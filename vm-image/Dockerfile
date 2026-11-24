@@ -26,9 +26,10 @@ RUN apt-get update \
 # Offline "repository": the .deb of every exam package, so that
 # `apt purge samba && apt install samba` still works without internet.
 # Dependencies stay installed; only the top-level packages are kept.
-RUN mkdir -p /var/lib/egz-repo && cd /var/lib/egz-repo \
- && apt-get install -y --no-install-recommends apt-utils \
+RUN apt-get install -y --no-install-recommends apt-utils \
+ && mkdir -p /var/lib/egz-repo && cd /var/lib/egz-repo && chown _apt /var/lib/egz-repo \
  && apt-get download $(grep -v '^#' /tmp/packages.txt) \
+ && chown -R root:root /var/lib/egz-repo \
  && apt-ftparchive packages . > Packages \
  && echo 'deb [trusted=yes] file:/var/lib/egz-repo ./' > /etc/apt/sources.list.d/egz-offline.list \
  && apt-get update \
@@ -36,11 +37,11 @@ RUN mkdir -p /var/lib/egz-repo && cd /var/lib/egz-repo \
  && rm -f /var/lib/apt/lists/deb.debian.org_* /tmp/packages.txt
 
 # Exam accounts: administrator / ZAQ!2wsx (sudo), root has the same password.
+# (/etc/hostname and /etc/hosts are bind-mounted by Docker during the build;
+# build-ext2.sh writes them from final/ into the exported filesystem.)
 RUN useradd -m -s /bin/bash -c 'Administrator' -G sudo,adm administrator \
  && echo 'administrator:ZAQ!2wsx' | chpasswd \
- && echo 'root:ZAQ!2wsx' | chpasswd \
- && echo serwer > /etc/hostname \
- && printf '127.0.0.1\tlocalhost\n127.0.1.1\tserwer\n\n::1\tlocalhost ip6-localhost ip6-loopback\nff02::1\tip6-allnodes\nff02::2\tip6-allrouters\n' > /etc/hosts
+ && echo 'root:ZAQ!2wsx' | chpasswd
 
 # Shims (systemctl, service, journalctl, netplan, hostnamectl, apt wrapper),
 # netplan template, MOTD, sudoers, prompt.

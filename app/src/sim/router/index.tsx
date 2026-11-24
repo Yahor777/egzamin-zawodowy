@@ -133,9 +133,13 @@ export interface RouterSimProps {
   /** true: render only the device web UI (the host provides the browser and checks the address) */
   embedded?: boolean
   onLogout?: () => void
+  /** called when the user reboots the device from its web UI (System Tools → Reboot, Restore config, …) */
+  onReboot?: () => void
+  /** called after the factory-default state has been committed via onChange */
+  onFactoryReset?: () => void
 }
 
-export function RouterSim({ state, onChange, embedded, onLogout }: RouterSimProps) {
+export function RouterSim({ state, onChange, embedded, onLogout, onReboot, onFactoryReset }: RouterSimProps) {
   const [page, setPage] = useState('status')
   const [notice, setNotice] = useState('')
   const short = state.model.replace(/\s*\(.*\)\s*$/, '')
@@ -151,6 +155,8 @@ export function RouterSim({ state, onChange, embedded, onLogout }: RouterSimProp
       ipChangeBehavior="reboot"
       embedded={embedded}
       onLogout={onLogout}
+      onReboot={onReboot}
+      onFactoryReset={onFactoryReset}
       factoryHint="Dane fabryczne (naklejka na spodzie): http://192.168.0.1, użytkownik admin, hasło admin."
       renderApp={(api) => (
         <DeviceLayout

@@ -934,8 +934,8 @@ function ResetPage({ state, onChange, api }: SwitchPageProps) {
           danger
           text="All settings will be restored to the factory defaults. Are you sure?"
           onOk={() => {
-            api.reboot('Restoring factory defaults, the switch will reboot…')
             onChange(defaultSwitchState({ model: state.model, ports: state.ports }))
+            api.reboot('Restoring factory defaults, the switch will reboot…', 'factory')
           }}
           onCancel={() => setAsk(false)}
         />

@@ -70,9 +70,13 @@ export interface SwitchSimProps {
   /** true: render only the device web UI (the host provides the browser and checks the address) */
   embedded?: boolean
   onLogout?: () => void
+  /** called when the user reboots the device from its web UI (System Tools → Reboot, Restore config, …) */
+  onReboot?: () => void
+  /** called after the factory-default state has been committed via onChange */
+  onFactoryReset?: () => void
 }
 
-export function SwitchSim({ state, onChange, embedded, onLogout }: SwitchSimProps) {
+export function SwitchSim({ state, onChange, embedded, onLogout, onReboot, onFactoryReset }: SwitchSimProps) {
   const [page, setPage] = useState('sys-info')
   const short = state.model.replace(/\s*\(.*\)\s*$/, '')
   return (
@@ -87,6 +91,8 @@ export function SwitchSim({ state, onChange, embedded, onLogout }: SwitchSimProp
       ipChangeBehavior="hang"
       embedded={embedded}
       onLogout={onLogout}
+      onReboot={onReboot}
+      onFactoryReset={onFactoryReset}
       factoryHint="Dane fabryczne przełącznika: adres 192.168.0.1, użytkownik admin, hasło admin. Komputer musi mieć adres z tej samej podsieci."
       renderApp={(api) => (
         <DeviceLayout

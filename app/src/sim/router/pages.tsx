@@ -1807,8 +1807,8 @@ function FactoryPage({ state, onChange, api, setNotice }: RouterPageProps) {
   const [ask, setAsk] = useState(false)
   const restore = () => {
     setNotice('')
-    api.reboot('Restoring factory defaults, the device will reboot…')
     onChange(defaultRouterState({ model: state.model, clients: state.clients }))
+    api.reboot('Restoring factory defaults, the device will reboot…', 'factory')
   }
   return (
     <Panel title="Factory Defaults">

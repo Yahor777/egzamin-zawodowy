@@ -303,6 +303,405 @@ subnet 10.80.0.0 netmask 255.255.255.0 {
   expect('VLAN mismatch explained', !r7.ok && r7.why.some((w) => /VLAN/.test(w.short)), whyText(r7))
 }
 
+// ================================================================ labs-more.ts
+type Pc = NonNullable<LabSave['pc']>
+const pcSet = (s: LabSave, id: string, v: Partial<Pc['adapters'][number]>) => Object.assign(s.pc!.adapters.find((a) => a.id === id)!, v)
+const pcCmd = (s: LabSave, ...cmds: string[]) => s.pc!.history.push(...cmds)
+const staticIp = (ip: string, mask: string, gateway = '', dns1 = '', dns2 = '') => ({ dhcp: false, ip, mask, gateway, dnsAuto: false, dns1, dns2 })
+const netplan = (body: string) => `network:\n  version: 2\n  ethernets:\n${body}`
+const eth = (name: string, addr: string, gw?: string, dns?: string[]) =>
+  `    ${name}:\n      addresses: [${addr}]\n` + (gw ? `      routes:\n        - to: default\n          via: ${gw}\n` : '') + (dns ? `      nameservers:\n        addresses: [${dns.join(', ')}]\n` : '')
+function vlan(s: LabSave, id: number, untagged: number[], tagged: number[] = []) {
+  const sw = s.switch!
+  sw.dot1q = true
+  let v = sw.vlans.find((x) => x.id === id)
+  if (!v) sw.vlans.push((v = { id, name: `VLAN${id}`, members: sw.vlans[0].members.map(() => 'none') as typeof sw.vlans[0]['members'] }))
+  for (const p of untagged) {
+    v.members[p - 1] = 'untagged'
+    sw.pvid[p - 1] = id
+    if (id !== 1) sw.vlans[0].members[p - 1] = 'none'
+  }
+  for (const p of tagged) v.members[p - 1] = 'tagged'
+}
+const wan = (s: LabSave, ip: string, mask: string, gateway: string, dns1: string, dns2 = '') => Object.assign(s.router!.wan, { type: 'static', ip, mask, gateway, dns1, dns2 })
+const lan = (s: LabSave, ip: string, mask = '255.255.255.0') => Object.assign(s.router!.lan, { ip, mask })
+const pool = (s: LabSave, start: string, end: string, extra: Partial<NonNullable<LabSave['router']>['dhcp']> = {}) => Object.assign(s.router!.dhcp, { enabled: true, start, end, ...extra })
+const resv = (s: LabSave, mac: string, ip: string) => s.router!.reservations.push({ mac, ip, enabled: true, description: '' })
+const sw = (s: LabSave, ip: string, mask: string, gateway: string) => (s.switch!.ip = { dhcp: false, ip, mask, gateway })
+const wifi = (s: LabSave, ssid: string, password: string, channel: number) => Object.assign(s.router!.wifi24, { enabled: true, ssid, password, channel, security: 'wpa2-psk', encryption: 'aes' })
+async function pings(t: ReturnType<typeof term>, ...ips: string[]) {
+  for (const ip of ips) console.log('   ', (await t.run(`ping -c 2 ${ip}`)).split('\n').slice(0, 2).join(' | '))
+}
+
+// ---------- 26-06-02
+{
+  const L = lab('inf02-26-06-02')
+  const s = fresh(L)
+  wan(s, '78.80.88.5', '255.255.255.248', '78.80.88.1', '8.8.8.8', '8.8.4.4')
+  lan(s, '192.168.100.1')
+  pool(s, '192.168.100.20', '192.168.100.50')
+  resv(s, '08-00-27-26-62-10', '192.168.100.50')
+  sw(s, '192.168.100.10', '255.255.255.0', '192.168.100.1')
+  vlan(s, 3, [1, 2, 3])
+  s.links = [...L.requiredLinks]
+  pcSet(s, 'eth0', { name: 'LAN1' })
+  pcSet(s, 'eth1', { name: 'LAN2', ...staticIp('192.168.0.5', '255.255.255.0') })
+  s.pc!.firewallIcmp = true
+  renew(s, L, 'eth0')
+  pcCmd(s, 'ipconfig /renew', 'ping 192.168.0.200')
+  const t = term(s, L)
+  await t.edit('/etc/netplan/50-cloud-init.yaml', netplan(eth('enp0s3', '192.168.100.15/24', '192.168.100.1', ['192.168.100.1'])))
+  console.log(await t.run('sudo netplan apply'))
+  await t.run('mkdir /media/administrator/Egzamin-5/LINUX_TERMINAL')
+  console.log(await t.run('sudo groupadd Technicy'))
+  console.log(await t.run('sudo useradd -m Student1'))
+  await t.run('sudo passwd Student1', PASS, PASS)
+  await t.run('sudo usermod -aG Technicy Student1')
+  await pings(t, '192.168.100.1', '192.168.100.50')
+  await verify(L, s)
+}
+
+// ---------- 26-06-05
+{
+  const L = lab('inf02-26-06-05')
+  const s = fresh(L)
+  wan(s, '50.50.50.1', '255.255.255.252', '50.50.50.2', '8.8.8.8', '4.4.4.4')
+  lan(s, '192.168.0.5')
+  pool(s, '192.168.0.10', '192.168.0.20')
+  resv(s, '08:00:27:26:65:03', '192.168.0.12')
+  sw(s, '192.168.0.6', '255.255.255.0', '192.168.0.5')
+  s.links = [...L.requiredLinks]
+  pcSet(s, 'eth0', { name: 'LAN_S', ...staticIp('192.168.0.105', '255.255.255.0', '192.168.0.5') })
+  pcSet(s, 'eth1', { enabled: false })
+  pcCmd(s, 'ping 192.168.0.6', 'ping 192.168.0.5', 'ping 192.168.0.200')
+  const t = term(s, L)
+  await t.edit('/etc/netplan/50-cloud-init.yaml', netplan('    enp0s3:\n      dhcp4: true\n'))
+  console.log(await t.run('sudo netplan apply'))
+  await t.run('sudo groupadd uczniowie')
+  await t.run('sudo useradd -m egzamin')
+  await t.run('sudo passwd egzamin', 'Egz-inf02!', 'Egz-inf02!')
+  await t.run('sudo usermod -aG uczniowie egzamin')
+  console.log(await t.run('cd ~ && tar -cvf egzamin.tar zrzut_grupa.png zrzut_konto.png'))
+  await verify(L, s)
+}
+
+// ---------- 26-06-08
+{
+  const L = lab('inf02-26-06-08')
+  const s = fresh(L)
+  wan(s, '87.105.190.109', '255.255.255.252', '87.105.190.110', '8.8.8.8')
+  lan(s, '172.20.250.1')
+  pool(s, '172.20.250.100', '172.20.250.200')
+  resv(s, '08-00-27-26-68-10', '172.20.250.150')
+  wifi(s, 'EGZAMIN_05', 'egzamin05', 5)
+  sw(s, '192.168.0.102', '255.255.255.0', '192.168.0.5')
+  vlan(s, 2, [2, 4])
+  vlan(s, 3, [1, 3])
+  s.links = [...L.requiredLinks]
+  pcSet(s, 'eth0', { name: 'LAN1', dnsAuto: false, dns1: '127.0.0.1' })
+  pcSet(s, 'eth1', { name: 'LAN2', ...staticIp('192.168.0.5', '255.255.255.0', '', '127.0.0.1') })
+  renew(s, L, 'eth0')
+  pcCmd(s, 'ping 172.20.250.1', 'ping 192.168.0.200')
+  console.log('  LAN1 lease:', JSON.stringify(s.pc!.adapters[0].lease))
+  await verify(L, s)
+}
+
+// ---------- 26-06-01
+{
+  const L = lab('inf02-26-06-01')
+  const s = fresh(L)
+  lan(s, '192.168.16.1')
+  pool(s, '192.168.16.12', '192.168.16.20')
+  resv(s, '08-00-27-26-61-10', '192.168.16.12')
+  sw(s, '192.168.0.32', '255.255.255.0', '192.168.0.5')
+  vlan(s, 2, [1, 2, 3])
+  vlan(s, 4, [4])
+  s.links = [...L.requiredLinks]
+  pcSet(s, 'eth0', { name: 'LANZ' })
+  pcSet(s, 'eth1', { name: 'LANW', ...staticIp('192.168.0.5', '255.255.255.0') })
+  renew(s, L, 'eth0')
+  pcCmd(s, 'ipconfig /renew', 'ping 192.168.16.1', 'ping 192.168.0.200', 'ipconfig')
+  await verify(L, s)
+}
+
+// ---------- 26-01-04
+{
+  const L = lab('inf02-26-01-04')
+  const s = fresh(L)
+  wan(s, '88.88.88.2', '255.255.255.252', '88.88.88.1', '6.6.6.6', '7.7.7.7')
+  lan(s, '172.16.10.10')
+  s.router!.dhcp.enabled = false
+  sw(s, '10.0.10.5', '255.255.255.0', '10.0.10.1')
+  s.links = [...L.requiredLinks]
+  pcSet(s, 'eth0', { name: 'LAN Z', ...staticIp('172.16.10.1', '255.255.255.0', '172.16.10.10', '127.0.0.1') })
+  pcSet(s, 'eth1', { name: 'LAN W', ...staticIp('10.0.10.1', '255.255.255.0', '', '127.0.0.1') })
+  pcCmd(s, 'ping 172.16.10.10', 'ping 10.0.10.5', 'ping 10.0.10.11')
+  const t = term(s, L)
+  await t.edit('/etc/netplan/50-cloud-init.yaml', netplan(eth('enp0s3', '10.0.10.11/24', '10.0.10.1', ['10.0.10.1'])))
+  console.log(await t.run('sudo netplan apply'))
+  await t.run('sudo hostnamectl set-hostname stanowisko05')
+  console.log((await t.run('ip link show enp0s3')).split('\n')[1])
+  await t.run('mkdir ~/ELEKTRONIKA')
+  await t.run('chmod u=rwx,g=r,o=x ~/ELEKTRONIKA')
+  await verify(L, s)
+}
+
+// ---------- 26-01-03
+{
+  const L = lab('inf02-26-01-03')
+  const s = fresh(L)
+  wan(s, '212.10.10.20', '255.255.255.192', '212.10.10.1', '8.8.8.8', '8.8.4.4')
+  pool(s, '192.168.0.60', '192.168.0.80')
+  sw(s, '192.168.0.2', '255.255.255.0', '192.168.0.1')
+  s.links = [...L.requiredLinks]
+  pcSet(s, 'eth0', staticIp('192.168.0.15', '255.255.255.0', '192.168.0.1', '192.168.0.1'))
+  s.pc!.firewallIcmp = true
+  const t = term(s, L)
+  await t.edit('/etc/netplan/50-cloud-init.yaml', netplan(eth('enp0s3', '192.168.0.35/24', '192.168.0.1', ['127.0.0.1'])))
+  console.log(await t.run('sudo netplan apply'))
+  await t.run('sudo cp /media/administrator/DOKUMENTACJA/PLIKI/index.html /var/www/html/index.html')
+  await t.run('sudo systemctl restart apache2')
+  console.log((await t.run('curl http://localhost')).split('\n').find((l) => l.includes('h1')))
+  console.log(await t.run('grep -E "RUN_(USER|GROUP)" /etc/apache2/envvars'))
+  await t.run('sudo mkdir /kopie_strony')
+  await t.run('sudo chmod 750 /kopie_strony')
+  await t.run('sudo chown www-data:www-data /kopie_strony')
+  await pings(t, '192.168.0.15', '192.168.0.2', '192.168.0.1', '192.168.0.200')
+  await verify(L, s)
+}
+
+// ---------- 25-06-05
+{
+  const L = lab('inf02-25-06-05')
+  const s = fresh(L)
+  wan(s, '100.0.0.4', '255.255.255.0', '100.0.0.1', '4.4.4.4', '4.4.5.5')
+  lan(s, '192.168.1.1', '255.255.255.240')
+  s.router!.dhcp.enabled = false
+  wifi(s, 'Egzamin_05', 'Qwerty_05', 5)
+  s.links = [...L.requiredLinks]
+  pcSet(s, 'wlan0', { name: 'W-LAN', ...staticIp('192.168.1.2', '255.255.255.240', '192.168.1.1', '4.4.4.4') })
+  const t = term(s, L)
+  await t.edit('/etc/netplan/50-cloud-init.yaml', netplan(eth('enp0s3', '192.168.1.3/28', '192.168.1.1', ['4.4.4.4'])))
+  console.log(await t.run('sudo netplan apply'))
+  await t.run('sudo hostnamectl set-hostname PCserwer')
+  await t.run('sudo mkdir /home/zadanie')
+  await t.run('echo INF.02 | sudo tee /home/zadanie/dane')
+  await t.run('sudo chmod 770 /home/zadanie')
+  await t.run('sudo chmod 660 /home/zadanie/dane')
+  console.log(await t.run('sudo useradd -m egzamin -e 2029-02-15'))
+  await t.run('sudo passwd egzamin', 'Egz@min12!', 'Egz@min12!')
+  await t.run('sudo chown -R egzamin:root /home/zadanie')
+  console.log(await t.run('sudo chage -l egzamin | grep Account'))
+  await pings(t, '192.168.1.1')
+  await verify(L, s)
+}
+
+// ---------- 25-01-02
+{
+  const L = lab('inf02-25-01-02')
+  const s = fresh(L)
+  wan(s, '55.55.55.55', '255.255.255.240', '55.55.55.50', '4.4.4.4', '7.7.7.7')
+  s.router!.dhcp.enabled = false
+  sw(s, '192.168.0.2', '255.255.255.0', '192.168.0.1')
+  s.links = [...L.requiredLinks]
+  pcSet(s, 'eth0', { name: 'LAN2', ...staticIp('192.168.0.3', '255.255.255.0', '192.168.0.1', '4.4.4.4') })
+  s.pc!.firewallIcmp = true
+  const t = term(s, L)
+  await t.edit('/etc/netplan/50-cloud-init.yaml', netplan(eth('enp0s3', '192.168.0.4/24', '192.168.0.1', ['4.4.4.4'])))
+  console.log(await t.run('sudo netplan apply'))
+  console.log(await t.run('sudo systemctl enable --now ssh'))
+  await t.run('mkdir ~/Identyfikacja_serwera')
+  await t.run('free -h > ~/Identyfikacja_serwera/free.txt')
+  await t.run('sudo dmidecode -t memory > ~/Identyfikacja_serwera/dmidecode.txt')
+  await pings(t, '192.168.0.3', '192.168.0.1', '192.168.0.2')
+  await verify(L, s)
+}
+
+// ---------- 24-06-06
+{
+  const L = lab('inf02-24-06-06')
+  const s = fresh(L)
+  wan(s, '88.88.88.1', '255.255.255.240', '88.88.88.2', '8.8.8.8', '8.8.4.4')
+  pool(s, '192.168.0.11', '192.168.0.100')
+  resv(s, '08-00-27-24-66-0A', '192.168.0.51')
+  wifi(s, 'EGZAMIN_5', 'Egzamin_zawodowy!', 6)
+  sw(s, '192.168.0.2', '255.255.255.0', '192.168.0.1')
+  s.links = [...L.requiredLinks]
+  pcSet(s, 'wlan0', { name: 'EGZAMIN-5' })
+  pcSet(s, 'eth0', { enabled: false })
+  s.pc!.firewallIcmp = true
+  const t = term(s, L)
+  await t.edit('/etc/netplan/50-cloud-init.yaml', netplan(eth('enp0s3', '192.168.0.3/24', '192.168.0.1', ['192.168.0.1'])))
+  console.log(await t.run('sudo netplan apply'))
+  await t.run('sudo useradd -m -c "Jan Kowalski" -s /bin/bash jkowalski')
+  await t.run('sudo passwd jkowalski', 'XSW@3edc', 'XSW@3edc')
+  await t.run('sudo groupadd pracownicy')
+  await t.run('sudo gpasswd -a jkowalski pracownicy')
+  await t.run('sudo mkdir /dane')
+  await t.run('sudo chown jkowalski:pracownicy /dane')
+  await t.run('sudo chmod 750 /dane')
+  await t.run('sudo systemctl enable ssh')
+  await t.run('echo "AllowUsers administrator jkowalski" | sudo tee -a /etc/ssh/sshd_config')
+  await t.run('sudo systemctl restart ssh')
+  await pings(t, '192.168.0.1', '192.168.0.2')
+  await verify(L, s)
+}
+
+// ---------- 24-06-02
+{
+  const L = lab('inf02-24-06-02')
+  const s = fresh(L)
+  lan(s, '192.168.1.129', '255.255.255.128')
+  wan(s, '20.20.20.20', '255.255.255.0', '20.20.20.21', '9.9.8.8', '8.8.9.9')
+  s.router!.dhcp.enabled = false
+  wifi(s, 'wifi-5', 'stanowisko-5', 7)
+  sw(s, '192.168.1.254', '255.255.255.128', '192.168.1.129')
+  s.links = [...L.requiredLinks]
+  pcSet(s, 'eth0', { name: 'LAN_serwer', ...staticIp('192.168.1.253', '255.255.255.128', '192.168.1.129', '127.0.0.1') })
+  pcCmd(s, 'ping 192.168.1.129', 'ping 192.168.1.254', 'ping 192.168.1.130')
+  const t = term(s, L)
+  await t.edit('/etc/netplan/50-cloud-init.yaml', netplan(eth('enp0s3', '192.168.1.130/25', '192.168.1.129', ['192.168.1.253'])))
+  console.log(await t.run('sudo netplan apply'))
+  await t.edit(`/home/administrator/konfiguracja.sh`, '#!/bin/bash\ngroupadd informatycy\nusermod -aG informatycy administrator\ngroupmod -g 1111 informatycy\n', false)
+  await t.run('chmod +x ~/konfiguracja.sh')
+  console.log(await t.run('sudo ~/konfiguracja.sh'))
+  console.log(await t.run('getent group informatycy'))
+  console.log(await t.run('cd ~ && tar -czvf konfiguracja.tar.gz konfiguracja.sh'))
+  await verify(L, s)
+}
+
+// ---------- 24-01-02
+{
+  const L = lab('inf02-24-01-02')
+  const s = fresh(L)
+  lan(s, '192.168.10.1', '255.255.255.128')
+  wan(s, '100.100.100.1', '255.255.255.192', '100.100.100.2', '5.4.3.2', '2.3.4.5')
+  pool(s, '192.168.10.10', '192.168.10.20')
+  resv(s, '08-00-27-24-12-0C', '192.168.10.13')
+  sw(s, '192.168.10.4', '255.255.255.128', '192.168.10.1')
+  vlan(s, 200, [1, 2, 3])
+  s.links = [...L.requiredLinks]
+  pcSet(s, 'eth0', { dnsAuto: false, dns1: '192.168.10.2' })
+  s.pc!.firewallIcmp = true
+  renew(s, L, 'eth0')
+  const t = term(s, L)
+  await t.edit('/etc/netplan/50-cloud-init.yaml', netplan(eth('enp0s3', '192.168.10.2/25', '192.168.10.1', ['127.0.0.1'])))
+  console.log(await t.run('sudo netplan apply'))
+  await t.run('sudo groupadd administracja')
+  await t.run('sudo useradd -m kadry')
+  await t.run('sudo passwd -n 4 kadry')
+  await t.run('sudo usermod -a -G administracja kadry')
+  await pings(t, '192.168.10.1', '192.168.10.13')
+  await verify(L, s)
+}
+
+// ---------- 24-01-01
+{
+  const L = lab('inf02-24-01-01')
+  const s = fresh(L)
+  lan(s, '172.31.0.1')
+  s.router!.dhcp.enabled = false
+  wan(s, '72.16.31.1', '255.255.255.192', '72.16.31.62', '6.6.9.9', '4.4.7.7')
+  sw(s, '10.100.100.2', '255.255.255.0', '10.100.100.1')
+  s.links = [...L.requiredLinks]
+  pcSet(s, 'eth0', { name: 'LAN_ruter', ...staticIp('172.31.0.2', '255.255.255.0', '172.31.0.1', '127.0.0.1') })
+  pcSet(s, 'eth1', { name: 'LAN_switch', ...staticIp('10.100.100.1', '255.255.255.0', '', '127.0.0.1') })
+  pcCmd(s, 'ping 172.31.0.1', 'ping 10.100.100.2', 'ping 10.100.100.3')
+  const t = term(s, L)
+  await t.edit('/etc/netplan/50-cloud-init.yaml', netplan(eth('enp0s3', '10.100.100.3/24', '10.100.100.1', ['10.100.100.1'])))
+  console.log(await t.run('sudo netplan apply'))
+  await t.run('ip a > ~/konfiguracja')
+  await t.run('chmod 666 ~/konfiguracja')
+  await verify(L, s)
+}
+
+// ---------- 23-06-01
+{
+  const L = lab('inf02-23-06-01')
+  const s = fresh(L)
+  wan(s, '20.20.20.2', '255.255.255.240', '20.20.20.1', '8.8.8.8', '8.8.5.5')
+  lan(s, '172.31.3.1')
+  pool(s, '172.31.3.20', '172.31.3.200')
+  resv(s, '08-00-27-23-61-0C', '172.31.3.27')
+  sw(s, '172.31.3.2', '255.255.255.0', '172.31.3.1')
+  vlan(s, 2, [1, 2, 3])
+  s.links = [...L.requiredLinks]
+  pcSet(s, 'eth0', { name: 'Egzamin1' })
+  renew(s, L, 'eth0')
+  pcCmd(s, 'ipconfig /renew', 'ipconfig /all')
+  const t = term(s, L)
+  await t.edit('/etc/netplan/50-cloud-init.yaml', netplan(eth('enp0s3', '172.31.3.7/24', '172.31.3.1', ['127.0.0.1'])))
+  console.log(await t.run('sudo netplan apply'))
+  await t.run('mkdir ~/KOPIE')
+  await t.run('cp /etc/ssh/sshd_config ~/KOPIE/ssh_old')
+  await t.run('chmod 740 ~/KOPIE')
+  await t.run('df -h > ~/dysk')
+  await verify(L, s)
+}
+
+// ---------- 23-01-01
+{
+  const L = lab('inf02-23-01-01')
+  const s = fresh(L)
+  lan(s, '192.168.0.1')
+  pool(s, '192.168.0.79', '192.168.0.99')
+  resv(s, '08:00:27:23:11:03', '192.168.0.81')
+  wan(s, '100.100.0.2', '255.255.255.224', '100.100.0.1', '8.8.3.3', '3.3.8.8')
+  sw(s, '192.168.0.3', '255.255.255.0', '192.168.0.1')
+  s.links = [...L.requiredLinks]
+  pcSet(s, 'eth0', { name: 'NET1', ...staticIp('192.168.0.15', '255.255.255.0', '192.168.0.1', '127.0.0.1') })
+  pcSet(s, 'eth1', { enabled: false })
+  pcCmd(s, 'ping 192.168.0.1', 'ping 192.168.0.3', 'ping 192.168.0.200')
+  const t = term(s, L)
+  await t.edit('/etc/netplan/50-cloud-init.yaml', netplan('    enp0s3:\n      dhcp4: true\n      nameservers:\n        addresses: [192.168.0.15]\n'))
+  console.log(await t.run('sudo netplan apply'))
+  await t.run('sudo groupadd Kierownictwo')
+  await t.run('sudo useradd -m -G Kierownictwo Kierownik')
+  await t.run('sudo passwd Kierownik', 'Kier0wnik1', 'Kier0wnik1')
+  await t.run('ln -s /dev ~/dowiazanie_dev')
+  await t.run('mkdir ~/test && chmod 711 ~/test')
+  await verify(L, s)
+}
+
+// ---------- 22-06-02
+{
+  const L = lab('inf02-22-06-02')
+  const s = fresh(L)
+  lan(s, '10.10.10.1')
+  s.router!.dhcp.enabled = false
+  wan(s, '88.88.88.1', '255.255.255.252', '88.88.88.2', '8.8.8.8', '8.8.4.4')
+  s.router!.forwarding.push({ name: 'www', externalPort: '8080', internalIp: '10.10.10.2', internalPort: '8080', protocol: 'TCP', enabled: true })
+  s.links = [...L.requiredLinks]
+  pcSet(s, 'eth0', staticIp('88.88.88.2', '255.255.255.252', '88.88.88.1', '8.8.8.8'))
+  s.pc!.firewallIcmp = true
+  const t = term(s, L)
+  await t.edit('/etc/netplan/50-cloud-init.yaml', netplan(eth('enp0s3', '10.10.10.2/24', '10.10.10.1', ['10.10.10.1']) + eth('enp0s8', '192.168.0.5/24')))
+  console.log(await t.run('sudo netplan apply'))
+  await t.run('sudo smartctl -a /dev/sda > ~/SMART.txt')
+  await t.run('sudo mkdir /www')
+  await t.edit('/www/index.html', '<html>\n<body>\n<p>Strona testowa</p>\n</body>\n</html>\n')
+  await t.run('sudo chown -R www-data:www-data /www')
+  await t.run('sudo chmod 444 /www/index.html')
+  await t.run('sudo chmod 555 /www')
+  console.log("SED1", await t.run("sudo sed -i 's/^Listen 80$/Listen 8080/' /etc/apache2/ports.conf"))
+  await t.run("sudo sed -i -e 's/\\*:80>/*:8080>/' -e 's#DocumentRoot /var/www/html#DocumentRoot /www#' /etc/apache2/sites-available/000-default.conf")
+  await t.run('printf "<Directory /www/>\\n\\tRequire all granted\\n</Directory>\\n" | sudo tee -a /etc/apache2/apache2.conf')
+  console.log("CONF", await t.run("cat /etc/apache2/ports.conf /etc/apache2/sites-enabled/000-default.conf; ls -la /etc/apache2/sites-enabled"))
+  console.log(await t.run('sudo apache2ctl configtest'))
+  await t.run('sudo systemctl restart apache2')
+  console.log('    curl:', (await t.run('curl -s http://10.10.10.2:8080/')).trim().replace(/\n/g, ' '))
+  await pings(t, '192.168.0.100', '10.10.10.1', '88.88.88.2')
+  await verify(L, s)
+}
+
+// ---------- every lab: a fresh, untouched setup must not pass
+for (const L of LABS) {
+  const r = labScore(L, buildCtx(fresh(L), buildModel(L, fresh(L))))
+  const ok = r.pct < 75
+  if (!ok) failures++
+  console.log(`${ok ? 'ok  ' : 'FAIL'} fresh ${L.id}: ${r.pct}% (< 75%)`)
+}
+
 if (failures) {
   throw new Error(`${failures} lab(s) not at 100%`)
 }

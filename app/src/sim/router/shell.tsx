@@ -466,8 +466,11 @@ export function DeviceLayout(props: {
 
 export interface ShellApi {
   logout: () => void
-  /** Simulates a reboot: shows the restarting screen, then the login page. */
-  reboot: (text?: string) => void
+  /**
+   * Simulates a reboot: shows the restarting screen, then the login page.
+   * reason 'factory' = after a factory reset (state already committed via onChange).
+   */
+  reboot: (text?: string, reason?: 'reboot' | 'factory') => void
 }
 
 interface Restart {
@@ -502,6 +505,10 @@ export function DeviceShell(props: {
   /** render only the device web UI (no browser frame); the host browser checks reachability */
   embedded?: boolean
   onLogout?: () => void
+  /** host hook: the user rebooted the device from its web UI */
+  onReboot?: () => void
+  /** host hook: the user restored factory defaults (called after onChange) */
+  onFactoryReset?: () => void
   renderApp: (api: ShellApi) => ReactNode
 }) {
   const { deviceIp, embedded } = props
@@ -575,9 +582,12 @@ export function DeviceShell(props: {
       setLoggedIn(false)
       props.onLogout?.()
     },
-    reboot: (text) => {
+    reboot: (text, reason) => {
       setLoggedIn(false)
-      setRestart({ text: text ?? 'Restarting… Please wait.', ipChange: null })
+      const hook = reason === 'factory' ? props.onFactoryReset : props.onReboot
+      // embedded: the host shows the boot sequence itself when it handles the event
+      if (!(embedded && hook)) setRestart({ text: text ?? 'Restarting… Please wait.', ipChange: null })
+      hook?.()
     },
   }
 

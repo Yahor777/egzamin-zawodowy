@@ -131,12 +131,12 @@ export function Browser({ st, pcKey, pc, router, switch: sw, printer, onRouter, 
           ) : device === 'router' && router ? (
             <>
               {r?.conflict && <ConflictBar r={r} />}
-              <RouterSim key={ep('router')} state={router} onChange={onRouter} embedded />
+              <RouterSim key={ep('router')} state={router} onChange={onRouter} embedded onReboot={() => st.reboot('router')} onFactoryReset={() => st.factoryReset('router')} />
             </>
           ) : device === 'switch' && sw ? (
             <>
               {r?.conflict && <ConflictBar r={r} />}
-              <SwitchSim key={ep('switch')} state={sw} onChange={onSwitch} embedded />
+              <SwitchSim key={ep('switch')} state={sw} onChange={onSwitch} embedded onReboot={() => st.reboot('switch')} onFactoryReset={() => st.factoryReset('switch')} />
             </>
           ) : device === 'printer' && printer ? (
             <PrinterPage ip={printer.ip} prefix={printer.prefix} />

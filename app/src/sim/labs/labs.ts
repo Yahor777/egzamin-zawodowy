@@ -3,6 +3,7 @@
 import type { LinuxApi, RouterState, SwitchState } from '../types'
 import type { Link, PcState } from '../net'
 import { maskToPrefix, sameSubnet } from '../net'
+import { MORE_LABS } from './labs-more'
 
 export interface LinuxSetupLite {
   hostname: string
@@ -554,3 +555,6 @@ export function labScore(lab: Lab, ctx: LabCtx) {
     }
   return { total, got, pct: total ? Math.round((got / total) * 100) : 0, results }
 }
+
+// labs generated from further CKE sheets (newest first), see labs-more.ts
+LABS.push(...MORE_LABS)
