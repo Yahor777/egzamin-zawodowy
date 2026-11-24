@@ -11,8 +11,18 @@
   gap: 10px;
   flex-wrap: wrap;
 }
+.lab-head {
+  flex-wrap: nowrap;
+}
 .lab-head .back-link {
   margin-right: auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.lab-head .btn {
+  flex: none;
 }
 .lab-timer {
   display: inline-flex;

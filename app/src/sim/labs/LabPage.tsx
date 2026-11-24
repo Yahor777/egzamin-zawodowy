@@ -2,25 +2,14 @@ import { useEffect, useMemo, useState } from 'react'
 import { Icon } from '../../components/Icon'
 import { useLang } from '../../lib/store'
 import { go } from '../../router'
-import { createLinuxState, linuxApi, LinuxTerminal, type LinuxState } from '../linux'
-import { canPing, defaultPcState, leaseFor, maskToPrefix, networkOf, prefixToMask, type DhcpServer, type Link, type NetworkModel, type PcState } from '../net'
+import { createLinuxState, LinuxTerminal } from '../linux'
+import { canPing, defaultPcState, leaseFor, maskToPrefix, type Link } from '../net'
 import { PcSim } from '../pc/PcSim'
 import { defaultRouterState, RouterSim } from '../router'
 import { defaultSwitchState, SwitchSim } from '../switch'
-import type { RouterState, SwitchState } from '../types'
-import { LABS, labScore, type Lab, type LabCtx } from './labs'
+import { LABS, labScore, type Lab } from './labs'
+import { buildCtx, buildDhcpServers, buildModel, type LabSave } from './ctx'
 import './lab.css'
-
-interface LabSave {
-  v: 1
-  router?: RouterState
-  switch?: SwitchState
-  linux?: LinuxState
-  pc?: PcState
-  links: Link[]
-  startedAt: number | null
-  checked: Record<string, boolean> | null
-}
 
 const key = (id: string) => `inf02.lab.${id}`
 
@@ -115,82 +104,14 @@ export function LabPage({ id }: { id: string }) {
     return () => clearInterval(t)
   }, [])
 
-  // network model shared by all devices
-  const model = useMemo<NetworkModel | null>(() => {
-    if (!s || !lab) return null
-    const api = s.linux ? linuxApi(s.linux) : null
-    return {
-      router: s.router,
-      switch: s.switch,
-      linuxIfaces: api?.interfaces(),
-      linuxGateway: api?.defaultGateway() ?? null,
-      pc: s.pc,
-      printer: lab.devices.printer,
-      links: s.links,
-    }
-  }, [s, lab])
-
-  const dhcpServers = useMemo<DhcpServer[]>(() => {
-    const out: DhcpServer[] = []
-    if (!s) return out
-    const r = s.router
-    if (r?.dhcp.enabled) {
-      out.push({
-        port: 'router:lan-if',
-        serverIp: r.lan.ip,
-        start: r.dhcp.start,
-        end: r.dhcp.end,
-        mask: r.lan.mask,
-        gateway: r.dhcp.gateway || r.lan.ip,
-        dns: [r.dhcp.dns1 || r.lan.ip, r.dhcp.dns2].filter(Boolean),
-        reservations: r.reservations.filter((x) => x.enabled),
-      })
-    }
-    if (s.linux) {
-      const api = linuxApi(s.linux)
-      const subnets = api.dhcpSubnets()
-      if (subnets && api.serviceActive('isc-dhcp-server')) {
-        for (const ifn of api.dhcpInterfaces()) {
-          const iface = api.interfaces().find((i) => i.name === ifn)
-          const addr = iface?.addresses[0]
-          if (!addr) continue
-          const [ip, pre] = addr.split('/')
-          const sub = subnets.find((x) => x.subnet === networkOf(ip, Number(pre)) && x.rangeStart)
-          if (sub)
-            out.push({
-              port: `linux:${ifn}`,
-              serverIp: ip,
-              start: sub.rangeStart!,
-              end: sub.rangeEnd ?? sub.rangeStart!,
-              mask: sub.netmask || prefixToMask(Number(pre)),
-              gateway: sub.routers ?? '',
-              dns: sub.dns ?? [],
-              reservations: [],
-            })
-        }
-      }
-    }
-    return out
-  }, [s])
+  const model = useMemo(() => (s && lab ? buildModel(lab, s) : null), [s, lab])
+  const dhcpServers = useMemo(() => (s ? buildDhcpServers(s) : []), [s])
 
   if (!lab || !s || !model) return <div className="page">Nie znaleziono.</div>
 
   const update = (p: Partial<LabSave>) => setS((x) => (x ? { ...x, ...p, startedAt: x.startedAt ?? Date.now() } : x))
 
-  const ctx: LabCtx = {
-    router: s.router,
-    switch: s.switch,
-    linux: s.linux ? linuxApi(s.linux) : undefined,
-    pc: s.pc,
-    links: s.links,
-    ping: (from, ip) => {
-      if (from === 'linux') {
-        const api = s.linux ? linuxApi(s.linux) : null
-        return !!api && canPing(model, api.interfaces().map((i) => `linux:${i.name}`), ip).ok
-      }
-      return !!s.pc && canPing(model, s.pc.adapters.map((a) => `pc:${a.id}`), ip).ok
-    },
-  }
+  const ctx = buildCtx(s, model)
 
   const score = s.checked ? labScore(lab, ctx) : null
   const doCheck = () => {
@@ -206,7 +127,7 @@ export function LabPage({ id }: { id: string }) {
     window.scrollTo(0, 0)
   }
 
-  const elapsed = s.startedAt ? Math.floor((now - s.startedAt) / 1000) : 0
+  const elapsed = s.startedAt ? Math.max(0, Math.floor((now - s.startedAt) / 1000)) : 0
   const left = Math.max(0, 150 * 60 - elapsed)
   const tabs: [Tab, string][] = [
     ['tasks', lang === 'ru' ? 'Задания' : 'Zadania'],

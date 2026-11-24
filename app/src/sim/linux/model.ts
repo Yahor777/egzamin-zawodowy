@@ -74,6 +74,7 @@ export interface Mount {
   fstype: string
   options: string
   system?: boolean
+  hidden?: Record<string, FsNode> // entries shadowed by the mount ('' = original mountpoint dir)
 }
 
 export interface JournalEntry {
