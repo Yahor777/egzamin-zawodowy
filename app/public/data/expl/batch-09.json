@@ -1,0 +1,1221 @@
+{
+"o0370c65": {
+"ru": {
+"stem": "Устройством, используемым для соединения 6 компьютеров в локальную сеть, является",
+"answers": [
+"мост.",
+"сервер.",
+"трансивер.",
+"коммутатор."
+]
+},
+"expl": {
+"pl": "Przełącznik (switch) ma wiele portów i łączy komputery w sieć LAN w topologii gwiazdy. Most łączy zwykle tylko dwa segmenty, a transceiver jedynie konwertuje medium.",
+"ru": "Коммутатор (switch) имеет много портов и объединяет компьютеры в LAN по топологии «звезда». Мост обычно соединяет лишь два сегмента, а трансивер только преобразует среду передачи."
+}
+},
+"o06bec03": {
+"ru": {
+"stem": "На каком уровне модели ISO/OSI используются логические адреса?",
+"answers": [
+"Физическом.",
+"Сетевом.",
+"Транспортном.",
+"Канальном."
+]
+},
+"expl": {
+"pl": "Adresy logiczne to adresy IP, używane w warstwie sieciowej (3) do routingu. Warstwa łącza danych używa adresów fizycznych MAC, a transportowa – numerów portów.",
+"ru": "Логические адреса — это IP-адреса, используемые на сетевом уровне (3) для маршрутизации. Канальный уровень использует физические MAC-адреса, а транспортный — номера портов."
+}
+},
+"o07c11ba": {
+"ru": {
+"stem": "Согласно спецификации JEDEC напряжение питания модулей памяти DDR3L составляет",
+"answers": [
+"1,35 V",
+"1,5 V",
+"1,85 V",
+"1,9 V"
+]
+},
+"expl": {
+"pl": "Litera L (Low voltage) w DDR3L oznacza obniżone napięcie 1,35 V. Standardowe DDR3 pracuje przy 1,5 V, a 1,8 V to napięcie DDR2.",
+"ru": "Буква L (Low voltage) в DDR3L означает пониженное напряжение 1,35 В. Обычная DDR3 работает при 1,5 В, а 1,8 В — напряжение DDR2."
+},
+"stemFix": "Zgodnie ze specyfikacją JEDEC napięcie zasilania modułów pamięci RAM DDR3L wynosi",
+"answersFix": [
+"1,35 V",
+"1,5 V",
+"1,85 V",
+"1,9 V"
+]
+},
+"o0bfa317": {
+"ru": {
+"stem": "Салфетки, пропитанные жидкостью с антистатическими свойствами, предназначены для чистки",
+"answers": [
+"экранов мониторов CRT.",
+"экранов мониторов LCD.",
+"масляных валов в лазерных принтерах.",
+"роликов подачи бумаги в струйных принтерах."
+]
+},
+"expl": {
+"pl": "Ekran kineskopu CRT gromadzi ładunek elektrostatyczny i przyciąga kurz, dlatego czyści się go chusteczkami antystatycznymi. Matryce LCD czyści się delikatnymi, specjalnymi płynami do LCD.",
+"ru": "Экран кинескопа CRT накапливает электростатический заряд и притягивает пыль, поэтому его чистят антистатическими салфетками. Матрицы LCD чистят мягкими специальными средствами для LCD."
+},
+"outdated": true
+},
+"o0fb4060": {
+"ru": {
+"stem": "Какой из протоколов использует порты 20 и 21?",
+"answers": [
+"FTP",
+"DHCP",
+"WWW",
+"Telnet"
+]
+},
+"expl": {
+"pl": "FTP używa portu 21 do sterowania (polecenia) i portu 20 do przesyłania danych (tryb aktywny). Telnet to port 23, DHCP – 67/68, WWW (HTTP) – 80.",
+"ru": "FTP использует порт 21 для управления (команды) и порт 20 для передачи данных (активный режим). Telnet — порт 23, DHCP — 67/68, WWW (HTTP) — 80."
+},
+"stemFix": "Który z protokołów wykorzystuje porty 20 i 21?"
+},
+"o12bae42": {
+"ru": {
+"stem": "Адресом IPv6 автоконфигурации канала (link-local) является",
+"answers": [
+"2000::/3",
+"FF00::/8",
+"FE80::/10",
+"::/128"
+]
+},
+"expl": {
+"pl": "Adresy link-local (autokonfiguracja łącza) mają prefiks FE80::/10. 2000::/3 to globalne adresy unicast, FF00::/8 – multicast, a ::/128 – adres nieokreślony.",
+"ru": "Адреса link-local (автоконфигурация канала) имеют префикс FE80::/10. 2000::/3 — глобальные unicast-адреса, FF00::/8 — multicast, а ::/128 — неопределённый адрес."
+}
+},
+"o1526bdb": {
+"ru": {
+"stem": "Правильность работы оперативной памяти RAM можно проверить с помощью диагностической программы",
+"answers": [
+"CPU-Z",
+"GPU-Z",
+"S.M.A.R.T.",
+"Memtest86+"
+]
+},
+"expl": {
+"pl": "Memtest86+ uruchamia się z nośnika startowego i zapisuje/odczytuje wzorce w całej pamięci RAM, wykrywając błędy. CPU-Z i GPU-Z tylko wyświetlają informacje, a S.M.A.R.T. dotyczy dysków.",
+"ru": "Memtest86+ запускается с загрузочного носителя и записывает/читает шаблоны по всей RAM, выявляя ошибки. CPU-Z и GPU-Z лишь показывают информацию, а S.M.A.R.T. относится к дискам."
+},
+"answersFix": [
+"CPU-Z",
+"GPU-Z",
+"S.M.A.R.T.",
+"Memtest86+"
+]
+},
+"o15f65f4": {
+"ru": {
+"stem": "Для измерения мощности, потребляемой компьютером, следует использовать",
+"answers": [
+"ваттметр.",
+"вольтметр.",
+"амперметр.",
+"тестер блоков питания."
+]
+},
+"expl": {
+"pl": "Moc mierzy się watomierzem (wynik w watach). Woltomierz mierzy napięcie, amperomierz natężenie prądu, a tester zasilaczy sprawdza jedynie napięcia na wyjściach zasilacza.",
+"ru": "Мощность измеряют ваттметром (результат в ваттах). Вольтметр измеряет напряжение, амперметр — силу тока, а тестер БП проверяет лишь напряжения на выходах блока питания."
+}
+},
+"o16ae9b4": {
+"ru": {
+"stem": "В системе Windows пользователь и все группы, в которые он входит, имеют разрешение «чтение» для папки XYZ. Этот пользователь сможет выполнять операцию",
+"answers": [
+"удаления папки XYZ",
+"переименования папки XYZ",
+"копирования файлов в папку XYZ",
+"чтения разрешений папки XYZ"
+]
+},
+"expl": {
+"pl": "Uprawnienie NTFS „Odczyt” pozwala przeglądać zawartość, atrybuty i uprawnienia folderu. Usuwanie, zmiana nazwy czy kopiowanie plików do folderu wymagają uprawnień zapisu lub modyfikacji.",
+"ru": "Разрешение NTFS «Чтение» позволяет просматривать содержимое, атрибуты и разрешения папки. Удаление, переименование или копирование файлов в папку требуют прав записи или изменения."
+}
+},
+"o1e4635f": {
+"ru": {
+"stem": "student:x:1001:100:Jan Kowalski:/home/student:/bin/bash Числа 1001 и 100 в строке файла /etc/passwd означают",
+"answers": [
+"количество удачных и неудачных попыток входа.",
+"идентификаторы пользователя и группы в системе.",
+"номер цвета шрифта и номер цвета фона в терминале.",
+"количество дней с последней смены пароля и количество дней до истечения пароля."
+]
+},
+"expl": {
+"pl": "Pola w /etc/passwd to: login:hasło(x):UID:GID:opis:katalog domowy:powłoka. 1001 to UID użytkownika, a 100 to GID jego grupy podstawowej. Dane o ważności hasła są w /etc/shadow.",
+"ru": "Поля в /etc/passwd: логин:пароль(x):UID:GID:описание:домашний каталог:оболочка. 1001 — UID пользователя, 100 — GID его основной группы. Данные о сроке действия пароля хранятся в /etc/shadow."
+}
+},
+"o1fa45ba": {
+"ru": {
+"stem": "Как называется двунаправленная передача в сети Ethernet?",
+"answers": [
+"Simplex",
+"Duosimplex",
+"Half duplex",
+"Full duplex"
+]
+},
+"expl": {
+"pl": "Full duplex to jednoczesna transmisja w obu kierunkach. Half duplex też jest dwukierunkowy, ale naprzemiennie, a simplex tylko w jedną stronę. Klucz CKE uznaje full duplex.",
+"ru": "Full duplex — одновременная передача в обоих направлениях. Half duplex тоже двунаправленный, но поочерёдный, а simplex — только в одну сторону. Ключ CKE засчитывает full duplex."
+}
+},
+"o1fcd743": {
+"ru": {
+"stem": "Обычный пользователь системы Linux, который хочет удалить учётную запись другого пользователя вместе с его домашним каталогом, должен выполнить команду",
+"answers": [
+"userdel nazwa użytkownika",
+"userdel -d nazwa użytkownika",
+"sudo userdel nazwa użytkownika",
+"sudo userdel -r nazwa użytkownika"
+]
+},
+"expl": {
+"pl": "Zwykły użytkownik potrzebuje uprawnień roota, więc używa sudo. Opcja -r polecenia userdel usuwa także katalog domowy i skrzynkę pocztową. Bez -r katalog domowy pozostaje.",
+"ru": "Обычному пользователю нужны права root, поэтому используется sudo. Опция -r команды userdel удаляет также домашний каталог и почтовый ящик. Без -r домашний каталог остаётся."
+},
+"answersFix": [
+"userdel nazwa użytkownika",
+"userdel -d nazwa użytkownika",
+"sudo userdel nazwa użytkownika",
+"sudo userdel -r nazwa użytkownika"
+]
+},
+"o2567562": {
+"ru": {
+"stem": "Атаки, целью которых является остановка работы приложений и процессов в сетевом устройстве, — это атаки типа",
+"answers": [
+"DoS.",
+"smurf.",
+"zero-day.",
+"spoofing."
+]
+},
+"expl": {
+"pl": "DoS (Denial of Service) ma uniemożliwić działanie usługi lub urządzenia, np. przez zalanie go żądaniami. Smurf to tylko jedna z odmian DoS, a spoofing to podszywanie się pod inny adres.",
+"ru": "DoS (Denial of Service) направлена на то, чтобы сделать службу или устройство недоступными, например, заваливая его запросами. Smurf — лишь одна из разновидностей DoS, а spoofing — подмена адреса."
+}
+},
+"o26f0078": {
+"ru": {
+"stem": "Чтобы блокировать и удалять вредоносное ПО типа эксплойт, черви и трояны, следует установить программу",
+"answers": [
+"antymalware.",
+"antyspyware.",
+"antyspam.",
+"adblok."
+]
+},
+"expl": {
+"pl": "Malware to ogólna nazwa wszelkiego złośliwego oprogramowania (robaki, trojany, exploity), więc chroni przed nim program antymalware. Antyspyware wykrywa tylko oprogramowanie szpiegujące, a antyspam filtruje pocztę.",
+"ru": "Malware — общее название любого вредоносного ПО (черви, трояны, эксплойты), поэтому от него защищает антималварь. Antispyware обнаруживает только шпионское ПО, а antispam фильтрует почту."
+}
+},
+"o2a1f7be": {
+"ru": {
+"stem": "Какой адрес IPv4 обозначает устройство, работающее в сети с адресом 14.36.64.0/20?",
+"answers": [
+"14.36.17.1",
+"14.36.48.1",
+"14.36.65.1",
+"14.36.80.1"
+]
+},
+"expl": {
+"pl": "Maska /20 to 255.255.240.0, więc w trzecim oktecie bloki co 16: sieć 14.36.64.0 obejmuje 14.36.64.0–14.36.79.255. Mieści się w niej tylko 14.36.65.1; 14.36.80.1 należy już do kolejnej sieci.",
+"ru": "Маска /20 — это 255.255.240.0, в третьем октете блоки по 16: сеть 14.36.64.0 охватывает 14.36.64.0–14.36.79.255. В неё попадает только 14.36.65.1; 14.36.80.1 уже из следующей сети."
+},
+"answersFix": [
+"14.36.17.1",
+"14.36.48.1",
+"14.36.65.1",
+"14.36.80.1"
+]
+},
+"o2af96d3": {
+"ru": {
+"stem": "Кадр с данными, отправленными с компьютера PC1 на веб-сервер, находится между маршрутизатором R1 и маршрутизатором R2 (точка A). Какие адреса в нём содержатся?",
+"answers": [
+"IP-адрес источника — компьютер PC1, IP-адрес назначения — сервер, MAC-адрес источника — маршрутизатор R1, MAC-адрес назначения — маршрутизатор R2.",
+"IP-адрес источника — компьютер PC1, IP-адрес назначения — сервер, MAC-адрес источника — компьютер PC1, MAC-адрес назначения — сервер.",
+"IP-адрес источника — маршрутизатор R1, IP-адрес назначения — маршрутизатор R2, MAC-адрес источника — компьютер PC1, MAC-адрес назначения — сервер.",
+"IP-адрес источника — компьютер PC1, IP-адрес назначения — маршрутизатор R2, MAC-адрес источника — компьютер PC1, MAC-адрес назначения — сервер."
+]
+},
+"expl": {
+"pl": "Adresy IP (źródło PC1, cel serwer) nie zmieniają się na całej trasie. Adresy MAC są tylko lokalne dla segmentu: każdy ruter tworzy nową ramkę, więc między R1 a R2 źródłowym MAC jest R1, a docelowym R2.",
+"ru": "IP-адреса (источник PC1, назначение сервер) не меняются на всём пути. MAC-адреса действуют только в пределах сегмента: каждый маршрутизатор формирует новый кадр, поэтому между R1 и R2 MAC источника — R1, назначения — R2."
+},
+"stemFix": "Ramka z danymi wysłanymi z komputera PC1 do serwera www znajduje się pomiędzy ruterem R1 a ruterem R2 (punkt A). Które adresy są w niej zawarte?",
+"answersFix": [
+"Źródłowy adres IP komputera PC1, docelowy adres IP serwera, adres źródłowy MAC rutera R1, adres docelowy MAC rutera R2.",
+"Źródłowy adres IP komputera PC1, docelowy adres IP serwera, adres źródłowy MAC komputera PC1, adres docelowy MAC serwera.",
+"Źródłowy adres IP rutera R1, docelowy adres IP rutera R2, adres źródłowy MAC komputera PC1, adres docelowy MAC serwera.",
+"Źródłowy adres IP komputera PC1, docelowy adres IP rutera R2, adres źródłowy MAC komputera PC1, adres docelowy MAC serwera."
+]
+},
+"o2b7f511": {
+"ru": {
+"stem": "Как называется в Windows профиль пользователя, создаваемый при первом входе в компьютер и хранящийся на локальном жёстком диске, причём каждое его изменение касается только компьютера, на котором оно было сделано?",
+"answers": [
+"Локальный.",
+"Перемещаемый (мобильный).",
+"Временный.",
+"Обязательный."
+]
+},
+"expl": {
+"pl": "Profil lokalny powstaje przy pierwszym logowaniu i jest zapisany tylko na dysku danego komputera. Profil mobilny przechowywany jest na serwerze i podąża za użytkownikiem, a obowiązkowy nie zachowuje zmian.",
+"ru": "Локальный профиль создаётся при первом входе и хранится только на диске данного компьютера. Перемещаемый профиль хранится на сервере и следует за пользователем, а обязательный не сохраняет изменения."
+}
+},
+"o2bac24f": {
+"ru": {
+"stem": "Заменяя повреждённую видеокарту, которая работала с монитором, оснащённым только аналоговым входом, следует выбрать карту",
+"answers": [
+"Gigabyte GeForce GT 740 OC, 1GB GDDR5 (128 Bit), HDMI, DVI, D-Sub",
+"Sapphire Radeon R7 250X FLEX, 1GB GDDR5 (128 Bit), HDMI, 2xDVI, DP, LITE",
+"ZOTAC GeForce GT 730 Synergy Edition, 4GB DDR3 (128 Bit), 2xDVI, miniHDMI",
+"Sapphire Radeon R7 250, 1GB GDDR5 (128-Bit), microHDMI, DVI, miniDP LP, BULK"
+]
+},
+"expl": {
+"pl": "Analogowe wejście monitora to VGA, czyli złącze D-Sub – ma je tylko karta Gigabyte GT 740. HDMI, DisplayPort i (zwykle) DVI-D przesyłają sygnał cyfrowy.",
+"ru": "Аналоговый вход монитора — это VGA, то есть разъём D-Sub; он есть только у карты Gigabyte GT 740. HDMI, DisplayPort и (обычно) DVI-D передают цифровой сигнал."
+},
+"answersFix": [
+"Gigabyte GeForce GT 740 OC, 1GB GDDR5 (128 Bit), HDMI, DVI, D-Sub",
+"Sapphire Radeon R7 250X FLEX, 1GB GDDR5 (128 Bit), HDMI, 2xDVI, DP, LITE",
+"ZOTAC GeForce GT 730 Synergy Edition, 4GB DDR3 (128 Bit), 2xDVI, miniHDMI",
+"Sapphire Radeon R7 250, 1GB GDDR5 (128-Bit), microHDMI, DVI, miniDP LP, BULK"
+]
+},
+"o2e2fa9c": {
+"ru": {
+"stem": "Какую из команд следует выполнить в Windows 7, чтобы прямо из командной строки запустить «Брандмауэр Windows в режиме повышенной безопасности»?",
+"answers": [
+"wf.msc",
+"services.msc",
+"perfmon.msc",
+"compmgmt.msc"
+]
+},
+"expl": {
+"pl": "wf.msc (Windows Firewall) otwiera Zaporę systemu Windows z zabezpieczeniami zaawansowanymi. services.msc to Usługi, perfmon.msc – Monitor wydajności, compmgmt.msc – Zarządzanie komputerem.",
+"ru": "wf.msc (Windows Firewall) открывает брандмауэр Windows в режиме повышенной безопасности. services.msc — «Службы», perfmon.msc — «Системный монитор», compmgmt.msc — «Управление компьютером»."
+},
+"answersFix": [
+"wf.msc",
+"services.msc",
+"perfmon.msc",
+"compmgmt.msc"
+]
+},
+"o2f590b3": {
+"ru": {
+"stem": "Какие элементы компьютерной системы подлежат утилизации на специализированных перерабатывающих предприятиях из-за содержания опасных веществ или химических элементов?",
+"answers": [
+"Корпуса компьютеров.",
+"Кабели.",
+"Радиаторы.",
+"Тонеры."
+]
+},
+"expl": {
+"pl": "Tonery i kartridże zawierają drobny proszek z polimerów, pigmentów i związków metali, szkodliwy dla zdrowia i środowiska, więc oddaje się je do wyspecjalizowanych zakładów. Obudowy i radiatory to głównie zwykły metal i plastik.",
+"ru": "Тонеры и картриджи содержат мелкий порошок из полимеров, пигментов и соединений металлов, вредный для здоровья и среды, поэтому их сдают на специализированные предприятия. Корпуса и радиаторы — в основном обычный металл и пластик."
+}
+},
+"o2fe0f29": {
+"ru": {
+"stem": "По умолчанию анонимный доступ к ресурсам FTP-сервера даёт",
+"answers": [
+"полные права доступа.",
+"только право записи.",
+"только право чтения.",
+"права чтения и записи."
+]
+},
+"expl": {
+"pl": "Konto anonymous na serwerze FTP domyślnie pozwala jedynie pobierać (czytać) pliki. Zapis jest wyłączony ze względów bezpieczeństwa i trzeba go świadomie włączyć.",
+"ru": "Учётная запись anonymous на FTP-сервере по умолчанию позволяет только скачивать (читать) файлы. Запись отключена из соображений безопасности, её нужно включать сознательно."
+}
+},
+"o303d9a2": {
+"ru": {
+"stem": "На рисунке представлена конфигурация",
+"answers": [
+"виртуальных сетей.",
+"беспроводной сети.",
+"перенаправления портов.",
+"резервирования MAC-адресов."
+]
+},
+"expl": {
+"pl": "Okno „Port to VLAN” w sekcji VLAN Management przypisuje porty przełącznika (g1, g3 jako Tagged) do VLAN ID 10 – to konfiguracja sieci wirtualnych VLAN.",
+"ru": "Окно «Port to VLAN» в разделе VLAN Management назначает порты коммутатора (g1, g3 как Tagged) в VLAN ID 10 — это настройка виртуальных сетей VLAN."
+},
+"stemFix": "Na rysunku jest przedstawiona konfiguracja"
+},
+"o322fa00": {
+"ru": {
+"stem": "Гелевые чернила применяются в принтерах",
+"answers": [
+"термотрансферных.",
+"сублимационных.",
+"фискальных.",
+"матричных (игольчатых)."
+]
+},
+"expl": {
+"pl": "Tusze sublimacyjne występują m.in. w postaci żelowej (np. w drukarkach Ricoh GelSprinter), a wydruk przenosi się na tkaninę lub kubek prasą termiczną. Drukarki igłowe używają taśmy barwiącej, a termotransferowe – folii z woskiem lub żywicą.",
+"ru": "Сублимационные чернила выпускаются в том числе в гелевой форме (например, в принтерах Ricoh GelSprinter), а отпечаток переносят на ткань или кружку термопрессом. Матричные принтеры используют красящую ленту, а термотрансферные — плёнку с воском или смолой."
+}
+},
+"o328d1d7": {
+"ru": {
+"stem": "Сколько IP-адресов необходимо, чтобы адресовать 4 компьютера, подключённых к коммутатору, так чтобы они могли общаться друг с другом?",
+"answers": [
+"2",
+"3",
+"4",
+"5"
+]
+},
+"expl": {
+"pl": "Każdy komputer potrzebuje własnego, unikalnego adresu IP, więc 4 hosty = 4 adresy. Przełącznik warstwy 2 nie wymaga adresu IP do przekazywania ramek, a brama nie jest potrzebna w jednej sieci.",
+"ru": "Каждому компьютеру нужен свой уникальный IP-адрес, поэтому 4 хоста = 4 адреса. Коммутатору 2-го уровня IP не нужен для пересылки кадров, а шлюз в пределах одной сети не требуется."
+}
+},
+"o40a5b28": {
+"ru": {
+"stem": "Монитор производительности и стабильности в Windows запускается с помощью оснастки",
+"answers": [
+"diskmgmt.msc",
+"taskschd.msc",
+"perfmon.msc",
+"fsmgmt.msc"
+]
+},
+"expl": {
+"pl": "perfmon.msc otwiera Monitor wydajności (Performance Monitor). diskmgmt.msc to Zarządzanie dyskami, taskschd.msc – Harmonogram zadań, fsmgmt.msc – Foldery udostępnione.",
+"ru": "perfmon.msc открывает «Системный монитор» (Performance Monitor). diskmgmt.msc — «Управление дисками», taskschd.msc — «Планировщик заданий», fsmgmt.msc — «Общие папки»."
+}
+},
+"o49c136c": {
+"ru": {
+"stem": "В системе Linux для просмотра текущих процессов служит команда",
+"answers": [
+"df",
+"ps",
+"free",
+"watch"
+]
+},
+"expl": {
+"pl": "ps (process status) wyświetla listę uruchomionych procesów, np. ps aux. df pokazuje zajętość systemów plików, free – użycie pamięci, a watch cyklicznie powtarza inne polecenie.",
+"ru": "ps (process status) выводит список запущенных процессов, например ps aux. df показывает занятость файловых систем, free — использование памяти, а watch периодически повторяет другую команду."
+}
+},
+"o4a2cf29": {
+"ru": {
+"stem": "Показанный на рисунке элемент компьютерной системы — это",
+"answers": [
+"видеокарта для ноутбука.",
+"модуль кэш-памяти.",
+"SSD-накопитель.",
+"GPU."
+]
+},
+"expl": {
+"pl": "Na zdjęciu jest płytka z wieloma kośćmi pamięci flash NAND, kontrolerem i złączem SATA na krawędzi – to wnętrze dysku SSD 2,5”. Karta graficzna miałaby duży układ GPU i złącza wideo.",
+"ru": "На фото плата с множеством микросхем флеш-памяти NAND, контроллером и разъёмом SATA на краю — это внутренности SSD 2,5”. У видеокарты был бы крупный чип GPU и видеоразъёмы."
+},
+"stemFix": "Przedstawiony na rysunku element systemu komputerowego to"
+},
+"o4d24e8e": {
+"ru": {
+"stem": "На рисунке представлен фрагмент процесса связи с сервером, перехваченного программой Wireshark. Какой это сервер?",
+"answers": [
+"FTP",
+"DNS",
+"DHCP",
+"WWW"
+]
+},
+"expl": {
+"pl": "Sekwencja Discover – Offer – Request – ACK (DORA) z jednym Transaction ID to proces uzyskiwania adresu IP od serwera DHCP.",
+"ru": "Последовательность Discover – Offer – Request – ACK (DORA) с одним Transaction ID — это процесс получения IP-адреса от DHCP-сервера."
+},
+"stemFix": "Na rysunku jest przedstawiony fragment procesu komunikacji z serwerem przechwyconej przez program Wireshark. Który to serwer?",
+"answersFix": [
+"FTP",
+"DNS",
+"DHCP",
+"WWW"
+]
+},
+"o4ff01f5": {
+"ru": {
+"stem": "Какой протокол служит для зашифрованного терминального подключения к удалённому компьютеру?",
+"answers": [
+"SIP",
+"SSL",
+"SSH",
+"Telnet"
+]
+},
+"expl": {
+"pl": "SSH (port 22) zapewnia szyfrowaną sesję terminalową na zdalnym komputerze. Telnet daje podobny dostęp, ale bez szyfrowania, a SSL to protokół szyfrujący, nie terminalowy.",
+"ru": "SSH (порт 22) обеспечивает зашифрованный терминальный сеанс на удалённом компьютере. Telnet даёт похожий доступ, но без шифрования, а SSL — протокол шифрования, не терминальный."
+}
+},
+"o5138d5d": {
+"ru": {
+"stem": "Дистрибутивы Linux Ubuntu распространяются по лицензиям",
+"answers": [
+"Public Domain",
+"GNU GPL",
+"Freeware",
+"MOLP"
+]
+},
+"expl": {
+"pl": "Ubuntu, jak większość dystrybucji Linuksa, opiera się na licencji GNU GPL – wolne oprogramowanie z kodem źródłowym. MOLP to licencja zbiorcza Microsoftu, a freeware nie daje dostępu do kodu.",
+"ru": "Ubuntu, как большинство дистрибутивов Linux, основан на лицензии GNU GPL — свободное ПО с исходным кодом. MOLP — корпоративная лицензия Microsoft, а freeware не даёт доступа к коду."
+},
+"answersFix": [
+"Public Domain",
+"GNU GPL",
+"Freeware",
+"MOLP"
+]
+},
+"o57835f0": {
+"ru": {
+"stem": "Из перечисленных материнских плат наименьшие размеры имеет формат",
+"answers": [
+"Micro BTX",
+"Mini ATX",
+"Flex ATX",
+"Mini ITX"
+]
+},
+"expl": {
+"pl": "Mini ITX ma wymiary 17 × 17 cm. Flex ATX to ok. 22,9 × 19,1 cm, Mini ATX ok. 28,4 × 20,8 cm, a Micro BTX ok. 26,4 × 26,7 cm.",
+"ru": "Mini ITX имеет размеры 17 × 17 см. Flex ATX — около 22,9 × 19,1 см, Mini ATX — около 28,4 × 20,8 см, Micro BTX — около 26,4 × 26,7 см."
+}
+},
+"o5a72290": {
+"ru": {
+"stem": "В системе Linux информация о сроке действия пароля хранится в файле",
+"answers": [
+"bash",
+"grub",
+"passwd",
+"shadow"
+]
+},
+"expl": {
+"pl": "/etc/shadow przechowuje skróty haseł oraz dane o ich ważności (ostatnia zmiana, min./maks. wiek, ostrzeżenie). /etc/passwd zawiera tylko podstawowe dane kont, a hasło jest tam zastąpione znakiem x.",
+"ru": "/etc/shadow хранит хеши паролей и данные об их сроке действия (последняя смена, мин./макс. возраст, предупреждение). /etc/passwd содержит только основные данные учётных записей, а пароль там заменён символом x."
+}
+},
+"o66f4aa0": {
+"ru": {
+"stem": "Какой числовой код следует использовать в команде изменения прав на папку в Linux, чтобы владелец имел права записи и чтения, группа — права чтения и выполнения, а остальные пользователи — только чтения?",
+"answers": [
+"765",
+"751",
+"654",
+"123"
+]
+},
+"expl": {
+"pl": "r=4, w=2, x=1. Właściciel rw = 4+2 = 6, grupa r-x = 4+1 = 5, pozostali r = 4, więc kod 654 (chmod 654).",
+"ru": "r=4, w=2, x=1. Владелец rw = 4+2 = 6, группа r-x = 4+1 = 5, остальные r = 4, итого код 654 (chmod 654)."
+}
+},
+"o676e606": {
+"ru": {
+"stem": "Какие протоколы являются протоколами транспортного уровня модели ISO/OSI?",
+"answers": [
+"ICMP, IP",
+"FTP, POP",
+"TCP, UDP",
+"ARP, DNS"
+]
+},
+"expl": {
+"pl": "TCP (połączeniowy) i UDP (bezpołączeniowy) działają w warstwie transportowej. IP i ICMP to warstwa sieciowa, FTP, POP i DNS – aplikacji, a ARP łączy warstwę sieciową z łącza danych.",
+"ru": "TCP (с установлением соединения) и UDP (без соединения) работают на транспортном уровне. IP и ICMP — сетевой уровень, FTP, POP и DNS — прикладной, а ARP связывает сетевой и канальный уровни."
+},
+"answersFix": [
+"ICMP, IP",
+"FTP, POP",
+"TCP, UDP",
+"ARP, DNS"
+]
+},
+"o6de9c3c": {
+"ru": {
+"stem": "Какое утверждение о маршрутизаторах верно?",
+"answers": [
+"Работают на канальном уровне.",
+"Работают на транспортном уровне.",
+"Принимают решения о пересылке данных на основе IP-адресов.",
+"Принимают решения о пересылке данных на основе MAC-адресов."
+]
+},
+"expl": {
+"pl": "Ruter działa w warstwie sieciowej (3) i wybiera trasę na podstawie docelowego adresu IP i tablicy routingu. Na podstawie adresów MAC decyduje przełącznik (warstwa 2).",
+"ru": "Маршрутизатор работает на сетевом уровне (3) и выбирает маршрут по IP-адресу назначения и таблице маршрутизации. По MAC-адресам решения принимает коммутатор (уровень 2)."
+}
+},
+"o720916c": {
+"ru": {
+"stem": "При попытке записи данных на SD-карту появляется сообщение «снимите защиту от записи или используйте другой диск». Причиной такого сообщения чаще всего является",
+"answers": [
+"механический переключатель блокировки записи на карте установлен в положение ON (LOCK).",
+"наличие прав «только чтение» к файлам на SD-карте.",
+"слишком большой размер записываемого файла.",
+"отсутствие места на карте памяти."
+]
+},
+"expl": {
+"pl": "Karty SD mają z boku suwak blokady zapisu; przesunięty w pozycję LOCK powoduje, że system widzi nośnik jako chroniony. Brak miejsca lub zbyt duży plik dają inne komunikaty.",
+"ru": "У SD-карт сбоку есть ползунок блокировки записи; в положении LOCK система видит носитель как защищённый. Нехватка места или слишком большой файл дают другие сообщения."
+},
+"stemFix": "Przy próbie zapisu danych na karcie SD pojawia się komunikat „usuń ochronę przed zapisem lub użyj innego dysku”. Przyczyną takiego komunikatu jest najczęściej"
+},
+"o783aca9": {
+"ru": {
+"stem": "Информация, представленная на рисунке, является результатом работы команды",
+"answers": [
+"ping",
+"tracert",
+"ipconfig",
+"nslookup"
+]
+},
+"expl": {
+"pl": "Ponumerowana lista kolejnych ruterów (przeskoków) z trzema czasami odpowiedzi dla każdego to wynik tracert, który śledzi trasę pakietu. ping pokazuje tylko odpowiedzi jednego hosta.",
+"ru": "Нумерованный список промежуточных маршрутизаторов (хопов) с тремя временами ответа для каждого — результат tracert, который отслеживает маршрут пакета. ping показывает ответы лишь одного узла."
+},
+"stemFix": "Informacje przedstawione na rysunku są wynikiem działania polecenia"
+},
+"o786ac27": {
+"ru": {
+"stem": "Данные с жёсткого диска HDD с повреждённым контроллером двигателя SM можно восстановить",
+"answers": [
+"заменой двигателя SM.",
+"с помощью команды fixmbr.",
+"с помощью внешней программы восстановления данных, например TestDisk.",
+"заменой платы электроники диска на другую от такой же модели."
+]
+},
+"expl": {
+"pl": "Sterownik silnika znajduje się na płytce elektroniki (PCB). Wymiana jej na sprawną z identycznego modelu przywraca pracę dysku i dostęp do danych. Programy typu TestDisk nie pomogą, gdy dysk się nie kręci.",
+"ru": "Контроллер двигателя находится на плате электроники (PCB). Замена её на исправную от идентичной модели восстанавливает работу диска и доступ к данным. Программы вроде TestDisk не помогут, если диск не раскручивается."
+},
+"answersFix": [
+"przez wymianę silnika SM.",
+"za pomocą polecenia fixmbr.",
+"za pomocą zewnętrznego programu do odzyskiwania danych np. TestDisk.",
+"przez wymianę płytki z elektroniką dysku na inną pochodzącą z takiego samego modelu."
+]
+},
+"o81dd074": {
+"ru": {
+"stem": "На рисунке показана конфигурация сетевой карты устройства с IP-адресом 10.15.89.104/25. Из неё следует, что",
+"answers": [
+"IP-адрес неверен.",
+"маска неверна.",
+"DNS-сервер находится в той же подсети, что и устройство.",
+"адрес шлюза по умолчанию находится в другой подсети, чем адрес хоста."
+]
+},
+"expl": {
+"pl": "Maska /25 (255.255.255.128) dzieli ostatni oktet na 0–127 i 128–255. Host 10.15.89.104 jest w podsieci 0–127, a brama 10.15.89.129 w podsieci 128–255, więc brama jest nieosiągalna.",
+"ru": "Маска /25 (255.255.255.128) делит последний октет на 0–127 и 128–255. Хост 10.15.89.104 в подсети 0–127, а шлюз 10.15.89.129 — в подсети 128–255, поэтому шлюз недоступен."
+},
+"stemFix": "Rysunek przedstawia konfigurację karty sieciowej dla urządzenia o adresie IP 10.15.89.104/25. Wynika z niego, że"
+},
+"o87cd70c": {
+"ru": {
+"stem": "Процессоры AMD с разъёмом AM2+ будут корректно работать на материнской плате с сокетом",
+"answers": [
+"FM2",
+"AM2",
+"AM3",
+"AM3+"
+]
+},
+"expl": {
+"pl": "Gniazdo AM2+ jest wstecznie zgodne z AM2 – procesor AM2+ działa na płycie AM2 (z ograniczeniem HyperTransport). Płyty AM3/AM3+ obsługują DDR3, a procesory AM2+ mają kontroler tylko DDR2.",
+"ru": "Сокет AM2+ обратно совместим с AM2 — процессор AM2+ работает на плате AM2 (с ограничением HyperTransport). Платы AM3/AM3+ используют DDR3, а у процессоров AM2+ контроллер только DDR2."
+},
+"outdated": true
+},
+"o8c38828": {
+"ru": {
+"stem": "Пользователи SSD-накопителей в рамках рекомендуемых работ по обслуживанию не должны выполнять",
+"answers": [
+"дефрагментацию диска.",
+"регулярное резервное копирование данных.",
+"очистку системного блока от пыли.",
+"регулярную проверку диска антивирусом."
+]
+},
+"expl": {
+"pl": "SSD ma stały czas dostępu do każdej komórki, więc defragmentacja nic nie daje, a niepotrzebne zapisy skracają żywotność pamięci flash. Dla SSD system stosuje zamiast tego polecenie TRIM.",
+"ru": "У SSD время доступа к любой ячейке одинаковое, поэтому дефрагментация ничего не даёт, а лишние записи сокращают ресурс флеш-памяти. Для SSD система вместо этого использует команду TRIM."
+}
+},
+"o8f3dde8": {
+"ru": {
+"stem": "Как настроить брандмауэр Windows, соблюдая правила безопасности, чтобы с помощью команды ping можно было проверить связь с другими устройствами в сети?",
+"answers": [
+"Настроить правила для протокола IP",
+"Настроить правила для протокола TCP",
+"Настроить правила для протокола ICMP",
+"Настроить правила для протокола IGMP"
+]
+},
+"expl": {
+"pl": "ping wysyła komunikaty ICMP Echo Request i odbiera Echo Reply, więc wystarczy zezwolić na ten typ ICMP. Otwieranie całego IP czy TCP byłoby zbędne i niebezpieczne, a IGMP dotyczy multicastu.",
+"ru": "ping отправляет сообщения ICMP Echo Request и получает Echo Reply, поэтому достаточно разрешить этот тип ICMP. Открывать весь IP или TCP излишне и небезопасно, а IGMP относится к multicast."
+},
+"answersFix": [
+"Skonfigurować reguły dotyczące protokołu IP",
+"Skonfigurować reguły dotyczące protokołu TCP",
+"Skonfigurować reguły dotyczące protokołu ICMP",
+"Skonfigurować reguły dotyczące protokołu IGMP"
+]
+},
+"o8f41fcc": {
+"ru": {
+"stem": "Разъём блока питания ATX12V служит для питания",
+"answers": [
+"видеокарты PCI-e 3.0.",
+"устройств SATA.",
+"дисковода гибких дисков.",
+"процессора."
+]
+},
+"expl": {
+"pl": "ATX12V (4-pin, a w wersji EPS 8-pin) doprowadza dodatkowe 12 V do sekcji zasilania procesora na płycie głównej. Karta graficzna ma własne wtyki PCI-E 6/8-pin, a dyski – wtyki SATA.",
+"ru": "ATX12V (4-pin, в версии EPS — 8-pin) подаёт дополнительные 12 В на цепи питания процессора на материнской плате. Видеокарта имеет свои разъёмы PCI-E 6/8-pin, а диски — разъёмы SATA."
+},
+"answersFix": [
+"karty graficznej PCI-e 3.0.",
+"urządzeń SATA.",
+"stacji dyskietek.",
+"procesora."
+]
+},
+"o97bf543": {
+"ru": {
+"stem": "В какой технологии проекторов используется система микроскопических зеркал, каждое из которых соответствует 1 пикселю отображаемого изображения?",
+"answers": [
+"LCD",
+"DLP",
+"LED",
+"LCOS"
+]
+},
+"expl": {
+"pl": "DLP (Digital Light Processing) wykorzystuje układ DMD z mikroskopijnymi lusterkami, z których każde odpowiada jednemu pikselowi i odchyla światło. LCD i LCOS używają ciekłych kryształów.",
+"ru": "DLP (Digital Light Processing) использует чип DMD с микроскопическими зеркалами, каждое соответствует одному пикселю и отклоняет свет. LCD и LCOS используют жидкие кристаллы."
+},
+"stemFix": "W której technologii budowy projektorów wykorzystywany jest system mikroskopijnych luster, z których każde odpowiada 1 pikselowi wyświetlanego obrazu?"
+},
+"o982d361": {
+"ru": {
+"stem": "Кэш-память Intel® Smart Cache, встроенная в многоядерные процессоры, например Intel® Core™ Duo, — это память",
+"answers": [
+"Cache L1, поделённая поровну между ядрами.",
+"Cache L1, общая для всех ядер.",
+"Cache L2 или Cache L3, поделённая поровну между ядрами.",
+"Cache L2 или Cache L3, общая для всех ядер."
+]
+},
+"expl": {
+"pl": "Intel Smart Cache to pamięć ostatniego poziomu (L2 w Core Duo, L3 w nowszych) współdzielona dynamicznie przez wszystkie rdzenie. Pamięć L1 każdy rdzeń ma zawsze własną.",
+"ru": "Intel Smart Cache — кэш последнего уровня (L2 в Core Duo, L3 в более новых), динамически разделяемый всеми ядрами. Кэш L1 у каждого ядра всегда свой."
+},
+"stemFix": "Pamięć podręczna Intel® Smart Cache wbudowana w procesory wielordzeniowe np. Intel® Core™ Duo to pamięć",
+"answersFix": [
+"Cache L1 podzielona równo pomiędzy rdzenie.",
+"Cache L1 współdzielona przez wszystkie rdzenie.",
+"Cache L2 lub Cache L3, podzielona równo pomiędzy rdzenie.",
+"Cache L2 lub Cache L3, współdzielona przez wszystkie rdzenie."
+]
+},
+"o98439da": {
+"ru": {
+"stem": "Сколько максимально устройств можно адресовать в сети IPv4 класса C?",
+"answers": [
+"126",
+"254",
+"2024",
+"65534"
+]
+},
+"expl": {
+"pl": "Klasa C ma maskę /24, czyli 8 bitów na hosty: 2^8 − 2 = 254 (odejmujemy adres sieci i rozgłoszeniowy). 65534 to liczba hostów w klasie B.",
+"ru": "Класс C имеет маску /24, то есть 8 бит на хосты: 2^8 − 2 = 254 (вычитаем адрес сети и широковещательный). 65534 — число хостов в классе B."
+}
+},
+"o9ab28fa": {
+"ru": {
+"stem": "Правильным результатом умножения двух двоичных чисел 11100110(2) и 00011110(2) является число",
+"answers": [
+"6900(10)",
+"6900(16)",
+"64400(8)",
+"0110 1001 0000 0000(2)"
+]
+},
+"expl": {
+"pl": "11100110(2) = 230, 00011110(2) = 30, a 230 · 30 = 6900(10). Pozostałe odpowiedzi to błędne zapisy: 0110 1001 0000 0000(2) = 6900(16) = 64400(8) = 26880(10).",
+"ru": "11100110(2) = 230, 00011110(2) = 30, а 230 · 30 = 6900(10). Остальные варианты — ошибочные записи: 0110 1001 0000 0000(2) = 6900(16) = 64400(8) = 26880(10)."
+},
+"stemFix": "Prawidłowym wynikiem mnożenia dwóch liczb binarnych 11100110(2) i 00011110(2) jest liczba",
+"answersFix": [
+"6900(10)",
+"6900(16)",
+"64400(8)",
+"0110 1001 0000 0000(2)"
+]
+},
+"o9b7efbb": {
+"ru": {
+"stem": "На рисунке представлен(а)",
+"answers": [
+"маршрутизатор.",
+"коммутатор.",
+"концентратор.",
+"коммутационная панель (патч-панель)."
+]
+},
+"expl": {
+"pl": "Na rysunku widać listwę 19” z ponumerowanymi gniazdami RJ45 (1–48) bez diod i zasilania – to pasywny panel krosowy, do którego zakańcza się kable z gniazd abonenckich. Przełącznik miałby diody LED i zasilanie.",
+"ru": "На рисунке 19” планка с пронумерованными гнёздами RJ45 (1–48) без индикаторов и питания — это пассивная патч-панель, на которой оконцовывают кабели от розеток. У коммутатора были бы светодиоды и питание."
+},
+"stemFix": "Rysunek przedstawia"
+},
+"o9e4191a": {
+"ru": {
+"stem": "Служба, с помощью которой можно удалённо работать на компьютере с Windows с другого компьютера с Windows, подключённого к той же сети или к Интернету, — это",
+"answers": [
+"FTP.",
+"DHCP.",
+"удалённый рабочий стол.",
+"файловый сервер."
+]
+},
+"expl": {
+"pl": "Pulpit zdalny (RDP, port 3389) pozwala zdalnie sterować sesją graficzną komputera z Windows. FTP służy tylko do przesyłania plików, a DHCP do przydzielania adresów IP.",
+"ru": "Удалённый рабочий стол (RDP, порт 3389) позволяет удалённо управлять графическим сеансом компьютера с Windows. FTP служит только для передачи файлов, а DHCP — для выдачи IP-адресов."
+}
+},
+"o9f26944": {
+"ru": {
+"stem": "Какие каналы лучше всего выбрать для трёх сетей WLAN 2,4 ГГц, чтобы исключить их взаимные помехи?",
+"answers": [
+"2,5,7",
+"1,6,11",
+"1,3,12",
+"3,6,12"
+]
+},
+"expl": {
+"pl": "Kanały w paśmie 2,4 GHz są co 5 MHz, a jeden kanał zajmuje ok. 20–22 MHz, więc nie nakładają się tylko kanały oddalone o 5: 1, 6 i 11.",
+"ru": "Каналы в диапазоне 2,4 ГГц идут через 5 МГц, а один канал занимает около 20–22 МГц, поэтому не перекрываются только каналы, отстоящие на 5: 1, 6 и 11."
+}
+},
+"oa73a0a8": {
+"ru": {
+"stem": "К ИБП (UPS) с активной мощностью 480 Вт не следует подключать",
+"answers": [
+"сетевые устройства типа маршрутизатор.",
+"лазерный принтер.",
+"ADSL-модем.",
+"монитор."
+]
+},
+"expl": {
+"pl": "Drukarka laserowa przy nagrzewaniu grzałki utrwalacza pobiera chwilowo nawet ponad 1000 W, co przeciąża mały UPS. Ruter, modem i monitor pobierają niewiele mocy.",
+"ru": "Лазерный принтер при разогреве термоузла кратковременно потребляет даже более 1000 Вт, что перегружает небольшой ИБП. Маршрутизатор, модем и монитор потребляют мало."
+}
+},
+"oac0190e": {
+"ru": {
+"stem": "Информацию об ошибках работы операционной системы Linux можно получить с помощью инструмента",
+"answers": [
+"grub",
+"watch",
+"syslog",
+"netstat"
+]
+},
+"expl": {
+"pl": "syslog (np. rsyslog) zbiera komunikaty jądra i usług, w tym błędy, i zapisuje je w /var/log. grub to program rozruchowy, a netstat pokazuje połączenia sieciowe.",
+"ru": "syslog (например, rsyslog) собирает сообщения ядра и служб, включая ошибки, и записывает их в /var/log. grub — загрузчик, а netstat показывает сетевые соединения."
+}
+},
+"oadb3b92": {
+"ru": {
+"stem": "В фирме адрес класса B был разделён на 100 подсетей. В каждой подсети доступно максимально 510 IP-адресов. Какая маска была использована для выделения подсетей?",
+"answers": [
+"255.255.224.0",
+"255.255.240.0",
+"255.255.248.0",
+"255.255.254.0"
+]
+},
+"expl": {
+"pl": "510 hostów = 2^9 − 2, więc na hosty potrzeba 9 bitów: maska /23 = 255.255.254.0. Z klasy B (/16) zostaje 7 bitów podsieci, czyli 128 podsieci ≥ 100.",
+"ru": "510 хостов = 2^9 − 2, значит на хосты нужно 9 бит: маска /23 = 255.255.254.0. Из класса B (/16) остаётся 7 бит подсети, то есть 128 подсетей ≥ 100."
+}
+},
+"oae57c33": {
+"ru": {
+"stem": "Какую команду следует выполнить в Windows, чтобы проверить таблицу преобразования IP-адресов в физические адреса, используемую протоколом разрешения адресов?",
+"answers": [
+"arp -a",
+"ipconfig",
+"netstat -r",
+"route print"
+]
+},
+"expl": {
+"pl": "Protokół ARP odwzorowuje adresy IP na MAC, a arp -a wyświetla jego pamięć podręczną (tablicę ARP). netstat -r i route print pokazują tablicę routingu.",
+"ru": "Протокол ARP сопоставляет IP-адреса с MAC, а arp -a показывает его кэш (таблицу ARP). netstat -r и route print показывают таблицу маршрутизации."
+},
+"stemFix": "Które polecenie należy wydać w systemie Windows, aby sprawdzić tabelę translacji adresów IP na adresy fizyczne używane przez protokół rozróżniania adresów?",
+"answersFix": [
+"arp -a",
+"ipconfig",
+"netstat -r",
+"route print"
+]
+},
+"ob324b36": {
+"ru": {
+"stem": "Рассчитайте стоимость прокладки СКС от 5 абонентских точек до патч-панели вместе с изготовлением соединительных кабелей для рабочих станций. Для этого использовано 50 м витой пары UTP. Абонентская точка состоит из 2 гнёзд RJ45. Цены: розетка скрытого монтажа 45x45 без рамки UTP 2xRJ45 кат.5e — 17 зл/шт.; кабель UTP кат.5e PVC 4PR, коробка 305 м — 305 зл; штекер RJ45 UTP кат.5e безынструментальный — 6 зл/шт.",
+"answers": [
+"152,00 зл",
+"255,00 зл",
+"345,00 зл",
+"350,00 зл"
+]
+},
+"expl": {
+"pl": "Gniazda: 5 × 17 zł = 85 zł. Kabel: 305 zł/305 m = 1 zł/m, więc 50 m = 50 zł. Kable do stacji: 10 gniazd → 10 kabli × 2 wtyki = 20 × 6 zł = 120 zł. Razem 85 + 50 + 120 = 255 zł.",
+"ru": "Розетки: 5 × 17 зл = 85 зл. Кабель: 305 зл/305 м = 1 зл/м, значит 50 м = 50 зл. Патч-корды: 10 гнёзд → 10 кабелей × 2 штекера = 20 × 6 зл = 120 зл. Итого 85 + 50 + 120 = 255 зл."
+},
+"stemFix": "Oblicz koszt wykonania okablowania strukturalnego od 5 punktów abonenckich do panelu krosowego wraz z wykonaniem kabli połączeniowych dla stacji roboczych. W tym celu wykorzystano 50 m skrętki UTP. Punkt abonencki składa się z 2 gniazd typu RJ45. Cennik: gniazdo podtynkowe 45x45, bez ramki, UTP 2xRJ45 kat.5e – 17 zł/szt.; UTP kabel kat.5e PVC 4PR 305 m karton – 305 zł; RJ45 wtyk UTP kat.5e beznarzędziowy – 6 zł/szt.",
+"answersFix": [
+"152,00 zł",
+"255,00 zł",
+"345,00 zł",
+"350,00 zł"
+]
+},
+"oc9e54ea": {
+"ru": {
+"stem": "RGB-светодиоды являются источником света в сканерах",
+"answers": [
+"барабанных.",
+"планшетных CIS.",
+"планшетных CCD.",
+"штрих-кодов."
+]
+},
+"expl": {
+"pl": "W skanerach CIS (Contact Image Sensor) listwa czujników jest oświetlana diodami LED w kolorach R, G i B zapalanymi kolejno. Skanery CCD używają zwykle lampy fluorescencyjnej (CCFL) i układu luster.",
+"ru": "В сканерах CIS (Contact Image Sensor) линейка датчиков подсвечивается светодиодами R, G и B, включаемыми поочерёдно. Сканеры CCD обычно используют люминесцентную лампу (CCFL) и систему зеркал."
+}
+},
+"ocb1e66a": {
+"ru": {
+"stem": "В прайс-листе компьютерных услуг есть показанные ниже записи. Сколько будет стоить выезд сервисного специалиста к клиенту, живущему за городом, на расстоянии 15 км от офиса фирмы? • Выезд к клиенту в пределах города — 25 зл нетто • Выезд к клиенту за городом — 2 зл нетто за каждый км расстояния от офиса фирмы, считая в обе стороны.",
+"answers": [
+"30 зл",
+"30 зл + VAT",
+"25 зл + 2 зл за каждый км за пределами города",
+"60 зл + VAT"
+]
+},
+"expl": {
+"pl": "Liczymy km w obie strony: 15 km × 2 = 30 km, a 30 km × 2 zł = 60 zł. Ceny w cenniku są netto, więc trzeba doliczyć VAT: 60 zł + VAT.",
+"ru": "Километры считаются в обе стороны: 15 км × 2 = 30 км, а 30 км × 2 зл = 60 зл. Цены в прайсе нетто, поэтому добавляется НДС (VAT): 60 зл + VAT."
+},
+"stemFix": "W cenniku usług komputerowych znajdują się przedstawione niżej zapisy. Ile będzie wynosił koszt dojazdu serwisanta do klienta mieszkającego poza miastem, w odległości 15 km od siedziby firmy? • Dojazd do klienta na terenie miasta – 25 zł netto • Dojazd do klienta poza miastem – 2 zł netto za każdy km odległości od siedziby firmy liczony w obie strony.",
+"answersFix": [
+"30 zł",
+"30 zł + VAT",
+"25 zł + 2 zł za każdy km poza granicami miasta",
+"60 zł + VAT"
+]
+},
+"occ9e1ad": {
+"ru": {
+"stem": "Какой протокол прикладного уровня применяется для управления сетевыми устройствами через сеть?",
+"answers": [
+"FTP",
+"NTP",
+"MIME",
+"SNMP"
+]
+},
+"expl": {
+"pl": "SNMP (Simple Network Management Protocol, porty UDP 161/162) służy do monitorowania i zarządzania ruterami, przełącznikami itp. NTP synchronizuje czas, a MIME to standard kodowania załączników poczty.",
+"ru": "SNMP (Simple Network Management Protocol, порты UDP 161/162) служит для мониторинга и управления маршрутизаторами, коммутаторами и т. п. NTP синхронизирует время, а MIME — стандарт кодирования почтовых вложений."
+},
+"answersFix": [
+"FTP",
+"NTP",
+"MIME",
+"SNMP"
+]
+},
+"od46802a": {
+"ru": {
+"stem": "Какую среду передачи используют Bluetooth-мыши для связи с компьютером?",
+"answers": [
+"Инфракрасное излучение.",
+"Ультрафиолетовое излучение.",
+"Радиоволны в диапазоне 2,4 ГГц.",
+"Радиоволны в диапазоне 800/900 МГц."
+]
+},
+"expl": {
+"pl": "Bluetooth to transmisja radiowa w nielicencjonowanym paśmie ISM 2,4 GHz (2,402–2,480 GHz). Podczerwień (IrDA) wymaga widoczności nadajnika i to inna technologia.",
+"ru": "Bluetooth — радиопередача в нелицензируемом диапазоне ISM 2,4 ГГц (2,402–2,480 ГГц). Инфракрасная связь (IrDA) требует прямой видимости и является другой технологией."
+}
+},
+"od4fec34": {
+"ru": {
+"stem": "Сервер Windows с установленной службой Active Directory называется",
+"answers": [
+"DHCP-сервером.",
+"веб-сервером (WWW).",
+"файловым сервером.",
+"контроллером домена."
+]
+},
+"expl": {
+"pl": "Serwer z rolą Usługi domenowe Active Directory (AD DS) przechowuje bazę kont i uwierzytelnia użytkowników domeny – nazywa się go kontrolerem domeny.",
+"ru": "Сервер с ролью доменных служб Active Directory (AD DS) хранит базу учётных записей и аутентифицирует пользователей домена — он называется контроллером домена."
+}
+},
+"od8436d4": {
+"ru": {
+"stem": "Какая служба позволяет регистрировать и сопоставлять имена NetBIOS с используемыми в сети IP-адресами?",
+"answers": [
+"WAS",
+"WINS",
+"DHCP",
+"HTTPS"
+]
+},
+"expl": {
+"pl": "WINS (Windows Internet Name Service) to serwer nazw NetBIOS – rejestruje je i tłumaczy na adresy IP, podobnie jak DNS robi to dla nazw domenowych. DHCP przydziela adresy, a nie tłumaczy nazw.",
+"ru": "WINS (Windows Internet Name Service) — сервер имён NetBIOS: регистрирует их и преобразует в IP-адреса, подобно тому как DNS делает это для доменных имён. DHCP выдаёт адреса, а не разрешает имена."
+},
+"stemFix": "Która usługa pozwala rejestrować i rozpoznawać nazwy NetBIOS jako używane w sieci adresy IP?"
+},
+"od8e6bbb": {
+"ru": {
+"stem": "Параметр оперативной памяти, называемый временем задержки, определяется как",
+"answers": [
+"RAS to CAS Delay",
+"Command Rate",
+"RAS Precharge",
+"CAS Latency"
+]
+},
+"expl": {
+"pl": "CAS Latency (CL) to liczba cykli zegara od wysłania polecenia odczytu do pojawienia się danych – to główny parametr opóźnienia pamięci podawany np. jako CL9 lub CL11.",
+"ru": "CAS Latency (CL) — число тактов от команды чтения до появления данных; это основной параметр задержки памяти, указываемый, например, как CL9 или CL11."
+},
+"answersFix": [
+"RAS to CAS Delay",
+"Command Rate",
+"RAS Precharge",
+"CAS Latency"
+]
+},
+"odb25773": {
+"ru": {
+"stem": "После выполнения команды net user в командной строке Windows будет выведен(а)",
+"answers": [
+"список учётных записей пользователей.",
+"справка по команде net.",
+"имя текущего пользователя и его пароль.",
+"информация о параметрах учётной записи вошедшего пользователя."
+]
+},
+"expl": {
+"pl": "net user bez parametrów wyświetla listę kont użytkowników na komputerze. Szczegóły konta pokaże dopiero net user nazwa_konta, a hasła nigdy nie są wyświetlane.",
+"ru": "net user без параметров выводит список учётных записей на компьютере. Подробности учётной записи покажет только net user имя_учётки, а пароли никогда не отображаются."
+}
+},
+"odce7778": {
+"ru": {
+"stem": "Уменьшение количества единиц в маске позволит адресовать",
+"answers": [
+"больше сетей и больше устройств.",
+"больше сетей и меньше устройств.",
+"меньше сетей и больше устройств.",
+"меньше сетей и меньше устройств."
+]
+},
+"expl": {
+"pl": "Jedynki w masce to bity sieci, zera – bity hosta. Mniej jedynek oznacza więcej bitów na hosty (więcej urządzeń w sieci), ale mniej bitów na sieci, czyli mniej podsieci.",
+"ru": "Единицы в маске — биты сети, нули — биты хоста. Меньше единиц означает больше битов на хосты (больше устройств в сети), но меньше битов на сеть, то есть меньше подсетей."
+}
+},
+"oeb2fbd0": {
+"ru": {
+"stem": "Серверная материнская плата для корректной работы требует регистровой памяти. Какой из перечисленных модулей памяти будет совместим с такой платой?",
+"answers": [
+"Kingston 4GB 1333MHz DDR3 Non-ECC CL9 DIMM",
+"Kingston 4GB 1600MHz DDR3 ECC CL11 DIMM 1,5 v",
+"Kingston 8GB 1333MHz DDR3 ECC Reg CL9 DIMM 2Rx8",
+"Kingston Hynix B 8GB 1600MHz DDR3L CL11 ECC SODIMM 1,35V"
+]
+},
+"expl": {
+"pl": "Pamięć z rejestrem to moduły Registered (RDIMM) – oznaczenie „Reg”. Moduł ECC bez „Reg” jest niebuforowany (UDIMM), a SODIMM to pamięć do laptopów.",
+"ru": "Регистровая память — модули Registered (RDIMM), обозначение «Reg». Модуль ECC без «Reg» небуферизованный (UDIMM), а SODIMM — память для ноутбуков."
+},
+"stemFix": "Serwerowa płyta główna do poprawnego działania wymaga pamięci z rejestrem. Który z wymienionych modułów pamięci będzie kompatybilny z taką płytą?"
+},
+"oef014d8": {
+"ru": {
+"stem": "Какая физическая топология компьютерной сети представлена на рисунке?",
+"answers": [
+"Ячеистая (сетка).",
+"Шина.",
+"Расширенная звезда.",
+"Двойное кольцо."
+]
+},
+"expl": {
+"pl": "Komputery są połączone dwoma równoległymi okręgami kabla – to podwójny pierścień (np. FDDI), w którym drugi pierścień jest zapasowy. Magistrala to jeden prosty kabel z terminatorami.",
+"ru": "Компьютеры соединены двумя параллельными кольцами кабеля — это двойное кольцо (например, FDDI), где второе кольцо резервное. Шина — один прямой кабель с терминаторами."
+},
+"stemFix": "Która z topologii fizycznych sieci komputerowej jest przedstawiona na rysunku?"
+},
+"of0dc12b": {
+"ru": {
+"stem": "К какому устройству следует подключить компьютеры, чтобы они работали в разных широковещательных доменах?",
+"answers": [
+"Мосту.",
+"Маршрутизатору.",
+"Повторителю (регенератору).",
+"Концентратору."
+]
+},
+"expl": {
+"pl": "Ruter nie przekazuje rozgłoszeń między interfejsami, więc każdy jego port to osobna domena rozgłoszeniowa. Most, regenerator i koncentrator przepuszczają broadcasty.",
+"ru": "Маршрутизатор не передаёт широковещательные кадры между интерфейсами, поэтому каждый его порт — отдельный широковещательный домен. Мост, повторитель и концентратор пропускают broadcast."
+},
+"answersFix": [
+"Mostu.",
+"Rutera.",
+"Regeneratora.",
+"Koncentratora."
+]
+},
+"ofae6464": {
+"ru": {
+"stem": "Пользователю, который хочет печатать документы одновременно в оригинале и трёх копиях на самокопирующей бумаге, следует купить принтер",
+"answers": [
+"термотрансферный.",
+"струйный.",
+"лазерный.",
+"матричный (игольчатый)."
+]
+},
+"expl": {
+"pl": "Drukarka igłowa drukuje uderzeniowo – igły uderzają przez taśmę w papier, a nacisk przenosi się na kolejne warstwy papieru samokopiującego. Drukarki atramentowe i laserowe nie wywierają nacisku.",
+"ru": "Матричный принтер печатает ударным способом: иглы бьют через ленту по бумаге, и давление передаётся на следующие слои самокопирующей бумаги. Струйные и лазерные принтеры давления не оказывают."
+}
+},
+"ofb7caea": {
+"ru": {
+"stem": "Какое из чисел в десятичной записи является правильным представлением числа 10111111(2)?",
+"answers": [
+"191(10)",
+"193(10)",
+"381(10)",
+"382(10)"
+]
+},
+"expl": {
+"pl": "10111111(2) = 128 + 32 + 16 + 8 + 4 + 2 + 1 = 191. Szybciej: 11111111(2) = 255, a brakuje bitu 64, więc 255 − 64 = 191.",
+"ru": "10111111(2) = 128 + 32 + 16 + 8 + 4 + 2 + 1 = 191. Быстрее: 11111111(2) = 255, не хватает бита 64, значит 255 − 64 = 191."
+},
+"stemFix": "Która z liczb w zapisie dziesiętnym jest prawidłową reprezentacją liczby 10111111(2)?",
+"answersFix": [
+"191(10)",
+"193(10)",
+"381(10)",
+"382(10)"
+]
+},
+"ofed0a85": {
+"ru": {
+"stem": "Какое из перечисленных устройств является элементом системного блока?",
+"answers": [
+"Клавиатура PS/2",
+"Монитор LCD",
+"Модем PCI",
+"Мышь USB"
+]
+},
+"expl": {
+"pl": "Modem PCI to karta rozszerzeń montowana w gnieździe PCI płyty głównej, czyli wewnątrz jednostki centralnej. Klawiatura, mysz i monitor to urządzenia peryferyjne podłączane z zewnątrz.",
+"ru": "Модем PCI — карта расширения, устанавливаемая в слот PCI материнской платы, то есть внутри системного блока. Клавиатура, мышь и монитор — периферия, подключаемая снаружи."
+}
+},
+"off600b0": {
+"ru": {
+"stem": "Сообщение «BIOS checksum error», отображаемое при запуске компьютера, чаще всего означает",
+"answers": [
+"ошибку оперативной памяти.",
+"повреждённый вентилятор процессора.",
+"отсутствие носителя с операционной системой.",
+"повреждённую или разряженную батарейку на материнской плате."
+]
+},
+"expl": {
+"pl": "Ustawienia BIOS są przechowywane w pamięci CMOS podtrzymywanej baterią; gdy bateria się rozładuje, dane się psują i suma kontrolna się nie zgadza. Brak nośnika daje inny komunikat (np. „No boot device”).",
+"ru": "Настройки BIOS хранятся в памяти CMOS, питаемой батарейкой; когда она разряжается, данные портятся и контрольная сумма не совпадает. Отсутствие носителя даёт другое сообщение (например, «No boot device»)."
+}
+}
+}
