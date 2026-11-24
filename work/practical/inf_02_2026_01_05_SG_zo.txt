@@ -1,0 +1,191 @@
+ Układ graficzny © CKE 2025                                                       EGZAMIN ZAWODOWY
+                                                                                       Rok 2026
+                                                                             ZASADY OCENIANIA I KARTY OCENY
+
+                                                                              Arkusz zawiera informacje prawnie chronione
+                                                                                  do momentu rozpoczęcia egzaminu
+
+
+
+
+      Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych i lokalnych sieci komputerowych
+      Oznaczenie arkusza: INF.02-05-26.01-SG
+      Symbol kwalifikacji: INF.02
+      Numer zadania: 05
+                                                                                         PODSTAWA PROGRAMOWA
+      Wersja arkusza: SG                                                                                2019
+
+
+                                                                           Wypełnia egzaminator
+
+                                                                                                                                Numer
+                                   Kod ośrodka                         –                            Numer PESEL zdającego*   stanowiska**
+
+
+
+                              Kod egzaminatora
+
+
+                                Data egzaminu
+                                                 Dzień Miesiąc   Rok
+
+
+Godzina rozpoczęcia egzaminu                            :
+
+
+
+ * w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+ ** na podstawie danych wpisanych przez zdającego na pierwszej stronie arkusza egzaminacyjnego
+Egzaminatorze!
+ − Oceniaj prace zdających rzetelnie i z zaangażowaniem. Dokumentuj wyniki oceny.
+
+ − Stosuj przyjęte zasady oceniania w sposób obiektywny.
+
+ − Jeżeli zdający, wykonując zadanie egzaminacyjne, uzyskuje inne rezultaty albo pożądane rezultaty uzyskuje w inny sposób niż uwzględniony
+   w zasadach oceniania lub przedstawia nietypowe rozwiązanie, ale zgodnie ze sztuką w zawodzie, to nadal oceniaj zgodnie z kryteriami
+   zawartymi w zasadach oceniania. Informacje o tym, że zasady oceniania nie przewidują zaistniałej sytuacji, przekaż niezwłocznie w formie
+   pisemnej notatki do Przewodniczącego Zespołu Egzaminacyjnego z prośbą o przekazanie jej do Okręgowej Komisji Egzaminacyjnej. Notatka
+   może być sporządzona odręcznie w trybie roboczym.
+ − Informuj przewodniczącego zespołu nadzorującego o wszystkich nieprawidłowościach zaistniałych w trakcie egzaminu, w tym w szczególności
+   o naruszeniach przepisów bezpieczeństwa i higieny pracy i o podejrzeniach niesamodzielności w wykonaniu zadania przez zdającego.
+
+
+
+
+                                                             Strona 2 z 6
+                                                                                                                       stanowiska
+                                                                                                                         Numer
+                                                                                                                                    Egzaminator wpisuje T,
+                                                                                                                                     jeżeli zdający spełnił
+                                        Elementy podlegające ocenie/kryteria oceny                                                  kryterium albo N, jeżeli
+                                                                                                                                           nie spełnił
+Rezultat 1: Wykonane okablowanie sieciowe oraz połączenie fizyczne urządzeń
+UWAGA: Oceny kryteriów 1.1 ÷ 1.4 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny montażu okablowania.
+Obserwację należy zakończyć po dokonaniu oceny wykonania okablowania sieciowego. Przebieg montażu okablowania sieciowego należy ocenić
+zgodnie z kryteriami zapisanymi w Przebiegu 1
+1 Z obu stron kabla wszystkie żyły kabla są podłączone do styków wtyku 8P8C według sekwencji T568B
+
+2 Zatrzask obu wtyków znajduje się na zewnętrznej izolacji kabla
+    W obecności egzaminatora przeprowadzony za pomocą testera okablowania test wykonanego kabla prostego potwierdził
+3
+    poprawność jego wykonania
+4 Do montażu zastosowany kabel typu linka
+
+5 Wszystkie urządzenia sieciowe podłączone zgodnie ze schematem - Załącznik 1
+Rezultat 2: Montaż podzespołów oraz identyfikacja parametrów dysku
+UWAGA: kryteria 2.1 i 2.2 należy ocenić po informacji od PZN. Identyfikacja podzespołów została wykonana w systemie Windows na stacji roboczej.
+Należy porównać zapisy zdającego z tabeli 1 znajdującej się w arkuszu egzaminacyjnym ze zrzutem ekranowym identyfikacja/parametry_dysku.jpg
+znajdującym się na dysku USB oznaczonym nazwą Egzamin-x, gdzie x to numer stanowiska egzaminacyjnego. W przypadku braku zgodności
+zapisów w tabeli 1 ze zrzutami, kryteria nie są spełnione. Dopuszcza się możliwość podania przez zdającego zapisu świadczącego o braku informacji,
+jeżeli jest zgodny ze zrzutem ekranu
+   Zapasowy dysk twardy zamontowany na stacji roboczej w sposób trwały, po każdej stronie jest minimum jeden wkręt.
+ 1
+   W przypadku mocowania bez użycia wkrętów montaż wykonany bez zbędnego luzu z obudową jednostki komputera
+   Do zamontowanego dysku twardego podłączony przewód sygnałowy i zasilający w sposób umożliwiający prawidłową pracę
+ 2
+   dysku
+3 Zainstalowany program CrystalDiskInfo
+
+4 W tabeli 1 zapisany numer seryjny zapasowego dysku twardego
+
+5 W tabeli 1 zapisany tryb interfejsu zapasowego dysku twardego
+
+6 W tabeli 1 zapisana temperatura zapasowego dysku twardego w stopniach Celsjusza
+
+7 W tabeli 1 zapisany czas pracy zapasowego dysku twardego w godzinach
+
+                                                                   Strona 3 z 6
+                                                                                                                       stanowiska
+                                                                                                                         Numer
+Rezultat 3: Skonfigurowane urządzenia sieciowe
+UWAGA: Oceny ustawień urządzeń należy dokonać po zgłoszeniu przez Przewodniczącego ZN o gotowości zdającego do prezentacji konfiguracji
+rutera, następnie przełącznika
+1 Wyłączony serwer DHCP na ruterze
+  Dodany interfejs VLAN 802.1Q o ID = 1, przypisany do portu 2 z tagowaniem (tryb trunk) i ustawiony adres IP dla interfejsu
+2
+  VLAN o ID = 1: 10.10.1.1/24
+  Dodany interfejs VLAN 802.1Q o ID = 2, przypisany do portu 2 z tagowaniem (tryb trunk) i ustawiony adres IP dla interfejsu
+3
+  VLAN o ID = 2: 10.10.2.1/25
+  Dodany interfejs VLAN 802.1Q o ID = 3, przypisany do portu 2 z tagowaniem (tryb trunk) i ustawiony adres IP dla interfejsu
+4
+  VLAN o ID = 3: 10.10.3.1/26
+5 Ustawiony adres IP przełącznika na: 10.10.1.123/24 z bramą domyślną 10.10.1.1
+  Dodana sieć VLAN 802.1Q o ID = 2 z przypisanym portem 2 bez tagowania (tryb dostępu) oraz portem 4 z tagowaniem (tryb
+6
+  trunk)
+  Dodana sieć VLAN 802.1Q o ID = 3 z przypisanym portem 3 bez tagowania (tryb dostępu) oraz portem 4 z tagowaniem (tryb
+7
+  trunk)
+Rezultat 4: Skonfigurowany serwer
+
+UWAGA: Ocenie podlega konfiguracja systemu Windows Server, konto Administrator z hasłem ZAQ!2wsx
+  Ustawiona nazwa przewodowego interfejsu sieciowego podłączonego do portu 1 przełącznika na LAN1 z adresem IP:
+1
+  10.10.1.10/24, bramą domyślną 10.10.1.1 i adresami DNS: 8.8.8.8 oraz 1.1.1.1
+  Ustawiona nazwa przewodowego interfejsu sieciowego podłączonego do portu 2 przełącznika na LAN2 z adresem IP
+2
+  10.10.2.20, maską sieciową 255.255.255.128, bramą domyślną 10.10.2.1 i adresami DNS: 8.8.8.8 oraz 1.1.1.1
+3 Utworzony folder C:\ftp, a w nim plik egzamin.txt zawierający tekst: EGZAMIN ZAWODOWY INF.02
+
+4 Utworzone konto użytkownika Egzamin z opcjami: Użytkownik nie może zmienić hasła oraz Hasło nigdy nie wygasa
+
+5 Zainstalowana rola serwera IIS z usługą FTP
+
+6 Skonfigurowana usługa FTP: nazwa witryny FTP_egzamin, ścieżka fiziczna C:\ftp
+
+7 Skonfigurowana usługa FTP: adres IP powiązany z adresem IP 10.10.2.20
+    Dla witryny FTP ustawione uwierzytelnianie i autoryzacja dla konta Egzamin: prawo do odczytu i zapisu dla użytkowników
+8
+    anonimowych: prawo do odczytu
+
+                                                                 Strona 4 z 6
+                                                                                                                                   stanowiska
+                                                                                                                                     Numer
+Rezultat 5: Skonfigurowana stacja robocza
+UWAGA: Ocenie podlega konfiguracja systemu Windows, konto Administrator z hasłem ZAQ!2wsx
+Kryteria 5.4 ÷ 5.6 należy ocenić po informacji od Przewodniczącego ZN o gotowości zdającego do oceny komunikacji stacji roboczej
+
+1 Ustawiona nazwa przewodowego interfejsu sieciowego na LAN3
+    Skonfigurowany przewodowy interfejs sieciowy: adres IP 10.10.3.44 maska sieciowa 255.255.255.192, brama domyślna:
+2
+    10.10.3.1, serwer DNS: 8.8.8.8 oraz 1.1.1.1
+3 Sprawdzone działanie usługi FTP: pod adresem ftp://10.10.2.20 wyświetla się plik egzamin.txt oraz folder INF.02
+  Wykonane sprawdzenie komunikacji stacji roboczej z interfejsem LAN1 serwera, urządzenie odpowiada na polecenie, np. ping
+4
+  10.10.1.10
+  Wykonane sprawdzenie komunikacji stacji roboczej z interfejsem LAN2 serwera, urządzenie odpowiada na polecenie, np. ping
+5
+  10.10.2.20
+  Wykonane sprawdzenie komunikacji stacji roboczej z przełącznikiem, urządzenie odpowiada na polecenie, np. ping
+6
+  10.10.1.123
+Przebieg 1: Wykonywanie okablowania sieciowego oraz montowanie podzespołu
+
+Zdający:
+
+1 montował dysk w stacji roboczej przy odłączonym zasilaniu jednostki centralnej
+
+2 podczas montażu dysku używał opaski antystatycznej
+    zdejmował izolację z kabla U/UTP i montował gniazdo oraz kabel U/UTP w panelu krosowym przy zastosowaniu
+3
+    odpowiednich narzędzi, zgodnie z zasadami BHP
+4 po wykonaniu montażu zostawił uporządkowane stanowisko pracy
+
+
+
+
+Egzaminator …………………………………………………………………………….                                                            ..........................................................................
+                                         imię i nazwisko                                                                   data i czytelny podpis
+
+
+
+
+                                                                 Strona 5 z 6
+Załącznik 1 - Schemat połączenia urządzeń
+
+
+
+
+                                            Strona 6 z 6
+

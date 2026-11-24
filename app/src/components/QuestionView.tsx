@@ -5,6 +5,7 @@ import { toggleStar, useLang, useProgress } from '../lib/store'
 import { shuffle } from '../lib/bank'
 import { Icon } from './Icon'
 import { RichText } from './RichText'
+import { AiPanel } from './AiPanel'
 
 const LETTERS = ['A', 'B', 'C', 'D']
 
@@ -112,6 +113,8 @@ export function QuestionView({ q, selected, onSelect, reveal, shuffleAnswers = t
           <p>{expl}</p>
         </div>
       )}
+      {reveal && q.doubt && <p className="hint">{lang === 'ru' ? 'Возможная неточность в ключе CKE: ' : 'Możliwa nieścisłość w kluczu CKE: '}{q.doubt}</p>}
+      {reveal && showMeta && <AiPanel q={q} selected={selected} />}
     </div>
   )
 }

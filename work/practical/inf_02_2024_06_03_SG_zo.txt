@@ -1,0 +1,197 @@
+ Układ graficzny © CKE 2023                                                           EGZAMIN ZAWODOWY
+                                                                                           Rok 2024
+                                                                                       ZASADY OCENIANIA
+
+                                                                              Arkusz zawiera informacje prawnie chronione
+                                                                                  do momentu rozpoczęcia egzaminu
+
+
+
+
+      Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych i lokalnych sieci komputerowych
+      Oznaczenie arkusza: INF.02-03-24.06-SG
+      Symbol kwalifikacji: INF.02
+      Numer zadania: 03
+                                                                                         PODSTAWA PROGRAMOWA
+      Wersja arkusza: SG                                                                                2019
+
+
+                                                                           Wypełnia egzaminator
+
+                                                                                                                                Numer
+                                   Kod ośrodka                         –                             Numer PESEL zdającego*   stanowiska
+
+
+
+                              Kod egzaminatora
+
+
+                                Data egzaminu
+                                                 Dzień Miesiąc   Rok
+
+
+Godzina rozpoczęcia egzaminu                            :
+
+
+
+ * w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+Egzaminatorze!
+ − Oceniaj prace zdających rzetelnie i z zaangażowaniem. Dokumentuj wyniki oceny.
+
+ − Stosuj przyjęte zasady oceniania w sposób obiektywny.
+
+ − Jeżeli zdający, wykonując zadanie egzaminacyjne, uzyskuje inne rezultaty albo pożądane rezultaty uzyskuje w inny sposób niż uwzględniony
+   w zasadach oceniania lub przedstawia nietypowe rozwiązanie, ale zgodnie ze sztuką w zawodzie, to nadal oceniaj zgodnie z kryteriami
+   zawartymi w zasadach oceniania. Informacje o tym, że zasady oceniania nie przewidują zaistniałej sytuacji, przekaż niezwłocznie w formie
+   pisemnej notatki do Przewodniczącego Zespołu Egzaminacyjnego z prośbą o przekazanie jej do Okręgowej Komisji Egzaminacyjnej. Notatka
+   może być sporządzona odręcznie w trybie roboczym.
+ − Informuj przewodniczącego zespołu nadzorującego o wszystkich nieprawidłowościach zaistniałych w trakcie egzaminu, w tym w szczególności
+   o naruszeniach przepisów bezpieczeństwa i higieny pracy i o podejrzeniach niesamodzielności w wykonaniu zadania przez zdającego.
+
+
+
+
+                                                             Strona 2 z 7
+                                                                                                                        stanowiska
+                                                                                                                          Numer
+                                                                                                                                     Egzaminator wpisuje T,
+                                                                                                                                      jeżeli zdający spełnił
+                                        Elementy podlegające ocenie/kryteria oceny                                                   kryterium albo N, jeżeli
+                                                                                                                                            nie spełnił
+
+Rezultat 1: Montaż kabla krosowego oraz podłączenie urządzeń
+Uwaga: Oceny kryteriów 1.1 - 1.4 należy dokonać po informacji od Przewodniczącego ZN o wykonaniu kabla. Przebieg montażu należy ocenić
+zgodnie z kryteriami zapisanymi w przebiegu 1
+1 Wszystkie żyły kabla podłączono są do wtyków 8P8C wg sekwencji T568B
+
+2 Wtyki 8P8C zaciśnięto w taki sposób aby zatrzask był na zewnętrznej izolacji kabla U/UTP
+
+3 Użyto kabla U/UTP typu linka
+    W obecności egzaminatora przeprowadzono za pomocą testera okablowania test wykonanego kabla oraz test potwierdził
+4
+    poprawność jego wykonania
+5 Wszystkie urządzenia sieciowe podłączono zgodnie ze schematem - załącznik 1
+
+Rezultat 2: Skonfigurowane urządzenia sieciowe
+Uwaga: oceny kryteriów należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny rutera, następnie przełącznika
+1 W ruterze ustawiono adres IP interfejsu LAN: 10.0.0.1/25
+
+2 W ruterze włączono serwer DHCP
+
+3 W ruterze ustawiono zakres dzierżawy DHCP 10.0.0.10 ÷ 10.0.0.99
+    W ruterze ustawiono rezerwację adresu IP 10.0.0.51 dla adresu MAC karty sieciowej serwera, podłączanej do portu 1
+4
+    przełącznika
+5 Adres IP przełącznika ustawiono na 10.0.0.2/25
+
+6 W przełączniku utworzono sieć VLAN o ID=101
+
+7 W przełączniku utworzono sieć VLAN o ID=102
+
+8 W przełączniku port 1 i 2 przypisano bez tagowania (tryb dostępu) do sieci VLAN o ID=101
+
+9 W przełączniku port 3 i 4 przypisano bez tagowania (tryb dostępu) do sieci VLAN o ID=102
+                                                                 Strona 3 z 7
+                                                                                                                        stanowiska
+                                                                                                                          Numer
+Rezultat 3: Skonfigurowane interfejsy sieciowe
+Uwaga: oceny rezultatów należy dokonać dla serwera i stacji roboczej w systemie Windows, konto Administrator z hasłem ZAQ!2wsx
+Oceny kryteriów 3.9 ÷ 3.10 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny komunikacji pomiędzy
+urządzeniami sieciowymi. Sprawdzenie komunikacji zdający wykonuje w obecności egzaminatora
+   Na serwerze dla interfejsu sieciowego podłączonego do portu 1 przełącznika ustawiono nazwę połączenia: VLAN101 oraz dla
+ 1
+   interfejsu sieciowego podłączonego do portu 3 przełącznika ustawiono nazwę połączenia: VLAN102
+   Na serwerze dla interfejsu sieciowego podłączonego do portu 1 przełącznika ustawiono automatyczne pobieranie adresu IP,
+ 2
+   uzyskano adres IP: 10.0.0.51 oraz bramę domyślną 10.0.0.1
+3 Na serwerze dla interfejsu sieciowego podłączonego do portu 1 przełącznika ustawiono serwer DNS na localhost
+    Na serwerze dla interfejsu sieciowego podłączonego do portu 1 przełącznika wyłączono opcję ustawień TCP/IP: Zarejestruj
+4
+    adresy tego połączenia w DNS
+5 Na serwerze dla interfejsu sieciowego podłączonego do portu 3 przełącznika ustawiono adres IP: 192.168.0.1/24
+
+6 Na serwerze dla interfejsu sieciowego podłączonego do portu 3 przełącznika ustawiono serwer DNS: localhost
+
+7 Na stacji roboczej dla interfejsu sieciowego ustawiono nazwę połączenia: VLAN102
+   Na stacji roboczej dla interfejsu sieciowego ustawiono automatyczne pobieranie adresu IP, adres jest z zakresu 192.168.0.10
+8
+   ÷ 192.168.0.99
+   Wykonano test komunikacji serwera z ruterem, uzyskano odpowiedź na polecenie np. ping 10.0.0.1 lub innym poleceniem
+ 9
+   systemowym
+   Wykonano test komunikacji serwera z przełącznikiem, uzyskano odpowiedź na polecenie np. ping 10.0.0.2 lub innym
+10
+   poleceniem systemowym
+
+
+
+
+                                                                 Strona 4 z 7
+                                                                                                                       stanowiska
+                                                                                                                         Numer
+Rezultat 4: Skonfigurowany serwer
+UWAGA: ocenie podlega konfiguracja w systemie Windows
+1 Dodano role: Usługi domenowe AD oraz serwer DHCP
+
+2 Utworzono nową domenę o nazwie egzamin.local
+
+3 W domenie utworzono jednostkę organizacyjną Pracownicy
+
+4 W utworzonej jednostce organizacyjnej dodano konto użytkownika o nazwie logowania anowak
+
+5 Udostępniono folder C:\Profile pod nazwą zasobu profile$
+
+6 Ustawiono do zasobu profile$ uprawnienia sieciowe tylko dla: Wszyscy - Pełna kontrola
+  Ustawiono do folderu C:\Profile zabezpieczenia dla: Administratorzy – Pełna kontrola, Użytkownicy domeny – Wyświetlenie
+7
+  zawartości folderu oraz Tworzenie folderów z dziedziczeniem: Tylko ten folder
+  Ustawiono utworzonemu użytkownikowi ścieżkę profilu mobilnego \\serwer\profil$\anowak i w folderze C:\Profile znajduje się
+8
+  profil anowak
+9 W serwerze DHCP ustawiono zakres DHCP 192.168.0.10 ÷ 192.168.0.99 z maską podsieci 255.255.255.0
+
+10 W serwerze DHCP ustawiono opcje ruter i serwer DNS na 192.168.0.1 oraz ustawiono domenę nadrzędną: egzamin.local
+Rezultat 5: Wykonana diagnoza i skonfigurowana stacja robocza
+UWAGA: ocenie podlega konfiguracja w systemie Windows. Nośnik USB opisany Egzamin-x, gdzie x to numer stanowiska zdającego, powinien być
+zabezpieczony hasłem ZAQ!2wsx
+Kryteria R.5.5 ÷ R.5.7 należy ocenić na podstawie pliku specyfikacja umieszczonego na nośniku Egzamin-x, zapisy muszą być zgodne ze stanem
+faktycznym
+1 Ustawiono nazwę komputera na STACJA-X, gdzie x to numer stanowiska egzaminacyjnego
+
+2 Dodano stację roboczą do domeny
+
+3 Sformatowano nośnik USB opisany Egzamin-x na systemem plików NTFS oraz nadano mu etykietę USB
+
+4 Wykonano identyfikację nośnika USB opisanego Egzamin-x i w pliku zapisano poprawnie nazwę producenta
+
+5 Wykonano identyfikację nośnika USB opisanego Egzamin-x i w pliku zapisano poprawnie model
+
+6 Wykonano identyfikację nośnika USB opisanego Egzamin-x i w pliku zapisano poprawnie pojemność
+                                                                Strona 5 z 7
+                                                                                                                                stanowiska
+                                                                                                                                  Numer
+Przebieg 1: Montaż kabla krosowego
+
+Zdający:
+    zdejmował izolację z kabla U/UTP i montował wtyki 8P8C przy zastosowaniu odpowiednich narzędzi, zgodnie z zasadami
+1
+    BHP
+2 zostawił uporządkowane stanowisko po zakończeniu wszystkich prac
+
+
+
+
+Egzaminator …………………………………………………………………………….                                                         ..........................................................................
+                                        imię i nazwisko                                                                 data i czytelny podpis
+
+
+
+
+                                                               Strona 6 z 7
+Załącznik 1 - Schemat połączenia urządzeń
+
+
+
+
+                   Strona 7 z 7
+

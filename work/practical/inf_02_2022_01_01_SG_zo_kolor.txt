@@ -1,0 +1,188 @@
+ Układ graficzny © CKE 2019                                                           EGZAMIN ZAWODOWY
+                                                                                           Rok 2022
+                                                                                       ZASADY OCENIANIA
+
+                                                                              Arkusz zawiera informacje prawnie chronione
+                                                                                  do momentu rozpoczęcia egzaminu
+
+
+
+
+       Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych i lokalnych sieci komputerowych
+       Oznaczenie arkusza: INF.02-01-22.01-SG
+       Oznaczenie kwalifikacji: INF.02
+       Numer zadania: 01
+                                                                                                PODSTAWA PROGRAMOWA
+       Wersja arkusza: SG                                                                                       2019
+
+
+                                                                           Wypełnia egzaminator
+
+                                                                                                                                 Numer
+                                   Kod ośrodka                         –                             Numer PESEL zdającego*    stanowiska
+
+
+
+                              Kod egzaminatora
+
+
+                                Data egzaminu
+                                                 Dzień Miesiąc   Rok
+
+
+Godzina rozpoczęcia egzaminu                            :
+
+
+
+ * w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+Egzaminatorze!
+  Oceniaj prace zdających rzetelnie i z zaangażowaniem. Dokumentuj wyniki oceny.
+
+  Stosuj przyjęte zasady oceniania w sposób obiektywny.
+
+  Jeżeli zdający, wykonując zadanie egzaminacyjne, uzyskuje inne rezultaty albo pożądane rezultaty uzyskuje w inny sposób niż uwzględniony
+   w zasadach oceniania lub przedstawia nietypowe rozwiązanie, ale zgodnie ze sztuką w zawodzie, to nadal oceniaj zgodnie z kryteriami
+   zawartymi w zasadach oceniania. Informacje o tym, że zasady oceniania nie przewidują zaistniałej sytuacji, przekaż niezwłocznie w formie
+   pisemnej notatki do Przewodniczącego Zespołu Egzaminacyjnego z prośbą o przekazanie jej do Okręgowej Komisji Egzaminacyjnej. Notatka
+   może być sporządzona odręcznie w trybie roboczym.
+  Informuj przewodniczącego zespołu nadzorującego o wszystkich nieprawidłowościach zaistniałych w trakcie egzaminu, w tym w szczególności
+   o naruszeniach przepisów bezpieczeństwa i higieny pracy i o podejrzeniach niesamodzielności w wykonaniu zadania przez zdającego.
+
+
+
+
+                                                             Strona 2 z 6
+                                                                                                                   stanowiska
+                                                                                                                     Numer
+                                                                                                                                Egzaminator wpisuje T,
+                                                                                                                                 jeżeli zdający spełnił
+                                       Elementy podlegające ocenie/kryteria oceny                                               kryterium albo N, jeżeli
+                                                                                                                                       nie spełnił
+
+Rezultat 1: Wykonane okablowanie sieciowe oraz połączenie fizyczne urządzeń
+UWAGA: Oceny kryteriów 1.1 ÷ 1.4 należy dokonać po informacji od przewodniczącego ZN o gotowości zdającego do testu montażu okablowania.
+Przebieg montażu okablowania należy ocenić zgodnie z kryteriami zapisanymi w Przebiegu 1
+  Wszystkie żyły kabla podłączono do panelu krosowego według sekwencji T568A oraz przewody nie wystają więcej niż 25 mm
+1
+  poza płaszcz, a pary nie są rozkręcone na całej tej długości
+  Wszystkie żyły podłączono do styków modułu Keystone według sekwencji T568A, przewody nie wystają więcej niż 25 mm
+2
+  poza płaszcz, a pary nie są rozkręcone na całej tej długości
+3 Wszystkie elementy gniazda zamontowano w sposób umożliwiający jego zastosowanie jako gniazda naściennego
+    Przeprowadzono za pomocą testera okablowania test wykonanego połączenia panel krosowy - gniazdo w obecności
+4
+    egzaminatora oraz test potwierdził poprawność jego wykonania
+5 Urządzenia sieciowe, stację roboczą oraz serwer podłączono zgodnie ze schematem zamieszczonym w załączniku 1
+Rezultat 2: Diagnostyka i specyfikacja podzespołów
+UWAGA: Ocenie podlega diagnostyka w systemie Linux na stacji roboczej. Testy należy porównać ze zrzutami na nośniku EGZAMIN-x, gdzie x
+oznacza numer stanowiska zdającego, w folderze TESTY. Kryteria w R.2 są spełnione, gdy zapisane parametry są zgodne ze zrzutami. Kryterium
+należy uznać za spełnione, jeśli zdający zapisze "brak danych" w przypadku braku możliwości identyfikacji parametru przez system
+1 W tabeli 1 zapisano numer seryjny dysku twardego
+
+2 W tabeli 1 zapisano liczbę rdzeni procesora
+
+3 W tabeli 1 zapisano producenta karty graficznej
+
+
+
+
+                                                               Strona 3 z 6
+                                                                                                                          stanowiska
+                                                                                                                            Numer
+Rezultat 3: Skonfigurowane urządzenia sieciowe
+UWAGA: Oceny kryteriów R.3 należy dokonać po informacji od przewodniczącego ZN o gotowości zdającego do prezentacji konfiguracji rutera,
+następnie przełącznika
+    Przypisano dla interfejsu LAN rutera adres IP 192.168.10.1 z maską 255.255.255.0 oraz dla interfejsu WAN przypisano
+1
+    adres IP: 30.30.20.5/29 i adresem serwera DNS: 5.5.8.8
+2 Włączono na ruterze serwer DHCP z zakresem 192.168.10.14 ÷ 192.168.10.34
+    Zarezerwowano na ruterze adres 192.168.10.24 dla interfejsu sieciowego serwera podłączonego do przełącznika oraz
+3
+    192.168.10.25 dla interfejsu stacji roboczej podłączonego do przełącznika
+4 Skonfigurowano przełącznik: adres IP 192.168.10.2
+Rezultat 4: Skonfigurowany serwer
+UWAGA: Ocenie podlega konfiguracja systemu Windows, do sprawdzenia rezultatu należy wykorzystać konto Administrator z hasłem Egzamin08!@
+Oceny rezultatów 4.6 ÷ 4.8 należy dokonać po zgłoszeniu od przewodniczącego ZN o gotowości zdającego do oceny testu komunikacji. Zdający
+wyświetli automatycznie uzyskane adresy IP stacji roboczej i serwera
+   Ustawiono nazwę interfejsu sieciowego podłączonego do przełącznika na NET11, adres IP uzyskiwany automatycznie oraz
+ 1
+   adres DNS: localhost
+2 Wyłączono drugi interfejs sieciowy
+
+3 Utworzono domenę o nazwie egzamin.local
+
+4 Utworzono w domenie jednostkę organizacyjną o nazwie Prawnicy
+    W utworzonej jednostce organizacyjnej utworzono konto o parametrach: pełna nazwa: Adam Kowalski, nazwa logowania:
+5
+    prawnik
+6 Sprawdzono komunikację serwera z ruterem - urządzenie odpowiada na polecenie, np. ping 192.168.10.1
+
+7 Sprawdzono komunikację serwera z przełącznikiem - urządzenie odpowiada na polecenie, np. ping 192.168.10.2
+
+8 Sprawdzono komunikację serwera ze stacją roboczą - urządzenie odpowiada na polecenie, np. ping 192.168.10.25
+
+
+
+
+                                                                 Strona 4 z 6
+                                                                                                                      stanowiska
+                                                                                                                        Numer
+Rezultat 5: Skonfigurowana stacja robocza
+UWAGA: Ocenie podlega konfiguracja systemu Linux do sprawdzenia rezultatu należy wykorzystać konto administrator z hasłem Egzamin08!@ (konto
+z prawem podniesienia uprawnień do root z hasłem Egzamin08!@ )
+
+1 Ustawiono nazwę interfejsu sieciowego stacji roboczej na NET12
+
+2 Ustawiono dla połączenia sieciowego stacji roboczej uzyskiwanie automatyczne adresu IP, serwer DNS: 192.168.10.24
+
+3 Ustawiono nazwę komputera STACJAX, gdzie X oznacza numer stanowiska zdającego
+
+4 Utworzono w katalogu domowym użytkownika administrator ukryty katalog o nazwie INF02
+Rezultat 6: Kosztorys
+UWAGA: Ocenie podlega plik kosztorys zapisany na nośniku EGZAMIN-x
+    Kosztorys sporządzono w arkuszu kalkulacyjnym w postaci pliku kosztorys, w którym zapisano tabelę zawierającą sześć
+1
+    kolumn: Lp., Nazwa podzespołu, Cena jednostkowa netto, Cena jednostkowa z VAT, Ilość, Wartość brutto
+    W kosztorysie zapisano płytę główną Gigabyte oraz nazwy kompatybilnych podzespołów: procesor Intel Core i3, Pamięć RAM
+2
+    Balistic, monitor LG
+    W kosztorysie zapisano pozycje podzespołów: Obudowa Sharkoon, Zasilacz Silentium PC, Dysk twardy Toshiba, klawiatura,
+3
+    mysz
+  Sumowanie oraz obliczenia w kolumnie Wartość brutto odbywają się automatycznie, po wpisaniu danych do kolumny Cena
+4
+  jednostkowa netto oraz Ilość, a wynik jest zgodny ze stanem faktycznym. Zastosowano format walutowy.
+  W kosztorysie zapisano jedynie kompatybilne podzespoły umożliwiające zmontowanie nowego zestawu komputerowego
+5
+  (karta graficzna i napęd Asus są opcjonalne)
+
+
+
+
+                                                                 Strona 5 z 6
+                                                                                                                             stanowiska
+                                                                                                                               Numer
+Przebieg 1: Wykonanie okablowania sieciowego
+
+Zdający:
+    zdejmował izolację z kabla U/UTP, montował kabel U/UTP w module Keystone oraz panelu krosowym przy zastosowaniu
+1
+    odpowiednich narzędzi, zgodnie z zasadami BHP
+2 zostawił uporządkowane stanowisko po zakończeniu wszystkich prac
+
+
+
+
+                                                   Załącznik 1. Schemat połączenia urządzeń
+
+
+
+
+Egzaminator …………………………………………………………………………….                                                      ..........................................................................
+                                        imię i nazwisko                                                              data i czytelny podpis
+
+
+
+
+                                                                Strona 6 z 6
+

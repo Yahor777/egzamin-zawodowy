@@ -1,0 +1,211 @@
+ Układ graficzny © CKE 2019                                                           EGZAMIN ZAWODOWY
+                                                                                           Rok 2022
+                                                                                       ZASADY OCENIANIA
+
+                                                                              Arkusz zawiera informacje prawnie chronione
+                                                                                  do momentu rozpoczęcia egzaminu
+
+
+
+
+       Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych i lokalnych sieci komputerowych
+       Oznaczenie arkusza: INF.02-03-22.06-SG
+       Oznaczenie kwalifikacji: INF.02
+       Numer zadania: 03
+                                                                                          PODSTAWA PROGRAMOWA
+       Wersja arkusza: SG                                                                                2019
+
+
+                                                                           Wypełnia egzaminator
+
+                                                                                                                                Numer
+                                   Kod ośrodka                         –                             Numer PESEL zdającego*   stanowiska
+
+
+
+                              Kod egzaminatora
+
+
+                                Data egzaminu
+                                                 Dzień Miesiąc   Rok
+
+
+Godzina rozpoczęcia egzaminu                            :
+
+
+
+ * w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+Egzaminatorze!
+ − Oceniaj prace zdających rzetelnie i z zaangażowaniem. Dokumentuj wyniki oceny.
+
+ − Stosuj przyjęte zasady oceniania w sposób obiektywny.
+
+ − Jeżeli zdający, wykonując zadanie egzaminacyjne, uzyskuje inne rezultaty albo pożądane rezultaty uzyskuje w inny sposób niż uwzględniony
+   w zasadach oceniania lub przedstawia nietypowe rozwiązanie, ale zgodnie ze sztuką w zawodzie, to nadal oceniaj zgodnie z kryteriami
+   zawartymi w zasadach oceniania. Informacje o tym, że zasady oceniania nie przewidują zaistniałej sytuacji, przekaż niezwłocznie w formie
+   pisemnej notatki do Przewodniczącego Zespołu Egzaminacyjnego z prośbą o przekazanie jej do Okręgowej Komisji Egzaminacyjnej. Notatka
+   może być sporządzona odręcznie w trybie roboczym.
+ − Informuj przewodniczącego zespołu nadzorującego o wszystkich nieprawidłowościach zaistniałych w trakcie egzaminu, w tym w szczególności
+   o naruszeniach przepisów bezpieczeństwa i higieny pracy i o podejrzeniach niesamodzielności w wykonaniu zadania przez zdającego.
+
+
+
+
+                                                             Strona 2 z 7
+                                                                                                                       stanowiska
+                                                                                                                         Numer
+                                                                                                                                    Egzaminator wpisuje T,
+                                                                                                                                     jeżeli zdający spełnił
+                                        Elementy podlegające ocenie/kryteria oceny                                                  kryterium albo N, jeżeli
+                                                                                                                                           nie spełnił
+
+Rezultat 1: Montaż pamięci i okablowania sieciowego oraz połączenie fizyczne urządzeń
+Uwaga: Oceny kryteriów 1.1 ÷ 1.7 należy dokonać po informacji od przewodniczącego ZN o wykonaniu montażu pamięci RAM1, następnie RAM2,
+następnie montażu okablowania. Przebieg montażu pamięci oraz okablowania należy ocenić zgodnie z kryteriami zapisanymi w przebiegu 1
+   Wykonano montaż modułu pamięci RAM1, a następnie RAM2, bez uszkodzenia modułów pamięci oraz bez uszkodzenia
+ 1
+   elementów płyty głównej
+2 Wszystkie żyły kabla podłączone są do styków dowolnego gniazda panelu krosowego wg sekwencji T568A
+    Żyły kabla podłączone do styków panelu krosowego nie wystają więcej niż 25 mm poza płaszcz, a pary nie są rozkręcone na
+3
+    długości większej niż 13 mm
+4 Wszystkie żyły kabla podłączone są do styków modułu Keystone wg sekwencji T568A
+    Żyły podłączone do styków modułu Keystone nie wystają więcej niż 25 mm poza płaszcz, a pary nie są rozkręcone na
+5
+    długości większej niż 13 mm
+6 Zmontowano gniazdo sieciowe z jednym modułem Keystone
+    Zdający przeprowadził za pomocą testera okablowania test wykonanego połączenia panel krosowy - gniazdo w obecności
+7
+    egzaminatora oraz test potwierdził poprawność jego wykonania
+8 Stacja robocza jest podłączona do 1 portu przełącznika
+
+9 Obie karty sieciowe serwera są podłączone do przełącznika do portów 3 oraz 4
+
+10 Port LAN rutera jest podłączony do 2 portu przełącznika
+
+
+
+
+                                                                Strona 3 z 7
+                                                                                                                     stanowiska
+                                                                                                                       Numer
+Rezultat 2: Diagnostyka
+Uwaga: Diagnostyka pamięci RAM powinna zostać wykonana na stacji roboczej w systemie Linux. Pliki zrzutów ekranu znajdują się w katalogach
+/Test_1 oraz /Test_2. Kryteria należy uznać za spełnione tylko wtedy, gdy zapisy są zgodne ze zrzutami ekranowymi. Dopuszcza się zapis N/A
+lub inny świadczący o braku wyświetlonej informacji, jeżeli zostało to również udokumentowane zrzutem ekranu
+    Zapisano w katalogu /Test_1 minimum 1 zrzut ekranu potwierdzający przeprowadzenie testów pamięci RAM1
+ 1
+    zamontowanej w komputerze
+    Zapisano w katalogu /Test_2 minimum 1 zrzut ekranu potwierdzający przeprowadzenie testów pamięci RAM2
+ 2
+    zamontowanej w komputerze
+    Zapisano minimum dwa parametry zainstalowanej pamięci RAM1 w tabeli 1 arkusza egzaminacyjnego oraz zapisy są zgodne
+ 3
+    ze stanem faktycznym
+    Zapisano minimum dwa parametry zainstalowanej pamięci RAM2 w tabeli 1 arkusza egzaminacyjnego oraz zapisy są zgodne
+ 4
+    ze stanem faktycznym
+Rezultat 3: Skonfigurowane urządzenia sieciowe
+Uwaga: oceny kryteriów należy dokonać po informacji od przewodniczącego ZN o gotowości zdającego do oceny konfiguracji rutera, następnie
+konfiguracji przełącznika
+1 Dla interfejsu LAN rutera przypisano adres 172.22.0.1 z maską podsieci 255.255.255.0
+
+2 Na ruterze włączono serwer DHCP
+
+3 Ustawiono zakres dzierżawy adresów serwera DHCP na 172.22.0.5 ÷ 172.22.0.10
+
+4 Dla przełącznika przypisano adres 192.168.100.2
+
+5 W przełączniku dodano dwie nowe sieci VLAN z ID ustawionymi na 100 oraz 444
+
+6 Porty 1, 2 i 3 przełącznika przypisano do utworzonej sieci VLAN o ID=100 bez tagowania
+
+7 Port 4 przypisano w przełączniku do utworzonej sieci VLAN o ID=444 bez tagowania
+
+
+
+
+                                                                Strona 4 z 7
+                                                                                                                           stanowiska
+                                                                                                                             Numer
+Rezultat 4: Skonfigurowane interfejsy sieciowe serwera i stacji roboczej
+Uwaga: oceny rezultatów należy dokonać dla serwera w systemie Windows, konto Administrator z hasłem ZAQ!2wsx oraz dla stacji roboczej
+w systemie Linux, konto administrator z hasłem ZAQ!2wsx
+Oceny kryteriów 4.6 ÷ 4.10 należy dokonać po informacji od przewodniczącego ZN o gotowości zdającego do oceny komunikacji pomiędzy
+urządzeniami sieciowymi, nadania adresu DHCP dla stacji roboczej oraz wyświetlenia witryny. Sprawdzenie komunikacji wykonuje zdający
+w obecności egzaminatora
+   Interfejs sieciowy serwera podłączony do portu 4 przełącznika ma ustawioną nazwę IP2 oraz interfejs sieciowy podłączony do
+ 1
+   portu 3 przełącznika ma ustawioną nazwę IP1
+2 Dla interfejsu sieciowego podłączonego do portu 3 przełącznika ustawiono adres 172.22.0.3 z maską podsieci 255.255.255.0
+
+3 Dla interfejsu sieciowego podłączonego do portu 3 przełącznika ustawiono bramę domyślną na 172.22.0.1
+
+4 Dla interfejsu sieciowego podłączonego do portu 3 przełącznika ustawiono adres serwera DNS na 172.22.0.3 lub 127.0.0.1
+  Dla interfejsu sieciowego podłączonego do portu 4 przełącznika ustawiono adres 192.168.100.1 z maską podsieci
+5
+  255.255.255.0
+  Konfiguracja interfejsu sieciowego stacji roboczej pobierana jest automatycznie, interfejs sieciowy otrzymał adres IP z zakresu
+6
+  172.22.0.5 ÷ 172.22.0.10
+7 Sprawdzono komunikację między stacją roboczą a serwerem oraz urządzenie odpowiada na polecenie np. ping 172.22.0.3
+
+8 Sprawdzono komunikację między stacja roboczą a ruterem oraz urządzenie odpowiada na polecenie np. ping 172.22.0.1
+    Na stacji roboczej wyświetlono witrynę WWW o adresie http://172.22.0.3, zawierającą napis: "Strona testowa - egzamin
+9
+    INF.02"
+
+
+
+
+                                                                  Strona 5 z 7
+                                                                                                                             stanowiska
+                                                                                                                               Numer
+Rezultat 5: Skonfigurowany serwer
+Uwaga: ocenie podlega konfiguracja w systemie Windows Server
+1 Utworzono folder C:\STRONA_TESTOWA
+2 W folderze zapisano plik o nazwie index.html z zawartością
+3 Na serwerze uruchomiono usługę serwera IIS i utworzono witrynę WWW o nazwie TESTOWA
+
+4 Ustawiono lokalizację witryny na utworzony przez zdającego folder
+
+5 Witrynę powiązano z interfejsem sieciowym o adresie 172.22.0.3
+
+6 Utworzono konto użytkownika WEBMASTER należącego do grupy użytkowników zaawansowanych
+7 Folder utworzony przez zdającego udostępniono w sieci pod nazwą testowe_www
+   Dla folderu utworzonego przez zdającego skonfigurowano uprawnienia: Administrator – pełna kontrola, WEBMASTER –
+8
+   zapis, odczyt
+   Dla folderu utworzonego przez zdającego skonfigurowano zabezpieczenia: Administrator – pełna kontrola, WEBMASTER –
+ 9
+   modyfikacja
+   Na serwerze wyświetlono w przeglądarce internetowej zawartość strony WWW dostępnej pod adresem http://172.22.0.3
+10
+   co udokumentowano w pliku strona_WWW zapisanym na pulpicie konta Administrator
+Przebieg 1. Montaż pamięci RAM i okablowania sieciowego
+Zdający:
+   podczas wykonywaniu montażu okablowania sieciowego zdejmował izolację z kabla U/UTP stosując narzędzia do tego celu
+ 1
+   przeznaczone
+   podczas montażu kabla U/UTP do modułu Keystone i wtyku oraz podczas montowania gniazda sieciowego stosował
+ 2
+   narzędzia zgodnie z ich przeznaczeniem oraz z zasadami BHP
+   podczas montażu pamięci RAM stosował opaskę antystatyczną oraz narzędzia zgodnie z ich przeznaczeniem oraz
+ 3
+   z zasadami BHP
+4 po wykonaniu montażu pamięci RAM i okablowania sieciowego uporządkował stanowisko egzaminacyjne
+
+
+Egzaminator …………………………………………………………………………….                                                      ..........................................................................
+                                        imię i nazwisko                                                              data i czytelny podpis
+
+
+
+                                                                Strona 6 z 7
+Załącznik 1: Schemat połączenia urządzeń
+
+
+
+
+                                           Strona 7 z 7
+

@@ -1,0 +1,201 @@
+ Układ graficzny © CKE 2019                                                           EGZAMIN ZAWODOWY
+                                                                                           Rok 2023
+                                                                                       ZASADY OCENIANIA
+
+                                                                              Arkusz zawiera informacje prawnie chronione
+                                                                                  do momentu rozpoczęcia egzaminu
+
+
+
+
+      Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych i lokalnych sieci komputerowych
+      Oznaczenie arkusza: INF.02-01-23.01-SG
+      Oznaczenie kwalifikacji: INF.02
+      Numer zadania: 01
+                                                                                         PODSTAWA PROGRAMOWA
+      Wersja arkusza: SG                                                                                2019
+
+
+                                                                           Wypełnia egzaminator
+
+                                                                                                                                Numer
+                                   Kod ośrodka                         –                             Numer PESEL zdającego*   stanowiska
+
+
+
+                              Kod egzaminatora
+
+
+                                Data egzaminu
+                                                 Dzień Miesiąc   Rok
+
+
+Godzina rozpoczęcia egzaminu                            :
+
+
+
+ * w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+Egzaminatorze!
+ − Oceniaj prace zdających rzetelnie i z zaangażowaniem. Dokumentuj wyniki oceny.
+
+ − Stosuj przyjęte zasady oceniania w sposób obiektywny.
+
+ − Jeżeli zdający, wykonując zadanie egzaminacyjne, uzyskuje inne rezultaty albo pożądane rezultaty uzyskuje w inny sposób niż uwzględniony
+   w zasadach oceniania lub przedstawia nietypowe rozwiązanie, ale zgodnie ze sztuką w zawodzie, to nadal oceniaj zgodnie z kryteriami
+   zawartymi w zasadach oceniania. Informacje o tym, że zasady oceniania nie przewidują zaistniałej sytuacji, przekaż niezwłocznie w formie
+   pisemnej notatki do Przewodniczącego Zespołu Egzaminacyjnego z prośbą o przekazanie jej do Okręgowej Komisji Egzaminacyjnej. Notatka
+   może być sporządzona odręcznie w trybie roboczym.
+ − Informuj przewodniczącego zespołu nadzorującego o wszystkich nieprawidłowościach zaistniałych w trakcie egzaminu, w tym w szczególności
+   o naruszeniach przepisów bezpieczeństwa i higieny pracy i o podejrzeniach niesamodzielności w wykonaniu zadania przez zdającego.
+
+
+
+
+                                                             Strona 2 z 6
+                                                                                                                     stanowiska
+                                                                                                                       Numer
+                                                                                                                                  Egzaminator wpisuje T,
+                                                                                                                                   jeżeli zdający spełnił
+                                       Elementy podlegające ocenie/kryteria oceny                                                 kryterium albo N, jeżeli
+                                                                                                                                         nie spełnił
+
+Rezultat 1: Wykonane okablowanie sieciowe, montaż podzespołu oraz połączenie fizyczne urządzeń
+
+UWAGA: Oceny kryteriów 1.1 ÷ 1.6 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny montażu okablowania,
+następnie montażu podzespołu. Przebieg montażu okablowania należy ocenić zgodnie z kryteriami zapisanymi w Przebiegu 1
+  Wszystkie żyły kabla są podłączone do panelu krosowego według sekwencji T568B oraz przewody nie wystają więcej niż
+1
+  25 mm poza płaszcz, a pary nie są rozkręcone na długości większej niż 13 mm
+  Wszystkie żyły są podłączone do styków modułu Keystone według sekwencji T568B, przewody nie wystają więcej niż 25 mm
+2
+  poza płaszcz, a pary nie są rozkręcone na długości większej niż 13 mm
+3 Wszystkie elementy gniazda są zamontowane w sposób umożliwiający jego zastosowanie jako gniazda naściennego
+
+4 Zastosowano typ kabla: drut
+  Przeprowadzono za pomocą testera okablowania test wykonanego połączenia panel krosowy – gniazdo w obecności
+5
+  egzaminatora oraz test potwierdził poprawność jego wykonania
+  W stacji roboczej zamontowano zapasową kartę graficzną bez uszkodzeń płyty głównej, po zamontowaniu system operacyjny
+6
+  uruchamia się
+7 Urządzenia sieciowe, stację roboczą oraz serwer podłączono zgodnie ze schematem zamieszczonym w załączniku 1
+
+Rezultat 2: Diagnostyka
+UWAGA: Ocenie podlega diagnostyka stacji roboczej w systemie Windows. Pliki karta_1 oraz karta_2 są zapisane na nośniku USB opisanym
+EGZAMIN-x gdzie x to numer stanowiska egzaminacyjnego. Zapisy parametrów kart znajdują się w arkuszu egzaminacyjnym w tabeli 1. Kryteria 2.3
+i .2.4 są spełnione, gdy zapisane parametry są zgodne ze zrzutami. W przypadku niemożliwości identyfikacji przez program parametrów podzespołu
+i takim też zapisie w tabeli 1 arkusza, należy uznać kryteria 2.3 i 2.4 za spełnione
+     Sprawdzono parametry zainstalowanej karty graficznej na stacji roboczej w programie GPU-Z, co udokumentowano w pliku
+  1
+     edytora tekstu karta_1
+     Sprawdzono parametry zapasowej karty graficznej na stacji roboczej w programie GPU-Z, co udokumentowano w pliku
+  2
+     edytora tekstu karta_2
+     Zapisano parametry zainstalowanej karty graficznej w tabeli 1 w kolumnie Zainstalowana karta graficzna (minimum 5 z 6
+  3
+     parametrów)
+4 Zapisano parametry zapasowej karty graficznej w tabeli 1 w kolumnie Zapasowa karta graficzna (minimum 5 z 6 parametrów)
+
+                                                                Strona 3 z 6
+                                                                                                                       stanowiska
+                                                                                                                         Numer
+Rezultat 3: Skonfigurowane urządzenia sieciowe
+UWAGA: Oceny kryteriów R.3 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny konfiguracji rutera, następnie
+przełącznika, następnie do oceny testu komunikacji
+   Przypisano dla interfejsu LAN rutera adres 192.168.0.1/24 oraz dla interfejsu WAN przypisano adres: 100.100.0.2/27, brama
+ 1
+   domyślna 100.100.0.1, serwer DNS: 8.8.3.3
+2 Włączono na ruterze serwer DHCP z zakresem 192.168.0.79 ÷ 192.168.0.99
+
+3 Zarezerwowano na ruterze adres 192.168.0.81 dla interfejsu sieciowego stacji roboczej podłączonego do przełącznika
+
+4 Skonfigurowano przełącznik: adres IP 192.168.0.3
+
+5 Wykonano sprawdzenie komunikacji serwera z ruterem o adresie 192.168.0.1. Test potwierdził komunikację
+
+6 Wykonano sprawdzenie komunikacji serwera z przełącznikiem o adresie 192.168.0.3. Test potwierdził komunikację
+
+7 Wykonano sprawdzenie komunikacji serwera ze stacją roboczą o adresie 192.168.0.81. Test potwierdził komunikację
+
+8 Wykonano sprawdzenie komunikacji serwera z drukarką o adresie 192.168.0.200. Test potwierdził komunikację
+
+Rezultat 4: Skonfigurowany serwer
+
+UWAGA: Ocenie podlega konfiguracja systemu serwerowego Windows, konto Administrator z hasłem ZAQ!2wsx
+  Ustawiono nazwę interfejsu sieciowego serwera podłączonego do przełącznika na NET1, DNS: localhost, adres IP:
+1 192.168.0.10+X/24, gdzie X oznacza numer stanowiska egzaminacyjnego, np. 192.168.0.11 dla stanowiska nr 1 oraz
+  wyłączono drugi interfejs sieciowy serwera
+2 Utworzono domenę o nazwie inf02.local
+
+3 Utworzono w domenie jednostkę organizacyjną o nazwie Deweloperzy
+    Utworzono w jednostce organizacyjnej konto o parametrach: pełna nazwa: Krzysztof Nowak, nazwa logowania: Deweloper_1,
+4
+    hasło nigdy nie wygasa
+
+
+
+
+                                                               Strona 4 z 6
+                                                                                                                    stanowiska
+                                                                                                                      Numer
+Rezultat 5: Skonfigurowana stacja robocza
+UWAGA: Ocenie podlega konfiguracja systemu Linux, konto administrator z hasłem ZAQ!2wsx (konto z prawem podniesienia uprawnień do root
+z hasłem ZAQ!2wsx )
+   Ustawiono nazwę interfejsu sieciowego stacji roboczej podłączonego do przełącznika na NET2, adres IP uzyskano
+ 1
+   automatycznie, DNS: adres IP serwera
+2 Utworzono grupę użytkowników o nazwie Kierownictwo
+
+3 Utworzono konto użytkownika o nazwie Kierownik
+
+4 Dodano utworzone konto użytkownika do grupy użytkowników Kierownictwo
+    Utworzono w katalogu domowym użytkownika administrator dowiązanie symboliczne do katalogu /dev o nazwie
+5
+    dowiazanie_dev
+6 Utworzono w katalogu domowym użytkownika administrator katalog test
+
+7 Ustawiono dla katalogu test prawa o wartości 711
+
+Rezultat 6: Zainstalowana i skonfigurowana drukarka sieciowa
+
+UWAGA: Kryterium 6.2 należy ocenić po informacji od Przewodniczącego ZN o gotowości zdającego do wydruku
+
+1 Zainstalowano drukarkę na porcie TCP/IP 192.168.0.200
+
+2 Wydrukowano z serwera stronę testową drukarki
+
+3 Udostępniono drukarkę pod nazwą Drukarka-X, gdzie X oznacza numer stanowiska egzaminacyjnego
+    Skonfigurowano domyślne ustawienia drukowania dla zainstalowanej drukarki: dostępność w godzinach 8:00 ÷ 21:00 oraz
+4
+    preferencje wydruku: liczba kopii: 2, orientacja: pozioma
+
+
+
+
+                                                                Strona 5 z 6
+                                                                                                                             stanowiska
+                                                                                                                               Numer
+Przebieg 1: Wykonanie okablowania sieciowego
+
+Zdający:
+    zdejmował izolację z kabla U/UTP, montował kabel U/UTP w module Keystone oraz panelu krosowym przy zastosowaniu
+1
+    odpowiednich narzędzi, zgodnie z zasadami BHP
+2 zostawił uporządkowane stanowisko po zakończeniu wszystkich prac
+
+
+
+
+Załącznik 1. Schemat połączenia urządzeń
+
+
+
+
+Egzaminator …………………………………………………………………………….                                                      ..........................................................................
+                                        imię i nazwisko                                                              data i czytelny podpis
+
+
+
+
+                                                              Strona 6 z 6
+

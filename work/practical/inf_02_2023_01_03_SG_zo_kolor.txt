@@ -1,0 +1,201 @@
+ Układ graficzny © CKE 2019                                                           EGZAMIN ZAWODOWY
+                                                                                           Rok 2023
+                                                                                       ZASADY OCENIANIA
+
+                                                                              Arkusz zawiera informacje prawnie chronione
+                                                                                  do momentu rozpoczęcia egzaminu
+
+
+
+
+      Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych i lokalnych sieci komputerowych
+      Oznaczenie arkusza: INF.02-03-23.01-SG
+      Oznaczenie kwalifikacji: INF.02
+      Numer zadania: 03
+                                                                                         PODSTAWA PROGRAMOWA
+      Wersja arkusza: SG                                                                                2019
+
+
+                                                                           Wypełnia egzaminator
+
+                                                                                                                                Numer
+                                   Kod ośrodka                         –                             Numer PESEL zdającego*   stanowiska
+
+
+
+                              Kod egzaminatora
+
+
+                                Data egzaminu
+                                                 Dzień Miesiąc   Rok
+
+
+Godzina rozpoczęcia egzaminu                            :
+
+
+
+ * w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+Egzaminatorze!
+ − Oceniaj prace zdających rzetelnie i z zaangażowaniem. Dokumentuj wyniki oceny.
+
+ − Stosuj przyjęte zasady oceniania w sposób obiektywny.
+
+ − Jeżeli zdający, wykonując zadanie egzaminacyjne, uzyskuje inne rezultaty albo pożądane rezultaty uzyskuje w inny sposób niż uwzględniony
+   w zasadach oceniania lub przedstawia nietypowe rozwiązanie, ale zgodnie ze sztuką w zawodzie, to nadal oceniaj zgodnie z kryteriami
+   zawartymi w zasadach oceniania. Informacje o tym, że zasady oceniania nie przewidują zaistniałej sytuacji, przekaż niezwłocznie w formie
+   pisemnej notatki do Przewodniczącego Zespołu Egzaminacyjnego z prośbą o przekazanie jej do Okręgowej Komisji Egzaminacyjnej. Notatka
+   może być sporządzona odręcznie w trybie roboczym.
+ − Informuj przewodniczącego zespołu nadzorującego o wszystkich nieprawidłowościach zaistniałych w trakcie egzaminu, w tym w szczególności
+   o naruszeniach przepisów bezpieczeństwa i higieny pracy i o podejrzeniach niesamodzielności w wykonaniu zadania przez zdającego.
+
+
+
+
+                                                             Strona 2 z 6
+                                                                                                                    stanowiska
+                                                                                                                      Numer
+                                                                                                                                 Egzaminator wpisuje T,
+                                                                                                                                  jeżeli zdający spełnił
+                                        Elementy podlegające ocenie/kryteria oceny                                               kryterium albo N, jeżeli
+                                                                                                                                        nie spełnił
+
+Rezultat 1: Montaż podzespołu oraz podłączenie urządzeń
+Uwaga: Oceny kryterium 1.1 należy dokonać po informacji od Przewodniczącego ZN o wykonaniu montażu dysku. Przebieg montażu należy ocenić
+zgodnie z kryteriami zapisanymi w przebiegu 1
+1 Zamontowano drugi dysk w stacji roboczej w sposób trwały
+
+2 W stacji roboczej na drugim dysku utworzono partycję podstawową o pełnej pojemności dysku
+
+3 Utworzoną partycję sformatowano z systemem plików NTFS
+
+4 Nowemu woluminowi przypisano etykietę Dane
+
+5 Nowemu woluminowi przypisano literę X:
+
+6 Urządzenia sieciowe, stację roboczą oraz serwer podłączono zgodnie ze schematem zamieszczonym w załączniku 1
+Rezultat 2: Skonfigurowany ruter
+Uwaga: oceny kryteriów należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny konfiguracji rutera
+1 Ustawiono adres IP dla VLAN o ID=1: 192.168.0.x/24, gdzie x to numer stanowiska egzaminacyjnego
+
+2 Utworzono VLAN 802.1q o ID=2
+
+3 Port 2 przypisano z tagowaniem do VLAN o ID=1 i ID=2 lub port 2 ustawiono w tryb trunk
+    Ustawiono adres IP dla interfejsu powiązanego z VLAN o ID=2: 192.168.1.x/24, gdzie x to numer stanowiska
+4
+    egzaminacyjnego
+5 Włączono serwer DHCP dla VLAN o ID=2
+
+6 Ustawiono pulę adresową DHCP dla VLAN o ID=2: 192.168.1.100 ÷ 192.168.1.150
+
+7 Ustawiono bramę domyślną dla klientów DHCP 192.168.1.x, gdzie x to numer stanowiska egzaminacyjnego
+    Ustawiono adres serwera DNS dla klientów DHCP: 192.168.0.200+x, gdzie x to numer stanowiska egzaminacyjnego,
+8
+    np. 192.168.0.201 dla stanowiska nr 1
+
+                                                                 Strona 3 z 6
+                                                                                                                     stanowiska
+                                                                                                                       Numer
+Rezultat 3: Skonfigurowany przełącznik
+
+Uwaga: oceny kryteriów należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny konfiguracji przełącznika
+
+1 Ustawiono adres IP: 192.168.0.100+x, gdzie x to numer stanowiska egzaminacyjnego, np. 192.168.0.101 dla stanowiska nr 1
+
+2 Utworzono VLAN 802.1q o ID=2
+
+3 Port 1 przypisany bez tagowania (tryb dostępu) do VLAN o ID=1
+
+4 Port 2 przypisany bez tagowania (tryb dostępu) do VLAN o ID=2
+
+5 Port 3 przypisano z tagowaniem do VLAN o ID=1 i ID=2 lub port ustawiony w tryb trunk
+
+Rezultat 4: Skonfigurowane interfejsy sieciowe
+Uwaga: oceny rezultatów należy dokonać dla serwera i stacji roboczej w systemie Windows, konto Administrator z hasłem ZAQ!2wsx
+Oceny kryteriów 4.5 ÷ 4.7 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny komunikacji pomiędzy
+urządzeniami sieciowymi. Sprawdzenie komunikacji zdający wykonuje w obecności egzaminatora
+1 Na serwerze interfejsowi sieciowemu podłączonemu do przełącznika ustawiono nazwę: VLAN1
+  Na serwerze interfejsowi sieciowemu podłączonemu do przełącznika ustawiono adres IP: 192.168.0.200+x, gdzie x to numer
+2
+  stanowiska egzaminacyjnego
+  Na serwerze interfejsowi sieciowemu podłączonemu do przełącznika ustawiono DNS: localhost oraz bramę domyślną
+3
+  192.168.0.x/24, gdzie x to numer stanowiska egzaminacyjnego
+4 Na stacji roboczej nazwę połączenia przewodowego ustawiono na VLAN2
+
+5 Na stacji roboczej interfejs przewodowy ma przypisany automatycznie adres IP z zakresu 192.168.1.100 ÷ 192.168.1.150
+  Wykonano test komunikacji stacji roboczej z ruterem, uzyskano odpowiedź na polecenie ping 192.168.0.x lub 192.168.1.x,
+6
+  gdzie x to numer stanowiska egzaminacyjnego
+  Wykonano test komunikacji stacji roboczej z przełącznikiem, uzyskano odpowiedź na polecenie ping 192.168.0.100 + x, gdzie
+7
+  x to numer stanowiska egzaminacyjnego
+
+
+
+
+                                                               Strona 4 z 6
+                                                                                                                   stanowiska
+                                                                                                                     Numer
+Rezultat 5: Skonfigurowany serwer
+
+UWAGA: ocenie podlega konfiguracja w systemie Windows
+
+1 Ustawiono nazwę serwera na SERWERX, gdzie X to numer stanowiska egzaminacyjnego
+
+2 Promowano serwer do roli kontrolera domeny o nazwie egzamin.local
+
+3 W domenie utworzono jednostkę organizacyjną Biuro projektów
+
+4 W utworzonej jednostce organizacyjnej dodano konto użytkownika jkowalski
+
+5 Dodano rolę Usługi drukowania i zarządzania dokumentami
+
+6 Zainstalowano drukarkę sieciową dostępną przez protokół RAW pod adresem IP 192.168.0.200
+
+7 Udostępniono zainstalowaną drukarkę w sieci pod nazwą zasobu drukarka
+  Ustawiono zabezpieczenia do udostępnionej drukarki dla: Administratorzy (Drukowanie, Zarządzanie tą drukarką,
+8
+  Zarządzanie dokumentami), TWÓRCA-WŁAŚCICIEL (Zarządzanie dokumentami), jkowalski (Drukowanie)
+  Dla utworzonej jednostki organizacyjnej dodano zasadę grupy o nazwie Udostępnienie drukarki, która rozmieszcza
+9
+  udostępnioną drukarkę użytkownikom
+Rezultat 6: Skonfigurowana stacja robocza
+UWAGA: ocenie podlega konfiguracja w systemie Windows, kryterium 6.5 należy ocenić po informacji od Przewodniczącego ZN o gotowości
+zdającego do wydruku
+1 Ustawiono nazwę stacji roboczej na STACJAX, gdzie X to numer stanowiska egzaminacyjnego
+
+2 Podłączono stację roboczą do domeny
+
+3 Na serwerze obiekt stacji roboczej przeniesiono do utworzonej jednostki organizacyjnej
+
+4 Na utworzonym koncie użytkownika ustawiono udostępnioną drukarkę jako drukarkę domyślną
+
+5 Wydrukowano stronę testową
+
+
+
+
+                                                                 Strona 5 z 6
+                                                                                                                           stanowiska
+                                                                                                                             Numer
+Przebieg 1: Montaż podzespołu
+
+Zdający:
+
+1 poprawnie wykorzystywał narzędzia do montażu i stosował się do przepisów BHP podczas wykonywania montażu
+
+2 zostawił uporządkowane stanowisko po zakończeniu wszystkich prac
+
+Załącznik 1 - Schemat połączenia urządzeń
+
+
+
+
+Egzaminator …………………………………………………………………………….                                                    ..........................................................................
+                                       imię i nazwisko                                                             data i czytelny podpis
+
+
+
+
+                                                             Strona 6 z 6
+

@@ -1,0 +1,223 @@
+ Układ graficzny © CKE 2025                                                       EGZAMIN ZAWODOWY
+                                                                                       Rok 2026
+                                                                             ZASADY OCENIANIA I KARTY OCENY
+
+                                                                              Arkusz zawiera informacje prawnie chronione
+                                                                                  do momentu rozpoczęcia egzaminu
+
+
+
+
+      Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych i lokalnych sieci komputerowych
+      Oznaczenie arkusza: INF.02-02-26.06-SG
+      Symbol kwalifikacji: INF.02
+      Numer zadania: 02
+                                                                                         PODSTAWA PROGRAMOWA
+      Wersja arkusza: SG                                                                                2019
+
+
+                                                                           Wypełnia egzaminator
+
+                                                                                                                                Numer
+                                   Kod ośrodka                         –                            Numer PESEL zdającego*   stanowiska**
+
+
+
+                              Kod egzaminatora
+
+
+                                Data egzaminu
+                                                 Dzień Miesiąc   Rok
+
+
+Godzina rozpoczęcia egzaminu                            :
+
+
+
+ * w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+ ** na podstawie danych wpisanych przez zdającego na pierwszej stronie arkusza egzaminacyjnego
+Egzaminatorze!
+ − Oceniaj prace zdających rzetelnie i z zaangażowaniem. Dokumentuj wyniki oceny.
+
+ − Stosuj przyjęte zasady oceniania w sposób obiektywny.
+
+ − Jeżeli zdający, wykonując zadanie egzaminacyjne, uzyskuje inne rezultaty albo pożądane rezultaty uzyskuje w inny sposób niż uwzględniony
+   w zasadach oceniania lub przedstawia nietypowe rozwiązanie, ale zgodnie ze sztuką w zawodzie, to nadal oceniaj zgodnie z kryteriami
+   zawartymi w zasadach oceniania. Informacje o tym, że zasady oceniania nie przewidują zaistniałej sytuacji, przekaż niezwłocznie w formie
+   pisemnej notatki do Przewodniczącego Zespołu Egzaminacyjnego z prośbą o przekazanie jej do Okręgowej Komisji Egzaminacyjnej. Notatka
+   może być sporządzona odręcznie w trybie roboczym.
+ − Informuj przewodniczącego zespołu nadzorującego o wszystkich nieprawidłowościach zaistniałych w trakcie egzaminu, w tym w szczególności
+   o naruszeniach przepisów bezpieczeństwa i higieny pracy i o podejrzeniach niesamodzielności w wykonaniu zadania przez zdającego.
+
+
+
+
+                                                             Strona 2 z 8
+                                                                                                                     stanowiska
+                                                                                                                       Numer
+                                                                                                                                  Egzaminator wpisuje T,
+                                                                                                                                   jeżeli zdający spełnił
+                                       Elementy podlegające ocenie/kryteria oceny                                                 kryterium albo N, jeżeli
+                                                                                                                                         nie spełnił
+
+Rezultat 1: Wykonane okablowanie sieciowe oraz połączenie fizyczne urządzeń
+Uwaga: oceny kryteriów 1.1 ÷ 1.6 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny montażu okablowania.
+Przebieg montażu okablowania sieciowego należy ocenić zgodnie z kryteriami zapisanymi w Przebiegu 1
+   Wszystkie żyły kabla są podłączone do panelu krosowego wg sekwencji T568B, przewody nie wystają więcej niż 25 mm poza
+ 1
+   płaszcz, a pary nie są rozkręcone na długości większej niż 13 mm
+   Wszystkie żyły są podłączone do styków modułu Keystone wg sekwencji T568B, przewody nie wystają więcej niż 25 mm poza
+ 2
+   płaszcz, a pary nie są rozkręcone na długości większej niż 13 mm
+3 Wszystkie elementy gniazda są zmontowane w sposób umożliwiający jego zastosowanie jako gniazda naściennego
+    W obecności egzaminatora przeprowadzony za pomocą testera okablowania test wykonanego połączenia panel krosowy –
+4
+    gniazdo naścienne potwierdził poprawność jego wykonania
+5 Do montażu zastosowany kabel typu drut
+    Panel krosowy zamontowany stabilnie w szafie lub stelażu RACK, front panelu krosowego skierowany na zewnątrz szafy/
+6
+    stelażu
+7 Wszystkie urządzenia sieciowe połączone zgodnie ze schematem – Załącznik 1
+
+
+
+
+                                                                Strona 3 z 8
+                                                                                                                        stanowiska
+                                                                                                                          Numer
+Rezultat 2: Identyfikacja parametrów
+Uwaga: identyfikacja parametrów podzespołów została wykonana w systemie Linux na stacji roboczej. Należy porównać zapisy zdającego z tabeli 3
+znajdującej się w arkuszu egzaminacyjnym ze zrzutami ekranowymi zapisanymi w katalogu Identyfikacja na dysku USB oznaczonym nazwą Egzamin-
+x, gdzie x to numer stanowiska egzaminacyjnego. W przypadku braku zgodności zapisów w tabeli 3 ze zrzutami, kryteria nie są spełnione. Dopuszcza
+się możliwość podania przez zdającego zapisu świadczącego o braku informacji, jeżeli jest zgodny ze zrzutem ekranu
+1 W tabeli 3 zapisana wersja jądra systemu Linux
+
+2 W tabeli 3 zapisany producent GPU
+
+3 W tabeli 3 zapisany model karty graficznej
+
+4 W tabeli 3 zapisana nazwa modelu procesora
+
+5 W tabeli 3 zapisana bazowa częstotliwość taktowania procesora
+
+6 W tabeli 3 zapisana liczba rdzeni procesora
+    W tabeli 3 zapisana ocena, czy procesor spełnia minimalne wymagania dla procesora: Intel lub AMD, co najmniej 6 rdzeni,
+7
+    taktowanie 3 GHz lub wyższe
+Rezultat 3: Skonfigurowane urządzenia sieciowe
+Uwaga: oceny kryteriów należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny konfiguracji rutera, a następnie
+przełącznika
+1 Adres IP interfejsu LAN rutera: 192.168.100.1/24
+
+2 Interfejs WAN rutera: adres IP 78.80.88.5, maska 255.255.255.248, brama domyślna 78.80.88.1, serwer DNS: 8.8.8.8
+
+3 W ruterze włączony serwer DHCP z zakresem: 192.168.100.20 ÷ 192.168.100.50
+
+4 W DHCP ustawiona rezerwacja adresu 192.168.100.50 dla interfejsu sieciowego serwera podłączonego do przełącznika
+
+5 Konfiguracja przełącznika: adres IP 192.168.100.10/24, brama domyślna: 192.168.100.1
+
+6 Na przełączniku utworzona sieć VLAN 802.1Q o ID = 3
+
+7 Utworzony VLAN ma przypisane porty 1, 2 i 3 bez tagowania
+
+
+
+                                                                  Strona 4 z 8
+                                                                                                                    stanowiska
+                                                                                                                      Numer
+Rezultat 4: Skonfigurowany serwer
+Uwaga: ocenie podlega konfiguracja systemu Windows Server, konto Administrator z hasłem ZAQ!2wsx X oznacza numer stanowiska
+egzaminacyjnego
+Kryteria 4.2, 4.10 należy ocenić po informacji od Przewodniczącego ZN o gotowości zdającego do oceny uzyskania adresu z DHCP i komunikacji
+urządzeń sieciowych. Sprawdzenie wykonuje zdający w obecności egzaminatora
+Kryterium 4.5 - egzaminator przekazuje wydrukowaną stronę zdającemu, który dołącza ją do arkusza egzaminacyjnego
+1 Nazwy połączeń sieciowych: LAN1 i LAN2
+    Przewodowy interfejs sieciowy podłączony do przełącznika: adres uzyskiwany automatycznie. Uzyskany adres IP:
+2
+    192.168.100.50/24
+3 Adres IP przewodowego interfejsu sieciowego serwera podłączonego do gniazda E-X: 192.168.0.X/24
+
+4 Zainstalowana drukarka sieciowa o adresie IP 192.168.0.200
+
+5 Wydrukowana na drukarce strona zawierająca numer stanowiska
+
+6 Nadana nazwa komputera: SERWERX
+
+7 Dodana rola serwera IIS z usługą FTP
+  Konfiguracja witryny FTP: nazwa INF_FTP, udostępnia zawartość folderu C:\MOJE_FTP pod adresem IP 192.168.100.50, na
+8
+  porcie 21
+  Dostęp dla FTP: użytkownicy anonimowi – jedynie odczyt,
+9
+  Administrator – odczyt i zapis
+10 Wykonane sprawdzenie komunikacji serwera z drukarką, urządzenie odpowiada na polecenie np. ping 192.168.0.200
+
+
+
+
+                                                                Strona 5 z 8
+                                                                                                                      stanowiska
+                                                                                                                        Numer
+Rezultat 5: Skonfigurowana stacja robocza
+Uwaga: ocenie podlega konfiguracja systemu Linux, konto administrator z hasłem ZAQ!2wsx (konto z prawem podniesienia uprawnień do root)
+Kryteria 5.3 ÷ 5.6: są spełnione, jeśli na zrzutach ekranowych zapisanych na dysku USB oznaczonym nazwą Egzamin-x są widoczne wykonane
+polecenia w terminalu.
+Kryteria 5.7 ÷ 5.9 należy ocenić po informacji od Przewodniczącego ZN o gotowości zdającego do oceny działania usługi FTP oraz oceny komunikacji
+urządzeń sieciowych. Sprawdzenie wykonuje zdający w obecności egzaminatora
+1 Nazwa przewodowego połączenia sieciowego: IP_PC
+
+2 Przewodowy interfejs sieciowy: adres IP 192.168.100.15/24, brama domyślna 192.168.100.1
+
+3 Utworzony za pomocą polecenia systemowego katalog LINUX_TERMINAL na nośniku USB opisanym Egzamin-x
+
+4 Utworzone za pomocą polecenia systemowego konto użytkownika Student1
+
+5 Utworzona za pomocą polecenia systemowego grupa użytkowników Technicy
+
+6 Dodane za pomocą polecenia systemowego utworzone konto do utworzonej grupy
+  Za pomocą programu FileZilla nawiązane połączenie z serwerem FTP:
+  autoryzacja: konto Administrator
+7
+  adres IP serwera 192.168.100.50 i port 21
+  Wyświetla się zawartość folderu z plikiem tekstowym EGZAMIN_INF02.txt
+  Wykonane sprawdzenie komunikacji stacji roboczej z interfejsem LAN rutera, urządzenie odpowiada na polecenie np. ping
+8
+  192.168.100.1
+  Wykonane sprawdzenie komunikacji stacji roboczej z serwerem, urządzenie odpowiada na polecenie np. ping
+9
+  adres_ip_serwera
+
+
+
+
+                                                                Strona 6 z 8
+                                                                                                                               stanowiska
+                                                                                                                                 Numer
+Przebieg 1: Wykonywanie okablowania sieciowego
+
+zdający:
+    zdejmował izolację z kabla U/UTP i montował gniazdo oraz kabel U/UTP w panelu krosowym przy zastosowaniu
+1
+    odpowiednich narzędzi, zgodnie z zasadami BHP
+2 podczas montażu używał narzędzi zgodnie z ich przeznaczeniem
+
+3 po wykonaniu montażu zostawił uporządkowane stanowisko pracy
+
+
+
+
+Egzaminator …………………………………………………………………………….                                                        ..........................................................................
+                                        imię i nazwisko                                                                data i czytelny podpis
+
+
+
+
+                                                               Strona 7 z 8
+Załącznik 1. Schemat połączenia urządzeń
+
+
+
+
+                                           Strona 8 z 8
+

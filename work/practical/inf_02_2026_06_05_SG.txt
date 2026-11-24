@@ -1,0 +1,300 @@
+                                                                             Arkusz zawiera informacje
+                                                                          prawnie chronione do momentu
+                                                                               rozpoczęcia egzaminu
+
+
+
+Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych
+                    i lokalnych sieci komputerowych
+Symbol kwalifikacji: INF.02
+Numer zadania: 05
+Wersja arkusza: SG
+
+                                        Wypełnia zdający
+
+Numer PESEL zdającego*                                                        Miejsce na naklejkę z numerem
+                                                                                PESEL i z kodem ośrodka
+
+         Numer stanowiska
+
+
+
+
+Czas trwania egzaminu: 150 minut                                                          INF.02-05-26.06-SG
+
+EGZAMIN ZAWODOWY
+                                                              PODSTAWA PROGRAMOWA
+Rok 2026
+                                                                      2019
+CZĘŚĆ PRAKTYCZNA
+
+Instrukcja dla zdającego
+
+    1.    Na pierwszej stronie arkusza egzaminacyjnego wpisz w oznaczonym miejscu swój numer PESEL*,
+          numer stanowiska i naklej naklejkę** z numerem PESEL i z kodem ośrodka.
+    2.    Sprawdź, czy arkusz egzaminacyjny zawiera 7 stron i nie zawiera błędów. Ewentualny brak stron
+          lub inne usterki zgłoś przez podniesienie ręki przewodniczącemu zespołu nadzorującego.
+    3.    Zapoznaj się z treścią zadania oraz stanowiskiem egzaminacyjnym. Masz na to 10 minut. Czas ten nie
+          jest wliczany do czasu trwania egzaminu.
+    4.    Czas rozpoczęcia i zakończenia pracy zapisze w widocznym miejscu przewodniczący zespołu
+          nadzorującego.
+    5.    Wykonaj samodzielnie zadanie egzaminacyjne. Przestrzegaj zasad bezpieczeństwa i organizacji
+          pracy.
+    6.    Jeżeli w zadaniu egzaminacyjnym występuje polecenie „zgłoś gotowość do oceny przez podniesienie
+          ręki”, to zastosuj się do polecenia i poczekaj na decyzję przewodniczącego zespołu nadzorującego.
+    7.    Po zakończeniu wykonania zadania pozostaw rezultaty jego wykonania oraz arkusz egzaminacyjny
+          na swoim stanowisku lub w miejscu wskazanym przez przewodniczącego zespołu nadzorującego.
+    8.    Po uzyskaniu zgody zespołu nadzorującego możesz opuścić salę/miejsce przeprowadzania egzaminu.
+
+                                                                                                Powodzenia!
+
+* w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+** w przypadku otrzymania naklejki
+
+Układ graficzny
+© CKE 2025
+Zadanie egzaminacyjne
+
+Korzystając z dostępnych narzędzi, oprogramowania oraz elementów znajdujących się na stanowisku
+egzaminacyjnym, wykonaj czynności zapisane w arkuszu egzaminacyjnym.
+W systemie Linux wykorzystaj konto administrator z hasłem ZAQ!2wsx (konto z prawem podniesienia
+uprawnień do root z hasłem ZAQ!2wsx)
+W systemach Windows wykorzystaj konto Administrator z hasłem ZAQ!2wsx
+
+Ruter i przełącznik pracują na ustawieniach fabrycznych zgodnie z dokumentacją, która jest dostępna na
+nośniku opisanym DOKUMENTACJA/PROGRAMY. Jeżeli ruter i przełącznik wymagają zmiany hasła, ustaw
+je zgodnie z wymogami urządzenia.
+
+1. Wykonaj montaż podzespołów w stacji roboczej:
+   −   wymontuj kartę graficzną, a w przypadku zintegrowanej, wyłącz ją w BIOS lub Menedżerze urządzeń
+   −   zamontuj zapasową kartę graficzną
+   −   zamontuj zapasową pamięć RAM
+
+UWAGA: Po wykonaniu montażu podzespołów w stacji roboczej zgłoś Przewodniczącemu ZN – przez
+podniesienie ręki – gotowość do sprawdzenia montażu.
+
+2. Na stacji roboczej w systemie Windows zainstaluj sterowniki zamontowanej karty graficznej.
+
+3. Przeprowadź diagnostykę stacji roboczej:
+   − dokonaj identyfikacji podzespołów za pomocą dostępnych w systemie operacyjnym Windows
+       narzędzi. Wyniki przeprowadzonej identyfikacji zapisz w postaci zrzutów ekranowych, w folderze
+       Diagnostyka na dysku USB oznaczonym nazwą Egzamin-x, gdzie x to numer stanowiska
+       egzaminacyjnego. Odczytane wyniki zapisz w Tabeli 3. Diagnostyka systemu operacyjnego oraz
+       zasobów stacji roboczej znajdującej się w arkuszu egzaminacyjnym. W przypadku braku możliwości
+       identyfikacji wymaganych parametrów przez system, należy zapisać brak danych
+   − dla każdego podzespołu dokonaj oceny, czy spełnia minimalne wymagania programu typu CAD,
+       zapisane w tabeli 1. W kolumnie Wniosek zapisz TAK w przypadku spełnienia wymagań lub NIE
+       w przeciwnym wypadku
+   −   w Tabeli 3, w wierszu Ocena wypisz parametry, które nie spełniają wymagań. W wierszu Wskazania
+       zapisz wskazania do modernizacji zestawu. Gdy zestaw nie wymaga modernizacji zapisz Nie wymaga
+
+Tabela 1. Minimalne wymagania programowe i sprzętowe dla programu CAD
+ System operacyjny i wersja bitowa       Microsoft Windows 11 (64-bit)
+
+ Wersja systemu operacyjnego             wersja 22H1 lub nowsza
+
+ Częstotliwość taktowania
+                                         3.0 GHz
+ procesora
+
+ Rozmiar pamięci RAM                     16 GB
+
+ Pojemność dysku                         100 GB
+
+ Pamięć karty graficzna                  8 GB
+
+ Rozdzielczość wyświetlania              Full HD 1920 x 1080
+                                                Strona 2 z 7
+4. Skonfiguruj ruter zgodnie z następującymi zaleceniami:
+   −    interfejs sieciowy WAN:
+       − adres IP: 50.50.50.1/30
+       −   brama domyślna: 50.50.50.2
+     − serwer DNS: 8.8.8.8, drugi: 4.4.4.4, jeżeli jest wymagany
+   − adres IP interfejsu sieciowego LAN: 192.168.0.5/24
+   − konfiguracja serwera DHCP:
+     − włączony
+       −   zakres adresów: 192.168.0.10 ÷ 192.168.0.20
+       −   zarezerwowany adres IP 192.168.0.12 dla interfejsu przewodowego stacji roboczej
+
+UWAGA: Po wykonaniu konfiguracji zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+oceny ustawień rutera.
+
+5. Skonfiguruj przełącznik zgodnie z następującymi zaleceniami:
+   − adres IP: 192.168.0.6/24
+   −   brama domyślna: adres IP interfejsu LAN rutera
+
+UWAGA: Po wykonaniu konfiguracji zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+oceny ustawień przełącznika.
+
+6. Za pomocą kabli dostępnych na stanowisku połącz urządzenia sieciowe zgodnie ze schematem,
+    a następnie podłącz je do sieci zasilającej.
+
+
+
+
+                                     Schemat połączenia urządzeń
+
+
+
+
+                                              Strona 3 z 7
+7. Skonfiguruj serwer z systemem Windows, zgodnie z następującymi zaleceniami:
+   −   konfiguracja interfejsu sieciowego podłączonego do przełącznika:
+        − nazwa interfejsu: LAN_S
+       −       adres IP: 192.168.0.100+X/24, gdzie X oznacza numer stanowiska egzaminacyjnego
+        − brama domyślna: adres interfejsu LAN rutera
+   −   drugi interfejs sieciowy: wyłączony
+   −   zainstaluj drukarkę sieciową, dostępną przez port TCP/IP pod adresem IP 192.168.0.200, poprzez
+       protokół RAW. Sterowniki drukarki znajdują się w folderze DRUKARKA na nośniku
+       DOKUMENTACJA/PROGRAMY
+   −   wydrukuj stronę testową, chęć wydruku zgłoś przez podniesienie ręki. Stronę testową dołącz do
+       arkusza egzaminacyjnego
+   −   utwórz folder C:\STRONA
+   −   do folderu C:\STRONA skopiuj plik strona.html. Plik znajduje się w folderze PLIKI na nośniku
+       DOKUMENTACJA/PROGRAMY
+   −   na serwerze dodaj rolę Serwer sieci Web (IIS), obsługujący protokół HTTP
+   −   utwórz nową witrynę z parametrami:
+           −    nazwa witryny: egzamin
+           −    witryna powiązana z adresem IP interfejsu LAN_S serwera
+           −    katalog witryny: C:\STRONA
+           −    strona domyślna: strona.html
+
+8. Skonfiguruj stację roboczą z systemem Linux, zgodnie z następującymi zaleceniami:
+   − konfiguracja przewodowego interfejsu sieciowego:
+      − nazwa interfejsu: LAN_K
+     − adresacja IP uzyskiwana automatycznie
+   − korzystając z poleceń systemowych, wykonaj w terminalu następujące czynności, dokumentując je
+      zrzutami ekranowymi zawierającymi widoczne użyte polecenie systemowe. Zrzuty umieść w katalogu
+      domowym konta administrator:
+     − utwórz grupę uczniowie
+     − utwórz konto użytkownika egzamin z katalogiem domowym
+     − zabezpiecz konto egzamin hasłem Egz-inf02!
+     − dołącz konto egzamin do grupy uczniowie
+   − w katalogu domowym konta administrator utwórz archiwum egzamin.tar zawierające zrzuty
+      ekranowe z konfiguracji systemu Linux
+   − w przeglądarce internetowej wyświetl stronę strona.html udostępnioną na serwerze.
+
+9. Za pomocą poleceń systemowych wykonaj test komunikacji serwera z przełącznikiem, interfejsem LAN
+   rutera, stacją roboczą i drukarką. Na stacji roboczej wyświetl automatycznie nadany adres IP.
+
+UWAGA: Po wykonaniu testu komunikacji między urządzeniami zgłoś Przewodniczącemu ZN – przez
+podniesienie ręki – gotowość do przeprowadzenia ponownego sprawdzenia komunikacji. Sprawdzenie
+wykonaj w obecności egzaminatora. Na stacji roboczej pokaż automatycznie nadany adres IP oraz
+wyświetloną stronę internetową
+
+
+
+
+                                                Strona 4 z 7
+10. Korzystając z Tabeli 2. Cennik podzespołów, sporządź w arkuszu kalkulacyjnym kosztorys nowego
+    zestawu komputerowego spełniającego minimalne wymagania zawarte w tabeli 1. Uwzględnij zalecenia:
+    − plik wykonany zgodnie z Tabelą 4. Wzór kosztorysu i zapisany pod nazwą kosztorys na nośniku USB
+       opisanym Egzamin-x
+    − obliczenia w kolumnie Cena brutto powinny wykonywać się automatycznie oraz uwzględniać
+       zwiększenie Ceny netto o 23% podatku VAT
+    − obliczenia w kolumnie Wartość brutto powinny wykonywać się automatycznie, po wypełnieniu
+       kolumny Ilość oraz w oparciu o wykonane obliczenia w kolumnie Cena brutto
+    − sumowanie kolumny Wartość brutto powinno odbywać się automatycznie
+     −   komórka Wartość po rabacie powinna zawierać formuły liczące:
+          − wartość zestawu pomniejszoną o 10%, jeśli jest ona większa niż 4000 zł
+          − wartość zestawu pomniejszoną o 5%, w przeciwnym wypadku
+     −   komórki w kolumnach Cena netto, Cena brutto oraz Wartość brutto oraz w polach Wartość i Wartość
+         po rabacie powinny mieć format walutowy (zł lub PLN) z dwoma miejscami dziesiętnymi po przecinku
+
+Tabela 2. Cennik podzespołów
+                                                                                                  Cena
+ Lp       Nazwa podzespołu                                Parametry
+                                                                                                netto w zł
+ 1       Procesor Intel Core i5   Intel Core i5-10XXX, Socket 1200, 2,9 GHz BOX                     650,00
+ 2       Procesor Intel Core i3   Intel Core i3- Socket 1700 3,5 GHz BOX                            560,00
+ 3       Pamięć RAM Goodram       8GB, 1x8GB, 1600MHz, DDR3                                         150,00
+ 4       Pamięć RAM Kingston      16GB, 1x16GB, 3200MHz, DDR4                                       180,00
+ 5       Płyta główna Gigabyte    Intel H510, DDR4, HDMI, Micro-ATX, socket 1200, 1x RJ-            315,00
+                                  45, 1x HDMI, PCI Express x16, 4xSATAIII
+ 6       Płyta główna Asus        PRIME H610M-R D4-SI, DDR4, HDMI, Micro-ATX, socket               279,00
+                                  1700, 1x RJ-45, 1x HDMI, PCI Express x16, 4xSATAIII
+ 7       Karta graficzna Asus     Radeon RX 6600 8GB GDDR6 (128 Bit), PCI Express x16,             870,00
+                                  1xHDMI, 3xDP
+ 8       Karta graficzna          GeForce RTX 3050 6GB GDDR6, PCI Express x16,                     760,00
+         Gigabyte                 2xHDMI, 2xDP
+ 9       Monitor ASUS             ASUS VG24VQ1B - 23.8'', VA Curved, Full HD, 1xHDMI,              649,00
+                                  1xDP
+ 10      Obudowa Krux ASTRO       Kompatybilność: Micro ATX (uATX), Mini ITX, Typ                  139,00
+                                  obudowy: Micro Tower
+ 11      Zasilacz Endorfy Vero    700W, złącza: 1 x 4-pin Molex, 1 x 4/8 EPS 12V, 3 x 6/8-pin      259,00
+         L5 Bronze                PEG, 5 x SATA, ATX 24pin
+ 12      Dysk SSD                 Samsung 870EVO, SATA III, 500GB                                  319,00
+ 13      Klawiatura               Logitech K120 przewodowa, USB                                     59,00
+ 14      Mysz                     Logitech M185 bezprzewodowa, USB                                  59,00
+
+UWAGA: Po zakończeniu prac nie wylogowuj się oraz nie wyłączaj komputerów i urządzeń sieciowych
+znajdujących się na Twoim stanowisku egzaminacyjnym.
+
+
+
+
+                                                Strona 5 z 7
+Czas przeznaczony na wykonanie zadania wynosi 150 minut.
+
+Ocenie podlegać będzie 6 rezultatów:
+   − montaż podzespołów stacji roboczej oraz połączenie fizyczne urządzeń,
+   − diagnostyka stacji roboczej,
+   −   skonfigurowane urządzenia sieciowe,
+   −   skonfigurowany serwer,
+   −   skonfigurowana stacja robocza,
+   − kosztorys
+oraz
+przebieg montażu podzespołów stacji roboczej.
+
+Uwaga: Zawartość dysku USB, wykorzystywanego podczas egzaminu do zapisu zrzutów ekranowych lub
+dokumentów, jest usuwana po egzaminie i nie stanowi dokumentacji egzaminacyjnej przekazywanej wraz
+z arkuszem do OKE.
+
+Tabela 3. Diagnostyka systemu operacyjnego oraz zasobów stacji roboczej
+                                                                                  Wniosek
+          Parametr                                    Wartość
+                                                                             (wpisz TAK lub NIE)
+ Nazwa systemu operacyjnego i
+ wersja bitowa
+
+ Wersja systemu operacyjnego
+
+ Częstotliwość taktowania
+ procesora
+
+ Rozmiar pamięci RAM
+
+ Pojemność dysku
+
+ Rozmiar pamięci karty
+ graficznej
+
+ Rozdzielczość wyświetlania
+
+
+
+ Ocena
+
+
+
+
+ Wskazania
+
+
+
+
+                                                Strona 6 z 7
+Tabela 4. Wzór kosztorysu
+ Lp.      Nazwa podzespołu   Cena netto     Cena brutto        Ilość    Wartość brutto
+
+
+
+
+                                                             Wartość
+                                                   Wartość po rabacie
+
+
+
+
+                                    Strona 7 z 7
+

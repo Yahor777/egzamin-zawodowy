@@ -1,0 +1,231 @@
+ Układ graficzny © CKE 2025                                                       EGZAMIN ZAWODOWY
+                                                                                       Rok 2026
+                                                                             ZASADY OCENIANIA I KARTY OCENY
+
+                                                                              Arkusz zawiera informacje prawnie chronione
+                                                                                  do momentu rozpoczęcia egzaminu
+
+
+
+
+      Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych i lokalnych sieci komputerowych
+      Oznaczenie arkusza: INF.02-01-26.01-SG
+      Symbol kwalifikacji: INF.02
+      Numer zadania: 01
+                                                                                         PODSTAWA PROGRAMOWA
+      Wersja arkusza: SG                                                                                2019
+
+
+                                                                           Wypełnia egzaminator
+
+                                                                                                                                Numer
+                                   Kod ośrodka                         –                            Numer PESEL zdającego*   stanowiska**
+
+
+
+                              Kod egzaminatora
+
+
+                                Data egzaminu
+                                                 Dzień Miesiąc   Rok
+
+
+Godzina rozpoczęcia egzaminu                            :
+
+
+
+ * w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+ ** na podstawie danych wpisanych przez zdającego na pierwszej stronie arkusza egzaminacyjnego
+Egzaminatorze!
+ − Oceniaj prace zdających rzetelnie i z zaangażowaniem. Dokumentuj wyniki oceny.
+
+ − Stosuj przyjęte zasady oceniania w sposób obiektywny.
+
+ − Jeżeli zdający, wykonując zadanie egzaminacyjne, uzyskuje inne rezultaty albo pożądane rezultaty uzyskuje w inny sposób niż uwzględniony
+   w zasadach oceniania lub przedstawia nietypowe rozwiązanie, ale zgodnie ze sztuką w zawodzie, to nadal oceniaj zgodnie z kryteriami
+   zawartymi w zasadach oceniania. Informacje o tym, że zasady oceniania nie przewidują zaistniałej sytuacji, przekaż niezwłocznie w formie
+   pisemnej notatki do Przewodniczącego Zespołu Egzaminacyjnego z prośbą o przekazanie jej do Okręgowej Komisji Egzaminacyjnej. Notatka
+   może być sporządzona odręcznie w trybie roboczym.
+ − Informuj przewodniczącego zespołu nadzorującego o wszystkich nieprawidłowościach zaistniałych w trakcie egzaminu, w tym w szczególności
+   o naruszeniach przepisów bezpieczeństwa i higieny pracy i o podejrzeniach niesamodzielności w wykonaniu zadania przez zdającego.
+
+
+
+
+                                                             Strona 2 z 8
+                                                                                                                   stanowiska
+                                                                                                                     Numer
+                                                                                                                                Egzaminator wpisuje T,
+                                                                                                                                 jeżeli zdający spełnił
+                                      Elementy podlegające ocenie/kryteria oceny                                                kryterium albo N, jeżeli
+                                                                                                                                       nie spełnił
+
+Rezultat 1: Wykonane okablowanie sieciowe, montaż podzespołu oraz połączenie fizyczne urządzeń
+UWAGA: Oceny kryteriów 1.1 ÷ 1.2 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny montażu podzespołu.
+Oceny kryteriów 1.3 ÷ 1.6 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny montażu kabla. Obserwację należy
+zakończyć po dokonaniu oceny wykonania montażu. Przebieg montażu podzespołu i kabla sieciowego należy ocenić zgodnie z kryteriami zapisanymi
+w Przebiegu 1
+1 Wykonany demontaż pamięci RAM zainstalowanej w stacji roboczej
+
+2 Zamontowana zapasowa pamięć RAM bez uszkodzenia płyty głównej stacji roboczej
+
+3 Wszystkie żyły na obu końcach kabla są podłączone do wtyku 8P8C według sekwencji T568B
+
+4 Zatrzaski wtyków oparte na zewnętrznej izolacji kabla U/UTP
+
+5 Do montażu zastosowany kabel U/UTP typu linka
+    W obecności egzaminatora przeprowadzony za pomocą testera okablowania test wykonanego kabla potwierdził poprawność
+6
+    jego wykonania
+7 Wszystkie urządzenia sieciowe podłączone zgodnie ze schematem z Załącznika 1
+
+
+
+
+                                                                Strona 3 z 8
+                                                                                                                    stanowiska
+                                                                                                                      Numer
+Rezultat 2: Diagnostyka
+UWAGA: Identyfikacja parametrów została wykonana w systemie Windows na stacji roboczej. Należy porównać zapisy zdającego z tabeli 2
+znajdującej się w arkuszu egzaminacyjnym ze zrzutami ekranowymi zapisanymi w folderze Wymagania, znajdującym się na dysku USB oznaczonym
+nazwą Egzamin-x, gdzie x to numer stanowiska egzaminacyjnego. W przypadku braku zgodności zapisów w tabeli 2 ze zrzutami, kryteria nie są
+spełnione. Dopuszcza się możliwość podania przez zdającego zapisu świadczącego o braku informacji, jeżeli jest zgodny ze zrzutem ekranowym
+1 W tabeli 2 zapisana nazwa oraz typ systemu operacyjnego
+
+2 W tabeli 2 zapisana nazwa i oznaczenie oraz taktowanie procesora
+
+3 W tabeli 2 zapisany producent karty graficznej oraz rozmiar pamięci RAM
+  W tabeli 2 zapisane TAK, gdy wirtualizacja jest włączona lub NIE w przeciwnym wypadku oraz zapisany rodzaj i pojemność
+4
+  dysku twardego
+  W tabeli 2 zapisana ocena, czy na stacji roboczej w systemie Windows możliwe jest korzystanie z programu do emulacji
+5
+  systemu Android (wymagania w Załączniku 2)
+  W tabeli 2 uzasadniona ocena poprzez odniesienie się do zapisanych w tabeli parametrów systemu i podzespołów oraz
+6
+  uzasadnienie jest zgodne ze stanem faktycznym
+Rezultat 3: Skonfigurowane urządzenia sieciowe
+UWAGA: Oceny ustawień urządzeń należy dokonać po zgłoszeniu przez Przewodniczącego ZN o gotowości zdającego do prezentacji konfiguracji
+rutera, a następnie przełącznika
+1 Interfejs WAN rutera: adres IP 90.90.0.1, maska 255.255.255.248, brama domyślna 90.90.0.2 serwer DNS 208.67.222.222
+
+2 Interfejs LAN rutera: adres IP 10.90.0.1/24
+
+3 Wyłączony na ruterze serwer DHCP
+
+4 Przełącznik: adres IP 10.80.0.3/24, brama domyślna 10.80.0.2
+
+
+
+
+                                                                 Strona 4 z 8
+                                                                                                                        stanowiska
+                                                                                                                          Numer
+Rezultat 4: Skonfigurowany serwer
+UWAGA: Ocenie podlega konfiguracja systemu serwerowego Linux, konto administrator z hasłem ZAQ!2wsx
+Kryteria 4.8 ÷ 4.10 należy ocenić po informacji od Przewodniczącego ZN o gotowości zdającego do oceny komunikacji urządzeń sieciowych
+   Interfejs sieciowy podłączony do rutera: adres IP 90.90.0.3, maska 255.255.255.248, brama domyślna 90.90.0.1, serwer DNS:
+ 1
+   brak
+2 Interfejs sieciowy podłączony do przełącznika: adres IP 10.80.0.2/24, brama domyślna brak, serwer DNS 10.80.0.2
+  Do obsługi żądania usługi DHCP ustawiony interfejs sieciowy podłączony do przełącznika np. w pliku /etc/default/isc-dhcp-
+3 server dla zmiennej INTERFACESv4 przypisana nazwa interfejsu sieciowego podłączonego do przełącznika (np. enp0s3
+  w Ubuntu, eth0 w OpenSUSE)
+  Skonfigurowana usługa DHCP: serwer autorytatywny dla podsieci 10.80.0.0/24, zakres adresów: 10.80.0.10 ÷ 10.80.0.30
+  np. w pliku dhcpd.conf
+  authoritative; (odkomentowany)
+4 subnet 10.80.0.0 netmask 255.255.255.0{
+  range 10.80.0.10 10.80.0.30;
+  (...) }
+5 Skonfigurowana usługa DHCP: adres serwera DNS 10.80.0.2, nazwa domeny egzamin.edu, adres bramy domyślnej 10.80.0.2
+  Skonfigurowana usługa DHCP: adres rozgłoszeniowy 10.80.0.255, domyślny czas dzierżawy: 1 godzina, maksymalny czas
+6 dzierżawy: 3 godziny
+  ( np.: default-lease-time 3600; max-lease-time 10800;)
+7 W katalogu domowym użytkownika administrator utworzony katalog skrypty_admina
+  Wykonane sprawdzenie komunikacji serwera z interfejsem WAN rutera, urządzenie odpowiada na polecenie, np. ping
+8 90.90.0.1
+
+9 Wykonane sprawdzenie komunikacji serwera z przełącznikiem, urządzenie odpowiada na polecenie, np. ping 10.80.0.3
+   Wykonane sprawdzenie komunikacji serwera ze stacją roboczą, urządzenie odpowiada na polecenie, np. ping
+10 adres_IP_stacji_roboczej
+
+
+
+
+                                                                 Strona 4 z 8
+                                                                                                                           stanowiska
+                                                                                                                             Numer
+Rezultat 5: Skonfigurowana stacja robocza
+UWAGA: Ocenie podlega konfiguracja systemu Windows, konto Administrator z hasłem ZAQ!2wsx
+Kryterium 5.2 należy ocenić po informacji od Przewodniczącego ZN o gotowości zdającego do oceny poprawności pobrania adresu IP z serwera DHCP dla
+przewodowego interfejsu sieciowego
+1 Nazwa interfejsu sieciowego podłączonego do przełącznika: LAN_S
+    Adres IP przewodowego interfejsu sieciowego oraz pozostałe parametry sieciowe uzyskano w sposób automatyczny oraz
+2
+    uzyskany adres IP należy do zakresu 10.80.0.10 ÷ 10.80.0.30
+3 Włączona funkcja systemu Windows: Podsystem Windows dla systemu Linux
+
+4 Utworzone konto użytkownika standardowego asystent
+    W przydziałach dyskowych dla utworzonego użytkownika ustawione ograniczenie miejsca na dysku do 8 GB, poziom ostrzeżeń
+5
+    7 GB
+6 Zablokowana użytkownikom możliwość dodawania lub zmieniania obrazu tła pulpitu np. w gpedit
+
+7 Włączony wskaźnik kursora tekstu oraz zmieniony jego kolor na zielony
+
+Rezultat 6: Utworzony i wykonany skrypt powłoki
+UWAGA: Skrypt został utworzony na serwerze Linux konto administrator z hasłem ZAQ!2wsx
+Kryteria 6.1 i 6.6 należy uznać za spełnione, jeżeli w tabeli 3 zostały zapisane wymagane polecenia, poprawne składniowo
+   Plik konta.sh ma ustawione prawa w notacji liczbowej: odczyt, zapis i wykonanie skryptu dla właściciela oraz uruchomienie dla
+ 1 grupy.
+   Tabela 3 np. chmod 710 konta.sh
+   W kodzie skryptu użyte polecenia useradd lub adduser tworzące konto dowolnego użytkownika wraz z jego katalogiem domowym
+ 2
+   (poprawne również bez parametrów skryptu)
+3 W kodzie skryptu wykorzystana pętla o pięciu iteracjach
+
+4 W kodzie skryptu pierwszy parametr służy do utworzenia nazw kont użytkowników ze zmienną nadającą kolejny numer od 1 do 5
+
+5 W kodzie skryptu drugi parametr służy do utworzenia nazw katalogów domowych ze zmienną nadającą kolejny numer od 1 do 5
+  Uruchomiony skrypt z parametrami "uczen 3TI" np. sh konta.sh uczen 3TI, w wyniku jego działania: utworzonych 5 kont
+  użytkowników: uczen1 z katalogiem domowym /home/3TI1, uczen2 z katalogiem domowym /home/3TI2, …, uczen5 z katalogiem
+6 domowym /home/3TI5. np. w pliku /etc/passwd.
+  W tabeli 3 zapisane poprawne składniowo polecenie prowadzące do wykonania skryptu oraz skrypt działa dla innych wartości
+  parametru (wystarczy 1 dodatkowy test)
+                                                               Strona 6 z 8
+                                                                                                                                stanowiska
+                                                                                                                                  Numer
+Przebieg 1: Montaż podzespołu oraz wykonywanie okablowania sieciowego
+
+Zdający:
+
+1 demontował oraz montował pamięć RAM przy odłączonym zasilaniu jednostki centralnej
+
+2 podczas montażu podzespołu używał opaski antystatycznej oraz narzędzi zgodnie z przepisami BHP
+
+3 zdejmował izolację z kabla U/UTP przy zastosowaniu odpowiednich narzędzi, zgodnie z zasadami BHP
+
+4 po wykonaniu montażu zostawił uporządkowane stanowisko pracy
+
+
+
+
+Egzaminator …………………………………………………………………………….                                                         ..........................................................................
+                                      imię i nazwisko                                                                   data i czytelny podpis
+
+
+
+
+                                                             Strona 7 z 8
+Załącznik 1 - Schemat połączenia urządzeń
+
+
+
+
+Załącznik 2
+
+
+
+
+                                            Strona 8 z 8
+

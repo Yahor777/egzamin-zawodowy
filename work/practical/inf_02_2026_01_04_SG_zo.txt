@@ -1,0 +1,202 @@
+ Układ graficzny © CKE 2025                                                       EGZAMIN ZAWODOWY
+                                                                                       Rok 2026
+                                                                             ZASADY OCENIANIA I KARTY OCENY
+
+                                                                              Arkusz zawiera informacje prawnie chronione
+                                                                                  do momentu rozpoczęcia egzaminu
+
+
+
+
+      Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych i lokalnych sieci komputerowych
+      Oznaczenie arkusza: INF.02-04-26.01-SG
+      Symbol kwalifikacji: INF.02
+      Numer zadania: 04
+                                                                                         PODSTAWA PROGRAMOWA
+      Wersja arkusza: SG                                                                                2019
+
+
+                                                                           Wypełnia egzaminator
+
+                                                                                                                                Numer
+                                   Kod ośrodka                         –                            Numer PESEL zdającego*   stanowiska**
+
+
+
+                              Kod egzaminatora
+
+
+                                Data egzaminu
+                                                 Dzień Miesiąc   Rok
+
+
+Godzina rozpoczęcia egzaminu                            :
+
+
+
+ * w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+ ** na podstawie danych wpisanych przez zdającego na pierwszej stronie arkusza egzaminacyjnego
+Egzaminatorze!
+ − Oceniaj prace zdających rzetelnie i z zaangażowaniem. Dokumentuj wyniki oceny.
+
+ − Stosuj przyjęte zasady oceniania w sposób obiektywny.
+
+ − Jeżeli zdający, wykonując zadanie egzaminacyjne, uzyskuje inne rezultaty albo pożądane rezultaty uzyskuje w inny sposób niż uwzględniony
+   w zasadach oceniania lub przedstawia nietypowe rozwiązanie, ale zgodnie ze sztuką w zawodzie, to nadal oceniaj zgodnie z kryteriami
+   zawartymi w zasadach oceniania. Informacje o tym, że zasady oceniania nie przewidują zaistniałej sytuacji, przekaż niezwłocznie w formie
+   pisemnej notatki do Przewodniczącego Zespołu Egzaminacyjnego z prośbą o przekazanie jej do Okręgowej Komisji Egzaminacyjnej. Notatka
+   może być sporządzona odręcznie w trybie roboczym.
+ − Informuj przewodniczącego zespołu nadzorującego o wszystkich nieprawidłowościach zaistniałych w trakcie egzaminu, w tym w szczególności
+   o naruszeniach przepisów bezpieczeństwa i higieny pracy i o podejrzeniach niesamodzielności w wykonaniu zadania przez zdającego.
+
+
+
+
+                                                             Strona 2 z 7
+                                                                                                                 stanowiska
+                                                                                                                   Numer
+                                                                                                                              Egzaminator wpisuje T,
+                                                                                                                               jeżeli zdający spełnił
+                                       Elementy podlegające ocenie/kryteria oceny                                             kryterium albo N, jeżeli
+                                                                                                                                     nie spełnił
+
+Rezultat 1: Wykonany montaż podzespołu oraz połączenie fizyczne urządzeń
+UWAGA: Oceny kryteriów 1.1 i 1.2 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny montażu podzespołu.
+Obserwację należy zakończyć po dokonaniu oceny. Przebieg montażu podzespołu należy ocenić zgodnie z kryteriami zapisanymi w Przebiegu 1
+   Wykonany demontaż przewodowej karty sieciowej zamontowanej w stacji roboczej, w przypadku karty zintegrowanej
+ 1
+   wyłączona w BIOS lub Menedżerze urządzeń
+   Zamontowana zapasowa karta sieciowa w sposób trwały, po wykonaniu montażu na stacji roboczej uruchamia się system
+ 2
+   operacyjny
+3 Wszystkie urządzenia sieciowe podłączone zgodnie ze schematem w załączniku 1
+
+Rezultat 2: Identyfikacja parametrów
+UWAGA: identyfikacja podzespołów została wykonana w systemie Windows na stacji roboczej. Należy porównać zapisy zdającego z tabeli 1
+znajdującej się w arkuszu egzaminacyjnym ze zrzutami ekranowymi zapisanymi w folderze PARAMETRY znajdującym się na dysku USB oznaczonym
+nazwą Egzamin-x, gdzie x to numer stanowiska egzaminacyjnego. W przypadku braku zgodności zapisów w tabeli 1 ze zrzutami, kryteria nie są
+spełnione. Dopuszcza się możliwość podania przez zdającego zapisu świadczącego o braku informacji, jeżeli jest zgodny ze zrzutem ekranowym
+   Zainstalowany na stacji roboczej w systemie Windows program CPU-Z, co jest udokumentowane za pomocą przynajmniej
+ 1
+   jednego zrzutu ekranu zapisanego w folderze PARAMETRY z widocznym oknem programu
+2 W tabeli 1 zapisany producent i model płyty głównej
+
+3 W tabeli 1 zapisana liczba rdzeni oraz typ gniazda procesora
+
+4 W tabeli 1 zapisane taktowanie podstawowe oraz technologia wykonania procesora
+
+5 W tabeli 1 zapisane wykorzystanie procesora w % (chwilowe)
+
+
+
+
+                                                                 Strona 3 z 7
+                                                                                                                     stanowiska
+                                                                                                                       Numer
+Rezultat 3: Skonfigurowane urządzenia sieciowe
+UWAGA: Oceny ustawień urządzeń należy dokonać po zgłoszeniu przez Przewodniczącego ZN o gotowości zdającego do prezentacji konfiguracji
+rutera, następnie przełącznika
+1 Przypisane dla interfejsu WAN rutera: adres IP 88.88.88.2/30, brama domyślna: 88.88.88.1 serwer DNS: 6.6.6.6
+
+2 Przypisany dla interfejsu LAN rutera adres 172.16.10.10/24
+
+3 Wyłączony na ruterze serwer DHCP
+
+4 Ustawione na przełączniku: adres IP 10.0.10.5/24, brama domyślna 10.0.10.1
+
+Rezultat 4: Skonfigurowany serwer
+UWAGA: Ocenie podlega konfiguracja systemu Windows Server, konto Administrator z hasłem ZAQ!2wsx lub zaq1@WSX
+Kryteria 4.7 ÷ 4.9 należy ocenić po informacji od Przewodniczącego ZN o gotowości zdającego do oceny komunikacji urządzeń sieciowych
+   Ustawione dla przewodowego interfejsu sieciowego podłączonego do rutera: nazwa LAN Z, adres IP 172.16.10.1/24, brama
+ 1
+   domyślna 172.16.10.10, serwer DNS: localhost
+   Ustawione dla przewodowego interfejsu sieciowego podłączonego do przełącznika: nazwa LAN W, adres IP: 10.0.10.1/24,
+ 2
+   brama domyślna: brak, serwer DNS: localhost
+3 Zainstalowana na serwerze usługa AD DS
+
+4 Utworzona domena o nazwie firmaXX.local, gdzie XX oznacza numer stanowiska egzaminacyjnego
+  W domenie utworzona jednostka organizacyjna BIURO, a w niej konta użytkowników:
+  - Krystyna Nowak z nazwą logowania sekretarka
+5 - Jan Kowalski z nazwą logowania elektronik
+  Ustawione hasła spełniające wymagania co do złożoności, minimalna długość 8 znaków (hasła ocenić na podstawie tabeli 2
+  arkusza egzaminacyjnego)
+  Ustawione dla całej domeny, w nowej zasadzie grupy Polityka, zasady haseł:
+6 - hasła muszą spełniać wymagania co do złożoności
+  - minimalna długość 8 znaków
+  Wykonane sprawdzenie komunikacji serwera z interfejsem LAN rutera, urządzenie odpowiada na polecenie, np. ping
+7
+  172.16.10.10
+8 Wykonane sprawdzenie komunikacji serwera z przełącznikiem, urządzenie odpowiada na polecenie, np. ping 10.0.10.5
+
+9 Wykonane sprawdzenie komunikacji serwera ze stacją roboczą, urządzenie odpowiada na polecenie, np. ping 10.0.10.11
+
+                                                                Strona 4 z 7
+                                                                                                                           stanowiska
+                                                                                                                             Numer
+Rezultat 5: Skonfigurowana stacja robocza
+
+UWAGA: Ocenie podlega konfiguracja systemu Linux, konto administrator z hasłem ZAQ!2wsx
+    Ustawione dla przewodowego interfejsu sieciowego podłączonego do przełącznika: nazwa LAN K, adres IP 10.0.10.11/24,
+1
+    brama domyślna i DNS 10.0.10.1
+2 Ustawiona nazwa komputera: stanowiskoXX, gdzie XX oznacza numer stanowiska egzaminacyjnego
+    Sprawdzony za pomocą polecenia systemowego adres MAC przewodowej karty sieciowej. W tabeli 3 zapisane adres MAC
+3
+    oraz polecenie umożliwiające jego odczytanie (np. ip a, ip link show, ifconfig, …) oraz adres jest zgodny ze stanem faktycznym
+4 Utworzony w katalogu domowym użytkownika administrator katalog ELEKTRONIKA
+
+5 Ustawione do utworzonego katalogu prawa: właściciel - pełne, grupa - odczyt, inni - wykonanie
+
+6 Ustawiony plik water.jpg jako tapeta (tło) pulpitu
+
+Rezultat 6: Utworzony plik wsadowy
+
+Uwaga: plik znajduje się na serwerze Windows
+
+1 Plik wsadowy zapisany w katalogu głównym dysku systemowego pod nazwą powitanie.bat
+
+2 Plik wsadowy ma wyłączone wyświetlanie treści poleceń np.: @echo off lub echo off
+
+3 Plik wsadowy czyści ekran, użyte polecenie cls
+  Plik wsadowy wyświetla komunikat "Podaj imie: "
+4 Użyte polecenie np. set /p imie=Podaj imię: lub echo Podaj imię
+  Po podaniu imienia przez użytkownika plik wsadowy wyświetla komunikat "Witaj xxxxx", gdzie xxxxx oznacza podane imię.
+  Skrypt jest zatrzymywany i nie zamyka się. W kodzie użyto np.:
+5 set /p imie=Podaj imię:
+  echo Witaj %imie%
+  pause
+
+
+
+
+                                                                   Strona 5 z 7
+                                                                                                                     stanowiska
+                                                                                                                       Numer
+Przebieg 1: Montaż karty sieciowej
+
+Zdający:
+
+1 montował kartę sieciową przy odłączonym zasilaniu jednostki centralnej
+
+2 podczas montażu używał opaski antystatycznej oraz narzędzi zgodnie z przepisami BHP
+
+3 po wykonaniu montażu zostawił uporządkowane stanowisko pracy
+
+
+
+
+Egzaminator …………………………………………………………………………….                                              ..........................................................................
+                                        imię i nazwisko                                                      data i czytelny podpis
+
+
+
+
+                                                                Strona 6 z 7
+Załącznik 1 - Schemat połączenia urządzeń
+
+
+
+
+                                            Strona 7 z 7
+

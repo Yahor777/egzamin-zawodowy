@@ -1,0 +1,181 @@
+ Układ graficzny © CKE 2023                                                           EGZAMIN ZAWODOWY
+                                                                                           Rok 2024
+                                                                                       ZASADY OCENIANIA
+
+                                                                              Arkusz zawiera informacje prawnie chronione
+                                                                                  do momentu rozpoczęcia egzaminu
+
+
+
+
+      Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych i lokalnych sieci komputerowych
+      Oznaczenie arkusza: INF.02-04-24.01-SG
+      Symbol kwalifikacji: INF.02
+      Numer zadania: 04
+                                                                                         PODSTAWA PROGRAMOWA
+      Wersja arkusza: SG                                                                                2019
+
+
+                                                                           Wypełnia egzaminator
+
+                                                                                                                                Numer
+                                   Kod ośrodka                         –                             Numer PESEL zdającego*   stanowiska
+
+
+
+                              Kod egzaminatora
+
+
+                                Data egzaminu
+                                                 Dzień Miesiąc   Rok
+
+
+Godzina rozpoczęcia egzaminu                            :
+
+
+
+ * w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+Egzaminatorze!
+ − Oceniaj prace zdających rzetelnie i z zaangażowaniem. Dokumentuj wyniki oceny.
+
+ − Stosuj przyjęte zasady oceniania w sposób obiektywny.
+
+ − Jeżeli zdający, wykonując zadanie egzaminacyjne, uzyskuje inne rezultaty albo pożądane rezultaty uzyskuje w inny sposób niż uwzględniony
+   w zasadach oceniania lub przedstawia nietypowe rozwiązanie, ale zgodnie ze sztuką w zawodzie, to nadal oceniaj zgodnie z kryteriami
+   zawartymi w zasadach oceniania. Informacje o tym, że zasady oceniania nie przewidują zaistniałej sytuacji, przekaż niezwłocznie w formie
+   pisemnej notatki do Przewodniczącego Zespołu Egzaminacyjnego z prośbą o przekazanie jej do Okręgowej Komisji Egzaminacyjnej. Notatka
+   może być sporządzona odręcznie w trybie roboczym.
+ − Informuj przewodniczącego zespołu nadzorującego o wszystkich nieprawidłowościach zaistniałych w trakcie egzaminu, w tym w szczególności
+   o naruszeniach przepisów bezpieczeństwa i higieny pracy i o podejrzeniach niesamodzielności w wykonaniu zadania przez zdającego.
+
+
+
+
+                                                             Strona 2 z 6
+                                                                                                                     stanowiska
+                                                                                                                       Numer
+                                                                                                                                  Egzaminator wpisuje T,
+                                                                                                                                   jeżeli zdający spełnił
+                                       Elementy podlegające ocenie/kryteria oceny                                                 kryterium albo N, jeżeli
+                                                                                                                                         nie spełnił
+Rezultat 1: Wykonane okablowanie sieciowe oraz połączenie fizyczne urządzeń
+UWAGA: Oceny kryteriów 1.1 ÷ 1.5 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do testu montażu okablowania.
+Przebieg montażu okablowania należy ocenić zgodnie z kryteriami zapisanymi w Przebiegu 1
+1 Wszystkie żyły kabla podłączono do panelu krosowego wg sekwencji T568A
+    Przewody podłączone do styków panelu krosowego nie wystają więcej niż 25 mm poza płaszcz, a pary nie są rozkręcone na
+2
+    długości większej niż 13 mm
+3 Wtyk 8P8C zaciśnięto zgodnie z sekwencją T568A
+
+4 Wtyk 8P8C zaciśnięto poprawnie - zatrzask na izolacji zewnętrznej kabla U/UTP
+    Przeprowadzono za pomocą testera okablowania test wykonanego połączenia panel krosowy – wtyk w obecności
+5
+    egzaminatora oraz test potwierdził poprawność jego wykonania
+6 Urządzenia sieciowe, stację roboczą oraz serwer podłączono zgodnie ze schematem zamieszczonym w załączniku 1
+
+7 Panel krosowy zamontowano stabilnie w szafie lub stelażu RACK
+Rezultat 2: Diagnostyka i montaż podzespołów
+UWAGA: Kryterium R.2.1 należy ocenić po informacji Przewodniczącego ZN o wykonaniu montażu zapasowej karty graficznej. W kryteriach R.2.2 ÷
+R.2.7 ocenie podlega diagnostyka w systemie Windows na stacji roboczej. Testy należy porównać ze zrzutami zapisanymi w folderze TESTY na
+pulpicie użytkownika Administrator Kryteria w R.2 są spełnione, gdy zapisane parametry są zgodne ze zrzutami. Kryterium należy również uznać za
+spełnione, jeśli zdający zapisze "brak danych" w przypadku braku możliwości identyfikacji parametru przez system
+   Zdemontowano kartę graficzną oraz zamontowano zapasową kartę graficzną na stacji roboczej (w przypadku karty
+ 1
+   zintegrowanej z płytą główną - wyłączono ją w BIOS lub Menedżerze urządzeń)
+2 W tabeli 1 zapisano wartość parametru Technologia (Technology) dla obu kart graficznych
+
+3 W tabeli 1 zapisano wartość parametru Identyfikator urządzenia (Device ID) dla obu kart graficznych
+
+4 W tabeli 1 zapisano wartość parametru Typ pamięci (Memory Type) dla obu kart graficznych
+
+5 W tabeli 1 zapisano wartość parametru Przepustowość (Bandwidth) dla obu kart graficznych
+
+6 W tabeli 1 zapisano wartość parametru Data sterownika (Driver Date) dla obu kart graficznych
+
+7 W tabeli 1 zapisano wartość parametru Taktowanie procesora graficznego (GPU Clock) dla obu kart graficznych
+                                                                 Strona 3 z 6
+                                                                                                                   stanowiska
+                                                                                                                     Numer
+Rezultat 3: Skonfigurowane urządzenie sieciowe
+UWAGA: Oceny kryteriów R.3 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do prezentacji konfiguracji przełącznika
+oraz rutera
+1 Ustawiono adres rutera IP 172.31.128.100/24
+2 Wyłączono na ruterze serwer DHCP
+3 Ustawiono dla przełącznika adres IP 10.20.20.1
+4 Utworzono VLAN o ID = 201
+5 Utworzono VLAN o ID = 202
+6 Porty 1 i 3 przełącznika przypisano do sieci VLAN o ID = 201 bez tagowania
+7 Porty 2 i 4 przełącznika przypisano do sieci VLAN o ID = 202 bez tagowania
+Rezultat 4: Skonfigurowany serwer
+UWAGA: Ocenie podlega konfiguracja systemu Windows, do sprawdzenia rezultatu należy wykorzystać konto Administrator z hasłem ZAQ!2wsx
+Oceny rezultatów 4.8 ÷ 4.10 należy dokonać po zgłoszeniu od Przewodniczącego ZN o gotowości zdającego do oceny testu komunikacji
+   Ustawiono nazwę interfejsu sieciowego podłączonego do 3 portu przełącznika na RUTER oraz interfejsu sieciowego
+ 1
+   podłączonego do 4 portu przełącznika na KOMPUTER
+2 Dla połączenia sieciowego KOMPUTER ustawiono adres IP 10.20.20.2 z maską 255.255.255.0, serwer DNS 127.0.0.1
+  Dla połączenia sieciowego RUTER ustawiono adres IP 172.31.128.X z maską 255.255.255.0, gdzie X to numer stanowiska
+3
+  egzaminacyjnego, serwer DNS 127.0.0.1
+  Utworzono domenę o nazwie firma.local oraz w domenie utworzono jednostkę organizacyjną Administracja a w niej
+4
+  utworzono konto użytkownika o nazwie logowania: jnowak, imię i nazwisko: Jan Nowak, chronione hasłem
+  Na serwerze dla dysku systemowego włączono przydziały i odmówiono miejsca na dysku użytkownikom przekraczającym limit
+5
+  przydziału
+6 Skonfigurowano przydziały z ograniczeniem miejsca na poziomie 1 GB i ustawiono poziom ostrzeżeń na 900 MB
+
+7 Dodano wpis przydziału nieograniczający użycia dysku dla utworzonego konta
+  Sprawdzono komunikację serwera z ruterem za pomocą polecenia systemowego oraz uzyskano odpowiedź dla polecenia np.
+8
+  ping 172.31.128.100
+  Sprawdzono komunikację serwera z przełącznikiem za pomocą polecenia systemowego oraz uzyskano odpowiedź dla
+9
+  polecenia np. ping 10.20.20.1
+10 Sprawdzono komunikację serwera ze stacją roboczą. Uzyskano odpowiedź dla polecenia np. ping 10.20.20.3
+                                                                Strona 4 z 6
+                                                                                                                              stanowiska
+                                                                                                                                Numer
+Rezultat 5: Skonfigurowana stacja robocza
+
+UWAGA: Ocenie podlega konfiguracja systemu Windows, do sprawdzenia rezultatu należy wykorzystać konto Administrator z hasłem ZAQ!2wsx
+
+1 Na stacji roboczej połączenie sieciowe ETH ma ustawiony adres IP 10.20.20.3 z maską 255.255.255.0
+
+2 Na stacji roboczej połączenie sieciowe ma ustawiony adres serwera DNS na 10.20.20.2
+
+3 Zmieniono nazwę komputera na 00XSTACJA gdzie X oznacza numer stanowiska egzaminacyjnego
+    Zabroniono użytkownikom dodawania drukarek, co udokumentowano w pliku drukarki.png zapisanym na Pulpicie
+4
+    użytkownika Administrator
+Przebieg 1: Wykonanie okablowania sieciowego oraz montażu podzespołów
+
+Zdający:
+
+1 zdejmował izolację z kabla U/UTP przy zastosowaniu odpowiednich narzędzi, zgodnie z zasadami BHP
+  stosował narzędzia podczas montażu kabla U/UTP do panelu krosowego oraz wtyku zgodnie z ich przeznaczeniem oraz
+2
+  zasadami BHP
+  wykonywał demontaż i montaż kart graficznych z odłączonym zasilaniem jednostki centralnej, a podłączenie zasilania
+3
+  nastąpiło dopiero po założeniu obudowy komputera
+4 używał opaski antystatycznej podczas montażu i demontażu karty graficznej
+
+5 zostawił uporządkowane stanowisko po zakończeniu wszystkich prac
+
+
+
+
+Egzaminator …………………………………………………………………………….                                                       ..........................................................................
+                                        imię i nazwisko                                                               data i czytelny podpis
+
+
+
+
+                                                               Strona 5 z 6
+Załącznik 1. Schemat połączenia urządzeń
+
+
+
+
+                                           Strona 6 z 6
+

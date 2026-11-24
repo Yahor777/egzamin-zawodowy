@@ -1,0 +1,185 @@
+                                                                             Arkusz zawiera informacje
+                                                                          prawnie chronione do momentu
+                                                                               rozpoczęcia egzaminu
+
+
+
+Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych
+                    i lokalnych sieci komputerowych
+Symbol kwalifikacji: INF.02
+Numer zadania: 06
+Wersja arkusza: SG
+
+                                       Wypełnia zdający
+                                                                             Miejsce na naklejkę z numerem
+Numer PESEL zdającego*                                                         PESEL i z kodem ośrodka
+
+
+
+
+Czas trwania egzaminu: 150 minut.                                                       INF.02-06-24.06-SG
+
+EGZAMIN ZAWODOWY
+                                                              PODSTAWA PROGRAMOWA
+Rok 2024
+                                                                      2019
+CZĘŚĆ PRAKTYCZNA
+
+
+Instrukcja dla zdającego
+    1.  Na pierwszej stronie arkusza egzaminacyjnego wpisz w oznaczonym miejscu swój numer PESEL
+        i naklej naklejkę z numerem PESEL i z kodem ośrodka.
+    2. Na KARCIE OCENY w oznaczonym miejscu przyklej naklejkę z numerem PESEL oraz wpisz:
+        − swój numer PESEL*,
+        − oznaczenie kwalifikacji,
+        − numer zadania,
+        − numer stanowiska.
+    3. KARTĘ OCENY przekaż zespołowi nadzorującemu.
+    4. Sprawdź, czy arkusz egzaminacyjny zawiera 5 stron i nie zawiera błędów. Ewentualny brak stron lub
+        inne usterki zgłoś przez podniesienie ręki przewodniczącemu zespołu nadzorującego.
+    5. Zapoznaj się z treścią zadania oraz stanowiskiem egzaminacyjnym. Masz na to 10 minut. Czas ten
+        nie jest wliczany do czasu trwania egzaminu.
+    6. Czas rozpoczęcia i zakończenia pracy zapisze w widocznym miejscu przewodniczący zespołu
+        nadzorującego.
+    7. Wykonaj samodzielnie zadanie egzaminacyjne. Przestrzegaj zasad bezpieczeństwa i organizacji
+        pracy.
+    8. Jeżeli w zadaniu egzaminacyjnym występuje polecenie „zgłoś gotowość do oceny przez podniesienie
+        ręki”, to zastosuj się do polecenia i poczekaj na decyzję przewodniczącego zespołu nadzorującego.
+    9. Po zakończeniu wykonania zadania pozostaw rezultaty oraz arkusz egzaminacyjny na swoim
+        stanowisku lub w miejscu wskazanym przez przewodniczącego zespołu nadzorującego.
+    10. Po uzyskaniu zgody zespołu nadzorującego możesz opuścić salę/miejsce przeprowadzania egzaminu.
+
+                                                                                               Powodzenia!
+* w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+
+Układ graficzny
+© CKE 2023
+Zadanie egzaminacyjne
+
+Wykorzystując dostępne narzędzia znajdujące się na stanowisku egzaminacyjnym, wykonaj montaż
+okablowania sieciowego, konfigurację urządzeń sieciowych, podłączenie urządzeń sieciowych oraz
+konfigurację systemów zainstalowanych na dysku twardym serwera oraz stacji roboczej.
+W systemie Linux wykorzystaj konto administrator z hasłem ZAQ!2wsx (konto z prawem podniesienia
+uprawnień do root z hasłem ZAQ!2wsx ).
+W systemie Windows wykorzystaj konto Administrator z hasłem ZAQ!2wsx
+
+ 1.   Wykonaj montaż okablowania sieciowego:
+      − podłącz kabel U/UTP do modułu keystone gniazda naściennego według sekwencji T586B, zmontuj
+        gniazdo naścienne z jednym modułem keystone
+      − drugi koniec kabla U/UTP podłącz do panelu krosowego według sekwencji T568B
+      − zamontuj panel krosowy w stelażu lub szafie RACK
+      − zastosuj odpowiedni typ kabla.
+
+UWAGA: Po wykonaniu montażu okablowania zgłoś Przewodniczącemu ZN – przez podniesienie ręki –
+gotowość do przeprowadzenia testu. W obecności egzaminatora sprawdź za pomocą testera poprawność
+wykonanego połączenia.
+
+ 2.   Skonfiguruj ruter według następujących zaleceń:
+      −   adres IP interfejsu WAN: 88.88.88.1/28
+      −   adres IP bramy domyślnej dla interfejsu WAN: 88.88.88.2
+      −   adres IP serwera nazw dla interfejsu WAN: 8.8.8.8 oraz 8.8.4.4, jeśli jest wymagany
+      −   adres IP interfejsu LAN: 192.168.0.1/24
+      −   włączony serwer DHCP
+      − zakres dzierżawy DHCP 192.168.0.11 ÷ 192.168.0.100
+      − rezerwacja adresu IP 192.168.0.51 dla adresu MAC bezprzewodowej karty sieciowej stacji roboczej
+      − włączona sieć bezprzewodowa o nazwie: EGZAMIN_X, uwierzytelnieniu tylko WPA2 PSK
+        z kluczem: Egzamin_zawodowy! i szyfrowaniu AES lub CCMP, gdzie X to numer stanowiska
+        egzaminacyjnego.
+Ruter pracuje na ustawieniach fabrycznych zgodnie z dokumentacją, która jest dostępna w folderze RUTER
+na nośniku opisanym DOKUMENTACJA/PROGRAMY. Jeżeli ruter wymaga zmiany hasła, ustaw je zgodnie
+z wymogami urządzenia.
+
+UWAGA: Po wykonaniu konfiguracji zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+oceny ustawień rutera.
+
+ 3.   Skonfiguruj przełącznik według następujących zaleceń:
+      − adres IP: 192.168.0.2/24
+      − brama domyślna: IP rutera dla interfejsu LAN, jeśli jest wymagana.
+Przełącznik pracuje na ustawieniach fabrycznych zgodnie z dokumentacją, która jest dostępna w folderze
+PRZEŁĄCZNIK na nośniku opisanym DOKUMENTACJA/PROGRAMY. Jeżeli przełącznik wymaga zmiany
+hasła, ustaw je zgodnie z wymogami urządzenia.
+
+UWAGA: Po wykonaniu konfiguracji zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+oceny ustawień przełącznika.
+                                                Strona 2 z 5
+ 4.   Za pomocą kabli połączeniowych znajdujących się na stanowisku egzaminacyjnym połącz urządzenia
+      zgodnie ze schematem.
+
+
+
+
+                                    Schemat połączenia urządzeń
+
+ 5.   Skonfiguruj interfejsy sieciowe serwera z systemem Linux oraz stacji roboczej z systemem Windows:
+      − skonfiguruj interfejs sieciowy serwera podłączony do portu 1 przełącznika
+         − adres IP: 192.168.0.3/24
+         − brama domyślna oraz serwer DNS: adres IP interfejsu LAN rutera
+      − skonfiguruj bezprzewodowy interfejs sieciowy stacji roboczej:
+         − nazwa połączenia: EGZAMIN-X, gdzie x to numer stanowiska egzaminacyjnego
+         − podłączenie pod utworzoną sieć bezprzewodową
+         − adres IP: pobierany automatycznie
+      − wyłącz przewodowy interfejs sieciowy stacji roboczej
+      − na stacji roboczej dodaj regułę o nazwie test do zapory sieciowej umożliwiającą sprawdzanie
+        komunikacji sieciowej między urządzeniami
+      − za pomocą poleceń systemowych wykonaj test komunikacji serwera z ruterem, przełącznikiem oraz
+        stacją roboczą.
+
+UWAGA: Po wykonaniu testu komunikacji zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość
+do przeprowadzenia ponownego sprawdzenia komunikacji. Sprawdzenie wykonaj w obecności
+egzaminatora. Na stacji roboczej wyświetl automatycznie przydzielony adres IP.
+
+ 6.   Skonfiguruj serwer z zainstalowanym systemem Linux:
+      − utwórz użytkownika o nazwie: jkowalski, z opisem: Jan Kowalski i katalogiem domowym
+      − ustaw hasło dla użytkownika jkowalski na XSW@3edc
+      − utwórz grupę o nazwie pracownicy i przypisz do niej użytkownika jkowalski
+      − utwórz katalog /dane
+      − ustaw właściciela utworzonego katalogu na jkowalski i grupę pracownicy
+      − ustaw prawa do utworzonego katalogu dla właściciela: odczyt, zapis, wykonywanie; grupy: odczyt,
+        wykonywanie; pozostali: brak praw
+      − ustaw automatycznie włączanie usługi SSH po starcie systemu
+      − skonfiguruj usługę SSH w taki sposób, aby umożliwić użytkownikowi jkowalski zdalne logowanie.
+                                              Strona 3 z 5
+ 7.   Wykonaj diagnozę sieci i skonfiguruj stację roboczą z zainstalowanym systemem Windows:
+      − za pomocą programu Zenmap wykonaj skanowanie ping scan podsieci lokalnej. Program jest
+        dostępny na nośniku opisanym DOKUMENTACJA/PROGRAMY
+      − dla wykrytych hostów wykonaj skanowanie quick scan plus
+      − przeprowadź analizę wykonanego skanowania, sporządź i wypełnij w edytorze tekstu tabelę zgodną
+        z Tabelą 1. Wzór specyfikacji diagnozy sieci. Utworzony plik zapisz pod nazwą specyfikacja na
+        nośniku USB opisanym Egzamin-x, gdzie x oznacza numer stanowiska
+      − utwórz użytkownika o nazwie: jkowalski, pełnej nazwie: Jan Kowalski i haśle XSW@3edc
+      − zaloguj się na użytkownika jkowalski
+      − za pomocą wbudowanego klienta SSH lub programu PuTTY, dostępnego na nośniku opisanym
+        DOKUMENTACJA/PROGRAMY, połącz się z serwerem i zaloguj na użytkownika jkowalski
+
+UWAGA: Po zalogowaniu klientem SSH zgłoś Przewodniczącemu ZN – przez podniesienie ręki – wykonanie
+tego działania.
+
+UWAGA: Po zakończeniu prac nie wylogowuj się i nie wyłączaj komputerów oraz urządzeń sieciowych
+znajdujących się na Twoim stanowisku egzaminacyjnym.
+
+UWAGA: Zawartość nośnika USB, wykorzystywanego podczas egzaminu do zapisu dokumentów, jest
+usuwana po egzaminie i nie stanowi dokumentacji egzaminacyjnej przekazywanej wraz z arkuszem do OKE.
+
+Czas przeznaczony na wykonanie zadania wynosi 150 minut.
+
+Ocenie podlegać będzie 5 rezultatów:
+ − montaż okablowania sieciowego oraz podłączenie urządzeń,
+  − skonfigurowane urządzenia sieciowe,
+  − skonfigurowane interfejsy sieciowe,
+  − skonfigurowany serwer,
+  − wykonana diagnoza sieci i skonfigurowana stacja robocza
+oraz
+     przebieg montażu okablowania sieciowego
+
+
+
+
+                                             Strona 4 z 5
+                           Tabela 1. Wzór specyfikacji diagnozy sieci
+Adres IP wykrytego hosta              Otwarte porty TCP               Wykryty system operacyjny
+
+
+
+
+                                          Strona 5 z 5
+

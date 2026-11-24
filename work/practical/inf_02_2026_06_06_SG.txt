@@ -1,0 +1,251 @@
+                                                                             Arkusz zawiera informacje
+                                                                          prawnie chronione do momentu
+                                                                               rozpoczęcia egzaminu
+
+
+
+Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych
+                    i lokalnych sieci komputerowych
+Symbol kwalifikacji: INF.02
+Numer zadania: 06
+Wersja arkusza: SG
+
+                                        Wypełnia zdający
+
+Numer PESEL zdającego*                                                        Miejsce na naklejkę z numerem
+                                                                                PESEL i z kodem ośrodka
+
+         Numer stanowiska
+
+
+
+
+Czas trwania egzaminu: 150 minut                                                          INF.02-06-26.06-SG
+
+EGZAMIN ZAWODOWY
+                                                              PODSTAWA PROGRAMOWA
+Rok 2026
+                                                                      2019
+CZĘŚĆ PRAKTYCZNA
+
+Instrukcja dla zdającego
+
+    1.    Na pierwszej stronie arkusza egzaminacyjnego wpisz w oznaczonym miejscu swój numer PESEL*,
+          numer stanowiska i naklej naklejkę** z numerem PESEL i z kodem ośrodka.
+    2.    Sprawdź, czy arkusz egzaminacyjny zawiera 6 stron i nie zawiera błędów. Ewentualny brak stron
+          lub inne usterki zgłoś przez podniesienie ręki przewodniczącemu zespołu nadzorującego.
+    3.    Zapoznaj się z treścią zadania oraz stanowiskiem egzaminacyjnym. Masz na to 10 minut. Czas ten nie
+          jest wliczany do czasu trwania egzaminu.
+    4.    Czas rozpoczęcia i zakończenia pracy zapisze w widocznym miejscu przewodniczący zespołu
+          nadzorującego.
+    5.    Wykonaj samodzielnie zadanie egzaminacyjne. Przestrzegaj zasad bezpieczeństwa i organizacji
+          pracy.
+    6.    Jeżeli w zadaniu egzaminacyjnym występuje polecenie „zgłoś gotowość do oceny przez podniesienie
+          ręki”, to zastosuj się do polecenia i poczekaj na decyzję przewodniczącego zespołu nadzorującego.
+    7.    Po zakończeniu wykonania zadania pozostaw rezultaty jego wykonania oraz arkusz egzaminacyjny
+          na swoim stanowisku lub w miejscu wskazanym przez przewodniczącego zespołu nadzorującego.
+    8.    Po uzyskaniu zgody zespołu nadzorującego możesz opuścić salę/miejsce przeprowadzania egzaminu.
+
+                                                                                                Powodzenia!
+
+* w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+** w przypadku otrzymania naklejki
+
+Układ graficzny
+© CKE 2025
+Zadanie egzaminacyjne
+
+Korzystając z dostępnych narzędzi, oprogramowania oraz elementów znajdujących się na stanowisku
+egzaminacyjnym, wykonaj czynności zapisane w arkuszu egzaminacyjnym.
+W systemach Windows wykorzystaj konto Administrator z hasłem ZAQ!2wsx
+
+Ruter i przełącznik pracują na ustawieniach fabrycznych zgodnie z dokumentacją, która jest dostępna na
+nośniku opisanym DOKUMENTACJA/PROGRAMY. Jeżeli urządzenie wymaga zmiany hasła, ustaw je
+zgodnie z wymogami urządzenia.
+
+1. Wykonaj montaż okablowania sieciowego:
+   − podłącz kabel U/UTP do modułu Keystone gniazda naściennego według sekwencji T586B
+   − zmontuj gniazdo naścienne z jednym modułem Keystone
+   − drugi koniec kabla U/UTP podłącz do portu panelu krosowego oznaczonego numerem 4 według
+     sekwencji T568B
+   − zastosuj odpowiedni typ kabla
+   − w szafie lub stelażu RACK zamontuj: panel krosowy, organizer kabli oraz przełącznik 2. Nadmiar kabli
+     zamocuj w organizerze kabli.
+
+UWAGA: Po wykonaniu montażu zgłoś Przewodniczącemu ZN – przez podniesienie ręki –
+gotowość do przeprowadzenia testu. W obecności egzaminatora sprawdź za pomocą testera poprawność
+wykonanego okablowania.
+
+   − za pomocą kabli połączeniowych znajdujących się na stanowisku egzaminacyjnym połącz port 4 panelu
+     krosowego z portem 1 przełącznika 2.
+
+2. Na stacji roboczej wykonaj montaż zapasowej karty sieciowej oraz dokonaj diagnostyki w systemie
+    Windows:
+   − zamontuj zapasową kartę sieciową
+
+UWAGA: Po wykonaniu czynności montażowych zgłoś Przewodniczącemu ZN – przez podniesienie ręki –
+gotowość do oceny poprawności montażu.
+
+   − zainstaluj sterowniki do zapasowej karty sieciowej (jeśli są wymagane)
+   − za pomocą programu PCI-Z oraz narzędzi systemowych przeprowadź identyfikację oraz ocenę
+     parametrów obu przewodowych kart sieciowych, ujętych w Tabeli 1. Parametry kart sieciowych stacji
+     roboczej . Program PCI-Z znajduje się na nośniku DOKUMENTACJA/PROGRAMY
+   − odczytane parametry zapisz w postaci zrzutów ekranowych, w folderze IDENTYFIKACJA na nośniku
+     USB oznaczonym nazwą Egzamin-x, gdzie x to numer stanowiska egzaminacyjnego
+   − odczytane parametry zapisz w arkuszu egzaminacyjnym w tabeli 1. W przypadku braku możliwości
+     identyfikacji wymaganych parametrów przez system należy zapisać: brak danych
+   − dokonaj porównania kart sieciowych ze względu na prędkość transmisji danych. W ostatnim wierszu
+     tabeli 1 zapisz wybór karty sieciowej o większej maksymalnej prędkości transmisji danych wraz z
+     uzasadnieniem.
+
+
+
+
+                                              Strona 2 z 6
+3. Skonfiguruj ruter zgodnie z następującymi zaleceniami:
+
+UWAGA: Jeżeli konfiguracja VLAN wymaga nadania nazwy, zastosuj nazwę VLANX, gdzie X oznacza numer
+ID, np.: dla ID = 1 nazwa VLAN1, lub inną nazwę, zgodnie z wymogami urządzenia.
+
+   − włączona obsługa VLAN 802.1Q
+   − interfejs VLAN o ID = 10 z przypisanym portem 2 rutera z tagowaniem (tryb trunk)
+   − adres IP dla interfejsu VLAN o ID = 10: 192.168.0.1/24
+   − uruchomiony serwer DHCP dla interfejsu VLAN o ID = 10, z ustawieniami:
+      − zakres 192.168.0.10 ÷ 192.168.0.100
+       −   DNS: 8.8.8.8 oraz 1.1.1.1
+       −   czas dzierżawy 45 minut
+   − interfejs VLAN o ID = 20 z przypisanym portem 2 rutera z tagowaniem (tryb trunk)
+   − adres IP dla interfejsu VLAN o ID = 20: 172.16.20.1/24
+   − uruchomiony serwer DHCP dla interfejsu VLAN o ID = 20, z ustawieniami:
+       −   zakres 172.16.20.111 ÷ 172.16.20.220
+       −   DNS: 172.16.20.100
+       −   czas dzierżawy 2 godziny
+       −  zarezerwowany adres IP dla interfejsu sieciowego stacji roboczej podłączonego do portu 3
+          przełącznika: 172.16.20.200
+   − interfejs VLAN o ID = 30 z przypisanym portem 2 z tagowaniem (tryb trunk)
+   − adres IP dla interfejsu VLAN o ID = 30: 172.16.30.1/24
+   − włącz ruting miedzy sieciami VLAN, jeżeli nie jest domyślnie włączony
+
+UWAGA: Po wykonaniu konfiguracji zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+oceny ustawień rutera.
+
+4. Skonfiguruj przełącznik 1 zgodnie z następującymi zaleceniami:
+   − adres IP: 172.16.20.50/24 (dla przełącznika L3 adres IP przypisany do VLAN o ID = 20)
+   − brama domyślna: 172.16.20.1
+   − obsługa VLAN 802.1Q
+   − VLAN o ID = 10, przypisane: port 1 z tagowaniem (tryb trunk) oraz port 5 bez tagowania (tryb dostępu)
+   − VLAN o ID = 20, przypisane: port 1 z tagowaniem (tryb trunk) oraz porty 2 i 3 bez tagowania (tryb
+     dostępu)
+   − VLAN o ID = 30, przypisane: port 1 z tagowaniem (tryb trunk) oraz port 4 bez tagowania (tryb dostępu)
+
+UWAGA: Po wykonaniu konfiguracji zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+oceny ustawień przełączników.
+
+5. Za pomocą kabli połączeniowych znajdujących się na stanowisku egzaminacyjnym połącz urządzenia
+   zgodnie ze schematem.
+
+
+
+
+                                               Strona 3 z 6
+                                       Schemat połączenia urządzeń
+
+6. Skonfiguruj serwer z systemem operacyjnym Windows:
+   − konfiguracja karty sieciowej podłączonej do portu 2 przełącznika
+     ‒ nazwa interfejsu: LAN1
+     ‒ adres IP: 172.16.20.100/24
+     ‒ brama domyślna: 172.16.20.1
+     ‒ serwer DNS: localhost
+   − druga karta sieciowa wyłączona
+   − promuj serwer do roli kontrolera domeny
+   − utwórz nową domenę w nowym lesie o nazwie biuro.local hasło dla konta Administrator trybu
+     przywracania usług katalogowych: ZAQ!2wsx
+   − w domenie biuro.local utwórz jednostkę organizacyjną Pracownicy
+   − w jednostce organizacyjnej Pracownicy utwórz konto użytkownika:
+      ‒ imię i nazwisko: Tomasz Nowak
+      ‒ nazwa logowania: tnowak
+      ‒ hasło docelowe: ZAQ!2wsx
+      ‒ ustawienia: użytkownik nie może zmienić hasła oraz hasło nigdy nie wygasa
+   − dla jednostki organizacyjnej Pracownicy utwórz nowy obiekt zasad grupy o nazwie Egzamin
+     z ustawieniami:
+      ‒ brak możliwości zablokowania komputera oraz wylogowania się po naciśnięciu klawiszy
+         Ctrl+Alt+Del
+      ‒ brak możliwości instalowania plików pakietu Instalatora Windows na stacji roboczej. Do wykonania
+         zadania użyj pliku 7-Zip.msi z nośnika DOKUMENTACJA/PROGRAMY
+
+
+
+
+                                               Strona 4 z 6
+7. Na stacji roboczej skonfiguruj system Windows:
+   − skonfiguruj przewodowy interfejs sieciowy stacji roboczej podłączony do portu 3 przełącznika:
+      ‒ nazwa interfejsu: LAN3
+      ‒ adres IP i brama domyślna: uzyskiwane automatycznie
+      ‒ DNS: uzyskiwany automatycznie
+   − skonfiguruj przewodowy interfejs sieciowy stacji roboczej podłączony do portu 5 przełącznika:
+      ‒ nazwa interfejsu: LAN4
+      ‒ adres IP i brama domyślna: uzyskiwane automatycznie
+      ‒ DNS: uzyskiwany automatycznie
+  − podłącz stację roboczą do domeny biuro.local
+  −     na serwerze przenieś obiekt komputera stacji roboczej do jednostki organizacyjnej Pracownicy
+  −     odśwież zasady grupy
+
+
+ 8. Na stacji roboczej za pomocą poleceń systemowych wykonaj test komunikacji stacji roboczej
+      z interfejsem LAN1 serwera, portem 2 rutera. W razie potrzeby zmieńustawienia zapory sieciowej.
+      Wyświetl na stacji roboczej oba automatycznie nadane adresy interfejsów sieciowych
+
+
+UWAGA: Po wykonaniu testów połączenia zgłoś Przewodniczącemu ZN – przez podniesienie ręki –
+gotowość do przeprowadzenia ponownego sprawdzenia komunikacji. Sprawdzenie wykonaj w obecności
+egzaminatora. Na stacji roboczej wyświetl automatycznie uzyskane adresy IP.
+
+UWAGA: Po zakończeniu prac nie wylogowuj się oraz nie wyłączaj komputerów i urządzeń sieciowych
+znajdujących się na Twoim stanowisku egzaminacyjnym.
+
+Czas na wykonanie zadania wynosi 150 minut.
+
+Ocenie będzie podlegać 5 rezultatów:
+
+  −     wykonane okablowanie sieciowe oraz połączenie fizyczne urządzeń,
+  −     montaż podzespołu oraz diagnostyka kart sieciowych,
+  −     skonfigurowane urządzenia sieciowe,
+  −     skonfigurowany serwer,
+  −     skonfigurowana stacja robocza
+
+oraz
+przebieg wykonywania okablowania sieciowego.
+
+Uwaga: Zawartość dysku USB, wykorzystywanego podczas egzaminu do zapisu zrzutów ekranowych lub
+dokumentów, jest usuwana po egzaminie i nie stanowi dokumentacji egzaminacyjnej przekazywanej wraz
+z arkuszem do OKE.
+
+
+
+
+                                                Strona 5 z 6
+Tabela 1. Parametry kart sieciowych stacji roboczej
+
+                                         Karta sieciowa 1   Karta sieciowa 2
+  Lp.           Parametry
+                                         (zainstalowana)      (zapasowa)
+
+  1.    Producent
+
+  2.    Adres fizyczny
+
+  3.    Model
+
+        Maksymalna prędkość
+  4.
+        transmisji danych
+
+
+        Wybór karty sieciowej
+        wraz z uzasadnieniem
+
+
+
+
+                                            Strona 6 z 6
+

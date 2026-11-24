@@ -6,8 +6,11 @@ import { Exam } from './pages/Exam'
 import { Home } from './pages/Home'
 import { Learn } from './pages/Learn'
 import { Settings } from './pages/Settings'
-import { Generator, Tools } from './pages/Tools'
-import { Topics } from './pages/Topics'
+import { Generator } from './pages/Tools'
+import { Theory, Note } from './pages/Theory'
+import { Practice, Guide } from './pages/Practice'
+import { Glossary } from './pages/Glossary'
+import { Commands } from './pages/Commands'
 import { go, useRoute } from './router'
 
 function Page({ route }: { route: string }) {
@@ -24,11 +27,18 @@ function Page({ route }: { route: string }) {
     case 'exam':
       return <Exam />
     case 'topics':
-      return <Topics />
     case 'tools':
-      return <Tools />
+      return <Theory />
+    case 'notes':
+      return <Note key={b} id={b} />
+    case 'practice':
+      return b ? <Guide key={b} slug={b} /> : <Practice />
+    case 'glossary':
+      return <Glossary />
+    case 'commands':
+      return <Commands />
     case 'gen':
-      return b in GENERATORS ? <Generator key={b} id={b as GenId} /> : <Tools />
+      return b in GENERATORS ? <Generator key={b} id={b as GenId} /> : <Theory />
     case 'settings':
       return <Settings />
     default:
@@ -42,13 +52,16 @@ export default function App() {
   const lang = useLang()
   const nav: [string, string, string][] = [
     ['/', 'home', t('home')],
-    ['/learn', 'learn', t('learn')],
+    ['/topics', 'learn', t('theory')],
     ['/exam', 'exam', t('exam')],
-    ['/topics', 'topics', t('topics')],
-    ['/tools', 'calc', t('tools')],
+    ['/practice', 'wrench', t('practice')],
   ]
-  const active = (p: string) =>
-    p === '/' ? route === '/' : route.startsWith(p) || (p === '/tools' && route.startsWith('/gen')) || (p === '/learn' && (route.startsWith('/mistakes') || route.startsWith('/starred')))
+  const group: Record<string, string[]> = {
+    '/topics': ['/topics', '/learn', '/notes', '/gen', '/glossary', '/mistakes', '/starred', '/tools'],
+    '/practice': ['/practice', '/commands'],
+    '/exam': ['/exam'],
+  }
+  const active = (p: string) => (p === '/' ? route === '/' : (group[p] ?? [p]).some((g) => route.startsWith(g)))
   return (
     <div className="shell">
       <aside className="side">

@@ -1,0 +1,220 @@
+ Układ graficzny © CKE 2023                                                           EGZAMIN ZAWODOWY
+                                                                                           Rok 2024
+                                                                                       ZASADY OCENIANIA
+
+                                                                              Arkusz zawiera informacje prawnie chronione
+                                                                                  do momentu rozpoczęcia egzaminu
+
+
+
+
+      Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych i lokalnych sieci komputerowych
+      Oznaczenie arkusza: INF.02-06-24.06-SG
+      Symbol kwalifikacji: INF.02
+      Numer zadania: 06
+                                                                                         PODSTAWA PROGRAMOWA
+      Wersja arkusza: SG                                                                                2019
+
+
+                                                                           Wypełnia egzaminator
+
+                                                                                                                                Numer
+                                   Kod ośrodka                         –                             Numer PESEL zdającego*   stanowiska
+
+
+
+                              Kod egzaminatora
+
+
+                                Data egzaminu
+                                                 Dzień Miesiąc   Rok
+
+
+Godzina rozpoczęcia egzaminu                            :
+
+
+
+ * w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+Egzaminatorze!
+ − Oceniaj prace zdających rzetelnie i z zaangażowaniem. Dokumentuj wyniki oceny.
+
+ − Stosuj przyjęte zasady oceniania w sposób obiektywny.
+
+ − Jeżeli zdający, wykonując zadanie egzaminacyjne, uzyskuje inne rezultaty albo pożądane rezultaty uzyskuje w inny sposób niż uwzględniony
+   w zasadach oceniania lub przedstawia nietypowe rozwiązanie, ale zgodnie ze sztuką w zawodzie, to nadal oceniaj zgodnie z kryteriami
+   zawartymi w zasadach oceniania. Informacje o tym, że zasady oceniania nie przewidują zaistniałej sytuacji, przekaż niezwłocznie w formie
+   pisemnej notatki do Przewodniczącego Zespołu Egzaminacyjnego z prośbą o przekazanie jej do Okręgowej Komisji Egzaminacyjnej. Notatka
+   może być sporządzona odręcznie w trybie roboczym.
+ − Informuj przewodniczącego zespołu nadzorującego o wszystkich nieprawidłowościach zaistniałych w trakcie egzaminu, w tym w szczególności
+   o naruszeniach przepisów bezpieczeństwa i higieny pracy i o podejrzeniach niesamodzielności w wykonaniu zadania przez zdającego.
+
+
+
+
+                                                             Strona 2 z 8
+                                                                                                                     stanowiska
+                                                                                                                       Numer
+                                                                                                                                  Egzaminator wpisuje T,
+                                                                                                                                   jeżeli zdający spełnił
+                                       Elementy podlegające ocenie/kryteria oceny                                                 kryterium albo N, jeżeli
+                                                                                                                                         nie spełnił
+
+Rezultat 1: Montaż okablowania sieciowego oraz podłączenie urządzeń
+Uwaga: Oceny kryteriów 1.1 ÷ 1.7 i 1.9 należy dokonać po informacji od Przewodniczącego ZN o wykonaniu okablowania. Przebieg montażu należy
+ocenić zgodnie z kryteriami zapisanymi w przebiegu 1
+1 Wszystkie żyły kabla podłączono do modułu Keystone wg sekwencji T568B
+    Przewody podłączone do modułu Keystone nie wystają więcej niż 25 mm poza płaszcz, a pary nie są rozkręcone na
+2
+    długości większej niż 13 mm
+3 Gniazdo naścienne zostało poprawnie zmontowane
+
+4 Wszystkie żyły kabla podłączono do panelu krosowego wg sekwencji T568B
+    Przewody podłączone do panelu krosowego nie wystają więcej niż 25 mm poza płaszcz, a pary nie są rozkręcone na
+5
+    długości większej niż 13 mm
+6 Użyto kabla U/UTP typu drut
+    W obecności egzaminatora przeprowadzono za pomocą testera okablowania test wykonanego kabla oraz test potwierdził
+7
+    poprawność jego wykonania
+8 Wszystkie urządzenia sieciowe podłączono zgodnie ze schematem w załączniku 1
+
+9 Zamontowano panel krosowy stabilnie w szafie lub stelażu RACK
+
+
+
+
+                                                               Strona 3 z 8
+                                                                                                                    stanowiska
+                                                                                                                      Numer
+Rezultat 2: Skonfigurowane urządzenia sieciowe
+Uwaga: oceny kryteriów należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny konfiguracji rutera, następnie
+przełącznika
+1 W ruterze ustawiono adres IP interfejsu WAN: 88.88.88.1/28
+
+2 W ruterze ustawiono adres IP bramy domyślnej dla interfejsu WAN: 88.88.88.2
+
+3 W ruterze ustawiono adres IP serwera nazw dla interfejsu WAN na 8.8.8.8
+
+4 W ruterze ustawiono adres IP interfejsu LAN: 192.168.0.1/24
+
+5 Włączono serwer DHCP
+
+6 W ruterze ustawiono zakres dzierżawy DHCP 192.168.0.11 ÷ 192.168.0.100
+
+7 W ruterze ustawiono rezerwację adresu IP 192.168.0.51 dla adresu MAC bezprzewodowej karty sieciowej stacji roboczej
+
+8 W ruterze włączono sieć bezprzewodową o nazwie: EGZAMIN_X, gdzie X to numer stanowiska egzaminacyjnego
+
+9 Dla utworzonej sieci bezprzewodowej ustawiono uwierzytelnianie tylko WPA2 PSK z szyfrowaniem AES lub CCMP
+
+10 W przełączniku ustawiono adres IP: 192.168.0.2/24
+
+
+
+
+                                                                Strona 4 z 8
+                                                                                                                    stanowiska
+                                                                                                                      Numer
+Rezultat 3: Skonfigurowane interfejsy sieciowe
+Uwaga: oceny rezultatów należy dokonać dla serwera w systemie Linux i stacji roboczej w systemie Windows, w systemie Linux konto administrator
+z hasłem ZAQ!2wsx z prawem podniesienia uprawnień do root z hasłem ZAQ!2wsx, w systemie Windows konto Administrator z hasłem ZAQ!2wsx
+Oceny kryteriów R.3.7 ÷ R.3.9 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny komunikacji pomiędzy
+urządzeniami sieciowymi. Sprawdzenie komunikacji zdający wykonuje w obecności egzaminatora
+1 Na serwerze dla interfejsu sieciowego podłączonego do portu 1 przełącznika ustawiono adres IP: 192.168.0.3/24
+  Na serwerze dla interfejsu sieciowego podłączonego do portu 1 przełącznika ustawiono bramę domyślną oraz serwer DNS:
+2
+  192.168.0.1
+  Na stacji roboczej dla bezprzewodowego interfejsu sieciowego ustawiono nazwę połączenia: EGZAMIN-X, gdzie X to numer
+3
+  stanowiska egzaminacyjnego
+  Na stacji roboczej bezprzewodowy interfejs sieciowy podłączono pod sieć bezprzewodową EGZAMIN_X, gdzie X to numer
+4
+  stanowiska egzaminacyjnego
+  Na stacji roboczej dla bezprzewodowego interfejsu sieciowego ustawiono automatyczne pobieranie adresu IP, nadany adres:
+5
+  192.168.0.51
+6 Na stacji roboczej wyłączono przewodowy interfejs sieciowy
+  Wykonano test komunikacji serwera z ruterem, uzyskano odpowiedź na polecenie np. ping 192.168.0.1 lub innym poleceniem
+7
+  systemowym
+  Wykonano test komunikacji serwera z przełącznikiem, uzyskano odpowiedź na polecenie np. ping 192.168.0.2 lub innym
+8
+  poleceniem systemowym
+  Wykonano test komunikacji serwera ze stacją roboczą, uzyskano odpowiedź na polecenie np. ping 192.168.0.51 lub innym
+9
+  poleceniem systemowym
+
+
+
+
+                                                               Strona 5 z 8
+                                                                                                                     stanowiska
+                                                                                                                       Numer
+Rezultat 4: Skonfigurowany serwer
+UWAGA: ocenie podlega konfiguracja w systemie Linux
+1 Utworzono użytkownika o nazwie: jkowalski z opisem: Jan Kowalski
+
+2 Utworzonemu użytkownikowi dodano katalog domowy
+
+3 Utworzono grupę o nazwie pracownicy
+
+4 Przypisano utworzonego użytkownika do utworzonej grupy
+
+5 Ustawiono właściciela katalogu /dane na utworzonego użytkownika i grupę
+
+6 Ustawiono prawa do utworzonego katalogu na 750
+
+7 Ustawiono aby usługa SSH włączała się automatycznie po starcie systemu
+
+8 Skonfigurowano usługę SSH tak, aby utworzony użytkownik mógł się zdalnie zalogować
+Rezultat 5: Wykonana diagnoza sieci i skonfigurowana stacja robocza
+UWAGA: ocenie podlega konfiguracja w systemie Windows. W kryteriach 5.1 ÷ 5.5 ocenie podlega plik specyfikacja znajdujący się na nośniku USB
+opisanym Egzamin-x, gdzie x oznacza numer stanowiska egzaminacyjnego. Oceny kryterium 5.7 należy dokonać po informacji od Przewodniczącego
+ZN o gotowości zdającego do oceny zalogowania przez klienta SSH do serwera
+1 Wykonano diagnozę sieci: w pliku zapisano wykryte 3 adresy IP: 192.168.0.1 ÷ 192.168.0.3
+  Wykonano diagnozę sieci: w pliku zapisano dla adresu 192.168.0.1 otwarty port 22 lub 80 lub 443, dodatkowe podanie innych
+2
+  portów nie jest traktowane jako błąd
+  Wykonano diagnozę sieci: w pliku zapisano dla adresu 192.168.0.2 otwarty port 80 lub 443, dodatkowe podanie innych portów
+3
+  nie jest traktowane jako błąd
+  Wykonano diagnozę sieci: w pliku zapisano dla adresu 192.168.0.3 otwarty port 22, dodatkowe podanie innych portów nie jest
+4
+  traktowane jako błąd
+5 Wykonano diagnozę sieci: w pliku zapisano dla adresu 192.168.0.3 wykryty system operacyjny Linux
+
+6 Utworzono użytkownika o nazwie jkowalski pełna nazwa: Jan Kowalski
+
+7 Klientem SSH zalogowano się do serwera na utworzonego użytkownika
+
+8 W zaporze sieciowej dodano regułę zezwalającą na przychodzące połączenia dla protokołu ICMPv4
+
+
+                                                               Strona 6 z 8
+                                                                                                                           stanowiska
+                                                                                                                             Numer
+Przebieg 1: Montaż okablowania sieciowego
+
+Zdający:
+
+1 poprawnie wykorzystywał narzędzia do montażu i stosował się do przepisów BHP podczas wykonywania montażu
+
+2 zostawił uporządkowane stanowisko po zakończeniu wszystkich prac
+
+
+
+
+Egzaminator …………………………………………………………………………….                                                    ..........................................................................
+                                      imię i nazwisko                                                              data i czytelny podpis
+
+
+
+
+                                                            Strona 7 z 8
+Załącznik 1 - Schemat połączenia urządzeń
+
+
+
+
+                Strona 8 z 8
+

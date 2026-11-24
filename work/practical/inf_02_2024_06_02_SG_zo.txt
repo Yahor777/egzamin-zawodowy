@@ -1,0 +1,211 @@
+ Układ graficzny © CKE 2023                                                           EGZAMIN ZAWODOWY
+                                                                                           Rok 2024
+                                                                                       ZASADY OCENIANIA
+
+                                                                              Arkusz zawiera informacje prawnie chronione
+                                                                                  do momentu rozpoczęcia egzaminu
+
+
+
+
+      Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych i lokalnych sieci komputerowych
+      Oznaczenie arkusza: INF.02-02-24.06-SG
+      Symbol kwalifikacji: INF.02
+      Numer zadania: 02
+                                                                                         PODSTAWA PROGRAMOWA
+      Wersja arkusza: SG                                                                                2019
+
+
+                                                                           Wypełnia egzaminator
+
+                                                                                                                                Numer
+                                   Kod ośrodka                         –                             Numer PESEL zdającego*   stanowiska
+
+
+
+                              Kod egzaminatora
+
+
+                                Data egzaminu
+                                                 Dzień Miesiąc   Rok
+
+
+Godzina rozpoczęcia egzaminu                            :
+
+
+
+ * w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+Egzaminatorze!
+ − Oceniaj prace zdających rzetelnie i z zaangażowaniem. Dokumentuj wyniki oceny.
+
+ − Stosuj przyjęte zasady oceniania w sposób obiektywny.
+
+ − Jeżeli zdający, wykonując zadanie egzaminacyjne, uzyskuje inne rezultaty albo pożądane rezultaty uzyskuje w inny sposób niż uwzględniony
+   w zasadach oceniania lub przedstawia nietypowe rozwiązanie, ale zgodnie ze sztuką w zawodzie, to nadal oceniaj zgodnie z kryteriami
+   zawartymi w zasadach oceniania. Informacje o tym, że zasady oceniania nie przewidują zaistniałej sytuacji, przekaż niezwłocznie w formie
+   pisemnej notatki do Przewodniczącego Zespołu Egzaminacyjnego z prośbą o przekazanie jej do Okręgowej Komisji Egzaminacyjnej. Notatka
+   może być sporządzona odręcznie w trybie roboczym.
+ − Informuj przewodniczącego zespołu nadzorującego o wszystkich nieprawidłowościach zaistniałych w trakcie egzaminu, w tym w szczególności
+   o naruszeniach przepisów bezpieczeństwa i higieny pracy i o podejrzeniach niesamodzielności w wykonaniu zadania przez zdającego.
+
+
+
+
+                                                             Strona 2 z 7
+                                                                                                                    stanowiska
+                                                                                                                      Numer
+                                                                                                                                 Egzaminator wpisuje T,
+                                                                                                                                  jeżeli zdający spełnił
+                                       Elementy podlegające ocenie/kryteria oceny                                                kryterium albo N, jeżeli
+                                                                                                                                        nie spełnił
+
+Rezultat 1: Wykonane okablowanie sieciowe oraz połączenie fizyczne urządzeń
+UWAGA: Oceny kryteriów 1.1 ÷ 1.4 i 1.6 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny montażu
+okablowania. Obserwację należy zakończyć po dokonaniu oceny wykonania okablowania sieciowego. Przebieg montażu okablowania sieciowego
+należy ocenić zgodnie z kryteriami zapisanymi w Przebiegu 1
+   Przewody podłączone do panelu krosowego nie wystają więcej niż 25 mm poza płaszcz, a pary nie są rozkręcone na
+ 1
+   długości większej niż 13 mm, zastosowano sekwencję T568B
+   Przewody podłączone do modułu Keystone nie wystają więcej niż 25 mm poza płaszcz, a pary nie są rozkręcone na
+ 2
+   długości większej niż 13 mm, zastosowano sekwencję T568B
+3 Do wykonania okablowania zastosowano kabel typu drut
+    W obecności egzaminatora przeprowadzono za pomocą testera test wykonanego połączenia panel krosowy - gniazdo oraz
+4
+    test potwierdził poprawność jego wykonania
+5 Wszystkie urządzenia sieciowe podłączono zgodnie ze schematem - załącznik 1
+
+6 Zamontowano panel krosowy stabilnie w szafie lub stelażu RACK
+
+Rezultat 2: Diagnostyka
+UWAGA: Diagnostyka została wykonana w systemie LINUX na stacji roboczej.
+Należy porównać zapisy zdającego z tabeli 1 znajdującej się w arkuszu egzaminacyjnym ze zrzutami ekranowymi zapisanymi w katalogu
+Diagnostyka_systemu znajdującym się na dysku USB oznaczonym nazwą Egzamin-x, gdzie x to numer stanowiska egzaminacyjnego.
+W przypadku braku zgodności zapisów w tabeli 1 ze zrzutami ekranowymi kryteria nie są spełnione. Dopuszcza się możliwość podania przez
+zdającego zapisu świadczącego o braku informacji, jeżeli jest zgodny ze zrzutem ekranowym
+1 W tabeli 1 zapisano liczbę uśpionych procesów
+
+2 W tabeli 1 zapisano oznaczenie lub nazwę napędu optycznego
+
+3 W tabeli 1 zapisano architekturę procesora
+
+4 W tabeli 1 zapisano nazwę dowolnego urządzenia podłączonego do złącza PCI
+
+5 W tabeli 1 zapisano rozmiar pamięci L3 cache
+
+                                                               Strona 3 z 7
+                                                                                                                     stanowiska
+                                                                                                                       Numer
+Rezultat 3: Skonfigurowane urządzenia sieciowe
+UWAGA: Oceny ustawień urządzeń należy dokonać po zgłoszeniu przez Przewodniczącego ZN o gotowości zdającego do prezentacji konfiguracji
+rutera następnie przełącznika
+1 Przypisano dla interfejsu WAN rutera adres IP 20.20.20.20/24, brama domyślna: 20.20.20.21 serwer DNS: 9.9.8.8
+
+2 Przypisano dla interfejsu LAN rutera adres IP: 192.168.1.129/25
+
+3 Włączono w ruterze sieć bezprzewodową i ustawiono SSID na wifi-x, gdzie x to numer stanowiska egzaminacyjnego
+
+4 Ustawiono w ruterze najsilniejsze dostępne szyfrowanie transmisji dla sieci bezprzewodowej
+
+5 Ustawiono w ruterze dla sieci bezprzewodowej numer kanału na 7 (zawierający częstotliwość 2442 MHz)
+
+6 Skonfigurowano przełącznik: adres IP 192.168.1.254/25
+
+Rezultat 4: Skonfigurowany serwer
+UWAGA: Ocenie podlega konfiguracja systemu Windows Server, konto Administrator z hasłem ZAQ!2wsx
+Kryteria 4.6 ÷ 4.8 należy ocenić po informacji od Przewodniczącego ZN o gotowości zdającego do oceny komunikacji urządzeń sieciowych
+   Ustawiono dla interfejsu sieciowego podłączonego do przełącznika nazwę LAN_serwer, adres IP: 192.168.1.253/25, brama
+ 1
+   domyślna: 192.168.1.129, serwer DNS: localhost
+2 Promowano serwer do roli kontrolera domeny
+
+3 Utworzono domenę INF02.local w nowym lesie
+
+4 Utworzono w nowej domenie jednostkę organizacyjną o nazwie Egzamin
+
+5 Utworzono w nowej jednostce organizacyjnej konto użytkownika: pełna nazwa Jan Nowak, nazwa logowania zdajacy
+
+6 Wykonano sprawdzenie komunikacji serwera z ruterem, urządzenie odpowiada na polecenie, np. ping 192.168.1.129
+
+7 Wykonano sprawdzenie komunikacji serwera z przełącznikiem, urządzenie odpowiada na polecenie, np. ping 192.168.1.254
+    Wykonano sprawdzenie komunikacji serwera ze stacją roboczą, urządzenie odpowiada na polecenie, np. ping dla adresu
+8
+    stacji roboczej, z zakresu 192.168.1.130 ÷ 192.168.1.252
+
+
+
+
+                                                                Strona 4 z 7
+                                                                                                                  stanowiska
+                                                                                                                    Numer
+Rezultat 5: Skonfigurowana stacja robocza
+UWAGA: Ocenie podlega konfiguracja systemu Linux konto administrator z hasłem ZAQ!2wsx
+Kryteria 5.3 ÷ 5.5 należy ocenić wyłącznie na podstawie poprawnych zapisów poleceń w skrypcie konfiguracja.sh
+ 1 Dla interfejsu przewodowego ustawiono dowolny adres IP z zakresu 192.168.1.130 ÷ 192.168.1.252 z maską 25 bitową:
+   brama domyślna 192.168.1.129
+2 W katalogu domowym konta administrator zapisano skrypt o nazwie konfiguracja.sh
+
+3 Skrypt tworzy grupę użytkowników o nazwie informatycy
+
+4 Skrypt przypisuje konto administrator do utworzonej grupy
+
+5 Skrypt zmienia identyfikator utworzonej grupy na wartość 1111
+
+6 Wykonano archiwum pliku ze skryptem i zapisano go w katalogu domowym użytkownika administrator
+
+7 Ustawiono wyłączanie ekranu po 60 minutach bezczynności
+
+8 Ustawiono tło pulpitu wykorzystując plik kwiaty.jpg
+
+
+
+
+                                                                  Strona 5 z 7
+                                                                                                                                   stanowiska
+                                                                                                                                     Numer
+Rezultat 6: Kosztorys
+  Kosztorys sporządzono w arkuszu kalkulacyjnym, w postaci pliku o nazwie Kosztorys zapisanym na dysku USB oznaczonym
+1 nazwą Egzamin-x, składający się z siedmiu kolumn: Lp., Nazwa usługi, Cena netto (w zł), VAT (%), Cena brutto (w zł), Ilość,
+  Wartość brutto (w zł)
+2 W kosztorysie uwzględniono usługę: Montaż okablowania
+
+3 W kosztorysie uwzględniono usługę: Diagnostyka zasobów komputera
+
+4 W kosztorysie uwzględniono usługę: Konfiguracja systemu Windows/Linux, 2 szt. lub dwa razy zapisano usługę
+
+5 W kosztorysie uwzględniono usługę: Konfiguracja przełącznika
+
+6 W kosztorysie uwzględniono usługę: Konfiguracja rutera
+  W komórce Weryfikacja zapisano formułę, która w przypadku, gdy wartość w kolumnie VAT (%) jest różna od 23%, wpisuje
+7 w komórce Weryfikacja komunikat „Podaj prawidłowe dane”. Funkcję utworzono przynajmniej dla pierwszej komórki z kolumny
+  VAT (%)
+  Dla wszystkich wpisów obliczenia w kolumnie Cena brutto (w zł) wykonują się automatycznie, uwzględniając wartość
+8
+  w kolumnie Cena netto (w zł) oraz VAT (%)
+  Dla wszystkich wpisów obliczenia w kolumnie Wartość brutto (w zł) wykonują się automatycznie, uwzględniając wartości
+9
+  w kolumnach Cena brutto (w zł) oraz Ilość
+10 Sumowanie wszystkich wpisów kolumny Wartość brutto (w zł) odbywa się automatycznie
+
+Przebieg 1: Wykonanie okablowania sieciowego
+
+Zdający:
+    zdejmował izolację z kabla U/UTP i montował gniazdo naścienne, kabel U/UTP w module Keystone oraz panelu krosowym
+1
+    przy zastosowaniu odpowiednich narzędzi, zgodnie z zasadami BHP
+2 po wykonaniu montażu zostawił uporządkowane stanowisko pracy
+
+
+Egzaminator …………………………………………………………………………….                                                            ..........................................................................
+                                         imię i nazwisko                                                                   data i czytelny podpis
+
+
+
+                                                                 Strona 6 z 7
+Załącznik 1 - Schemat połączenia urządzeń
+
+
+
+
+               Strona 7 z 7
+

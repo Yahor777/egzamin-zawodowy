@@ -1,0 +1,225 @@
+                                                                             Arkusz zawiera informacje
+                                                                          prawnie chronione do momentu
+                                                                               rozpoczęcia egzaminu
+
+
+
+Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych
+                    i lokalnych sieci komputerowych
+Oznaczenie kwalifikacji: INF.02
+Numer zadania: 03
+Wersja arkusza: SG
+
+                                       Wypełnia zdający
+                                                                             Miejsce na naklejkę z numerem
+Numer PESEL zdającego*                                                         PESEL i z kodem ośrodka
+
+
+
+
+Czas trwania egzaminu: 150 minut.                                                       INF.02-03-22.06-SG
+
+EGZAMIN ZAWODOWY
+                                                              PODSTAWA PROGRAMOWA
+Rok 2022
+                                                                      2019
+CZĘŚĆ PRAKTYCZNA
+
+
+Instrukcja dla zdającego
+    1.  Na pierwszej stronie arkusza egzaminacyjnego wpisz w oznaczonym miejscu swój numer PESEL
+        i naklej naklejkę z numerem PESEL i z kodem ośrodka.
+    2. Na KARCIE OCENY w oznaczonym miejscu przyklej naklejkę z numerem PESEL oraz wpisz:
+        − swój numer PESEL*,
+        − oznaczenie kwalifikacji,
+        − numer zadania,
+        − numer stanowiska.
+    3. KARTĘ OCENY przekaż zespołowi nadzorującemu.
+    4. Sprawdź, czy arkusz egzaminacyjny zawiera 5 stron i nie zawiera błędów. Ewentualny brak stron lub
+        inne usterki zgłoś przez podniesienie ręki przewodniczącemu zespołu nadzorującego.
+    5. Zapoznaj się z treścią zadania oraz stanowiskiem egzaminacyjnym. Masz na to 10 minut. Czas ten
+        nie jest wliczany do czasu trwania egzaminu.
+    6. Czas rozpoczęcia i zakończenia pracy zapisze w widocznym miejscu przewodniczący zespołu
+        nadzorującego.
+    7. Wykonaj samodzielnie zadanie egzaminacyjne. Przestrzegaj zasad bezpieczeństwa i organizacji
+        pracy.
+    8. Jeżeli w zadaniu egzaminacyjnym występuje polecenie „zgłoś gotowość do oceny przez podniesienie
+        ręki”, to zastosuj się do polecenia i poczekaj na decyzję przewodniczącego zespołu nadzorującego.
+    9. Po zakończeniu wykonania zadania pozostaw rezultaty oraz arkusz egzaminacyjny na swoim
+        stanowisku lub w miejscu wskazanym przez przewodniczącego zespołu nadzorującego.
+    10. Po uzyskaniu zgody zespołu nadzorującego możesz opuścić salę/miejsce przeprowadzania egzaminu.
+
+                                                                                               Powodzenia!
+* w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+
+Układ graficzny
+© CKE 2020
+Zadanie egzaminacyjne
+
+Wykorzystując dostępne narzędzia, elementy i urządzenia sieciowe, podzespoły komputera oraz
+oprogramowanie znajdujące się na stanowisku egzaminacyjnym, wykonaj montaż okablowania,
+modernizację stacji roboczej i połączenie urządzeń sieciowych. Przeprowadź konfigurację urządzeń
+sieciowych oraz wykonaj konfigurację systemów operacyjnych zainstalowanych na dysku twardym stacji
+roboczej oraz serwera.
+Do konfiguracji serwera oraz stacji roboczej z zainstalowanym systemem Windows i Linux wykorzystaj:
+    ‒ dla systemu Windows konto Administrator z hasłem ZAQ!2wsx
+    ‒ dla systemu Linux konto administrator z hasłem ZAQ!2wsx (konto z prawem podniesienia
+       uprawnień do root z hasłem ZAQ!2wsx )
+
+1. Korzystając z dostępnych podzespołów komputerowych znajdujących się na stanowisku
+   egzaminacyjnym przeprowadź modernizację i identyfikację pamięci RAM stacji roboczej w systemie
+   Linux:
+     – zamontuj moduł pamięci oznaczony jako RAM1
+
+UWAGA: Po wykonaniu montażu zgłoś przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+zakończenia prac montażowych. Po uzyskaniu zgody przystąp do końcowych czynności montażowych
+i uruchomienia systemu.
+
+      –   wykorzystując dostępne narzędzia systemowe sprawdź parametry pamięci RAM1 ujęte
+          w Tabeli 1. Specyfikacja pamięci RAM. Odczytane dane zapisz do tabeli 1 w arkuszu
+          egzaminacyjnym
+      –   na dysku utwórz katalog /Test_1 Wykonaj zrzuty dokumentujące przeprowadzone testy, zapisz je
+          w plikach graficznych w katalogu /Test_1
+      –   zamontuj na płycie głównej komputera drugi moduł pamięci oznaczony jako RAM2
+
+UWAGA: Po wykonaniu montażu zgłoś przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+zakończenia prac montażowych. Po uzyskaniu zgody przystąp do końcowych czynności montażowych
+i uruchomienia systemu.
+
+      –   wykorzystując dostępne narzędzia systemowe sprawdź parametry zamontowanej pamięci
+          operacyjnej RAM2 ujęte w tabeli 1
+      –   na dysku utwórz katalog /Test_2 Wykonaj zrzuty dokumentujące przeprowadzone testy, zapisz je
+          w plikach graficznych w katalogu /Test_2
+      –   zapisz odczytane parametry pamięci RAM2 w tabeli 1 w arkuszu egzaminacyjnym
+
+2. Wykonaj montaż okablowania sieciowego:
+   – wykonaj podłączenie kabla U/UTP do dowolnego gniazda panelu krosowego według sekwencji
+      T568A
+   – drugi koniec kabla U/UTP podłącz do modułu Keystone według sekwencji T568A, zmontuj
+      kompletne gniazdo naścienne z jednym modułem Keystone
+
+UWAGA: po wykonaniu montażu zgłoś przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+przeprowadzenia testu wykonanego okablowania. W obecności egzaminatora sprawdź za pomocą testera
+okablowania poprawność wykonanego połączenia panel krosowy – gniazdo naścienne.
+
+ 3. Skonfiguruj ruter według zaleceń:
+    – adres IP interfejsu LAN: 172.22.0.1 z maską podsieci 255.255.255.0
+    – serwer DHCP włączony
+    – zakres dzierżawy DHCP: 172.22.0.5 ÷ 172.22.0.10
+Ruter pracuje na ustawieniach fabrycznych zgodnie z dokumentacją, która jest dostępna w folderze RUTER
+na nośniku opisanym DOKUMENTACJA/PROGRAMY. Jeżeli ruter wymaga zmiany hasła, ustaw je na
+ZAQ!2wsx
+
+UWAGA: po wykonaniu konfiguracji zgłoś przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+oceny ustawień rutera.
+
+                                             Strona 2 z 5
+4. Skonfiguruj przełącznik według zaleceń:
+     – adres IP: 192.168.100.2 z maską podsieci 255.255.255.0
+     – adres bramy domyślnej: 192.168.100.1, jeżeli jest wymagany
+     – utwórz VLAN o ID = 100 i nazwie VLAN100, jeżeli ustawienie nazwy jest możliwe
+     – do VLAN100 przypisz porty 1, 2 i 3 bez tagowania
+     – utwórz VLAN o ID = 444 i nazwie VLAN444, jeżeli ustawienie nazwy jest możliwe
+     – do VLAN444 przypisz port 4 bez tagowania
+Przełącznik pracuje na ustawieniach fabrycznych zgodnie z dokumentacją, która jest dostępna w folderze
+PRZEŁĄCZNIK na nośniku opisanym DOKUMENTACJA/PROGRAMY.
+
+UWAGA: po wykonaniu konfiguracji zgłoś przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+oceny ustawień przełącznika.
+
+5. Za pomocą kabli połączeniowych znajdujących się na stanowisku egzaminacyjnym połącz urządzenia
+   zgodnie ze schematem.
+
+
+
+
+                             Schemat połączenia urządzeń sieciowych
+
+
+6. Skonfiguruj interfejsy sieciowe serwera w systemie Windows Serwer:
+   – skonfiguruj interfejs sieciowy podłączony do portu 3 przełącznika:
+         ‒ nazwa połączenia: IP1
+         ‒ adres IP: 172.22.0.3 z maską podsieci 255.255.255.0
+         ‒ brama domyślna: adres IP rutera
+         ‒ serwer DNS: 172.22.0.3 lub 127.0.0.1
+   – skonfiguruj interfejs sieciowy podłączony do portu 4 przełącznika:
+         ‒ nazwa połączenia: IP2
+         ‒ adres IP: 192.168.100.1
+         ‒ maska podsieci 255.255.255.0
+
+7. Skonfiguruj usługę sieciową na serwerze z zainstalowanym systemem Windows Server:
+   – dodaj rolę Serwera sieci Web
+   – w katalogu głównym dysku C:\ utwórz folder STRONA_TESTOWA
+   – w folderze C:\STRONA_TESTOWA utwórz plik o nazwie index.html z zawartością:
+
+
+ <html>
+   <body>
+     <p>Strona testowa - egzamin INF.02</p>
+   </body>
+ </html>
+
+
+                                             Strona 3 z 5
+    –   utwórz nową witrynę WWW o nazwie TESTOWA uruchamianą plikiem index.html. Witryna powinna
+        być powiązana z interfejsem sieciowym IP1 serwera
+    –   utwórz konto użytkownika WEBMASTER z hasłem Webm@ster! należącego do grupy
+        użytkowników zaawansowanych
+    –   udostępnij w sieci folder zawierający witrynę WWW pod nazwą testowe_www oraz nadaj
+        uprawnienia i zabezpieczenia tak, aby tylko użytkownik Administrator miał pełną kontrolę do
+        zasobu, a użytkownik WEBMASTER mógł modyfikować stronę
+    –   wyświetl w przeglądarce internetowej zawartość strony WWW. Strona powinna być dostępna pod
+        adresem http://172.22.0.3. Wykonaj zrzut ekranu potwierdzający wyświetlenie strony
+        w przeglądarce, zapisz go pod nazwą strona_WWW na pulpicie konta Administrator
+
+8. Skonfiguruj system Linux na stacji roboczej:
+   – skonfiguruj interfejs sieciowy:
+         ‒ adres IP: pobierany automatycznie
+         ‒ serwer DNS: adres interfejsu IP1 serwera
+   – za pomocą polecenia systemowego wyświetl uzyskany automatycznie adres IP
+   – na stacji roboczej wyświetl w przeglądarce internetowej stronę WWW dostępną pod adresem
+      http://172.22.0.3
+   – za pomocą poleceń systemowych sprawdź komunikację stacji roboczej z serwerem i ruterem
+
+UWAGA: po wykonaniu testu komunikacji zgłoś przewodniczącemu ZN – przez podniesienie ręki – gotowość
+do przeprowadzenia ponownego sprawdzenia komunikacji stacji roboczej z serwerem i ruterem oraz wykonaj
+test wyświetlenia strony internetowej dostępnej pod adresem http://172.22.0.3. Należy również wyświetlić
+automatycznie uzyskany na stacji roboczej adres IP. Sprawdzenie wykonaj w obecności egzaminatora.
+
+Uwaga: Po zakończeniu prac nie wylogowuj się i nie wyłączaj komputerów oraz urządzeń sieciowych
+znajdujących się na Twoim stanowisku egzaminacyjnym.
+
+Uwaga: zawartość nośnika USB, wykorzystywanego podczas egzaminu do zapisu zrzutów ekranowych lub
+dokumentów, jest usuwana po egzaminie i nie stanowi dokumentacji egzaminacyjnej przekazywanej wraz
+z arkuszem do OKE.
+
+Czas przeznaczony na wykonanie zadania wynosi 150 minut.
+
+Ocenie podlegać będzie 5 rezultatów:
+     – montaż pamięci i okablowania sieciowego oraz połączenie fizyczne urządzeń,
+     – diagnostyka,
+     – skonfigurowane urządzenia sieciowe,
+     – skonfigurowane interfejsy sieciowe serwera i stacji roboczej,
+     – skonfigurowany serwer
+oraz
+przebieg montażu pamięci RAM i okablowania sieciowego.
+
+
+
+
+                                              Strona 4 z 5
+Tabela 1. Specyfikacja pamięci RAM
+                           Parametry pamięci RAM1
+          Typ                    Pojemność             Częstotliwość pracy
+
+
+
+
+                           Parametry pamięci RAM2
+          Typ                    Pojemność             Częstotliwość pracy
+
+
+
+
+                                        Strona 5 z 5
+

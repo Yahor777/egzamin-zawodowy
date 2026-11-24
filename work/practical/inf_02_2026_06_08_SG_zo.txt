@@ -1,0 +1,231 @@
+ Układ graficzny © CKE 2025                                                       EGZAMIN ZAWODOWY
+                                                                                       Rok 2026
+                                                                             ZASADY OCENIANIA I KARTY OCENY
+
+                                                                              Arkusz zawiera informacje prawnie chronione
+                                                                                  do momentu rozpoczęcia egzaminu
+
+
+
+
+      Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych i lokalnych sieci komputerowych
+      Oznaczenie arkusza: INF.02-08-26.06-SG
+      Symbol kwalifikacji: INF.02
+      Numer zadania: 08
+                                                                                         PODSTAWA PROGRAMOWA
+      Wersja arkusza: SG                                                                                2019
+
+
+                                                                           Wypełnia egzaminator
+
+                                                                                                                                Numer
+                                   Kod ośrodka                         –                            Numer PESEL zdającego*   stanowiska**
+
+
+
+                              Kod egzaminatora
+
+
+                                Data egzaminu
+                                                 Dzień Miesiąc   Rok
+
+
+Godzina rozpoczęcia egzaminu                            :
+
+
+
+ * w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+ ** na podstawie danych wpisanych przez zdającego na pierwszej stronie arkusza egzaminacyjnego
+Egzaminatorze!
+ − Oceniaj prace zdających rzetelnie i z zaangażowaniem. Dokumentuj wyniki oceny.
+
+ − Stosuj przyjęte zasady oceniania w sposób obiektywny.
+
+ − Jeżeli zdający, wykonując zadanie egzaminacyjne, uzyskuje inne rezultaty albo pożądane rezultaty uzyskuje w inny sposób niż uwzględniony
+   w zasadach oceniania lub przedstawia nietypowe rozwiązanie, ale zgodnie ze sztuką w zawodzie, to nadal oceniaj zgodnie z kryteriami
+   zawartymi w zasadach oceniania. Informacje o tym, że zasady oceniania nie przewidują zaistniałej sytuacji, przekaż niezwłocznie w formie
+   pisemnej notatki do Przewodniczącego Zespołu Egzaminacyjnego z prośbą o przekazanie jej do Okręgowej Komisji Egzaminacyjnej. Notatka
+   może być sporządzona odręcznie w trybie roboczym.
+ − Informuj przewodniczącego zespołu nadzorującego o wszystkich nieprawidłowościach zaistniałych w trakcie egzaminu, w tym w szczególności
+   o naruszeniach przepisów bezpieczeństwa i higieny pracy i o podejrzeniach niesamodzielności w wykonaniu zadania przez zdającego.
+
+
+
+
+                                                             Strona 2 z 8
+                                                                                                                       stanowiska
+                                                                                                                         Numer
+                                                                                                                                    Egzaminator wpisuje T,
+                                                                                                                                     jeżeli zdający spełnił
+                                        Elementy podlegające ocenie/kryteria oceny                                                  kryterium albo N, jeżeli
+                                                                                                                                           nie spełnił
+
+Rezultat 1: Wykonane okablowanie sieciowe oraz połączenie fizyczne urządzeń
+Uwaga: Oceny kryteriów 1.1 ÷ 1.4 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny montażu okablowania.
+Przebieg montażu okablowania sieciowego należy ocenić zgodnie z kryteriami zapisanymi w Przebiegu 1
+1 Wszystkie żyły na obu końcach kabla podłączone do wtyku 8P8C wg sekwencji T568B
+
+2 Zatrzask obu wtyków oparty na zewnętrznej izolacji kabla U/UTP
+
+3 Do montażu zastosowany kabel typu linka
+    W obecności egzaminatora przeprowadzony za pomocą testera okablowania test wykonanego kabla potwierdził poprawność
+4
+    jego wykonania
+5 Wszystkie urządzenia sieciowe podłączone zgodnie ze schematem – Załącznik 1
+
+Rezultat 2: Identyfikacja parametrów
+Uwaga: Identyfikacja została wykonana w systemie Windows na stacji roboczej.
+Należy porównać zapisy zdającego z tabeli 4 znajdującej się w arkuszu egzaminacyjnym ze zrzutami ekranowymi zapisanymi w katalogu Identyfikacja
+znajdującym się na dysku USB oznaczonym nazwą Egzamin-x, gdzie x to numer stanowiska egzaminacyjnego. W przypadku braku zgodności
+zapisów w tabeli 4 ze zrzutami, kryteria nie są spełnione. Dopuszcza się możliwość podania przez zdającego zapisu świadczącego o braku informacji,
+jeżeli jest zgodny ze zrzutem ekranowym
+1 W tabeli 4 zapisane parametry płyty głównej: producent i model, liczba gniazd pamięci RAM, wielkość pamięci RAM
+
+2 W tabeli 4 zapisane parametry dysku twardego: producent, pojemność, wolne miejsce na dysku systemowym
+
+3 W tabeli 4 zapisane parametry karty graficznej: producent i pamięć GPU
+  W tabeli 4 zapisana ocena, czy parametry podzespołów spełniają wymagania programu do obróbki grafiki oraz ocena jest
+4 zgodna ze stanem faktycznym (wolne miejsce na dysku systemowym 20 GB, pamięć RAM min. 8 GB, pamięć karty graficznej
+  min. 2 GB)
+5 Do sprawdzenia przynajmniej jednego parametru użyty program CPU-Z
+
+
+
+
+                                                                 Strona 3 z 8
+                                                                                                                     stanowiska
+                                                                                                                       Numer
+Rezultat 3: Skonfigurowane urządzenia sieciowe
+Uwaga: oceny kryteriów należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny konfiguracji rutera, a następnie
+przełącznika
+X lub XX oznaczają numer stanowiska egzaminacyjnego
+1 Adres IP interfejsu LAN rutera: 172.20.250.1/24
+    Konfiguracja interfejsu WAN rutera: adres IP 87.105.190.109, maska 255.255.255.252, brama domyślna: 87.105.190.110,
+2
+    serwer DNS: 8.8.8.8
+3 W ruterze włączony serwer DHCP z zakresem: 172.20.250.100 ÷ 172.20.250.200
+    W DHCP ustawiona rezerwacja adresu 172.20.250.150 dla interfejsu sieciowego serwera podłączonego do portu 1
+4
+    przełącznika
+5 Włączona sieć bezprzewodowa z SSID o nazwie EGZAMIN_XX, dla pasma 2,4 GHz
+
+6 Włączone zabezpieczenie WPA2-PSK z szyfrowaniem AES lub CCMP oraz numer kanału = numer stanowiska
+
+7 Konfiguracja przełącznika: adres IP 192.168.0.102/24, brama domyślna: 192.168.0.X
+
+8 W przełączniku utworzony VLAN 802.1Q o ID=2 , przypisane porty 2 i 4 bez tagowania
+
+9 W przełączniku utworzony VLAN 802.1Q o ID=3, przypisane porty 1 i 3 bez tagowania
+
+
+
+
+                                                                Strona 4 z 8
+                                                                                                                      stanowiska
+                                                                                                                        Numer
+Rezultat 4: Skonfigurowany serwer
+Uwaga: Ocenie podlega konfiguracja systemu Windows Serwer, konto Administrator z hasłem ZAQ!2wsx lub zaq1@WSX
+X lub XX oznaczają numer stanowiska egzaminacyjnego.
+Kryteria 4.1 i 4.8 ÷ 4.10 należy ocenić po informacji od Przewodniczącego ZN o gotowości zdającego do oceny uzyskanego adresu IP i komunikacji
+pomiędzy urządzeniami sieciowymi. Sprawdzenie komunikacji wykonuje zdający w obecności egzaminatora
+    Konfiguracja przewodowego interfejsu sieciowego podłączonego do portu 1 przełącznika: nazwa LAN1, uzyskany z serwera
+ 1
+    DHCP adres IP: 172.20.250.150/24 oraz ustawiony adres serwera DNS: localhost
+    Konfiguracja przewodowego interfejsu sieciowego podłączonego do portu 4 przełącznika: nazwa LAN2, adres IP
+ 2
+    192.168.0.X/24, serwer DNS: localhost
+3 Zainstalowana drukarka sieciowa o adresie IP 192.168.0.200
+
+4 Udostępniona drukarka jako zasób printer_XX
+
+5 Serwer promowany do roli kontrolera domeny o nazwie egzaminXX.local
+
+6 W domenie utworzona jednostka organizacyjna KADRY z kontem użytkownika jnowak
+  Folder C:\Projekty ma ustawione zabezpieczenia tylko dla:
+  Administrator – Pełna kontrola,
+7 jnowak – Modyfikacja,
+  Użytkownicy – Odczyt i wykonywanie.
+  Folder jest udostępniony pod nazwą Projekty_drukarnia oraz ma ustawione uprawnienia udziału: Wszyscy – Pełna kontrola
+  Wykonane sprawdzenie komunikacji serwera z interfejsem LAN rutera, urządzenie odpowiada na polecenie np. ping
+8
+  172.20.250.1
+  Wykonane sprawdzenie komunikacji serwera ze stacją roboczą, urządzenie odpowiada na polecenie np. ping
+9
+  adres_ip_stacji_roboczej
+10 Wykonane sprawdzenie komunikacji serwera z drukarką, urządzenie odpowiada na polecenie np. ping 192.168.0.200
+
+
+
+
+                                                                Strona 5 z 8
+                                                                                                                         stanowiska
+                                                                                                                           Numer
+Rezultat 5: Skonfigurowana stacja robocza
+Uwaga: Ocenie podlega konfiguracja systemu Windows, konto Administrator z hasłem ZAQ!2wsx XX oznacza numer stanowiska egzaminacyjnego
+hasło do sieci bezprzewodowej: egzaminXX, gdzie XX oznacza nr. stanowiska
+1 Przewodowy interfejs sieciowy został wyłączony
+
+2 Adres IP bezprzewodowego interfejsu sieciowego uzyskany z zakresu 172.20.250.100 ÷ 172.20.250.200
+
+3 Adres serwera DNS bezprzewodowego interfejsu sieciowego 172.20.250.150
+
+4 Nazwa komputera: STACJAXX
+
+5 Włączone w systemie rejestrowanie udanych i nieudanych zdarzeń logowania użytkowników np. za pomocą secpol.msc
+
+6 Stacja robocza podłączona do domeny egzaminXX.local
+
+7 Ze stacji roboczej zalogowano się na konto domenowe użytkownika jnowak
+Rezultat 6: Kosztorys
+Uwaga: Plik z kosztorysem jest zapisany na nośniku USB Egzamin-x
+   Kosztorys znajduje się w arkuszu kalkulacyjnym w postaci pliku Kosztorys. W arkuszu znajduje się tabela zawierająca
+ 1
+   7 kolumn: Lp., Nazwa usługi, Cena netto w zł, VAT w zł, Cena brutto w zł, Ilość, Wartość brutto w zł
+2 Uwzględnione usługi: Konfiguracja systemu Windows na stacji roboczej oraz Konfiguracja systemu Windows Serwer
+
+3 Uwzględnione usługi: Instalacja i konfiguracja drukarki oraz Montaż okablowania
+
+4 Uwzględnione usługi: Konfiguracja przełącznika oraz Konfiguracja rutera
+
+5 Uwzględnione usługi: Podłączenie urządzeń sieciowych oraz Konfiguracja kontrolera domeny
+
+6 Uwzględniona usługa Specyfikacja podzespołów
+    Zastosowane formuły umożliwiające wykonywanie obliczeń zgodnych ze stanem faktycznym w kolumnach VAT w zł, Cena
+7
+    brutto w zł oraz Wartość brutto w zł
+8 Zastosowane formuły umożliwiające automatyczne sumowanie kolumny Wartość brutto w zł
+    Zastosowany format waluty lub księgowy w zł lub PLN dla kolumn: Cena netto w zł, Cena brutto w zł, Wartość brutto w zł oraz
+9
+    dla komórki z łączną wartością usług
+10 W kosztorysie zawarte jedynie faktycznie zaplanowane w zadaniu egzaminacyjnym usługi wymienione w kryteriach 6.2 ÷ 6.6
+
+                                                                  Strona 6 z 8
+                                                                                                                                stanowiska
+                                                                                                                                  Numer
+Przebieg 1: Wykonywanie okablowania sieciowego
+
+Zdający:
+    zdejmował izolację z kabla U/UTP i montował okablowanie sieciowe przy zastosowaniu odpowiednich narzędzi, zgodnie
+1
+    z zasadami BHP
+2 podczas montażu używał narzędzi zgodnie z ich przeznaczeniem
+
+3 po wykonaniu montażu zostawił uporządkowane stanowisko pracy
+
+
+
+
+Egzaminator …………………………………………………………………………….                                                         ..........................................................................
+                                         imię i nazwisko                                                                data i czytelny podpis
+
+
+
+
+                                                                Strona 7 z 8
+Załącznik 1. Schemat połączenia urządzeń
+
+
+
+
+                                           Strona 8 z 8
+

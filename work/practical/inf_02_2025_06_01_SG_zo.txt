@@ -1,0 +1,244 @@
+                                                                    Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+
+
+
+ Układ graficzny © CKE 2023                                                                          EGZAMIN ZAWODOWY
+                                                                                                          Rok 2025
+                                                                                                      ZASADY OCENIANIA
+
+                                                                                        Arkusz zawiera informacje prawnie chronione
+                                                                                            do momentu rozpoczęcia egzaminu
+
+
+
+
+      Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych i lokalnych sieci komputerowych
+      Oznaczenie arkusza: INF.02-01-25.06-SG
+      Symbol kwalifikacji: INF.02
+      Numer zadania: 01
+                                                                                         PODSTAWA PROGRAMOWA
+      Wersja arkusza: SG                                                                                2019
+
+
+                                                                                  Wypełnia egzaminator
+
+                                                                                                                                                          Numer
+                                   Kod ośrodka                         –                                                       Numer PESEL zdającego*   stanowiska
+
+
+
+                              Kod egzaminatora
+
+
+                                Data egzaminu
+                                                 Dzień Miesiąc   Rok
+
+
+Godzina rozpoczęcia egzaminu                            :
+
+
+
+ * w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+
+
+
+
+                                                                 Wi cej materia ów na stronie https://www.Testy.EgzaminZawodowy.info
+                                                Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+
+
+
+Egzaminatorze!
+ − Oceniaj prace zdających rzetelnie i z zaangażowaniem. Dokumentuj wyniki oceny.
+
+ − Stosuj przyjęte zasady oceniania w sposób obiektywny.
+
+ − Jeżeli zdający, wykonując zadanie egzaminacyjne, uzyskuje inne rezultaty albo pożądane rezultaty uzyskuje w inny sposób niż uwzględniony
+   w zasadach oceniania lub przedstawia nietypowe rozwiązanie, ale zgodnie ze sztuką w zawodzie, to nadal oceniaj zgodnie z kryteriami
+   zawartymi w zasadach oceniania. Informacje o tym, że zasady oceniania nie przewidują zaistniałej sytuacji, przekaż niezwłocznie w formie
+   pisemnej notatki do Przewodniczącego Zespołu Egzaminacyjnego z prośbą o przekazanie jej do Okręgowej Komisji Egzaminacyjnej. Notatka
+   może być sporządzona odręcznie w trybie roboczym.
+ − Informuj przewodniczącego zespołu nadzorującego o wszystkich nieprawidłowościach zaistniałych w trakcie egzaminu, w tym w szczególności
+   o naruszeniach przepisów bezpieczeństwa i higieny pracy i o podejrzeniach niesamodzielności w wykonaniu zadania przez zdającego.
+
+
+
+
+                                                                      Strona
+                                             Wi cej materia ów na stronie          2z7
+                                                                          https://www.Testy.EgzaminZawodowy.info
+                                                   Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+
+
+
+                                                                                                                      stanowiska
+                                                                                                                        Numer
+                                                                                                                                   Egzaminator wpisuje T,
+                                                                                                                                    jeżeli zdający spełnił
+                                       Elementy podlegające ocenie/kryteria oceny                                                  kryterium albo N, jeżeli
+                                                                                                                                          nie spełnił
+
+Rezultat 1: Montaż podzespołów oraz połączenie fizyczne urządzeń sieciowych
+UWAGA: Oceny kryterium 1.1 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny montażu pamięci RAM.
+Przebieg montażu należy ocenić zgodnie z kryteriami zapisanymi w Przebiegu 1
+1 Zamontowany w stacji roboczej moduł pamięci RAM bez uszkodzenia płyty głównej
+
+2 Urządzenia sieciowe i komputery podłączone zgodnie ze schematem - załącznik 1
+
+Rezultat 2: Identyfikacja parametrów
+UWAGA: identyfikacja parametrów została wykonana w systemie Linux na stacji roboczej.
+Należy porównać zapisy zdającego z tabeli 1, znajdującej się w arkuszu egzaminacyjnym ze zrzutem ekranowym zapisanym w pliku ram.jpg na dysku
+USB oznaczonym nazwą Egzamin-x, gdzie x to numer stanowiska egzaminacyjnego. W przypadku braku zgodności zapisów w tabeli 1 ze zrzutem,
+kryteria nie są spełnione. Dopuszcza się możliwość podania przez zdającego zapisu świadczącego o braku informacji, jeżeli jest zgodny ze zrzutem
+ekranowym
+1 Wykonana identyfikacja pamięci RAM za pomocą narzędzi systemowych, co jest udokumentowane w pliku ram.jpg
+
+2 W Tabeli 1 wpisana pojemność pamięci RAM
+
+3 W Tabeli 1 wpisany standard pamięci RAM
+
+4 W Tabeli 1 wpisana częstotliwość pamięci RAM
+
+5 W Tabeli 1 wpisany producent pamięci RAM
+
+6 W Tabeli 1 wpisany numer seryjny lub numer produktu pamięci RAM
+
+
+
+
+                                                                         Strona
+                                                Wi cej materia ów na stronie          3z7
+                                                                             https://www.Testy.EgzaminZawodowy.info
+                                                    Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+
+
+
+                                                                                                                       stanowiska
+                                                                                                                         Numer
+Rezultat 3: Skonfigurowane urządzenia sieciowe
+UWAGA: Oceny ustawień urządzeń należy dokonać po zgłoszeniu przez Przewodniczącego ZN o gotowości zdającego do prezentacji konfiguracji
+rutera, następnie przełącznika
+Kryteria 3.7 ÷ 3.9 należy ocenić po informacji od Przewodniczącego ZN o gotowości zdającego do oceny komunikacji urządzeń sieciowych
+    Ustawiony dla interfejsu WAN rutera: adres IP 100.100.100.9 z maską 255.255.255.240, adres bramy domyślnej
+ 1
+    100.100.100.1 oraz adres DNS 4.4.4.4
+2 Ustawiony dla interfejsu LAN rutera: adres IP 172.16.0.1/24
+
+3 Wyłączony w ruterze serwer DHCP
+
+4 Ustawiony w przełączniku adres IP 172.16.0.2/24
+
+5 Utworzona w przełączniku sieć VLAN o ID=2
+
+6 Do sieci VLAN przypisane porty 1, 2, 3 i 4 bez tagowania (w trybie access)
+
+7 Wykonany test potwierdzający komunikację serwera z ruterem np. ping 172.16.0.1
+
+8 Wykonany test potwierdzający komunikację serwera ze stacją roboczą np. ping 172.16.0.3
+
+9 Wykonany test potwierdzający komunikację serwera ze przełącznikiem np. ping 172.16.0.2
+
+
+
+
+                                                                          Strona
+                                                 Wi cej materia ów na stronie          4z7
+                                                                              https://www.Testy.EgzaminZawodowy.info
+                                                     Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+
+
+
+                                                                                                                        stanowiska
+                                                                                                                          Numer
+Rezultat 4: Skonfigurowany serwer
+UWAGA: Ocenie podlega konfiguracja systemu Windows Server, konto Administrator z hasłem ZAQ!2wsx
+  Ustawiona dla interfejsu sieciowego serwera podłączonego do portu 3 przełącznika nazwa LAN1, dla interfejsu sieciowego
+1 serwera podłączonego do portu 4 przełącznika nazwa LAN2 oraz utworzony zespół kart interfejsu sieciowego na serwerze
+  lokalnym (NIC Teaming) o nazwie LAN12, grupujący interfejsy sieciowe LAN1 i LAN2
+    Ustawiony dla interfejsu sieciowego LAN12: IP 172.16.0.4 z maską 255.255.255.0, bramą domyślną 172.16.0.1 oraz DNS
+2
+    localhost
+3 Zainstalowana usługa Active Directory oraz promowany serwer lokalny do roli kontrolera domeny
+4 Utworzony nowy las z domeną główną informatyk.local
+5 Utworzona w domenie jednostka organizacyjna Serwisanci
+6 W utworzonej jednostce organizacyjnej dodane konto użytkownika Adam Abacki z nazwą logowania abackia
+7 Utworzony folder C:\Profile i udostępniony pod nazwą profile$
+    Ustawione do utworzonego zasobu uprawnienia sieciowe tylko dla Wszyscy – Pełna kontrola oraz tylko dla utworzonego
+8
+    folderu zabezpieczenia dla grupy Administratorzy – Pełna kontrola oraz Użytkownicy – Pełna kontrola
+    Ustawiona dla utworzonego użytkownika ścieżka profilu mobilnego, który będzie zlokalizowany w udostępnionym folderze
+9
+    \\SERWER-XX\profile$\abackia (XX oznacza numer stanowiska egzaminacyjnego)
+10 W folderze C:\Profile znajduje się folder z profilem użytkownika abackia
+Rezultat 5: Skonfigurowana stacja robocza
+UWAGA: Ocenie podlega konfiguracja systemu Windows konto Administrator z hasłem ZAQ!2wsx
+    Ustawione dla przewodowego interfejsu sieciowego: nazwa LAN3, adres IP 172.16.0.3 z maską 255.255.255.0, brama
+1
+    domyślna 172.16.0.1 oraz DNS 172.16.0.4
+2 Ustawiona nazwa komputera: SERWIS
+3 Stacja robocza dodana do utworzonej domeny
+4 Na stacji roboczej można zalogować się do domeny na konto abackia
+5 Utworzony na dysku C:\ folder o nazwie PLIKI
+6 W utworzonym folderze umieszczony plik tapeta.jpg
+7 Plik tapeta.jpg został zaszyfrowany za pomocą atrybutów plików
+                                                                           Strona
+                                                  Wi cej materia ów na stronie          5z7
+                                                                               https://www.Testy.EgzaminZawodowy.info
+                                                     Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+
+
+
+                                                                                                                                                     stanowiska
+                                                                                                                                                       Numer
+Rezultat 6: Harmonogram prac
+
+UWAGA: plik z harmonogramem został zapisany na nośniku USB opisanym Egzamin-x
+    W arkuszu kalkulacyjnym utworzony plik o nazwie harmonogram, zawiera 2 kolumny o nazwach: Nazwa czynności i Czas
+1
+    wykonania [min]
+2 W kolumnie Czas wykonania [min] umieszczone dowolne wartości nieujemne
+    Komórka wyświetlająca obliczoną sumę czasu jest wypełniona kolorem niebieskim, gdy łączny czas nie przekracza 150 minut
+3
+    lub kolorem zielonym w przeciwnym wypadku (dowolny odcień)
+4 Obliczenia w komórce RAZEM wykonują się automatyczne
+
+Przebieg 1: Montaż podzespołu
+
+Zdający:
+
+1 montaż pamięci RAM wykonywał przy wyłączonym zasilaniu
+
+2 montaż pamięci RAM wykonywał z założoną opaską antystatyczną
+
+3 montaż pamięci RAM wykonywał korzystając z narzędzi do tego przeznaczonych
+
+
+
+
+Egzaminator …………………………………………………………………………….                                                                              ..........................................................................
+                                         imię i nazwisko                                                                                     data i czytelny podpis
+
+
+
+
+                                                                           Strona
+                                                  Wi cej materia ów na stronie          6z7
+                                                                               https://www.Testy.EgzaminZawodowy.info
+   Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+
+Załącznik 1. Schemat połączenia urządzeń
+
+
+
+
+                         Strona
+Wi cej materia ów na stronie          7z7
+                             https://www.Testy.EgzaminZawodowy.info
+

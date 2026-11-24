@@ -1,0 +1,280 @@
+                                                                             Arkusz zawiera informacje
+                                                                          prawnie chronione do momentu
+                                                                               rozpoczęcia egzaminu
+
+
+
+Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych
+                     i lokalnych sieci komputerowych
+Symbol kwalifikacji: INF.02
+Numer zadania: 01
+Wersja arkusza: SG
+
+                                        Wypełnia zdający
+
+Numer PESEL zdającego*                                                        Miejsce na naklejkę z numerem
+                                                                                PESEL i z kodem ośrodka
+
+         Numer stanowiska
+
+
+
+
+Czas trwania egzaminu: 150 minut                                                          INF.02-01-26.06-SG
+
+EGZAMIN ZAWODOWY
+                                                              PODSTAWA PROGRAMOWA
+Rok 2026
+                                                                      2019
+CZĘŚĆ PRAKTYCZNA
+
+Instrukcja dla zdającego
+
+    1.    Na pierwszej stronie arkusza egzaminacyjnego wpisz w oznaczonym miejscu swój numer PESEL*,
+          numer stanowiska i naklej naklejkę** z numerem PESEL i z kodem ośrodka.
+    2.    Sprawdź, czy arkusz egzaminacyjny zawiera 6 stron i nie zawiera błędów. Ewentualny brak stron
+          lub inne usterki zgłoś przez podniesienie ręki przewodniczącemu zespołu nadzorującego.
+    3.    Zapoznaj się z treścią zadania oraz stanowiskiem egzaminacyjnym. Masz na to 10 minut. Czas ten nie
+          jest wliczany do czasu trwania egzaminu.
+    4.    Czas rozpoczęcia i zakończenia pracy zapisze w widocznym miejscu przewodniczący zespołu
+          nadzorującego.
+    5.    Wykonaj samodzielnie zadanie egzaminacyjne. Przestrzegaj zasad bezpieczeństwa i organizacji
+          pracy.
+    6.    Jeżeli w zadaniu egzaminacyjnym występuje polecenie „zgłoś gotowość do oceny przez podniesienie
+          ręki”, to zastosuj się do polecenia i poczekaj na decyzję przewodniczącego zespołu nadzorującego.
+    7.    Po zakończeniu wykonania zadania pozostaw rezultaty jego wykonania oraz arkusz egzaminacyjny
+          na swoim stanowisku lub w miejscu wskazanym przez przewodniczącego zespołu nadzorującego.
+    8.    Po uzyskaniu zgody zespołu nadzorującego możesz opuścić salę/miejsce przeprowadzania egzaminu.
+
+                                                                                                Powodzenia!
+
+* w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+** w przypadku otrzymania naklejki
+
+Układ graficzny
+© CKE 2025
+Zadanie egzaminacyjne
+
+Korzystając z dostępnych narzędzi, oprogramowania oraz elementów znajdujących się na stanowisku
+egzaminacyjnym wykonaj czynności zapisane w arkuszu egzaminacyjnym.
+W systemie Windows wykorzystaj konto Administrator z hasłem ZAQ!2wsx
+W systemie Linux wykorzystaj konto administrator z hasłem ZAQ!2wsx (konto z prawem podniesienia
+uprawnień do root z hasłem ZAQ!2wsx)
+Ruter oraz przełącznik pracują na ustawieniach fabrycznych zgodnie z dokumentacją, która jest dostępna na
+nośniku opisanym DOKUMENTACJA/PROGRAMY. Jeżeli ruter lub przełącznik wymaga zmiany hasła, ustaw
+je zgodnie z wymogami urządzenia.
+
+1. Wykonaj montaż zapasowego dysku twardego:
+     − zamontuj zapasowy dysk twardy w jednostce centralnej stacji roboczej.
+
+
+UWAGA: Po wykonaniu montażu dysku twardego zgłoś Przewodniczącemu ZN – przez podniesienie ręki –
+gotowość do oceny. Po uzyskaniu zgody przystąp do dalszych czynności montażowych i uruchomienia
+systemu operacyjnego stacji roboczej.
+
+2. Skonfiguruj ruter zgodnie z następującymi zaleceniami:
+   − adres IP interfejsu LAN: 192.168.16.1/24
+   − serwer DHCP:
+      ‒ włączony
+      ‒ zakres adresów: 192.168.16.12 ÷ 192.168.16.20
+      ‒ zarezerwowany adres IP 192.168.16.12 dla interfejsu LANZ serwera.
+
+UWAGA: Po wykonaniu konfiguracji zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość
+do oceny ustawień rutera.
+
+3. Skonfiguruj przełącznik zgodnie z następującymi zaleceniami:
+   − utworzone nowe sieci VLAN 802.1Q o ID = 2 oraz ID = 4
+  −   porty 1, 2 i 3 przypisane do sieci VLAN o ID = 2 bez tagowania (w trybie dostępu)
+  −   port 4 przypisany do sieci VLAN o ID = 4 bez tagowania (w trybie dostępu)
+  −   adres IP przełącznika: 192.168.0.32/24 (dla przełącznika L3 adres IP przypisany do VLAN o ID = 2)
+  −   brama domyślna: 192.168.0.X, gdzie X oznacza numer stanowiska egzaminacyjnego
+
+UWAGA: Po wykonaniu konfiguracji zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość
+do oceny ustawień przełącznika.
+
+4. Za pomocą kabli połączeniowych znajdujących się na stanowisku egzaminacyjnym połącz urządzenia
+   zgodnie ze schematem, a następnie podłącz je do sieci zasilającej.
+
+
+
+
+                                               Strona 2 z 6
+                                       Schemat połączenia urządzeń
+
+5. Za pomocą dostępnych w systemie operacyjnym Linux narzędzi przeprowadź diagnostykę stacji
+   roboczej:
+  − dokonaj identyfikacji parametrów systemu i podzespołów ujętych Tabeli 3. Parametry systemu
+     i podzespołów stacji roboczej oraz ocena znajdującej się w arkuszu egzaminacyjnym. Wyniki
+     identyfikacji udokumentuj w postaci zrzutów ekranowych, w katalogu LINUX na dysku USB
+     oznaczonym nazwą Egzamin-x, gdzie x to numer stanowiska egzaminacyjnego
+  − odczytane dane zapisz w tabeli 3. W przypadku braku możliwości identyfikacji wymaganych
+     parametrów przez system należy zapisać brak danych
+  − oceń, czy parametry systemu i wskazanych podzespołów spełniają minimalne wymogi
+     oprogramowania typu CAD. W tabeli 3. w wierszu Ocena zapisz, czy jest możliwa instalacja tego
+     programu na stacji roboczej w systemie Linux. Swoją ocenę uzasadnij poprzez odniesienie się do
+     odczytanych parametrów.
+
+      Tabela 1. Minimalne wymagania oprogramowania typu CAD dla systemu Linux
+      System operacyjny        Ubuntu 20.04 LTS lub nowszy, OpenSUSE 15.5 lub nowszy
+      Procesor                 Intel i3 lub AMD Ryzen 3
+      Pamięć RAM               8 GB
+      Rozdzielczość monitora   1280 × 720 pikseli lub wyższa
+
+6. Na stacji roboczej skonfiguruj system Windows:
+   − skonfiguruj przewodowy interfejs sieciowy podłączony do przełącznika:
+      ‒ nazwa połączenia: LAN2
+      ‒ adres IP: 192.168.0.33/24
+      ‒ brama domyślna i DNS: adres IP interfejsu LANW serwera
+   − utwórz konto nowego użytkownika
+      ‒ pełna nazwa oraz nazwa logowania: TESTY
+      ‒ hasło docelowe: TE20#st10@
+  −    dodaj użytkownika TESTY do grupy użytkowników Administratorzy
+  −    skonfiguruj zapasowy dysk twardy:
+        ‒ jedna partycja, na całej powierzchni dysku
+        ‒ system plików: NTFS
+        ‒ litera dysku: M:
+        ‒ etykieta: DANE
+  −    udostępnij zapasowy dysk jako udział sieciowy:
+        ‒ nazwa udziału: DRUGI
+        ‒ pełne uprawnienia i zabezpieczenia tylko dla grupy Administratorzy.
+
+
+                                               Strona 3 z 6
+7. Skonfiguruj serwer z zainstalowanym systemem operacyjnym Windows:
+  −   skonfiguruj przewodowy interfejs sieciowy serwera podłączony do rutera:
+       ‒ nazwa połączenia: LANZ
+       ‒ adres IP oraz pozostałe parametry konfiguracji sieciowej: uzyskiwane automatycznie
+       ‒ odśwież adres IP w celu pobrania go z DHCP
+  −   skonfiguruj przewodowy interfejs sieciowy serwera podłączony do przełącznika:
+       ‒ nazwa połączenia: LANW
+       ‒ adres IP: 192.168.0.X/24, gdzie X oznacza numer stanowiska egzaminacyjnego
+       ‒ brama domyślna: brak
+       ‒ DNS: brak
+  −   zainstaluj drukarkę sieciową. Drukarka jest dostępna przez port TCP/IP pod adresem IP 192.168.0.200
+      poprzez protokół RAW. Sterowniki znajdują się w folderze DRUKARKA na nośniku opisanym
+      DOKUMENTACJA/PROGRAMY
+  −   wydrukuj stronę testową drukarki, wydruk strony testowej zasygnalizuj przez podniesienie ręki. Stronę
+      testową dołącz do arkusza egzaminacyjnego
+  −   dla konta Administrator wykonaj mapowanie dysku twardego, udostępnionego na stacji roboczej
+       ‒ litera dysku: K:
+
+ 8. Na serwerze za pomocą poleceń systemowych wykonaj test komunikacji serwera z przełącznikiem,
+    drukarką, stacją roboczą oraz interfejsem LAN rutera. Wyświetl adres IP interfejsu LANZ serwera.
+    W razie potrzeby na stacji roboczej zmień odpowiednio ustawienia zapory sieciowej.
+
+ UWAGA: Po wykonaniu testów połączenia zgłoś Przewodniczącemu ZN – przez podniesienie ręki –
+ gotowość do przeprowadzenia ponownego sprawdzenia komunikacji. Sprawdzenie wykonaj w obecności
+ egzaminatora. Na ekranie serwera wyświetl automatycznie nadany adres IP.
+
+ 9. Korzystając jedynie z podzespołów wymienionych w Tabeli 2. Zestawienie podzespołów sporządź
+    w arkuszu kalkulacyjnym kosztorys nowej jednostki centralnej, zgodnie z następującymi zaleceniami:
+  − przeznaczeniem jednostki centralnej jest magazyn danych w domenie Active Directory, w środowisku
+     Windows, na platformie Intel. Jednostka ma być wyposażona w dodatkowy dysk twardy przeznaczony
+     do przechowywania dużych porcji zarchiwizowanych danych
+  − kosztorys wykonany zgodnie ze wzorem przedstawionym w tabeli 4, zapisz pod nazwą KOSZTORYS
+     na dysku USB oznaczonym nazwą Egzamin-x
+  − obliczenia w kolumnach VAT (kwota), Cena brutto, Wartość netto oraz Wartość brutto muszą
+     wykonywać się automatycznie
+  − do zsumowania kolumn Wartość netto i Wartość brutto należy zastosować wbudowaną funkcję
+     sumującą
+  − jeśli komórka zawierająca sumę kolumny Wartość brutto ma wartość większą lub równą 2000 zł,
+     w wierszu Rabat 10% dla zakupów za 2000,00 zł i więcej powinna wyliczać się automatycznie kwota
+     rabatu równa 10% sumy brutto, w przeciwnym wypadku wpisywane jest 0
+  − w wierszu Do zapłaty wyliczana jest automatycznie kwota do zapłaty, uwzględniająca przysługujący
+     rabat
+  −   komórki zawierające kwoty w złotych należy sformatować kategorią walutową z symbolem zł lub PLN
+
+
+
+
+                                               Strona 4 z 6
+Tabela 2. Zestawienie podzespołów
+                                                                                                 Cena
+  Nazwa elementu                                    Parametry
+                                                                                                 netto
+ Płyta główna 1      MSI B450 TOMAHAWK MAX, Socket AM4, chipset AMD B450, 519,00
+                     pamięć DDR4-2666 MHz, DDR4-2400 MHz, DDR4-2133 MHz, SATA
+                     III (6 Gb/s) - 6 szt., M.2 PCIe NVMe 3.0 x4 / SATA - 1 szt., PCIe 3.0
+                     x16 - 1 szt., PCIe 2.0 x16 (tryb x4) - 1 szt., PCIe 2.0 x1 - 3 szt., USB
+                     3.2 - 1 szt., USB 2.0 - 2 szt.
+ Płyta główna 2      MSI MPG Z390 GAMING PLUS, Socket 1151 (Intel Core 8 i 9 gen.), 589,00
+                     chipset Intel Z390, pamięć DDR4-2666 MHz, DDR4-2400 MHz, DDR4-
+                     2133 MHz, SATA III (6 Gb/s) - 6 szt.,M.2 - 2 szt., M.2 (Wi-Fi) - 1 szt.,
+                     PCIe 3.0 x16 - 2 szt., PCIe 3.0 x1 - 4 szt., USB 3.2 - 2 szt., USB 2.0 -
+                     2 szt.
+ Płyta główna 3      ASRock X299 EXTREME 4 (PCI-E DDR4 USB 3.1 / M.2), Socket 2066 979,00
+                     (Intel Core i9 X-series, Intel Core i7 X-series, Intel Core i5 X-series),
+                     chipset Intel X299, pamięć DDR4-2666 MHz, DDR4-2400 MHz,
+                     DDR4-2133 MHz, SATA III (6 Gb/s) - 8 szt., PCIe 3.0 x16 - 3 szt., PCIe
+                     3.0 x1 - 1 szt., USB 3.2 - 1 szt., USB 2.0 - 2 szt.
+ Procesor 1          Intel Core i9-9900K, 3.6 GHz (5.0 GHz w trybie turbo), Socket 1151, 2199,00
+                     obsługiwana pamięć DDR4-2666 (PC4-21333), pobór mocy 95W
+ Procesor 2          AMD Ryzen 5 3600 (6 rdzeni, od 3.60GHz do 4.20GHz, 35 MB cache) 899,00
+                     pobór mocy 65W
+ Pamięć RAM 1        16 GB (DIMM DDR4, 2666 MHz)                                               329,00
+ Pamięć RAM 2        8 GB (DIMM DDR3, 3000 MHz)                                                189,00
+ Dysk twardy 1       SSD M.2 240 GB                                                            287,00
+ Dysk twardy 2       HDD SATA III, 5400 obr. 3000 GB                                           359,00
+ Karta graficzna 1   AMD Radeon RX 580, 4096 MB GDDR5, rekomendowana moc 699,00
+                     zasilacza 500W
+ Karta graficzna 2   NVIDIA GeForce GTX 1050Ti, 4096 MB GDDR5, rekomendowana 749,00
+                     moc zasilacza 300W
+ Zasilacz 1          ATX, 650 W                                                                89,00
+ Zasilacz 2          190 W                                                                     259,00
+ Obudowa             Middle Tower, płyta główna ATX                                            89,00
+ System operacyjny 1 Microsoft Windows 11 Pro 64bit                                            699,00
+ System operacyjny 2 Microsoft Windows 11 Home 64bit OEM                                       499,00
+
+UWAGA: Po zakończeniu prac nie wylogowuj się oraz nie wyłączaj komputerów i urządzeń sieciowych
+znajdujących się na Twoim stanowisku egzaminacyjnym.
+
+Czas na wykonanie zadania wynosi 150 minut.
+
+Ocenie będzie podlegać 6 rezultatów:
+ − wykonany montaż podzespołu oraz połączenie fizyczne urządzeń,
+ −   diagnostyka,
+ −   skonfigurowane urządzenia sieciowe,
+ −   skonfigurowany serwer,
+  − skonfigurowana stacja robocza,
+  − kosztorys
+oraz
+przebieg wykonywania montażu podzespołu.
+
+UWAGA: Zawartość dysku USB, wykorzystywanego podczas egzaminu do zapisu zrzutów ekranowych lub
+dokumentów, jest usuwana po egzaminie i nie stanowi dokumentacji egzaminacyjnej przekazywanej wraz
+z arkuszem do OKE.
+                                              Strona 5 z 6
+Tabela 3. Parametry systemu i podzespołów stacji roboczej oraz ocena
+                             Nazwa
+ System operacyjny Linux
+                             Wersja
+
+ Procesor                    Nazwa i oznaczenie
+
+ Zainstalowana pamięć RAM    Rozmiar
+
+ Monitor                     Maksymalna rozdzielczość
+
+
+ Ocena
+
+
+
+
+Tabela 4. Wzór kosztorysu
+                                       Cena        VAT        Cena             Wartość   Wartość
+ Lp.        Nazwa elementu                                             Ilość
+                                       netto     (kwota)      brutto            netto     brutto
+
+
+
+
+                                                               Suma
+                                       Rabat 10% dla zakupów za 2000,00 zł i więcej
+                                                                       Do zapłaty
+
+
+
+
+                                               Strona 6 z 6
+

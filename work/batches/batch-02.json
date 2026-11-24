@@ -1,0 +1,3152 @@
+[
+ {
+  "id": "e8d613ef",
+  "stem": "Przedstawiony na rysunku wtyk należy zastosować do zakańczania kabli kategorii",
+  "answers": {
+   "A": "3",
+   "B": "5",
+   "C": "5a",
+   "D": "6"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/ee_08_2024_01_sg_17_0.webp"
+  ],
+  "topics": [
+   "cabling"
+  ]
+ },
+ {
+  "id": "ea80ce3c",
+  "stem": "Wynik wykonania którego polecenia sieciowego systemu z rodziny Windows jest przedstawiony na rysunku?",
+  "answers": {
+   "A": "arp -a",
+   "B": "net view",
+   "C": "net session",
+   "D": "route print"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_13_2024_06_sg_26_0.webp"
+  ],
+  "topics": [
+   "protocols",
+   "windows"
+  ]
+ },
+ {
+  "id": "eb7c9b72",
+  "stem": "Który z adresów IPv4 jest adresem publicznym?",
+  "answers": {
+   "A": "10.0.3.42",
+   "B": "172.16.32.7",
+   "C": "192.168.0.4",
+   "D": "194.204.152.34"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "addressing"
+  ]
+ },
+ {
+  "id": "ecb95591",
+  "stem": "Na schemacie okablowania strukturalnego przy jednym z elementów widnieje zapis MDF. Z którym punktem dystrybucyjnym jest ten element związany?",
+  "answers": {
+   "A": "Głównym.",
+   "B": "Pośrednim.",
+   "C": "Budynkowym.",
+   "D": "Kampusowym."
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "cabling",
+   "hardware"
+  ]
+ },
+ {
+  "id": "ed3ff157",
+  "stem": "Pliki specjalne urządzeń, tworzone podczas instalacji sterowników w systemie Linux, są zapisywane w katalogu",
+  "answers": {
+   "A": "/dev",
+   "B": "/var",
+   "C": "/sbin",
+   "D": "/proc"
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux"
+  ]
+ },
+ {
+  "id": "ed7146ae",
+  "stem": "Przedstawione obszary sieci komputerowej powstałe po skonfigurowaniu rutera to domeny typu",
+  "answers": {
+   "A": "rutującego.",
+   "B": "wirtualnego.",
+   "C": "internetowego.",
+   "D": "rozgłoszeniowego."
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/ee_08_2024_06_sg_25_0.webp"
+  ],
+  "topics": [
+   "netdevices",
+   "winserver"
+  ]
+ },
+ {
+  "id": "ed8262a9",
+  "stem": "Aby serwer Windows mógł zarządzać usługami katalogowymi, należy zainstalować",
+  "answers": {
+   "A": "rolę serwera Web.",
+   "B": "kontroler domeny.",
+   "C": "rolę serwera DHCP.",
+   "D": "usługi zarządzania prawami."
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "protocols",
+   "winserver",
+   "windows"
+  ]
+ },
+ {
+  "id": "ee166e14",
+  "stem": "Które urządzenie należy podłączyć do sieci lokalnej w miejscu wskazanym na rysunku, aby komputery miały dostęp do Internetu?",
+  "answers": {
+   "A": "Most.",
+   "B": "Ruter.",
+   "C": "Przełącznik.",
+   "D": "Koncentrator."
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_13_2024_01_sg_16_0.webp"
+  ],
+  "topics": [
+   "netdevices"
+  ]
+ },
+ {
+  "id": "effbf88b",
+  "stem": "Do konserwacji elementów łożyskowanych oraz ślizgowych w urządzeniach peryferyjnych stosuje się",
+  "answers": {
+   "A": "tetrową szmatkę.",
+   "B": "smar syntetyczny.",
+   "C": "powłokę grafitową.",
+   "D": "sprężone powietrze."
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux"
+  ]
+ },
+ {
+  "id": "f36a933e",
+  "stem": "Jednym z narzędzi zabezpieczających system przed oprogramowaniem, które bez wiedzy użytkownika pozyskuje i wysyła jego autorowi dane osobowe, numery kart płatniczych, informacje o adresach stron WWW odwiedzanych przez użytkownika, hasła i używane adresy mailowe, jest program",
+  "answers": {
+   "A": "HDTune",
+   "B": "FakeFlashTest",
+   "C": "Reboot Restore Rx",
+   "D": "Spyboot Search & Destroy"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "hardware",
+   "security"
+  ]
+ },
+ {
+  "id": "f4f68249",
+  "stem": "Ile komputerów można zaadresować w sieci z maską 255.255.255.224?",
+  "answers": {
+   "A": "25 komputerów.",
+   "B": "27 komputerów.",
+   "C": "30 komputerów.",
+   "D": "32 komputery."
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "addressing"
+  ]
+ },
+ {
+  "id": "f520fb2f",
+  "stem": "Aby uzyskać największą prędkość przepływu danych w przypadku, gdy domowy ruter pracuje w paśmie częstotliwości 5 GHz, do notebooka powinno się zamontować bezprzewodową kartę sieciową pracującą w standardzie",
+  "answers": {
+   "A": "802.11a",
+   "B": "802.11b",
+   "C": "802.11g",
+   "D": "802.11n"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "netdevices"
+  ]
+ },
+ {
+  "id": "f870f2b7",
+  "stem": "Który plik wykorzystuje system Windows, przy hibernacji, do przechowywania kopii pamięci systemowej na dysku twardym?",
+  "answers": {
+   "A": "tape.sys",
+   "B": "stream.sys",
+   "C": "hiberfil.sys",
+   "D": "wimmount.sys"
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux",
+   "windows",
+   "hardware"
+  ]
+ },
+ {
+  "id": "f916ab4f",
+  "stem": "Narzędziem do monitorowania lokalnych sieci komputerowych jest",
+  "answers": {
+   "A": "Nmap",
+   "B": "SCTP",
+   "C": "pwd",
+   "D": "find"
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "peripherals",
+   "hardware"
+  ]
+ },
+ {
+  "id": "f92e5679",
+  "stem": "Aby użytkownik systemu Linux mógł sprawdzić zawartość katalogu, wyświetlając pliki i katalogi, oprócz polecenia ls może skorzystać z polecenia",
+  "answers": {
+   "A": "mkdir",
+   "B": "pwd",
+   "C": "man",
+   "D": "tree"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux"
+  ]
+ },
+ {
+  "id": "fbb09b3e",
+  "stem": "Oprogramowanie do wirtualizacji dostępne jako rola w systemie Windows Serwer 2019 to",
+  "answers": {
+   "A": "VMware",
+   "B": "Hyper-V",
+   "C": "Virtual PC",
+   "D": "Virtual Box"
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "winserver",
+   "windows",
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "fd820708",
+  "stem": "Które bity w 48 bitowym adresie sprzętowym MAC są identyfikatorem producenta?",
+  "answers": {
+   "A": "Pierwsze 8 bitów.",
+   "B": "Ostatnie 8 bitów.",
+   "C": "Pierwsze 24 bity.",
+   "D": "Ostatnie 24 bity."
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "other"
+  ]
+ },
+ {
+  "id": "ffae7206",
+  "stem": "Aby umożliwić przeglądarce obsługę innych dokumentów niż pliki HTML, należy zainstalować zewnętrzne biblioteki lub programy nazywane",
+  "answers": {
+   "A": "inputs",
+   "B": "plugins",
+   "C": "readers",
+   "D": "protocols"
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "003b5e79",
+  "stem": "Możliwą przyczyną niestabilnej pracy komputera, która objawia się zawieszaniem systemu oraz częstymi restartami, jest",
+  "answers": {
+   "A": "przegrzewanie się chipsetu.",
+   "B": "fragmentacja dysku twardego.",
+   "C": "za niska temperatura w pomieszczeniu.",
+   "D": "uszkodzona bateria podtrzymująca BIOS."
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "hardware"
+  ]
+ },
+ {
+  "id": "00a389a0",
+  "stem": "W zasadach grup włączono i skonfigurowano opcję „Ustaw ścieżkę profilu mobilnego dla wszystkich użytkowników logujących się do tego komputera”: W którym folderze serwera będzie się znajdował profil mobilny użytkownika jkowal?",
+  "answers": {
+   "A": "\\profile\\jkowal",
+   "B": "\\profile\\username",
+   "C": "\\profile\\serwer\\username",
+   "D": "\\profile\\username\\jkowal"
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_13_2023_01_sg_33_0.webp"
+  ],
+  "topics": [
+   "winserver"
+  ]
+ },
+ {
+  "id": "01c473c4",
+  "stem": "Na zrzucie ekranowym jest przedstawiona konfiguracja zasad haseł w zasadach grup systemu Windows. Która z opcji zostanie wdrożona w tej konfiguracji?",
+  "answers": {
+   "A": "Użytkownik nigdy nie musi zmieniać hasła.",
+   "B": "Hasła użytkownika muszą być zmieniane co 10 dni.",
+   "C": "Użytkownik może zmienić hasło na nowe po 8 dniach.",
+   "D": "Hasło może zawierać w sobie nazwę konta użytkownika."
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_13_2023_01_sg_32_0.webp"
+  ],
+  "topics": [
+   "winserver",
+   "windows",
+   "security"
+  ]
+ },
+ {
+  "id": "01eb393f",
+  "stem": "Drukarka posiada stały adres IP 172.16.0.101 z maską 255.255.255.0. Który adres IP powinien być przypisany do komputera, aby była możliwa komunikacja z drukarką w sieci lokalnej?",
+  "answers": {
+   "A": "255.255.255.1",
+   "B": "173.16.0.101",
+   "C": "172.16.1.101",
+   "D": "172.16.0.100"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "addressing",
+   "printers"
+  ]
+ },
+ {
+  "id": "0206ec39",
+  "stem": "Wskaż złącze, które należy wykorzystać do podłączenia wentylatora, którego parametry przedstawiono w tabeli.",
+  "answers": {
+   "A": "",
+   "B": "",
+   "C": "",
+   "D": ""
+  },
+  "correct": "B",
+  "imageAnswers": true,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2023_01_sg_08_0.webp"
+  ],
+  "topics": [
+   "hardware"
+  ]
+ },
+ {
+  "id": "04113055",
+  "stem": "Do usunięcia elementu Wszystkie programy z prostego Menu Start systemu Windows należy wykorzystać przystawkę",
+  "answers": {
+   "A": "lusrmgr.msc",
+   "B": "azman.msc",
+   "C": "gpedit.msc",
+   "D": "ciadv.msc"
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "windows"
+  ]
+ },
+ {
+  "id": "05cf1524",
+  "stem": "Planując prace modernizacyjne komputera przenośnego, związane z wymianą procesora, należy w pierwszej kolejności",
+  "answers": {
+   "A": "rozkręcić obudowę laptopa i rozpocząć montaż.",
+   "B": "zdemontować kartę graficzną, kartę Wi-Fi oraz moduły pamięci RAM.",
+   "C": "sprawdzić typ gniazda procesora oraz specyfikację techniczną płyty głównej.",
+   "D": "zakupić znacząco wydajniejszy procesor pasujący do gniazda na płycie głównej."
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "netdevices",
+   "hardware",
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "06170cc1",
+  "stem": "Które z poleceń systemu Windows należy zastosować, aby otrzymać wynik jak na przedstawionym rysunku?",
+  "answers": {
+   "A": "ping",
+   "B": "tracert",
+   "C": "netstat",
+   "D": "ipconfig"
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_13_2023_06_sg_25_0.webp"
+  ],
+  "topics": [
+   "windows"
+  ]
+ },
+ {
+  "id": "09ec1c81",
+  "stem": "Ile maksymalnie adresów sieci jest dostępnych w adresacji IP klasy A?",
+  "answers": {
+   "A": "32 adresy.",
+   "B": "64 adresy.",
+   "C": "128 adresów.",
+   "D": "254 adresy."
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "addressing"
+  ]
+ },
+ {
+  "id": "0af013e2",
+  "stem": "Przedstawiony program jest wykorzystywany do diagnostyki",
+  "answers": {
+   "A": "pamięci RAM.",
+   "B": "płyt głównych.",
+   "C": "kart graficznych.",
+   "D": "dysków twardych."
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/ee_08_2023_01_sg_30_0.webp"
+  ],
+  "topics": [
+   "hardware"
+  ]
+ },
+ {
+  "id": "0b3fe3f9",
+  "stem": "Użycie polecenia sudo ifup eth0 do konfiguracji interfejsu sieciowego w systemie Linux spowoduje",
+  "answers": {
+   "A": "wyświetlenie prędkości łącza sieciowego.",
+   "B": "wyświetlenie jego adresu IP.",
+   "C": "jego wyłączenie.",
+   "D": "jego włączenie."
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "addressing",
+   "linux"
+  ]
+ },
+ {
+  "id": "0b5f128c",
+  "stem": "Które z komputerów o adresach IPv4 przedstawionych w tabeli należą do tej samej sieci?",
+  "answers": {
+   "A": "1 i 2 Komputer Adres IPv4",
+   "B": "2 i 3 1 172.50.12.1/16",
+   "C": "2 i 4",
+   "D": "3 i 4"
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_13_2023_01_sg_22_0.webp"
+  ],
+  "topics": [
+   "addressing"
+  ]
+ },
+ {
+  "id": "0de8a165",
+  "stem": "W przypadku zalania układu elektronicznego klawiatury słodkim napojem należy natychmiast odłączyć ją od zestawu komputerowego, a następnie",
+  "answers": {
+   "A": "zdemontować każdy z klawiszy, przesmarować elementy ruchome smarem łożyskowym i podłączyć klawiaturę do komputera.",
+   "B": "przeczyścić całą klawiaturę w alkoholu izopropylowym i pozostawić na 24 h do wyschnięcia.",
+   "C": "wypłukać klawiaturę w wodzie destylowanej z detergentem i podłączyć ją do komputera.",
+   "D": "zdemontować klawisze i pozostawić do wyschnięcia na minimum 48 h."
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "peripherals"
+  ]
+ },
+ {
+  "id": "0ed990f3",
+  "stem": "Do organizacji przewodów wewnątrz jednostki centralnej można wykorzystać",
+  "answers": {
+   "A": "śruby.",
+   "B": "zworki.",
+   "C": "opaski zaciskowe.",
+   "D": "podkładki metalowe."
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "other"
+  ]
+ },
+ {
+  "id": "0f3ad427",
+  "stem": "Ile punktów rozdzielczych, według normy PN-EN 50174, powinno znajdować się w 3-kondygnacyjnym budynku, jeżeli powierzchnia każdej kondygnacji wynosi około 800 m 2 ?",
+  "answers": {
+   "A": "1",
+   "B": "2",
+   "C": "3",
+   "D": "4"
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "protocols"
+  ]
+ },
+ {
+  "id": "0ff146c0",
+  "stem": "Parametr NEXT oznacza zakłócenie spowodowane wpływem pola elektromagnetycznego",
+  "answers": {
+   "A": "jednej pary kabla na drugą parę kabla.",
+   "B": "jednej pary kabla na pozostałe pary kabla.",
+   "C": "wszystkich par kabla wzajemnie na siebie.",
+   "D": "pozostałych trzech par kabla na badaną parę."
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "cabling"
+  ]
+ },
+ {
+  "id": "1008a93a",
+  "stem": "Złącze 1. Złącze 2. Złącze 3. Złącze 4. Wskaż złącze, którego należy użyć w celu poprawnego podłączenia monitora do jednostki centralnej, wyposażonej w wymagane przez monitor porty.",
+  "answers": {
+   "A": "Złącze 1.",
+   "B": "Złącze 2.",
+   "C": "Złącze 3.",
+   "D": "Złącze 4."
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/ee_08_2023_01_sg_06_0.webp",
+   "/home/user/egzamin-zawodowy/app/public/img/ee_08_2023_01_sg_06_1.webp",
+   "/home/user/egzamin-zawodowy/app/public/img/ee_08_2023_01_sg_06_2.webp",
+   "/home/user/egzamin-zawodowy/app/public/img/ee_08_2023_01_sg_06_3.webp",
+   "/home/user/egzamin-zawodowy/app/public/img/ee_08_2023_01_sg_06_4.webp"
+  ],
+  "topics": [
+   "peripherals"
+  ]
+ },
+ {
+  "id": "11b0c8c3",
+  "stem": "Protokół wykorzystywany przez komputery do powiadamiania ruterów w swojej sieci o chęci przyłączenia się do z określonej grupy multicastowej lub odejścia z niej, to",
+  "answers": {
+   "A": "Interior Gateway Protocol (IGP).",
+   "B": "Transmission Control Protocol (TCP).",
+   "C": "Internet Message Access Protocol (IMA P).",
+   "D": "Internet Group Management Protocol (IGMP)."
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "netdevices",
+   "protocols"
+  ]
+ },
+ {
+  "id": "11cc932d",
+  "stem": "W wierszu poleceń systemu Windows do zarządzania ustawieniami konta użytkownika komputera, takimi jak okres ważności hasła, minimalna długość hasła i czas blokady konta, służy polecenie",
+  "answers": {
+   "A": "NET USE",
+   "B": "NET USER",
+   "C": "NET CONFIG",
+   "D": "NET ACCOUNTS"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "windows",
+   "security"
+  ]
+ },
+ {
+  "id": "11e556f0",
+  "stem": "Biernym elementem elektronicznym jest",
+  "answers": {
+   "A": "dioda.",
+   "B": "tranzystor.",
+   "C": "kondensator.",
+   "D": "stabilizator napięcia."
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "hardware",
+   "basics"
+  ]
+ },
+ {
+  "id": "1241046a",
+  "stem": "Żywica światłoutwardzalna to materiał eksploatacyjny drukarki",
+  "answers": {
+   "A": "termotransferowej.",
+   "B": "stałoatramentowej.",
+   "C": "termicznej.",
+   "D": "3D."
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "printers"
+  ]
+ },
+ {
+  "id": "134919bf",
+  "stem": "Podczas skanowania czarno-białego rysunku technicznego, z maksymalną rozdzielczością optyczną skanera, na pochylonych i zaokrąglonych krawędziach są widoczne ułożone schodkowo piksele. Aby uzyskać lepszą jakość skanowanego obrazu, należy użyć funkcji",
+  "answers": {
+   "A": "korekcji Gamma.",
+   "B": "odrastrowywania.",
+   "C": "rozdzielczości interpolowanej.",
+   "D": "skanowania według krzywej tonalnej."
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "printers"
+  ]
+ },
+ {
+  "id": "161af2da",
+  "stem": "Który rysunek przedstawia ułożenie żył przewodu UTP we wtyku 8P8C zgodnie z normą TIA/EIA-568-A, sekwencją T568A?",
+  "answers": {
+   "A": "",
+   "B": "",
+   "C": "",
+   "D": ""
+  },
+  "correct": "D",
+  "imageAnswers": true,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_13_2023_01_sg_02_0.webp"
+  ],
+  "topics": [
+   "cabling"
+  ]
+ },
+ {
+  "id": "1633ae9d",
+  "stem": "Ze schematu umieszczonego w dokumentacji płyty głównej wynika, że jest ona wyposażona",
+  "answers": {
+   "A": "w gniazdo procesora LGA 1151.",
+   "B": "w 1 port HDMI oraz 1 port DP.",
+   "C": "w 4 porty pamięci DDR4.",
+   "D": "w 6 portów SATA."
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/ee_08_2023_01_sg_04_0.webp"
+  ],
+  "topics": [
+   "peripherals",
+   "hardware"
+  ]
+ },
+ {
+  "id": "1668a8ba",
+  "stem": "Komputer, który uzyskuje adres IP, adres bramy i adresy serwerów DNS automatycznie, łączy się ze wszystkimi komputerami w sieci lokalnej przez adres IP. Komputer ten nie może się połączyć z żadnym hostem w sieci rozległej, ani przez adres URL, ani przez adres IP, co wskazuje na brak w sieci lub awarię",
+  "answers": {
+   "A": "rutera.",
+   "B": "przełącznika.",
+   "C": "serwera DNS.",
+   "D": "serwera DHCP."
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "addressing",
+   "netdevices",
+   "protocols"
+  ]
+ },
+ {
+  "id": "171f03f3",
+  "stem": "Awaria laptopa objawiająca się zmienionymi kolorami lub brakiem jakiegoś koloru na ekranie może być spowodowana uszkodzeniem",
+  "answers": {
+   "A": "portu D-SUB.",
+   "B": "pamięci RAM.",
+   "C": "taśmy matrycy.",
+   "D": "interfejsu HDMI."
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "peripherals",
+   "hardware"
+  ]
+ },
+ {
+  "id": "172c7d64",
+  "stem": "Użytkownik ma problem z rozruchem systemu Windows. Aby to naprawić, uruchomił narzędzie System Image Recovery, które",
+  "answers": {
+   "A": "przywraca system na podstawie kopii zapasowej.",
+   "B": "naprawia pliki startowe, wykorzystując płytę Recovery.",
+   "C": "odtwarza system wykorzystując w tym celu punkty przywracania.",
+   "D": "odzyskuje ustawienia systemu, korzystając z kopii rejestru systemowego backup.reg"
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "windows",
+   "hardware",
+   "security"
+  ]
+ },
+ {
+  "id": "18bd5150",
+  "stem": "Przedstawione narzędzie podczas naprawy zestawu komputerowego przeznaczone jest do",
+  "answers": {
+   "A": "wyginania oraz zaciskania metalowych płaszczyzn.",
+   "B": "czyszczenia elementów elektronicznych z resztek pasty i topników.",
+   "C": "zaciskania wtyków, obcinania i ściągania izolacji z przewodów elektrycznych.",
+   "D": "podstawowych testów elementów elektronicznych, takich jak diody, tranzystory lub rezystory."
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2023_01_sg_29_0.webp",
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2023_01_sg_29_1.webp"
+  ],
+  "topics": [
+   "hardware"
+  ]
+ },
+ {
+  "id": "1a5cce87",
+  "stem": "Która z par: protokół – warstwa, w której pracuje protokół, jest poprawnie połączona według modelu TCP/IP?",
+  "answers": {
+   "A": "DHCP – warstwa dostępu do sieci.",
+   "B": "RARP – warstwa transportowa.",
+   "C": "IGMP - warstwa Internetu.",
+   "D": "ICMP - warstwa aplikacji."
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "protocols"
+  ]
+ },
+ {
+  "id": "1c10f33d",
+  "stem": "Programem wykorzystywanym w systemie Linux do odtwarzania muzyki jest",
+  "answers": {
+   "A": "Leafpad",
+   "B": "Banshee",
+   "C": "BlueFish",
+   "D": "LibreOffice"
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux",
+   "hardware",
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "1c1404f3",
+  "stem": "Oprogramowanie, które wymaga wyrażenia zgody na emisję reklam lub wykupienia pełnej licencji, aby wyłączyć reklamy, jest rozpowszechniane na licencji",
+  "answers": {
+   "A": "Trial",
+   "B": "Adware",
+   "C": "Freeware",
+   "D": "GNU GPL"
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "1d963e0b",
+  "stem": "Zmianę hasła użytkownika egzamin w systemie Linux umożliwia polecenie",
+  "answers": {
+   "A": "pwd egzamin",
+   "B": "mkdir egzamin",
+   "C": "passwd egzamin",
+   "D": "shadow egzamin"
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux",
+   "security"
+  ]
+ },
+ {
+  "id": "1dd996f4",
+  "stem": "Które cechy ma licencja bezpłatnego oprogramowania zwana freemium?",
+  "answers": {
+   "A": "Daje możliwość zyskania dodatkowych funkcjonalności po wykupieniu wersji premium.",
+   "B": "Regularnie emituje prośby o wniesienie dobrowolnego datku na określony cel charytatywny.",
+   "C": "Okresowo lub przy każdym uruchomieniu programu wyświetla komunikat zachęcający do dokonania dobrowolnej opłaty na rzecz instytucji edukacyjnych.",
+   "D": "Daje nieograniczone prawo do użytkowania i rozpowszechniania oryginalnego lub zmodyfikowanego programu, pod warunkiem podania informacji o autorze."
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "1ec605a9",
+  "stem": "Zamieszczony komunikat tekstowy wyświetlony na ekranie komputera z zainstalowanym systemem Windows wskazuje na",
+  "answers": {
+   "A": "źle skojarzone aplikacje domyślne.",
+   "B": "brak włączonej Zapory systemowej.",
+   "C": "błędną konfigurację adresu IP karty Wi-Fi.",
+   "D": "stare lub uszkodzone sterowniki sprzętowe."
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2023_01_sg_30_0.webp"
+  ],
+  "topics": [
+   "addressing",
+   "netdevices",
+   "windows"
+  ]
+ },
+ {
+  "id": "24515289",
+  "stem": "Który moduł zabezpieczeń występuje w pakietach Internet Security (IS), a nie ma go w programach antywirusowych (AV)?",
+  "answers": {
+   "A": "Zapora sieciowa.",
+   "B": "Skaner antywirusowy.",
+   "C": "Monitor antywirusowy.",
+   "D": "Aktualizacja baz wirusów."
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "printers",
+   "peripherals",
+   "security"
+  ]
+ },
+ {
+  "id": "249a9bcb",
+  "stem": "Który z parametrów czasowych pamięci RAM jest nazywany czasem dostępu?",
+  "answers": {
+   "A": "CL",
+   "B": "CR",
+   "C": "RAT",
+   "D": "RCD"
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "hardware"
+  ]
+ },
+ {
+  "id": "25d4cdaa",
+  "stem": "Podzespołem kompatybilnym z przedstawionym kontrolerem jest",
+  "answers": {
+   "A": "monitor Dell, 27”, 1x DP, 4x USB 3.1, HDMI",
+   "B": "pamięć RAM HyperX, DDR3 8GB, 1600MHz, CL10",
+   "C": "dysk twardy DELL SAS 3TB 7.2K 6G 3.5IN SAS HDD",
+   "D": "karta graficzna NVIDIA 6GB, GDDR5, 192 bit, PCI-Ex16 3.0"
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/ee_08_2023_01_sg_05_0.webp"
+  ],
+  "topics": [
+   "winserver",
+   "peripherals",
+   "hardware"
+  ]
+ },
+ {
+  "id": "25e4fdf2",
+  "stem": "Które urządzenie sieciowe umożliwi zamianę sygnału przesyłanego analogową linią telefoniczną na sygnał cyfrowy komputerowej sieci lokalnej?",
+  "answers": {
+   "A": "Modem.",
+   "B": "Przełącznik.",
+   "C": "Punkt dostępu.",
+   "D": "Konwerter mediów."
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "netdevices"
+  ]
+ },
+ {
+  "id": "271b94a0",
+  "stem": "Jeśli prędkość pobierania danych z sieci przez kartę sieciową wynosi 4 Mb/s, to plik o wielkości 2 MB można pobrać w minimalnym czasie",
+  "answers": {
+   "A": "2 s",
+   "B": "4 s",
+   "C": "6 s",
+   "D": "8 s"
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "protocols"
+  ]
+ },
+ {
+  "id": "27624286",
+  "stem": "Komputery K1, K2, K3, K4 są podłączone do interfejsów przełącznika przypisanych do VLAN-ów podanych w tabeli. Które komputery mogą się ze sobą komunikować?",
+  "answers": {
+   "A": "K1 z K2",
+   "B": "K1 z K3",
+   "C": "K1 z K4",
+   "D": "K2 z K4"
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_13_2023_06_sg_36_0.webp"
+  ],
+  "topics": [
+   "netdevices"
+  ]
+ },
+ {
+  "id": "28963073",
+  "stem": "Który adres wskazuje na to, że komputer pracuje w sieci o adresie IP 192.168.10.64/26?",
+  "answers": {
+   "A": "192.168.10.1",
+   "B": "192.168.10.50",
+   "C": "192.168.10.100",
+   "D": "192.168.10.200"
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "addressing"
+  ]
+ },
+ {
+  "id": "2acd1408",
+  "stem": "W ciągu godziny instalator może zamontować 5 gniazd. Jaki jest koszt materiałów oraz zamontowania 20 natynkowych gniazd sieciowych, jeżeli cena 1 gniazda to 5,00 zł a koszt roboczogodziny pracy instalatora to 30,00 zł?",
+  "answers": {
+   "A": "130,00 zł",
+   "B": "220,00 zł",
+   "C": "350,00 zł",
+   "D": "700,00 zł"
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "cabling",
+   "hardware"
+  ]
+ },
+ {
+  "id": "2b3b56f3",
+  "stem": "Symbole i oznaczenia znajdujące się na zamieszczonej tabliczce znamionowej podzespołu informują między innymi o tym, że produkt jest",
+  "answers": {
+   "A": "wykonany z aluminium i w pełni nadaje się do recyclingu.",
+   "B": "przyjazny dla środowiska na etapie produkcji, użytkowania i utylizacji.",
+   "C": "szkodliwy dla środowiska i nie może być wyrzucany wraz z innymi odpadami.",
+   "D": "niebezpieczny i może emitować nadmierny hałas podczas pracy zestawu komputerowego."
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2023_01_sg_18_0.webp"
+  ],
+  "topics": [
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "2fb14526",
+  "stem": "Na stronie wydrukowanej w drukarce atramentowej pojawiają się smugi, kropki, kleksy i plamy. Aby rozwiązać problemy z jakością wydruku, należy",
+  "answers": {
+   "A": "odinstalować i ponownie zainstalować sterownik drukarki.",
+   "B": "wyczyścić i wyrównać lub wymienić pojemniki z tuszem.",
+   "C": "stosować papier według zaleceń producenta.",
+   "D": "wyczyścić układ optyki drukarki."
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "printers",
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "31c2bd15",
+  "stem": "Jaka jest maksymalna liczba adresów hostów, które można wykorzystać w podsieci o adresie IPv4 172.16.0.0/22?",
+  "answers": {
+   "A": "1022",
+   "B": "1024",
+   "C": "2046",
+   "D": "2048"
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "addressing"
+  ]
+ },
+ {
+  "id": "33ca313d",
+  "stem": "Narzędziem do monitorowania zdarzeń w systemie Windows jest",
+  "answers": {
+   "A": "dfrg.msc",
+   "B": "gpedit.msc",
+   "C": "tsmmc.msc",
+   "D": "eventvwr.msc"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "windows",
+   "peripherals",
+   "hardware"
+  ]
+ },
+ {
+  "id": "36ca64c8",
+  "stem": "Topologia fizyczna, w której wszystkie urządzenia sieciowe są podłączone do jednego urządzenia umieszczonego centralnie względem nich, to topologia",
+  "answers": {
+   "A": "siatki.",
+   "B": "drzewa.",
+   "C": "gwiazdy.",
+   "D": "pierścienia."
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "netdevices"
+  ]
+ },
+ {
+  "id": "371a9e84",
+  "stem": "Który kabel umożliwia transmisję danych z maksymalną prędkością transmisji wynoszącą 1 Gb/s?",
+  "answers": {
+   "A": "Skrętka kat. 4.",
+   "B": "Skrętka kat. 5e.",
+   "C": "Kabel współosiowy.",
+   "D": "Kabel światłowodowy."
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "cabling"
+  ]
+ },
+ {
+  "id": "3a5b5ec1",
+  "stem": "Usterka objawiająca się zawieszaniem systemu operacyjnego podczas uruchamiania jest zwykle spowodowana",
+  "answers": {
+   "A": "zbyt małą ilością pamięci RAM.",
+   "B": "pofragmentowanym dyskiem SSD.",
+   "C": "nieprawidłową instalacją oprogramowania np. sterowników.",
+   "D": "obecnością w napędzie optycznym nośnika instalacyjnego systemu."
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "hardware"
+  ]
+ },
+ {
+  "id": "3b36fd22",
+  "stem": "Punkty abonenckie rozmieszczone są równomiernie, do połączenia z najbliższym punktem potrzeba 4 m kabla, a z najdalszym - 22 m. Koszt zakupu 1 m kabla to 1 zł. Ile wyniesie minimalny koszt zakupu kabla UTP do połączenia 10 podwójnych gniazd abonenckich z punktem dystrybucyjnym?",
+  "answers": {
+   "A": "80 zł",
+   "B": "130 zł",
+   "C": "260 zł",
+   "D": "440 zł"
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "cabling",
+   "hardware"
+  ]
+ },
+ {
+  "id": "43498178",
+  "stem": "Kamera cyfrowa łączy się z notebookiem za pomocą interfejsu i.Link. Do którego gniazda w notebooku należy podłączyć kamerę?",
+  "answers": {
+   "A": "IEEE 1394",
+   "B": "DB-15F",
+   "C": "S/PDiF",
+   "D": "RJ-45"
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "cabling",
+   "peripherals",
+   "hardware"
+  ]
+ },
+ {
+  "id": "437187d2",
+  "stem": "Atrybut SN występujący w pliku schematów core.schema w OpenLDAP oznacza",
+  "answers": {
+   "A": "imię.",
+   "B": "państwo.",
+   "C": "nazwisko.",
+   "D": "organizację."
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "protocols"
+  ]
+ },
+ {
+  "id": "4419b9ab",
+  "stem": "Które narzędzie jest stosowane do mocowania kabla w module Keystone?",
+  "answers": {
+   "A": "",
+   "B": "",
+   "C": "",
+   "D": ""
+  },
+  "correct": "D",
+  "imageAnswers": true,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_13_2023_06_sg_18_0.webp"
+  ],
+  "topics": [
+   "cabling",
+   "hardware"
+  ]
+ },
+ {
+  "id": "449b1ffb",
+  "stem": "Który element serwera typu rack można wymieniać bez konieczności zdejmowania górnej obudowy?",
+  "answers": {
+   "A": "Procesor.",
+   "B": "Dysk twardy.",
+   "C": "Pamięć RAM.",
+   "D": "Kartę sieciową."
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "hardware"
+  ]
+ },
+ {
+  "id": "4544d767",
+  "stem": "Wskaż narzędzie systemu Windows 10, które zastosowane wraz z historią plików umożliwia odzyskiwanie plików lub folderów osobistych użytkownika.",
+  "answers": {
+   "A": "Kopia zapasowa.",
+   "B": "Menedżer zadań.",
+   "C": "Harmonogram zadań.",
+   "D": "Menedżer poświadczeń."
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "windows",
+   "hardware",
+   "security"
+  ]
+ },
+ {
+  "id": "4688ce52",
+  "stem": "Medium transmisyjnym, w którym na przesyłany sygnał nie oddziałują zakłócenia elektromagnetyczne, to",
+  "answers": {
+   "A": "światłowód.",
+   "B": "fale radiowe.",
+   "C": "kabel typu skrętka.",
+   "D": "kabel koncentryczny."
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "cabling"
+  ]
+ },
+ {
+  "id": "4a720e39",
+  "stem": "Do umocowania nowych radiatorów na układach pamięci karty graficznej, jeżeli stare i niesprawne zostały wymontowane, można użyć",
+  "answers": {
+   "A": "smaru.",
+   "B": "filamentu.",
+   "C": "alkoholu izopropylowego.",
+   "D": "taśmy termoprzewodzącej."
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "other"
+  ]
+ },
+ {
+  "id": "4d3b4a52",
+  "stem": "Którym skrótem na schemacie logicznym sieci jest oznaczany element okablowania strukturalnego określany jako punkt, w którym są zakończone budynkowe kable szkieletowe?",
+  "answers": {
+   "A": "MDF",
+   "B": "IDF",
+   "C": "CD",
+   "D": "TO"
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "cabling",
+   "hardware",
+   "basics"
+  ]
+ },
+ {
+  "id": "4e0bda62",
+  "stem": "W systemie Linux poleceniem jednorazowo podnoszącym uprawnienia dla procesu uruchamianego z konsoli jest",
+  "answers": {
+   "A": "passwd",
+   "B": "uname",
+   "C": "users",
+   "D": "sudo"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux"
+  ]
+ },
+ {
+  "id": "4e3a4bfe",
+  "stem": "Przedstawione narzędzie jest stosowane do",
+  "answers": {
+   "A": "zaciskania złączy BNC.",
+   "B": "cięcia włókien światłowodowych.",
+   "C": "zdejmowania izolacji okablowania S/FTP.",
+   "D": "spawania okablowania miedzianego różnych typów."
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/ee_08_2023_01_sg_13_0.webp"
+  ],
+  "topics": [
+   "cabling",
+   "protocols",
+   "hardware"
+  ]
+ },
+ {
+  "id": "4f13a9d2",
+  "stem": "Który zapis jest formą uproszczoną adresu IPv6: 2020:0dc8:0000:0001:0000:0000:0000:0001 ?",
+  "answers": {
+   "A": "22:dc8:1:1",
+   "B": "22:dc8::1::1",
+   "C": "2020:0dc8::1",
+   "D": "2020:dc8:0:1::1"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "addressing"
+  ]
+ },
+ {
+  "id": "4f3b1190",
+  "stem": "Liczba dziesiętna o wartości 128 D będzie w systemie heksadecymalnym miała wartość",
+  "answers": {
+   "A": "10 H",
+   "B": "80 H",
+   "C": "128 H",
+   "D": "10000000 H"
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "basics"
+  ]
+ },
+ {
+  "id": "508ad5f6",
+  "stem": "Wpisanie polecenia configure terminal w przedstawionym interfejsie CLI rutera CISCO spowoduje",
+  "answers": {
+   "A": "wyjście z trybu konfiguracji.",
+   "B": "uruchomienie trybu konfiguracji.",
+   "C": "ustawienie nazwy interfejsu rutera.",
+   "D": "określenie interfejsu wewnętrznego."
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/ee_08_2023_01_sg_23_0.webp"
+  ],
+  "topics": [
+   "netdevices"
+  ]
+ },
+ {
+  "id": "50e1bf87",
+  "stem": "Który z adresów jest adresem prywatnym IP?",
+  "answers": {
+   "A": "80.80.10.10",
+   "B": "172.30.10.10",
+   "C": "198.192.15.10",
+   "D": "220.192.164.10"
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "addressing"
+  ]
+ },
+ {
+  "id": "5187d0ca",
+  "stem": "Narzędzie przedstawione na zdjęciu to",
+  "answers": {
+   "A": "zaciskarka.",
+   "B": "nóż monterski.",
+   "C": "ściągacz izolacji.",
+   "D": "narzędzie uderzeniowe."
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_13_2023_01_sg_18_0.webp"
+  ],
+  "topics": [
+   "hardware"
+  ]
+ },
+ {
+  "id": "521d9a71",
+  "stem": "Którego wkrętu należy użyć, aby zamocować napęd optyczny o szerokości 5,25” w obudowie wymagającej przykręcania napędów?",
+  "answers": {
+   "A": "",
+   "B": "",
+   "C": "",
+   "D": ""
+  },
+  "correct": "B",
+  "imageAnswers": true,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2023_06_sg_11_0.webp"
+  ],
+  "topics": [
+   "hardware"
+  ]
+ },
+ {
+  "id": "5506dc68",
+  "stem": "Aby uruchomić przedstawione narzędzie systemu Windows, należy użyć polecenia",
+  "answers": {
+   "A": "nmon",
+   "B": "dxdiag",
+   "C": "taskmgr",
+   "D": "msconfig"
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2023_01_sg_11_0.webp"
+  ],
+  "topics": [
+   "windows",
+   "hardware"
+  ]
+ },
+ {
+  "id": "55e4fca1",
+  "stem": "Której komendy wiersza polecań z opcji zaawansowanych naprawy systemu Windows należy użyć, aby naprawić uszkodzony MBR dysku?",
+  "answers": {
+   "A": "repair mbr",
+   "B": "convert mbr",
+   "C": "rebuild /mbr",
+   "D": "bootrec /fixmbr"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "windows",
+   "hardware"
+  ]
+ },
+ {
+  "id": "569374a4",
+  "stem": "Aby w systemie Linux wyszukać wszystkie pliki o dowolnej długości nazwy z rozszerzeniem txt, znajdujące się w katalogu /home/user i zawierające w nazwie ciąg znaków abc, należy wydać polecenie",
+  "answers": {
+   "A": "ls /home/user/*abc*.txt",
+   "B": "ls /home/user/?abc?.txt",
+   "C": "ls /home/user/[abc].txt",
+   "D": "ls /home/user/[a-c].txt"
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux",
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "56e20585",
+  "stem": "Program systemu Linux, pozwalający na zebranie w czasie rzeczywistym informacji statystycznych na temat ruchu sieciowego, to",
+  "answers": {
+   "A": "ps",
+   "B": "ntop",
+   "C": "wget",
+   "D": "getmac"
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux",
+   "hardware"
+  ]
+ },
+ {
+  "id": "58884eb0",
+  "stem": "Przedstawiony obraz zawiera fragment wyniku działania polecenia",
+  "answers": {
+   "A": "ping -t",
+   "B": "net view",
+   "C": "netstat -n",
+   "D": "route print"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/ee_08_2023_06_sg_40_0.webp"
+  ],
+  "topics": [
+   "other"
+  ]
+ },
+ {
+  "id": "59806909",
+  "stem": "Do konfigurowania interfejsu sieciowego w systemie Linux jest stosowana komenda",
+  "answers": {
+   "A": "netsh",
+   "B": "netstate",
+   "C": "ifconfig",
+   "D": "ipconfig"
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux",
+   "windows"
+  ]
+ },
+ {
+  "id": "5a23f53d",
+  "stem": "Przedstawiony zestaw komputerowy jest niekompletny. Który element nie został uwzględniony w tabeli, a jest niezbędny do prawidłowego działania zestawu?",
+  "answers": {
+   "A": "Wentylator procesora.",
+   "B": "Karta graficzna.",
+   "C": "Pamięć RAM.",
+   "D": "Zasilacz."
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2023_06_sg_12_0.webp"
+  ],
+  "topics": [
+   "hardware"
+  ]
+ },
+ {
+  "id": "5b4c240e",
+  "stem": "Które polecenie systemu Linux umożliwia wyszukanie w zawartości pliku linii zawierających określony ciągu znaków?",
+  "answers": {
+   "A": "grep",
+   "B": "find",
+   "C": "pine",
+   "D": "search"
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux"
+  ]
+ },
+ {
+  "id": "5b4da6a5",
+  "stem": "Z przedstawionego zrzutu wynika, że za pomocą przeglądarki internetowej wykonano pomiar",
+  "answers": {
+   "A": "strat mocy optycznej.",
+   "B": "tłumienia kabla miedzianego.",
+   "C": "czasu odpowiedzi od wybranego serwera.",
+   "D": "liczby transmitowanych pakietów między wybranymi serwerami."
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/ee_08_2023_01_sg_17_0.webp"
+  ],
+  "topics": [
+   "cabling"
+  ]
+ },
+ {
+  "id": "5d086143",
+  "stem": "W systemach z rodziny Windows Server usługa serwera FTP jest definiowana w",
+  "answers": {
+   "A": "usłudze plików.",
+   "B": "serwerze aplikacji.",
+   "C": "serwerze sieci Web.",
+   "D": "usłudze zasad i dostępu sieciowego."
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "cabling",
+   "protocols",
+   "winserver"
+  ]
+ },
+ {
+  "id": "5dfdc66c",
+  "stem": "Element elektroniczny oznaczony na schemacie czerwonym kółkiem to",
+  "answers": {
+   "A": "cewka.",
+   "B": "fotodioda.",
+   "C": "dioda prostownicza.",
+   "D": "kondensator elektrolityczny."
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/ee_08_2023_01_sg_03_0.webp"
+  ],
+  "topics": [
+   "hardware"
+  ]
+ },
+ {
+  "id": "5e8e24e8",
+  "stem": "Aby osiągnąć maksymalną wydajność, karta sieciowa w komputerze wykorzystuje transmisję szeregową",
+  "answers": {
+   "A": "synchroniczną Simplex.",
+   "B": "asynchroniczną Simplex.",
+   "C": "synchroniczna Half duplex.",
+   "D": "asynchroniczną Full duplex."
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "netdevices"
+  ]
+ },
+ {
+  "id": "5f72b6c4",
+  "stem": "Który z wymienionych interfejsów komputera wykorzystuje transmisję równoległą do przesyłania danych?",
+  "answers": {
+   "A": "IEEE 1394",
+   "B": "SATA",
+   "C": "LAN",
+   "D": "PCI"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "peripherals",
+   "hardware"
+  ]
+ },
+ {
+  "id": "63689799",
+  "stem": "W systemie Linux do wyświetlenia wszystkich grup, do których należy użytkownik egzamin służy polecenie",
+  "answers": {
+   "A": "cat egzamin",
+   "B": "who egzamin",
+   "C": "users egzamin",
+   "D": "groups egzamin"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux",
+   "peripherals"
+  ]
+ },
+ {
+  "id": "65a786f7",
+  "stem": "Aby zapewnić możliwość odzyskania ważnych danych, należy regularnie",
+  "answers": {
+   "A": "sprawdzać integralność danych na dysku.",
+   "B": "nie wykonywać defragmentacji dysku.",
+   "C": "używać programu antywirusowego.",
+   "D": "tworzyć kopie danych."
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "windows",
+   "hardware",
+   "security"
+  ]
+ },
+ {
+  "id": "65c0e18a",
+  "stem": "Które polecenie systemu Linux służy do wyświetlenia informacji o zainstalowanych podzespołach?",
+  "answers": {
+   "A": "chsh",
+   "B": "lshw",
+   "C": "mkfs",
+   "D": "xrandr"
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux"
+  ]
+ },
+ {
+  "id": "65d2cc27",
+  "stem": "Głównie które aktualizacje zostaną zainstalowane po kliknięciu na przycisk OK prezentowany na zrzucie ekranu?",
+  "answers": {
+   "A": "Zwiększające bezpieczeństwo, prywatność i niezawodność systemu.",
+   "B": "Związane z podniesieniem komfortu pracy z komputerem.",
+   "C": "Dotyczące sterowników lub nowego oprogramowania.",
+   "D": "Rozwiązujące problemy niekrytyczne systemu."
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2023_01_sg_10_0.webp"
+  ],
+  "topics": [
+   "security",
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "668354e8",
+  "stem": "Nowe podzespoły komputerowe, np. dyski twarde, karty graficzne, są pakowane w metalizowane opakowania foliowe, których głównym zadaniem jest ochrona",
+  "answers": {
+   "A": "podzespołów przed wilgocią.",
+   "B": "elementów elektronicznych przed światłem słonecznym.",
+   "C": "elementów elektronicznych przed ładunkami elektrostatycznymi.",
+   "D": "podzespołów przed gwałtownymi zmianami temperatur w transporcie."
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "hardware"
+  ]
+ },
+ {
+  "id": "676b9898",
+  "stem": "Który z parametrów dysku twardego nie wpływa na jego wydajność?",
+  "answers": {
+   "A": "Czas dostępu",
+   "B": "CACHE",
+   "C": "MTBF",
+   "D": "RPM"
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "hardware"
+  ]
+ },
+ {
+  "id": "69d85083",
+  "stem": "Urządzenia przedstawione na zdjęciu to",
+  "answers": {
+   "A": "modemy.",
+   "B": "przełączniki.",
+   "C": "adaptery PowerLine.",
+   "D": "bezprzewodowe karty sieciowe."
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_13_2023_01_sg_06_0.webp"
+  ],
+  "topics": [
+   "netdevices"
+  ]
+ },
+ {
+  "id": "6b1f58d4",
+  "stem": "Producent matrycy LCD zadeklarował jej zgodność z klasą II w oparciu o normę ISO 13406-2. Na podstawie informacji zawartych w tabeli ustal, ile pikseli z defektem typu 3 musi pojawić się na matrycy o rozdzielczości naturalnej 1280x800 pikseli, aby można ją było uznać za uszkodzoną?",
+  "answers": {
+   "A": "1 piksel.",
+   "B": "3 piksele.",
+   "C": "4 piksele.",
+   "D": "7 pikseli."
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2023_06_sg_08_0.webp"
+  ],
+  "topics": [
+   "peripherals"
+  ]
+ },
+ {
+  "id": "6be4a703",
+  "stem": "Papier termotransferowy to materiał eksploatacyjny stosowany w drukarkach",
+  "answers": {
+   "A": "atramentowych.",
+   "B": "rozetkowych.",
+   "C": "igłowych.",
+   "D": "3D."
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "printers"
+  ]
+ },
+ {
+  "id": "6c9a636d",
+  "stem": "Urządzeniem, które umożliwia komputerom bezprzewodowy dostęp do przewodowej sieci komputerowej, jest",
+  "answers": {
+   "A": "modem.",
+   "B": "regenerator.",
+   "C": "koncentrator.",
+   "D": "punkt dostępowy."
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "netdevices"
+  ]
+ },
+ {
+  "id": "6d4c9e7e",
+  "stem": "Wspomagający protokół kontrolny stosu TCP/IP, którego funkcją jest wykrywanie oraz dostarczanie informacji o awarii podczas pracy protokołu IP, to",
+  "answers": {
+   "A": "Address Resolution Protocol (A RP).",
+   "B": "Routing Information Protocol (RIP).",
+   "C": "Internet Control Message Protocol (ICMP).",
+   "D": "Reverse Address Resolution Protocol (RA RP)."
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "netdevices",
+   "protocols",
+   "hardware"
+  ]
+ },
+ {
+  "id": "6fc03c4a",
+  "stem": "Przedstawiony moduł pamięci należy zamontować na płycie głównej w gnieździe",
+  "answers": {
+   "A": "DDR",
+   "B": "DDR2",
+   "C": "SO-RIMM",
+   "D": "SO-DIMM DDR4"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2023_01_sg_07_0.webp"
+  ],
+  "topics": [
+   "hardware"
+  ]
+ },
+ {
+  "id": "701832d7",
+  "stem": "Jednostką pojemności elektrycznej jest",
+  "answers": {
+   "A": "wolt (V)",
+   "B": "wat (W)",
+   "C": "henr (H)",
+   "D": "farad (F)"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "basics"
+  ]
+ },
+ {
+  "id": "73e9678c",
+  "stem": "Czteroparowy kabel skręcany, w którym każda para przewodów posiada ekran foliowy i dodatkowo wszystkie pary są ekranowane siatką, to kabel",
+  "answers": {
+   "A": "S/FTP",
+   "B": "F/UTP",
+   "C": "U/UTP",
+   "D": "SF/UTP"
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "cabling",
+   "protocols"
+  ]
+ },
+ {
+  "id": "74088ef0",
+  "stem": "Narzędziem systemu Linux OpenSUSE dedykowanym między innymi do zarządzania systemem jest",
+  "answers": {
+   "A": "Monitor systemu.",
+   "B": "Menedżer zadań.",
+   "C": "System Log.",
+   "D": "YaST."
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux",
+   "windows",
+   "peripherals"
+  ]
+ },
+ {
+  "id": "74f9ec85",
+  "stem": "Na podstawie tabeli ustal, ile kabli ekranowanych typu skrętka należy poprowadzić w listwie PCV typu LN 25x16.",
+  "answers": {
+   "A": "2 kable.",
+   "B": "3 kable.",
+   "C": "4 kable.",
+   "D": "5 kabli."
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_13_2023_01_sg_10_0.webp"
+  ],
+  "topics": [
+   "cabling"
+  ]
+ },
+ {
+  "id": "781eaa69",
+  "stem": "Który protokół zostanie zastosowany przez administratora w celu zamieszczenia plików na serwerze?",
+  "answers": {
+   "A": "FTP (File Transfer Protocol).",
+   "B": "DNS (DomainName System).",
+   "C": "HTTP (Hyper Text Transfer Protocol).",
+   "D": "DHCP (Domain Host Configuration Protocol)."
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "cabling",
+   "protocols"
+  ]
+ },
+ {
+  "id": "7d2d7e33",
+  "stem": "Który z wymienionych elementów stanowi część mechanizmu drukarki atramentowej?",
+  "answers": {
+   "A": "Pisak.",
+   "B": "Soczewka.",
+   "C": "Zespół dysz.",
+   "D": "Filtr ozonowy."
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "printers"
+  ]
+ },
+ {
+  "id": "7df47695",
+  "stem": "Do zasilania niektórych kart graficznych wymagane jest dodatkowe 6-pinowe złącze zasilacza PCI-E, które doprowadza napięcia",
+  "answers": {
+   "A": "+5 V na 3 liniach",
+   "B": "+3,3 V oraz +5 V",
+   "C": "+12 V na 3 liniach",
+   "D": "+3,3 V, +5 V, +12 V"
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "hardware",
+   "basics"
+  ]
+ },
+ {
+  "id": "7f5db853",
+  "stem": "Ile maksymalnie komputerów można zaadresować adresami sieci IP z klasy C?",
+  "answers": {
+   "A": "252 komputery.",
+   "B": "254 komputery.",
+   "C": "255 komputerów.",
+   "D": "256 komputerów."
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "addressing"
+  ]
+ },
+ {
+  "id": "8402f506",
+  "stem": "Na schemacie blokowym przedstawiającym zasadę działania zasilacza liniowego numerem 5) oznaczono",
+  "answers": {
+   "A": "regulator napięcia prądu stałego.",
+   "B": "wejście prądu przemiennego.",
+   "C": "układ Graetza.",
+   "D": "transformator."
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2023_01_sg_03_0.webp"
+  ],
+  "topics": [
+   "hardware",
+   "basics"
+  ]
+ },
+ {
+  "id": "8411e9ff",
+  "stem": "Zrzut ekranowy przedstawia wynik wykonania w systemie z rodziny Windows Server polecenia",
+  "answers": {
+   "A": "ping",
+   "B": "whois",
+   "C": "tracert",
+   "D": "nslookup"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_13_2023_01_sg_28_0.webp"
+  ],
+  "topics": [
+   "winserver",
+   "windows"
+  ]
+ },
+ {
+  "id": "8529f78d",
+  "stem": "Wskaż polecenie systemu Linux, które służy do wyodrębnienia plików z archiwum wazne_pliki.tar.bz2",
+  "answers": {
+   "A": "tar –xvjf wazne_pliki.tar.bz2",
+   "B": "tar –xvzf wazne_pliki.tar.bz2",
+   "C": "tar –xvtf wazne_pliki.tar.bz2",
+   "D": "tar –xvuf wazne_pliki.tar.bz2"
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux"
+  ]
+ },
+ {
+  "id": "88422a07",
+  "stem": "Protokół służący do prowadzenia rozmów za pomocą konsoli tekstowej to",
+  "answers": {
+   "A": "Voice over IP (V oIP).",
+   "B": "Internet Relay Chat (IRC).",
+   "C": "Simple Mail Transfer Protocol (SMTP).",
+   "D": "Internet Message Access Protocol (IMA P)."
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "protocols",
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "8a839ce7",
+  "stem": "Na podstawie zrzutu ekranu wskaż, który adres należy zmienić w konfiguracji klienta lub serwera, aby komputer można było podłączyć do domeny?",
+  "answers": {
+   "A": "Adres DNS w konfiguracji serwera na 10.0.0.1",
+   "B": "Adres IPv4 w konfiguracji serwera na 10.0.0.10",
+   "C": "Adres IPv4 w konfiguracji klienta na 10.0.0.1",
+   "D": "Adres DNS w konfiguracji klienta na 10.0.0.1"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_13_2023_06_sg_39_0.webp"
+  ],
+  "topics": [
+   "addressing",
+   "protocols",
+   "winserver"
+  ]
+ },
+ {
+  "id": "8b840ca3",
+  "stem": "Listę wszystkich założonych kont użytkowników w systemie Linux można wyświetlić poleceniem",
+  "answers": {
+   "A": "id -u",
+   "B": "who -HT",
+   "C": "cat /etc/passwd",
+   "D": "finger (bez parametrów)"
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux"
+  ]
+ },
+ {
+  "id": "8cb5a63e",
+  "stem": "Poleceniem systemu Windows, które wymusza zmianę hasła po zalogowaniu użytkownika test jest",
+  "answers": {
+   "A": "net user test /logonpasswordchg:yes",
+   "B": "net user test /passwordreq:yes",
+   "C": "net user test /passwordchg:no",
+   "D": "net user test /passwordreq:no"
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "windows",
+   "security"
+  ]
+ },
+ {
+  "id": "8e0f61a1",
+  "stem": "Aby w systemie Windows 10 wykonać przedstawioną konfigurację słuchawek w Panelu sterowania, należy użyć apletu",
+  "answers": {
+   "A": "Ekran.",
+   "B": "Dźwięk.",
+   "C": "Menedżer urządzeń.",
+   "D": "Menedżer poświadczeń."
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/ee_08_2023_01_sg_19_0.webp"
+  ],
+  "topics": [
+   "windows"
+  ]
+ },
+ {
+  "id": "8f23e77a",
+  "stem": "Przedstawiona czynność jest związana z eksploatacją drukarki",
+  "answers": {
+   "A": "termicznej.",
+   "B": "atramentowej.",
+   "C": "sublimacyjnej.",
+   "D": "termotransferowej."
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2023_01_sg_26_0.webp"
+  ],
+  "topics": [
+   "printers"
+  ]
+ },
+ {
+  "id": "914ee3fc",
+  "stem": "Ile portów USB może być dostępnych w komputerze wyposażonym w przedstawioną płytę główną bez zastosowania huba USB i podłączenia dodatkowych kart?",
+  "answers": {
+   "A": "3 porty.",
+   "B": "4 porty.",
+   "C": "5 portów.",
+   "D": "12 portów."
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2023_06_sg_21_0.webp"
+  ],
+  "topics": [
+   "peripherals",
+   "hardware"
+  ]
+ },
+ {
+  "id": "91d2d742",
+  "stem": "Przed zakupem podzespołu zestawu komputerowego lub urządzenia peryferyjnego na aukcjach internetowych, należy sprawdzić, czy kupowany sprzęt posiada wymagany w Polsce certyfikat",
+  "answers": {
+   "A": "EAC",
+   "B": "CSA",
+   "C": "FSC",
+   "D": "CE"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "security",
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "921edc3e",
+  "stem": "Która z wymienionych czynności konserwacyjnych drukarek dotyczy tylko drukarki atramentowej?",
+  "answers": {
+   "A": "Usunięcie zabrudzeń z zespołu czyszczącego głowice.",
+   "B": "Czyszczenie prowadnic karetki.",
+   "C": "Czyszczenie luster i soczewek.",
+   "D": "Oczyszczenie traktora."
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "printers",
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "925bd4c7",
+  "stem": "Najlepszym narzędziem służącym do podgrzania znajdującego się na karcie graficznej elementu SMD, który ma zostać usunięty, jest",
+  "answers": {
+   "A": "tester płyt głównych.",
+   "B": "klasyczny odsysacz cyny.",
+   "C": "lutownica z cyną i kalafonią.",
+   "D": "stacja lutownicza z modułem Hot Air."
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "hardware"
+  ]
+ },
+ {
+  "id": "94ced93f",
+  "stem": "Mysz komputerowa z interfejsem bluetooth działającym w klasie 2 ma teoretyczny zasięg działania do",
+  "answers": {
+   "A": "1 m",
+   "B": "2 m",
+   "C": "10 m",
+   "D": "100 m"
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "peripherals"
+  ]
+ },
+ {
+  "id": "94fb59b5",
+  "stem": "Które zdanie dotyczące tablicy partycji GUID (GPT) jest prawdziwe?",
+  "answers": {
+   "A": "Obsługuje on partycje większe niż 2 TB.",
+   "B": "Limit tworzonych partycji jest nieograniczony.",
+   "C": "Zrezygnowano w nim z używania unikatowego identyfikatora dysku.",
+   "D": "Zmieniono w nim metodę adresowania pamięci masowej z LBA na CHS."
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "hardware",
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "95096f35",
+  "stem": "Do edycji plików konfiguracyjnych w systemie Linux można użyć polecenia",
+  "answers": {
+   "A": "vi",
+   "B": "cat",
+   "C": "pwd",
+   "D": "mkdir"
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux"
+  ]
+ },
+ {
+  "id": "99f209fe",
+  "stem": "Przedstawiony zapis jest umieszczony na końcu pliku smb.conf. W wyniku jego działania podczas konfiguracji usług zainstalowanych w systemie Linux jest",
+  "answers": {
+   "A": "dodanie nowej drukarki sieciowej o nazwie UDZIAL",
+   "B": "odebranie użytkownikowi root uprawnień do katalogu /home/udzial",
+   "C": "utworzenie udostępnionego udziału dyskowego dla użytkownika root",
+   "D": "konfiguracja przestrzeni nazw domenowych serwera DNS w katalogu path"
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/ee_08_2023_01_sg_35_0.webp"
+  ],
+  "topics": [
+   "protocols",
+   "winserver",
+   "linux"
+  ]
+ },
+ {
+  "id": "9ec71fa5",
+  "stem": "Licencja na oprogramowanie systemu bankowości, przeznaczona tylko dla jednego z działających w Polsce banków, powiązana z umową podpisaną z firmą wykonującą oprogramowanie, to licencja",
+  "answers": {
+   "A": "subskrypcyjna.",
+   "B": "niewyłączna.",
+   "C": "dostępowa.",
+   "D": "wyłączna."
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "a08ace9a",
+  "stem": "Do sprawdzenia przedstawionej wydajności dysku twardego w systemie Linux należy użyć polecenia",
+  "answers": {
+   "A": "hdparm –E /dev/sda",
+   "B": "hdparm –T /dev/sda",
+   "C": "hdparm –d0 /dev/sda",
+   "D": "hdparm –d1 /dev/sda"
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/ee_08_2023_01_sg_29_0.webp"
+  ],
+  "topics": [
+   "linux",
+   "hardware"
+  ]
+ },
+ {
+  "id": "a504cdae",
+  "stem": "Do mechanizmów zabezpieczeń systemu operacyjnego nie należy",
+  "answers": {
+   "A": "fragmentacja dysków.",
+   "B": "zapora sieciowa.",
+   "C": "serwer proxy.",
+   "D": "wirtualizacja."
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "hardware",
+   "security"
+  ]
+ },
+ {
+  "id": "a754c20e",
+  "stem": "Typowe napięcie zasilania modułów pamięci RAM DDR4 wynosi",
+  "answers": {
+   "A": "1,2 V",
+   "B": "1,5 V",
+   "C": "1,35 V",
+   "D": "1,65 V"
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "protocols",
+   "hardware",
+   "basics"
+  ]
+ },
+ {
+  "id": "a89d29d4",
+  "stem": "Ile bitów o wartości 1 zawiera standardowa maska adresu IPv4 klasy B?",
+  "answers": {
+   "A": "8 bitów.",
+   "B": "16 bitów.",
+   "C": "24 bity.",
+   "D": "32 bity."
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "addressing"
+  ]
+ },
+ {
+  "id": "ab31c7fe",
+  "stem": "W systemie Windows konfigurację opcji rozruchu systemu umożliwia polecenie",
+  "answers": {
+   "A": "dxdiag",
+   "B": "diskpart",
+   "C": "charmap",
+   "D": "msconfig"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "windows"
+  ]
+ },
+ {
+  "id": "abeeba6d",
+  "stem": "Aby wykonać „naprasowankę” z własnym zdjęciem na koszulkę bawełnianą przy użyciu drukarki atramentowej, należy użyć papieru typu",
+  "answers": {
+   "A": "Photo Matt.",
+   "B": "Photo Glossy.",
+   "C": "transferowego.",
+   "D": "samoprzylepnego."
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "printers"
+  ]
+ },
+ {
+  "id": "ac40278f",
+  "stem": "Przyczyną uszkodzenia mechanicznego dysku twardego w komputerze stacjonarnym może być",
+  "answers": {
+   "A": "dopuszczenie do przegrzania dysku.",
+   "B": "brak wykonywania defragmentacji dysku.",
+   "C": "brak wykonywania operacji czyszczenia dysku.",
+   "D": "przechodzenie po skończonej pracy w stan uśpienia systemu zamiast zamknięcia."
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "windows",
+   "hardware"
+  ]
+ },
+ {
+  "id": "acf49636",
+  "stem": "Zestawienie połączenia między dwoma odległymi hostami, za pośrednictwem publicznej sieci, np. Internet, w taki sposób, że węzły tej sieci są przezroczyste dla przesyłanych w ten sposób pakietów, to",
+  "answers": {
+   "A": "VM (V irtual Machine).",
+   "B": "VPN (V irtual Private Network).",
+   "C": "VLAN (V irtual Lan A rea Network).",
+   "D": "VoIP (V oice over Internet Protocol)."
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "netdevices",
+   "protocols",
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "ad363846",
+  "stem": "Simple Mail Transfer Protocol to protokół",
+  "answers": {
+   "A": "synchronizowania czasu pomiędzy komputerami.",
+   "B": "przekazywania poczty elektronicznej w Internecie.",
+   "C": "obsługi odległego terminala w architekturze klient-serwer.",
+   "D": "zarządzania grupami multicastowymi w sieciach opartych na protokole IP."
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "protocols"
+  ]
+ },
+ {
+  "id": "b192b6d8",
+  "stem": "W tabeli przedstawiono pobór mocy poszczególnych podzespołów zestawu komputerowego. Zestaw składa się z: – płyty głównej, – procesora, – 2 modułów pamięci DDR3, – dysku twardego SSD, – dysku twardego z prędkością obrotową 7200, – karty graficznej, – napędu optycznego, – myszy i klawiatury, – wentylatora. Który zasilacz należy zastosować dla przedstawionego zestawu komputerowego, uwzględniając co najmniej 20% rezerwy poboru mocy?",
+  "answers": {
+   "A": "Zalman ZM600-LX 600W BOX",
+   "B": "Corsair VS550 550W 80PLUS BOX",
+   "C": "be quiet! 500W System Power 8 BOX",
+   "D": "Thermaltake 530W SMART SE Modular BOX"
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2023_01_sg_05_0.webp",
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2023_01_sg_05_1.webp"
+  ],
+  "topics": [
+   "peripherals",
+   "hardware",
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "b6ac494a",
+  "stem": "Aby zwiększyć wydajność komputera w grach, karta graficzna Sapphire Radeon R9 FURY OC, 4GB HBM (4096 Bit), HDMI, DVI, 3xDP została wyposażona w technologię",
+  "answers": {
+   "A": "SLI",
+   "B": "Stream",
+   "C": "CUDA",
+   "D": "CrossFireX"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "peripherals",
+   "hardware",
+   "basics"
+  ]
+ },
+ {
+  "id": "baef2283",
+  "stem": "Która warstwa modelu ISO/OSI definiuje protokół IP (Internet Protocol)?",
+  "answers": {
+   "A": "Warstwa sieci.",
+   "B": "Warstwa fizyczna.",
+   "C": "Warstwa łącza danych.",
+   "D": "Warstwa transportowa."
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "protocols"
+  ]
+ },
+ {
+  "id": "bf2d6639",
+  "stem": "Liczba 1010 O jest zapisana w systemie",
+  "answers": {
+   "A": "binarnym.",
+   "B": "dziesiętnym.",
+   "C": "ósemkowym.",
+   "D": "szesnastkowym."
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "basics"
+  ]
+ },
+ {
+  "id": "bf7ac669",
+  "stem": "Rodzajem złośliwego oprogramowania będącego programem rezydentnym, który działa, wykonując konkretną operację, nie powiela się przez sieć, a jedną z jego metod jest samoreplikacja aż do wyczerpania pamięci komputera, jest",
+  "answers": {
+   "A": "Wabbit",
+   "B": "Rootkit",
+   "C": "Stealware",
+   "D": "Backdoor"
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "security",
+   "basics"
+  ]
+ },
+ {
+  "id": "c14a8bab",
+  "stem": "Protokół, zapewniający wyświetlanie stron www w przeglądarce internetowej za pomocą połączenia szyfrowanego, to",
+  "answers": {
+   "A": "FTP Secure.",
+   "B": "SSH File Transfer Protocol.",
+   "C": "Hypertext Transfer Protocol.",
+   "D": "Hypertext Transfer Protocol Secure."
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "cabling",
+   "protocols",
+   "security"
+  ]
+ },
+ {
+  "id": "c191afb6",
+  "stem": "Jaką funkcję pełni polecenie tee w systemie Linux?",
+  "answers": {
+   "A": "Wyświetla zbiory dyskowe zapisane w postaci drzewa katalogów.",
+   "B": "Wyświetla zawartość pliku tekstowego podanego jako argument polecenia.",
+   "C": "Pobiera dane ze strumienia i zapisuje wynik do pliku tekstowego w katalogu /home.",
+   "D": "Pobiera dane ze strumienia wejściowego i wysyła je do strumienia wyjściowego oraz plików."
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux",
+   "hardware"
+  ]
+ },
+ {
+  "id": "c50ed2e5",
+  "stem": "Który rodzaj pliku pozwala na rejestrację zdjęć aparatem cyfrowym o najwyższej wierności odwzorowania obrazu oraz umożliwia dokładną obróbkę tego pliku na komputerze?",
+  "answers": {
+   "A": "RAW",
+   "B": "PNG",
+   "C": "SWF",
+   "D": "EPS"
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux",
+   "windows"
+  ]
+ },
+ {
+  "id": "c6747054",
+  "stem": "W notebooku został uszkodzony moduł pamięci 4GB DDR3-1066 1.5V. Można go zastąpić modułem",
+  "answers": {
+   "A": "4GB 1333MHz DDR3 SODIMM 1.5V",
+   "B": "4GB DDR3-1333 ECC DIMM REGISTERED 1.5V",
+   "C": "4GB 1333MHz DDR3 CL9 DIMM HyperX Fury 1.5V",
+   "D": "4GB 1333MHz DDR3L CL9 ECC Unbuffered SODIMM 1.5V"
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "hardware"
+  ]
+ },
+ {
+  "id": "c67c0c64",
+  "stem": "Wskaż najnowszy standard szyfrowania danych w sieciach bezprzewodowych.",
+  "answers": {
+   "A": "PSK",
+   "B": "EIRP",
+   "C": "WPA3",
+   "D": "WPA2"
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "netdevices",
+   "security"
+  ]
+ },
+ {
+  "id": "c7cfd8cb",
+  "stem": "Aby zwiększyć funkcjonalność przeglądarki internetowej, np. o obsługę VPN, należy zainstalować zewnętrzne biblioteki lub programy nazywane",
+  "answers": {
+   "A": "inputs",
+   "B": "plugins",
+   "C": "readers",
+   "D": "protocols"
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "protocols"
+  ]
+ },
+ {
+  "id": "cf05c374",
+  "stem": "Karty dźwiękowe nie zawierają modułu funkcjonalnego oznaczonego skrótem",
+  "answers": {
+   "A": "ROM",
+   "B": "DAC",
+   "C": "DSP",
+   "D": "GPU"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "hardware"
+  ]
+ },
+ {
+  "id": "cf93a7d1",
+  "stem": "Protokołem komunikacyjnym warstwy aplikacji wykorzystującym standardowo port 443 jest",
+  "answers": {
+   "A": "DNS",
+   "B": "DHCP",
+   "C": "SMTP",
+   "D": "HTTPS"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "protocols",
+   "linux"
+  ]
+ },
+ {
+  "id": "d088603f",
+  "stem": "Topologia logiczna, której mechanizm działania jest pokazany na przedstawionym schemacie blokowym, to topologia",
+  "answers": {
+   "A": "pierścienia.",
+   "B": "rozgłaszania.",
+   "C": "gwiazdy rozszerzonej.",
+   "D": "przekazywania tokenu."
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/ee_08_2023_01_sg_11_0.webp"
+  ],
+  "topics": [
+   "netdevices",
+   "hardware",
+   "basics"
+  ]
+ },
+ {
+  "id": "d12b7b35",
+  "stem": "Urządzeniem sieciowym drugiej warstwy modelu OSI, łączącym segmenty sieci oraz dokonującym filtrowania ruchu sieciowego, w którym podłączone sieci mogą korzystać z różnych fizycznych i logicznych protokołów łącza, jest",
+  "answers": {
+   "A": "bramka VoIP.",
+   "B": "most (bridge).",
+   "C": "zapora sieciowa.",
+   "D": "wzmacniak (repeater)."
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "netdevices",
+   "protocols",
+   "security"
+  ]
+ },
+ {
+  "id": "d1d4499a",
+  "stem": "Aby odzyskać dane ze sformatowanego dysku twardego, należy wykorzystać program",
+  "answers": {
+   "A": "RECUVA",
+   "B": "CDTrack Rescue",
+   "C": "Acronis True Image",
+   "D": "CD Recovery Toolbox Free"
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux",
+   "hardware",
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "d2368455",
+  "stem": "Komputer ma pracować w sieci lokalnej o adresie 172.16.0.0/16 i łączyć się z Internetem. Który element konfiguracji karty sieciowej został wpisany nieprawidłowo?",
+  "answers": {
+   "A": "Adres IP.",
+   "B": "Maska podsieci.",
+   "C": "Brama domyślna.",
+   "D": "Adresy serwerów DNS."
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_13_2023_01_sg_39_0.webp"
+  ],
+  "topics": [
+   "addressing",
+   "protocols"
+  ]
+ },
+ {
+  "id": "d31b7bf7",
+  "stem": "Która przystawka MMC systemu Windows umożliwia przegląd systemowego Dziennika zdarzeń?",
+  "answers": {
+   "A": "devmgmt.msc",
+   "B": "eventvwr.msc",
+   "C": "certcmpl.msc",
+   "D": "fsmgmt.msc"
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "windows"
+  ]
+ },
+ {
+  "id": "d86e6dc4",
+  "stem": "Wskaż nazwę przedstawionego na rysunku interfejsu, wykorzystywanego między innymi do zarządzania systemem operacyjnym.",
+  "answers": {
+   "A": "CLI",
+   "B": "GUI",
+   "C": "BSD",
+   "D": "GPL"
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/ee_08_2023_06_sg_09_0.webp"
+  ],
+  "topics": [
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "dbf72abb",
+  "stem": "Na rysunku jest przedstawiony symbol graficzny",
+  "answers": {
+   "A": "rutera.",
+   "B": "mostu.",
+   "C": "przełącznika.",
+   "D": "koncentratora."
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_13_2023_01_sg_07_0.webp"
+  ],
+  "topics": [
+   "netdevices"
+  ]
+ },
+ {
+  "id": "dde6f012",
+  "stem": "Aby przygotować do pracy skaner, którego opis zawarto w tabeli, należy w pierwszej kolejności",
+  "answers": {
+   "A": "podłączyć ładowarkę i całkowicie naładować akumulator.",
+   "B": "podłączyć skaner do komputera za pomocą kabla Ethernet.",
+   "C": "włożyć baterię i kartę pamięci do odpowiedniego gniazda skanera.",
+   "D": "włączyć urządzenie i rozpocząć bezpośrednie skanowanie do formatu PDF."
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2023_01_sg_23_0.webp"
+  ],
+  "topics": [
+   "cabling",
+   "printers",
+   "hardware"
+  ]
+ },
+ {
+  "id": "df71f40e",
+  "stem": "Aby za pomocą złącza DE-15F podłączyć przedstawiony projektor do laptopa, należy wykorzystać gniazdo oznaczone numerem",
+  "answers": {
+   "A": "1",
+   "B": "2",
+   "C": "5",
+   "D": "6"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2023_01_sg_24_0.webp"
+  ],
+  "topics": [
+   "peripherals",
+   "hardware"
+  ]
+ },
+ {
+  "id": "dfd134a4",
+  "stem": "By podłączyć drukarkę bez karty sieciowej do przewodowej sieci komputerowej należy zainstalować serwer wydruku z interfejsami",
+  "answers": {
+   "A": "Centronics i RJ11",
+   "B": "Centronics i USB",
+   "C": "USB i RS232",
+   "D": "USB i RJ45"
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "cabling",
+   "winserver",
+   "printers"
+  ]
+ },
+ {
+  "id": "e1378655",
+  "stem": "Liczba 54321 (o) zapisana w systemie heksadecymalnym ma postać",
+  "answers": {
+   "A": "58D1",
+   "B": "A8D1",
+   "C": "B1A1",
+   "D": "B1A2"
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "basics"
+  ]
+ },
+ {
+  "id": "e37e1a24",
+  "stem": "Do monitorowania stanu dysków twardych służy program",
+  "answers": {
+   "A": "GPU-Z.",
+   "B": "Super Pi.",
+   "C": "MemTest86.",
+   "D": "Acronis Drive Monitor."
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux",
+   "peripherals",
+   "hardware"
+  ]
+ },
+ {
+  "id": "e3b90670",
+  "stem": "Adres rozgłoszeniowy dla sieci 172.30.0.0/16 to",
+  "answers": {
+   "A": "172.30.0.255",
+   "B": "172.0.255.255",
+   "C": "172.30.255.255",
+   "D": "172.255.255.255"
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "addressing"
+  ]
+ },
+ {
+  "id": "e475f01d",
+  "stem": "Oprogramowanie do wirtualizacji dostępne jako rola w systemie Windows Serwer 2012 to",
+  "answers": {
+   "A": "VMware",
+   "B": "Hyper-V",
+   "C": "Virtual PC",
+   "D": "Virtual Box"
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "winserver",
+   "windows",
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "e5594656",
+  "stem": "W komputerze z zainstalowanym systemem Windows 10 nie można uruchomić systemu. Uszkodzeniu uległ główny rekord rozruchowy (MBR). Naprawa usterki bez reinstalacji systemu jest możliwa przy zastosowaniu narzędzia",
+  "answers": {
+   "A": "bootrec.exe",
+   "B": "gpedit.msc",
+   "C": "boot.ini",
+   "D": "wf.msc"
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "windows",
+   "hardware"
+  ]
+ },
+ {
+  "id": "e56bf2be",
+  "stem": "Głównym celem realizowanej przez program antywirusowy funkcji ochrony przed ransomware jest zapewnienie zabezpieczenia systemu przed zagrożeniami",
+  "answers": {
+   "A": "wyświetlającymi w natrętny sposób niepożądane reklamy.",
+   "B": "szyfrującymi dane oraz domagającymi się okupu za ich odblokowanie.",
+   "C": "podmieniającymi strony startowe przeglądarek i dodającymi paski narzędzi.",
+   "D": "wykorzystującymi błędy w oprogramowaniu do przejęcia kontroli nad systemem."
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2023_01_sg_17_0.webp"
+  ],
+  "topics": [
+   "winserver",
+   "hardware",
+   "security"
+  ]
+ },
+ {
+  "id": "e854090f",
+  "stem": "Która rola serwera Windows Server umożliwia scentralizowaną obsługę i konfigurację tymczasowych adresów IP i pokrewnych informacji dla komputerów klienckich?",
+  "answers": {
+   "A": "Serwer telnet.",
+   "B": "Serwer DHCP.",
+   "C": "Usługi pulpitu zdalnego.",
+   "D": "Usługi udostępniania plików."
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "addressing",
+   "protocols",
+   "winserver"
+  ]
+ },
+ {
+  "id": "e9b9b250",
+  "stem": "Podczas pracy komputera nastąpił samoczynny twardy reset. Przyczyną resetu najprawdopodobniej jest",
+  "answers": {
+   "A": "przegrzanie procesora.",
+   "B": "zablokowanie klawiatury.",
+   "C": "błędy zapisu/odczytu dysku twardego.",
+   "D": "odwołanie się do nieistniejącego pliku."
+  },
+  "correct": "A",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "peripherals",
+   "hardware"
+  ]
+ },
+ {
+  "id": "eaa25a4b",
+  "stem": "Wskaż urządzenie, które należy wykorzystać do połączenia drukarki wyposażonej w interfejs Wi-Fi z komputerem stacjonarnym bez interfejsu Wi-Fi, ale z interfejsem USB.",
+  "answers": {
+   "A": "",
+   "B": "",
+   "C": "",
+   "D": ""
+  },
+  "correct": "C",
+  "imageAnswers": true,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2023_01_sg_21_0.webp"
+  ],
+  "topics": [
+   "netdevices",
+   "printers",
+   "peripherals"
+  ]
+ },
+ {
+  "id": "ec45820f",
+  "stem": "W tablecie graficznym bez wyświetlacza pióro nie ustala położenia kursora ekranowego, można jedynie korzystać z jego końcówki do przesuwania kursora ekranowego oraz klikania. Wskaż możliwą przyczynę nieprawidłowej pracy urządzenia.",
+  "answers": {
+   "A": "Uszkodzona bateria zainstalowana w tablecie.",
+   "B": "Zainstalowany niepoprawny sterownik urządzenia.",
+   "C": "Uszkodzone przyciski znajdujące się na panelu monitora.",
+   "D": "Zwiększono wartość parametru regulującego nacisk końcówki."
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "peripherals",
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "ec6f2fab",
+  "stem": "Urządzeniem peryferyjnym wykorzystywanym w fabrykach odzieżowych do wycinania elementów ubrań jest ploter",
+  "answers": {
+   "A": "atramentowy.",
+   "B": "solwentowy.",
+   "C": "kreślący.",
+   "D": "tnący."
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "printers"
+  ]
+ },
+ {
+  "id": "ed46e729",
+  "stem": "Komputery K1 i K2 nie mogą się komunikować. Adresacja urządzeń jest podana w tabeli. Co należy zmienić, aby przywrócić komunikację w sieci?",
+  "answers": {
+   "A": "Adres bramy dla K1",
+   "B": "Adres bramy dla K2",
+   "C": "Maskę w adresie dla K1",
+   "D": "Maskę w adresie dla K2"
+  },
+  "correct": "B",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_13_2023_06_sg_38_0.webp",
+   "/home/user/egzamin-zawodowy/app/public/img/e_13_2023_06_sg_38_1.webp"
+  ],
+  "topics": [
+   "other"
+  ]
+ },
+ {
+  "id": "eeaf9085",
+  "stem": "Serwisant podczas naprawy sprzętu komputerowego wymienił kartę graficzną oraz zasilacz, zainstalował oraz skonfigurował drukarkę, skonfigurował program Outlook oraz wykonał kopię zapasową zdjęć prywatnych klienta na dysk USB. Wskaż koszt brutto wykonanych przez serwisanta usług.",
+  "answers": {
+   "A": "140,00 zł.",
+   "B": "170,00 zł.",
+   "C": "204,40 zł.",
+   "D": "209,10 zł."
+  },
+  "correct": "D",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/ee_08_2023_01_sg_31_0.webp"
+  ],
+  "topics": [
+   "printers",
+   "peripherals",
+   "hardware"
+  ]
+ },
+ {
+  "id": "eec0ae4c",
+  "stem": "Które urządzenie sieciowe jest widoczne na zdjęciu?",
+  "answers": {
+   "A": "Most.",
+   "B": "Modem.",
+   "C": "Przełącznik.",
+   "D": "Karta sieciowa."
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_13_2023_01_sg_08_0.webp"
+  ],
+  "topics": [
+   "netdevices"
+  ]
+ },
+ {
+  "id": "f1d2ed0f",
+  "stem": "Ile bitów należy przejąć z części hosta, aby sieć o adresie IPv4 10.0.10.0/24 można było podzielić na 16 podsieci?",
+  "answers": {
+   "A": "2",
+   "B": "3",
+   "C": "4",
+   "D": "5"
+  },
+  "correct": "C",
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "addressing"
+  ]
+ }
+]

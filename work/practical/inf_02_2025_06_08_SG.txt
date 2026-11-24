@@ -1,0 +1,281 @@
+                          Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+                                                                              Arkusz zawiera informacje
+                                                                           prawnie chronione do momentu
+                                                                                rozpoczęcia egzaminu
+
+
+
+Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych
+                    i lokalnych sieci komputerowych
+Symbol kwalifikacji: INF.02
+Numer zadania: 08
+Wersja arkusza: SG
+
+                                       Wypełnia zdający
+                                                                               Miejsce na naklejkę z numerem
+Numer PESEL zdającego*                                                           PESEL i z kodem ośrodka
+
+
+
+
+Czas trwania egzaminu: 150 minut.                                                            INF.02-08-25.06-SG
+
+EGZAMIN ZAWODOWY
+                                                              PODSTAWA PROGRAMOWA
+Rok 2025
+                                                                      2019
+CZĘŚĆ PRAKTYCZNA
+
+
+Instrukcja dla zdającego
+    1.  Na pierwszej stronie arkusza egzaminacyjnego wpisz w oznaczonym miejscu swój numer PESEL
+        i naklej naklejkę z numerem PESEL i z kodem ośrodka.
+    2. Na KARCIE OCENY w oznaczonym miejscu przyklej naklejkę z numerem PESEL oraz wpisz:
+        − swój numer PESEL*,
+        − oznaczenie kwalifikacji,
+        − numer zadania,
+        − numer stanowiska.
+    3. KARTĘ OCENY przekaż zespołowi nadzorującemu.
+    4. Sprawdź, czy arkusz egzaminacyjny zawiera 5 stron i nie zawiera błędów. Ewentualny brak stron lub
+        inne usterki zgłoś przez podniesienie ręki przewodniczącemu zespołu nadzorującego.
+    5. Zapoznaj się z treścią zadania oraz stanowiskiem egzaminacyjnym. Masz na to 10 minut. Czas ten
+        nie jest wliczany do czasu trwania egzaminu.
+    6. Czas rozpoczęcia i zakończenia pracy zapisze w widocznym miejscu przewodniczący zespołu
+        nadzorującego.
+    7. Wykonaj samodzielnie zadanie egzaminacyjne. Przestrzegaj zasad bezpieczeństwa i organizacji
+        pracy.
+    8. Jeżeli w zadaniu egzaminacyjnym występuje polecenie „zgłoś gotowość do oceny przez podniesienie
+        ręki”, to zastosuj się do polecenia i poczekaj na decyzję przewodniczącego zespołu nadzorującego.
+    9. Po zakończeniu wykonania zadania pozostaw rezultaty oraz arkusz egzaminacyjny na swoim
+        stanowisku lub w miejscu wskazanym przez przewodniczącego zespołu nadzorującego.
+    10. Po uzyskaniu zgody zespołu nadzorującego możesz opuścić salę/miejsce przeprowadzania egzaminu.
+
+                                                                                                   Powodzenia!
+* w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+
+Układ graficzny
+© CKE 2023
+
+
+
+
+                       Wi cej materia ów na stronie https://www.Testy.EgzaminZawodowy.info
+                       Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+Zadanie egzaminacyjne
+
+Korzystając z dostępnych narzędzi, oprogramowania oraz elementów znajdujących się na stanowisku
+egzaminacyjnym, wykonaj czynności zapisane w arkuszu egzaminacyjnym.
+W systemach Windows wykorzystaj konto Administrator z hasłem ZAQ!2wsx
+Ruter, punkt dostępowy i przełącznik pracują na ustawieniach fabrycznych zgodnie z dokumentacją, która
+jest dostępna na nośniku opisanym DOKUMENTACJA/PROGRAMY. Jeżeli urządzenia wymagają zmiany
+hasła, ustaw je zgodnie z wymogami urządzenia.
+
+1. Wykonaj montaż okablowania sieciowego:
+  − wykonaj kabel krosowy prosty U/UTP według sekwencji T568A zakończony z dwóch stron wtykiem
+     8P8C
+  ‒ zastosuj odpowiedni typ kabla
+
+UWAGA: Po wykonaniu montażu okablowania zgłoś Przewodniczącemu ZN – przez podniesienie ręki –
+gotowość do przeprowadzenia testu. W obecności egzaminatora sprawdź za pomocą testera poprawność
+wykonanego okablowania.
+
+2. Przeprowadź identyfikację parametrów bezprzewodowej karty sieciowej stacji roboczej za pomocą
+dostępnych w systemie operacyjnym Windows narzędzi. Odczytane dane zapisz w postaci zrzutów
+ekranowych, w katalogu Identyfikacja na dysku USB oznaczonym nazwą Egzamin-x, gdzie x to numer
+stanowiska egzaminacyjnego. Odczytane dane zapisz w Tabeli 2. Parametry techniczne bezprzewodowej
+karty sieciowej znajdującej się w arkuszu egzaminacyjnym. W przypadku braku możliwości identyfikacji
+wymaganych parametrów przez system należy zapisać brak danych.
+
+3. Skonfiguruj ruter zgodnie z następującymi zaleceniami:
+    − adres IP interfejsu sieciowego LAN: 192.168.0.1/24
+    − serwer DHCP wyłączony
+    − sieć bezprzewodowa włączona z ustawieniami:
+       − nazwa SSID: EGZAMIN_XX, gdzie XX oznacza numer stanowiska egzaminacyjnego
+       − zabezpieczenie WPA2 z kluczem: egzamin_XX, gdzie XX oznacza numer stanowiska
+           egzaminacyjnego i szyfrowanie AES lub CCMP
+       − pasmo: 2,4 GHz
+       − kanał: numer stanowiska egzaminacyjnego
+
+UWAGA: Jeżeli AP jest oddzielnym urządzeniem, należy skonfigurować interfejs LAN korzystając
+z dowolnego wolnego adresu należącego do podsieci LAN rutera. Adres bramy domyślnej: 192.168.0.1, tryb
+pracy Access Point.
+
+UWAGA: Po wykonaniu konfiguracji zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+oceny ustawień rutera.
+
+4. Skonfiguruj przełącznik zgodnie z następującymi zaleceniami:
+   − utworzona sieć VLAN 802.1Q o ID = 123 z portami 1, 2 i 3 bez tagowania (w trybie dostępu)
+   − adres IP: 192.168.0.5/24 (dla przełącznika L3 adres IP przypisany do VLAN o ID=123)
+   − brama domyślna: adres IP rutera
+
+UWAGA: Po wykonaniu konfiguracji zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+oceny ustawień przełącznika.
+
+
+
+
+                                               Strona 2 z 5
+
+                    Wi cej materia ów na stronie https://www.Testy.EgzaminZawodowy.info
+                       Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+5. Za pomocą kabli dostępnych na stanowisku połącz urządzenia sieciowe zgodnie ze schematem,
+a następnie podłącz je do sieci zasilającej.
+
+
+
+
+                                    Schemat połączenia urządzeń
+
+UWAGA: Jeżeli AP jest oddzielnym urządzeniem, podłącz go w dowolny, poprawny sposób.
+
+6. Skonfiguruj serwer z systemem operacyjnym Windows zgodnie z wytycznymi:
+   − przewodowy interfejs sieciowy podłączony do przełącznika:
+      − nazwa interfejsu: LAN_W
+      − adres IP: 192.168.0.10+XX/24, gdzie XX oznacza numer stanowiska egzaminacyjnego (np. dla
+          stanowiska egzaminacyjnego numer 5 adres IP to 192.168.0.15)
+      − brama domyślna: 192.168.0.1
+      − adres serwera DNS: localhost
+    − drugi interfejs przewodowy - wyłączony
+    − zainstaluj drukarkę sieciową. Drukarka jest dostępna przez port TCP/IP pod adresem IP
+       192.168.0.200 poprzez protokół RAW. Sterowniki znajdują się w folderze DRUKARKA na nośniku
+       opisanym DOKUMENTACJA/PROGRAMY
+   − udostępnij drukarkę w sieci jako zasób drukarka_XX, gdzie XX oznacza numer stanowiska
+       egzaminacyjnego
+   − promuj serwer do roli kontrolera domeny:
+      − utwórz nową domenę w nowym lesie o nazwie zsXX.local (gdzie XX oznacza numer stanowiska
+          egzaminacyjnego, np.: zs03.local dla stanowiska nr 3)
+      − hasło dla konta Administrator trybu przywracania usług katalogowych ustaw na egz@INF2
+      − w przypadku wymogu zmiany hasła dla konta Administrator ustaw je na zaq1@WSX
+      − w domenie zsXX.local utwórz jednostkę organizacyjną TECHNIKUM a w niej grupę z zakresem
+          globalnym UCZNIOWIE
+      − w jednostce organizacyjnej TECHNIKUM utwórz użytkownika:
+           − nazwa pełna: Jan Nowak
+           − login: jnowak
+           − hasło docelowe: jnow#1UCZ#
+           − konto dodane do grupy UCZNIOWIE
+      − utwórz folder C:\ZSprofile oraz udostępnij go pod nazwą zasobu ZSprofile$
+      − ustaw dla utworzonego folderu uprawnienia i zabezpieczenia na pełna kontrola dla wszystkich
+          użytkowników
+      − przypisz profil mobilny dla użytkownika jnowak zlokalizowany w udostępnionym zasobie
+      − utwórz obiekt zasady grupy o nazwie bezpieczna_szkola i połącz ją z korzeniem głównym domeny.
+          Zasadą grupy definiuj politykę haseł oraz blokadę konta:
+           − minimalna długość hasła: 8 znaków
+           − po 3 próbach nieudanego wprowadzenia hasła, konto zostaje zablokowane na 15 minut
+
+
+
+                                               Strona 3 z 5
+
+                    Wi cej materia ów na stronie https://www.Testy.EgzaminZawodowy.info
+                        Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+7. Skonfiguruj stację roboczą w systemie Windows zgodnie z następującymi zaleceniami:
+   − konfiguracja bezprzewodowego interfejsu sieciowego:
+      − nazwa interfejsu: LAN_K
+      − adres IP: 192.168.0.101/24
+      − brama domyślna: 192.168.0.1
+      − adres serwera DNS: adres IP interfejsu LAN_W serwera
+      − podłączony z utworzoną siecią Wi-Fi
+   − podłącz stację roboczą do domeny zsXX.local
+   − po zalogowaniu do domeny na konto użytkownika jnowak dodaj udostępnioną na serwerze drukarkę
+       sieciową
+   − wydrukuj z konta jnowak stacji roboczej stronę testową drukarki sieciowej, chęć wydruku zgłoś, przez
+       podniesienie ręki. Stronę testową dołącz do arkusza egzaminacyjnego.
+
+8. Za pomocą poleceń systemowych wykonaj test komunikacji stacji roboczej z interfejsem LAN rutera
+i serwerem oraz serwera z drukarką. W razie potrzeby zmień konfigurację zapory sieciowej serwera.
+
+UWAGA: Po wykonaniu testów połączenia zgłoś Przewodniczącemu ZN – przez podniesienie ręki –
+gotowość do przeprowadzenia ponownego sprawdzenia komunikacji. Sprawdzenie wykonaj w obecności
+egzaminatora.
+
+9. Korzystając z Tabeli 1. Cennik usług komputerowych, sporządź w arkuszu kalkulacyjnym kosztorys zadań
+wymienionych w arkuszu egzaminacyjnym. Kosztorys wykonaj zgodnie z Tabelą 3. Wzór kosztorysu. Plik
+zawierający kosztorys zapisz pod nazwą Kosztorys na nośniku Egzamin-x
+  − obliczenia w kolumnie VAT w zł powinny wykonywać się automatycznie w oparciu o stawkę podatku
+     VAT równą 23%
+  − obliczenia w kolumnie Cena brutto w zł powinny wykonywać się automatycznie na podstawie kolumny
+     Cena netto w zł oraz VAT w zł
+  − sumowanie kolumny Wartość brutto w zł oraz obliczenia w kolumnie Wartość brutto w zł powinny
+     wykonywać się automatycznie, na podstawie kolumny Cena brutto w zł oraz Ilość
+  − obliczenie wartości rabatu powinno odbywać się automatycznie, na podstawie łącznej wartości usług.
+     Rabat wynosi 10%, gdy wartość ta przekracza 450,00 zł
+  − pola znajdujące się w kolumnach Cena netto w zł, VAT w zł, Cena brutto w zł, Wartość brutto w zł oraz
+     komórki z łączną wartością usług, udzielonym rabatem i kwotą do zapłaty powinny mieć format waluty
+     zł lub PLN.
+
+                                 Tabela 1. Cennik usług komputerowych
+            Lp.                 Nazwa usługi                  Wartość usługi netto w zł
+           1.     Konfiguracja systemu Windows                                     100,00
+           2.     Konfiguracja systemu Windows Serwer                              150,00
+           3.     Montaż podzespołów                                                55,00
+           4.     Identyfikacja parametrów                                          30,00
+           5.     Podłączenie urządzeń sieciowych                                  100,00
+           6.     Instalacja drukarki                                               60,00
+           7.     Konfiguracja przełącznika                                         80,00
+           8.     Konfiguracja rutera                                               90,00
+
+UWAGA: Po zakończeniu prac nie wylogowuj się i nie wyłączaj komputerów oraz urządzeń sieciowych
+znajdujących się na Twoim stanowisku egzaminacyjnym.
+
+UWAGA: Zawartość nośnika USB, wykorzystywanego podczas egzaminu do zapisu zrzutów ekranowych
+lub dokumentów, jest usuwana po egzaminie i nie stanowi dokumentacji egzaminacyjnej przekazywanej wraz
+z arkuszem do OKE.
+
+
+
+
+                                                Strona 4 z 5
+
+                     Wi cej materia ów na stronie https://www.Testy.EgzaminZawodowy.info
+                       Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+Czas przeznaczony na wykonanie zadania wynosi 150 minut.
+
+Ocenie podlegać będzie 6 rezultatów:
+  − wykonane okablowanie sieciowe oraz połączenie fizyczne urządzeń,
+  − identyfikacja parametrów,
+  − skonfigurowane urządzenia sieciowe,
+  − skonfigurowany serwer,
+  − skonfigurowana stacja robocza,
+  − kosztorys
+oraz
+przebieg wykonywania okablowania sieciowego.
+
+
+
+
+                  Tabela 2. Parametry techniczne bezprzewodowej karty sieciowej
+       Parametr                                               Wartość
+
+ Adres fizyczny
+
+ Producent
+ Obsługiwane standardy
+ z grupy IEEE 802.11
+
+
+
+
+                                      Tabela 3. Wzór kosztorysu
+                                        Cena         VAT      Cena brutto                  Wartość
+ Lp.         Nazwa usługi                                                         Ilość
+                                      netto w zł     w zł        w zł                     brutto w zł
+
+
+
+
+                                                            ŁĄCZNA WARTOŚĆ USŁUG
+                                                                  UDZIELONY RABAT
+                                                                       DO ZAPŁATY
+
+
+
+
+                                               Strona 5 z 5
+
+                    Wi cej materia ów na stronie https://www.Testy.EgzaminZawodowy.info
+

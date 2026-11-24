@@ -21,6 +21,12 @@ export interface Question {
   ru?: { stem: string; answers: string[] }
   /** generated (not from CKE) */
   generated?: boolean
+  /** recognised from a scanned sheet */
+  ocr?: boolean
+  /** about obsolete technology */
+  outdated?: boolean
+  /** reviewer thinks the official key may be wrong */
+  doubt?: string
 }
 
 export interface CardState {

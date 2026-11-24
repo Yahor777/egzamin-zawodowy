@@ -100,6 +100,55 @@ def main():
             "seen": sessions,
             "year": int(sessions[0].split()[1][:4]),
         })
+    # scanned (OCR) sheets: fuzzy-match against the bank, add only new questions
+    if len(sys.argv) > 3:
+        import difflib
+        ocr_src = Path(sys.argv[3])
+        ocr_raw = json.loads((ocr_src / "questions.raw.json").read_text())
+        index = [(norm(b["stem"]), b) for b in bank]
+        added = merged = 0
+        for q in ocr_raw:
+            if q.get("needs_review") or not q.get("correct"):
+                continue
+            ns = norm(q["stem"])
+            ctext = norm(q["answers"].get(q["correct"], ""))
+            match = None
+            for bs, b in index:
+                if abs(len(bs) - len(ns)) > 25:
+                    continue
+                if difflib.SequenceMatcher(None, bs, ns).ratio() > 0.88:
+                    bc = norm(b["answers"][b["correct"]])
+                    if not ctext or not bc or difflib.SequenceMatcher(None, bc, ctext).ratio() > 0.7:
+                        match = b
+                        break
+            sess = f'{q["source"]["qual"]} {q["source"]["session"]}'
+            if match:
+                if sess not in match["seen"]:
+                    match["seen"] = sorted(set(match["seen"] + [sess]), reverse=True)
+                merged += 1
+                continue
+            qid = "o" + hashlib.sha1((ns + "#" + ctext).encode()).hexdigest()[:7]
+            figs = []
+            for f in q["figures"]:
+                name = Path(f["src"]).name
+                shutil.copy(ocr_src / f["src"], out_img / name)
+                figs.append({"src": f"img/{name}", "w": f["w"], "h": f["h"], "where": "stem"})
+            entry = {
+                "id": qid,
+                "stem": q["stem"],
+                "answers": [q["answers"].get(k, "") for k in "ABCD"],
+                "correct": "ABCD".index(q["correct"]),
+                "figures": figs,
+                "imageAnswers": False,
+                "topics": topics_for(q),
+                "seen": [sess],
+                "year": int(q["source"]["session"][:4]),
+                "ocr": True,
+            }
+            bank.append(entry)
+            index.append((ns, entry))
+            added += 1
+        print(f"OCR: merged into existing {merged}, added {added}", file=sys.stderr)
     bank.sort(key=lambda b: (-b["year"], b["id"]))
     (pub / "data").mkdir(parents=True, exist_ok=True)
     (pub / "data" / "questions.json").write_text(json.dumps(bank, ensure_ascii=False, separators=(",", ":")))

@@ -1,0 +1,222 @@
+                                                    Układ graficzny © CKE 2023                                                           EGZAMIN ZAWODOWY
+                                                                                                                                              Rok 2025
+                                                                                                                                          ZASADY OCENIANIA
+
+                                                                                                                                 Arkusz zawiera informacje prawnie chronione
+                                                                                                                                     do momentu rozpoczęcia egzaminu
+Więcej arkuszy znajdziesz na stronie: arkusze.pl
+
+
+
+
+                                                         Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych i lokalnych sieci komputerowych
+                                                         Oznaczenie arkusza: INF.02-01-25.01-SG
+                                                         Symbol kwalifikacji: INF.02
+                                                         Numer zadania: 01
+                                                                                                                                            PODSTAWA PROGRAMOWA
+                                                         Wersja arkusza: SG                                                                                2019
+
+
+                                                                                                                              Wypełnia egzaminator
+
+                                                                                                                                                                                   Numer
+                                                                                      Kod ośrodka                         –                             Numer PESEL zdającego*   stanowiska
+
+
+
+                                                                                 Kod egzaminatora
+
+
+                                                                                   Data egzaminu
+                                                                                                    Dzień Miesiąc   Rok
+
+
+                                                   Godzina rozpoczęcia egzaminu                            :
+
+
+
+                                                    * w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+Więcej arkuszy znajdziesz na stronie: arkusze.pl
+
+
+
+
+                                                   Egzaminatorze!
+                                                    − Oceniaj prace zdających rzetelnie i z zaangażowaniem. Dokumentuj wyniki oceny.
+
+                                                    − Stosuj przyjęte zasady oceniania w sposób obiektywny.
+
+                                                    − Jeżeli zdający, wykonując zadanie egzaminacyjne, uzyskuje inne rezultaty albo pożądane rezultaty uzyskuje w inny sposób niż uwzględniony
+                                                      w zasadach oceniania lub przedstawia nietypowe rozwiązanie, ale zgodnie ze sztuką w zawodzie, to nadal oceniaj zgodnie z kryteriami
+                                                      zawartymi w zasadach oceniania. Informacje o tym, że zasady oceniania nie przewidują zaistniałej sytuacji, przekaż niezwłocznie w formie
+                                                      pisemnej notatki do Przewodniczącego Zespołu Egzaminacyjnego z prośbą o przekazanie jej do Okręgowej Komisji Egzaminacyjnej. Notatka
+                                                      może być sporządzona odręcznie w trybie roboczym.
+                                                    − Informuj przewodniczącego zespołu nadzorującego o wszystkich nieprawidłowościach zaistniałych w trakcie egzaminu, w tym w szczególności
+                                                      o naruszeniach przepisów bezpieczeństwa i higieny pracy i o podejrzeniach niesamodzielności w wykonaniu zadania przez zdającego.
+
+
+
+
+                                                                                                                Strona 2 z 7
+                                                                                                                                                                        stanowiska
+                                                                                                                                                                          Numer
+                                                                                                                                                                                     Egzaminator wpisuje T,
+                                                                                                                                                                                      jeżeli zdający spełnił
+                                                                                           Elementy podlegające ocenie/kryteria oceny                                                kryterium albo N, jeżeli
+                                                                                                                                                                                            nie spełnił
+                                                   Rezultat 1: Wykonane okablowanie sieciowe oraz połączenie fizyczne urządzeń
+                                                   UWAGA: Oceny kryteriów 1.1 ÷ 1.8 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny montażu
+                                                   okablowania. Obserwację należy zakończyć po dokonaniu oceny wykonania okablowania sieciowego. Przebieg montażu okablowania sieciowego
+                                                   należy ocenić zgodnie z kryteriami zapisanymi w Przebiegu 1
+Więcej arkuszy znajdziesz na stronie: arkusze.pl
+
+
+
+
+                                                   1 Wszystkie żyły kabla podłączono do modułu Keystone wg sekwencji T568B
+                                                       Przewody podłączone do modułu Keystone nie wystają więcej niż 25 mm poza płaszcz, a pary nie są rozkręcone na długości
+                                                   2
+                                                       większej niż 13 mm
+                                                   3 Gniazdo naścienne zostało poprawnie zmontowane
+
+                                                   4 Wszystkie żyły kabla podłączono do panelu krosowego wg sekwencji T568B
+                                                       Przewody podłączone do panelu krosowego nie wystają więcej niż 25 mm poza płaszcz, a pary nie są rozkręcone na długości
+                                                   5
+                                                       większej niż 13 mm
+                                                   6 Do montażu zastosowano kabel U/UTP typu drut
+                                                       W obecności egzaminatora przeprowadzono za pomocą testera okablowania test wykonanego połączenia oraz test
+                                                   7
+                                                       potwierdził poprawność jego wykonania
+                                                   8 Zamontowano panel krosowy stabilnie w szafie lub stelażu RACK
+
+                                                   9 Wszystkie urządzenia sieciowe podłączono zgodnie ze schematem w załączniku 1
+                                                   Rezultat 2: Identyfikacja parametrów
+                                                   UWAGA: identyfikacja podzespołów została wykonana w systemie Linux na stacji roboczej. Należy porównać zapisy zdającego z tabeli 1 znajdującej
+                                                   się w arkuszu egzaminacyjnym ze zrzutami ekranowymi zapisanymi w katalogu Identyfikacja znajdującym się na dysku USB oznaczonym nazwą
+                                                   Egzamin-x, gdzie x to numer stanowiska egzaminacyjnego. W przypadku braku zgodności zapisów w tabeli 1 ze zrzutami, kryteria nie są spełnione.
+                                                   Dopuszcza się możliwość podania przez zdającego zapisu świadczącego o braku informacji, jeżeli jest zgodny ze zrzutem ekranowym
+                                                   1 W tabeli 1 zapisano nazwę procesora
+
+                                                   2 W tabeli 1 zapisano liczbę rdzeni procesora
+
+                                                   3 W tabeli 1 zapisano taktowanie procesora
+
+                                                   4 W tabeli 1 zapisano producenta i model karty graficznej
+
+                                                                                                                   Strona 3 z 7
+                                                                                                                                                                        stanowiska
+                                                                                                                                                                          Numer
+                                                   Rezultat 3: Skonfigurowane urządzenia sieciowe
+                                                   UWAGA: Oceny ustawień urządzeń należy dokonać po zgłoszeniu przez Przewodniczącego ZN o gotowości zdającego do prezentacji konfiguracji
+                                                   rutera, następnie przełącznika
+                                                   1 Przypisano dla interfejsu WAN rutera adres IP 90.0.0.3/28, brama domyślna: 90.0.0.2 serwer DNS: 4.4.4.4
+                                                   2 Przypisano dla interfejsu LAN rutera adres IP: 10.10.0.1/24
+                                                   3 Włączono na ruterze serwer DHCP
+Więcej arkuszy znajdziesz na stronie: arkusze.pl
+
+
+
+
+                                                   4 Ustawiono na serwerze DHCP zakres adresów: 10.10.0.2 ÷ 10.10.0.20
+                                                   5 Ustawiono na serwerze DHCP serwer DNS: 10.10.0.20
+                                                   6 Zarezerwowano adres 10.10.0.20 dla interfejsu serwera
+                                                   7 Ustawiono na przełączniku adres IP: 192.168.1.2/25
+                                                   Rezultat 4: Skonfigurowany serwer
+                                                   UWAGA: Ocenie podlega konfiguracja systemu Windows Server, konto Administrator z hasłem ZAQ!2wsx
+                                                   Kryteria 4.1 oraz 4.9 ÷ 4.10 należy ocenić po informacji od Przewodniczącego ZN o gotowości zdającego do oceny komunikacji urządzeń sieciowych
+                                                      Ustawiono dla interfejsu sieciowego podłączonego do rutera nazwę WAN oraz adres IP 10.10.0.20 uzyskano w sposób
+                                                    1
+                                                      automatyczny
+                                                      Ustawiono dla interfejsu sieciowego podłączonego do przełącznika nazwę LAN 1,
+                                                    2
+                                                      adres IP: 192.168.1.1/25, brama domyślna: brak, serwer DNS: 192.168.1.1
+                                                   3 Zainstalowano na serwerze usługę DNS oraz IIS
+
+                                                   4 Utworzono nową strefę wyszukiwania do przodu o nazwie egzamin.local
+
+                                                   5 Ustawiono w nowej strefie nowy rekord hosta o nazwie www powiązany z adresem 192.168.1.1
+
+                                                   6 Zainstalowano program 7-Zip oraz za jego pomocą wyodrębniono do folderu C:\www plik strona_testowa.html
+                                                       Dodano nową witrynę o nazwie strona_testowa oraz dodano do dokumentów domyślnych witryny plik strona_testowa.html ze
+                                                   7
+                                                       ścieżką do plików C:\www
+                                                   8 Nową witrynę powiązano z protokołem HTTP oraz interfejsem sieciowym 192.168.1.1 na porcie 80
+                                                       Wykonano sprawdzenie komunikacji serwera z intefejsem LAN rutera, urządzenie odpowiada na polecenie, np. ping
+                                                   9
+                                                       10.10.0.1
+                                                   10 Wykonano sprawdzenie komunikacji serwera ze stacją roboczą, urządzenie odpowiada na polecenie, np. ping 192.168.1.3
+
+                                                                                                                   Strona 4 z 7
+                                                                                                                                                                         stanowiska
+                                                                                                                                                                           Numer
+                                                   Rezultat 5: Skonfigurowana stacja robocza
+                                                   UWAGA: Ocenie podlega konfiguracja systemu Windows, konto Administrator z hasłem ZAQ!2wsx
+                                                   Kryteria 5.4 ÷ 5.6 należy ocenić po informacji od Przewodniczącego ZN o gotowości zdającego do oceny konfiguracji interfejsu sieciowego maszyny
+                                                   wirtualnej Linux oraz wyświetlenia strony
+                                                       Ustawiono dla przewodowego interfejsu sieciowego podłączonego do przełącznika nazwę: LAN 2, adres IP: 192.168.1.3/25,
+                                                    1
+                                                       brama domyślna: 192.168.1.1, DNS: 192.168.1.1
+Więcej arkuszy znajdziesz na stronie: arkusze.pl
+
+
+
+
+                                                   2 Utworzono nową maszynę wirtualną w programie Oracle VirtualBox wykorzystując obraz ISO systemu desktopowego Linux
+
+                                                   3 Dla maszyny wirtualnej włączono kartę sieciową pracującą w trybie bridged
+                                                       W systemie wirtualnym Linux ustawiono nazwę interfejsu sieciowego LAN 3 oraz
+                                                   4
+                                                       adres IP: 192.168.1.4 z maską: 255.255.255.128
+                                                   5 Interfejsowi sieciowemu LAN 3 ustawiono bramę domyślną oraz serwer DNS: 192.168.1.1
+
+                                                   6 W oknie przeglądarki internetowej maszyny wirtualnej wyświetlono stronę internetową po wpisaniu adresu www.egzamin.local
+                                                   Rezultat 6: Kosztorys
+                                                   UWAGA: kosztorys znajduje się na dysku USB oznaczonym nazwą Egzamin-x
+                                                      Kosztorys sporządzono w arkuszu kalkulacyjnym w postaci pliku o nazwie kosztorys. Zawiera on siedem kolumn: Lp.,
+                                                    1 Nazwa czynności, Liczba roboczogodzin na 1 sztukę, Liczba sztuk, Łączna liczba roboczogodzin, stawka za 1
+                                                      roboczogodzinę, Wartość robocizny
+                                                      W kosztorysie uwzględniono wyłącznie 4 czynności:
+                                                      Montaż kabla U/UTP do panelu krosowego
+                                                    2 Montaż modułu Keystone do kabla U/UTP
+                                                      Montaż modułu Keystone w obudowie gniazda
+                                                      Montaż gniazda naściennego 2 x RJ45
+                                                      W polach Liczba sztuk zapisano 100 dla czynności (Montaż kabla U/UTP do panelu krosowego, Montaż modułu Keystone do
+                                                    3 kabla U/UTP, Montaż modułu Keystone w obudowie gniazda) i 50 dla czynności (Montaż gniazda naściennego 2 x RJ45) oraz
+                                                      stawkę 50 zł za roboczogodzinę
+                                                   4 Kosztorys zawiera formuły liczące Łączną liczbę roboczogodzin na podstawie Liczby roboczogodzin za 1 sztukę i Liczby sztuk
+                                                     Obliczenia w kolumnie Wartość robocizny oraz polu RAZEM wykonują się automatycznie oraz do obliczenia sumy robocizny
+                                                   5
+                                                     Razem zastosowano funkcję sumującą
+                                                     Komórki zawierające kwoty w złotych sformatowano kategorią walutową z symbolem zł lub PLN (dopuszcza się kategorię
+                                                   6
+                                                     księgowe)
+                                                                                                                    Strona 5 z 7
+                                                                                                                                                                                 stanowiska
+                                                                                                                                                                                   Numer
+                                                   Przebieg 1: Wykonywanie okablowania sieciowego
+
+                                                   Zdający:
+                                                       zdejmował izolację z kabla U/UTP i montował gniazdo oraz kabel U/UTP w panelu krosowym przy zastosowaniu
+                                                   1
+                                                       odpowiednich narzędzi, zgodnie z zasadami BHP
+                                                   2 po wykonaniu montażu zostawił uporządkowane stanowisko pracy
+Więcej arkuszy znajdziesz na stronie: arkusze.pl
+
+
+
+
+                                                   Egzaminator …………………………………………………………………………….                                                       ..........................................................................
+                                                                                           imię i nazwisko                                                               data i czytelny podpis
+
+
+
+
+                                                                                                                  Strona 6 z 7
+                                                   Załącznik 1 - Schemat połączenia urządzeń
+Więcej arkuszy znajdziesz na stronie: arkusze.pl
+
+
+
+
+                                                                 Strona 7 z 7
+

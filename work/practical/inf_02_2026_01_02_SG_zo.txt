@@ -1,0 +1,214 @@
+ Układ graficzny © CKE 2025                                                       EGZAMIN ZAWODOWY
+                                                                                       Rok 2026
+                                                                             ZASADY OCENIANIA I KARTY OCENY
+
+                                                                              Arkusz zawiera informacje prawnie chronione
+                                                                                  do momentu rozpoczęcia egzaminu
+
+
+
+
+      Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych i lokalnych sieci komputerowych
+      Oznaczenie arkusza: INF.02-02-26.01-SG
+      Symbol kwalifikacji: INF.02
+      Numer zadania: 02
+                                                                                         PODSTAWA PROGRAMOWA
+      Wersja arkusza: SG                                                                                2019
+
+
+                                                                           Wypełnia egzaminator
+
+                                                                                                                                Numer
+                                   Kod ośrodka                         –                            Numer PESEL zdającego*   stanowiska**
+
+
+
+                              Kod egzaminatora
+
+
+                                Data egzaminu
+                                                 Dzień Miesiąc   Rok
+
+
+Godzina rozpoczęcia egzaminu                            :
+
+
+
+ * w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+ ** na podstawie danych wpisanych przez zdającego na pierwszej stronie arkusza egzaminacyjnego
+Egzaminatorze!
+ − Oceniaj prace zdających rzetelnie i z zaangażowaniem. Dokumentuj wyniki oceny.
+
+ − Stosuj przyjęte zasady oceniania w sposób obiektywny.
+
+ − Jeżeli zdający, wykonując zadanie egzaminacyjne, uzyskuje inne rezultaty albo pożądane rezultaty uzyskuje w inny sposób niż uwzględniony
+   w zasadach oceniania lub przedstawia nietypowe rozwiązanie, ale zgodnie ze sztuką w zawodzie, to nadal oceniaj zgodnie z kryteriami
+   zawartymi w zasadach oceniania. Informacje o tym, że zasady oceniania nie przewidują zaistniałej sytuacji, przekaż niezwłocznie w formie
+   pisemnej notatki do Przewodniczącego Zespołu Egzaminacyjnego z prośbą o przekazanie jej do Okręgowej Komisji Egzaminacyjnej. Notatka
+   może być sporządzona odręcznie w trybie roboczym.
+ − Informuj przewodniczącego zespołu nadzorującego o wszystkich nieprawidłowościach zaistniałych w trakcie egzaminu, w tym w szczególności
+   o naruszeniach przepisów bezpieczeństwa i higieny pracy i o podejrzeniach niesamodzielności w wykonaniu zadania przez zdającego.
+
+
+
+
+                                                             Strona 2 z 8
+                                                                                                                  stanowiska
+                                                                                                                    Numer
+                                                                                                                               Egzaminator wpisuje T,
+                                                                                                                                jeżeli zdający spełnił
+                                       Elementy podlegające ocenie/kryteria oceny                                              kryterium albo N, jeżeli
+                                                                                                                                      nie spełnił
+
+Rezultat 1: Wykonane okablowanie sieciowe oraz połączenie fizyczne urządzeń
+UWAGA: Oceny kryteriów 1.1 ÷ 1.4 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny montażu okablowania.
+Obserwację należy zakończyć po dokonaniu oceny wykonania okablowania sieciowego. Przebieg montażu okablowania sieciowego należy ocenić
+zgodnie z kryteriami zapisanymi w Przebiegu 1
+1 Wszystkie żyły na obu końcach kabla podłączone do wtyku 8P8C wg sekwencji T568B
+
+2 Zatrzask wtyków 8P8C oparty na zewnętrznej izolacji kabla U/UTP
+
+3 Do montażu okablowania zastosowany kabel typu linka
+    W obecności egzaminatora, przeprowadzony za pomocą testera okablowania test wykonanego kabla prostego potwierdził
+4
+    poprawność jego wykonania
+5 Wszystkie urządzenia sieciowe podłączone zgodnie ze schematem - Załącznik 1
+
+Rezultat 2: Skonfigurowane urządzenia sieciowe
+
+UWAGA: Oceny należy dokonać po zgłoszeniu przez Przewodniczącego ZN gotowości zdającego do oceny konfiguracji rutera, następnie przełącznika
+
+1 Interfejs LAN rutera: adres IP 192.168.1.1/24
+
+2 W ruterze włączony serwer DHCP z pulą adresów: 192.168.1.101 ÷ 192.168.1.150
+  W serwerze DHCP zarezerwowane adresy IP:
+3 192.168.1.101 dla interfejsu sieciowego serwera podłączonego do przełącznika,
+  192.168.1.102 dla przewodowego interfejsu sieciowego stacji roboczej
+4 W serwerze DHCP ustawiony czas dzierżawy: 12 godzin
+
+5 W serwerze DHCP ustawiony serwer DNS: 192.168.1.101
+
+6 Przełącznik: adres IP: 192.168.1.2/24, brama domyślna 192.168.1.1
+
+7 W przełączniku utworzony VLAN 802.1Q o ID = 2
+
+8 Porty 1, 2, 3 przypisane do VLAN o ID = 2 bez tagowania
+                                                               Strona 3 z 8
+                                                                                                                    stanowiska
+                                                                                                                      Numer
+Rezultat 3: Skonfigurowane interfejsy sieciowe
+UWAGA: Na serwerze ocenie podlega konfiguracja systemu Windows, konto Administrator z hasłem ZAQ!2wsx
+Na stacji roboczej ocenie podlega konfiguracja systemu Linux, konto administrator z hasłem ZAQ!2wsx (konto z prawem podniesienia uprawnień do
+root z hasłem ZAQ!2wsx)
+Kryteria 3.5 ÷ 3.10 należy ocenić po informacji od Przewodniczącego ZN o gotowości zdającego do oceny komunikacji urządzeń sieciowych
+1 Interfejs sieciowy serwera podłączony do gniazda E-X: nazwa LAN1
+    Interfejs sieciowy serwera podłączony do gniazda E-X: adres IP 192.168.0.X/24
+2
+    X to numer stanowiska egzaminacyjnego
+3 Interfejs sieciowy serwera podłączony do gniazda E-X: serwer DNS localhost
+
+4 Interfejs sieciowy serwera podłączony do przełącznika: nazwa LAN2
+
+5 Interfejs sieciowy serwera podłączony do przełącznika: uzyskano z DHCP adres IP 192.168.1.101
+
+6 Interfejs sieciowy serwera podłączony do przełącznika: uzyskano z DHCP adres DNS: 192.168.1.101
+
+7 Interfejs przewodowy stacji roboczej: uzyskano z DHCP adres IP 192.168.1.102
+
+8 Interfejs przewodowy stacji roboczej: uzyskano z DHCP adres DNS: 192.168.1.101
+
+9 Wykonane sprawdzenie komunikacji serwera ze stacją roboczą, urządzenie odpowiada na polecenie, np. ping 192.168.1.102
+
+10 Wykonane sprawdzenie komunikacji serwera z drukarką, urządzenie odpowiada na polecenie, np. ping 192.168.0.200
+
+
+
+
+                                                                 Strona 4 z 8
+                                                                                                                 stanowiska
+                                                                                                                   Numer
+Rezultat 4: Skonfigurowany serwer
+UWAGA: Oceny kryterium 4.9 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny poprawności wyświetlenia się
+opublikowanej strony
+1 Dodane role: serwer DNS, Serwer sieci Web (IIS)
+
+2 W usłudze DNS utworzona nowa strefa wyszukiwania do przodu o nazwie: egzamin.local
+
+3 W utworzonej strefie dodany rekord A o nazwie app powiązany z adresem IP: 192.168.1.101
+
+4 W usłudze DNS utworzona strefę wyszukiwania wstecznego dla podsieci 192.168.1.0/24
+    Do utworzonej strefy wyszukiwania wstecznego dodany rekord PTR dla nazwy hosta app powiązany z adresem IP:
+5
+    192.168.1.101
+6 Na dysku C: utworzony folder o nazwie app z plikiem index.html
+  Zabezpieczenia folderu C:\app tylko dla:
+7 Administratorzy – Pełna kontrola,
+  IUSR – Odczyt i wykonywanie
+8 Utworzona nowa witryna sieci Web publikuje zawartość folderu C:\app pod nazwą hosta app.egzamin.local
+    Na stacji roboczej w systemie Linux wyświetlona opublikowana strona pod adresem 192.168.1.101
+9
+
+
+
+
+                                                                   Strona 5 z 8
+                                                                                                                      stanowiska
+                                                                                                                        Numer
+Rezultat 5: Zmodernizowana stacja robocza i wykonane testy
+UWAGA: Ocenie podlega konfiguracja systemu Linux na stacji roboczej. Oceny kryterium 5.1 należy dokonać po informacji od Przewodniczącego ZN
+o gotowości zdającego do oceny montażu dysku
+Kryteria 5.4, 5.5, 5.6 należy ocenić na podstawie zrzutów ekranu znajdujących się na nośniku USB opisanym Egzamin-x, gdzie x to numer stanowiska.
+Zapisy znajdują się w tabeli 1 arkusza egzaminacyjnego
+1 Zamontowany w stacji roboczej zapasowy dysk
+
+2 Na zapasowym dysku utworzona partycja o pełnej pojemności dysku, sformatowana z systemem plików ext4
+
+3 Nowa partycja podmontowana pod katalog /dane
+  Za pomocą narzędzi systemowych przeprowadzony test wydajności odczytu z partycji systemowej. Test wykonany przy
+  ustawieniach:
+4 prędkość przesyłania/Liczba próbek: 200
+  prędkość przesyłania/Rozmiar próbki: 20 MiB
+  czas dostępu/Liczba próbek: 1000
+5 Wynik testu partycji systemowej zapisany w tabeli 1 arkusza egzaminacyjnego, wynik jest zgodny ze zrzutami ekranu
+  Za pomocą narzędzi systemowych przeprowadzony test wydajności odczytu z partycji na zapasowym dysku. Test wykonany
+  przy ustawieniach:
+6 prędkość przesyłania/Liczba próbek: 200
+  prędkość przesyłania/Rozmiar próbki: 20 MiB
+  czas dostępu/Liczba próbek: 1000
+7 Wynik testu partycji na zapasowym dysku zapisany w tabeli 1, wynik jest zgodny ze zrzutem ekranu
+
+8 W ostatnim wierszu tabeli 1 wskazane, który dysk jest szybszy zgodnie ze stanem faktycznym
+
+
+
+
+                                                                Strona 6 z 8
+                                                                                                                                stanowiska
+                                                                                                                                  Numer
+Przebieg 1: Wykonywanie okablowania sieciowego i modernizacja stacji roboczej
+
+Zdający:
+    zdejmował izolację z kabla U/UTP i wykonywał montaż kabla przy zastosowaniu odpowiednich narzędzi, zgodnie z zasadami
+1
+    BHP
+2 po wykonaniu montażu kabla zostawił uporządkowane stanowisko pracy
+
+3 montował dysk przy zastosowaniu odpowiednich narzędzi, zgodnie z zasadami BHP
+
+
+
+
+Egzaminator …………………………………………………………………………….                                                         ..........................................................................
+                                        imię i nazwisko                                                                 data i czytelny podpis
+
+
+
+
+                                                               Strona 7 z 8
+Załącznik 1 - Schemat połączenia urządzeń
+
+
+
+
+                                            Strona 8 z 8
+

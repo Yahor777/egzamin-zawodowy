@@ -1,0 +1,208 @@
+                                                                             Arkusz zawiera informacje
+                                                                          prawnie chronione do momentu
+                                                                               rozpoczęcia egzaminu
+
+
+
+Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych
+                    i lokalnych sieci komputerowych
+Symbol kwalifikacji: INF.02
+Numer zadania: 10
+Wersja arkusza: SG
+
+                                        Wypełnia zdający
+
+Numer PESEL zdającego*                                                        Miejsce na naklejkę z numerem
+                                                                                PESEL i z kodem ośrodka
+
+         Numer stanowiska
+
+
+
+
+Czas trwania egzaminu: 150 minut                                                          INF.02-10-26.06-SG
+
+EGZAMIN ZAWODOWY
+                                                              PODSTAWA PROGRAMOWA
+Rok 2026
+                                                                      2019
+CZĘŚĆ PRAKTYCZNA
+
+Instrukcja dla zdającego
+
+    1.    Na pierwszej stronie arkusza egzaminacyjnego wpisz w oznaczonym miejscu swój numer PESEL*,
+          numer stanowiska i naklej naklejkę** z numerem PESEL i z kodem ośrodka.
+    2.    Sprawdź, czy arkusz egzaminacyjny zawiera 5 stron i nie zawiera błędów. Ewentualny brak stron
+          lub inne usterki zgłoś przez podniesienie ręki przewodniczącemu zespołu nadzorującego.
+    3.    Zapoznaj się z treścią zadania oraz stanowiskiem egzaminacyjnym. Masz na to 10 minut. Czas ten nie
+          jest wliczany do czasu trwania egzaminu.
+    4.    Czas rozpoczęcia i zakończenia pracy zapisze w widocznym miejscu przewodniczący zespołu
+          nadzorującego.
+    5.    Wykonaj samodzielnie zadanie egzaminacyjne. Przestrzegaj zasad bezpieczeństwa i organizacji
+          pracy.
+    6.    Jeżeli w zadaniu egzaminacyjnym występuje polecenie „zgłoś gotowość do oceny przez podniesienie
+          ręki”, to zastosuj się do polecenia i poczekaj na decyzję przewodniczącego zespołu nadzorującego.
+    7.    Po zakończeniu wykonania zadania pozostaw rezultaty jego wykonania oraz arkusz egzaminacyjny
+          na swoim stanowisku lub w miejscu wskazanym przez przewodniczącego zespołu nadzorującego.
+    8.    Po uzyskaniu zgody zespołu nadzorującego możesz opuścić salę/miejsce przeprowadzania egzaminu.
+
+                                                                                                Powodzenia!
+
+* w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+** w przypadku otrzymania naklejki
+
+Układ graficzny
+© CKE 2025
+Zadanie egzaminacyjne
+
+Korzystając z dostępnych narzędzi, oprogramowania oraz elementów znajdujących się na stanowisku
+egzaminacyjnym, wykonaj czynności opisane w arkuszu egzaminacyjnym.
+W systemach Windows wykorzystaj konto Administrator z hasłem ZAQ!2wsx
+Urządzenia pracują na ustawieniach fabrycznych zgodnie z dokumentacją, która jest dostępna na nośniku
+opisanym DOKUMENTACJA/PROGRAMY. Jeżeli urządzenia wymagają zmiany hasła, ustaw je zgodnie
+z wymogami urządzenia.
+
+1. Wykonaj montaż okablowania sieciowego:
+   − wykonaj kabel krosowy prosty według sekwencji T568B, zastosuj odpowiedni typ kabla.
+
+
+UWAGA: Po wykonaniu montażu okablowania zgłoś Przewodniczącemu Zespołu Nadzorującego –
+przez podniesienie ręki – gotowość do przeprowadzenia testu. W obecności egzaminatora sprawdź za
+pomocą testera poprawność wykonanego kabla.
+
+Tabela 1. Konfiguracja interfejsów sieciowych urządzeń
+                                                                             Brama
+Urządzenie          Interfejs        Nazwa        Adres IP       Maska                       Serwer DNS
+                                                                            domyślna
+                PORT1 (WAN)                     90.90.90.1       29      90.90.90.2        8.8.8.8, 8.8.4.4*
+Ruter
+                PORT2 (LAN)                     192.168.0.1      24
+Przełącznik                                     192.168.0.2      24      adres IP rutera
+                                   V101         192.168.0.3      24      adres IP rutera   localhost
+Serwer
+                                   V102         192.168.1.1      24                        localhost
+Stacja          przewodowy         V102         192.168.1.2      24      adres IP interfejsu V102 serwera
+robocza         bezprzewodowy      Wyłączony
+* jeśli jest wymagany
+
+2. Skonfiguruj ruter zgodnie z następującymi zaleceniami:
+   − konfiguracja interfejsów sieciowych zgodnie z tabelą 1
+   − serwer DHCP wyłączony
+   − dodana trasa statyczna do podsieci 192.168.1.0/24 przez serwer pełniący rolę rutera o adresie
+     192.168.0.3
+
+UWAGA: Po wykonaniu konfiguracji zgłoś Przewodniczącemu Zespołu Nadzorującego – przez podniesienie
+ręki – gotowość do oceny ustawień rutera.
+
+3. Skonfiguruj przełącznik zgodnie z następującymi zaleceniami:
+  −     konfiguracja interfejsów sieciowych zgodnie z tabelą 1
+  −     włączona obsługa VLAN 802.1Q
+  −     utworzony VLAN 802.1Q o ID = 101
+  −     utworzony VLAN 802.1Q o ID = 102
+  −     port 1 i 4 przypisany do VLAN o ID = 101 bez tagowania (tryb dostępu)
+  −     port 2 i 3 przypisany do VLAN o ID = 102 bez tagowania (tryb dostępu)
+  −     dla przełącznika L3 adres IP przypisany do VLAN o ID = 101
+  −     ustaw sieć VLAN o ID = 101 jako VLAN zarządzalny (jeśli wymagane)
+
+                                                 Strona 2 z 5
+UWAGA: Po wykonaniu konfiguracji zgłoś Przewodniczącemu Zespołu Nadzorującego – przez podniesienie
+ręki – gotowość do oceny ustawień przełącznika.
+
+4. Za pomocą kabli połączeniowych znajdujących się na stanowisku egzaminacyjnym połącz urządzenia
+   zgodnie ze schematem, a następnie podłącz je do sieci zasilającej.
+
+
+
+
+                                     Schemat połączenia urządzeń
+
+5. Skonfiguruj interfejsy sieciowe stacji roboczej i serwera w systemie Windows
+   − na serwerze:
+      − nazwy interfejsów sieciowych i ich konfiguracja zgodnie z tabelą 1
+      − dodaj rolę Dostęp zdalny, usługę Routing oraz włącz Routing LAN
+      − włącz zaporę sieciową jeśli jest wyłączona w systemie operacyjnym
+      − w zaporze sieciowej dodaj odpowiednią regułę tak, aby serwer odpowiadał na żądanie echa
+          protokołu ICMP
+   − na stacji roboczej:
+      − nazwy interfejsów sieciowych i ich konfiguracja zgodnie z tabelą 1
+      − za pomocą poleceń systemowych wykonaj test komunikacji stacji roboczej z serwerem i ruterem.
+
+ UWAGA: Po wykonaniu testów połączenia zgłoś Przewodniczącemu Zespołu Nadzorującego – przez
+ podniesienie ręki – gotowość do przeprowadzenia ponownego sprawdzenia komunikacji. Sprawdzenie
+ wykonaj w obecności egzaminatora.
+
+6. Skonfiguruj serwer z systemem operacyjnym Windows zgodnie z wytycznymi:
+   − zmień nazwę serwera na serwer-x, gdzie x to numer stanowiska egzaminacyjnego
+   − dodaj rolę Usługi domenowe Active Directory
+  −   podnieś poziom serwera do poziomu kontrolera nowej domeny o nazwie egzamin.local w nowym lesie
+  −   hasło trybu przywracania usług katalogowych ZAQ!2wsx
+  −   jeżeli przy uruchomieniu kontrolera domeny system wymusi zmianę hasła konta Administrator, ustaw
+      je na zaq1@WSX
+  −   w domenie utwórz jednostkę organizacyjną o nazwie Pracownicy
+  −   w jednostce Pracownicy utwórz konto użytkownika o danych:
+      ‒ imię i nazwisko: Adam Nowak
+      ‒ login: anowak
+
+
+                                             Strona 3 z 5
+      ‒   hasło docelowe: Mojedlugiehaslo! (wyłączona opcja użytkownik musi zmienić hasło przy
+          następnym logowaniu)
+  −   utwórz folder C:\Profiles i ustaw zabezpieczenia tylko dla:
+       − Administratorzy – Pełna kontrola
+       − Użytkownicy uwierzytelnieni – Tworzenie folderów (z opcją Dotyczy: tylko ten folder)
+  −   folder C:\Profiles udostępnij pod nazwą zasobu profiles$
+  −   ustaw uprawnienia zasobu profiles$ tylko dla: Wszyscy – Pełna kontrola
+  −   użytkownikowi anowak przypisz profil mobilny zlokalizowany w udostępnionym zasobie profiles$
+      i folderze o nazwie zgodnej z nazwą użytkownika.
+
+7. Skonfiguruj stację roboczą w systemie Windows:
+   − podłącz stację roboczą do utworzonej domeny
+  −   zaloguj się na użytkownika anowak, a następnie wyloguj
+
+8. Zamontuj w stacji roboczej zapasowy dysk twardy.
+
+UWAGA: Po wykonaniu montażu zgłoś Przewodniczącemu Zespołu Nadzorującego – przez podniesienie
+ręki – gotowość do sprawdzenia poprawności montażu dodatkowego dysku.
+
+9. Skonfiguruj na stacji roboczej w systemie Windows zapasowy dysk twardy zgodnie z następującymi
+    zaleceniami:
+   − tablica partycji GPT
+   − podział na dwie partycje
+   − pierwsza partycja:
+        − około 40% pojemności dysku
+        − sformatowana z systemem plików NTFS
+      −   przypisana litera P: i etykieta Dysk2_1
+  −   druga partycja:
+       − pozostała przestrzeń dysku
+       − sformatowana z systemem plików NTFS
+       − przypisana litera R: i etykieta Dysk2_2
+  −   dysk R: zabezpiecz funkcją BitLocker z hasłem: Mojedlugiehaslo! Klucz odzyskiwania zapisz na
+      nośniku USB oznaczonym nazwą Egzamin-x, gdzie x to numer stanowiska egzaminacyjnego
+
+UWAGA: Po zakończeniu prac nie wylogowuj się oraz nie wyłączaj komputerów i urządzeń sieciowych
+znajdujących się na Twoim stanowisku egzaminacyjnym.
+
+
+
+
+                                                Strona 4 z 5
+Czas na wykonanie zadania wynosi 150 minut.
+
+Ocenie podlegać będzie 5 rezultatów:
+ − wykonane okablowanie sieciowe oraz połączenie fizyczne urządzeń,
+ − skonfigurowane urządzenia sieciowe,
+  −   skonfigurowane interfejsy sieciowe,
+  −   skonfigurowany serwer i stacja robocza,
+  − zmodernizowana stacja robocza
+oraz
+przebieg wykonywania okablowania sieciowego i modernizacji stacji roboczej.
+
+UWAGA: Zawartość dysku USB, wykorzystywanego podczas egzaminu do zapisu zrzutów ekranowych lub
+dokumentów, jest usuwana po egzaminie i nie stanowi dokumentacji egzaminacyjnej przekazywanej wraz
+z arkuszem do OKE.
+
+
+
+
+                                                Strona 5 z 5
+

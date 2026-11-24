@@ -1,0 +1,232 @@
+                                                                             Arkusz zawiera informacje
+                                                                          prawnie chronione do momentu
+                                                                               rozpoczęcia egzaminu
+
+
+
+Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych
+                    i lokalnych sieci komputerowych
+Oznaczenie kwalifikacji: INF.02
+Numer zadania: 01
+Wersja arkusza: SG
+
+                                       Wypełnia zdający
+                                                                             Miejsce na naklejkę z numerem
+Numer PESEL zdającego*                                                         PESEL i z kodem ośrodka
+
+
+
+
+Czas trwania egzaminu: 150 minut.                                                       INF.02-01-22.01-SG
+
+EGZAMIN ZAWODOWY                                           PODSTAWA PROGRAMOWA
+Rok 2022                                                           2019
+CZĘŚĆ PRAKTYCZNA
+
+Instrukcja dla zdającego
+    1.  Na pierwszej stronie arkusza egzaminacyjnego wpisz w oznaczonym miejscu swój numer PESEL
+        i naklej naklejkę z numerem PESEL i z kodem ośrodka.
+    2. Na KARCIE OCENY w oznaczonym miejscu przyklej naklejkę z numerem PESEL oraz wpisz:
+         swój numer PESEL*,
+         oznaczenie kwalifikacji,
+         numer zadania,
+         numer stanowiska.
+    3. KARTĘ OCENY przekaż zespołowi nadzorującemu.
+    4. Sprawdź, czy arkusz egzaminacyjny zawiera 5 stron i nie zawiera błędów. Ewentualny brak stron lub
+        inne usterki zgłoś przez podniesienie ręki przewodniczącemu zespołu nadzorującego.
+    5. Zapoznaj się z treścią zadania oraz stanowiskiem egzaminacyjnym. Masz na to 10 minut. Czas ten
+        nie jest wliczany do czasu trwania egzaminu.
+    6. Czas rozpoczęcia i zakończenia pracy zapisze w widocznym miejscu przewodniczący zespołu
+        nadzorującego.
+    7. Wykonaj samodzielnie zadanie egzaminacyjne. Przestrzegaj zasad bezpieczeństwa i organizacji
+        pracy.
+    8. Jeżeli w zadaniu egzaminacyjnym występuje polecenie „zgłoś gotowość do oceny przez podniesienie
+        ręki”, to zastosuj się do polecenia i poczekaj na decyzję przewodniczącego zespołu nadzorującego.
+    9. Po zakończeniu wykonania zadania pozostaw rezultaty oraz arkusz egzaminacyjny na swoim
+        stanowisku lub w miejscu wskazanym przez przewodniczącego zespołu nadzorującego.
+    10. Po uzyskaniu zgody zespołu nadzorującego możesz opuścić salę/miejsce przeprowadzania egzaminu.
+
+                                                                                               Powodzenia!
+* w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+
+Układ graficzny
+© CKE 2020
+Zadanie egzaminacyjne
+
+Wykorzystując dostępne narzędzia oraz oprogramowanie znajdujące się na stanowisku egzaminacyjnym,
+wykonaj montaż okablowania i podłączenie urządzeń sieciowych. Przeprowadź diagnostykę podzespołów,
+wykonaj konfigurację urządzeń sieciowych i konfigurację systemów zainstalowanych na dysku twardym stacji
+roboczej oraz serwera.
+Do konfiguracji serwera z zainstalowanym systemem Windows wykorzystaj konto Administrator z hasłem
+Egzamin08!@ Do diagnostyki i konfiguracji stacji roboczej z systemem Linux wykorzystaj konto
+administrator z hasłem Egzamin08!@ konto z prawem podniesienia uprawnień do root z hasłem
+Egzamin08!@
+
+1. Wykonaj montaż okablowania sieciowego:
+    ‒ wykonaj podłączenie kabla U/UTP do panelu krosowego według sekwencji T568A
+    ‒ drugi koniec kabla U/UTP zamontuj w module Keystone, umieszczonym w gnieździe naściennym,
+       według sekwencji T568A. Zmontuj kompletne gniazdo naścienne.
+
+UWAGA! Po wykonaniu montażu zgłoś przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+przeprowadzenia testu wykonanego okablowania. W obecności egzaminatora sprawdź za pomocą testera
+okablowania poprawność wykonanego połączenia panel krosowy – gniazdo naścienne.
+
+2. Skonfiguruj ruter według następujących zaleceń:
+     ‒ adres IP dla interfejsu LAN: 192.168.10.1/24
+     ‒ serwer DHCP włączony, zakres adresów 192.168.10.14 ÷ 192.168.10.34
+     ‒ zarezerwuj adres IP 192.168.10.24 dla interfejsu sieciowego serwera podłączonego do przełącznika
+     ‒ zarezerwuj adres IP 192.168.10.25 dla interfejsu stacji roboczej, podłączonego do przełącznika
+     ‒ adres IP interfejsu WAN: 30.30.20.5/29 oraz jeśli jest wymagana brama: 30.30.20.1
+     ‒ serwer DNS dla interfejsu WAN: 5.5.8.8 oraz drugi serwer DNS: 8.8.5.5, jeśli jest wymagany.
+Ruter pracuje na ustawieniach fabrycznych zgodnie z dokumentacją, która jest dostępna w folderze RUTER
+na nośniku opisanym DOKUMENTACJA/PROGRAMY
+
+UWAGA: Po wykonaniu konfiguracji zgłoś przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+oceny ustawień rutera.
+
+3. Skonfiguruj przełącznik według następujących zaleceń:
+     ‒ adres IP: 192.168.10.2/24
+     ‒ brama domyślna: adres IP rutera, jeśli jest wymagana
+Przełącznik pracuje na ustawieniach fabrycznych zgodnie z dokumentacją, która jest dostępna w folderze
+PRZEŁĄCZNIK na nośniku opisanym DOKUMENTACJA/PROGRAMY
+
+UWAGA: Po wykonaniu konfiguracji zgłoś przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+oceny ustawień przełącznika.
+
+4. Za pomocą kabli połączeniowych znajdujących się na stanowisku egzaminacyjnym połącz urządzenia
+    zgodnie ze schematem, a następnie podłącz je do sieci zasilającej.
+
+
+
+
+                                              Strona 2 z 5
+                                     Schemat połączenia urządzeń
+
+5.   Za pomocą dostępnych narzędzi w systemie operacyjnym Linux, przeprowadź na stacji roboczej
+     identyfikację zasobów komputera ujętych w Tabeli 1. Diagnostyka zasobów stacji roboczej arkusza
+     egzaminacyjnego. Uzyskane wyniki testów, w postaci zrzutów ekranowych, zapisz w edytorze
+     tekstowym w pliku o nazwie stacja_testy. Plik umieść na dysku USB oznaczonym nazwą EGZAMIN-x,
+     gdzie x oznacza numer stanowiska, w folderze TESTY. Uzyskane wyniki zapisz także w tabeli 1 arkusza
+     egzaminacyjnego. W przypadku braku możliwości identyfikacji parametru zapisz w odpowiedniej
+     komórce tabeli „brak danych”.
+
+6.   Na stacji roboczej skonfiguruj system Linux:
+     ‒ skonfiguruj interfejs sieciowy stacji roboczej według zaleceń:
+          ‒ nazwa połączenia: NET12
+          ‒ adres IP uzyskiwany automatycznie
+          ‒ serwer DNS: adres IP interfejsu NET11 serwera
+     ‒ zmień nazwę komputera na STACJAX, gdzie X to numer Twojego stanowiska egzaminacyjnego
+     ‒ utwórz w katalogu domowym użytkownika administrator ukryty katalog o nazwie INF02
+
+7.   Skonfiguruj serwer z zainstalowanym systemem Windows:
+      ‒ skonfiguruj interfejs sieciowy serwera, podłączony do przełącznika według zaleceń:
+          ‒ nazwa połączenia: NET11
+          ‒ adres IP przydzielany automatycznie
+          ‒ serwer DNS: localhost
+      ‒ wyłącz drugi interfejs sieciowy serwera
+      ‒ promuj serwer do roli kontrolera domeny. Utwórz nową domenę o nazwie egzamin.local w nowym
+        lesie. Jako hasło konta Administrator dla trybu przywracania usług katalogowych ustaw
+        Egzamin08!@
+      ‒ w domenie egzamin.local utwórz jednostkę organizacyjną o nazwie Prawnicy, a w niej utwórz konto
+        użytkownika z następującymi ustawieniami:
+          ‒ pełna nazwa: Adam Kowalski
+          ‒ nazwa logowania: prawnik
+          ‒ hasło: Pr@wnik1!
+      ‒ za pomocą poleceń systemowych wykonaj test połączenia serwera z ruterem, przełącznikiem i stacją
+        roboczą. Upewnij się czy konfiguracja systemu operacyjnego serwera i stacji roboczej zezwala na
+        wykonanie tego testu. Na serwerze i stacji roboczej wyświetl uzyskany automatycznie adres IP
+
+UWAGA: Po wykonaniu testu komunikacji zgłoś przewodniczącemu ZN – przez podniesienie ręki – gotowość
+do sprawdzenia komunikacji serwera z ruterem, przełącznikiem oraz stacją roboczą. Ponowne sprawdzenie
+wykonaj w obecności egzaminatora. Na serwerze i stacji roboczej wyświetl uzyskany automatycznie adres IP
+
+
+
+                                              Strona 3 z 5
+8.       Korzystając z Cennika podzespołów, sporządź w arkuszu kalkulacyjnym kosztorys nowego zestawu
+         komputerowego:
+          ‒ plik wykonany zgodnie z Tabelą 2. Wzór kosztorysu zapisz pod nazwą kosztorys na nośniku USB
+            opisanym EGZAMIN-x
+          ‒ obliczenia w kolumnie Cena jednostkowa z VAT powinny wykonywać się automatycznie oraz
+            uwzględniać zwiększenie Ceny jednostkowej netto o 23% podatku VAT
+          ‒ obliczenia w kolumnie Wartość brutto powinny wykonywać się automatycznie, po wypełnieniu
+            kolumny Ilość oraz w oparciu o wykonane obliczenia w kolumnie Cena jednostkowa z VAT
+          ‒ komórki w kolumnach Cena jednostkowa netto, Cena jednostkowa z VAT oraz Wartość brutto
+            powinny mieć format walutowy (zł lub PLN) z dwoma miejscami dziesiętnymi po przecinku
+          ‒ sumowanie kolumny Wartość brutto powinno odbywać się automatycznie
+
+                                                    Cennik podzespołów
+     Lp      Nazwa podzespołu                                    Parametry                             Cena netto
+                                                                                                          w zł
+     1     Procesor Intel Core i5 Procesor Intel Core i5-7640X, 4GHz, 6MB, s-2066, BOX                     915,00
+     2     Procesor Intel Core i3 Procesor Intel Core i3-7100, 3.9GHz, 3MB, s-1151 BOX                     465,00
+     3     Pamięć RAM Goodram DDR3-1600 (PC3-12800) 4 GB (1x4GB)                                           259,00
+     4     Pamięć RAM Balistic    DDR4 Sport LT 8GB/2400(2*4GB)                                            339,00
+     5     Płyta główna Gigabyte GA-Z270-Gaming K3, Z270, DDR4, HDMI, DVI-D, ATX, socket 1151,             519,00
+                                  1x USB typu C, 1x RJ-45, 1x HDMI, 1x USB 3.1, 1xDVI-D, 1x PS/2,
+                                  4x USB 3.1 gen 1, 2x USB 2.0
+     6     Płyta główna Asus       M5A97 R2.0 AM3+ AMD970 4 DDR3 RAID/USB3/GLANATX, 1x RJ-45,              309,00
+                                   1x S/PDIF Optyczne, 6x wyjście audio, 2x PS/2, 2x USB 3.0, 6x USB
+  7        Napęd Asus              2.0
+                                   DRW- 4D5MT/BLK/B/AS                                                      59,00
+  8        Monitor BenQ            21.5''/LED/AMVA+/FHD/5ms/20mln:1/LBL/FF/ES/D-Sub                        459,00
+  9        Monitor LG              24''/LED/TN/FullHD/1ms/1000:1/DisplayPort/HDMI/3xUSB                  1 099,00
+ 10        Obudowa Sharkoon        Kompatybilność: ATX, Micro ATX (uATX), Mini ITX, Typ                    299,00
+                                   obudowy: Midi Tower, złącza USB: USB 3.0 x2, USB 2.0 x2
+
+
+ 11        Zasilacz Silentium PC   Vero L2 600W, złącza: ATX 24-pin (20+4) x1,PCI-E 8-pin (6+2) x2,        219,00
+                                   PCI-E 8-pin x1, SATA x7,Molex x3
+
+ 12        Karta graficzna         GeForce GTX1050 OC 2GB GDDR5 (128 Bit), PCI Express x16, HDMI,          529,00
+           Gigabyte                DVI-D, DP, BOX
+ 13        Dysk twardy Toshiba     P300, 2TB, SATA III, 64 MB, 7200                                        299,00
+ 14        Klawiatura              HP, K1500, przewodowa, USB, czarny                                       89,00
+ 15        Mysz                    Logitech, M705 Marathon Wireless, bezprzewodowa, USB                    129,00
+UWAGA: Po zakończeniu prac nie wylogowuj się i nie wyłączaj komputerów oraz urządzeń sieciowych
+znajdujących się na Twoim stanowisku egzaminacyjnym.
+
+Czas przeznaczony na wykonanie zadania wynosi 150 minut.
+
+Ocenie będzie podlegać 6 rezultatów:
+  ‒ wykonane okablowanie sieciowe oraz połączenie fizyczne urządzeń,
+  ‒ diagnostyka i specyfikacja podzespołów,
+  ‒ skonfigurowane urządzenia sieciowe,
+  ‒ skonfigurowany serwer,
+  ‒ skonfigurowana stacja robocza,
+  ‒ kosztorys
+  oraz
+       przebieg wykonania okablowania sieciowego.
+                                            Strona 4 z 5
+Uwaga! Zawartość nośnika USB, wykorzystywanego podczas egzaminu do zapisu zrzutów ekranowych lub
+dokumentów, jest usuwana po egzaminie i nie stanowi dokumentacji egzaminacyjnej przekazywanej wraz
+z arkuszem do OKE
+                          Tabela 1. Diagnostyka zasobów stacji roboczej
+
+        Numer seryjny dysku twardego
+
+
+
+        Liczba rdzeni procesora
+
+
+
+        Producent karty graficznej
+
+
+
+                                       Tabela 2. Wzór kosztorysu
+                                          Cena jednostkowa   Cena jednostkowa
+  Lp.             Nazwa podzespołu                                              Ilość   Wartość brutto
+                                               netto              z VAT
+
+
+
+
+                                                                     WARTOŚĆ ZESTAWU
+
+
+
+
+                                              Strona 5 z 5
+

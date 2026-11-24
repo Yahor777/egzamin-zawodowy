@@ -136,9 +136,11 @@ def page_lines(raw, fix):
 def page_media(page):
     """Rects of raster images and non-trivial vector drawings."""
     rects = []
+    page_area = page.rect.width * page.rect.height
     for info in page.get_image_info():
         r = pymupdf.Rect(info["bbox"])
-        if r.width > 4 and r.height > 4:
+        # skip full-page scans (OCR'd sheets): the text layer carries the content
+        if r.width > 4 and r.height > 4 and r.width * r.height < 0.4 * page_area:
             rects.append(r)
     for d in page.get_drawings():
         r = pymupdf.Rect(d["rect"])
@@ -229,6 +231,8 @@ def parse_sheet(path: Path, img_dir: Path, sid: str):
                     continue
                 figs.append((pi, c))
         figs.sort(key=lambda f: (f[0], f[1].y0, f[1].x0))
+        if OCR_MODE and not figs:
+            figs = ocr_figures(seg, regions)
 
         def in_fig(pi, y0, x0, y1, x1):
             for fpi, c in figs:
@@ -317,7 +321,34 @@ def parse_sheet(path: Path, img_dir: Path, sid: str):
     return questions
 
 
+PIC_RE = re.compile(r"rysun|zdjęci|przedstawion|ilustrac|schemat|tabel|zrzut|fotografi|na obrazie", re.I)
+
+
+def ocr_figures(seg, regions):
+    """Scanned sheets have no separate image objects: when the question refers to a
+    picture/table/screenshot, crop the whole question area (stem + answers) per page."""
+    stem_text = " ".join(t for *_, t in seg if not ANS_RE.match(t))
+    if not PIC_RE.search(stem_text):
+        return []
+    out = []
+    for pi, reg in regions:
+        ys = [(y0, y1) for p2, y0, x0, y1, x1, t in seg if p2 == pi]
+        if not ys:
+            continue
+        top = min(y for y, _ in ys) - 4
+        bottom = min(reg.y1 - 2, max(y1 for _, y1 in ys) + 8)
+        out.append((pi, pymupdf.Rect(28, top, reg.x1 - 28, bottom)))
+    return out
+
+
+OCR_MODE = False
+
+
 def main():
+    global OCR_MODE
+    if "--ocr" in sys.argv:
+        OCR_MODE = True
+        sys.argv.remove("--ocr")
     root, out = Path(sys.argv[1]), Path(sys.argv[2])
     img_dir = out / "img"
     img_dir.mkdir(parents=True, exist_ok=True)

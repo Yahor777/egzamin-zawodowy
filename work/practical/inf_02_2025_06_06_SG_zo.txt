@@ -1,0 +1,254 @@
+                                                                    Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+
+
+
+ Układ graficzny © CKE 2023                                                                          EGZAMIN ZAWODOWY
+                                                                                                          Rok 2025
+                                                                                                      ZASADY OCENIANIA
+
+                                                                                        Arkusz zawiera informacje prawnie chronione
+                                                                                            do momentu rozpoczęcia egzaminu
+
+
+
+
+      Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych i lokalnych sieci komputerowych
+      Oznaczenie arkusza: INF.02-06-25.06-SG
+      Symbol kwalifikacji: INF.02
+      Numer zadania: 06
+                                                                                         PODSTAWA PROGRAMOWA
+      Wersja arkusza: SG                                                                                2019
+
+
+                                                                                  Wypełnia egzaminator
+
+                                                                                                                                                          Numer
+                                   Kod ośrodka                         –                                                       Numer PESEL zdającego*   stanowiska
+
+
+
+                              Kod egzaminatora
+
+
+                                Data egzaminu
+                                                 Dzień Miesiąc   Rok
+
+
+Godzina rozpoczęcia egzaminu                            :
+
+
+
+ * w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+
+
+
+
+                                                                 Wi cej materia ów na stronie https://www.Testy.EgzaminZawodowy.info
+                                                Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+
+
+
+Egzaminatorze!
+ − Oceniaj prace zdających rzetelnie i z zaangażowaniem. Dokumentuj wyniki oceny.
+
+ − Stosuj przyjęte zasady oceniania w sposób obiektywny.
+
+ − Jeżeli zdający, wykonując zadanie egzaminacyjne, uzyskuje inne rezultaty albo pożądane rezultaty uzyskuje w inny sposób niż uwzględniony
+   w zasadach oceniania lub przedstawia nietypowe rozwiązanie, ale zgodnie ze sztuką w zawodzie, to nadal oceniaj zgodnie z kryteriami
+   zawartymi w zasadach oceniania. Informacje o tym, że zasady oceniania nie przewidują zaistniałej sytuacji, przekaż niezwłocznie w formie
+   pisemnej notatki do Przewodniczącego Zespołu Egzaminacyjnego z prośbą o przekazanie jej do Okręgowej Komisji Egzaminacyjnej. Notatka
+   może być sporządzona odręcznie w trybie roboczym.
+ − Informuj przewodniczącego zespołu nadzorującego o wszystkich nieprawidłowościach zaistniałych w trakcie egzaminu, w tym w szczególności
+   o naruszeniach przepisów bezpieczeństwa i higieny pracy i o podejrzeniach niesamodzielności w wykonaniu zadania przez zdającego.
+
+
+
+
+                                                                      Strona
+                                             Wi cej materia ów na stronie          2z7
+                                                                          https://www.Testy.EgzaminZawodowy.info
+                                                   Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+
+
+
+                                                                                                                      stanowiska
+                                                                                                                        Numer
+                                                                                                                                   Egzaminator wpisuje T,
+                                                                                                                                    jeżeli zdający spełnił
+                                        Elementy podlegające ocenie/kryteria oceny                                                 kryterium albo N, jeżeli
+                                                                                                                                          nie spełnił
+
+Rezultat 1: Wykonane okablowanie sieciowe oraz połączenie fizyczne urządzeń
+UWAGA: Oceny kryteriów 1.1 ÷ 1.6 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny montażu okablowania.
+Obserwację należy zakończyć po dokonaniu oceny wykonania okablowania sieciowego. Przebieg montażu okablowania sieciowego należy ocenić
+zgodnie z kryteriami zapisanymi w Przebiegu 1
+1 Wszystkie żyły kabla podłączone do modułu Keystone i panelu krosowego wg sekwencji T568B
+
+2 Przewody nie wystają więcej niż 25 mm poza płaszcz, a pary nie są rozkręcone na długości większej niż 13 mm
+
+3 Gniazdo naścienne jest poprawnie zmontowane
+
+4 Zamontowany panel krosowy stabilnie w szafie lub stelażu RACK
+
+5 Do montażu zastosowany kabel U/UTP typu drut
+    W obecności egzaminatora przeprowadzony za pomocą testera okablowania test wykonanego połączenia potwierdził
+6
+    poprawność jego wykonania
+7 Wszystkie urządzenia sieciowe podłączone zgodnie ze schematem w załączniku 1
+
+Rezultat 2: Identyfikacja parametrów
+UWAGA: Identyfikacja została wykonana w systemie Windows na stacji roboczej. Należy porównać zapisy zdającego z tabeli 1 znajdującej się
+w arkuszu egzaminacyjnym ze zrzutami ekranowymi zapisanymi w katalogu Identyfikacja znajdującym się na dysku USB oznaczonym nazwą Egzamin
+-x, gdzie x to numer stanowiska egzaminacyjnego. W przypadku braku zgodności zapisów w tabeli 1 ze zrzutami, kryteria nie są spełnione. Dopuszcza
+się możliwość podania przez zdającego zapisu świadczącego o braku informacji, jeżeli jest zgodny ze zrzutem ekranowym
+1 W tabeli 1 zapisana pojemność dysku [GB]
+
+2 W tabeli 1 zapisany model dysku
+
+3 W tabeli 1 zapisana liczba partycji
+
+4 W tabeli 1 zapisany typ partycji
+
+5 W tabeli 1 zapisana wersja sterownika
+
+                                                                         Strona
+                                                Wi cej materia ów na stronie          3z7
+                                                                             https://www.Testy.EgzaminZawodowy.info
+                                                   Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+
+
+
+                                                                                                                      stanowiska
+                                                                                                                        Numer
+Rezultat 3: Skonfigurowane urządzenia sieciowe
+Uwaga: oceny kryteriów należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny konfiguracji rutera, następnie
+przełączników
+1 Dla interfejsu LAN rutera ustawiony adres IP 192.168.0.3/24
+
+2 Włączony serwer DHCP na ruterze z zakresem adresów 192.168.0.30 ÷ 192.168.0.40
+
+3 Zarezerwowany adres IP 192.168.0.30/24 dla interfejsu bezprzewodowego stacji roboczej
+    Włączona sieć bezprzewodową z ustawionym SSID: STANOWISKO_XX, gdzie XX oznacza numer stanowiska
+4
+    egzaminacyjnego, dla pasma 2,4 GHz
+5 Włączone zabezpieczenie WPA2 z szyfrowaniem AES lub CCMP, numer kanału = numer stanowiska
+
+6 Dla przełącznika 1 ustawiony VLAN o ID=10 na portach 1 i 2 bez tagowania
+
+7 Dla przełącznika 1 ustawiony adres IP 172.16.11.3/25
+
+8 Dla przełącznika 1 ustawiony adres bramy domyślnej: 172.16.11.5/25
+
+9 Dla przełącznika 2 ustawiony adres IP 192.168.0.2/24 i brama 192.168.0.3
+
+
+
+
+                                                                         Strona
+                                                Wi cej materia ów na stronie          4z7
+                                                                             https://www.Testy.EgzaminZawodowy.info
+                                                    Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+
+
+
+                                                                                                                       stanowiska
+                                                                                                                         Numer
+Rezultat 4: Skonfigurowany serwer
+Uwaga: oceny rezultatu należy dokonać dla serwera w systemie Windows, konto Administrator z hasłem ZAQ!2wsx
+Oceny kryteriów 4.7 ÷ 4.9 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny komunikacji pomiędzy
+urządzeniami sieciowymi. Sprawdzenie komunikacji zdający wykonuje w obecności egzaminatora
+   Ustawiona nazwa przewodowego interfejsu sieciowego podłączonego do przełącznika 1 na LAN_Z z adresem IP
+ 1
+   172.16.11.5/25 z bez bramy domyślnej oraz DNS: localhost
+   Ustawiona nazwa przewodowego interfejsu sieciowego podłączonego do przełącznika 2 na LAN_W z adresem IP
+ 2
+   192.168.0.10+XX/24, gdzie XX to numer stanowiska egzaminacyjnego
+3 Dla interfejsu LAN_W serwera ustawiony adres serwera DNS: localhost oraz brama domyślna: 192.168.0.3
+4 W lokalizacji C:\DODATKI umieszczony plik index.html
+5 Zainstalowane role IIS oraz DNS
+  W usłudze IIS skonfigurowana witryna WWW z parametrami:
+  - nazwa witryny: INF.02
+6 - witryna powiązana z adresem IP 192.168.0.10+XX, gdzie XX to numer stanowiska egzaminacyjnego
+  - katalog witryny: C:\DODATKI
+  - strona domyślna: index.html
+7 Wykonany test komunikacji serwera z interfejsem LAN rutera, uzyskana odpowiedź na polecenie np. ping 192.168.0.3
+8 Wykonany test komunikacji serwera ze stacją roboczą, uzyskana odpowiedź na polecenie np. ping adres_stacji_roboczej
+9 Wykonany test komunikacji serwera z drukarką, uzyskana odpowiedź na polecenie np. ping 192.168.0.200
+Rezultat 5: Skonfigurowana stacja robocza
+Uwaga: ocenie podlega konfiguracja w systemie Windows, konto Administrator z hasłem ZAQ!2wsx
+Oceny kryterium 5.7 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny uruchomienia strony index.html.
+Sprawdzenie zdający wykonuje w obecności egzaminatora
+1 Ustawiona nazwa bezprzewodowego interfejsu sieciowego LAN_K i interfejs sieciowy połączony z siecią bezprzewodową
+2 Bezprzewodowy interfejs sieciowy uzyskał adres IP 192.168.0.30 z serwera DHCP
+3 Ustawiona nazwa komputera: stacja_XX, gdzie XX oznacza numer stanowiska egzaminacyjnego
+4 Ustawiony opis komputera: stacja_XX_robocza, gdzie XX oznacza numer stanowiska egzaminacyjnego
+5 Ustawiona grupa robocza: INF02
+6 Utworzone konto jnowak z ograniczonymi uprawnieniami (grupa Użytkownicy)
+    Na koncie użytkownika wyświetlona strona http://192.168.0.10+XX/index.html w przeglądarce internetowej (XX to numer
+7
+    stanowiska egzaminacyjnego)
+                                                                          Strona
+                                                 Wi cej materia ów na stronie          5z7
+                                                                              https://www.Testy.EgzaminZawodowy.info
+                                                    Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+
+
+
+                                                                                                                                                    stanowiska
+                                                                                                                                                      Numer
+Rezultat 6: Skonfigurowane urządzenie peryferyjne
+
+UWAGA: Kryterium 6.6 - egzaminator przekazuje wydrukowaną stronę testową zdającemu, który dołącza ją do arkusza egzaminacyjnego
+
+1 Zainstalowana drukarka sieciowa na serwerze dostępna przez port TCP/IP pod adresem 192.168.0.200 protokołem RAW
+  Skonfigurowane domyślne ustawienia drukowania dla zainstalowanej drukarki:
+2
+  - dostępność: od godziny 7:30 do godziny 21:30
+  Skonfigurowane domyślne ustawienia drukowania dla zainstalowanej drukarki:
+3
+  - orientacja: pozioma
+  Skonfigurowane domyślne ustawienia drukowania dla zainstalowanej drukarki:
+4
+  - włączona oszczędność tonera / tryb ekonomiczny
+5 Udostępniona drukarka w sieci pod nazwą udziału druk_XX, gdzie XX oznacza numer stanowiska egzaminacyjnego
+
+6 Wydrukowana strona testowa z drukarki sieciowej
+
+Przebieg 1: Wykonywanie okablowania sieciowego
+
+Zdający:
+    zdejmował izolację z kabla U/UTP i montował gniazdo oraz kabel U/UTP w panelu krosowym przy zastosowaniu
+1
+    odpowiednich narzędzi, zgodnie z zasadami BHP
+2 po wykonaniu montażu zostawił uporządkowane stanowisko pracy
+
+
+
+
+Egzaminator …………………………………………………………………………….                                                                             ..........................................................................
+                                        imię i nazwisko                                                                                     data i czytelny podpis
+
+
+
+
+                                                                          Strona
+                                                 Wi cej materia ów na stronie          6z7
+                                                                              https://www.Testy.EgzaminZawodowy.info
+     Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+
+Załącznik 1. Schemat połączenia urządzeń
+
+
+
+
+                           Strona
+  Wi cej materia ów na stronie          7z7
+                               https://www.Testy.EgzaminZawodowy.info
+

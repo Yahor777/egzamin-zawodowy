@@ -34,7 +34,7 @@ export function shuffle<T>(arr: T[]): T[] {
 /** Older questions get slightly lower weight (old E.12/E.13 often mention obsolete hardware). */
 function relevance(q: Question) {
   const age = 2026 - q.year
-  return Math.max(0.35, 1 - age * 0.06) * (1 + 0.25 * (q.seen.length - 1))
+  return Math.max(0.35, 1 - age * 0.06) * (1 + 0.25 * (q.seen.length - 1)) * (q.outdated ? 0.25 : 1)
 }
 
 function weightedPick<T>(items: T[], weight: (t: T) => number, n: number): T[] {

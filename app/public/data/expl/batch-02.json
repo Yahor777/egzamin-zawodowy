@@ -1,0 +1,1833 @@
+{
+ "e8d613ef": {
+  "ru": {
+   "stem": "Показанный на рисунке штекер следует использовать для оконцовки кабелей категории",
+   "answers": [
+    "3",
+    "5",
+    "5a",
+    "6"
+   ]
+  },
+  "expl": {
+   "pl": "Na rysunku jest ekranowany wtyk 8P8C z metalową osłoną i prowadnicą (wkładką) na żyły – taki wtyk stosuje się do grubszych, ekranowanych kabli kategorii 6. Kategorie 3 i 5/5e zakańcza się prostszymi wtykami.",
+   "ru": "На рисунке экранированный штекер 8P8C с металлическим корпусом и вкладышем-направляющей для жил – такие применяются для более толстых экранированных кабелей категории 6. Кабели категорий 3 и 5/5e оконцовываются более простыми штекерами."
+  }
+ },
+ "ea80ce3c": {
+  "ru": {
+   "stem": "Результат выполнения какой сетевой команды системы семейства Windows показан на рисунке?",
+   "answers": [
+    "arp -a",
+    "net view",
+    "net session",
+    "route print"
+   ]
+  },
+  "expl": {
+   "pl": "Polecenie route print wyświetla listę interfejsów oraz tablicę routingu IPv4/IPv6 (miejsce docelowe, maska, brama, metryka). arp -a pokazuje tylko pary IP–MAC, a net view – udostępnione zasoby komputerów.",
+   "ru": "Команда route print выводит список интерфейсов и таблицу маршрутизации IPv4/IPv6 (назначение, маска, шлюз, метрика). arp -a показывает только пары IP–MAC, а net view – общие ресурсы компьютеров."
+  }
+ },
+ "eb7c9b72": {
+  "ru": {
+   "stem": "Какой из адресов IPv4 является публичным адресом?",
+   "answers": [
+    "10.0.3.42",
+    "172.16.32.7",
+    "192.168.0.4",
+    "194.204.152.34"
+   ]
+  },
+  "expl": {
+   "pl": "Adresy prywatne (RFC 1918) to 10.0.0.0/8, 172.16.0.0/12 i 192.168.0.0/16. Adres 194.204.152.34 nie należy do żadnej z tych pul, więc jest publiczny.",
+   "ru": "Частные адреса (RFC 1918): 10.0.0.0/8, 172.16.0.0/12 и 192.168.0.0/16. Адрес 194.204.152.34 не входит ни в один из этих диапазонов, значит он публичный."
+  }
+ },
+ "ecb95591": {
+  "ru": {
+   "stem": "На схеме структурированной кабельной системы у одного из элементов стоит обозначение MDF. С каким распределительным пунктом связан этот элемент?",
+   "answers": [
+    "С главным.",
+    "С промежуточным.",
+    "Со зданием (здания).",
+    "С кампусным."
+   ]
+  },
+  "expl": {
+   "pl": "MDF (Main Distribution Frame) to główny punkt dystrybucyjny, do którego zbiegają się okablowanie szkieletowe i łącza zewnętrzne. Punkty pośrednie oznacza się skrótem IDF (Intermediate Distribution Frame).",
+   "ru": "MDF (Main Distribution Frame) – главный распределительный пункт, куда сходятся магистральные кабели и внешние линии. Промежуточные пункты обозначаются IDF (Intermediate Distribution Frame)."
+  }
+ },
+ "ed3ff157": {
+  "ru": {
+   "stem": "Специальные файлы устройств, создаваемые при установке драйверов в системе Linux, сохраняются в каталоге",
+   "answers": [
+    "/dev",
+    "/var",
+    "/sbin",
+    "/proc"
+   ]
+  },
+  "expl": {
+   "pl": "Katalog /dev zawiera pliki specjalne urządzeń (np. /dev/sda, /dev/ttyS0). /proc to wirtualny system plików z informacjami o procesach i jądrze, /sbin – programy systemowe, /var – dane zmienne (logi, kolejki).",
+   "ru": "Каталог /dev содержит специальные файлы устройств (например, /dev/sda, /dev/ttyS0). /proc – виртуальная ФС с информацией о процессах и ядре, /sbin – системные программы, /var – изменяемые данные (логи, очереди)."
+  }
+ },
+ "ed7146ae": {
+  "ru": {
+   "stem": "Показанные области компьютерной сети, образованные после настройки маршрутизатора, – это домены типа",
+   "answers": [
+    "маршрутизирующего.",
+    "виртуального.",
+    "интернет.",
+    "широковещательного."
+   ]
+  },
+  "expl": {
+   "pl": "Ruter nie przekazuje ramek rozgłoszeniowych między interfejsami, więc każda podłączona do niego sieć (10.0.0.0 i 192.168.0.0) tworzy osobną domenę rozgłoszeniową. Huby tych domen nie dzielą.",
+   "ru": "Маршрутизатор не пересылает широковещательные кадры между интерфейсами, поэтому каждая подключённая к нему сеть (10.0.0.0 и 192.168.0.0) – отдельный широковещательный домен. Концентраторы (hub) такие домены не разделяют."
+  }
+ },
+ "ed8262a9": {
+  "ru": {
+   "stem": "Чтобы сервер Windows мог управлять службами каталогов, необходимо установить",
+   "answers": [
+    "роль веб-сервера.",
+    "контроллер домена.",
+    "роль DHCP-сервера.",
+    "службы управления правами."
+   ]
+  },
+  "expl": {
+   "pl": "Usługi katalogowe w Windows Server to Active Directory Domain Services; serwer z zainstalowaną tą rolą i wypromowany staje się kontrolerem domeny. Role Web, DHCP czy RMS nie dostarczają katalogu.",
+   "ru": "Службы каталогов в Windows Server – это Active Directory Domain Services; сервер с этой ролью после повышения становится контроллером домена. Роли Web, DHCP или RMS каталог не предоставляют."
+  },
+  "topic": "winserver"
+ },
+ "ee166e14": {
+  "ru": {
+   "stem": "Какое устройство нужно подключить к локальной сети в месте, указанном на рисунке, чтобы компьютеры имели доступ к Интернету?",
+   "answers": [
+    "Мост.",
+    "Маршрутизатор.",
+    "Коммутатор.",
+    "Концентратор."
+   ]
+  },
+  "expl": {
+   "pl": "Dostęp do Internetu wymaga połączenia sieci lokalnej z siecią zewnętrzną, czyli trasowania pakietów między różnymi sieciami IP – robi to ruter (brama domyślna). Most, przełącznik i koncentrator działają tylko w obrębie jednej sieci.",
+   "ru": "Для доступа к Интернету нужно соединить локальную сеть с внешней, то есть маршрутизировать пакеты между разными IP-сетями – это делает маршрутизатор (шлюз по умолчанию). Мост, коммутатор и концентратор работают только внутри одной сети."
+  }
+ },
+ "effbf88b": {
+  "ru": {
+   "stem": "Для обслуживания подшипниковых и скользящих элементов в периферийных устройствах применяют",
+   "answers": [
+    "тетровую (марлевую) тряпочку.",
+    "синтетическую смазку.",
+    "графитовое покрытие.",
+    "сжатый воздух."
+   ]
+  },
+  "expl": {
+   "pl": "Elementy łożyskowane i ślizgowe (np. prowadnice głowicy drukarki) wymagają smarowania, do czego służy smar syntetyczny. Szmatka i sprężone powietrze tylko czyszczą, a nie zmniejszają tarcia.",
+   "ru": "Подшипниковые и скользящие элементы (например, направляющие каретки принтера) нужно смазывать – для этого служит синтетическая смазка. Тряпочка и сжатый воздух только очищают, но не уменьшают трение."
+  },
+  "topic": "peripherals"
+ },
+ "f36a933e": {
+  "ru": {
+   "stem": "Одним из средств защиты системы от программ, которые без ведома пользователя собирают и отправляют автору его персональные данные, номера платёжных карт, сведения о посещаемых сайтах, пароли и используемые адреса e-mail, является программа",
+   "answers": [
+    "HDTune",
+    "FakeFlashTest",
+    "Reboot Restore Rx",
+    "Spyboot Search & Destroy"
+   ]
+  },
+  "expl": {
+   "pl": "Opisane oprogramowanie to spyware, a Spybot Search & Destroy jest programem do jego wykrywania i usuwania. HDTune testuje dyski, FakeFlashTest – pendrive’y, a Reboot Restore Rx przywraca stan systemu po restarcie.",
+   "ru": "Описанное ПО – это шпионские программы (spyware), а Spybot Search & Destroy предназначен для их обнаружения и удаления. HDTune тестирует диски, FakeFlashTest – флешки, Reboot Restore Rx восстанавливает состояние системы после перезагрузки."
+  },
+  "topic": "security"
+ },
+ "f4f68249": {
+  "ru": {
+   "stem": "Сколько компьютеров можно адресовать в сети с маской 255.255.255.224?",
+   "answers": [
+    "25 компьютеров.",
+    "27 компьютеров.",
+    "30 компьютеров.",
+    "32 компьютера."
+   ]
+  },
+  "expl": {
+   "pl": "Maska 255.255.255.224 = /27, czyli 5 bitów na hosty: 2^5 = 32 adresy. Po odjęciu adresu sieci i rozgłoszeniowego zostaje 32 − 2 = 30 hostów.",
+   "ru": "Маска 255.255.255.224 = /27, т.е. 5 бит на хосты: 2^5 = 32 адреса. За вычетом адреса сети и широковещательного остаётся 32 − 2 = 30 хостов."
+  }
+ },
+ "f520fb2f": {
+  "ru": {
+   "stem": "Чтобы получить наибольшую скорость передачи данных, когда домашний маршрутизатор работает в диапазоне 5 ГГц, в ноутбук следует установить беспроводную сетевую карту стандарта",
+   "answers": [
+    "802.11a",
+    "802.11b",
+    "802.11g",
+    "802.11n"
+   ]
+  },
+  "expl": {
+   "pl": "Pasmo 5 GHz obsługują 802.11a (do 54 Mb/s) i 802.11n (do 600 Mb/s), więc szybszy jest 802.11n. Standardy 802.11b i 802.11g działają tylko w 2,4 GHz.",
+   "ru": "Диапазон 5 ГГц поддерживают 802.11a (до 54 Мбит/с) и 802.11n (до 600 Мбит/с), значит быстрее 802.11n. Стандарты 802.11b и 802.11g работают только в 2,4 ГГц."
+  }
+ },
+ "f870f2b7": {
+  "ru": {
+   "stem": "Какой файл система Windows использует при гибернации для хранения копии системной памяти на жёстком диске?",
+   "answers": [
+    "tape.sys",
+    "stream.sys",
+    "hiberfil.sys",
+    "wimmount.sys"
+   ]
+  },
+  "expl": {
+   "pl": "Przy hibernacji Windows zapisuje zawartość pamięci RAM do pliku hiberfil.sys w katalogu głównym dysku systemowego i odczytuje ją przy ponownym uruchomieniu. Pozostałe pliki to sterowniki.",
+   "ru": "При гибернации Windows записывает содержимое ОЗУ в файл hiberfil.sys в корне системного диска и считывает его при включении. Остальные файлы – драйверы."
+  },
+  "topic": "windows"
+ },
+ "f916ab4f": {
+  "ru": {
+   "stem": "Инструментом для мониторинга локальных компьютерных сетей является",
+   "answers": [
+    "Nmap",
+    "SCTP",
+    "pwd",
+    "find"
+   ]
+  },
+  "expl": {
+   "pl": "Nmap to skaner sieci: wykrywa hosty, otwarte porty i usługi w sieci. SCTP to protokół transportowy, a pwd i find to polecenia systemu Linux do pracy z plikami.",
+   "ru": "Nmap – сетевой сканер: обнаруживает хосты, открытые порты и службы. SCTP – транспортный протокол, а pwd и find – команды Linux для работы с файлами."
+  },
+  "topic": "security"
+ },
+ "f92e5679": {
+  "ru": {
+   "stem": "Чтобы пользователь Linux мог просмотреть содержимое каталога, выведя файлы и каталоги, помимо команды ls он может воспользоваться командой",
+   "answers": [
+    "mkdir",
+    "pwd",
+    "man",
+    "tree"
+   ]
+  },
+  "expl": {
+   "pl": "Polecenie tree wyświetla zawartość katalogu w postaci drzewa plików i podkatalogów. mkdir tworzy katalog, pwd pokazuje bieżącą ścieżkę, a man – podręcznik.",
+   "ru": "Команда tree выводит содержимое каталога в виде дерева файлов и подкаталогов. mkdir создаёт каталог, pwd показывает текущий путь, man – справку."
+  }
+ },
+ "fbb09b3e": {
+  "ru": {
+   "stem": "ПО для виртуализации, доступное как роль в системе Windows Server 2019, – это",
+   "answers": [
+    "VMware",
+    "Hyper-V",
+    "Virtual PC",
+    "Virtual Box"
+   ]
+  },
+  "expl": {
+   "pl": "Hyper-V to wbudowany w Windows Server hiperwizor Microsoftu, instalowany jako rola przez Menedżera serwera. VMware i VirtualBox to produkty innych firm, a Virtual PC jest przestarzały.",
+   "ru": "Hyper-V – встроенный в Windows Server гипервизор Microsoft, устанавливается как роль через Диспетчер серверов. VMware и VirtualBox – продукты других компаний, Virtual PC устарел."
+  }
+ },
+ "fd820708": {
+  "ru": {
+   "stem": "Какие биты в 48-битном аппаратном адресе MAC являются идентификатором производителя?",
+   "answers": [
+    "Первые 8 бит.",
+    "Последние 8 бит.",
+    "Первые 24 бита.",
+    "Последние 24 бита."
+   ]
+  },
+  "expl": {
+   "pl": "Pierwsze 24 bity (3 bajty) adresu MAC to OUI – identyfikator producenta nadawany przez IEEE. Ostatnie 24 bity to numer karty nadawany przez producenta.",
+   "ru": "Первые 24 бита (3 байта) MAC-адреса – это OUI, идентификатор производителя, выдаваемый IEEE. Последние 24 бита – номер карты, присваиваемый производителем."
+  }
+ },
+ "ffae7206": {
+  "ru": {
+   "stem": "Чтобы браузер мог обрабатывать документы, отличные от HTML-файлов, нужно установить внешние библиотеки или программы, называемые",
+   "answers": [
+    "inputs",
+    "plugins",
+    "readers",
+    "protocols"
+   ]
+  },
+  "expl": {
+   "pl": "Wtyczki (plugins) to dodatkowe moduły rozszerzające przeglądarkę, np. o obsługę PDF czy multimediów. Protocols to reguły komunikacji, a nie programy.",
+   "ru": "Плагины (plugins) – дополнительные модули, расширяющие браузер, например для PDF или мультимедиа. Protocols – правила обмена данными, а не программы."
+  },
+  "topic": "other"
+ },
+ "003b5e79": {
+  "ru": {
+   "stem": "Возможной причиной нестабильной работы компьютера, проявляющейся зависаниями системы и частыми перезагрузками, является",
+   "answers": [
+    "перегрев чипсета.",
+    "фрагментация жёсткого диска.",
+    "слишком низкая температура в помещении.",
+    "повреждённая батарейка, поддерживающая BIOS."
+   ]
+  },
+  "expl": {
+   "pl": "Przegrzewający się chipset powoduje błędy i zawieszanie się systemu, a zabezpieczenia termiczne wymuszają restarty. Fragmentacja tylko spowalnia dysk, a słaba bateria BIOS objawia się resetem daty i ustawień.",
+   "ru": "Перегрев чипсета вызывает ошибки и зависания, а тепловая защита провоцирует перезагрузки. Фрагментация лишь замедляет диск, а севшая батарейка BIOS проявляется сбросом даты и настроек."
+  }
+ },
+ "00a389a0": {
+  "ru": {
+   "stem": "В групповых политиках включён и настроен параметр «Указать путь к перемещаемому профилю для всех пользователей, входящих на этот компьютер»: в какой папке сервера будет находиться перемещаемый профиль пользователя jkowal?",
+   "answers": [
+    "\\profile\\jkowal",
+    "\\profile\\username",
+    "\\profile\\serwer\\username",
+    "\\profile\\username\\jkowal"
+   ]
+  },
+  "expl": {
+   "pl": "Ścieżka \\\\serwer\\profile\\%username% zawiera zmienną %username%, która przy logowaniu jest zastępowana nazwą konta. Dla jkowal profil trafi więc do \\profile\\jkowal, a nie do folderu o dosłownej nazwie „username”.",
+   "ru": "Путь \\\\serwer\\profile\\%username% содержит переменную %username%, которая при входе заменяется именем учётной записи. Поэтому профиль jkowal окажется в \\profile\\jkowal, а не в папке с буквальным именем «username»."
+  }
+ },
+ "01c473c4": {
+  "ru": {
+   "stem": "На скриншоте показана настройка политики паролей в групповых политиках Windows. Какой из вариантов будет применён при такой конфигурации?",
+   "answers": [
+    "Пользователь никогда не должен менять пароль.",
+    "Пароли пользователя должны меняться каждые 10 дней.",
+    "Пользователь может сменить пароль на новый через 8 дней.",
+    "Пароль может содержать имя учётной записи пользователя."
+   ]
+  },
+  "expl": {
+   "pl": "Maksymalny okres ważności hasła = 0 oznacza, że hasło nigdy nie wygasa, więc użytkownik nie musi go zmieniać. 10 dni to minimalny okres (wcześniej nie można zmienić), a włączona złożoność zabrania używania nazwy konta.",
+   "ru": "Максимальный срок действия пароля = 0 означает, что пароль никогда не истекает, поэтому менять его не нужно. 10 дней – минимальный срок (раньше сменить нельзя), а включённая сложность запрещает использовать имя учётной записи."
+  }
+ },
+ "01eb393f": {
+  "ru": {
+   "stem": "Принтер имеет постоянный IP-адрес 172.16.0.101 с маской 255.255.255.0. Какой IP-адрес следует назначить компьютеру, чтобы была возможна связь с принтером в локальной сети?",
+   "answers": [
+    "255.255.255.1",
+    "173.16.0.101",
+    "172.16.1.101",
+    "172.16.0.100"
+   ]
+  },
+  "expl": {
+   "pl": "Maska /24 oznacza, że sieć wyznaczają trzy pierwsze oktety: 172.16.0.0. Komputer musi mieć adres 172.16.0.x różny od drukarki, czyli 172.16.0.100; 172.16.1.101 leży już w innej sieci.",
+   "ru": "Маска /24 означает, что сеть задают первые три октета: 172.16.0.0. Компьютеру нужен адрес 172.16.0.x, отличный от принтера, т.е. 172.16.0.100; 172.16.1.101 уже в другой сети."
+  }
+ },
+ "0206ec39": {
+  "ru": {
+   "stem": "Укажите разъём, который следует использовать для подключения вентилятора, параметры которого приведены в таблице.",
+   "answers": [
+    "",
+    "",
+    "",
+    ""
+   ]
+  },
+  "expl": {
+   "pl": "B to rozgałęziacz z 4-pinowymi złączami wentylatorowymi (PWM), do których podłącza się wentylator do gniazda CPU_FAN/SYS_FAN płyty głównej. A to przedłużacz zasilania ATX 24-pin, C – adapter Molex na PCIe, D – przedłużacz ATX12V 4-pin.",
+   "ru": "B – разветвитель с 4-контактными разъёмами для вентиляторов (PWM), которыми вентилятор подключают к CPU_FAN/SYS_FAN материнской платы. A – удлинитель питания ATX 24-pin, C – переходник Molex на PCIe, D – удлинитель ATX12V 4-pin."
+  }
+ },
+ "04113055": {
+  "ru": {
+   "stem": "Чтобы удалить элемент «Все программы» из классического меню «Пуск» Windows, следует использовать оснастку",
+   "answers": [
+    "lusrmgr.msc",
+    "azman.msc",
+    "gpedit.msc",
+    "ciadv.msc"
+   ]
+  },
+  "expl": {
+   "pl": "Wygląd menu Start konfiguruje się w Edytorze lokalnych zasad grupy (gpedit.msc): Konfiguracja użytkownika → Szablony administracyjne → Menu Start i pasek zadań. lusrmgr.msc służy do zarządzania kontami lokalnymi.",
+   "ru": "Вид меню «Пуск» настраивается в Редакторе локальной групповой политики (gpedit.msc): Конфигурация пользователя → Административные шаблоны → Меню «Пуск» и панель задач. lusrmgr.msc управляет локальными учётными записями."
+  }
+ },
+ "05cf1524": {
+  "ru": {
+   "stem": "Планируя модернизацию ноутбука, связанную с заменой процессора, нужно в первую очередь",
+   "answers": [
+    "развинтить корпус ноутбука и начать монтаж.",
+    "демонтировать видеокарту, карту Wi-Fi и модули ОЗУ.",
+    "проверить тип сокета процессора и техническую спецификацию материнской платы.",
+    "купить значительно более производительный процессор, подходящий к сокету материнской платы."
+   ]
+  },
+  "expl": {
+   "pl": "Najpierw trzeba ustalić, czy wymiana jest w ogóle możliwa: typ gniazda (w laptopach CPU bywa wlutowany – BGA) i listę procesorów obsługiwanych przez płytę i BIOS. Dopiero potem kupuje się procesor i demontuje laptop.",
+   "ru": "Сначала нужно выяснить, возможна ли замена вообще: тип сокета (в ноутбуках CPU часто впаян – BGA) и список процессоров, поддерживаемых платой и BIOS. Только потом покупают процессор и разбирают ноутбук."
+  },
+  "topic": "hardware"
+ },
+ "06170cc1": {
+  "ru": {
+   "stem": "Какую из команд Windows нужно применить, чтобы получить результат, как на представленном рисунке?",
+   "answers": [
+    "ping",
+    "tracert",
+    "netstat",
+    "ipconfig"
+   ]
+  },
+  "expl": {
+   "pl": "netstat pokazuje aktywne połączenia TCP: protokół, adres i port lokalny, adres zdalny oraz stan (ESTABLISHED, TIME_WAIT). ipconfig wyświetla konfigurację IP karty, a tracert – trasę do hosta.",
+   "ru": "netstat показывает активные TCP-соединения: протокол, локальный адрес и порт, удалённый адрес и состояние (ESTABLISHED, TIME_WAIT). ipconfig выводит IP-конфигурацию адаптера, tracert – маршрут до хоста."
+  }
+ },
+ "09ec1c81": {
+  "ru": {
+   "stem": "Какое максимальное количество адресов сетей доступно в IP-адресации класса A?",
+   "answers": [
+    "32 адреса.",
+    "64 адреса.",
+    "128 адресов.",
+    "254 адреса."
+   ]
+  },
+  "expl": {
+   "pl": "W klasie A pierwszy bit to 0, a na numer sieci przypada 7 bitów: 2^7 = 128 adresów sieci (0–127, z czego 0 i 127 są zarezerwowane, więc użytecznych jest 126).",
+   "ru": "В классе A первый бит равен 0, на номер сети приходится 7 бит: 2^7 = 128 адресов сетей (0–127, из них 0 и 127 зарезервированы, так что используемых 126)."
+  }
+ },
+ "0af013e2": {
+  "ru": {
+   "stem": "Показанная программа используется для диагностики",
+   "answers": [
+    "оперативной памяти.",
+    "материнских плат.",
+    "видеокарт.",
+    "жёстких дисков."
+   ]
+  },
+  "expl": {
+   "pl": "To SeaTools for Windows firmy Seagate – narzędzie do testowania dysków: pokazuje wykryte napędy, model, firmware i status SMART oraz uruchamia testy powierzchni.",
+   "ru": "Это SeaTools for Windows от Seagate – утилита для тестирования дисков: показывает найденные накопители, модель, прошивку и статус SMART, запускает тесты поверхности."
+  }
+ },
+ "0b3fe3f9": {
+  "ru": {
+   "stem": "Использование команды sudo ifup eth0 для настройки сетевого интерфейса в системе Linux приведёт к",
+   "answers": [
+    "выводу скорости сетевого соединения.",
+    "выводу его IP-адреса.",
+    "его выключению.",
+    "его включению."
+   ]
+  },
+  "expl": {
+   "pl": "ifup („interface up”) aktywuje interfejs zgodnie z jego konfiguracją, a ifdown go wyłącza. Adres IP wyświetla się np. poleceniem ip a lub ifconfig.",
+   "ru": "ifup («interface up») включает интерфейс согласно его конфигурации, а ifdown выключает. IP-адрес выводится, например, командой ip a или ifconfig."
+  },
+  "topic": "linux"
+ },
+ "0b5f128c": {
+  "ru": {
+   "stem": "Какие из компьютеров с адресами IPv4, приведёнными в таблице, принадлежат к одной и той же сети?",
+   "answers": [
+    "1 и 2",
+    "2 и 3",
+    "2 и 4",
+    "3 и 4"
+   ]
+  },
+  "expl": {
+   "pl": "Przy masce /16 sieć wyznaczają dwa pierwsze oktety. Komputery 2 (172.70.12.1) i 3 (172.70.50.1) należą do sieci 172.70.0.0/16; pozostałe są w 172.50.0.0 i 172.80.0.0.",
+   "ru": "При маске /16 сеть задают первые два октета. Компьютеры 2 (172.70.12.1) и 3 (172.70.50.1) принадлежат сети 172.70.0.0/16; остальные – в 172.50.0.0 и 172.80.0.0."
+  }
+ },
+ "0de8a165": {
+  "ru": {
+   "stem": "Если электронную схему клавиатуры залили сладким напитком, нужно немедленно отключить её от компьютера, а затем",
+   "answers": [
+    "демонтировать каждую клавишу, смазать подвижные элементы подшипниковой смазкой и подключить клавиатуру к компьютеру.",
+    "очистить всю клавиатуру изопропиловым спиртом и оставить на 24 ч для высыхания.",
+    "промыть клавиатуру в дистиллированной воде с моющим средством и подключить её к компьютеру.",
+    "демонтировать клавиши и оставить сохнуть минимум на 48 ч."
+   ]
+  },
+  "expl": {
+   "pl": "Alkohol izopropylowy rozpuszcza lepkie resztki cukru, nie przewodzi prądu i szybko odparowuje; po 24 h schnięcia klawiaturę można podłączyć. Samo suszenie zostawi cukier, a woda z detergentem i natychmiastowe podłączenie grozi zwarciem.",
+   "ru": "Изопропиловый спирт растворяет липкие остатки сахара, не проводит ток и быстро испаряется; после 24 ч сушки клавиатуру можно подключать. Простая сушка оставит сахар, а вода с моющим средством и немедленное подключение грозят замыканием."
+  }
+ },
+ "0ed990f3": {
+  "ru": {
+   "stem": "Для организации проводов внутри системного блока можно использовать",
+   "answers": [
+    "винты.",
+    "перемычки.",
+    "кабельные стяжки.",
+    "металлические шайбы."
+   ]
+  },
+  "expl": {
+   "pl": "Opaski zaciskowe (trytytki) spinają przewody w wiązki i mocują je do obudowy, poprawiając przepływ powietrza. Zworki służą do konfiguracji urządzeń, a śruby i podkładki – do montażu podzespołów.",
+   "ru": "Кабельные стяжки собирают провода в жгуты и крепят к корпусу, улучшая циркуляцию воздуха. Перемычки служат для конфигурации устройств, а винты и шайбы – для крепления компонентов."
+  },
+  "topic": "hardware"
+ },
+ "0f3ad427": {
+  "ru": {
+   "stem": "Сколько распределительных пунктов по норме PN-EN 50174 должно быть в 3-этажном здании, если площадь каждого этажа около 800 м²?",
+   "answers": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ]
+  },
+  "expl": {
+   "pl": "Według PN-EN 50174 stosuje się co najmniej jeden punkt rozdzielczy na każdą kondygnację, a dodatkowy przy powierzchni ponad 1000 m². 800 m² < 1000 m², więc 1 punkt × 3 kondygnacje = 3.",
+   "ru": "По PN-EN 50174 нужен минимум один распределительный пункт на каждый этаж и дополнительный при площади более 1000 м². 800 м² < 1000 м², поэтому 1 пункт × 3 этажа = 3."
+  },
+  "topic": "cabling"
+ },
+ "0ff146c0": {
+  "ru": {
+   "stem": "Параметр NEXT означает помеху, вызванную влиянием электромагнитного поля",
+   "answers": [
+    "одной пары кабеля на другую пару кабеля.",
+    "одной пары кабеля на остальные пары кабеля.",
+    "всех пар кабеля друг на друга.",
+    "остальных трёх пар кабеля на исследуемую пару."
+   ]
+  },
+  "expl": {
+   "pl": "NEXT (Near End Crosstalk) to przesłuch zbliżny mierzony między dwiema parami: jedna para nadaje, a na drugiej mierzy się zakłócenie na tym samym końcu kabla. Sumaryczny wpływ trzech par na jedną to PS NEXT.",
+   "ru": "NEXT (Near End Crosstalk) – перекрёстная наводка на ближнем конце, измеряемая между двумя парами: одна пара передаёт, на другой измеряется помеха на том же конце. Суммарное влияние трёх пар на одну – это PS NEXT."
+  }
+ },
+ "1008a93a": {
+  "ru": {
+   "stem": "Укажите разъём, который нужно использовать для правильного подключения монитора к системному блоку, оснащённому требуемыми монитором портами.",
+   "answers": [
+    "Разъём 1.",
+    "Разъём 2.",
+    "Разъём 3.",
+    "Разъём 4."
+   ]
+  },
+  "expl": {
+   "pl": "Monitor ma tylko wejścia DisplayPort i HDMI, więc należy użyć przewodu z wtykiem pasującym do jednego z nich (według klucza – złącze 1). Wtyki DVI czy DB13W3 nie pasują do żadnego gniazda monitora.",
+   "ru": "У монитора есть только входы DisplayPort и HDMI, поэтому нужен кабель со штекером под один из них (по ключу – разъём 1). Штекеры DVI или DB13W3 не подходят ни к одному гнезду монитора."
+  },
+  "stemFix": "Wskaż złącze, którego należy użyć w celu poprawnego podłączenia monitora do jednostki centralnej, wyposażonej w wymagane przez monitor porty.",
+  "doubt": "Kolejność wyciętych obrazków może nie odpowiadać numeracji złączy (pierwszy obrazek to USB-C, HDMI jest trzeci) – nie da się potwierdzić, że złącze 1 to HDMI."
+ },
+ "11b0c8c3": {
+  "ru": {
+   "stem": "Протокол, используемый компьютерами для уведомления маршрутизаторов своей сети о желании присоединиться к определённой multicast-группе или выйти из неё, – это",
+   "answers": [
+    "Interior Gateway Protocol (IGP).",
+    "Transmission Control Protocol (TCP).",
+    "Internet Message Access Protocol (IMAP).",
+    "Internet Group Management Protocol (IGMP)."
+   ]
+  },
+  "expl": {
+   "pl": "IGMP służy hostom do zgłaszania ruterom członkostwa w grupach multicastowych (join/leave). IGP to klasa protokołów routingu, TCP – protokół transportowy, IMAP – protokół odbioru poczty.",
+   "ru": "IGMP используется хостами, чтобы сообщать маршрутизаторам о членстве в multicast-группах (вход/выход). IGP – класс протоколов маршрутизации, TCP – транспортный протокол, IMAP – протокол получения почты."
+  },
+  "topic": "protocols"
+ },
+ "11cc932d": {
+  "ru": {
+   "stem": "В командной строке Windows для управления параметрами учётных записей компьютера, такими как срок действия пароля, минимальная длина пароля и время блокировки учётной записи, служит команда",
+   "answers": [
+    "NET USE",
+    "NET USER",
+    "NET CONFIG",
+    "NET ACCOUNTS"
+   ]
+  },
+  "expl": {
+   "pl": "NET ACCOUNTS ustawia zasady kont dla wszystkich użytkowników, np. /MAXPWAGE, /MINPWLEN, /LOCKOUTDURATION. NET USER zarządza pojedynczym kontem, a NET USE mapuje zasoby sieciowe.",
+   "ru": "NET ACCOUNTS задаёт политики учётных записей для всех пользователей, например /MAXPWAGE, /MINPWLEN, /LOCKOUTDURATION. NET USER управляет отдельной учётной записью, а NET USE подключает сетевые ресурсы."
+  }
+ },
+ "11e556f0": {
+  "ru": {
+   "stem": "Пассивным электронным элементом является",
+   "answers": [
+    "диод.",
+    "транзистор.",
+    "конденсатор.",
+    "стабилизатор напряжения."
+   ]
+  },
+  "expl": {
+   "pl": "Elementy bierne (rezystor, kondensator, cewka) nie wzmacniają sygnału ani nie sterują przepływem prądu. Dioda, tranzystor i stabilizator to elementy półprzewodnikowe zaliczane do czynnych.",
+   "ru": "Пассивные элементы (резистор, конденсатор, катушка) не усиливают сигнал и не управляют током. Диод, транзистор и стабилизатор – полупроводниковые элементы, относящиеся к активным."
+  }
+ },
+ "1241046a": {
+  "ru": {
+   "stem": "Фотополимерная смола – это расходный материал принтера",
+   "answers": [
+    "термотрансферного.",
+    "твердочернильного.",
+    "термического.",
+    "3D."
+   ]
+  },
+  "expl": {
+   "pl": "Żywicę utwardzaną światłem UV wykorzystują drukarki 3D w technologii SLA/DLP – laser lub projektor utwardza ją warstwa po warstwie. Drukarki termotransferowe używają taśmy barwiącej, a termiczne – papieru termoczułego.",
+   "ru": "Смолу, отверждаемую УФ-светом, используют 3D-принтеры технологии SLA/DLP – лазер или проектор отверждает её слой за слоем. Термотрансферные принтеры используют красящую ленту, термические – термобумагу."
+  }
+ },
+ "134919bf": {
+  "ru": {
+   "stem": "При сканировании чёрно-белого технического чертежа с максимальным оптическим разрешением сканера на наклонных и закруглённых краях видны ступенчато расположенные пиксели. Чтобы получить лучшее качество отсканированного изображения, нужно использовать функцию",
+   "answers": [
+    "гамма-коррекции.",
+    "удаления растра (дерастеризации).",
+    "интерполированного разрешения.",
+    "сканирования по тональной кривой."
+   ]
+  },
+  "expl": {
+   "pl": "Skoro rozdzielczość optyczna jest już maksymalna, wyższą uzyskuje się programowo – rozdzielczość interpolowana dopisuje piksele pośrednie i wygładza „schodki”. Odrastrowywanie usuwa mory przy skanowaniu druku, a gamma i krzywa tonalna zmieniają tylko jasność.",
+   "ru": "Раз оптическое разрешение уже максимальное, выше его можно поднять только программно – интерполированное разрешение добавляет промежуточные пиксели и сглаживает «ступеньки». Удаление растра убирает муар при сканировании печати, а гамма и тональная кривая меняют только яркость."
+  }
+ },
+ "161af2da": {
+  "ru": {
+   "stem": "Какой рисунок показывает расположение жил провода UTP в штекере 8P8C согласно стандарту TIA/EIA-568-A, последовательность T568A?",
+   "answers": [
+    "",
+    "",
+    "",
+    ""
+   ]
+  },
+  "expl": {
+   "pl": "T568A: 1 biało-zielony, 2 zielony, 3 biało-pomarańczowy, 4 niebieski, 5 biało-niebieski, 6 pomarańczowy, 7 biało-brązowy, 8 brązowy – tak jest na rysunku D. Rysunek C (zaczyna się od biało-pomarańczowego) to T568B.",
+   "ru": "T568A: 1 бело-зелёный, 2 зелёный, 3 бело-оранжевый, 4 синий, 5 бело-синий, 6 оранжевый, 7 бело-коричневый, 8 коричневый – так на рисунке D. Рисунок C (начинается с бело-оранжевого) – это T568B."
+  }
+ },
+ "1633ae9d": {
+  "ru": {
+   "stem": "Из схемы, размещённой в документации материнской платы, следует, что она оснащена",
+   "answers": [
+    "сокетом процессора LGA 1151.",
+    "1 портом HDMI и 1 портом DP.",
+    "4 слотами памяти DDR4.",
+    "6 портами SATA."
+   ]
+  },
+  "expl": {
+   "pl": "Na schemacie przy chipsecie Q87 jest blok „6 SATA Ports” (600 MB/s, RAID 0,1,5,10). Gniazdo procesora to LGA 1150, pamięć to DDR3, a wyjścia wideo to DVI i VGA, nie HDMI/DP.",
+   "ru": "На схеме у чипсета Q87 есть блок «6 SATA Ports» (600 МБ/с, RAID 0,1,5,10). Сокет процессора – LGA 1150, память – DDR3, а видеовыходы – DVI и VGA, не HDMI/DP."
+  },
+  "topic": "hardware"
+ },
+ "1668a8ba": {
+  "ru": {
+   "stem": "Компьютер, получающий IP-адрес, адрес шлюза и адреса DNS-серверов автоматически, соединяется со всеми компьютерами локальной сети по IP-адресу. Этот компьютер не может соединиться ни с одним хостом глобальной сети ни по URL, ни по IP-адресу, что указывает на отсутствие в сети или неисправность",
+   "answers": [
+    "маршрутизатора.",
+    "коммутатора.",
+    "DNS-сервера.",
+    "DHCP-сервера."
+   ]
+  },
+  "expl": {
+   "pl": "Komunikacja lokalna działa, więc przełącznik i DHCP są sprawne. Brak połączenia z siecią rozległą nawet po adresie IP oznacza problem z bramą, czyli ruterem; awaria DNS blokowałaby tylko połączenia po nazwie.",
+   "ru": "Локальная связь работает, значит коммутатор и DHCP исправны. Отсутствие связи с глобальной сетью даже по IP указывает на проблему со шлюзом, т.е. маршрутизатором; сбой DNS блокировал бы только обращения по имени."
+  }
+ },
+ "171f03f3": {
+  "ru": {
+   "stem": "Неисправность ноутбука, проявляющаяся искажёнными цветами или отсутствием какого-либо цвета на экране, может быть вызвана повреждением",
+   "answers": [
+    "порта D-SUB.",
+    "оперативной памяти.",
+    "шлейфа матрицы.",
+    "интерфейса HDMI."
+   ]
+  },
+  "expl": {
+   "pl": "Taśma matrycy przesyła sygnały obrazu z płyty głównej do wbudowanego ekranu; przerwana żyła lub złe styki powodują brak koloru lub przekłamania barw. Porty D-SUB i HDMI dotyczą tylko monitorów zewnętrznych.",
+   "ru": "Шлейф матрицы передаёт видеосигнал с материнской платы на встроенный экран; обрыв жилы или плохой контакт приводят к пропаже или искажению цветов. Порты D-SUB и HDMI касаются только внешних мониторов."
+  }
+ },
+ "172c7d64": {
+  "ru": {
+   "stem": "У пользователя проблема с загрузкой Windows. Чтобы исправить её, он запустил средство System Image Recovery, которое",
+   "answers": [
+    "восстанавливает систему на основе резервной копии.",
+    "исправляет загрузочные файлы, используя диск Recovery.",
+    "восстанавливает систему, используя точки восстановления.",
+    "восстанавливает настройки системы, используя копию реестра backup.reg"
+   ]
+  },
+  "expl": {
+   "pl": "System Image Recovery (Odzyskiwanie obrazu systemu) przywraca cały dysk z wcześniej utworzonego obrazu kopii zapasowej. Punkty przywracania obsługuje Przywracanie systemu, a pliki rozruchowe naprawia Naprawa podczas uruchamiania.",
+   "ru": "System Image Recovery (Восстановление образа системы) восстанавливает весь диск из ранее созданного образа резервной копии. Точки восстановления использует «Восстановление системы», а загрузочные файлы чинит «Восстановление при загрузке»."
+  }
+ },
+ "18bd5150": {
+  "ru": {
+   "stem": "Показанный инструмент при ремонте компьютера предназначен для",
+   "answers": [
+    "сгибания и обжима металлических поверхностей.",
+    "очистки электронных элементов от остатков пасты и флюсов.",
+    "обжима штекеров, обрезки и снятия изоляции с электрических проводов.",
+    "базовых проверок электронных элементов, таких как диоды, транзисторы или резисторы."
+   ]
+  },
+  "expl": {
+   "pl": "To próbnik (tester) z diodami VOLT i CONT – sprawdza obecność napięcia oraz ciągłość obwodu, co pozwala na proste testy diod, rezystorów czy połączeń. Nie jest to narzędzie mechaniczne ani do zaciskania wtyków.",
+   "ru": "Это пробник (тестер) с индикаторами VOLT и CONT – проверяет наличие напряжения и целостность цепи, что позволяет делать простые проверки диодов, резисторов, соединений. Это не механический инструмент и не обжимка."
+  }
+ },
+ "1a5cce87": {
+  "ru": {
+   "stem": "Какая из пар «протокол – уровень, на котором работает протокол» правильно сопоставлена согласно модели TCP/IP?",
+   "answers": [
+    "DHCP – уровень доступа к сети.",
+    "RARP – транспортный уровень.",
+    "IGMP – уровень Интернета.",
+    "ICMP – прикладной уровень."
+   ]
+  },
+  "expl": {
+   "pl": "IGMP, podobnie jak IP i ICMP, działa w warstwie Internetu modelu TCP/IP. DHCP to protokół warstwy aplikacji, a ICMP nie należy do warstwy aplikacji.",
+   "ru": "IGMP, как IP и ICMP, работает на уровне Интернета модели TCP/IP. DHCP – протокол прикладного уровня, а ICMP к прикладному уровню не относится."
+  }
+ },
+ "1c10f33d": {
+  "ru": {
+   "stem": "Программой, используемой в системе Linux для воспроизведения музыки, является",
+   "answers": [
+    "Leafpad",
+    "Banshee",
+    "BlueFish",
+    "LibreOffice"
+   ]
+  },
+  "expl": {
+   "pl": "Banshee to odtwarzacz multimedialny dla Linuksa (muzyka, podcasty). Leafpad to prosty edytor tekstu, BlueFish – edytor HTML, a LibreOffice – pakiet biurowy.",
+   "ru": "Banshee – мультимедийный проигрыватель для Linux (музыка, подкасты). Leafpad – простой текстовый редактор, BlueFish – редактор HTML, LibreOffice – офисный пакет."
+  }
+ },
+ "1c1404f3": {
+  "ru": {
+   "stem": "Программное обеспечение, которое требует согласия на показ рекламы или покупки полной лицензии для её отключения, распространяется по лицензии",
+   "answers": [
+    "Trial",
+    "Adware",
+    "Freeware",
+    "GNU GPL"
+   ]
+  },
+  "expl": {
+   "pl": "Adware jest darmowe w zamian za wyświetlanie reklam, a ich usunięcie wymaga wykupienia płatnej wersji. Trial działa ograniczony czas, a freeware jest bezpłatny bez reklam.",
+   "ru": "Adware бесплатно в обмен на показ рекламы, а её отключение требует покупки платной версии. Trial работает ограниченное время, а freeware бесплатно без рекламы."
+  }
+ },
+ "1d963e0b": {
+  "ru": {
+   "stem": "Сменить пароль пользователя egzamin в системе Linux позволяет команда",
+   "answers": [
+    "pwd egzamin",
+    "mkdir egzamin",
+    "passwd egzamin",
+    "shadow egzamin"
+   ]
+  },
+  "expl": {
+   "pl": "passwd zmienia hasło użytkownika (root może podać nazwę konta, np. passwd egzamin). pwd wyświetla bieżący katalog, a shadow to nazwa pliku /etc/shadow, nie polecenie.",
+   "ru": "passwd меняет пароль пользователя (root может указать имя учётной записи, например passwd egzamin). pwd выводит текущий каталог, а shadow – имя файла /etc/shadow, а не команда."
+  }
+ },
+ "1dd996f4": {
+  "ru": {
+   "stem": "Какие черты имеет лицензия бесплатного ПО под названием freemium?",
+   "answers": [
+    "Даёт возможность получить дополнительные функции после покупки премиум-версии.",
+    "Регулярно выводит просьбы о добровольном пожертвовании на определённую благотворительную цель.",
+    "Периодически или при каждом запуске программы выводит сообщение, побуждающее сделать добровольный взнос в пользу образовательных учреждений.",
+    "Даёт неограниченное право использовать и распространять исходную или изменённую программу при условии указания автора."
+   ]
+  },
+  "expl": {
+   "pl": "Freemium = free + premium: podstawowa wersja jest darmowa, a dodatkowe funkcje odblokowuje się po zakupie wersji premium. Prośby o datki to cechy donationware/careware, a swobodne rozpowszechnianie z podaniem autora – licencji typu BSD/CC-BY.",
+   "ru": "Freemium = free + premium: базовая версия бесплатна, а дополнительные функции открываются после покупки премиум-версии. Просьбы о пожертвованиях – черта donationware/careware, а свободное распространение с указанием автора – лицензий типа BSD/CC-BY."
+  }
+ },
+ "1ec605a9": {
+  "ru": {
+   "stem": "Показанное текстовое сообщение, выведенное на экран компьютера с установленной системой Windows, указывает на",
+   "answers": [
+    "неправильно сопоставленные приложения по умолчанию.",
+    "выключенный системный брандмауэр.",
+    "неправильную настройку IP-адреса карты Wi-Fi.",
+    "старые или повреждённые драйверы оборудования."
+   ]
+  },
+  "expl": {
+   "pl": "To „niebieski ekran” (BSOD) z błędem HAL_INITIALIZATION_FAILED – krytyczny błąd jądra/warstwy HAL, typowo wywołany przez wadliwe lub nieaktualne sterowniki sprzętu. Zła konfiguracja IP czy wyłączona zapora nie powodują BSOD.",
+   "ru": "Это «синий экран» (BSOD) с ошибкой HAL_INITIALIZATION_FAILED – критическая ошибка ядра/уровня HAL, обычно вызванная неисправными или устаревшими драйверами. Неверный IP или выключенный брандмауэр BSOD не вызывают."
+  },
+  "topic": "windows"
+ },
+ "24515289": {
+  "ru": {
+   "stem": "Какой модуль защиты есть в пакетах Internet Security (IS), но отсутствует в антивирусных программах (AV)?",
+   "answers": [
+    "Сетевой экран (файрвол).",
+    "Антивирусный сканер.",
+    "Антивирусный монитор.",
+    "Обновление вирусных баз."
+   ]
+  },
+  "expl": {
+   "pl": "Pakiety Internet Security rozszerzają antywirusa m.in. o zaporę sieciową (firewall) kontrolującą ruch sieciowy. Skaner, monitor i aktualizacja baz wirusów występują już w zwykłym AV.",
+   "ru": "Пакеты Internet Security дополняют антивирус, в частности, сетевым экраном (firewall), контролирующим сетевой трафик. Сканер, монитор и обновление баз есть уже в обычном AV."
+  },
+  "topic": "security"
+ },
+ "249a9bcb": {
+  "ru": {
+   "stem": "Какой из временных параметров (таймингов) оперативной памяти называется временем доступа?",
+   "answers": [
+    "CL",
+    "CR",
+    "RAT",
+    "RCD"
+   ]
+  },
+  "expl": {
+   "pl": "CL (CAS Latency) to liczba cykli zegara od wysłania polecenia odczytu do pojawienia się danych – nazywana czasem dostępu. tRCD to opóźnienie RAS-to-CAS, a CR (Command Rate) – opóźnienie wyboru kości.",
+   "ru": "CL (CAS Latency) – число тактов от команды чтения до появления данных, его называют временем доступа. tRCD – задержка RAS-to-CAS, CR (Command Rate) – задержка выбора чипа."
+  }
+ },
+ "25d4cdaa": {
+  "ru": {
+   "stem": "Компонентом, совместимым с показанным контроллером, является",
+   "answers": [
+    "монитор Dell, 27”, 1x DP, 4x USB 3.1, HDMI",
+    "память RAM HyperX, DDR3 8GB, 1600MHz, CL10",
+    "жёсткий диск DELL SAS 3TB 7.2K 6G 3.5IN SAS HDD",
+    "видеокарта NVIDIA 6GB, GDDR5, 192 bit, PCI-Ex16 3.0"
+   ]
+  },
+  "expl": {
+   "pl": "Na zdjęciu jest karta rozszerzeń HP SAS (ekspander z wieloma złączami mini-SAS „to backplane”, numer SAS WWN). Podłącza się do niej dyski SAS, np. DELL SAS 3TB. Monitorów, RAM ani kart graficznych do kontrolera dysków się nie podłącza.",
+   "ru": "На фото плата расширения HP SAS (экспандер с множеством разъёмов mini-SAS «to backplane», номер SAS WWN). К ней подключаются диски SAS, например DELL SAS 3TB. Мониторы, ОЗУ и видеокарты к дисковому контроллеру не подключаются."
+  },
+  "topic": "hardware"
+ },
+ "25e4fdf2": {
+  "ru": {
+   "stem": "Какое сетевое устройство позволит преобразовать сигнал, передаваемый по аналоговой телефонной линии, в цифровой сигнал компьютерной локальной сети?",
+   "answers": [
+    "Модем.",
+    "Коммутатор.",
+    "Точка доступа.",
+    "Медиаконвертер."
+   ]
+  },
+  "expl": {
+   "pl": "Modem (modulator-demodulator) zamienia sygnał analogowy linii telefonicznej na cyfrowy i odwrotnie. Konwerter mediów zmienia tylko medium (np. miedź–światłowód) przy sygnale cyfrowym.",
+   "ru": "Модем (модулятор-демодулятор) преобразует аналоговый сигнал телефонной линии в цифровой и обратно. Медиаконвертер меняет только среду (например, медь–оптика) для цифрового сигнала."
+  }
+ },
+ "271b94a0": {
+  "ru": {
+   "stem": "Если скорость загрузки данных из сети сетевой картой составляет 4 Мбит/с, то файл размером 2 МБ можно загрузить за минимальное время",
+   "answers": [
+    "2 s",
+    "4 s",
+    "6 s",
+    "8 s"
+   ]
+  },
+  "expl": {
+   "pl": "Trzeba ujednolicić jednostki: 2 MB = 2 × 8 = 16 Mb. Czas = 16 Mb / 4 Mb/s = 4 s. Odpowiedź 2 s wynika z pomylenia bajtów z bitami.",
+   "ru": "Нужно привести единицы: 2 МБ = 2 × 8 = 16 Мбит. Время = 16 Мбит / 4 Мбит/с = 4 с. Ответ 2 с – результат путаницы байтов и битов."
+  },
+  "topic": "basics"
+ },
+ "27624286": {
+  "ru": {
+   "stem": "Компьютеры K1, K2, K3, K4 подключены к интерфейсам коммутатора, назначенным VLAN-ам из таблицы. Какие компьютеры могут обмениваться данными друг с другом?",
+   "answers": [
+    "K1 с K2",
+    "K1 с K3",
+    "K1 с K4",
+    "K2 с K4"
+   ]
+  },
+  "expl": {
+   "pl": "K1 i K3 są w tym samym VLAN 10 i w tej samej sieci 10.10.10.0/24, więc komunikują się bez rutera. K2 i K4 są w VLAN 11, ale w różnych podsieciach (10.10.10.0 i 10.10.11.0), a K1–K2 dzielą różne VLAN-y.",
+   "ru": "K1 и K3 в одном VLAN 10 и одной сети 10.10.10.0/24, поэтому общаются без маршрутизатора. K2 и K4 в VLAN 11, но в разных подсетях (10.10.10.0 и 10.10.11.0), а K1 и K2 разделены разными VLAN."
+  }
+ },
+ "28963073": {
+  "ru": {
+   "stem": "Какой адрес указывает на то, что компьютер работает в сети с IP-адресом 192.168.10.64/26?",
+   "answers": [
+    "192.168.10.1",
+    "192.168.10.50",
+    "192.168.10.100",
+    "192.168.10.200"
+   ]
+  },
+  "expl": {
+   "pl": "/26 to bloki po 64 adresy: sieć 192.168.10.64 obejmuje adresy .64–.127 (hosty .65–.126). Mieści się w niej tylko 192.168.10.100; .1 i .50 są w sieci .0, a .200 w sieci .192.",
+   "ru": "/26 – блоки по 64 адреса: сеть 192.168.10.64 охватывает .64–.127 (хосты .65–.126). В неё попадает только 192.168.10.100; .1 и .50 – в сети .0, а .200 – в сети .192."
+  }
+ },
+ "2acd1408": {
+  "ru": {
+   "stem": "За час монтажник может установить 5 розеток. Какова стоимость материалов и монтажа 20 накладных сетевых розеток, если цена 1 розетки 5,00 zł, а стоимость человеко-часа монтажника 30,00 zł?",
+   "answers": [
+    "130,00 zł",
+    "220,00 zł",
+    "350,00 zł",
+    "700,00 zł"
+   ]
+  },
+  "expl": {
+   "pl": "Materiały: 20 × 5 zł = 100 zł. Robocizna: 20 / 5 = 4 h × 30 zł = 120 zł. Razem 100 + 120 = 220 zł.",
+   "ru": "Материалы: 20 × 5 zł = 100 zł. Работа: 20 / 5 = 4 ч × 30 zł = 120 zł. Итого 100 + 120 = 220 zł."
+  }
+ },
+ "2b3b56f3": {
+  "ru": {
+   "stem": "Символы и обозначения на показанной заводской табличке компонента сообщают, в частности, о том, что продукт",
+   "answers": [
+    "изготовлен из алюминия и полностью пригоден для переработки.",
+    "экологичен на этапе производства, использования и утилизации.",
+    "вреден для окружающей среды и не может выбрасываться вместе с другими отходами.",
+    "опасен и может издавать чрезмерный шум во время работы компьютера."
+   ]
+  },
+  "expl": {
+   "pl": "Przekreślony kosz na śmieci (dyrektywa WEEE) oznacza, że zużytego sprzętu elektronicznego nie wolno wyrzucać z odpadami komunalnymi – trzeba go oddać do punktu zbiórki. Symbol nie mówi nic o aluminium ani o hałasie.",
+   "ru": "Перечёркнутый мусорный бак (директива WEEE) означает, что отработавшую электронику нельзя выбрасывать с бытовыми отходами – её сдают в пункт сбора. Об алюминии или шуме символ ничего не говорит."
+  }
+ },
+ "2fb14526": {
+  "ru": {
+   "stem": "На странице, напечатанной струйным принтером, появляются полосы, точки, кляксы и пятна. Чтобы решить проблемы с качеством печати, нужно",
+   "answers": [
+    "удалить и заново установить драйвер принтера.",
+    "очистить и выровнять или заменить картриджи с чернилами.",
+    "использовать бумагу согласно рекомендациям производителя.",
+    "очистить оптическую систему принтера."
+   ]
+  },
+  "expl": {
+   "pl": "Smugi, kleksy i plamy w drukarce atramentowej wynikają z zabrudzonych lub zaschniętych dysz i źle wyrównanych głowic, więc pomaga czyszczenie i wyrównanie lub wymiana pojemników z tuszem. Drukarka atramentowa nie ma układu optycznego jak laserowa.",
+   "ru": "Полосы, кляксы и пятна в струйном принтере вызваны загрязнёнными или засохшими дюзами и невыровненными головками, поэтому помогает очистка и выравнивание или замена картриджей. Оптической системы, как у лазерного, у струйного принтера нет."
+  }
+ },
+ "31c2bd15": {
+  "ru": {
+   "stem": "Каково максимальное количество адресов хостов, которые можно использовать в подсети с адресом IPv4 172.16.0.0/22?",
+   "answers": [
+    "1022",
+    "1024",
+    "2046",
+    "2048"
+   ]
+  },
+  "expl": {
+   "pl": "/22 pozostawia 32 − 22 = 10 bitów na hosty: 2^10 = 1024 adresy. Po odjęciu adresu sieci i rozgłoszeniowego: 1024 − 2 = 1022 hosty.",
+   "ru": "/22 оставляет 32 − 22 = 10 бит на хосты: 2^10 = 1024 адреса. За вычетом адреса сети и широковещательного: 1024 − 2 = 1022 хоста."
+  }
+ },
+ "33ca313d": {
+  "ru": {
+   "stem": "Инструментом для мониторинга событий в системе Windows является",
+   "answers": [
+    "dfrg.msc",
+    "gpedit.msc",
+    "tsmmc.msc",
+    "eventvwr.msc"
+   ]
+  },
+  "expl": {
+   "pl": "eventvwr.msc uruchamia Podgląd zdarzeń, gdzie zapisywane są dzienniki systemu, aplikacji i zabezpieczeń. dfrg.msc to defragmentator, gpedit.msc – zasady grupy, tsmmc.msc – pulpity zdalne.",
+   "ru": "eventvwr.msc открывает «Просмотр событий», где хранятся журналы системы, приложений и безопасности. dfrg.msc – дефрагментация, gpedit.msc – групповая политика, tsmmc.msc – удалённые рабочие столы."
+  }
+ },
+ "36ca64c8": {
+  "ru": {
+   "stem": "Физическая топология, в которой все сетевые устройства подключены к одному устройству, расположенному централизованно относительно них, – это топология",
+   "answers": [
+    "сетки (mesh).",
+    "дерева.",
+    "звезды.",
+    "кольца."
+   ]
+  },
+  "expl": {
+   "pl": "W topologii gwiazdy każde urządzenie ma osobne połączenie z centralnym węzłem (przełącznikiem). Drzewo to połączenie wielu gwiazd, a w pierścieniu i siatce nie ma jednego centralnego urządzenia.",
+   "ru": "В топологии «звезда» каждое устройство отдельно подключено к центральному узлу (коммутатору). Дерево – это объединение нескольких звёзд, а в кольце и сетке нет одного центрального устройства."
+  }
+ },
+ "371a9e84": {
+  "ru": {
+   "stem": "Какой кабель позволяет передавать данные с максимальной скоростью передачи 1 Гбит/с?",
+   "answers": [
+    "Витая пара кат. 4.",
+    "Витая пара кат. 5e.",
+    "Коаксиальный кабель.",
+    "Оптоволоконный кабель."
+   ]
+  },
+  "expl": {
+   "pl": "Skrętka kat. 5e jest przewidziana do 1000BASE-T, czyli 1 Gb/s (pasmo 100 MHz). Kat. 4 obsługuje do 16 Mb/s, a światłowód pozwala na znacznie więcej niż 1 Gb/s.",
+   "ru": "Витая пара кат. 5e рассчитана на 1000BASE-T, т.е. 1 Гбит/с (полоса 100 МГц). Кат. 4 – до 16 Мбит/с, а оптоволокно позволяет гораздо больше 1 Гбит/с."
+  }
+ },
+ "3a5b5ec1": {
+  "ru": {
+   "stem": "Неисправность, проявляющаяся зависанием операционной системы при загрузке, обычно вызвана",
+   "answers": [
+    "слишком малым объёмом оперативной памяти.",
+    "фрагментированным SSD-диском.",
+    "неправильной установкой ПО, например драйверов.",
+    "наличием в оптическом приводе установочного носителя системы."
+   ]
+  },
+  "expl": {
+   "pl": "Według klucza: przy zbyt małej ilości RAM system podczas startu intensywnie korzysta z pliku stronicowania i może się zawieszać. Fragmentacja SSD nie ma znaczenia, a płyta w napędzie najwyżej zmieni kolejność rozruchu.",
+   "ru": "По ключу: при слишком малом объёме ОЗУ система при загрузке активно использует файл подкачки и может зависать. Фрагментация SSD значения не имеет, а диск в приводе максимум изменит порядок загрузки."
+  },
+  "doubt": "Nieprawidłowo zainstalowane sterowniki to równie (lub bardziej) typowa przyczyna zawieszania się przy starcie."
+ },
+ "3b36fd22": {
+  "ru": {
+   "stem": "Абонентские точки размещены равномерно, для подключения ближайшей точки нужно 4 м кабеля, а самой дальней – 22 м. Стоимость 1 м кабеля – 1 zł. Какой будет минимальная стоимость кабеля UTP для подключения 10 двойных абонентских розеток к распределительному пункту?",
+   "answers": [
+    "80 zł",
+    "130 zł",
+    "260 zł",
+    "440 zł"
+   ]
+  },
+  "expl": {
+   "pl": "Przy równomiernym rozmieszczeniu średnia długość to (4 + 22) / 2 = 13 m. Gniazdo podwójne wymaga 2 kabli: 10 × 2 × 13 m = 260 m × 1 zł = 260 zł.",
+   "ru": "При равномерном размещении средняя длина (4 + 22) / 2 = 13 м. Двойная розетка требует 2 кабеля: 10 × 2 × 13 м = 260 м × 1 zł = 260 zł."
+  }
+ },
+ "43498178": {
+  "ru": {
+   "stem": "Цифровая видеокамера подключается к ноутбуку через интерфейс i.Link. К какому гнезду ноутбука следует подключить камеру?",
+   "answers": [
+    "IEEE 1394",
+    "DB-15F",
+    "S/PDiF",
+    "RJ-45"
+   ]
+  },
+  "expl": {
+   "pl": "i.Link to nazwa handlowa Sony interfejsu IEEE 1394 (FireWire), używanego w kamerach cyfrowych DV. DB-15F to gniazdo VGA, S/PDIF – cyfrowe audio, RJ-45 – sieć.",
+   "ru": "i.Link – торговое название Sony для интерфейса IEEE 1394 (FireWire), применявшегося в цифровых DV-камерах. DB-15F – гнездо VGA, S/PDIF – цифровое аудио, RJ-45 – сеть."
+  },
+  "topic": "peripherals"
+ },
+ "437187d2": {
+  "ru": {
+   "stem": "Атрибут SN в файле схем core.schema в OpenLDAP означает",
+   "answers": [
+    "имя.",
+    "страну.",
+    "фамилию.",
+    "организацию."
+   ]
+  },
+  "expl": {
+   "pl": "sn to skrót od surname, czyli nazwisko. Imię to givenName, państwo – c (country), organizacja – o (organization).",
+   "ru": "sn – сокращение от surname, т.е. фамилия. Имя – givenName, страна – c (country), организация – o (organization)."
+  },
+  "topic": "linux"
+ },
+ "4419b9ab": {
+  "ru": {
+   "stem": "Какой инструмент применяется для закрепления кабеля в модуле Keystone?",
+   "answers": [
+    "",
+    "",
+    "",
+    ""
+   ]
+  },
+  "expl": {
+   "pl": "D to narzędzie uderzeniowe (punch down, LSA/110), którym wciska się żyły w złącza IDC modułu Keystone. A i B to ściągacze izolacji, a C – zaciskarka wtyków RJ.",
+   "ru": "D – ударный инструмент (punch down, LSA/110), которым жилы вдавливают в IDC-контакты модуля Keystone. A и B – стрипперы, C – обжимка для штекеров RJ."
+  }
+ },
+ "449b1ffb": {
+  "ru": {
+   "stem": "Какой элемент сервера стоечного типа (rack) можно заменить без снятия верхней крышки корпуса?",
+   "answers": [
+    "Процессор.",
+    "Жёсткий диск.",
+    "Оперативную память.",
+    "Сетевую карту."
+   ]
+  },
+  "expl": {
+   "pl": "Dyski w serwerach rack montuje się w kieszeniach (hot-swap) dostępnych od frontu obudowy. Procesor, RAM i karty rozszerzeń są wewnątrz i wymagają zdjęcia pokrywy.",
+   "ru": "Диски в стоечных серверах ставятся в салазки (hot-swap), доступные с передней панели. Процессор, ОЗУ и платы расширения находятся внутри и требуют снятия крышки."
+  }
+ },
+ "4544d767": {
+  "ru": {
+   "stem": "Укажите инструмент Windows 10, который вместе с историей файлов позволяет восстанавливать личные файлы или папки пользователя.",
+   "answers": [
+    "Резервное копирование.",
+    "Диспетчер задач.",
+    "Планировщик заданий.",
+    "Диспетчер учётных данных."
+   ]
+  },
+  "expl": {
+   "pl": "Historia plików jest częścią mechanizmu Kopii zapasowej w Windows 10 (Ustawienia → Aktualizacje i zabezpieczenia → Kopia zapasowa) i pozwala przywracać wcześniejsze wersje plików. Menedżer poświadczeń przechowuje hasła.",
+   "ru": "История файлов входит в механизм «Резервное копирование» Windows 10 (Параметры → Обновление и безопасность → Служба архивации) и позволяет восстанавливать прежние версии файлов. Диспетчер учётных данных хранит пароли."
+  }
+ },
+ "4688ce52": {
+  "ru": {
+   "stem": "Средой передачи, на передаваемый сигнал в которой не влияют электромагнитные помехи, является",
+   "answers": [
+    "оптоволокно.",
+    "радиоволны.",
+    "кабель типа витая пара.",
+    "коаксиальный кабель."
+   ]
+  },
+  "expl": {
+   "pl": "Światłowód przesyła sygnał jako światło w szklanym włóknie, więc zakłócenia elektromagnetyczne na niego nie działają. Skrętka, kabel koncentryczny i fale radiowe są na nie podatne.",
+   "ru": "Оптоволокно передаёт сигнал светом по стеклянному волокну, поэтому электромагнитные помехи на него не действуют. Витая пара, коаксиал и радиоволны им подвержены."
+  }
+ },
+ "4a720e39": {
+  "ru": {
+   "stem": "Для крепления новых радиаторов на микросхемах памяти видеокарты, если старые неисправные были сняты, можно использовать",
+   "answers": [
+    "смазку.",
+    "филамент.",
+    "изопропиловый спирт.",
+    "термопроводящую ленту."
+   ]
+  },
+  "expl": {
+   "pl": "Taśma termoprzewodząca jest dwustronnie klejąca i dobrze przewodzi ciepło, więc jednocześnie mocuje radiator i odprowadza ciepło z kości pamięci. Alkohol izopropylowy służy tylko do odtłuszczenia powierzchni.",
+   "ru": "Термопроводящая лента двусторонне клейкая и хорошо проводит тепло, поэтому одновременно крепит радиатор и отводит тепло от чипов памяти. Изопропиловый спирт нужен лишь для обезжиривания."
+  },
+  "topic": "hardware"
+ },
+ "4d3b4a52": {
+  "ru": {
+   "stem": "Каким сокращением на логической схеме сети обозначается элемент структурированной кабельной системы, определяемый как точка, где оканчиваются магистральные кабели здания?",
+   "answers": [
+    "MDF",
+    "IDF",
+    "CD",
+    "TO"
+   ]
+  },
+  "expl": {
+   "pl": "MDF (Main Distribution Frame) to główny punkt dystrybucyjny, w którym kończą się kable szkieletowe budynku. IDF to punkty pośrednie (piętrowe), CD – punkt kampusowy, TO – gniazdo abonenckie.",
+   "ru": "MDF (Main Distribution Frame) – главный распределительный пункт, где оканчиваются магистральные кабели здания. IDF – промежуточные (этажные) пункты, CD – кампусный пункт, TO – абонентская розетка."
+  }
+ },
+ "4e0bda62": {
+  "ru": {
+   "stem": "В системе Linux командой, однократно повышающей права для процесса, запускаемого из консоли, является",
+   "answers": [
+    "passwd",
+    "uname",
+    "users",
+    "sudo"
+   ]
+  },
+  "expl": {
+   "pl": "sudo uruchamia jedno polecenie z uprawnieniami innego użytkownika (domyślnie root), np. sudo apt update. passwd zmienia hasło, uname pokazuje informacje o jądrze, users – zalogowanych użytkowników.",
+   "ru": "sudo запускает одну команду с правами другого пользователя (по умолчанию root), например sudo apt update. passwd меняет пароль, uname показывает сведения о ядре, users – вошедших пользователей."
+  }
+ },
+ "4e3a4bfe": {
+  "ru": {
+   "stem": "Показанный инструмент применяется для",
+   "answers": [
+    "обжима разъёмов BNC.",
+    "скалывания (резки) оптических волокон.",
+    "снятия изоляции с кабеля S/FTP.",
+    "сварки медных кабелей разных типов."
+   ]
+  },
+  "expl": {
+   "pl": "To łamacz (cleaver) do światłowodów: włókno kładzie się na prowadnicy ze skalą długości, a nóż nacina je i łamie pod kątem prostym przed spawaniem lub montażem złącza. Kabli miedzianych się nie spawa.",
+   "ru": "Это скалыватель (cleaver) для оптоволокна: волокно кладут на направляющую со шкалой длины, нож надрезает и ломает его под прямым углом перед сваркой или установкой коннектора. Медные кабели не сваривают."
+  }
+ },
+ "4f13a9d2": {
+  "ru": {
+   "stem": "Какая запись является упрощённой формой адреса IPv6: 2020:0dc8:0000:0001:0000:0000:0000:0001 ?",
+   "answers": [
+    "22:dc8:1:1",
+    "22:dc8::1::1",
+    "2020:0dc8::1",
+    "2020:dc8:0:1::1"
+   ]
+  },
+  "expl": {
+   "pl": "Usuwamy zera wiodące (0dc8 → dc8, 0000 → 0, 0001 → 1) i najdłuższy ciąg grup zerowych (trzy grupy) zastępujemy raz „::”: 2020:dc8:0:1::1. Podwójny „::” jest niedozwolony.",
+   "ru": "Убираем ведущие нули (0dc8 → dc8, 0000 → 0, 0001 → 1) и самую длинную серию нулевых групп (три группы) один раз заменяем на «::»: 2020:dc8:0:1::1. Два «::» в адресе недопустимы."
+  }
+ },
+ "4f3b1190": {
+  "ru": {
+   "stem": "Десятичное число 128 D в шестнадцатеричной системе будет иметь значение",
+   "answers": [
+    "10 H",
+    "80 H",
+    "128 H",
+    "10000000 H"
+   ]
+  },
+  "expl": {
+   "pl": "128 / 16 = 8 reszty 0, więc 128D = 80H (8 × 16 + 0). 10000000 to zapis binarny 128, a nie heksadecymalny.",
+   "ru": "128 / 16 = 8, остаток 0, значит 128D = 80H (8 × 16 + 0). 10000000 – двоичная запись 128, а не шестнадцатеричная."
+  }
+ },
+ "508ad5f6": {
+  "ru": {
+   "stem": "Ввод команды configure terminal в показанном интерфейсе CLI маршрутизатора CISCO приведёт к",
+   "answers": [
+    "выходу из режима конфигурации.",
+    "запуску режима конфигурации.",
+    "установке имени интерфейса маршрутизатора.",
+    "определению внутреннего интерфейса."
+   ]
+  },
+  "expl": {
+   "pl": "Z trybu uprzywilejowanego (Router#) polecenie configure terminal przechodzi do globalnego trybu konfiguracji (Router(config)#). Wyjście z niego to exit lub end.",
+   "ru": "Из привилегированного режима (Router#) команда configure terminal переводит в режим глобальной конфигурации (Router(config)#). Выход из него – exit или end."
+  }
+ },
+ "50e1bf87": {
+  "ru": {
+   "stem": "Какой из адресов является частным IP-адресом?",
+   "answers": [
+    "80.80.10.10",
+    "172.30.10.10",
+    "198.192.15.10",
+    "220.192.164.10"
+   ]
+  },
+  "expl": {
+   "pl": "Pula prywatna 172.16.0.0/12 obejmuje adresy 172.16.0.0–172.31.255.255, więc 172.30.10.10 jest prywatny. Pozostałe adresy nie należą do 10/8, 172.16/12 ani 192.168/16.",
+   "ru": "Частный диапазон 172.16.0.0/12 охватывает 172.16.0.0–172.31.255.255, поэтому 172.30.10.10 частный. Остальные адреса не входят в 10/8, 172.16/12 и 192.168/16."
+  }
+ },
+ "5187d0ca": {
+  "ru": {
+   "stem": "Инструмент, показанный на фото, – это",
+   "answers": [
+    "обжимка.",
+    "монтажный нож.",
+    "стриппер (инструмент для снятия изоляции).",
+    "ударный инструмент."
+   ]
+  },
+  "expl": {
+   "pl": "Na zdjęciu jest ściągacz izolacji (napis „Cable stripper/cutter”) z regulowanym ostrzem do nacinania płaszcza kabla. Zaciskarka ma gniazda na wtyki RJ, a narzędzie uderzeniowe – końcówkę do złączy IDC.",
+   "ru": "На фото стриппер (надпись «Cable stripper/cutter») с регулируемым лезвием для надрезания оболочки кабеля. У обжимки есть гнёзда под штекеры RJ, а у ударного инструмента – насадка для IDC-контактов."
+  },
+  "topic": "cabling"
+ },
+ "521d9a71": {
+  "ru": {
+   "stem": "Какой винт следует использовать, чтобы закрепить оптический привод шириной 5,25” в корпусе, требующем прикручивания приводов?",
+   "answers": [
+    "",
+    "",
+    "",
+    ""
+   ]
+  },
+  "expl": {
+   "pl": "Napędy 5,25” mocuje się krótkimi wkrętami z drobnym gwintem metrycznym M3 – taki jest wkręt B. Wkręty C i D są samogwintujące (ostre końce, grube zwoje) i służą do blachy lub plastiku, a nie do gwintowanych otworów napędu.",
+   "ru": "Приводы 5,25” крепят короткими винтами с мелкой метрической резьбой M3 – это винт B. Винты C и D – саморезы (острый конец, крупный шаг) для жести или пластика, а не для резьбовых отверстий привода."
+  }
+ },
+ "5506dc68": {
+  "ru": {
+   "stem": "Чтобы запустить показанный инструмент системы Windows, нужно использовать команду",
+   "answers": [
+    "nmon",
+    "dxdiag",
+    "taskmgr",
+    "msconfig"
+   ]
+  },
+  "expl": {
+   "pl": "Na zrzucie jest Narzędzie diagnostyczne DirectX (zakładki System, Ekran, Dźwięk, Wejście), uruchamiane poleceniem dxdiag. taskmgr otwiera Menedżer zadań, a msconfig – Konfigurację systemu.",
+   "ru": "На скриншоте «Средство диагностики DirectX» (вкладки Система, Экран, Звук, Ввод), запускаемое командой dxdiag. taskmgr открывает Диспетчер задач, msconfig – Конфигурацию системы."
+  }
+ },
+ "55e4fca1": {
+  "ru": {
+   "stem": "Какую команду командной строки из дополнительных параметров восстановления Windows нужно использовать, чтобы исправить повреждённую MBR диска?",
+   "answers": [
+    "repair mbr",
+    "convert mbr",
+    "rebuild /mbr",
+    "bootrec /fixmbr"
+   ]
+  },
+  "expl": {
+   "pl": "bootrec /fixmbr zapisuje na dysk nowy, poprawny kod MBR bez zmiany tablicy partycji. convert mbr w diskpart zmienia styl partycjonowania (i wymaga czystego dysku), a pozostałe polecenia nie istnieją.",
+   "ru": "bootrec /fixmbr записывает на диск новый корректный код MBR, не трогая таблицу разделов. convert mbr в diskpart меняет стиль разметки (и требует чистого диска), остальных команд не существует."
+  }
+ },
+ "569374a4": {
+  "ru": {
+   "stem": "Чтобы в системе Linux найти все файлы с именем произвольной длины и расширением txt, находящиеся в каталоге /home/user и содержащие в имени строку abc, нужно выполнить команду",
+   "answers": [
+    "ls /home/user/*abc*.txt",
+    "ls /home/user/?abc?.txt",
+    "ls /home/user/[abc].txt",
+    "ls /home/user/[a-c].txt"
+   ]
+  },
+  "expl": {
+   "pl": "Gwiazdka * zastępuje dowolny ciąg znaków (także pusty), więc *abc*.txt znajdzie każdą nazwę z „abc” i rozszerzeniem txt. ? to dokładnie jeden znak, a [abc] – jeden znak spośród a, b, c.",
+   "ru": "Звёздочка * заменяет любую последовательность символов (в том числе пустую), поэтому *abc*.txt найдёт любое имя с «abc» и расширением txt. ? – ровно один символ, [abc] – один символ из a, b, c."
+  }
+ },
+ "56e20585": {
+  "ru": {
+   "stem": "Программа Linux, позволяющая в реальном времени собирать статистическую информацию о сетевом трафике, – это",
+   "answers": [
+    "ps",
+    "ntop",
+    "wget",
+    "getmac"
+   ]
+  },
+  "expl": {
+   "pl": "ntop (obecnie ntopng) monitoruje ruch sieciowy w czasie rzeczywistym i prezentuje statystyki hostów i protokołów. ps pokazuje procesy, wget pobiera pliki, a getmac to polecenie Windows.",
+   "ru": "ntop (сейчас ntopng) отслеживает сетевой трафик в реальном времени и показывает статистику по хостам и протоколам. ps показывает процессы, wget скачивает файлы, getmac – команда Windows."
+  }
+ },
+ "58884eb0": {
+  "ru": {
+   "stem": "Показанное изображение содержит фрагмент результата команды",
+   "answers": [
+    "ping -t",
+    "net view",
+    "netstat -n",
+    "route print"
+   ]
+  },
+  "expl": {
+   "pl": "Sekcja „Aktywne trasy” z kolumnami miejsce docelowe, maska, brama, interfejs i metryka to tablica routingu wyświetlana przez route print. netstat -n pokazuje połączenia z numerycznymi adresami i portami.",
+   "ru": "Раздел «Активные маршруты» с колонками назначение, маска, шлюз, интерфейс и метрика – это таблица маршрутизации, выводимая route print. netstat -n показывает соединения с числовыми адресами и портами."
+  },
+  "topic": "windows"
+ },
+ "59806909": {
+  "ru": {
+   "stem": "Для настройки сетевого интерфейса в системе Linux применяется команда",
+   "answers": [
+    "netsh",
+    "netstate",
+    "ifconfig",
+    "ipconfig"
+   ]
+  },
+  "expl": {
+   "pl": "ifconfig (z pakietu net-tools, dziś także ip) wyświetla i ustawia parametry interfejsów w Linuksie, np. ifconfig eth0 192.168.1.10. netsh i ipconfig to polecenia Windows.",
+   "ru": "ifconfig (из пакета net-tools, сейчас также ip) показывает и задаёт параметры интерфейсов в Linux, например ifconfig eth0 192.168.1.10. netsh и ipconfig – команды Windows."
+  }
+ },
+ "5a23f53d": {
+  "ru": {
+   "stem": "Показанный компьютерный комплект неполон. Какой элемент не учтён в таблице, но необходим для правильной работы комплекта?",
+   "answers": [
+    "Вентилятор процессора.",
+    "Видеокарта.",
+    "Оперативная память.",
+    "Блок питания."
+   ]
+  },
+  "expl": {
+   "pl": "Obudowa Zalman jest „bez PSU”, a w tabeli nie ma osobnego zasilacza. Procesor w wersji BOX ma wentylator, grafikę zapewnia Intel HD Graphics, a RAM to Patriot DDR4.",
+   "ru": "Корпус Zalman указан «без PSU», а отдельного блока питания в таблице нет. Процессор в версии BOX идёт с кулером, графику даёт Intel HD Graphics, а ОЗУ – Patriot DDR4."
+  }
+ },
+ "5b4c240e": {
+  "ru": {
+   "stem": "Какая команда Linux позволяет найти в содержимом файла строки, содержащие заданную последовательность символов?",
+   "answers": [
+    "grep",
+    "find",
+    "pine",
+    "search"
+   ]
+  },
+  "expl": {
+   "pl": "grep przeszukuje zawartość plików i wypisuje linie pasujące do wzorca, np. grep root /etc/passwd. find szuka plików po nazwie i atrybutach, a nie w ich treści; pine to klient poczty.",
+   "ru": "grep ищет в содержимом файлов и выводит строки, совпадающие с шаблоном, например grep root /etc/passwd. find ищет файлы по имени и атрибутам, а не по содержимому; pine – почтовый клиент."
+  }
+ },
+ "5b4da6a5": {
+  "ru": {
+   "stem": "Из показанного скриншота следует, что с помощью веб-браузера было выполнено измерение",
+   "answers": [
+    "потерь оптической мощности.",
+    "затухания медного кабеля.",
+    "времени ответа выбранного сервера.",
+    "количества переданных пакетов между выбранными серверами."
+   ]
+  },
+  "expl": {
+   "pl": "To „PING TEST” – wykres i tabela pokazują czas odpowiedzi (ping w ms: średnia, mediana, min., max.) od serwerów w Amsterdamie, Paryżu i San Francisco. Tłumienia kabli nie da się zmierzyć przeglądarką.",
+   "ru": "Это «PING TEST» – график и таблица показывают время ответа (ping в мс: среднее, медиана, мин., макс.) от серверов в Амстердаме, Париже и Сан-Франциско. Затухание кабеля браузером не измерить."
+  },
+  "topic": "protocols"
+ },
+ "5d086143": {
+  "ru": {
+   "stem": "В системах семейства Windows Server служба FTP-сервера определяется в",
+   "answers": [
+    "файловой службе.",
+    "сервере приложений.",
+    "веб-сервере.",
+    "службе политики сети и доступа."
+   ]
+  },
+  "expl": {
+   "pl": "Serwer FTP jest usługą roli „Serwer sieci Web (IIS)” – instaluje się go jako jej składnik (FTP Server). Usługi plików obsługują udziały SMB, a nie FTP.",
+   "ru": "FTP-сервер – это служба роли «Веб-сервер (IIS)», устанавливается как её компонент (FTP Server). Файловые службы обслуживают общие ресурсы SMB, а не FTP."
+  },
+  "topic": "winserver"
+ },
+ "5dfdc66c": {
+  "ru": {
+   "stem": "Электронный элемент, обведённый на схеме красным кружком, – это",
+   "answers": [
+    "катушка.",
+    "фотодиод.",
+    "выпрямительный диод.",
+    "электролитический конденсатор."
+   ]
+  },
+  "expl": {
+   "pl": "Symbol diody ze strzałkami skierowanymi do niej oznacza fotodiodę (tu PIN) – element reagujący na światło, np. w odbiorniku podczerwieni. Strzałki od diody oznaczałyby LED, a bez strzałek – zwykłą diodę prostowniczą.",
+   "ru": "Символ диода со стрелками, направленными к нему, обозначает фотодиод (здесь PIN) – элемент, реагирующий на свет, например в ИК-приёмнике. Стрелки от диода означали бы LED, без стрелок – обычный выпрямительный диод."
+  }
+ },
+ "5e8e24e8": {
+  "ru": {
+   "stem": "Для достижения максимальной производительности сетевая карта компьютера использует последовательную передачу",
+   "answers": [
+    "синхронную Simplex.",
+    "асинхронную Simplex.",
+    "синхронную Half duplex.",
+    "асинхронную Full duplex."
+   ]
+  },
+  "expl": {
+   "pl": "Największą wydajność daje tryb Full duplex – karta jednocześnie wysyła i odbiera dane. W Simplex dane płyną tylko w jedną stronę, a w Half duplex na przemian.",
+   "ru": "Наибольшую производительность даёт режим Full duplex – карта одновременно передаёт и принимает данные. В Simplex данные идут только в одну сторону, в Half duplex – поочерёдно."
+  }
+ },
+ "5f72b6c4": {
+  "ru": {
+   "stem": "Какой из перечисленных интерфейсов компьютера использует параллельную передачу данных?",
+   "answers": [
+    "IEEE 1394",
+    "SATA",
+    "LAN",
+    "PCI"
+   ]
+  },
+  "expl": {
+   "pl": "Klasyczna magistrala PCI przesyła dane równolegle po 32 (lub 64) liniach. IEEE 1394, SATA i Ethernet (LAN) to interfejsy szeregowe.",
+   "ru": "Классическая шина PCI передаёт данные параллельно по 32 (или 64) линиям. IEEE 1394, SATA и Ethernet (LAN) – последовательные интерфейсы."
+  },
+  "topic": "hardware"
+ },
+ "63689799": {
+  "ru": {
+   "stem": "В системе Linux для вывода всех групп, к которым принадлежит пользователь egzamin, служит команда",
+   "answers": [
+    "cat egzamin",
+    "who egzamin",
+    "users egzamin",
+    "groups egzamin"
+   ]
+  },
+  "expl": {
+   "pl": "groups egzamin wypisuje grupę główną i wszystkie grupy dodatkowe użytkownika. who i users pokazują zalogowanych użytkowników, a cat wyświetla zawartość pliku.",
+   "ru": "groups egzamin выводит основную и все дополнительные группы пользователя. who и users показывают вошедших пользователей, а cat выводит содержимое файла."
+  }
+ },
+ "65a786f7": {
+  "ru": {
+   "stem": "Чтобы обеспечить возможность восстановления важных данных, нужно регулярно",
+   "answers": [
+    "проверять целостность данных на диске.",
+    "не выполнять дефрагментацию диска.",
+    "использовать антивирусную программу.",
+    "создавать копии данных."
+   ]
+  },
+  "expl": {
+   "pl": "Odzyskanie danych po awarii, usunięciu czy ataku ransomware jest możliwe tylko z kopii zapasowej. Antywirus i sprawdzanie dysku zmniejszają ryzyko, ale niczego nie odtworzą.",
+   "ru": "Восстановить данные после сбоя, удаления или атаки шифровальщика можно только из резервной копии. Антивирус и проверка диска снижают риск, но ничего не восстановят."
+  }
+ },
+ "65c0e18a": {
+  "ru": {
+   "stem": "Какая команда Linux служит для вывода информации об установленных компонентах (оборудовании)?",
+   "answers": [
+    "chsh",
+    "lshw",
+    "mkfs",
+    "xrandr"
+   ]
+  },
+  "expl": {
+   "pl": "lshw (list hardware) wyświetla szczegóły sprzętu: CPU, pamięć, płytę główną, dyski, karty. chsh zmienia powłokę, mkfs tworzy system plików, xrandr ustawia ekran.",
+   "ru": "lshw (list hardware) выводит подробности об оборудовании: CPU, память, плата, диски, карты. chsh меняет оболочку, mkfs создаёт файловую систему, xrandr настраивает экран."
+  }
+ },
+ "65d2cc27": {
+  "ru": {
+   "stem": "Какие в основном обновления будут установлены после нажатия кнопки OK, показанной на скриншоте?",
+   "answers": [
+    "Повышающие безопасность, конфиденциальность и надёжность системы.",
+    "Связанные с повышением удобства работы с компьютером.",
+    "Касающиеся драйверов или нового ПО.",
+    "Решающие некритичные проблемы системы."
+   ]
+  },
+  "expl": {
+   "pl": "Zaznaczone są tylko aktualizacje „Ważne” – pakiet zbiorczy aktualizacji zabezpieczeń i narzędzie do usuwania złośliwego oprogramowania, czyli poprawki bezpieczeństwa i niezawodności. Sterowniki i nowe oprogramowanie są w kategorii opcjonalnej.",
+   "ru": "Отмечены только «Важные» обновления – накопительный пакет обновлений безопасности и средство удаления вредоносных программ, т.е. исправления безопасности и надёжности. Драйверы и новое ПО – в категории необязательных."
+  },
+  "topic": "windows"
+ },
+ "668354e8": {
+  "ru": {
+   "stem": "Новые компьютерные компоненты, например жёсткие диски, видеокарты, упаковываются в металлизированные плёночные пакеты, основная задача которых – защита",
+   "answers": [
+    "компонентов от влаги.",
+    "электронных элементов от солнечного света.",
+    "электронных элементов от электростатических зарядов.",
+    "компонентов от резких перепадов температуры при транспортировке."
+   ]
+  },
+  "expl": {
+   "pl": "Metalizowana torebka antystatyczna działa jak klatka Faradaya i chroni elementy przed wyładowaniami elektrostatycznymi (ESD). Przed wilgocią chronią dodatkowo saszetki z żelem krzemionkowym.",
+   "ru": "Металлизированный антистатический пакет работает как клетка Фарадея и защищает элементы от электростатических разрядов (ESD). От влаги дополнительно защищают пакетики силикагеля."
+  }
+ },
+ "676b9898": {
+  "ru": {
+   "stem": "Какой из параметров жёсткого диска не влияет на его производительность?",
+   "answers": [
+    "Время доступа",
+    "CACHE",
+    "MTBF",
+    "RPM"
+   ]
+  },
+  "expl": {
+   "pl": "MTBF (Mean Time Between Failures) to średni czas między awariami – miara niezawodności, nie szybkości. Czas dostępu, pamięć cache i prędkość obrotowa (RPM) bezpośrednio wpływają na wydajność.",
+   "ru": "MTBF (Mean Time Between Failures) – среднее время наработки на отказ, показатель надёжности, а не скорости. Время доступа, кэш и скорость вращения (RPM) напрямую влияют на производительность."
+  }
+ },
+ "69d85083": {
+  "ru": {
+   "stem": "Устройства, показанные на фото, – это",
+   "answers": [
+    "модемы.",
+    "коммутаторы.",
+    "адаптеры PowerLine.",
+    "беспроводные сетевые карты."
+   ]
+  },
+  "expl": {
+   "pl": "Urządzenia z wtyczką do gniazdka elektrycznego i portem RJ-45 to adaptery PowerLine – przesyłają sieć Ethernet przez instalację elektryczną. Działają w parze, dlatego na zdjęciu są dwa.",
+   "ru": "Устройства с вилкой для розетки и портом RJ-45 – это адаптеры PowerLine: они передают Ethernet по электропроводке. Работают в паре, поэтому на фото их два."
+  }
+ },
+ "6b1f58d4": {
+  "ru": {
+   "stem": "Производитель ЖК-матрицы заявил её соответствие классу II по норме ISO 13406-2. На основании информации из таблицы определите, сколько пикселей с дефектом типа 3 должно появиться на матрице с родным разрешением 1280x800 пикселей, чтобы её можно было признать повреждённой?",
+   "answers": [
+    "1 пиксель.",
+    "3 пикселя.",
+    "4 пикселя.",
+    "7 пикселей."
+   ]
+  },
+  "expl": {
+   "pl": "1280 × 800 = 1 024 000 pikseli ≈ 1,02 mln. Klasa II dopuszcza 5 błędów typu 3 na milion, czyli ok. 5 na tej matrycy. Spośród podanych wartości tylko 7 pikseli przekracza ten limit.",
+   "ru": "1280 × 800 = 1 024 000 пикселей ≈ 1,02 млн. Класс II допускает 5 дефектов типа 3 на миллион, т.е. около 5 на этой матрице. Из предложенных значений лимит превышают только 7 пикселей."
+  }
+ },
+ "6be4a703": {
+  "ru": {
+   "stem": "Термотрансферная бумага – это расходный материал, применяемый в принтерах",
+   "answers": [
+    "струйных.",
+    "розеточных.",
+    "матричных (игольчатых).",
+    "3D."
+   ]
+  },
+  "expl": {
+   "pl": "Papier termotransferowy (transferowy) zadrukowuje się w drukarce atramentowej, a potem nadruk przenosi żelazkiem lub prasą termiczną np. na koszulkę. Drukarki igłowe drukują przez taśmę barwiącą na zwykłym papierze.",
+   "ru": "Термотрансферную (трансферную) бумагу печатают на струйном принтере, а затем утюгом или термопрессом переносят изображение, например, на футболку. Матричные принтеры печатают через красящую ленту на обычной бумаге."
+  }
+ },
+ "6c9a636d": {
+  "ru": {
+   "stem": "Устройством, которое обеспечивает компьютерам беспроводной доступ к проводной компьютерной сети, является",
+   "answers": [
+    "модем.",
+    "регенератор.",
+    "концентратор.",
+    "точка доступа."
+   ]
+  },
+  "expl": {
+   "pl": "Punkt dostępowy (Access Point) łączy klientów Wi-Fi z siecią przewodową Ethernet. Regenerator wzmacnia sygnał w tym samym medium, a koncentrator łączy urządzenia przewodowo.",
+   "ru": "Точка доступа (Access Point) подключает Wi-Fi-клиентов к проводной сети Ethernet. Регенератор усиливает сигнал в той же среде, а концентратор соединяет устройства по проводам."
+  }
+ },
+ "6d4c9e7e": {
+  "ru": {
+   "stem": "Вспомогательный управляющий протокол стека TCP/IP, функция которого – обнаружение и передача информации о сбоях при работе протокола IP, – это",
+   "answers": [
+    "Address Resolution Protocol (ARP).",
+    "Routing Information Protocol (RIP).",
+    "Internet Control Message Protocol (ICMP).",
+    "Reverse Address Resolution Protocol (RARP)."
+   ]
+  },
+  "expl": {
+   "pl": "ICMP przesyła komunikaty o błędach i stanie sieci (np. „host nieosiągalny”, „TTL przekroczony”) – korzystają z niego ping i tracert. ARP i RARP tłumaczą adresy IP↔MAC, a RIP to protokół routingu.",
+   "ru": "ICMP передаёт сообщения об ошибках и состоянии сети (например, «хост недоступен», «TTL истёк») – его используют ping и tracert. ARP и RARP преобразуют адреса IP↔MAC, RIP – протокол маршрутизации."
+  },
+  "topic": "protocols"
+ },
+ "6fc03c4a": {
+  "ru": {
+   "stem": "Показанный модуль памяти следует установить на материнской плате в гнездо",
+   "answers": [
+    "DDR",
+    "DDR2",
+    "SO-RIMM",
+    "SO-DIMM DDR4"
+   ]
+  },
+  "expl": {
+   "pl": "Na etykiecie modułu jest „4GB DDR4-2133 SODIMM 1.2V CL15” – to krótka kość SO-DIMM DDR4 do laptopów, więc wymaga gniazda SO-DIMM DDR4. DDR i DDR2 mają inne wcięcie i napięcie.",
+   "ru": "На наклейке модуля – «4GB DDR4-2133 SODIMM 1.2V CL15»: это короткий модуль SO-DIMM DDR4 для ноутбуков, поэтому нужно гнездо SO-DIMM DDR4. У DDR и DDR2 другой ключ и напряжение."
+  }
+ },
+ "701832d7": {
+  "ru": {
+   "stem": "Единицей электрической ёмкости является",
+   "answers": [
+    "вольт (V)",
+    "ватт (W)",
+    "генри (H)",
+    "фарад (F)"
+   ]
+  },
+  "expl": {
+   "pl": "Pojemność elektryczną (np. kondensatora) mierzy się w faradach (F). Wolt to jednostka napięcia, wat – mocy, a henr – indukcyjności.",
+   "ru": "Электрическая ёмкость (например, конденсатора) измеряется в фарадах (F). Вольт – единица напряжения, ватт – мощности, генри – индуктивности."
+  }
+ },
+ "73e9678c": {
+  "ru": {
+   "stem": "Четырёхпарный витой кабель, в котором каждая пара проводов имеет фольгированный экран и, кроме того, все пары экранированы оплёткой, – это кабель",
+   "answers": [
+    "S/FTP",
+    "F/UTP",
+    "U/UTP",
+    "SF/UTP"
+   ]
+  },
+  "expl": {
+   "pl": "W oznaczeniu X/YTP pierwsza część to ekran całego kabla, druga – ekran par: S = siatka (oplot), F = folia. S/FTP: oplot na wszystkich parach i folia na każdej parze. SF/UTP ma folię i oplot ogólny, ale pary nieekranowane.",
+   "ru": "В обозначении X/YTP первая часть – экран всего кабеля, вторая – экран пар: S – оплётка, F – фольга. S/FTP: оплётка поверх всех пар и фольга на каждой паре. SF/UTP имеет общую фольгу и оплётку, но пары без экрана."
+  }
+ },
+ "74088ef0": {
+  "ru": {
+   "stem": "Инструментом системы Linux OpenSUSE, предназначенным, в частности, для управления системой, является",
+   "answers": [
+    "Системный монитор.",
+    "Диспетчер задач.",
+    "System Log.",
+    "YaST."
+   ]
+  },
+  "expl": {
+   "pl": "YaST (Yet another Setup Tool) to centralne narzędzie administracyjne openSUSE: instalacja pakietów, użytkownicy, sieć, partycje, usługi. Monitor systemu i System Log służą tylko do podglądu.",
+   "ru": "YaST (Yet another Setup Tool) – центральный инструмент администрирования openSUSE: пакеты, пользователи, сеть, разделы, службы. Системный монитор и System Log служат лишь для просмотра."
+  }
+ },
+ "74f9ec85": {
+  "ru": {
+   "stem": "На основании таблицы определите, сколько экранированных кабелей типа витая пара следует проложить в ПВХ-кабель-канале типа LN 25x16.",
+   "answers": [
+    "2 кабеля.",
+    "3 кабеля.",
+    "4 кабеля.",
+    "5 кабелей."
+   ]
+  },
+  "expl": {
+   "pl": "Ekranowana skrętka FTP ma średnicę ok. 5,5 mm. W wierszu LN 25X16, w kolumnie „Ø 5,5 mm, np. FTP”, odczytujemy 5 kabli. Wartość 3 dotyczy grubszych przewodów 7,2 mm.",
+   "ru": "Экранированная витая пара FTP имеет диаметр около 5,5 мм. В строке LN 25X16 в колонке «Ø 5,5 mm, np. FTP» указано 5 кабелей. Значение 3 относится к более толстым проводам 7,2 мм."
+  }
+ },
+ "781eaa69": {
+  "ru": {
+   "stem": "Какой протокол применит администратор, чтобы разместить файлы на сервере?",
+   "answers": [
+    "FTP (File Transfer Protocol).",
+    "DNS (Domain Name System).",
+    "HTTP (Hyper Text Transfer Protocol).",
+    "DHCP (Domain Host Configuration Protocol)."
+   ]
+  },
+  "expl": {
+   "pl": "FTP służy do przesyłania plików między klientem a serwerem, w tym do ich wysyłania (upload). HTTP służy głównie do pobierania stron WWW, DNS tłumaczy nazwy, a DHCP przydziela adresy IP.",
+   "ru": "FTP предназначен для передачи файлов между клиентом и сервером, в том числе их загрузки на сервер (upload). HTTP служит в основном для получения веб-страниц, DNS преобразует имена, DHCP выдаёт IP-адреса."
+  },
+  "topic": "protocols"
+ },
+ "7d2d7e33": {
+  "ru": {
+   "stem": "Какой из перечисленных элементов является частью механизма струйного принтера?",
+   "answers": [
+    "Перо.",
+    "Линза.",
+    "Блок дюз (сопел).",
+    "Озоновый фильтр."
+   ]
+  },
+  "expl": {
+   "pl": "Głowica drukarki atramentowej ma zespół dysz, przez które wyrzucane są krople tuszu. Pisak występuje w ploterach, a filtr ozonowy i soczewki – w drukarkach laserowych.",
+   "ru": "Печатающая головка струйного принтера имеет блок дюз, через которые выбрасываются капли чернил. Перо есть в плоттерах, а озоновый фильтр и линзы – в лазерных принтерах."
+  }
+ },
+ "7df47695": {
+  "ru": {
+   "stem": "Для питания некоторых видеокарт требуется дополнительный 6-контактный разъём блока питания PCI-E, который подаёт напряжения",
+   "answers": [
+    "+5 V на 3 линиях",
+    "+3,3 V и +5 V",
+    "+12 V на 3 линиях",
+    "+3,3 V, +5 V, +12 V"
+   ]
+  },
+  "expl": {
+   "pl": "6-pinowe złącze PCI-E ma 3 przewody +12 V (żółte) i 3 masy (czarne), co daje do 75 W. Napięć +3,3 V i +5 V w nim nie ma.",
+   "ru": "6-контактный разъём PCI-E имеет 3 провода +12 V (жёлтые) и 3 массы (чёрные), что даёт до 75 Вт. Напряжений +3,3 V и +5 V в нём нет."
+  }
+ },
+ "7f5db853": {
+  "ru": {
+   "stem": "Какое максимальное количество компьютеров можно адресовать IP-адресами сети класса C?",
+   "answers": [
+    "252 компьютера.",
+    "254 компьютера.",
+    "255 компьютеров.",
+    "256 компьютеров."
+   ]
+  },
+  "expl": {
+   "pl": "Klasa C ma domyślną maskę /24, czyli 8 bitów na hosty: 2^8 = 256 adresów. Odejmujemy adres sieci i rozgłoszeniowy: 256 − 2 = 254.",
+   "ru": "Класс C имеет маску /24 по умолчанию, т.е. 8 бит на хосты: 2^8 = 256 адресов. Вычитаем адрес сети и широковещательный: 256 − 2 = 254."
+  }
+ },
+ "8402f506": {
+  "ru": {
+   "stem": "На блок-схеме, показывающей принцип работы линейного блока питания, номером 5) обозначен",
+   "answers": [
+    "регулятор напряжения постоянного тока.",
+    "вход переменного тока.",
+    "мост Гретца.",
+    "трансформатор."
+   ]
+  },
+  "expl": {
+   "pl": "Kolejno: 1) wejście AC, 2) transformator, 3) mostek Graetza (prostownik), 4a/4b) kondensatory filtrujące, 5) stabilizator (regulator) napięcia stałego, 6) wyjście DC.",
+   "ru": "По порядку: 1) вход AC, 2) трансформатор, 3) мост Гретца (выпрямитель), 4a/4b) сглаживающие конденсаторы, 5) стабилизатор (регулятор) постоянного напряжения, 6) выход DC."
+  }
+ },
+ "8411e9ff": {
+  "ru": {
+   "stem": "Скриншот показывает результат выполнения в системе семейства Windows Server команды",
+   "answers": [
+    "ping",
+    "whois",
+    "tracert",
+    "nslookup"
+   ]
+  },
+  "expl": {
+   "pl": "Wynik zawiera użyty serwer DNS (Server/Address) i „Non-authoritative answer” z rekordami A i AAAA dla nazwy dns2.tpsa.pl – to typowa odpowiedź nslookup. ping pokazałby czasy odpowiedzi, a tracert – kolejne skoki.",
+   "ru": "В выводе указан используемый DNS-сервер (Server/Address) и «Non-authoritative answer» с записями A и AAAA для имени dns2.tpsa.pl – типичный ответ nslookup. ping показал бы время ответа, tracert – переходы."
+  },
+  "topic": "protocols"
+ },
+ "8529f78d": {
+  "ru": {
+   "stem": "Укажите команду Linux, которая служит для извлечения файлов из архива wazne_pliki.tar.bz2",
+   "answers": [
+    "tar –xvjf wazne_pliki.tar.bz2",
+    "tar –xvzf wazne_pliki.tar.bz2",
+    "tar –xvtf wazne_pliki.tar.bz2",
+    "tar –xvuf wazne_pliki.tar.bz2"
+   ]
+  },
+  "expl": {
+   "pl": "x – rozpakuj, v – wyświetlaj pliki, f – plik archiwum, a j – kompresja bzip2 (.bz2). Opcja z dotyczy gzip (.tar.gz), t tylko listuje zawartość, u dodaje nowsze pliki.",
+   "ru": "x – распаковать, v – выводить файлы, f – файл архива, j – сжатие bzip2 (.bz2). Опция z относится к gzip (.tar.gz), t только выводит список, u добавляет более новые файлы."
+  }
+ }
+}

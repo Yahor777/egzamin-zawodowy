@@ -44,6 +44,9 @@ export function Generator({ id }: { id: GenId }) {
   if (!g) return null
   return (
     <div className="page">
+      <button className="back-link" onClick={() => go('/topics')}>
+        <Icon name="back" size={18} /> {t('theory')}
+      </button>
       <div className="page-head">
         <h1>{g[lang]}</h1>
         <Score ok={score.ok} bad={score.bad} />

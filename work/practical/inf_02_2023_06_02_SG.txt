@@ -1,0 +1,235 @@
+                                                                             Arkusz zawiera informacje
+                                                                          prawnie chronione do momentu
+                                                                               rozpoczęcia egzaminu
+
+
+
+Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych
+                    i lokalnych sieci komputerowych
+Oznaczenie kwalifikacji: INF.02
+Numer zadania: 02
+Wersja arkusza: SG
+
+                                       Wypełnia zdający
+                                                                             Miejsce na naklejkę z numerem
+Numer PESEL zdającego*                                                         PESEL i z kodem ośrodka
+
+
+
+
+Czas trwania egzaminu: 150 minut.                                                       INF.02-02-23.06-SG
+
+EGZAMIN ZAWODOWY
+                                                              PODSTAWA PROGRAMOWA
+Rok 2023
+                                                                      2019
+CZĘŚĆ PRAKTYCZNA
+
+
+Instrukcja dla zdającego
+    1.  Na pierwszej stronie arkusza egzaminacyjnego wpisz w oznaczonym miejscu swój numer PESEL
+        i naklej naklejkę z numerem PESEL i z kodem ośrodka.
+    2. Na KARCIE OCENY w oznaczonym miejscu przyklej naklejkę z numerem PESEL oraz wpisz:
+        − swój numer PESEL*,
+        − oznaczenie kwalifikacji,
+        − numer zadania,
+        − numer stanowiska.
+    3. KARTĘ OCENY przekaż zespołowi nadzorującemu.
+    4. Sprawdź, czy arkusz egzaminacyjny zawiera 5 stron i nie zawiera błędów. Ewentualny brak stron lub
+        inne usterki zgłoś przez podniesienie ręki przewodniczącemu zespołu nadzorującego.
+    5. Zapoznaj się z treścią zadania oraz stanowiskiem egzaminacyjnym. Masz na to 10 minut. Czas ten
+        nie jest wliczany do czasu trwania egzaminu.
+    6. Czas rozpoczęcia i zakończenia pracy zapisze w widocznym miejscu przewodniczący zespołu
+        nadzorującego.
+    7. Wykonaj samodzielnie zadanie egzaminacyjne. Przestrzegaj zasad bezpieczeństwa i organizacji
+        pracy.
+    8. Jeżeli w zadaniu egzaminacyjnym występuje polecenie „zgłoś gotowość do oceny przez podniesienie
+        ręki”, to zastosuj się do polecenia i poczekaj na decyzję przewodniczącego zespołu nadzorującego.
+    9. Po zakończeniu wykonania zadania pozostaw rezultaty oraz arkusz egzaminacyjny na swoim
+        stanowisku lub w miejscu wskazanym przez przewodniczącego zespołu nadzorującego.
+    10. Po uzyskaniu zgody zespołu nadzorującego możesz opuścić salę/miejsce przeprowadzania egzaminu.
+
+                                                                                               Powodzenia!
+* w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+
+Układ graficzny
+© CKE 2020
+Zadanie egzaminacyjne
+
+Wykorzystując dostępne narzędzia znajdujące się na stanowisku egzaminacyjnym, wykonaj modernizację
+stacji roboczej oraz podłączenie urządzeń sieciowych. Wykonaj konfigurację urządzeń sieciowych oraz
+konfigurację systemów zainstalowanych na dysku twardym stacji roboczej oraz serwera.
+Do konfiguracji serwera oraz stacji roboczej z zainstalowanym systemem Windows wykorzystaj konto
+Administrator z hasłem ZAQ!2wsx
+Do konfiguracji serwera oraz stacji roboczej z zainstalowanym systemem Linux wykorzystaj konto
+administrator z hasłem ZAQ!2wsx (konto z prawem podniesienia uprawnień do root z hasłem ZAQ!2wsx )
+
+ 1.    Wykonaj okablowanie sieciowe:
+      ‒ wykonaj kabel połączeniowy prosty według sekwencji T568B, zastosuj odpowiedni typ okablowania
+      ‒ przeprowadź test poprawności wykonanego okablowania.
+UWAGA: Po wykonaniu okablowania zgłoś Przewodniczącemu ZN – przez podniesienie ręki –
+gotowość do przeprowadzenia testu okablowania. W obecności egzaminatora ponownie sprawdź za pomocą
+testera okablowania poprawność wykonania kabla połączeniowego.
+ 2.    Na stacji roboczej w systemie Linux przeprowadź identyfikację parametrów procesora:
+      ‒ za pomocą dostępnych narzędzi systemowych sprawdź parametry procesora, ujęte w Tabeli 1.
+         Podzespół stacji roboczej. Parametry wpisz do tabeli w arkuszu egzaminacyjnym. W przypadku
+         braku możliwości identyfikacji parametru podzespołu przez program, zapisz: brak danych
+      ‒ wykonaj zrzuty dokumentujące przeprowadzone testy, a następnie zapisz je jako pliki graficzne
+         w katalogu o nazwie PROCESOR na nośniku USB opisanym EGZAMIN-x, gdzie x oznacza numer
+         stanowiska zdającego.
+ 3.   Skonfiguruj ruter zgodnie z następującymi zaleceniami:
+     ‒ włączona obsługa VLAN 802.1q
+     ‒ utworzona sieć VLAN o ID = 1
+     ‒ adres IP dla interfejsu powiązanego z siecią VLAN o ID = 1: 10.27.10.1 /24
+     ‒ utworzona sieć VLAN o ID = 2
+     ‒ adres IP dla interfejsu powiązanego z siecią VLAN o ID = 2: 10.27.20.1/24
+     ‒ utworzona sieć VLAN o ID = 3
+     ‒ adres IP dla interfejsu powiązanego z siecią VLAN o ID = 3: 10.27.30.1/24
+     ‒ port LAN, podłączony do przełącznika, przypisany z tagowaniem do sieci VLAN o ID = 2 oraz ID = 3
+        (port obsługuje ramki z wpisanym znacznikiem sieci VLAN 2 lub 3)
+     ‒ włączony ruting między sieciami VLAN, jeżeli domyślnie nie jest włączony
+     ‒ serwer DHCP włączony dla sieci VLAN o ID = 2
+     ‒ konfiguracja serwera DHCP:
+         ‒ ustawiona pula adresowa: 10.27.20.10 ÷ 10.27.20.15
+         ‒ brama domyślna: 10.27.20.1
+         ‒ adres serwera DNS: 10.27.30.3
+     ‒ wyłączony dostęp do sieci bezprzewodowej.
+Ruter pracuje na ustawieniach fabrycznych zgodnie z dokumentacją, która jest dostępna w folderze RUTER
+na nośniku opisanym DOKUMENTACJA/PROGRAMY. Jeżeli ruter wymaga zmiany hasła, ustaw je zgodnie
+z wymogami tego urządzenia.
+UWAGA: Po wykonaniu konfiguracji zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+oceny ustawień rutera.
+ 4.   Skonfiguruj przełącznik zgodnie z następującymi zaleceniami:
+      − adres IP: 10.27.10.2 z maską 255.255.255.0
+      − brama domyślna: adres IP rutera dla interfejsu powiązanego z siecią VLAN o ID = 1, jeśli jest
+        wymagana
+      − włączona obsługa VLAN 802.1q
+      − utworzona sieć VLAN o ID = 2 i przypisanych portach:
+         ‒ port 1 przypisany z tagowaniem (obsługuje ramki z wpisanym znacznikiem sieci VLAN)
+         ‒ port 2 przypisany bez tagowania (tryb dostępu)
+      − utworzona sieć VLAN o ID = 3 i przypisanych portach:
+         ‒ port 1 przypisany z tagowaniem (obsługuje ramki z wpisanym znacznikiem sieci VLAN),
+         ‒ port 3 przypisany bez tagowania (tryb dostępu)
+                                             Strona 2 z 5
+Przełącznik pracuje na ustawieniach fabrycznych zgodnie z dokumentacją, która jest dostępna w folderze
+PRZEŁĄCZNIK na nośniku opisanym DOKUMENTACJA/PROGRAMY. Jeżeli przełącznik wymaga zmiany
+hasła, ustaw je zgodnie z wymogami tego urządzenia
+
+UWAGA: Po wykonaniu konfiguracji zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+oceny ustawień przełącznika.
+
+ 5.   Za pomocą kabli połączeniowych znajdujących się na stanowisku egzaminacyjnym połącz urządzenia
+      zgodnie ze schematem.
+
+
+
+
+                                    Schemat połączenia urządzeń
+
+ 6.   Skonfiguruj serwer z zainstalowanym systemem Windows:
+      − skonfiguruj interfejs sieciowy serwera podłączony do przełącznika:
+          − nazwa połączenia: VLAN3
+          − adres IP: 10.27.30.3/24
+          − brama domyślna: adres IP rutera dla interfejsu powiązanego z VLAN o ID = 3
+          − serwer DNS: localhost
+      − wyłącz drugi interfejs sieciowy serwera
+      − promuj serwer do roli kontrolera domeny. Utwórz nową domenę w nowym lesie o nazwie
+        egzamin.local hasło dla konta Administrator trybu przywracania usług katalogowych: ZAQ!2wsx
+      − w domenie egzamin.local utwórz jednostkę organizacyjną Pracownicy
+      − przy użyciu zasady grupy zablokuj wszystkim użytkownikom jednostki organizacyjnej Pracownicy
+        dostęp do Panelu sterowania i ekranu Ustawienia komputera. Nazwa nowej zasady:
+        blokada_pracownicy
+      − zainstaluj program 7-Zip. Wykonaj zrzut po zakończeniu instalacji programu i zapisz go pod nazwą
+        instalacja.png
+      − za pomocą programu 7-Zip wykonaj na nośniku USB opisanym EGZAMIN-x archiwum o nazwie
+        kopia_egzamin.zip, zabezpieczone hasłem Egz@min0waN1e zawierające plik instalacja.png
+
+ 7.   Skonfiguruj stację roboczą z zainstalowanym systemem Linux:
+      − skonfiguruj interfejs sieciowy stacji roboczej:
+         − nazwa połączenia: VLAN2
+         − adres IP: przydzielany automatycznie
+      − za pomocą polecenia systemowego wykonaj test pobrania adresu stacji roboczej z serwera DHCP.
+
+UWAGA: Zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość do sprawdzenia poprawności
+nadania adresu IP dla stacji roboczej.
+
+      − za pomocą polecenia systemowego do pliku tekstowego o nazwie Letter_n przekieruj wynik
+        działania polecenia wyświetlającego nazwy wszystkich plików i katalogów znajdujących się
+        w katalogu /sbin rozpoczynających się na literę „n”. Plik Letter_n zapisz w katalogu domowym
+        użytkownika administrator. Zapisz wykorzystane polecenie w pełnym brzmieniu w Tabeli 2.
+        Polecenia Linux w arkuszu egzaminacyjnym
+      − w katalogu domowym użytkownika administrator utwórz za pomocą polecenia systemowego
+                                              Strona 3 z 5
+        archiwum o nazwie n_sbin.tar zawierające plik tekstowy Letter_n. Zapisz użyte polecenie w tabeli 2
+        arkusza egzaminacyjnego
+      − ustaw strefę czasową na Oslo, Norwegia, format czasu 12-godzinny.
+
+ 8.   Wykonaj test komunikacji serwera z ruterem oraz stacją roboczą.
+
+UWAGA: Po wykonaniu testu komunikacji zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość
+do ponownego przeprowadzenia testu komunikacji serwera z ruterem oraz stacją roboczą. Sprawdzenie
+wykonaj w obecności egzaminatora.
+
+ 9.   W Tabeli 3. Wskazania eksploatacyjne zapisz wskazania eksploatacyjne dla użytkownika systemu
+      komputerowego podłączonego do sieci Internet.
+
+UWAGA: Po zakończeniu prac nie wylogowuj się i nie wyłączaj komputerów oraz urządzeń sieciowych
+znajdujących się na Twoim stanowisku egzaminacyjnym.
+
+UWAGA: Zawartość nośnika USB, wykorzystywanego podczas egzaminu do zapisu zrzutów ekranowych lub
+dokumentów, jest usuwana po egzaminie i nie stanowi dokumentacji egzaminacyjnej przekazywanej wraz
+z arkuszem do OKE.
+
+Czas przeznaczony na wykonanie zadania wynosi 150 minut.
+
+Ocenie podlegać będzie 6 rezultatów:
+  − montaż okablowania oraz podłączenie urządzeń,
+  − diagnostyka,
+  − skonfigurowane urządzenia sieciowe,
+  − skonfigurowany serwer,
+  − skonfigurowana stacja robocza,
+  − wskazania eksploatacyjne
+oraz
+przebieg montażu okablowania.
+
+
+
+
+                                               Strona 4 z 5
+                                  Tabela 1. Podzespół stacji roboczej
+  Badany element            Parametr                               Wartość parametru
+
+                      Nazwa modelu
+
+                      Producent
+
+                      Rodzina
+      Procesor
+                      Napięcie
+
+                      Liczba rdzeni
+
+                      Liczba wątków
+
+
+
+                                       Tabela 2. Polecenia Linux
+             Czynność                            Użyte polecenie systemowe w pełnej formie
+Przekierowanie do pliku tekstowego
+Letter_n wyniku działania polecenia
+wyświetlającego nazwy wszystkich
+plików i katalogów rozpoczynających
+się na literę „n” z katalogu /sbin
+Utworzenie w katalogu domowym
+użytkownika administrator archiwum o
+nazwie n_sbin.tar zawierające plik
+tekstowy Letter_n
+
+
+                                 Tabela 3. Wskazania eksploatacyjne
+
+
+
+
+                                               Strona 5 z 5
+

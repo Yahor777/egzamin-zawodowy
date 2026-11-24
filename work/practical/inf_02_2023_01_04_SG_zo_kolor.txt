@@ -1,0 +1,197 @@
+ Układ graficzny © CKE 2019                                                           EGZAMIN ZAWODOWY
+                                                                                           Rok 2023
+                                                                                       ZASADY OCENIANIA
+
+                                                                              Arkusz zawiera informacje prawnie chronione
+                                                                                  do momentu rozpoczęcia egzaminu
+
+
+
+
+      Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych i lokalnych sieci komputerowych
+      Oznaczenie arkusza: INF.02-04-23.01-SG
+      Oznaczenie kwalifikacji: INF.02
+      Numer zadania: 04
+                                                                                         PODSTAWA PROGRAMOWA
+      Wersja arkusza: SG                                                                                2019
+
+
+                                                                           Wypełnia egzaminator
+
+                                                                                                                                Numer
+                                   Kod ośrodka                         –                             Numer PESEL zdającego*   stanowiska
+
+
+
+                              Kod egzaminatora
+
+
+                                Data egzaminu
+                                                 Dzień Miesiąc   Rok
+
+
+Godzina rozpoczęcia egzaminu                            :
+
+
+
+ * w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+Egzaminatorze!
+ − Oceniaj prace zdających rzetelnie i z zaangażowaniem. Dokumentuj wyniki oceny.
+
+ − Stosuj przyjęte zasady oceniania w sposób obiektywny.
+
+ − Jeżeli zdający, wykonując zadanie egzaminacyjne, uzyskuje inne rezultaty albo pożądane rezultaty uzyskuje w inny sposób niż uwzględniony
+   w zasadach oceniania lub przedstawia nietypowe rozwiązanie, ale zgodnie ze sztuką w zawodzie, to nadal oceniaj zgodnie z kryteriami
+   zawartymi w zasadach oceniania. Informacje o tym, że zasady oceniania nie przewidują zaistniałej sytuacji, przekaż niezwłocznie w formie
+   pisemnej notatki do Przewodniczącego Zespołu Egzaminacyjnego z prośbą o przekazanie jej do Okręgowej Komisji Egzaminacyjnej. Notatka
+   może być sporządzona odręcznie w trybie roboczym.
+ − Informuj przewodniczącego zespołu nadzorującego o wszystkich nieprawidłowościach zaistniałych w trakcie egzaminu, w tym w szczególności
+   o naruszeniach przepisów bezpieczeństwa i higieny pracy i o podejrzeniach niesamodzielności w wykonaniu zadania przez zdającego.
+
+
+
+
+                                                             Strona 2 z 6
+                                                                                                                 stanowiska
+                                                                                                                   Numer
+                                                                                                                              Egzaminator wpisuje T,
+                                                                                                                               jeżeli zdający spełnił
+                                      Elementy podlegające ocenie/kryteria oceny                                              kryterium albo N, jeżeli
+                                                                                                                                     nie spełnił
+
+Rezultat 1: Montaż podzespołów, diagnostyka oraz podłączenie urządzeń
+Uwaga: oceny kryterium 1.1 należy dokonać po informacji od Przewodniczącego ZN o wykonaniu montażu podzespołu. Przebieg montażu należy
+ocenić zgodnie z kryteriami zapisanymi w przebiegu 1
+Diagnostyka pamięci RAM powinna zostać wykonana w systemie Windows stacji roboczej. Parametry są zapisane w tabeli 1 w arkuszu
+egzaminacyjnym. Pliki zrzutów ekranu znajdują się w folderach RAM1 i RAM2 na nośniku USB opisanym EGZAMIN-x, gdzie x to numer stanowiska
+egzaminacyjnego. Kryteria należy uznać za spełnione tylko wtedy, gdy zapisy są identyczne ze zrzutami ekranowymi. Dopuszcza się zapis
+świadczący o braku wyświetlonej informacji, jeżeli zostało to również udokumentowane zrzutem ekranu
+1 Zamontowano dodatkową pamięć RAM w stacji roboczej bez uszkodzenia płyty głównej
+
+2 Zapisano w tabeli 1 parametry podstawowej pamięci RAM1: Typ pamięci, slot
+
+3 Zapisano w tabeli 1 parametr pierwotnie zainstalowanej pamięci: Maksymalna przepustowość [MB/s]
+
+4 Zapisano w tabeli 1 parametr podstawowej pamięci RAM1: Producent
+
+5 Zapisano w tabeli 1 parametry dodatkowej pamięci RAM2: Typ pamięci, slot
+
+6 Zapisano w tabeli 1 parametr dodatkowej pamięci RAM2: Maksymalna przepustowość [MB/s]
+
+7 Zapisano w tabeli 1 parametr dodatkowej pamięci RAM2: Producent
+
+8 Urządzenia sieciowe, stację roboczą oraz serwer podłączono zgodnie ze schematem zamieszczonym w załączniku 1
+
+
+
+
+                                                              Strona 3 z 6
+                                                                                                                      stanowiska
+                                                                                                                        Numer
+Rezultat 2: Skonfigurowany ruter
+
+Uwaga: oceny kryteriów należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny konfiguracji rutera
+
+1 Ustawiono adres IP dla interfejsu powiązanego z VLAN o ID=1: 10.0.1.1/24
+
+2 Ustawiono adres IP dla interfejsu powiązanego z VLAN o ID=2: 10.0.2.1/24
+
+3 Ustawiono adres IP dla interfejsu powiązanego z VLAN o ID=3: 10.0.3.1/24
+
+4 Utworzono VLAN 802.1q o ID=2
+
+5 Utworzono VLAN 802.1q o ID=3
+
+6 Port 2 przypisano z tagowaniem do VLAN o ID=1, ID=2 oraz ID=3 lub port 2 ustawiono w tryb trunk
+
+7 Włączono serwer DHCP dla VLAN o ID=3
+
+8 Dla VLAN o ID=3 utworzono pulę adresową DHCP 10.0.3.10 ÷ 10.0.3.20
+    Skonfigurowano dla puli adresowej DHCP adres IP bramy domyślnej: 10.0.3.1, adres IP serwera DNS: 10.0.3.1, czas
+9
+    dzierżawy: 15 minut
+Rezultat 3: Skonfigurowany przełącznik
+
+Uwaga: oceny kryteriów należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny konfiguracji przełącznika
+
+1 Ustawiono adres IP: 10.0.1.2
+
+2 Utworzono VLAN 802.1q o ID=2
+
+3 Utworzono VLAN 802.1q o ID=3
+
+4 Port 1 przypisano do sieci VLAN2 bez tagowania (tryb dostępu)
+
+5 Port 2 przypisano do sieci VLAN3 bez tagowania (tryb dostępu)
+
+6 Port 3 przypisano do sieci VLAN1, VLAN2 i VLAN3 z tagowaniem lub port 3 ustawiono w tryb trunk
+
+
+
+
+                                                                  Strona 4 z 6
+                                                                                                                       stanowiska
+                                                                                                                         Numer
+Rezultat 4: Skonfigurowane interfejsy sieciowe
+Uwaga: oceny rezultatów należy dokonać dla serwera w systemie Linux, konto administrator z hasłem ZAQ!2wsx (konto z prawem podniesienia
+uprawnień do root z hasłem ZAQ!2wsx ) oraz dla stacji roboczej w systemie Windows, konto Administrator z hasłem ZAQ!2wsx
+Oceny kryteriów 4.4 ÷ 4.7 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny komunikacji pomiędzy
+urządzeniami sieciowymi. Sprawdzenie komunikacji wykonuje zdający w obecności egzaminatora
+1 Na serwerze interfejsowi sieciowemu przypisano adres IP: 10.0.2.2 z maską 255.255.255.0
+
+2 Na serwerze interfejsowi sieciowemu przypisano bramę oraz DNS: 10.0.2.1
+
+3 Na stacji roboczej nazwę połączenia przewodowego ustawiono na VLAN3
+
+4 Na stacji roboczej interfejs przewodowy ma nadany automatycznie adres IP z zakresu 10.0.3.10 ÷ 10.0.3.20
+
+5 Wykonano test komunikacji serwera z ruterem, uzyskano odpowiedź na polecenie np. ping 10.0.2.1 lub 10.0.3.1 lub 10.0.1.1
+
+6 Wykonano test komunikacji serwera z przełącznikiem, uzyskano odpowiedź na polecenie np. ping 10.0.1.2
+    Wykonano test komunikacji serwera ze stacją roboczą, uzyskano odpowiedź na polecenie np. ping ip, gdzie ip jest z zakresu
+7
+    10.0.3.10 ÷ 10.0.3.20
+Rezultat 5: Skonfigurowany serwer
+
+UWAGA: Ocenie podlega konfiguracja w systemie Linux
+
+1 Ustawiono właściciela katalogu /strona na użytkownika i grupę, z uprawnieniami których działa serwer HTTP
+
+2 Ustawiono właściciela pliku /strona/index.html na użytkownika i grupę, z uprawnieniami których działa serwer HTTP
+
+3 Skonfigurowano serwer HTTP tak, aby główna witryna udostępniała zawartość katalogu /strona
+
+Rezultat 6: Skonfigurowana stacja robocza
+Uwaga: ocenie polega konfiguracja w systemie Windows. Oceny kryterium 6.3 należy dokonać po informacji od Przewodniczącego ZN o gotowości
+zdającego do oceny wyświetlenia zawartości udostępnionej witryny
+1 W zaporze sieciowej wyłączono wszystkie reguły przychodzące
+
+2 W zaporze sieciowej dodano przychodzącą regułę o nazwie pingi zezwalającą dla protokołu ICMP w adresacji IPv4
+
+3 Wyświetlono na stacji roboczej udostępnioną witrynę
+
+                                                                 Strona 5 z 6
+                                                                                                                                stanowiska
+                                                                                                                                  Numer
+Przebieg 1: Montaż podzespołów
+
+Zdający:
+     poprawnie wykorzystywał narzędzia do montażu oraz opaskę antystatyczną i stosował się do przepisów BHP podczas
+ 1
+     wykonywania montażu
+ 2 zostawił uporządkowane stanowisko po zakończeniu wszystkich prac
+
+
+Załącznik 1 - Schemat połączenia urządzeń
+
+
+
+
+Egzaminator …………………………………………………………………………….                                                         ..........................................................................
+                                         imię i nazwisko                                                                data i czytelny podpis
+
+
+
+
+                                                                Strona 6 z 6
+

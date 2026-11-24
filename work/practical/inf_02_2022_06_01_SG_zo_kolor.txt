@@ -1,0 +1,210 @@
+ Układ graficzny © CKE 2019                                                           EGZAMIN ZAWODOWY
+                                                                                           Rok 2022
+                                                                                       ZASADY OCENIANIA
+
+                                                                              Arkusz zawiera informacje prawnie chronione
+                                                                                  do momentu rozpoczęcia egzaminu
+
+
+
+
+       Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych i lokalnych sieci komputerowych
+       Oznaczenie arkusza: INF.02-01-22.06-SG
+       Oznaczenie kwalifikacji: INF.02
+       Numer zadania: 01
+                                                                                          PODSTAWA PROGRAMOWA
+       Wersja arkusza: SG                                                                                2019
+
+
+                                                                           Wypełnia egzaminator
+
+                                                                                                                                Numer
+                                   Kod ośrodka                         –                             Numer PESEL zdającego*   stanowiska
+
+
+
+                              Kod egzaminatora
+
+
+                                Data egzaminu
+                                                 Dzień Miesiąc   Rok
+
+
+Godzina rozpoczęcia egzaminu                            :
+
+
+
+ * w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+Egzaminatorze!
+ − Oceniaj prace zdających rzetelnie i z zaangażowaniem. Dokumentuj wyniki oceny.
+
+ − Stosuj przyjęte zasady oceniania w sposób obiektywny.
+
+ − Jeżeli zdający, wykonując zadanie egzaminacyjne, uzyskuje inne rezultaty albo pożądane rezultaty uzyskuje w inny sposób niż uwzględniony
+   w zasadach oceniania lub przedstawia nietypowe rozwiązanie, ale zgodnie ze sztuką w zawodzie, to nadal oceniaj zgodnie z kryteriami
+   zawartymi w zasadach oceniania. Informacje o tym, że zasady oceniania nie przewidują zaistniałej sytuacji, przekaż niezwłocznie w formie
+   pisemnej notatki do Przewodniczącego Zespołu Egzaminacyjnego z prośbą o przekazanie jej do Okręgowej Komisji Egzaminacyjnej. Notatka
+   może być sporządzona odręcznie w trybie roboczym.
+ − Informuj przewodniczącego zespołu nadzorującego o wszystkich nieprawidłowościach zaistniałych w trakcie egzaminu, w tym w szczególności
+   o naruszeniach przepisów bezpieczeństwa i higieny pracy i o podejrzeniach niesamodzielności w wykonaniu zadania przez zdającego.
+
+
+
+
+                                                             Strona 2 z 7
+                                                                                                                     stanowiska
+                                                                                                                       Numer
+                                                                                                                                  Egzaminator wpisuje T,
+                                                                                                                                   jeżeli zdający spełnił
+                                       Elementy podlegające ocenie/kryteria oceny                                                 kryterium albo N, jeżeli
+                                                                                                                                         nie spełnił
+
+Rezultat 1. Montaż pamięci i okablowania sieciowego oraz połączenie fizyczne urządzeń
+Uwaga: Oceny kryteriów 1.1 ÷ 1.7 należy dokonać po informacji od przewodniczącego ZN o wykonaniu montażu pamięci RAM, następnie montażu
+okablowania. Przebieg montażu pamięci oraz okablowania należy ocenić zgodnie z kryteriami zapisanymi w przebiegu 1
+1 W stacji roboczej zamontowano pamięć RAM oznaczoną jako RAM1
+
+2 Wszystkie żyły kabla podłączono do styków modułu Keystone według sekwencji T568B
+    Żyły kabla podłączone do styków modułu Keystone nie wystają więcej niż 25 mm poza płaszcz, a pary nie są rozkręcone
+3
+    na długości większej niż 13 mm
+4 Zmontowano gniazdo sieciowe z jednym modułem Keystone
+
+5 Wtyk 8P8C zaciśnięto poprawnie - zatrzask jest na zewnętrznej izolacji kabla U/UTP
+
+6 Wtyk 8P8C zaciśnięto zgodnie z sekwencją T568B
+    Zdający przeprowadził za pomocą testera okablowania test wykonanego połączenia gniazdo naścienne - wtyk w obecności
+7
+    egzaminatora oraz test potwierdził poprawność jego wykonania
+8 Serwer podłączono do portu LAN rutera
+
+9 Serwer podłączono do gniazda LAN sali egzaminacyjnej
+
+10 Stację roboczą podłączono do portu WAN rutera
+
+
+
+
+                                                                Strona 3 z 7
+                                                                                                                      stanowiska
+                                                                                                                        Numer
+Rezultat 2. Diagnostyka
+Uwaga: Diagnostyka dysku powinna zostać wykonana za pomocą programu CrystalDiskInfo w systemie Windows Server. Pliki zrzutów ekranu
+z diagnostyki S.M.A.R.T. znajdują się na pulpicie konta Administrator. Parametry zapisane są w tabeli 1 arkusza egzaminacyjnego. Kryteria należy
+uznać za spełnione tylko wtedy, gdy zapisy w tabeli są identyczne ze zrzutami ekranowymi. Dopuszcza się zapis N/A świadczący o braku wyświetlonej
+informacji, jeżeli zostało to również udokumentowane zrzutem ekranu
+1 Zapisano wartość bieżącą parametru 01 z nazwą np. Liczba błędów odczytu lub Read Error Rate
+
+2 Zapisano wartość bieżącą parametru 05 z nazwą np. Ilość relokowanych sektorów lub Reallocated Sectors Count
+
+3 Zapisano wartość bieżącą parametru 0A z nazwą np. Liczba prób uruchomienia osi napędowej dysku lub Spin Retry Count
+
+4 Zapisano wartość bieżącą parametru C5 z nazwą np. Liczba sektorów niestabilnych lub Current Pending Sector Count
+  Zapisano wartość bieżącą parametru C6 z nazwą np. Ilość nienaprawionych sektorów lub Uncorrectable Sector Count/Offline
+5
+  scan UNC sectors
+  Zapisano wartość bieżącą parametru C7 z nazwą np. Liczba błędów CRC podczas pracy w trybie Ultra DMA lub UltraDMA
+6
+  CRC Error Count
+Rezultat 3. Skonfigurowane urządzenie sieciowe
+
+Uwaga: oceny kryteriów należy dokonać po informacji od przewodniczącego ZN o gotowości zdającego do oceny konfiguracji rutera
+
+1 Adres interfejsu LAN rutera ustawiono na 10.0.0.1 z maską 255.255.255.0
+
+2 Wyłączono usługę DHCP
+
+3 Adres interfejsu WAN rutera ustawiono na 90.90.90.1 z maską 255.255.255.252
+
+4 Interfejs WAN rutera ma przypisany adres bramy domyślnej 90.90.90.2
+
+5 Interfejs WAN rutera ma przypisany adres serwera DNS 8.8.8.8
+
+6 Ustawiono przekierowanie portu 80 z interfejsu WAN do interfejsu LAN1 serwera (10.0.0.2) na port 8080
+
+
+
+
+                                                                 Strona 4 z 7
+                                                                                                                     stanowiska
+                                                                                                                       Numer
+Rezultat 4. Skonfigurowane interfejsy sieciowe serwera i stacji roboczej
+Uwaga: oceny rezultatów należy dokonać dla serwera w systemie Windows, konto Administrator z hasłem ZAQ!2wsx oraz dla stacji roboczej
+w systemie Linux, konto administrator z hasłem ZAQ!2wsx
+Oceny kryteriów 4.8 ÷ 4.10 należy dokonać po informacji od przewodniczącego ZN o gotowości zdającego do oceny komunikacji pomiędzy
+urządzeniami sieciowymi. Sprawdzenie komunikacji wykonuje zdający w obecności egzaminatora
+1 Na serwerze ustawiono nazwy interfejsów sieciowych na LAN1 oraz LAN2
+
+2 Na serwerze interfejs sieciowy podłączony do rutera ma ustawiony adres IP 10.0.0.2 z maską 255.255.255.0
+
+3 Na serwerze interfejs sieciowy podłączony do rutera ma ustawiony adres bramy domyślnej oraz serwera DNS na 10.0.0.1
+    Na serwerze interfejs sieciowy podłączony do gniazda LAN sali egzaminacyjnej ma ustawiony adres IP 192.168.0.x z maską
+4
+    255.255.255.0, gdzie x to numer stanowiska
+5 Na stacji roboczej dla interfejsu sieci przewodowej ustawiono adres IP 90.90.90.2 z maską 255.255.255.252
+
+6 Na stacji roboczej dla interfejsu sieci przewodowej ustawiono bramę domyślną o adresie 90.90.90.1
+
+7 Na stacji roboczej dla interfejsu sieci przewodowej ustawiono serwer DNS na 8.8.8.8
+
+8 Wykonano sprawdzenie komunikacji serwera z drukarką. Uzyskano odpowiedź dla polecenia np. ping 192.168.0.100
+
+9 Wykonano sprawdzenie komunikacji serwera z ruterem. Uzyskano odpowiedź dla polecenia np. ping 10.0.0.1
+
+10 Wykonano sprawdzenie komunikacji serwera ze stacją roboczą. Uzyskano odpowiedź dla polecenia np. ping 90.90.90.2
+
+
+
+
+                                                                Strona 5 z 7
+                                                                                                                             stanowiska
+                                                                                                                               Numer
+Rezultat 5. Skonfigurowany serwer
+
+Uwaga: ocenie podlega konfiguracja systemu Windows Server
+
+1 Na serwerze dodano rolę Serwer sieci Web
+
+2 Do folderu C:\www ustawiono zabezpieczenia dla Administratorzy – Pełna kontrola, Użytkownicy – Odczyt i wykonywanie
+
+3 Utworzono nową witrynę o nazwie MojaStrona publikującą zawartość folderu C:\www
+
+4 Utworzoną witrynę powiązano z adresem 10.0.0.2
+
+5 Utworzoną witrynę powiązano z portem 8080
+
+6 W utworzonej witrynie ustawiono dokument domyślny na test.html
+
+7 Na stacji roboczej dostępna jest opublikowana witryna pod adresem http://90.90.90.1
+
+Przebieg 1. Montażu pamięci RAM i okablowania sieciowego
+
+Zdający:
+  podczas wykonywaniu montażu okablowania sieciowego zdejmował izolację z kabla U/UTP stosując narzędzia do tego celu
+1
+  przeznaczone
+  podczas montażu kabla U/UTP do modułu Keystone i wtyku oraz podczas montowania gniazda sieciowego stosował
+2
+  narzędzia zgodnie z ich przeznaczeniem oraz z zasadami BHP
+  podczas montażu pamięci RAM stosował opaskę antystatyczną oraz narzędzia zgodnie z ich przeznaczeniem oraz
+3
+  z zasadami BHP
+4 po wykonaniu montażu pamięci RAM i okablowania sieciowego uporządkował stanowisko egzaminacyjne
+
+
+
+
+Egzaminator …………………………………………………………………………….                                                      ..........................................................................
+                                        imię i nazwisko                                                              data i czytelny podpis
+
+
+
+
+                                                                Strona 6 z 7
+Załącznik 1: Schemat połączenia urządzeń
+
+
+
+
+                                           Strona 7 z 7
+

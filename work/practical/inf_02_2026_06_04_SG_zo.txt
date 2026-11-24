@@ -1,0 +1,233 @@
+ Układ graficzny © CKE 2025                                                       EGZAMIN ZAWODOWY
+                                                                                       Rok 2026
+                                                                             ZASADY OCENIANIA I KARTY OCENY
+
+                                                                              Arkusz zawiera informacje prawnie chronione
+                                                                                  do momentu rozpoczęcia egzaminu
+
+
+
+
+      Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych i lokalnych sieci komputerowych
+      Oznaczenie arkusza: INF.02-04-26.06-SG
+      Symbol kwalifikacji: INF.02
+      Numer zadania: 04
+                                                                                         PODSTAWA PROGRAMOWA
+      Wersja arkusza: SG                                                                                2019
+
+
+                                                                           Wypełnia egzaminator
+
+                                                                                                                                Numer
+                                   Kod ośrodka                         –                            Numer PESEL zdającego*   stanowiska**
+
+
+
+                              Kod egzaminatora
+
+
+                                Data egzaminu
+                                                 Dzień Miesiąc   Rok
+
+
+Godzina rozpoczęcia egzaminu                            :
+
+
+
+ * w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+ ** na podstawie danych wpisanych przez zdającego na pierwszej stronie arkusza egzaminacyjnego
+Egzaminatorze!
+ − Oceniaj prace zdających rzetelnie i z zaangażowaniem. Dokumentuj wyniki oceny.
+
+ − Stosuj przyjęte zasady oceniania w sposób obiektywny.
+
+ − Jeżeli zdający, wykonując zadanie egzaminacyjne, uzyskuje inne rezultaty albo pożądane rezultaty uzyskuje w inny sposób niż uwzględniony
+   w zasadach oceniania lub przedstawia nietypowe rozwiązanie, ale zgodnie ze sztuką w zawodzie, to nadal oceniaj zgodnie z kryteriami
+   zawartymi w zasadach oceniania. Informacje o tym, że zasady oceniania nie przewidują zaistniałej sytuacji, przekaż niezwłocznie w formie
+   pisemnej notatki do Przewodniczącego Zespołu Egzaminacyjnego z prośbą o przekazanie jej do Okręgowej Komisji Egzaminacyjnej. Notatka
+   może być sporządzona odręcznie w trybie roboczym.
+ − Informuj przewodniczącego zespołu nadzorującego o wszystkich nieprawidłowościach zaistniałych w trakcie egzaminu, w tym w szczególności
+   o naruszeniach przepisów bezpieczeństwa i higieny pracy i o podejrzeniach niesamodzielności w wykonaniu zadania przez zdającego.
+
+
+
+
+                                                             Strona 2 z 8
+                                                                                                                     stanowiska
+                                                                                                                       Numer
+                                                                                                                                  Egzaminator wpisuje T,
+                                                                                                                                   jeżeli zdający spełnił
+                                       Elementy podlegające ocenie/kryteria oceny                                                 kryterium albo N, jeżeli
+                                                                                                                                         nie spełnił
+
+Rezultat 1: Wykonane okablowanie sieciowe oraz połączenie fizyczne urządzeń
+Uwaga: Oceny kryteriów 1.1 ÷ 1.8 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny montażu okablowania.
+Przebieg montażu okablowania sieciowego należy ocenić zgodnie z kryteriami zapisanymi w Przebiegu 1
+1 Wszystkie żyły na jednym końcu kabla podłączone do modułu Keystone wg sekwencji T568B
+    Przewody podłączone do moduły Keystone nie wystają więcej niż 25 mm poza płaszcz, a pary nie są rozkręcone na długości
+2
+    większej niż 13 mm
+3 Wszystkie elementy gniazda zmontowane w sposób umożliwiający jego zastosowanie jako gniazda naściennego
+
+4 Drugi koniec kabla podłączony do panelu krosowego wg sekwencji T568B
+    Przewody podłączone do panelu krosowego nie wystają więcej niż 25 mm poza płaszcz, a pary nie są rozkręcone na długości
+5
+    większej niż 13 mm
+6 Do montażu okablowania zastosowany kabel typu drut
+  Zamontowany w sposób stabilny panel krosowy w szafie lub stelażu RACK, front panelu krosowego skierowany na zewnątrz
+7
+  szafy/stelażu
+  W obecności egzaminatora przeprowadzony za pomocą testera okablowania test wykonanego kabla potwierdził poprawność
+8
+  jego wykonania
+9 Urządzenia sieciowe połączone są zgodnie ze schematem - Załącznik 1
+
+
+
+
+                                                                Strona 3 z 8
+                                                                                                                     stanowiska
+                                                                                                                       Numer
+Rezultat 2: Skonfigurowane urządzenia sieciowe
+Uwaga: oceny kryteriów należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny konfiguracji rutera, a następnie
+przełącznika.
+Jeżeli na stanowisku znajduje się osobny punkt dostępowy, to powinien mieć adres IP 10.0.0.4/24 i jego dotyczy kryterium R.2.6
+1 Konfiguracja interfejsu WAN w ruterze: automatyczna
+
+2 Adres IP interfejsu LAN w ruterze: 10.0.0.1/24
+
+3 W ruterze włączony serwer DHCP z pulą adresów 10.0.0.101 ÷ 10.0.0.200
+
+4 Konfiguracja DHCP: przekazywany serwer DNS 10.0.0.3
+
+5 Konfiguracja DHCP: rezerwacja dla adresu MAC bezprzewodowej karty sieciowej stacji roboczej na adres IP 10.0.0.110
+    Włączona sieć bezprzewodowa 2,4 GHz o SSID = egzamin_x, gdzie x to numer stanowiska z zabezpieczeniem WPA2-PSK
+6
+    oraz szyfrowaniem AES lub CCMP
+7 W przełączniku utworzone sieci VLAN 802.1Q o ID = 201 i ID = 202
+
+8 Do sieci VLAN o ID = 201 przypisane porty 1 i 4 bez tagowania (tryb dostępu)
+
+9 Do sieci VLAN o ID = 202 przypisane porty 2 i 3 bez tagowania (tryb dostępu)
+
+10 Konfiguracja przełącznika: adres IP 10.0.0.2/24, brama domyślna 10.0.0.1
+
+
+
+
+                                                                Strona 4 z 8
+                                                                                                                     stanowiska
+                                                                                                                       Numer
+Rezultat 3: Skonfigurowane interfejsy sieciowe
+Uwaga: Ocenie podlega konfiguracja serwera Linux, konto administrator z hasłem ZAQ!2wsx oraz stacji roboczej w systemie Windows, konto
+Administrator z hasłem ZAQ!2wsx
+Oceny kryteriów 3.3, 3.8 ÷ 3.10 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny komunikacji pomiędzy
+urządzeniami sieciowymi. Sprawdzenie komunikacji zdający wykonuje w obecności egzaminatora
+W kryteriach 3.1, 3.7: x - oznacza numer stanowiska
+   Ustawiona nazwa stacji roboczej na stacja-x oraz
+ 1
+   sufix podstawowej domeny DNS na egzamin.internal
+2 Bezprzewodowy interfejs sieciowy stacji roboczej podłączony pod utworzoną sieć bezprzewodową
+
+3 Na stacji roboczej automatycznie uzyskany adres: 10.0.0.110
+
+4 Na stacji roboczej w zaporze sieciowej dodana reguła tak, aby stacja robocza odpowiadała na żądanie echa protokołu ICMP
+
+5 Adres IP interfejsu sieciowego serwera przyłączonego do portu 1 przełącznika: 10.0.0.3/24
+
+6 Konfiguracja interfejsu sieciowego serwera przyłączonego do portu 1 przełącznika: brama domyślna 10.0.0.1, DNS: localhost
+
+7 Adres IP interfejsu sieciowego serwera przyłączonego do portu 2 przełącznika: 192.168.0.x/24, DNS: localhost
+  Wykonane sprawdzenie komunikacji serwera ze stacją roboczą, urządzenie odpowiada na polecenie np. ping
+8
+  adres_IP_stacji_roboczej
+  Wykonane sprawdzenie komunikacji serwera z ruterem i przełącznikiem, urządzenie odpowiada na polecenia np. ping
+9
+  10.0.0.1 oraz 10.0.0.2
+10 Wykonane sprawdzenie komunikacji serwera z drukarką, urządzenie odpowiada na polecenie np. ping 192.168.0.200
+
+
+
+
+                                                                Strona 5 z 8
+                                                                                                                     stanowiska
+                                                                                                                       Numer
+Rezultat 4: Skonfigurowany serwer i stacja robocza
+
+Uwaga: dla serwera oceny rezultatu należy dokonać w systemie Linux, dla stacji roboczej - w systemie Windows
+
+1 Na serwerze zmieniona nazwa na serwer-x, gdzie x to numer stanowiska egzaminacyjnego
+
+2 Na serwerze utworzony użytkownik z katalogiem domowym o nazwie logowania: jkowalski
+
+3 Na serwerze do katalogu /dane ustawione pełne prawa tylko dla utworzonego użytkownika
+
+4 Na serwerze usługa DNS uruchamia się automatycznie po starcie systemu. Usługa jest uruchomiona
+
+5 Na serwerze usługa Samba (serwer plików) uruchamia się automatycznie po starcie systemu. Usługa jest uruchomiona
+
+6 W usłudze Samba utworzony jest użytkownik o nazwie logowania: jkowalski
+  W usłudze Samba udostępnione są katalogi domowe użytkowników, każdy użytkownik ma dostęp tylko do swojego katalogu
+7
+  domowego
+  W usłudze Samba udostępniony jest katalog /dane pod nazwą zasobu dane tak, aby tylko utworzony użytkownik miał
+8
+  uprawnienia odczytu i zapisu
+9 Na stacji roboczej utworzony użytkownik o nazwie logowania: jkowalski
+     Na stacji roboczej dla utworzonego użytkownika są trwale podmapowane zasoby serwera: katalog domowy pod literę M:
+10
+     i zasób dane pod literę P:
+
+
+
+
+                                                                Strona 6 z 8
+                                                                                                                               stanowiska
+                                                                                                                                 Numer
+Rezultat 5: Zmodernizowana stacja robocza
+Uwaga: identyfikacja parametrów i modernizacja została wykonana w systemie Windows na stacji roboczej. Należy porównać zapisy zdającego
+z tabeli 2 znajdującej się w arkuszu egzaminacyjnym ze zrzutami ekranowymi zapisanymi w folderach Karta1 i Karta2 na dysku USB oznaczonym
+nazwą Egzamin-x, gdzie x to numer stanowiska egzaminacyjnego. W przypadku braku zgodności zapisów w tabeli 2 ze zrzutami, kryteria nie są
+spełnione. Dopuszcza się możliwość podania przez zdającego zapisu świadczącego o braku informacji, jeżeli jest zgodny ze zrzutem ekranu
+Oceny kryterium 5.7 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny montażu karty sieciowej
+1 W tabeli 2 zapisany producent zainstalowanej karty sieciowej
+
+2 W tabeli 2 zapisana nazwa modelu zainstalowanej karty sieciowej
+
+3 W tabeli 2 zapisany adres MAC zainstalowanej karty sieciowej
+
+4 W tabeli 2 zapisany producent zapasowej karty sieciowej
+
+5 W tabeli 2 zapisana nazwa modelu zapasowej karty sieciowej
+
+6 W tabeli 2 zapisany adres MAC zapasowej karty sieciowej
+
+7 Karta sieciowa zamontowana w sposób trwały, bez uszkodzenia płyty głównej komputera
+
+Przebieg 1: Wykonywanie okablowania sieciowego i modernizacja stacji roboczej
+
+Zdający:
+    zdejmował izolację z kabla U/UTP i montował gniazdo oraz kabel U/UTP w panelu krosowym przy zastosowaniu
+1
+    odpowiednich narzędzi, zgodnie z zasadami BHP
+2 po wykonaniu montażu zostawił uporządkowane stanowisko pracy
+
+3 montował kartę sieciową przy zastosowaniu odpowiednich narzędzi, zgodnie z zasadami BHP
+
+
+
+
+Egzaminator …………………………………………………………………………….                                                        ..........................................................................
+                                        imię i nazwisko                                                                data i czytelny podpis
+
+
+
+
+                                                                 Strona 7 z 8
+Załącznik 1. Schemat połączenia urządzeń
+
+
+
+
+                                           Strona 8 z 8
+

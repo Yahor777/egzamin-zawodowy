@@ -1,0 +1,314 @@
+                                                                             Arkusz zawiera informacje
+                                                                          prawnie chronione do momentu
+                                                                               rozpoczęcia egzaminu
+
+
+
+Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych
+                    i lokalnych sieci komputerowych
+Oznaczenie kwalifikacji: INF.02
+Numer zadania: 01
+Wersja arkusza: SD
+
+                                       Wypełnia zdający
+                                                                             Miejsce na naklejkę z numerem
+Numer PESEL zdającego*                                                         PESEL i z kodem ośrodka
+
+
+
+
+Czas trwania egzaminu: 150 minut.                                                          INF.02-01-23.06-SD
+
+EGZAMIN ZAWODOWY
+                                                              PODSTAWA PROGRAMOWA
+Rok 2023
+                                                                      2019
+CZĘŚĆ PRAKTYCZNA
+
+
+Instrukcja dla zdającego
+    1.  Na pierwszej stronie arkusza egzaminacyjnego wpisz w oznaczonym miejscu swój numer PESEL
+        i naklej naklejkę z numerem PESEL i z kodem ośrodka.
+    2. Na KARCIE OCENY w oznaczonym miejscu przyklej naklejkę z numerem PESEL oraz wpisz:
+        − swój numer PESEL*,
+        − oznaczenie kwalifikacji,
+        − numer zadania,
+        − numer stanowiska.
+    3. KARTĘ OCENY przekaż zespołowi nadzorującemu.
+    4. Sprawdź, czy arkusz egzaminacyjny zawiera 6 stron i nie zawiera błędów. Ewentualny brak stron lub
+        inne usterki zgłoś przez podniesienie ręki przewodniczącemu zespołu nadzorującego.
+    5. Zapoznaj się z treścią zadania oraz stanowiskiem egzaminacyjnym. Masz na to 10 minut. Czas ten
+        nie jest wliczany do czasu trwania egzaminu.
+    6. Czas rozpoczęcia i zakończenia pracy zapisze w widocznym miejscu przewodniczący zespołu
+        nadzorującego.
+    7. Wykonaj samodzielnie zadanie egzaminacyjne. Przestrzegaj zasad bezpieczeństwa i organizacji
+        pracy.
+    8. Jeżeli w zadaniu egzaminacyjnym występuje polecenie „zgłoś gotowość do oceny przez podniesienie
+        ręki”, to zastosuj się do polecenia i poczekaj na decyzję przewodniczącego zespołu nadzorującego.
+    9. Po zakończeniu wykonania zadania pozostaw rezultaty oraz arkusz egzaminacyjny na swoim
+        stanowisku lub w miejscu wskazanym przez przewodniczącego zespołu nadzorującego.
+    10. Po uzyskaniu zgody zespołu nadzorującego możesz opuścić salę/miejsce przeprowadzania egzaminu.
+
+                                                                                               Powodzenia!
+* w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+
+Układ graficzny
+© CKE 2020
+Zadanie egzaminacyjne
+
+Wykorzystując dostępne narzędzia znajdujące się na stanowisku egzaminacyjnym, wykonaj modernizację
+stacji roboczej oraz podłączenie urządzeń sieciowych. Wykonaj konfigurację urządzeń sieciowych oraz
+konfigurację systemów zainstalowanych na dysku twardym stacji roboczej oraz serwera.
+Do konfiguracji serwera oraz stacji roboczej z zainstalowanym systemem Windows wykorzystaj konto
+Administrator z hasłem ZAQ!2wsx
+Do konfiguracji serwera oraz stacji roboczej z zainstalowanym systemem Linux wykorzystaj konto
+administrator z hasłem ZAQ!2wsx (konto z prawem podniesienia uprawnień do root z hasłem ZAQ!2wsx )
+
+ 1.    Na stacji roboczej w systemie Linux przeprowadź identyfikację podzespołów:
+      ‒ za pomocą dostępnych narzędzi systemowych wykonaj identyfikację parametrów zainstalowanych
+         podzespołów ujętych w Tabeli 1. Specyfikacja podzespołów stacji roboczej
+      ‒ wykonaj zrzuty dokumentujące sprawdzenie parametrów, a następnie zapisz je jako pliki graficzne
+         w katalogu SPRZET na nośniku USB opisanym EGZAMIN-x, gdzie x oznacza numer stanowiska
+         zdającego
+       ‒ zapisz odczytane parametry w tabeli 1 w arkuszu egzaminacyjnym. W przypadku braku możliwości
+          identyfikacji parametru podzespołu przez program, zapisz: brak danych
+
+ 2.    Wykonaj modernizację stacji roboczej:
+      ‒ zdemontuj zainstalowaną kartę sieciową, a w przypadku karty zintegrowanej wyłącz ją w BIOS lub
+         Menedżerze urządzeń
+      ‒ zainstaluj zapasową kartę sieciową.
+
+UWAGA: Po wykonaniu demontażu zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+zamontowania zapasowej karty sieciowej. Przystąp do montażu, który będzie obserwowany przez
+egzaminatora. Po uzyskaniu zgody dokonaj końcowych czynności montażowych i uruchomienia systemu.
+
+ 3.   Skonfiguruj ruter zgodnie z następującymi zaleceniami:
+     ‒ interfejs WAN: adres IP 20.20.20.2/28, brama domyślna 20.20.20.1, serwer DNS 8.8.8.8, drugi
+         serwer DNS 8.8.5.5, jeżeli jest wymagany
+     ‒ interfejs LAN: adres IP 10.0.1.X/24, gdzie X oznacza numer stanowiska egzaminacyjnego
+     ‒ serwer DHCP włączony
+     ‒ konfiguracja serwera DHCP:
+          ‒ ustawiona pula adresowa 10.0.1.15 ÷ 10.0.1.35
+          ‒ serwer DNS: 8.8.8.8
+          ‒ drugi serwer DNS: 8.8.5.5
+     ‒ wykonana rezerwacja adresu IP 10.0.1.30 dla interfejsu sieciowego serwera podłączonego do
+     rutera ‒ punkt dostępowy sieci bezprzewodowej: włączony
+     ‒ konfiguracja sieci bezprzewodowej:
+          ‒ SSID: EgzaminX, gdzie X oznacza numer stanowiska egzaminacyjnego
+          ‒ hasło dostępowe do sieci bezprzewodowej: MojEgzamin-X, gdzie X oznacza numer
+              stanowiska egzaminacyjnego
+          ‒ zabezpieczenie: WPA2/PSK
+     ‒ numer kanału: 7 (częstotliwość 2442 MHz).
+Ruter pracuje na ustawieniach fabrycznych zgodnie z dokumentacją, która jest dostępna w folderze RUTER
+na nośniku opisanym DOKUMENTACJA/PROGRAMY. Jeżeli ruter wymaga zmiany hasła, ustaw je zgodnie
+z wymogami urządzenia.
+
+UWAGA: Po wykonaniu konfiguracji zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+oceny ustawień rutera i punktu dostępowego sieci bezprzewodowej.
+
+ 4.   Skonfiguruj przełącznik zgodnie z następującymi zaleceniami:
+      − adres IP: 192.168.0.199 z maską 255.255.255.0
+      − brama domyślna jeśli jest wymagana: adres IP interfejsu sieciowego serwera podłączonego do
+        przełącznika
+      − włączona obsługa VLAN 802.1q, jeśli urządzenie tego wymaga
+      − utworzona nowa sieć VLAN o ID = 2
+      − porty: 1 i 4 przypisane bez tagowania (tryb access) do sieci VLAN o ID = 2.
+                                               Strona 2 z 6
+Przełącznik pracuje na ustawieniach fabrycznych zgodnie z dokumentacją, która jest dostępna w folderze
+PRZEŁĄCZNIK na nośniku opisanym DOKUMENTACJA/PROGRAMY. Jeżeli przełącznik wymaga zmiany
+hasła, ustaw je na zgodne z wymogami urządzenia.
+
+UWAGA: Po wykonaniu konfiguracji zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+oceny ustawień przełącznika.
+
+ 5.   Za pomocą kabli połączeniowych znajdujących się na stanowisku egzaminacyjnym połącz urządzenia
+      zgodnie ze schematem.
+
+
+
+
+                                   Schemat połączenia urządzeń
+
+ 6.   Skonfiguruj serwer z zainstalowanym systemem Linux:
+      − interfejs sieciowy serwera podłączony do rutera:
+          − adres IP: pobierany automatycznie
+          − brama domyślna: adres IP interfejsu LAN rutera
+          − serwer DNS: pobierany automatycznie
+      − interfejs sieciowy serwera podłączony do przełącznika:
+          − adres IP: 192.168.0.X, gdzie X oznacza numer stanowiska egzaminacyjnego
+          − serwer DNS: localhost
+      − utwórz katalog /home/user
+      − utwórz konto nowego użytkownika:
+          − nazwa: tester
+          − hasło TeStEr!@
+          − powłoka domyślna: /bin/sh
+          − UID: 7777
+          − katalog domowy: /home/user
+      − utwórz grupę użytkowników o nazwie symulatorzy i GID=2222
+      − dodaj użytkownika tester do grupy symulatorzy
+      − zmień hasło użytkownika tester na P@ssword12!@ i zapisz użyte polecenie w Tabeli 2. Polecenia
+        Linux w arkuszu egzaminacyjnym
+      − sprawdź, czy użytkownik administrator może odbierać wiadomości tekstowe od innych
+        użytkowników. Użyte polecenie wraz z wynikiem zapisz w tabeli 2.
+
+ 7.   Skonfiguruj stację roboczą z zainstalowanym systemem Windows zgodnie z zaleceniami:
+      − bezprzewodowy interfejs sieciowy stacji roboczej:
+         − nazwa połączenia: LAN10
+         − adres IP: pobierany automatycznie
+         − serwer DNS: pobierany automatycznie
+      − połącz komputer z siecią bezprzewodową EgzaminX, gdzie X oznacza numer stanowiska
+        egzaminacyjnego
+
+
+
+                                             Strona 3 z 6
+UWAGA: Po wykonaniu konfiguracji interfejsu i połączeniu z siecią bezprzewodową zgłoś
+Przewodniczącemu ZN – przez podniesienie ręki – gotowość do wyświetlenia ustawień pobranych z serwera
+DHCP oraz połączenia z siecią bezprzewodową. Sprawdzenie wykonaj w obecności egzaminatora.
+
+      − w zaporze systemowej wyłącz wszystkie domyślne reguły przychodzące oraz utwórz nową regułę
+        przychodzącą o nazwie test, zezwalającą na dostęp dla żądań ICMPv4
+      − na pulpicie utwórz folder NASZE_PRACE i udostępnij go jako zasób sieciowy:
+         − nazwa udziału: Rysunki
+         − uprawnienia: pełna kontrola dla wszystkich użytkowników
+         − zabezpieczenia: pełna kontrola dla wszystkich użytkowników
+         − liczba jednoczesnych połączeń: 10
+         − opis: Dokumenty publiczne.
+
+ 8.   Za pomocą poleceń systemowych wykonaj test komunikacji serwera ze stacją roboczą, drukarką
+      o adresie 192.168.0.200 i ruterem.
+
+UWAGA: Po wykonaniu testu komunikacji zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość
+do ponownego przeprowadzenia testu komunikacji serwera ze stacją roboczą, drukarką i ruterem.
+Sprawdzenie wykonaj w obecności egzaminatora.
+
+ 9.    Korzystając z Cennika usług komputerowych, sporządź w arkuszu kalkulacyjnym kosztorys
+       zaplanowanych w arkuszu egzaminacyjnym prac serwisowych. Kosztorys wykonaj zgodnie z Tabelą 3.
+       Wzór kosztorysu. Plik zawierający kosztorys zapisz pod nazwą Kosztorys na dysku USB o opisanym
+       EGZAMIN-x
+      ‒ obliczenia w kolumnie VAT w zł powinny wykonywać się automatycznie w oparciu o stawkę
+         podatku VAT równą 23%
+      ‒ obliczenia w kolumnie Cena brutto w zł powinny wykonywać się automatycznie, po wypełnieniu
+         kolumny Cena netto w zł z uwzględnieniem podatku VAT
+      ‒ sumowanie kolumny Wartość brutto w zł oraz obliczenia w kolumnie Wartość brutto w zł powinny
+         wykonywać się automatycznie, po wypełnieniu kolumny Cena brutto w zł oraz Ilość
+      ‒ pola znajdujące się w kolumnie Cena netto w zł, Cena brutto w zł, Wartość brutto w zł oraz komórka
+         zawierająca sumę kolumny Wartość brutto w zł powinny mieć format waluty w zł lub PLN.
+
+                                     Cennik usług komputerowych
+                                                                         Wartość usługi netto
+           Lp.                      Nazwa usługi
+                                                                                w zł
+             1. Konfiguracja systemu Windows/Linux                                       65,00
+             2. Instalacja oprogramowania                                                24,00
+             3. Konfiguracja oprogramowania                                              22,00
+             4. Testowanie/specyfikacja podzespołu                                       30,00
+             5. Instalacja systemu Windows/Linux                                         90,00
+             6. Montaż okablowania                                                       15,00
+             7. Montaż podzespołu                                                        20,00
+             8. Zabezpieczenie danych                                                    20,00
+             9. Konfiguracja przełącznika                                                25,00
+             10. Konfiguracja rutera                                                     33,00
+
+UWAGA: Po zakończeniu prac nie wylogowuj się i nie wyłączaj komputerów oraz urządzeń sieciowych
+znajdujących się na Twoim stanowisku egzaminacyjnym.
+
+UWAGA: Zawartość nośnika USB, wykorzystywanego podczas egzaminu do zapisu zrzutów ekranowych lub
+dokumentów, jest usuwana po egzaminie i nie stanowi dokumentacji egzaminacyjnej przekazywanej wraz
+z arkuszem do OKE.
+
+
+
+
+                                               Strona 4 z 6
+ Czas przeznaczony na wykonanie zadania wynosi 150 minut.
+
+ Ocenie podlegać będzie 6 rezultatów:
+   − montaż podzespołu oraz podłączenie urządzeń,
+   − diagnostyka,
+   − skonfigurowane urządzenia sieciowe,
+   − skonfigurowany serwer,
+   − skonfigurowana stacja robocza,
+   − kosztorys
+ oraz
+ przebieg montażu podzespołu.
+
+                             Tabela 1. Specyfikacja podzespołów stacji roboczej
+ Badany element          Parametr                                        Wartość parametru
+
+                         Producent
+
+      Dysk twardy        Nazwa logiczna dysku
+
+                         Numer seryjny
+
+                         Nazwa modelu
+
+       Procesor          Pobierane napięcie
+
+                         Liczba rdzeni oraz liczba
+                         wątków
+
+
+
+                                             Tabela 2. Polecenia Linux
+         Czynność                             Użyte polecenie                Wynik działania polecenia
+Zmiana hasła użytkownika                                                     ______________________
+tester na P@ssword12!@
+Sprawdzenie czy na
+serwerze można odbierać
+wiadomości tekstowe od
+innych użytkowników
+
+
+
+                                           Tabela 3. Wzór kosztorysu
+Lp.       Nazwa usługi          Cena netto           VAT       Cena brutto    Ilość     Wartość brutto
+                                   w zł              w zł         w zł                      w zł
+
+
+
+
+                                                            ŁĄCZNA WARTOŚĆ USŁUG
+                                                                                :
+
+
+                                                     Strona 5 z 6
+NAME
+   mesg - display (or do not display) messages from other users
+
+SYNOPSIS
+   mesg [option] [n|y]
+
+DESCRIPTION
+The mesg utility is invoked by a user to control write access others have to the terminal device associated
+with standard error output. If write access is allowed, then programs such as talk(1) and write(1) may display
+messages on the terminal.
+To make sure your ttys are set the way you want them to be set, mesg should be xecuted in your login scripts.
+The command line option --verbose forces mesg to print a warning in this situation. This behaviour has been
+introduced in version 2.33.
+
+ARGUMENTS
+   n     Disallow messages.
+   y     Allow messages to be displayed.
+   If no arguments are given, mesg shows the current message status on standard error output.
+
+OPTIONS
+   -v, --verbose
+         Explain what is being done.
+   -V, --version
+         Display version information and exit.
+   -h, --help
+         Display help text and exit.
+
+EXIT STATUS
+    The mesg utility exits with one of the following values:
+      0 Messages are allowed.
+      1 Messages are not allowed.
+      >1 An error has occurred.
+
+
+
+
+                                                 Strona 6 z 6
+

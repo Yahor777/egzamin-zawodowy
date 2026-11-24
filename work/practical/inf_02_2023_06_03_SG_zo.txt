@@ -1,0 +1,226 @@
+ Układ graficzny © CKE 2019                                                           EGZAMIN ZAWODOWY
+                                                                                           Rok 2023
+                                                                                       ZASADY OCENIANIA
+
+                                                                              Arkusz zawiera informacje prawnie chronione
+                                                                                  do momentu rozpoczęcia egzaminu
+
+
+
+
+      Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych i lokalnych sieci komputerowych
+      Oznaczenie arkusza: INF.02-03-23.06-SG
+      Oznaczenie kwalifikacji: INF.02
+      Numer zadania: 03
+                                                                                         PODSTAWA PROGRAMOWA
+      Wersja arkusza: SG                                                                                2019
+
+
+                                                                           Wypełnia egzaminator
+
+                                                                                                                                Numer
+                                   Kod ośrodka                         –                             Numer PESEL zdającego*   stanowiska
+
+
+
+                              Kod egzaminatora
+
+
+                                Data egzaminu
+                                                 Dzień Miesiąc   Rok
+
+
+Godzina rozpoczęcia egzaminu                            :
+
+
+
+ * w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+Egzaminatorze!
+ − Oceniaj prace zdających rzetelnie i z zaangażowaniem. Dokumentuj wyniki oceny.
+
+ − Stosuj przyjęte zasady oceniania w sposób obiektywny.
+
+ − Jeżeli zdający, wykonując zadanie egzaminacyjne, uzyskuje inne rezultaty albo pożądane rezultaty uzyskuje w inny sposób niż uwzględniony
+   w zasadach oceniania lub przedstawia nietypowe rozwiązanie, ale zgodnie ze sztuką w zawodzie, to nadal oceniaj zgodnie z kryteriami
+   zawartymi w zasadach oceniania. Informacje o tym, że zasady oceniania nie przewidują zaistniałej sytuacji, przekaż niezwłocznie w formie
+   pisemnej notatki do Przewodniczącego Zespołu Egzaminacyjnego z prośbą o przekazanie jej do Okręgowej Komisji Egzaminacyjnej. Notatka
+   może być sporządzona odręcznie w trybie roboczym.
+ − Informuj przewodniczącego zespołu nadzorującego o wszystkich nieprawidłowościach zaistniałych w trakcie egzaminu, w tym w szczególności
+   o naruszeniach przepisów bezpieczeństwa i higieny pracy i o podejrzeniach niesamodzielności w wykonaniu zadania przez zdającego.
+
+
+
+
+                                                             Strona 2 z 7
+                                                                                                                    stanowiska
+                                                                                                                      Numer
+                                                                                                                                 Egzaminator wpisuje T,
+                                                                                                                                  jeżeli zdający spełnił
+                                       Elementy podlegające ocenie/kryteria oceny                                                kryterium albo N, jeżeli
+                                                                                                                                        nie spełnił
+
+Rezultat 1: Montaż podzespołu oraz podłączenie urządzeń
+Uwaga: Oceny kryteriów 1.1 ÷ 1.2 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do montażu karty graficznej.
+Przebieg montażu należy obserwować oraz ocenić zgodnie z kryteriami zapisanymi w przebiegu 1
+   Zdemontowano zainstalowaną kartę graficzną w stacji roboczej lub w przypadku zintegrowanej karty wyłączono ją w BIOS lub
+ 1
+   Menedżerze urządzeń
+2 Zamontowano zapasową kartę graficzną bez uszkodzenia płyty głównej
+
+3 Po wymianie karty graficznej uruchomiono system operacyjny stacji roboczej
+
+4 Podłączono urządzenia sieciowe zgodnie z Załącznikiem 1
+
+Rezultat 2: Diagnostyka
+Uwaga: Diagnostyka została przeprowadzona na stacji roboczej w systemie Windows. Pliki zawierające zrzuty ekranu potwierdzające przeprowadzoną
+identyfikację są zapisane w folderze HARDWARE na nośniku USB opisanym EGZAMIN-x, gdzie x oznacza numer stanowiska egzaminacyjnego.
+Zapisy parametrów znajdują się w arkuszu egzaminacyjnym w tabeli 1. Zapisy muszą być zgodne ze zrzutami ekranu. Dopuszcza się zapis
+świadczący o braku wartości parametru, jeżeli zostało to udokumentowane na zrzucie
+1 Zainstalowano program diagnostyczny CPU-Z
+
+2 Sprawdzono producenta oraz typ pamięci RAM, co udokumentowano za pomocą minimum 1 zrzutu ekranu
+
+3 Sprawdzono rozmiar pamięci RAM oraz nazwę procesora, co udokumentowano za pomocą minimum 1 zrzutu ekranu
+    Sprawdzono liczbę rdzeni i liczbę wątków oraz taktowanie procesora, co udokumentowano za pomocą minimum 1 zrzutu
+4
+    ekranu
+5 Zapisano w tabeli 1 producenta i typ pamięci RAM
+
+6 Zapisano w tabeli 1 rozmiar pamięci RAM i nazwę procesora
+
+7 Zapisano w tabeli 1 liczbę rdzeni i liczbę wątków oraz taktowanie procesora
+
+
+
+
+                                                                 Strona 3 z 7
+                                                                                                                     stanowiska
+                                                                                                                       Numer
+Rezultat 3: Skonfigurowane urządzenia sieciowe
+Uwaga: oceny kryteriów należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny konfiguracji rutera, a następnie do
+oceny konfiguracji przełącznika
+1 Ustawiono adres IP interfejsu LAN rutera: 192.168.15.1/24
+
+2 Włączono na ruterze serwer DHCP
+
+3 Skonfigurowano serwer DHCP: pula adresów 192.168.15.50 ÷ 192.168.15.150
+
+4 Zarezerwowano na ruterze adres IP 192.168.15.54 dla stacji roboczej
+
+5 Ustawiono adres 20.20.20.2/28 dla interfejsu WAN rutera oraz bramę domyślną: 20.20.20.1
+
+6 Ustawiono serwer DNS 8.8.8.8 dla interfejsu WAN rutera
+
+7 Skonfigurowano przełącznik: adres IP 192.168.15.3
+Rezultat 4: Skonfigurowany serwer
+Uwaga: oceny rezultatów należy dokonać dla serwera w systemie Windows, konto Administrator z hasłem ZAQ!2wsx
+   Ustawiono interfejsowi sieciowemu podłączonemu do przełącznika adres IP na 192.168.15.2/24 oraz bramę domyślną na
+ 1
+   192.168.15.1
+2 Ustawiono interfejsowi sieciowemu podłączonemu do przełącznika serwer DNS: localhost
+
+3 Ustawiono interfejsowi sieciowemu podłączonemu do przełącznika nazwę LAN15 oraz wyłączono drugi interfejs sieciowy
+    Wykonano kopię klucza HKLM rejestru systemowego i zapisano ją na nośniku USB opisanym EGZAMIN-x pod nazwą
+4
+    kopia_rejestru
+5 Promowano serwer do roli kontrolera domeny o nazwie szkola.local
+   Utworzono w domenie jednostkę organizacyjną Rekrutacja, a w niej konto użytkownika jmichalski z hasłem, imię i nazwisko:
+6
+   Jan Michalski
+   Ograniczono czas logowania utworzonego użytkownika wyłącznie do dni poniedziałek, środa, piątek, w godzinach 8:00 ÷
+ 7
+   16:00
+   Utworzono folder C:\DOKUMENTY a w nim zapisano dokument egzamin.txt zawierający numer stanowiska
+ 8
+   egzaminacyjnego i numer zdającego, którym został podpisany arkusz
+   Zainstalowano usługę serwera plików oraz udostępniono za jego pomocą zasób lokalny C:\DOKUMENTY pod nazwą
+ 9
+   Zasoby, nałożono limit na zasób: 100 MB, przeznaczenie: pliki użytkowników
+   Dla utworzonego zasobu ustawiono uprawnienia udostępniania: jmichalski prawo do odczytu, administratorzy pełna
+10
+   kontrola
+                                                                  Strona 4 z 7
+                                                                                                                     stanowiska
+                                                                                                                       Numer
+Rezultat 5: Skonfigurowana stacja robocza
+Uwaga: oceny rezultatów należy dokonać w systemie Linux, konto administrator z hasłem ZAQ!2wsx Kryterium 5.1 należy ocenić po informacji od
+Przewodniczącego ZN o gotowości zdającego do sprawdzenia adresu nadanego stacji roboczej. Kryterium 5.7 należy ocenić po informacji od
+przewodniczącego ZN o gotowości zdającego do oceny działania aliasu. Oceny kryteriów 5.8 ÷ 5.9 należy dokonać po informacji od
+Przewodniczącego ZN o gotowości zdającego do oceny komunikacji pomiędzy urządzeniami sieciowymi. Sprawdzenie komunikacji wykonuje zdający
+w obecności egzaminatora
+   Ustawiono dla przewodowego interfejsu sieciowego podłączonego do przełącznika nazwę LAN20, dla interfejsu
+ 1
+   pobrano z serwera DHCP adres IP 192.168.15.54 oraz wpisano serwer DNS: 192.168.15.2
+2 Ustawiono prędkość kursora myszy na około 30% skali
+  Utworzono za pomocą polecenia systemowego konto użytkownika student z hasłem zaq1@WSX oraz zapisano w tabeli
+3
+  2 polecenie prowadzące do utworzenia konta wraz z wymaganymi parametrami
+  Ustawiono za pomocą poleceń systemowych dla utworzonego konta powłokę domyślną /bin/sh, UID 5555 oraz
+4
+  zapisano w tabeli 2 polecenie prowadzące do konfiguracji konta wraz z wymaganymi parametrami
+5 Utworzono grupę użytkowników o nazwie szkola z ustawionym numerem GID = 1111
+
+6 Dodano użytkownika student do grupy szkola
+  Utworzono za pomocą polecenia systemowego alias o nazwie godz dla polecenia systemowego wyświetlającego aktualny
+7 czas w formacie GG-MM oraz w tabeli 2 zapisano polecenie prowadzące do utworzenia aliasu o zadanych parametrach np.
+  godz='date+%H-%M'
+8 Wykonano test komunikacji stacji roboczej z interfejsem LAN rutera, uzyskano odpowiedź na polecenie np. ping 192.168.15.1
+
+9 Wykonano test komunikacji stacji roboczej z serwerem, uzyskano odpowiedź na polecenie np. ping 192.168.15.2
+
+
+
+
+                                                               Strona 5 z 7
+                                                                                                                                  stanowiska
+                                                                                                                                    Numer
+Rezultat 6: Kosztorys
+    Sporządzono kosztorys w arkuszu kalkulacyjnym w postaci pliku Kosztorys oraz w pliku arkusza utworzono tabelę zawierającą
+1
+    7 kolumn: Lp., Nazwa podzespołu, Cena netto w zł, VAT w zł, Cena brutto w zł, Ilość, Wartość brutto w zł
+2 W kosztorysie uwzględniono podzespół: płyta główna ASUS Prime
+
+3 W kosztorysie uwzględniono podzespoły: karta graficzna Power Color Radeon oraz obudowa Natec Armadillo
+
+4 W kosztorysie uwzględniono podzespoły: procesor INTEL CORE i7 oraz zasilacz Cooler Master
+
+5 W kosztorysie uwzględniono podzespoły: pamięć RAM G. Skill Aegis oraz HDD
+  Zastosowano formuły umożliwiające wykonywanie obliczeń zgodnych ze stanem faktycznym w kolumnach VAT w zł oraz
+6
+  Cena brutto w zł
+  Zastosowano formuły umożliwiające wykonanie obliczeń zgodnych ze stanem faktycznym w kolumnie Wartość brutto w zł
+7
+  po wypełnieniu kolumn Cena brutto w zł oraz Ilość i zastosowano automatyczne sumowanie kolumny Wartość brutto w zł
+  Zastosowano formuły umożliwiające obliczenie rabatu wynoszącego 6% dla zestawu o łącznej wartości powyżej 3000 zł brutto
+8
+  oraz obliczenie kwoty do zapłaty za zestaw po uwzględnieniu rabatu
+  Zastosowano format walutowy w zł lub PLN dla kolumn: Cena netto w zł, VAT w zł, Cena brutto w zł, Wartość brutto w zł
+9
+  oraz komórkach zawierających obliczoną łączną wartość zestawu, udzielony rabat oraz kwotę do zapłaty
+10 W kosztorysie zawarto jedynie niezbędne i kompatybilne podzespoły
+
+Przebieg 1: Montaż podzespołu
+
+Zdający:
+
+1 poprawnie wykorzystywał narzędzia do montażu i stosował się do przepisów BHP podczas jego wykonywania
+
+2 zostawił uporządkowane stanowisko po zakończeniu wszystkich prac
+
+
+
+
+Egzaminator …………………………………………………………………………….                                                           ..........................................................................
+                                         imię i nazwisko                                                                  data i czytelny podpis
+
+
+
+
+                                                                 Strona 6 z 7
+Załącznik 1 - Schemat połączenia urządzeń
+
+
+
+
+                                            Strona 7 z 7
+

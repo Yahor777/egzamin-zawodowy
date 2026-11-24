@@ -1,0 +1,250 @@
+ Układ graficzny © CKE 2025                                                       EGZAMIN ZAWODOWY
+                                                                                       Rok 2026
+                                                                             ZASADY OCENIANIA I KARTY OCENY
+
+                                                                              Arkusz zawiera informacje prawnie chronione
+                                                                                  do momentu rozpoczęcia egzaminu
+
+
+
+
+      Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych i lokalnych sieci komputerowych
+      Oznaczenie arkusza: INF.02-07-26.06-SG
+      Symbol kwalifikacji: INF.02
+      Numer zadania: 07
+                                                                                         PODSTAWA PROGRAMOWA
+      Wersja arkusza: SG                                                                                2019
+
+
+                                                                           Wypełnia egzaminator
+
+                                                                                                                                Numer
+                                   Kod ośrodka                         –                            Numer PESEL zdającego*   stanowiska**
+
+
+
+                              Kod egzaminatora
+
+
+                                Data egzaminu
+                                                 Dzień Miesiąc   Rok
+
+
+Godzina rozpoczęcia egzaminu                            :
+
+
+
+ * w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+ ** na podstawie danych wpisanych przez zdającego na pierwszej stronie arkusza egzaminacyjnego
+Egzaminatorze!
+ − Oceniaj prace zdających rzetelnie i z zaangażowaniem. Dokumentuj wyniki oceny.
+
+ − Stosuj przyjęte zasady oceniania w sposób obiektywny.
+
+ − Jeżeli zdający, wykonując zadanie egzaminacyjne, uzyskuje inne rezultaty albo pożądane rezultaty uzyskuje w inny sposób niż uwzględniony
+   w zasadach oceniania lub przedstawia nietypowe rozwiązanie, ale zgodnie ze sztuką w zawodzie, to nadal oceniaj zgodnie z kryteriami
+   zawartymi w zasadach oceniania. Informacje o tym, że zasady oceniania nie przewidują zaistniałej sytuacji, przekaż niezwłocznie w formie
+   pisemnej notatki do Przewodniczącego Zespołu Egzaminacyjnego z prośbą o przekazanie jej do Okręgowej Komisji Egzaminacyjnej. Notatka
+   może być sporządzona odręcznie w trybie roboczym.
+ − Informuj przewodniczącego zespołu nadzorującego o wszystkich nieprawidłowościach zaistniałych w trakcie egzaminu, w tym w szczególności
+   o naruszeniach przepisów bezpieczeństwa i higieny pracy i o podejrzeniach niesamodzielności w wykonaniu zadania przez zdającego.
+
+
+
+
+                                                             Strona 2 z 9
+                                                                                                                        stanowiska
+                                                                                                                          Numer
+                                                                                                                                     Egzaminator wpisuje T,
+                                                                                                                                      jeżeli zdający spełnił
+                                        Elementy podlegające ocenie/kryteria oceny                                                   kryterium albo N, jeżeli
+                                                                                                                                            nie spełnił
+
+Rezultat 1: Montaż podzespołów stacji roboczej oraz połączenie fizyczne urządzeń
+UWAGA: Oceny kryteriów 1.1 ÷ 1.2 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny montażu podzespołów.
+Przebieg montażu należy ocenić zgodnie z kryteriami zapisanymi w Przebiegu 1
+   Zdemontowana karta graficzna lub wyłączona w BIOS lub Menedżerze urządzeń oraz zamontowana zapasowa karta
+ 1
+   graficzna w sposób trwały
+2 Zamontowana zapasowa pamięć RAM bez uszkodzenia płyty głównej
+    Zainstalowane sterowniki karty graficznej na stacji roboczej w systemie Windows, w menedżerze urządzeń brak ikony
+3
+    z wykrzyknikiem
+4 Wszystkie urządzenia sieciowe podłączone zgodnie ze schematem zawartym w załączniku 1
+
+
+
+
+                                                                 Strona 3 z 9
+                                                                                                                       stanowiska
+                                                                                                                         Numer
+Rezultat 2: Diagnostyka stacji roboczej
+UWAGA: diagnostyka podzespołów została wykonana w systemie Windows na stacji roboczej. Należy porównać zapisy zdającego z tabeli 3
+znajdującej się w arkuszu egzaminacyjnym ze zrzutami ekranowymi zapisanymi w folderze Diagnostyka znajdującym się na dysku USB oznaczonym
+nazwą Egzamin-x, gdzie x to numer stanowiska egzaminacyjnego. W przypadku braku zgodności zapisów w tabeli 3 ze zrzutami, kryteria nie są
+spełnione. Dopuszcza się możliwość podania przez zdającego zapisu świadczącego o braku informacji, jeżeli jest zgodny ze zrzutem ekranowym
+Tabela z minimalnymi wymaganiami programu CAD znajduje się w załączniku 2
+   W tabeli 3 zapisana nazwa systemu operacyjnego i wersja bitowa oraz zapisany wniosek o spełnieniu minimalnych wymagań
+ 1
+   tego parametru
+2 W tabeli 3 zapisana wersja systemu operacyjnego oraz zapisany wniosek o spełnieniu minimalnych wymagań tego parametru
+    W tabeli 3 zapisana częstotliwość taktowania procesora oraz zapisany wniosek o spełnieniu minimalnych wymagań tego
+3
+    parametru
+4 W tabeli 3 zapisany rozmiar pamięci RAM oraz zapisany wniosek o spełnieniu minimalnych wymagań tego parametru
+
+5 W tabeli 3 zapisana pojemność dysku oraz zapisany wniosek o spełnieniu minimalnych wymagań tego parametru
+    W tabeli 3 zapisany rozmiar pamięci karty graficznej oraz zapisany wniosek o spełnieniu minimalnych wymagań tego
+6
+    parametru
+7 W tabeli 3 zapisana rozdzielczość wyświetlania oraz zapisany wniosek o spełnieniu minimalnych wymagań tego parametru
+  W tabeli 3 zapisana ocena, wypisane parametry niespełniające wymagań lub zapisana informacja świadcząca o tym
+8
+  że wszystkie podzespoły spełniają wymagania
+  W tabeli 3 zapisane wskazania do modernizacji zestawu, które obejmują podzespoły niespełniające wymagań
+9
+  lub umieszczony zapis o braku konieczności modernizacji
+
+
+
+
+                                                                 Strona 4 z 9
+                                                                                                                    stanowiska
+                                                                                                                      Numer
+Rezultat 3: Skonfigurowane urządzenia sieciowe
+Uwaga: oceny kryteriów należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny konfiguracji rutera, następnie
+przełącznika
+1 Interfejs WAN rutera: adres IP 70.70.70.1/28
+
+2 Interfejs WAN rutera: brama domyślna 70.70.70.2
+
+3 Interfejs WAN rutera: serwer DNS 8.8.8.8
+
+4 Interfejs LAN rutera: adres IP 192.168.0.5/24
+
+5 Włączony serwer DHCP na ruterze, zakres adresów 192.168.0.10 ÷ 192.168.0.40
+
+6 Zarezerwowany adres IP 192.168.0.12 dla przewodowego interfejsu sieciowego stacji roboczej
+
+7 Przełącznik: adres IP 192.168.0.6/24
+
+8 Przełącznik: brama domyślna 192.168.0.5
+
+
+
+
+                                                               Strona 5 z 9
+                                                                                                                     stanowiska
+                                                                                                                       Numer
+Rezultat 4: Skonfigurowany serwer
+Uwaga: oceny rezultatu należy dokonać w systemie Windows, konto Administrator z hasłem ZAQ!2wsx
+Kryterium 4.3 - egzaminator przekazuje wydrukowaną stronę testową zdającemu, który dołącza ją do arkusza egzaminacyjnego
+Oceny kryteriów 4.7 ÷ 4.10 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny komunikacji pomiędzy
+urządzeniami sieciowymi. Sprawdzenie komunikacji zdający wykonuje w obecności egzaminatora
+   Interfejs sieciowy podłączony do przełącznika: nazwa LAN_S, adres IP 192.168.0.100+X/24, brama domyślna 192.168.0.5
+ 1
+   X oznacza numer stanowiska egzaminacyjnego
+2 Zainstalowana drukarka sieciowa o adresie IP 192.168.0.200
+
+3 Wydrukowana strona testowa drukarki
+
+4 Utworzony folder C:\WITRYNA z plikiem witryna.html
+
+5 Zainstalowana rola Serwer sieci Web (IIS)
+  Skonfigurowana witryna WWW:
+  nazwa: egzamin
+6 powiązana z adresem IP 192.168.0.100+X (X - numer stanowiska egz.)
+  katalog: C:\WITRYNA
+  strona domyślna: witryna.html
+7 Wykonany test komunikacji serwera z przełącznikiem, uzyskana odpowiedź na polecenie np. ping 192.168.0.6
+
+8 Wykonany test komunikacji serwera z interfejsem LAN rutera, uzyskana odpowiedź na polecenie np. ping 192.168.0.5
+
+9 Wykonany test komunikacji serwera ze stacją roboczą, uzyskana odpowiedź na polecenie np. ping adres_stacji_roboczej
+
+10 Wykonany test komunikacji serwera z drukarką, uzyskana odpowiedź na polecenie np. ping 192.168.0.200
+
+
+
+
+                                                               Strona 6 z 9
+                                                                                                                       stanowiska
+                                                                                                                         Numer
+Rezultat 5: Skonfigurowana stacja robocza
+Uwaga: ocenie podlega konfiguracja w systemie Linux, konto administrator z hasłem ZAQ!2wsx
+Kryteria 5.3 ÷ 5.5 należy ocenić na podstawie zrzutów ekranu umieszczonych w katalogu domowym konta administrator
+Oceny kryterium 5.7 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny wyświetlenia strony
+1 Ustawiona nazwę interfejsu sieciowego na LAN_K i adres IP interfejsu uzyskany automatycznie
+
+2 Interfejs sieciowy uzyskał adres IP 192.168.0.12
+
+3 Utworzone konto użytkownika egzamin zabezpieczone hasłem za pomocą polecenia systemowego
+
+4 Utworzona grupa sluchacze za pomocą polecenia systemowego
+
+5 Dodane do grupy utworzone konto za pomocą polecenia systemowego
+
+6 Utworzone w katalogu domowym konta administrator archiwum egzamin.tar, które zawiera przynajmniej jeden zrzut ekranu
+    Wyświetlona w przeglądarce internetowej witryna udostępniona na serwerze, widoczny jest napis EGZAMIN INF.02! na
+7
+    niebieskim tle
+
+
+
+
+                                                                Strona 7 z 9
+                                                                                                                                   stanowiska
+                                                                                                                                     Numer
+Rezultat 6: Kosztorys
+Uwaga: kosztorys znajduje się na dysku USB oznaczonym nazwą Egzamin-x
+   Kosztorys sporządzony w arkuszu kalkulacyjnym w postaci pliku o nazwie kosztorys, Zawiera sześć kolumn: Lp., Nazwa
+ 1
+   podzespołu, Cena netto, Cena brutto, Ilość, Wartość brutto
+2 W kosztorysie uwzględniona płyta główna Asus i procesor Intel Core i3
+
+3 W kosztorysie uwzględniona pamięć RAM Kingston
+
+4 W kosztorysie uwzględniona kartę graficzną ASUS i dysk SSD
+
+5 W kosztorysie uwzględnione obudowa, zasilacz, monitor, mysz i klawiatura
+  Obliczenia w kolumnie Cena brutto wykonywane są automatycznie oraz uwzględniają zwiększenie Ceny netto o 23% podatku
+6
+  VAT
+  Obliczenia w kolumnie Wartość brutto wykonywane są automatycznie, po wypełnieniu kolumny Ilość oraz w oparciu
+7
+  o wykonane obliczenia w kolumnie Cena brutto
+  Komórki w kolumnach Cena netto, Cena brutto, Wartość brutto oraz komórki Wartość oraz Wartość po rabacie są zapisane
+8
+  w formacie walutowym zł lub PLN z dwoma miejscami dziesiętnymi po przecinku (dopuszcza się format księgowy)
+9 Sumowanie kolumny Wartość brutto wykonane jest automatycznie
+   W polu Wartość po rabacie umieszczone formuły
+10 Wartość - 10%, gdy wartość całkowita > 4000 zł
+   Wartość - 5%, gdy wartość całkowita <= 4000 zł
+Przebieg 1: Montaż podzespołów stacji roboczej
+Zdający:
+   montaż karty graficznej i pamięci RAM wykonywał przy odłączonym zasilaniu jednostki centralnej, a podłączenie zasilania
+ 1
+   nastąpiło po zamknięciu obudowy
+2 podczas montażu karty graficznej i pamięci RAM używał opaski antystatycznej
+
+3 po wykonaniu montażu zostawił uporządkowane stanowisko pracy
+
+
+Egzaminator …………………………………………………………………………….                                                            ..........................................................................
+                                         imię i nazwisko                                                                   data i czytelny podpis
+
+
+
+                                                                 Strona 8 z 9
+Załącznik 1. Schemat połączenia urządzeń
+
+
+
+
+Załącznik 2
+
+
+
+
+                                           Strona 9 z 9
+

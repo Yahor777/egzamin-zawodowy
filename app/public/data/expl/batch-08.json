@@ -1,0 +1,2821 @@
+{
+ "ae724d2d": {
+  "ru": {
+   "stem": "Графический символ, показанный на рисунке, обозначает",
+   "answers": [
+    "мост.",
+    "шлюз.",
+    "коммутатор.",
+    "концентратор."
+   ]
+  },
+  "expl": {
+   "pl": "Płaski prostopadłościan z czterema strzałkami skierowanymi w przeciwne strony to standardowy symbol przełącznika (switch) na schematach sieci. Ruter ma kształt walca ze strzałkami.",
+   "ru": "Плоский параллелепипед с четырьмя стрелками в противоположных направлениях — стандартный символ коммутатора (switch) на схемах сетей. Маршрутизатор изображается цилиндром со стрелками."
+  }
+ },
+ "b1100988": {
+  "ru": {
+   "stem": "К какому уровню модели ISO/OSI относятся сегментация данных, связь с установлением соединения с использованием протокола TCP и связь без установления соединения с использованием протокола UDP?",
+   "answers": [
+    "Физическому.",
+    "Сетевому.",
+    "Канальному.",
+    "Транспортному."
+   ]
+  },
+  "expl": {
+   "pl": "TCP i UDP to protokoły warstwy transportowej (4); to ona dzieli dane na segmenty i zapewnia komunikację połączeniową (TCP) lub bezpołączeniową (UDP). Warstwa sieciowa to IP i routing.",
+   "ru": "TCP и UDP — протоколы транспортного уровня (4); именно он делит данные на сегменты и обеспечивает связь с соединением (TCP) или без него (UDP). Сетевой уровень — это IP и маршрутизация."
+  }
+ },
+ "b2b76e37": {
+  "ru": {
+   "stem": "Согласно приведённому прайс-листу, средняя стоимость оснащения компьютерного рабочего места составляет",
+   "answers": [
+    "2000,00 zł",
+    "4350,00 zł",
+    "5000,50 zł",
+    "6700,00 zł"
+   ]
+  },
+  "expl": {
+   "pl": "Suma cen minimalnych: 1300+650+28+22 = 2000 zł; suma maksymalnych: 4550+2000+100+50 = 6700 zł. Średnia: (2000+6700)/2 = 4350 zł.",
+   "ru": "Сумма минимальных цен: 1300+650+28+22 = 2000 zł; максимальных: 4550+2000+100+50 = 6700 zł. Среднее: (2000+6700)/2 = 4350 zł."
+  },
+  "topic": "other"
+ },
+ "b7d34220": {
+  "ru": {
+   "stem": "Какая антенна обладает наибольшим энергетическим усилением и позволяет установить связь на большое расстояние?",
+   "answers": [
+    "Дипольная.",
+    "Изотропная.",
+    "Параболическая.",
+    "Микрополосковая."
+   ]
+  },
+  "expl": {
+   "pl": "Antena paraboliczna jest silnie kierunkowa – skupia energię w wąskiej wiązce, dzięki czemu ma bardzo duży zysk (nawet 20–30 dBi) i nadaje się do łączy punkt-punkt na duże odległości. Izotropowa ma zysk 0 dBi.",
+   "ru": "Параболическая антенна узконаправленная — концентрирует энергию в узком луче, поэтому имеет очень большое усиление (20–30 dBi) и подходит для дальних линков точка-точка. Изотропная имеет усиление 0 dBi."
+  },
+  "topic": "netdevices"
+ },
+ "b9d301b7": {
+  "ru": {
+   "stem": "Какой порт используется протоколом FTP (File Transfer Protocol) для передачи данных?",
+   "answers": [
+    "20.",
+    "25.",
+    "53.",
+    "69."
+   ]
+  },
+  "expl": {
+   "pl": "FTP używa dwóch portów: 21 do sterowania (polecenia) i 20 do przesyłania danych (w trybie aktywnym). 25 to SMTP, 53 to DNS, 69 to TFTP.",
+   "ru": "FTP использует два порта: 21 для управления (команды) и 20 для передачи данных (в активном режиме). 25 — SMTP, 53 — DNS, 69 — TFTP."
+  },
+  "topic": "protocols"
+ },
+ "bb54e0ee": {
+  "ru": {
+   "stem": "В системах Windows XP Pro/Windows Vista Business/Windows 7 Pro/Windows 8 Pro опцией, гарантирующей конфиденциальность данных для пользователей одного компьютера, данные которых могут использоваться только ими самими, является",
+   "answers": [
+    "использование собственных учётных записей с ограничениями.",
+    "самостоятельное присвоение файлам атрибута «скрытый».",
+    "самостоятельное присвоение файлам атрибута «зашифрованный».",
+    "использование собственных учётных записей с правами администратора."
+   ]
+  },
+  "expl": {
+   "pl": "Atrybut „zaszyfrowany” (EFS w NTFS) szyfruje plik kluczem użytkownika, więc nawet administrator ani inny użytkownik go nie odczyta. Atrybut „ukryty” jedynie chowa plik w widoku – nie chroni danych.",
+   "ru": "Атрибут «зашифрованный» (EFS в NTFS) шифрует файл ключом пользователя, поэтому его не прочитает ни другой пользователь, ни администратор. Атрибут «скрытый» лишь прячет файл из вида и не защищает данные."
+  }
+ },
+ "bd02d12b": {
+  "ru": {
+   "stem": "Какой из IP-адресов относится к классу B?",
+   "answers": [
+    "96.15.2.4",
+    "100.10.10.2",
+    "134.192.16.1",
+    "198.15.10.112"
+   ]
+  },
+  "expl": {
+   "pl": "Klasa B ma pierwszy oktet 128–191, więc pasuje 134.192.16.1. Adresy 96.x i 100.x to klasa A (1–126), a 198.x to klasa C (192–223).",
+   "ru": "Класс B — первый октет 128–191, поэтому подходит 134.192.16.1. Адреса 96.x и 100.x — класс A (1–126), 198.x — класс C (192–223)."
+  }
+ },
+ "be51a0ba": {
+  "ru": {
+   "stem": "Наследование разрешений заключается в",
+   "answers": [
+    "передаче разрешений одного пользователя другому.",
+    "назначении разрешений пользователю администратором.",
+    "переносе разрешений с дочернего объекта на родительский.",
+    "переносе разрешений с родительского объекта на дочерний."
+   ]
+  },
+  "expl": {
+   "pl": "Dziedziczenie oznacza, że obiekt podrzędny (np. plik lub podfolder) automatycznie otrzymuje uprawnienia obiektu nadrzędnego (folderu). Kierunek jest zawsze z góry w dół, nigdy odwrotnie.",
+   "ru": "Наследование означает, что дочерний объект (файл или подпапка) автоматически получает разрешения родительского объекта (папки). Направление всегда сверху вниз, а не наоборот."
+  },
+  "topic": "windows"
+ },
+ "bfa89b49": {
+  "ru": {
+   "stem": "Расходным материалом в матричном (игольчатом) принтере является",
+   "answers": [
+    "чернила.",
+    "тонер.",
+    "пигмент.",
+    "красящая лента."
+   ]
+  },
+  "expl": {
+   "pl": "Drukarka igłowa drukuje, uderzając igłami głowicy w taśmę barwiącą, która odbija tusz na papier. Tusz to materiał drukarek atramentowych, a toner – laserowych.",
+   "ru": "Матричный принтер печатает, ударяя иглами головки по красящей ленте, которая оставляет отпечаток на бумаге. Чернила используются в струйных принтерах, тонер — в лазерных."
+  }
+ },
+ "c792df71": {
+  "ru": {
+   "stem": "Какое устройство служит для соединения локальной сети с глобальной сетью?",
+   "answers": [
+    "Мост.",
+    "Маршрутизатор.",
+    "Коммутатор.",
+    "Концентратор."
+   ]
+  },
+  "expl": {
+   "pl": "Router działa w warstwie sieciowej i przekazuje pakiety między różnymi sieciami IP, np. między LAN a WAN (Internetem). Most, przełącznik i koncentrator działają w obrębie jednej sieci lokalnej.",
+   "ru": "Маршрутизатор работает на сетевом уровне и передаёт пакеты между разными IP-сетями, например между LAN и WAN (Интернетом). Мост, коммутатор и концентратор работают внутри одной локальной сети."
+  }
+ },
+ "ce41728f": {
+  "ru": {
+   "stem": "В системе Windows встроенная учётная запись администратора после её отключения и перезагрузки компьютера",
+   "answers": [
+    "не позволяет изменить пароль доступа к учётной записи.",
+    "позволяет запускать некоторые службы с этой учётной записи.",
+    "недоступна, если система запущена в безопасном режиме.",
+    "остаётся доступной после запуска системы в безопасном режиме."
+   ]
+  },
+  "expl": {
+   "pl": "W Windows XP wyłączone wbudowane konto Administrator nadal pojawia się i działa po uruchomieniu w trybie awaryjnym – to mechanizm ratunkowy na wypadek utraty dostępu do innych kont administracyjnych.",
+   "ru": "В Windows XP отключённая встроенная учётная запись Administrator всё равно доступна при загрузке в безопасном режиме — это аварийный механизм на случай потери доступа к другим админским учётным записям."
+  }
+ },
+ "d05663ed": {
+  "ru": {
+   "stem": "Лицензия CAL (Client Access License) даёт пользователю право",
+   "answers": [
+    "изменять код программы.",
+    "использовать программу бессрочно.",
+    "копировать программу на внешние носители.",
+    "пользоваться услугами, предоставляемыми сервером."
+   ]
+  },
+  "expl": {
+   "pl": "CAL to licencja dostępowa: uprawnia użytkownika lub urządzenie do łączenia się z serwerem (np. Windows Server) i korzystania z jego usług. Nie dotyczy kodu ani kopiowania programu.",
+   "ru": "CAL — клиентская лицензия доступа: даёт пользователю или устройству право подключаться к серверу (например, Windows Server) и пользоваться его службами. К коду или копированию программы отношения не имеет."
+  }
+ },
+ "d0aa909a": {
+  "ru": {
+   "stem": "Наименьшее время доступа имеет",
+   "answers": [
+    "жёсткий диск.",
+    "USB-память.",
+    "оперативная память RAM.",
+    "кэш-память процессора."
+   ]
+  },
+  "expl": {
+   "pl": "Pamięć cache jest wbudowana w procesor (SRAM) i działa z częstotliwością bliską zegarowi CPU – czas dostępu to pojedyncze nanosekundy. RAM jest wolniejsza, a dysk i pamięć USB – o rzędy wielkości wolniejsze.",
+   "ru": "Кэш-память встроена в процессор (SRAM) и работает на частоте, близкой к частоте CPU — время доступа единицы наносекунд. RAM медленнее, а диск и USB-память медленнее на порядки."
+  },
+  "topic": "hardware"
+ },
+ "d0e65ff7": {
+  "ru": {
+   "stem": "Локальные сети типа клиент-сервер характеризуются тем, что",
+   "answers": [
+    "каждый компьютер в сети равноправен с остальными.",
+    "существует один выделенный компьютер, предоставляющий свои ресурсы в сети.",
+    "ни один из компьютеров не играет главенствующей роли по отношению к остальным.",
+    "все клиентские компьютеры имеют доступ к ресурсам остальных компьютеров."
+   ]
+  },
+  "expl": {
+   "pl": "W modelu klient-serwer wydzielony serwer udostępnia zasoby i usługi, a klienci z nich korzystają. Równoprawność wszystkich komputerów to cecha sieci peer-to-peer.",
+   "ru": "В модели клиент-сервер выделенный сервер предоставляет ресурсы и службы, а клиенты ими пользуются. Равноправие всех компьютеров — признак одноранговой сети (peer-to-peer)."
+  }
+ },
+ "dcd2b494": {
+  "ru": {
+   "stem": "Какая из групп в системе Windows Server имеет наименьшие права?",
+   "answers": [
+    "Все (Everyone).",
+    "Пользователи.",
+    "Администраторы.",
+    "Операторы учётных записей."
+   ]
+  },
+  "expl": {
+   "pl": "Grupa Wszyscy (Everyone) obejmuje każdego, także gości i użytkowników nieuwierzytelnionych, więc domyślnie ma najmniej uprawnień. Użytkownicy mają podstawowe prawa, a Operatorzy kont i Administratorzy – rozszerzone.",
+   "ru": "Группа «Все» (Everyone) включает любого, даже гостей и неаутентифицированных, поэтому по умолчанию имеет меньше всего прав. «Пользователи» имеют базовые права, «Операторы учётных записей» и «Администраторы» — расширенные."
+  },
+  "topic": "winserver"
+ },
+ "e2dd0a03": {
+  "ru": {
+   "stem": "Блок вычислений с плавающей запятой — это",
+   "answers": [
+    "FPU",
+    "ALU",
+    "RPU",
+    "AND"
+   ]
+  },
+  "expl": {
+   "pl": "FPU (Floating Point Unit) to koprocesor/jednostka wykonująca obliczenia zmiennoprzecinkowe. ALU (Arithmetic Logic Unit) wykonuje operacje arytmetyczne i logiczne na liczbach całkowitych.",
+   "ru": "FPU (Floating Point Unit) — блок, выполняющий вычисления с плавающей запятой. ALU (Arithmetic Logic Unit) выполняет арифметические и логические операции над целыми числами."
+  }
+ },
+ "e3b1c678": {
+  "ru": {
+   "stem": "Ошибка Windows типа STOP Error (Blue Screen), заключающаяся в обращении системы к неверным данным в оперативной памяти, — это",
+   "answers": [
+    "NTFS_FILE_SYSTEM.",
+    "UNMOUNTABLE_BOOT_VOLUME.",
+    "PAGE_FAULT_IN_NONPAGE_AREA.",
+    "UNEXPECTED_KERNEL_MODE_TRAP."
+   ]
+  },
+  "expl": {
+   "pl": "PAGE_FAULT_IN_NONPAGED_AREA pojawia się, gdy system odwołuje się do nieprawidłowego adresu pamięci (często wadliwy RAM lub sterownik). UNMOUNTABLE_BOOT_VOLUME i NTFS_FILE_SYSTEM dotyczą dysku/systemu plików.",
+   "ru": "PAGE_FAULT_IN_NONPAGED_AREA возникает, когда система обращается к неверному адресу памяти (часто неисправная RAM или драйвер). UNMOUNTABLE_BOOT_VOLUME и NTFS_FILE_SYSTEM связаны с диском/файловой системой."
+  },
+  "topic": "windows"
+ },
+ "e42ed98d": {
+  "ru": {
+   "stem": "Программа CHKDSK используется для",
+   "answers": [
+    "дефрагментации диска.",
+    "изменения файловой системы.",
+    "исправления логической структуры диска.",
+    "исправления физической структуры диска."
+   ]
+  },
+  "expl": {
+   "pl": "CHKDSK sprawdza i naprawia błędy logiczne systemu plików (np. tablicę plików, utracone klastry); uszkodzone sektory może tylko oznaczyć, ale nie naprawi fizycznie dysku. Defragmentację robi defrag.",
+   "ru": "CHKDSK проверяет и исправляет логические ошибки файловой системы (таблицу файлов, потерянные кластеры); повреждённые секторы он может лишь пометить, но физически диск не чинит. Дефрагментацию выполняет defrag."
+  }
+ },
+ "e5d4405e": {
+  "ru": {
+   "stem": "Чтобы упорядочить файлы на диске для ускорения работы системы, нужно",
+   "answers": [
+    "выполнить дефрагментацию.",
+    "удалить временные файлы.",
+    "удалить неиспользуемые программы.",
+    "просканировать диск антивирусом."
+   ]
+  },
+  "expl": {
+   "pl": "Defragmentacja układa fragmenty plików w ciągłych obszarach dysku, dzięki czemu głowica HDD wykonuje mniej ruchów i odczyt jest szybszy. Usuwanie plików zwalnia miejsce, ale nie porządkuje ich ułożenia.",
+   "ru": "Дефрагментация размещает фрагменты файлов в непрерывных областях диска, поэтому головка HDD делает меньше перемещений и чтение быстрее. Удаление файлов освобождает место, но не упорядочивает их расположение."
+  }
+ },
+ "e7137ecb": {
+  "ru": {
+   "stem": "Сколько пар проводов в стандарте 100Base-TX предназначено для передачи данных в обоих направлениях?",
+   "answers": [
+    "1",
+    "2",
+    "4",
+    "8"
+   ]
+  },
+  "expl": {
+   "pl": "100Base-TX używa 2 par skrętki: jedna para (piny 1,2) do nadawania i druga (piny 3,6) do odbioru. Wszystkie 4 pary wykorzystuje dopiero 1000Base-T.",
+   "ru": "100Base-TX использует 2 пары витой пары: одна (контакты 1,2) для передачи, другая (3,6) для приёма. Все 4 пары задействует только 1000Base-T."
+  },
+  "topic": "cabling"
+ },
+ "ea2d6799": {
+  "ru": {
+   "stem": "Администратор заметил, что в сети LAN возникает большое число коллизий. Какое устройство он должен установить, чтобы разделить локальную сеть на меньшие домены коллизий?",
+   "answers": [
+    "Маршрутизатор.",
+    "Модем.",
+    "Коммутатор.",
+    "Концентратор."
+   ]
+  },
+  "expl": {
+   "pl": "Każdy port przełącznika to osobna domena kolizyjna, więc wymiana koncentratora na switch dzieli sieć i ogranicza kolizje, zachowując jedną sieć LAN. Koncentrator tworzy jedną wspólną domenę kolizyjną.",
+   "ru": "Каждый порт коммутатора — отдельный домен коллизий, поэтому замена концентратора на коммутатор делит сеть и уменьшает коллизии, сохраняя одну LAN. Концентратор образует один общий домен коллизий."
+  }
+ },
+ "eb2f10e4": {
+  "ru": {
+   "stem": "ARP (Address Resolution Protocol) — это протокол, выполняющий преобразование IP-адреса в",
+   "answers": [
+    "адрес электронной почты.",
+    "доменное имя.",
+    "имя компьютера.",
+    "аппаратный адрес."
+   ]
+  },
+  "expl": {
+   "pl": "ARP ustala adres MAC (sprzętowy) karty sieciowej na podstawie znanego adresu IP w sieci lokalnej. Zamianę nazw domenowych na IP wykonuje DNS.",
+   "ru": "ARP определяет MAC-адрес (аппаратный) сетевой карты по известному IP-адресу в локальной сети. Преобразование доменных имён в IP выполняет DNS."
+  },
+  "topic": "protocols"
+ },
+ "ee348d60": {
+  "ru": {
+   "stem": "Вертикальная кабельная система в структурированной сети соединяет",
+   "answers": [
+    "две абонентские розетки.",
+    "главный распределительный пункт с абонентской розеткой.",
+    "промежуточный распределительный пункт с абонентской розеткой.",
+    "главный распределительный пункт с промежуточными распределительными пунктами."
+   ]
+  },
+  "expl": {
+   "pl": "Okablowanie pionowe (szkieletowe) łączy główny punkt rozdzielczy (MDF) z pośrednimi punktami rozdzielczymi (IDF), np. na piętrach. Połączenie punktu rozdzielczego z gniazdem abonenckim to okablowanie poziome.",
+   "ru": "Вертикальная (магистральная) кабельная система соединяет главный распределительный пункт (MDF) с промежуточными (IDF), например на этажах. Соединение распределительного пункта с абонентской розеткой — горизонтальная кабельная система."
+  },
+  "topic": "cabling"
+ },
+ "fb3b1022": {
+  "ru": {
+   "stem": "Рассчитайте стоимость брутто кабеля UTP Cat 6, использованного для подключения 5 абонентских точек к распределительному пункту, если среднее расстояние между абонентской точкой и распределительным пунктом 8 м, а цена брутто 1 м кабеля 1 zł. При расчёте нужно учесть запас 2 м кабеля на каждую абонентскую точку.",
+   "answers": [
+    "32 zł",
+    "40 zł",
+    "45 zł",
+    "50 zł"
+   ]
+  },
+  "expl": {
+   "pl": "Na każdy punkt: 8 m + 2 m zapasu = 10 m. Dla 5 punktów: 5 × 10 m = 50 m × 1 zł = 50 zł.",
+   "ru": "На каждую точку: 8 м + 2 м запаса = 10 м. Для 5 точек: 5 × 10 м = 50 м × 1 zł = 50 zł."
+  },
+  "topic": "cabling"
+ },
+ "fb7ff3c9": {
+  "ru": {
+   "stem": "Образ диска создают, чтобы",
+   "answers": [
+    "ускорить работу с выбранными файлами на этом диске.",
+    "защитить данные от неуполномоченных пользователей.",
+    "защитить приложения от неуполномоченных пользователей.",
+    "защитить систему, приложения и данные от серьёзного сбоя компьютера."
+   ]
+  },
+  "expl": {
+   "pl": "Obraz dysku to kompletna kopia partycji/dysku (system, programy, dane), z której po awarii można szybko odtworzyć cały stan komputera. Nie służy do ochrony przed nieuprawnionym dostępem ani do przyspieszania pracy.",
+   "ru": "Образ диска — полная копия раздела/диска (система, программы, данные), из которой после сбоя можно быстро восстановить всё состояние компьютера. Он не защищает от несанкционированного доступа и не ускоряет работу."
+  }
+ },
+ "fc1722b6": {
+  "ru": {
+   "stem": "Прерывая работу за компьютером, мы сохраняем возможность быстро вернуться к работе, выбрав в Windows опцию",
+   "answers": [
+    "выхода из системы.",
+    "спящего режима (режима ожидания).",
+    "завершения работы.",
+    "перезагрузки."
+   ]
+  },
+  "expl": {
+   "pl": "Stan wstrzymania (uśpienie) zachowuje otwarte programy i dokumenty w pamięci RAM przy minimalnym poborze energii, więc praca wznawia się po kilku sekundach. Wylogowanie, zamknięcie i restart zamykają aplikacje.",
+   "ru": "Режим ожидания (сон) сохраняет открытые программы и документы в RAM при минимальном энергопотреблении, поэтому работа возобновляется за секунды. Выход из системы, завершение работы и перезагрузка закрывают приложения."
+  }
+ },
+ "ffd79551": {
+  "ru": {
+   "stem": "Какой IP-адрес в десятичной системе соответствует IP-адресу 10101010.00001111.10100000.11111100, записанному в двоичной системе?",
+   "answers": [
+    "170.14.160.252",
+    "170.15.160.252",
+    "171.14.159.252",
+    "171.15.159.252"
+   ]
+  },
+  "expl": {
+   "pl": "10101010 = 128+32+8+2 = 170; 00001111 = 15; 10100000 = 128+32 = 160; 11111100 = 252. Wynik: 170.15.160.252.",
+   "ru": "10101010 = 128+32+8+2 = 170; 00001111 = 15; 10100000 = 128+32 = 160; 11111100 = 252. Итог: 170.15.160.252."
+  }
+ },
+ "007b1fee": {
+  "ru": {
+   "stem": "Пользователь Windows получает сообщения о нехватке виртуальной памяти. Эту проблему можно решить путём",
+   "answers": [
+    "установки дополнительной кэш-памяти процессора.",
+    "увеличения размера файла virtualfile.sys.",
+    "установки дополнительного диска.",
+    "увеличения оперативной памяти RAM."
+   ]
+  },
+  "expl": {
+   "pl": "Dołożenie pamięci RAM zmniejsza potrzebę korzystania z pamięci wirtualnej i usuwa komunikaty o jej braku. Plik wymiany w Windows nazywa się pagefile.sys, a nie virtualfile.sys, a cache procesora nie da się „domontować”.",
+   "ru": "Увеличение RAM снижает потребность в виртуальной памяти и устраняет сообщения о её нехватке. Файл подкачки в Windows называется pagefile.sys, а не virtualfile.sys, а кэш процессора нельзя «доустановить»."
+  }
+ },
+ "00e77774": {
+  "ru": {
+   "stem": "Отсутствие устойчивости к потере данных из-за физического отказа одного из дисков — характерная черта",
+   "answers": [
+    "RAID 3",
+    "RAID 2",
+    "RAID 1",
+    "RAID 0"
+   ]
+  },
+  "expl": {
+   "pl": "RAID 0 (striping) dzieli dane na paski między dyskami bez żadnej redundancji – awaria jednego dysku niszczy całą macierz. RAID 1 to lustro, a RAID 2 i 3 mają kody korekcyjne/parzystość.",
+   "ru": "RAID 0 (striping) разбивает данные на полосы между дисками без избыточности — отказ одного диска уничтожает весь массив. RAID 1 — зеркало, RAID 2 и 3 используют коды коррекции/чётность."
+  }
+ },
+ "00fa2754": {
+  "ru": {
+   "stem": "Пользователь собирается установить 32-битную ОС Windows 7. Какой минимальный объём RAM должен иметь компьютер, чтобы была возможна работа системы в графическом режиме?",
+   "answers": [
+    "256 MB",
+    "512 MB",
+    "1 GB",
+    "2 GB"
+   ]
+  },
+  "expl": {
+   "pl": "Wymagania minimalne Windows 7: wersja 32-bitowa – 1 GB RAM, wersja 64-bitowa – 2 GB RAM. Wartość 2 GB dotyczy więc systemu 64-bitowego.",
+   "ru": "Минимальные требования Windows 7: 32-битная версия — 1 GB RAM, 64-битная — 2 GB RAM. Значение 2 GB относится к 64-битной системе."
+  }
+ },
+ "01074cd4": {
+  "ru": {
+   "stem": "Укажите правильный вид маски",
+   "answers": [
+    "255.255.255.64",
+    "255.255.255.96",
+    "255.255.255.192",
+    "255.255.255.228"
+   ]
+  },
+  "expl": {
+   "pl": "Maska musi mieć ciągłe jedynki od lewej: 192 = 11000000 (poprawnie, /26). 64 = 01000000, 96 = 01100000, 228 = 11100100 – mają przerwy w ciągu jedynek.",
+   "ru": "Маска должна иметь непрерывные единицы слева: 192 = 11000000 (верно, /26). 64 = 01000000, 96 = 01100000, 228 = 11100100 — в них единицы идут с разрывами."
+  }
+ },
+ "04f7bfd0": {
+  "ru": {
+   "stem": "На диск нужно записать 100 тысяч отдельных файлов, каждый размером 2570 байт. Записанные файлы займут меньше всего места на диске с единицей распределения (кластером)",
+   "answers": [
+    "8192 байта.",
+    "4096 байт.",
+    "3072 байта.",
+    "2048 байт."
+   ]
+  },
+  "expl": {
+   "pl": "Plik 2570 B zajmuje pełne klastry: 8192 B → 1 klaster = 8192 B; 4096 B → 4096 B; 3072 B → 1 klaster = 3072 B; 2048 B → 2 klastry = 4096 B. Najmniej marnuje klaster 3072 B.",
+   "ru": "Файл 2570 B занимает целые кластеры: 8192 B → 8192 B; 4096 B → 4096 B; 3072 B → 1 кластер = 3072 B; 2048 B → 2 кластера = 4096 B. Меньше всего потерь при кластере 3072 B."
+  }
+ },
+ "05497ea6": {
+  "ru": {
+   "stem": "Преобразованием доменных имён в сетевые адреса занимается служба",
+   "answers": [
+    "DNS",
+    "DHCP",
+    "SMTP",
+    "SNMP"
+   ]
+  },
+  "expl": {
+   "pl": "DNS (Domain Name System) zamienia nazwy domenowe (np. www.cke.gov.pl) na adresy IP. DHCP przydziela adresy IP, SMTP wysyła pocztę, a SNMP służy do zarządzania urządzeniami.",
+   "ru": "DNS (Domain Name System) преобразует доменные имена (например, www.cke.gov.pl) в IP-адреса. DHCP выдаёт IP-адреса, SMTP отправляет почту, SNMP служит для управления устройствами."
+  },
+  "topic": "protocols"
+ },
+ "0550179f": {
+  "ru": {
+   "stem": "С каким параметром нужно вызвать команду netstat, чтобы была выведена статистика сетевого интерфейса (количество отправленных и полученных байтов и пакетов)?",
+   "answers": [
+    "-a",
+    "-e",
+    "-n",
+    "-o"
+   ]
+  },
+  "expl": {
+   "pl": "netstat -e wyświetla statystyki Ethernet: liczbę wysłanych i odebranych bajtów oraz pakietów. -a pokazuje wszystkie połączenia i porty nasłuchujące, -n adresy w postaci liczbowej, -o identyfikator procesu (PID).",
+   "ru": "netstat -e выводит статистику Ethernet: число отправленных и полученных байтов и пакетов. -a показывает все соединения и слушающие порты, -n — адреса в числовом виде, -o — идентификатор процесса (PID)."
+  },
+  "topic": "windows"
+ },
+ "0920049a": {
+  "ru": {
+   "stem": "Какой протокол используется службой VPN для инкапсуляции IP-пакетов в публичной сети?",
+   "answers": [
+    "PPTP",
+    "HTTP",
+    "SMTP",
+    "SNMP"
+   ]
+  },
+  "expl": {
+   "pl": "PPTP (Point-to-Point Tunneling Protocol) tworzy tunel VPN, enkapsulując pakiety IP w ramki PPP przesyłane przez sieć publiczną. HTTP, SMTP i SNMP nie służą do tunelowania.",
+   "ru": "PPTP (Point-to-Point Tunneling Protocol) создаёт VPN-туннель, инкапсулируя IP-пакеты в кадры PPP, передаваемые по публичной сети. HTTP, SMTP и SNMP для туннелирования не предназначены."
+  }
+ },
+ "0a0964ca": {
+  "ru": {
+   "stem": "В операционной системе Ubuntu для мониторинга запущенных процессов и программ в реальном времени служит команда",
+   "answers": [
+    "ps",
+    "top",
+    "proc",
+    "sysinfo"
+   ]
+  },
+  "expl": {
+   "pl": "top wyświetla na bieżąco odświeżaną listę procesów wraz z użyciem CPU i pamięci. ps pokazuje jedynie jednorazową migawkę procesów w chwili wywołania.",
+   "ru": "top выводит постоянно обновляемый список процессов с загрузкой CPU и памяти. ps показывает лишь однократный снимок процессов на момент вызова."
+  }
+ },
+ "0cc2d7ab": {
+  "ru": {
+   "stem": "Сколько максимально каналов из доступного спектра каналов стандарта 802.11b можно использовать на территории Польши?",
+   "answers": [
+    "13 каналов.",
+    "11 каналов.",
+    "10 каналов.",
+    "9 каналов."
+   ]
+  },
+  "expl": {
+   "pl": "W Europie (w tym w Polsce) w paśmie 2,4 GHz dozwolone są kanały 1–13, czyli 13 kanałów. 11 kanałów to limit w USA, a kanał 14 jest dopuszczony tylko w Japonii.",
+   "ru": "В Европе (включая Польшу) в диапазоне 2,4 GHz разрешены каналы 1–13, т.е. 13 каналов. 11 каналов — ограничение в США, а канал 14 разрешён только в Японии."
+  }
+ },
+ "0d2d5bbf": {
+  "ru": {
+   "stem": "Лицензия Windows OEM не позволяет заменить",
+   "answers": [
+    "исправный блок питания на модель с лучшими параметрами.",
+    "исправную материнскую плату на модель с лучшими параметрами.",
+    "исправную видеокарту на модель с лучшими параметрами.",
+    "исправный жёсткий диск на модель с лучшими параметрами."
+   ]
+  },
+  "expl": {
+   "pl": "Licencja OEM jest przypisana do pierwszego komputera, a za „nowy komputer” uznaje się maszynę z wymienioną płytą główną. Wymiana zasilacza, karty graficznej czy dysku nie narusza licencji.",
+   "ru": "Лицензия OEM привязана к первому компьютеру, а «новым компьютером» считается машина с заменённой материнской платой. Замена блока питания, видеокарты или диска лицензию не нарушает."
+  }
+ },
+ "0d4a45c0": {
+  "ru": {
+   "stem": "Для отображения содержимого каталога в системе Linux служит команда",
+   "answers": [
+    "ls",
+    "cd",
+    "rpm",
+    "pwd"
+   ]
+  },
+  "expl": {
+   "pl": "ls (list) wyświetla listę plików i katalogów. cd zmienia katalog bieżący, pwd pokazuje ścieżkę bieżącego katalogu, a rpm to menedżer pakietów.",
+   "ru": "ls (list) выводит список файлов и каталогов. cd меняет текущий каталог, pwd показывает путь текущего каталога, rpm — менеджер пакетов."
+  }
+ },
+ "0fd66a57": {
+  "ru": {
+   "stem": "Какой наибольший IP-адрес в подсети 196.10.20.0/26?",
+   "answers": [
+    "196.10.20.0",
+    "196.10.20.1",
+    "196.10.20.63",
+    "196.10.20.64"
+   ]
+  },
+  "expl": {
+   "pl": "/26 to blok 2^6 = 64 adresów: 196.10.20.0–196.10.20.63. Największy adres w podsieci (rozgłoszeniowy) to 196.10.20.63; 196.10.20.64 należy już do następnej podsieci.",
+   "ru": "/26 — блок из 2^6 = 64 адресов: 196.10.20.0–196.10.20.63. Наибольший адрес подсети (широковещательный) — 196.10.20.63; 196.10.20.64 уже относится к следующей подсети."
+  }
+ },
+ "0ff303d2": {
+  "ru": {
+   "stem": "Какой протокол обеспечивает шифрование соединения?",
+   "answers": [
+    "SSH",
+    "DNS",
+    "DHCP",
+    "TELNET"
+   ]
+  },
+  "expl": {
+   "pl": "SSH (Secure Shell) szyfruje całą sesję, w tym hasła. TELNET realizuje podobny zdalny terminal, ale przesyła dane jawnym tekstem.",
+   "ru": "SSH (Secure Shell) шифрует весь сеанс, включая пароли. TELNET реализует похожий удалённый терминал, но передаёт данные открытым текстом."
+  }
+ },
+ "14ad4b65": {
+  "ru": {
+   "stem": "Укажите порт по умолчанию для передачи команд (command) сервера службы FTP?",
+   "answers": [
+    "20",
+    "21",
+    "25",
+    "110"
+   ]
+  },
+  "expl": {
+   "pl": "Kanał sterujący FTP (polecenia) używa portu TCP 21, a port 20 służy do przesyłania danych. 25 to SMTP, 110 to POP3.",
+   "ru": "Управляющий канал FTP (команды) использует порт TCP 21, а порт 20 — для передачи данных. 25 — SMTP, 110 — POP3."
+  },
+  "topic": "protocols"
+ },
+ "15100e20": {
+  "ru": {
+   "stem": "Беспроводную передачу данных обеспечивает стандарт, элементом которого является интерфейс",
+   "answers": [
+    "LFH60",
+    "HDMI",
+    "IrDA",
+    "DVI"
+   ]
+  },
+  "expl": {
+   "pl": "IrDA to standard bezprzewodowej transmisji danych w podczerwieni na krótkie odległości. HDMI, DVI i LFH60 to złącza przewodowe (wideo).",
+   "ru": "IrDA — стандарт беспроводной передачи данных в инфракрасном диапазоне на короткие расстояния. HDMI, DVI и LFH60 — проводные (видео) разъёмы."
+  },
+  "topic": "peripherals"
+ },
+ "1659f022": {
+  "ru": {
+   "stem": "На рисунке показан результат тестирования компьютерной сети командой",
+   "answers": [
+    "ipconfig",
+    "tracert",
+    "netstat",
+    "ping"
+   ]
+  },
+  "expl": {
+   "pl": "Komunikat „Badanie wp.pl [212.77.100.101] z użyciem 32 bajtów danych” i odpowiedzi „bajtów=32 czas=… TTL=…” to typowy wynik polecenia ping (ICMP echo). tracert wypisywałby kolejne przeskoki (routery) na trasie.",
+   "ru": "Строка «Badanie wp.pl [212.77.100.101] z użyciem 32 bajtów danych» и ответы «bajtów=32 czas=… TTL=…» — типичный вывод команды ping (ICMP echo). tracert вывел бы список промежуточных узлов (маршрутизаторов)."
+  }
+ },
+ "17629db0": {
+  "ru": {
+   "stem": "В операционной системе Ubuntu учётную запись пользователя student можно удалить командой",
+   "answers": [
+    "userdel student",
+    "del user student",
+    "net user student /del",
+    "user net student /del"
+   ]
+  },
+  "expl": {
+   "pl": "W Linuksie konto usuwa się poleceniem userdel (z opcją -r także katalog domowy). net user … /del to polecenie systemu Windows.",
+   "ru": "В Linux учётная запись удаляется командой userdel (с опцией -r — и домашний каталог). net user … /del — команда Windows."
+  }
+ },
+ "18772f1c": {
+  "ru": {
+   "stem": "Какое шифрование, применяемое в беспроводных сетях, наименее устойчиво к взлому паролей?",
+   "answers": [
+    "WPA TKIP",
+    "WPA AES",
+    "WPA2",
+    "WEP"
+   ]
+  },
+  "expl": {
+   "pl": "WEP ma poważne słabości algorytmu RC4 i krótkiego wektora IV – klucz można złamać w kilka minut. WPA, a zwłaszcza WPA2 z AES, są znacznie bezpieczniejsze.",
+   "ru": "WEP имеет серьёзные уязвимости (RC4, короткий вектор IV) — ключ взламывается за несколько минут. WPA и особенно WPA2 с AES значительно надёжнее."
+  }
+ },
+ "1ccc2ab7": {
+  "ru": {
+   "stem": "Postcardware — это вид",
+   "answers": [
+    "сетевой карты.",
+    "компьютерного вируса.",
+    "лицензии на программное обеспечение.",
+    "службы электронной почты."
+   ]
+  },
+  "expl": {
+   "pl": "Postcardware to licencja, w której autor udostępnia program za darmo, prosząc jedynie o przysłanie pocztówki. To odmiana freeware, nie wirus ani usługa.",
+   "ru": "Postcardware — лицензия, при которой автор распространяет программу бесплатно, прося лишь прислать открытку. Это разновидность freeware, а не вирус и не служба."
+  },
+  "topic": "law_bhp"
+ },
+ "1d19bf1a": {
+  "ru": {
+   "stem": "На рисунке представлен графический символ",
+   "answers": [
+    "маршрутизатора.",
+    "моста.",
+    "регенератора.",
+    "концентратора."
+   ]
+  },
+  "expl": {
+   "pl": "Walec (okrągły „krążek”) ze strzałkami skierowanymi do środka i na zewnątrz to standardowy symbol rutera na schematach sieci. Przełącznik ma kształt płaskiego prostopadłościanu.",
+   "ru": "Цилиндр («шайба») со стрелками, направленными внутрь и наружу, — стандартный символ маршрутизатора на схемах сетей. Коммутатор изображается плоским параллелепипедом."
+  }
+ },
+ "1f2c1668": {
+  "ru": {
+   "stem": "Сколько максимально основных разделов можно создать на жёстком диске с MBR?",
+   "answers": [
+    "4",
+    "8",
+    "24",
+    "26"
+   ]
+  },
+  "expl": {
+   "pl": "Tablica partycji MBR ma 4 wpisy, więc można utworzyć maksymalnie 4 partycje podstawowe (lub 3 podstawowe + 1 rozszerzoną z dyskami logicznymi).",
+   "ru": "Таблица разделов MBR содержит 4 записи, поэтому можно создать максимум 4 основных раздела (или 3 основных + 1 расширенный с логическими дисками)."
+  }
+ },
+ "209b6ea0": {
+  "ru": {
+   "stem": "Какой протокол отвечает за преобразование IP-адресов в адреса управления доступом к среде (MAC)?",
+   "answers": [
+    "ARP",
+    "RARP",
+    "SMTP",
+    "SNMP"
+   ]
+  },
+  "expl": {
+   "pl": "ARP (Address Resolution Protocol) ustala adres MAC na podstawie adresu IP. RARP działa odwrotnie – zamienia MAC na IP.",
+   "ru": "ARP (Address Resolution Protocol) определяет MAC-адрес по IP-адресу. RARP работает наоборот — преобразует MAC в IP."
+  },
+  "topic": "protocols"
+ },
+ "20d31838": {
+  "ru": {
+   "stem": "Чтобы увеличить или уменьшить значки на рабочем столе, нужно вращать колёсико мыши, одновременно удерживая клавишу",
+   "answers": [
+    "SHIFT",
+    "CTRL",
+    "ALT",
+    "TAB"
+   ]
+  },
+  "expl": {
+   "pl": "W Windows Ctrl + kółko myszy zmienia rozmiar ikon na pulpicie i w Eksploratorze (oraz powiększenie w wielu programach, np. przeglądarce).",
+   "ru": "В Windows Ctrl + колёсико мыши меняет размер значков на рабочем столе и в Проводнике (и масштаб во многих программах, например в браузере)."
+  },
+  "topic": "windows"
+ },
+ "2109674a": {
+  "ru": {
+   "stem": "В системе Linux пароли пользователей хранятся в файле",
+   "answers": [
+    "users",
+    "groups",
+    "passwd",
+    "password"
+   ]
+  },
+  "expl": {
+   "pl": "Spośród podanych odpowiedzią jest plik /etc/passwd – historycznie zawierał hasła; we współczesnych systemach są w nim konta, a skróty haseł przeniesiono do /etc/shadow. Pliki users i password nie istnieją w tej roli.",
+   "ru": "Из перечисленных правильный — /etc/passwd: исторически в нём хранились пароли; в современных системах там учётные записи, а хеши паролей перенесены в /etc/shadow. Файлы users и password такой роли не играют."
+  },
+  "topic": "linux"
+ },
+ "25a8b3e3": {
+  "ru": {
+   "stem": "Для управления программами и службами, запускаемыми вместе со стартом операционной системы в Windows 7, следует использовать программу",
+   "answers": [
+    "config.sys",
+    "autorun.inf",
+    "autoexec.bat",
+    "msconfig.exe"
+   ]
+  },
+  "expl": {
+   "pl": "msconfig.exe (Konfiguracja systemu) ma karty Uruchamianie i Usługi, w których włącza się lub wyłącza programy i usługi startujące z systemem. config.sys i autoexec.bat to pliki z czasów MS-DOS, a autorun.inf dotyczy autostartu nośnika.",
+   "ru": "msconfig.exe (Конфигурация системы) имеет вкладки «Автозагрузка» и «Службы», где включают/отключают программы и службы, стартующие с системой. config.sys и autoexec.bat — файлы времён MS-DOS, autorun.inf отвечает за автозапуск носителя."
+  },
+  "topic": "windows"
+ },
+ "26d1566c": {
+  "ru": {
+   "stem": "Буква S в протоколе FTPS означает защиту передаваемых данных путём",
+   "answers": [
+    "входа в систему.",
+    "авторизации.",
+    "шифрования.",
+    "аутентификации."
+   ]
+  },
+  "expl": {
+   "pl": "FTPS to FTP rozszerzony o SSL/TLS (Secure) – dane i hasła są przesyłane w postaci zaszyfrowanej. Zwykłe FTP przesyła je otwartym tekstem.",
+   "ru": "FTPS — это FTP с SSL/TLS (Secure): данные и пароли передаются в зашифрованном виде. Обычный FTP передаёт их открытым текстом."
+  },
+  "topic": "protocols"
+ },
+ "284a003e": {
+  "ru": {
+   "stem": "В документации материнской платы есть информация «Поддержка S/PDIF Out». Это означает, что материнская плата содержит",
+   "answers": [
+    "цифровой разъём видеосигнала.",
+    "цифровой разъём аудиосигнала.",
+    "аналоговый разъём выхода видеосигнала.",
+    "аналоговый разъём входа видеосигнала."
+   ]
+  },
+  "expl": {
+   "pl": "S/PDIF (Sony/Philips Digital Interface) to cyfrowe złącze audio (koncentryczne lub optyczne), np. do podłączenia amplitunera. Nie ma związku z sygnałem wideo.",
+   "ru": "S/PDIF (Sony/Philips Digital Interface) — цифровой аудиоразъём (коаксиальный или оптический), например для подключения ресивера. К видео отношения не имеет."
+  }
+ },
+ "2a9f889c": {
+  "ru": {
+   "stem": "Команда msconfig запускает в системе Windows",
+   "answers": [
+    "панель управления.",
+    "диспетчер задач.",
+    "диспетчер файлов.",
+    "средство настройки системы."
+   ]
+  },
+  "expl": {
+   "pl": "msconfig otwiera narzędzie Konfiguracja systemu (opcje rozruchu, usługi, autostart). Menedżer zadań uruchamia się poleceniem taskmgr.",
+   "ru": "msconfig открывает средство «Конфигурация системы» (параметры загрузки, службы, автозагрузка). Диспетчер задач запускается командой taskmgr."
+  },
+  "topic": "windows"
+ },
+ "2abf10eb": {
+  "ru": {
+   "stem": "В технологии Ethernet 100BaseTX требуется применение витой пары",
+   "answers": [
+    "категории 1",
+    "категории 2",
+    "категории 3",
+    "категории 5"
+   ]
+  },
+  "expl": {
+   "pl": "100BaseTX (Fast Ethernet, 100 Mb/s) wymaga skrętki co najmniej kategorii 5 (pasmo 100 MHz). Kategoria 3 wystarcza tylko dla 10BaseT.",
+   "ru": "100BaseTX (Fast Ethernet, 100 Мбит/с) требует витой пары не ниже категории 5 (полоса 100 MHz). Категории 3 хватает только для 10BaseT."
+  },
+  "topic": "cabling"
+ },
+ "30ec9bf3": {
+  "ru": {
+   "stem": "На рисунке показана панель конфигурации беспроводного устройства доступа, которая позволяет",
+   "answers": [
+    "назначить MAC-адреса сетевых карт.",
+    "настроить сервер DHCP.",
+    "назначить маску подсети.",
+    "задать имя хоста."
+   ]
+  },
+  "expl": {
+   "pl": "Panel „Network Address Server Settings (DHCP)” zawiera włączenie serwera DHCP, adres początkowy puli (192.168.1.100), maksymalną liczbę klientów i czas dzierżawy – to konfiguracja serwera DHCP.",
+   "ru": "Панель «Network Address Server Settings (DHCP)» содержит включение сервера DHCP, начальный адрес пула (192.168.1.100), максимальное число клиентов и время аренды — это настройка сервера DHCP."
+  },
+  "topic": "netdevices"
+ },
+ "322f26a7": {
+  "ru": {
+   "stem": "Какой протокол связи служит для передачи файлов по схеме клиент-сервер и может работать в двух режимах: активном и пассивном?",
+   "answers": [
+    "IP",
+    "FTP",
+    "DNS",
+    "EI-SI"
+   ]
+  },
+  "expl": {
+   "pl": "FTP działa w trybie aktywnym (serwer łączy się z klientem z portu 20) lub pasywnym (klient łączy się z portem wskazanym przez serwer, co ułatwia pracę za NAT/zaporą).",
+   "ru": "FTP работает в активном режиме (сервер подключается к клиенту с порта 20) или пассивном (клиент подключается к порту, указанному сервером, что удобно за NAT/брандмауэром)."
+  },
+  "topic": "protocols"
+ },
+ "34342964": {
+  "ru": {
+   "stem": "На фотографии изображена",
+   "answers": [
+    "чернила.",
+    "тонер.",
+    "картридж.",
+    "красящая лента."
+   ]
+  },
+  "expl": {
+   "pl": "Na zdjęciu jest kaseta z taśmą barwiącą – materiał eksploatacyjny drukarek igłowych. Tusz i toner są w pojemnikach/kartridżach drukarek atramentowych i laserowych.",
+   "ru": "На фото кассета с красящей лентой — расходный материал матричных принтеров. Чернила и тонер находятся в картриджах струйных и лазерных принтеров."
+  }
+ },
+ "35561687": {
+  "ru": {
+   "stem": "Какой стандарт использует частоту 5 GHz?",
+   "answers": [
+    "802.11",
+    "802.11a",
+    "802.11b",
+    "802.11g"
+   ]
+  },
+  "expl": {
+   "pl": "802.11a pracuje w paśmie 5 GHz (do 54 Mb/s). 802.11, 802.11b i 802.11g używają pasma 2,4 GHz.",
+   "ru": "802.11a работает в диапазоне 5 GHz (до 54 Мбит/с). 802.11, 802.11b и 802.11g используют 2,4 GHz."
+  }
+ },
+ "37f72b15": {
+  "ru": {
+   "stem": "К вредоносному ПО типа malware (от англ. malicious software) не относится ПО типа",
+   "answers": [
+    "computer aided manufacturing.",
+    "scumware.",
+    "keylogger.",
+    "exploit."
+   ]
+  },
+  "expl": {
+   "pl": "CAM (Computer Aided Manufacturing) to oprogramowanie wspomagające produkcję, np. sterowanie obrabiarkami CNC – jest legalne. Scumware, keylogger i exploit to odmiany złośliwego oprogramowania.",
+   "ru": "CAM (Computer Aided Manufacturing) — ПО для автоматизации производства, например управления станками ЧПУ, вполне легальное. Scumware, keylogger и exploit — виды вредоносного ПО."
+  }
+ },
+ "3a4d35f6": {
+  "ru": {
+   "stem": "Какая команда позволяет проверить значение записи MX для указанного домена?",
+   "answers": [
+    "Ipconfig /registrdns.",
+    "Ipconfig /release.",
+    "Nslookup.",
+    "Tracert."
+   ]
+  },
+  "expl": {
+   "pl": "nslookup odpytuje serwer DNS; polecenie nslookup -type=mx domena pokaże rekordy MX (serwery poczty). ipconfig /registerdns tylko rejestruje komputer w DNS, a /release zwalnia adres DHCP.",
+   "ru": "nslookup опрашивает DNS-сервер; команда nslookup -type=mx домен покажет записи MX (почтовые серверы). ipconfig /registerdns лишь регистрирует компьютер в DNS, а /release освобождает адрес DHCP."
+  },
+  "stemFix": "Która instrukcja pozwala sprawdzić wartość rekordu MX dla wskazanej domeny?",
+  "topic": "protocols",
+  "doubt": "Oryginalna treść (IGMP) nie pasuje do odpowiedzi; treść zamieniona z pytaniem 72af5887 – przywrócono pytanie o rekord MX."
+ },
+ "3c8f5c90": {
+  "ru": {
+   "stem": "В системе Windows 7 для копирования каталога c:\\test вместе с подкаталогами на съёмный диск f:\\ нужно использовать команду",
+   "answers": [
+    "copy c:\\test f:\\test /E",
+    "copy f:\\test c:\\test /E",
+    "xcopy c:\\test f:\\test /E",
+    "xcopy f:\\test c:\\test /E"
+   ]
+  },
+  "expl": {
+   "pl": "xcopy kopiuje katalogi z podkatalogami (/E – także puste), a składnia to źródło, potem cel: xcopy c:\\test f:\\test /E. Polecenie copy nie obsługuje kopiowania drzewa katalogów.",
+   "ru": "xcopy копирует каталоги с подкаталогами (/E — включая пустые), синтаксис: сначала источник, затем цель: xcopy c:\\test f:\\test /E. Команда copy не умеет копировать дерево каталогов."
+  },
+  "topic": "windows"
+ },
+ "3f048cf1": {
+  "ru": {
+   "stem": "Задача файлового сервера в компьютерных сетях LAN —",
+   "answers": [
+    "управление работой коммутаторов и маршрутизаторов.",
+    "управление данными на локальных компьютерах.",
+    "совместное использование одних и тех же ресурсов.",
+    "выполнение вычислительных процессов на локальных компьютерах."
+   ]
+  },
+  "expl": {
+   "pl": "Serwer plików przechowuje dane centralnie i udostępnia je w sieci, dzięki czemu wielu użytkowników korzysta ze wspólnych zasobów (folderów, dokumentów). Nie zarządza urządzeniami sieciowymi.",
+   "ru": "Файловый сервер централизованно хранит данные и предоставляет их в сети, поэтому многие пользователи совместно используют общие ресурсы (папки, документы). Сетевыми устройствами он не управляет."
+  },
+  "topic": "winserver"
+ },
+ "3f479b5c": {
+  "ru": {
+   "stem": "Сеть с адресом 192.168.1.128/29 позволяет подключить",
+   "answers": [
+    "6 хостов.",
+    "8 хостов.",
+    "12 хостов.",
+    "16 хостов."
+   ]
+  },
+  "expl": {
+   "pl": "/29 zostawia 32−29 = 3 bity na hosty: 2^3 = 8 adresów, minus adres sieci i rozgłoszeniowy = 6 hostów.",
+   "ru": "/29 оставляет 32−29 = 3 бита на хосты: 2^3 = 8 адресов, минус адрес сети и широковещательный = 6 хостов."
+  }
+ },
+ "40fbb02e": {
+  "ru": {
+   "stem": "Запись пути к сетевому ресурсу в соответствии с UNC (Universal Naming Convention) имеет вид",
+   "answers": [
+    "\\\\имя_ресурса\\имя_компьютера.",
+    "//имя_ресурса/имя_компьютера.",
+    "\\\\имя_компьютера\\имя_ресурса.",
+    "//имя_компьютера/имя_ресурса."
+   ]
+  },
+  "expl": {
+   "pl": "Ścieżka UNC zaczyna się od dwóch ukośników wstecznych, potem nazwa komputera (serwera), a następnie nazwa udziału: \\\\serwer\\udzial. Ukośniki „/” są używane w Linuksie i URL-ach.",
+   "ru": "Путь UNC начинается с двух обратных слэшей, затем имя компьютера (сервера), затем имя общего ресурса: \\\\сервер\\ресурс. Прямые слэши «/» используются в Linux и URL."
+  }
+ },
+ "43e0745f": {
+  "ru": {
+   "stem": "Система S.M.A.R.T. служит для мониторинга работы и выявления ошибок",
+   "answers": [
+    "материнской платы.",
+    "карт расширения.",
+    "жёстких дисков.",
+    "приводов CD/DVD."
+   ]
+  },
+  "expl": {
+   "pl": "S.M.A.R.T. (Self-Monitoring, Analysis and Reporting Technology) to mechanizm wbudowany w dyski HDD/SSD, który śledzi parametry (np. realokowane sektory, temperaturę) i ostrzega przed awarią.",
+   "ru": "S.M.A.R.T. (Self-Monitoring, Analysis and Reporting Technology) — механизм, встроенный в диски HDD/SSD, отслеживающий параметры (переназначенные секторы, температуру) и предупреждающий о сбое."
+  },
+  "topic": "hardware"
+ },
+ "46554f2b": {
+  "ru": {
+   "stem": "Установка Linux и Windows 7 прошла без затруднений. Системы установились корректно с настройками по умолчанию. На том же компьютере при идентичной конфигурации во время установки Windows XP появилось сообщение об отсутствии жёстких дисков, что может свидетельствовать о",
+   "answers": [
+    "неправильной установке перемычек на жёстком диске.",
+    "логическом повреждении жёсткого диска.",
+    "неправильно настроенном порядке загрузки приводов.",
+    "отсутствии драйверов."
+   ]
+  },
+  "expl": {
+   "pl": "Windows XP nie zawiera sterowników kontrolerów SATA w trybie AHCI/RAID, więc nie widzi dysku, który nowsze systemy obsługują bez problemu. Trzeba dostarczyć sterownik (F6) lub przełączyć tryb w BIOS na IDE.",
+   "ru": "Windows XP не содержит драйверов контроллеров SATA в режиме AHCI/RAID, поэтому не видит диск, который новые системы распознают без проблем. Нужно подать драйвер (F6) или переключить режим в BIOS на IDE."
+  },
+  "topic": "windows"
+ },
+ "46bd2932": {
+  "ru": {
+   "stem": "Какой из протоколов является шифрованным терминальным протоколом?",
+   "answers": [
+    "SSH",
+    "TFTP",
+    "telnet",
+    "POP3"
+   ]
+  },
+  "expl": {
+   "pl": "SSH zapewnia zdalny dostęp do terminala z pełnym szyfrowaniem sesji. telnet też jest protokołem terminalowym, ale nieszyfrowanym.",
+   "ru": "SSH обеспечивает удалённый доступ к терминалу с полным шифрованием сеанса. telnet тоже терминальный протокол, но без шифрования."
+  },
+  "topic": "protocols"
+ },
+ "4a45056a": {
+  "ru": {
+   "stem": "Группа, членам которой разрешения можно назначать только в пределах того же домена, что и домен родительской группы, — это группа",
+   "answers": [
+    "глобальная.",
+    "универсальная.",
+    "локальная в домене.",
+    "локальная компьютера."
+   ]
+  },
+  "expl": {
+   "pl": "Grupa lokalna domeny służy do nadawania uprawnień do zasobów wyłącznie w domenie, w której została utworzona (choć może zawierać członków z innych domen). Grupy uniwersalne działają w całym lesie.",
+   "ru": "Локальная группа домена служит для назначения разрешений на ресурсы только в том домене, где она создана (хотя может включать членов из других доменов). Универсальные группы действуют во всём лесу."
+  }
+ },
+ "4d1a3aea": {
+  "ru": {
+   "stem": "Протоколом доступа к пакетной сети со скоростью, не превышающей 2 Мбит/с, является протокол",
+   "answers": [
+    "X.25",
+    "ATM",
+    "VDSL",
+    "Frame Relay"
+   ]
+  },
+  "expl": {
+   "pl": "X.25 to starszy protokół sieci pakietowych z rozbudowaną kontrolą błędów, o przepływności do 2 Mb/s. Frame Relay i ATM oferują znacznie wyższe prędkości.",
+   "ru": "X.25 — старый протокол пакетных сетей с развитым контролем ошибок, скоростью до 2 Мбит/с. Frame Relay и ATM обеспечивают гораздо большие скорости."
+  },
+  "topic": "protocols"
+ },
+ "4ea48b85": {
+  "ru": {
+   "stem": "Какой порт сервера службы WWW используется по умолчанию?",
+   "answers": [
+    "80",
+    "800",
+    "8080",
+    "8081"
+   ]
+  },
+  "expl": {
+   "pl": "Serwer WWW (HTTP) domyślnie nasłuchuje na porcie TCP 80 (HTTPS – 443). Port 8080 jest często używany jako alternatywny, np. dla proxy, ale nie jest domyślny.",
+   "ru": "WWW-сервер (HTTP) по умолчанию слушает порт TCP 80 (HTTPS — 443). Порт 8080 часто используют как альтернативный, например для прокси, но он не стандартный."
+  },
+  "topic": "protocols"
+ },
+ "4eb301e5": {
+  "ru": {
+   "stem": "В лазерном принтере для закрепления отпечатка на листе используются",
+   "answers": [
+    "нагретые валики.",
+    "лучи лазера.",
+    "транспортные ленты.",
+    "пьезоэлектрические головки."
+   ]
+  },
+  "expl": {
+   "pl": "Utrwalacz (fuser) to rozgrzane wałki, które dociskają i topią toner, trwale wtapiając go w papier. Laser tylko naświetla bęben, a głowice piezoelektryczne występują w drukarkach atramentowych.",
+   "ru": "Узел закрепления (фьюзер) — нагретые валики, которые прижимают и расплавляют тонер, вплавляя его в бумагу. Лазер лишь засвечивает барабан, а пьезоэлектрические головки — у струйных принтеров."
+  }
+ },
+ "4ee661fe": {
+  "ru": {
+   "stem": "Пользователь компьютера публично выкладывает свои файлы в сети Интернет. Авторские права будут нарушены, если он выложит",
+   "answers": [
+    "полученный официальный документ.",
+    "собственные авторские фильмы с уличных демонстраций.",
+    "сделанные им самим фотографии военных объектов.",
+    "образ диска операционной системы Windows 7 Home."
+   ]
+  },
+  "expl": {
+   "pl": "Windows 7 jest utworem chronionym prawem autorskim, a jego rozpowszechnianie wymaga zgody Microsoftu. Dokumenty urzędowe nie są przedmiotem prawa autorskiego, a własne filmy czy zdjęcia są utworami użytkownika (zdjęcia obiektów wojskowych mogą łamać inne przepisy, ale nie prawo autorskie).",
+   "ru": "Windows 7 — произведение, охраняемое авторским правом, его распространение требует согласия Microsoft. Официальные документы не охраняются авторским правом, а собственные фильмы и фото — произведения самого пользователя (фото военных объектов могут нарушать другие законы, но не авторское право)."
+  },
+  "topic": "law_bhp"
+ },
+ "4f644adc": {
+  "ru": {
+   "stem": "Эквивалентной записью 2^32 байт является запись",
+   "answers": [
+    "1 GiB",
+    "2 GB",
+    "4 GiB",
+    "8 GB"
+   ]
+  },
+  "expl": {
+   "pl": "2^32 B = 2^2 × 2^30 B = 4 × 1 GiB = 4 GiB (1 GiB = 2^30 B). W systemie dziesiętnym to ok. 4,29 GB, więc pozostałe wartości nie pasują.",
+   "ru": "2^32 B = 2^2 × 2^30 B = 4 × 1 GiB = 4 GiB (1 GiB = 2^30 B). В десятичной системе это около 4,29 GB, поэтому остальные значения не подходят."
+  },
+  "stemFix": "Równoważnym zapisem 2^32 bajtów jest zapis"
+ },
+ "4f6aaa90": {
+  "ru": {
+   "stem": "Какая команда в системе Windows для рабочей станции служит для установки требований к входу в систему для всех учётных записей пользователей этой рабочей станции?",
+   "answers": [
+    "Net accounts",
+    "Net computer",
+    "Net session",
+    "Net file"
+   ]
+  },
+  "expl": {
+   "pl": "net accounts ustawia zasady dla wszystkich kont: minimalną długość hasła, jego maksymalny wiek, historię haseł, wymuszone wylogowanie itp. net session pokazuje sesje, net file otwarte pliki, net computer dodaje komputery do domeny.",
+   "ru": "net accounts задаёт правила для всех учётных записей: минимальную длину пароля, срок его действия, историю паролей, принудительный выход и т.п. net session показывает сеансы, net file — открытые файлы, net computer добавляет компьютеры в домен."
+  }
+ },
+ "54581d65": {
+  "ru": {
+   "stem": "Какое программное обеспечение нельзя использовать на устройствах, принадлежащих государственным или образовательным учреждениям?",
+   "answers": [
+    "AbiWord.",
+    "Microsoft Word.",
+    "Windows Defender.",
+    "Microsoft Security Essentials."
+   ]
+  },
+  "expl": {
+   "pl": "Licencja Microsoft Security Essentials pozwalała na darmowe użycie tylko w domu i w małych firmach (do 10 komputerów) – wykluczała instytucje rządowe i edukacyjne. AbiWord jest na licencji GPL, a Word można kupić w wersji dla instytucji.",
+   "ru": "Лицензия Microsoft Security Essentials разрешала бесплатное использование только дома и в малом бизнесе (до 10 ПК) — государственные и образовательные учреждения исключались. AbiWord распространяется по GPL, а Word можно купить в версии для учреждений."
+  },
+  "topic": "law_bhp"
+ },
+ "5557445c": {
+  "ru": {
+   "stem": "В четырёх магазинах продаётся один и тот же компьютер по разным ценам. Дешевле всего его можно купить в магазине",
+   "answers": [
+    "1500 zł 23% скидка 5%",
+    "1600 zł 23% скидка 15%",
+    "1650 zł 23% скидка 20%",
+    "1800 zł 23% скидка 25 %"
+   ]
+  },
+  "expl": {
+   "pl": "VAT 23% jest wszędzie taki sam, więc wystarczy porównać ceny netto po rabacie: 1500×0,95 = 1425; 1600×0,85 = 1360; 1650×0,80 = 1320; 1800×0,75 = 1350 zł. Najtaniej: 1650 zł z rabatem 20%.",
+   "ru": "НДС 23% везде одинаков, поэтому достаточно сравнить цены нетто со скидкой: 1500×0,95 = 1425; 1600×0,85 = 1360; 1650×0,80 = 1320; 1800×0,75 = 1350 zł. Дешевле всего: 1650 zł со скидкой 20%."
+  }
+ },
+ "55ac727c": {
+  "ru": {
+   "stem": "В корпоративной беспроводной сети запущена служба, заключающаяся в преобразовании мнемонических имён. Это служба",
+   "answers": [
+    "RADIUS",
+    "DHCP",
+    "RDS",
+    "DNS"
+   ]
+  },
+  "expl": {
+   "pl": "Nazwy mnemoniczne (np. serwer.firma.pl) na adresy IP tłumaczy DNS. RADIUS służy do uwierzytelniania, DHCP do przydzielania adresów, a RDS to usługi pulpitu zdalnego.",
+   "ru": "Мнемонические имена (например, serwer.firma.pl) в IP-адреса преобразует DNS. RADIUS служит для аутентификации, DHCP — для выдачи адресов, RDS — службы удалённых рабочих столов."
+  },
+  "topic": "protocols"
+ },
+ "570ff294": {
+  "ru": {
+   "stem": "На рисунке изображено гнездо",
+   "answers": [
+    "DisplayPort",
+    "HDMI",
+    "SATA",
+    "DVI"
+   ]
+  },
+  "expl": {
+   "pl": "Gniazdo DisplayPort ma charakterystyczny kształt z jednym ściętym narożnikiem (asymetryczny). HDMI ma oba narożniki ścięte symetrycznie, a DVI jest szerokie z wieloma pinami.",
+   "ru": "Разъём DisplayPort имеет характерную форму с одним срезанным углом (асимметричную). У HDMI оба угла срезаны симметрично, а DVI широкий, с множеством контактов."
+  }
+ },
+ "57e819c7": {
+  "ru": {
+   "stem": "В модели RGB в шестнадцатеричной системе цвет записан так: ABCDEF. Интенсивность синего цвета в этой записи имеет десятичное значение",
+   "answers": [
+    "171",
+    "186",
+    "205",
+    "239"
+   ]
+  },
+  "expl": {
+   "pl": "Zapis RRGGBB: AB – czerwony, CD – zielony, EF – niebieski. EF = 14×16 + 15 = 239. (AB = 171, CD = 205.)",
+   "ru": "Запись RRGGBB: AB — красный, CD — зелёный, EF — синий. EF = 14×16 + 15 = 239. (AB = 171, CD = 205.)"
+  }
+ },
+ "596d0cbf": {
+  "ru": {
+   "stem": "Для обновления установленной операционной системы Linux Ubuntu нужно использовать команду",
+   "answers": [
+    "yum upgrade",
+    "kernel update",
+    "system update",
+    "apt-get upgrade"
+   ]
+  },
+  "expl": {
+   "pl": "Ubuntu (rodzina Debian) używa menedżera pakietów APT: apt-get update odświeża listę pakietów, a apt-get upgrade instaluje aktualizacje. yum to menedżer w dystrybucjach Red Hat/Fedora.",
+   "ru": "Ubuntu (семейство Debian) использует менеджер пакетов APT: apt-get update обновляет списки пакетов, apt-get upgrade устанавливает обновления. yum — менеджер для Red Hat/Fedora."
+  }
+ },
+ "59b09a59": {
+  "ru": {
+   "stem": "Как выглядит IP-адрес 192.168.1.12 в двоичной записи?",
+   "answers": [
+    "11000000.10101000.00000001.00001100",
+    "11000001.10111000.00000011.00001110",
+    "11000010.10101100.00000111.00001101",
+    "11000100.10101010.00000101.00001001"
+   ]
+  },
+  "expl": {
+   "pl": "192 = 128+64 = 11000000; 168 = 128+32+8 = 10101000; 1 = 00000001; 12 = 8+4 = 00001100. Wynik: 11000000.10101000.00000001.00001100.",
+   "ru": "192 = 128+64 = 11000000; 168 = 128+32+8 = 10101000; 1 = 00000001; 12 = 8+4 = 00001100. Итог: 11000000.10101000.00000001.00001100."
+  },
+  "topic": "addressing"
+ },
+ "5b14dee6": {
+  "ru": {
+   "stem": "Команда dsadd позволяет",
+   "answers": [
+    "изменять свойства объектов в каталоге.",
+    "перемещать объекты в пределах одного домена.",
+    "удалять пользователей, группы, компьютеры, контакты и организационные подразделения в службе Active Directory.",
+    "добавлять пользователей, группы, компьютеры, контакты и организационные подразделения в службу Active Directory."
+   ]
+  },
+  "expl": {
+   "pl": "dsadd (ds + add) dodaje obiekty do Active Directory, np. dsadd user. Do zmiany właściwości służy dsmod, do przenoszenia dsmove, a do usuwania dsrm.",
+   "ru": "dsadd (ds + add) добавляет объекты в Active Directory, например dsadd user. Для изменения свойств служит dsmod, для перемещения — dsmove, для удаления — dsrm."
+  }
+ },
+ "5c89ad6f": {
+  "ru": {
+   "stem": "Укажите правильный вид маски подсети.",
+   "answers": [
+    "0.0.0.0",
+    "255.255.0.128",
+    "255.255.255.255",
+    "255.252.252.255"
+   ]
+  },
+  "expl": {
+   "pl": "255.255.255.255 (/32) ma same jedynki, więc jest poprawną maską (np. dla pojedynczego hosta). 255.255.0.128 i 255.252.252.255 mają zera między jedynkami, a 0.0.0.0 nie wyznacza żadnej podsieci (oznacza trasę domyślną).",
+   "ru": "255.255.255.255 (/32) состоит из одних единиц, поэтому это корректная маска (например, для одного хоста). В 255.255.0.128 и 255.252.252.255 нули стоят между единицами, а 0.0.0.0 не задаёт подсеть (обозначает маршрут по умолчанию)."
+  }
+ },
+ "633b33e0": {
+  "ru": {
+   "stem": "Диск с файловой системой FAT32, на котором часто выполняются операции удаления старых файлов и записи новых, подвергается",
+   "answers": [
+    "дефрагментации.",
+    "фрагментации.",
+    "колокации.",
+    "релокации."
+   ]
+  },
+  "expl": {
+   "pl": "Po usunięciu plików zostają luki, a nowe pliki zapisywane w tych lukach są dzielone na fragmenty rozsiane po dysku – to fragmentacja. Defragmentacja jest procesem odwrotnym, wykonywanym przez narzędzie.",
+   "ru": "После удаления файлов остаются промежутки, а новые файлы, записываемые в них, разбиваются на фрагменты по всему диску — это фрагментация. Дефрагментация — обратный процесс, выполняемый утилитой."
+  }
+ },
+ "63ff7373": {
+  "ru": {
+   "stem": "Industry Standard Architecture — стандарт шины, согласно которому шина данных имеет ширину",
+   "answers": [
+    "128 бит.",
+    "64 бита.",
+    "32 бита.",
+    "16 бит."
+   ]
+  },
+  "expl": {
+   "pl": "Magistrala ISA (IBM PC/AT) miała 16-bitową szynę danych (pierwotna wersja PC/XT – 8 bitów) i taktowanie 8 MHz. 32 bity miały późniejsze EISA i PCI.",
+   "ru": "Шина ISA (IBM PC/AT) имела 16-битную шину данных (первая версия PC/XT — 8 бит) и частоту 8 MHz. 32 бита имели более поздние EISA и PCI."
+  },
+  "topic": "hardware"
+ },
+ "64675b9a": {
+  "ru": {
+   "stem": "Устройство, которое соединяет сегменты сети и передаёт кадры между ними, выбирая порт, на который передаётся каждый кадр, — это",
+   "answers": [
+    "источник бесперебойного питания.",
+    "концентратор.",
+    "коммутатор.",
+    "регистратор."
+   ]
+  },
+  "expl": {
+   "pl": "Przełącznik na podstawie tablicy adresów MAC przekazuje ramkę tylko na port, za którym jest odbiorca. Koncentrator rozsyła sygnał na wszystkie porty bez wyboru.",
+   "ru": "Коммутатор по таблице MAC-адресов передаёт кадр только на порт, за которым находится получатель. Концентратор рассылает сигнал на все порты без выбора."
+  }
+ },
+ "65331ce3": {
+  "ru": {
+   "stem": "Какой стандарт реализации сети Ethernet определяет сеть, построенную на коаксиальном кабеле, с длиной сегмента не более 185 м?",
+   "answers": [
+    "10Base-2",
+    "10Base-5",
+    "100Base-T2",
+    "100Base-T4"
+   ]
+  },
+  "expl": {
+   "pl": "10Base-2 (cienki Ethernet, kabel RG-58) ma maksymalny segment 185 m (cyfra 2 to zaokrąglenie ~200 m). 10Base-5 (gruby koncentryk) pozwala na 500 m, a 100Base-T2/T4 używają skrętki.",
+   "ru": "10Base-2 (тонкий Ethernet, кабель RG-58) имеет максимальный сегмент 185 м (цифра 2 — округлённые ~200 м). 10Base-5 (толстый коаксиал) — 500 м, а 100Base-T2/T4 используют витую пару."
+  },
+  "topic": "cabling"
+ },
+ "675e9be4": {
+  "ru": {
+   "stem": "GRUB, LILO, NTLDR — это",
+   "answers": [
+    "версии главного сетевого интерфейса.",
+    "приложения для обновления BIOS.",
+    "прошивки для жёсткого диска.",
+    "загрузчики (программы начальной загрузки)."
+   ]
+  },
+  "expl": {
+   "pl": "GRUB i LILO to programy rozruchowe Linuksa, a NTLDR – starszych Windows (NT/2000/XP). Ładują jądro systemu operacyjnego i pozwalają wybrać system przy starcie.",
+   "ru": "GRUB и LILO — загрузчики Linux, NTLDR — старых Windows (NT/2000/XP). Они загружают ядро ОС и позволяют выбрать систему при запуске."
+  }
+ },
+ "69cb92fc": {
+  "ru": {
+   "stem": "Какой из протоколов используется для управления сетевыми устройствами?",
+   "answers": [
+    "SMTP",
+    "SNMP",
+    "SFTP",
+    "DNS"
+   ]
+  },
+  "expl": {
+   "pl": "SNMP (Simple Network Management Protocol) służy do monitorowania i zarządzania urządzeniami sieciowymi (routery, przełączniki, drukarki). SMTP – tylko podobna nazwa – wysyła pocztę.",
+   "ru": "SNMP (Simple Network Management Protocol) служит для мониторинга и управления сетевыми устройствами (маршрутизаторы, коммутаторы, принтеры). SMTP — лишь похожее название, он отправляет почту."
+  },
+  "topic": "protocols"
+ },
+ "6aa94897": {
+  "ru": {
+   "stem": "В блоке ALU в аккумулятор записано десятичное число 240. Каково его двоичное представление?",
+   "answers": [
+    "11110000",
+    "11111000",
+    "11111100",
+    "11111110"
+   ]
+  },
+  "expl": {
+   "pl": "240 = 128+64+32+16 = 11110000. Dla porównania 11111000 = 248, 11111100 = 252, 11111110 = 254.",
+   "ru": "240 = 128+64+32+16 = 11110000. Для сравнения: 11111000 = 248, 11111100 = 252, 11111110 = 254."
+  },
+  "topic": "basics"
+ },
+ "6af29906": {
+  "ru": {
+   "stem": "Какой протокол нужно использовать для получения электронной почты со своего сервера?",
+   "answers": [
+    "SMTP",
+    "SNMP",
+    "POP3",
+    "FTP"
+   ]
+  },
+  "expl": {
+   "pl": "POP3 (port 110) służy do pobierania poczty z serwera do klienta. SMTP wysyła pocztę, SNMP zarządza urządzeniami, FTP przesyła pliki.",
+   "ru": "POP3 (порт 110) служит для получения почты с сервера на клиент. SMTP отправляет почту, SNMP управляет устройствами, FTP передаёт файлы."
+  },
+  "topic": "protocols"
+ },
+ "6bd3de0a": {
+  "ru": {
+   "stem": "Какая учётная запись не является встроенной в систему Windows XP?",
+   "answers": [
+    "Гость",
+    "Admin",
+    "Помощник",
+    "Administrator"
+   ]
+  },
+  "expl": {
+   "pl": "Wbudowane konta Windows XP to Administrator, Gość oraz Pomocnik (HelpAssistant, dla Pomocy zdalnej). Konta „Admin” system nie tworzy – można je założyć tylko ręcznie.",
+   "ru": "Встроенные учётные записи Windows XP: Administrator, Гость и Помощник (HelpAssistant, для Удалённого помощника). Учётную запись «Admin» система не создаёт — её можно завести только вручную."
+  }
+ },
+ "6ca87e69": {
+  "ru": {
+   "stem": "Какой протокол поддерживает распределённую отправку и загрузку файлов?",
+   "answers": [
+    "FTP",
+    "Radius",
+    "HTTPS",
+    "BitTorrent"
+   ]
+  },
+  "expl": {
+   "pl": "BitTorrent to protokół P2P: plik jest dzielony na części pobierane jednocześnie od wielu użytkowników, którzy równocześnie wysyłają je innym. FTP działa w modelu klient-serwer z jednym źródłem.",
+   "ru": "BitTorrent — P2P-протокол: файл делится на части, которые загружаются одновременно от многих пользователей, одновременно раздающих их другим. FTP работает по схеме клиент-сервер с одним источником."
+  },
+  "topic": "protocols"
+ },
+ "6ea77bc4": {
+  "ru": {
+   "stem": "В структурированной кабельной системе на основе витой пары UTP кат. 6 следует применять сетевые розетки типа",
+   "answers": [
+    "F",
+    "BNC",
+    "RJ-11",
+    "8P8C"
+   ]
+  },
+  "expl": {
+   "pl": "8P8C (potocznie RJ-45) to złącze z 8 stykami dla 4 par skrętki stosowane w sieciach Ethernet. RJ-11 to złącze telefoniczne, a F i BNC służą do kabli koncentrycznych.",
+   "ru": "8P8C (в обиходе RJ-45) — разъём с 8 контактами для 4 пар витой пары, применяемый в Ethernet. RJ-11 — телефонный разъём, F и BNC — для коаксиальных кабелей."
+  },
+  "topic": "cabling"
+ },
+ "6ed5275f": {
+  "ru": {
+   "stem": "Наивысший уровень безопасности беспроводной сети обеспечит шифрование",
+   "answers": [
+    "WEP",
+    "WPA",
+    "WPA2",
+    "ROT13"
+   ]
+  },
+  "expl": {
+   "pl": "WPA2 używa silnego szyfrowania AES (CCMP) i jest najbezpieczniejszy z wymienionych. WEP i WPA (TKIP) mają znane słabości, a ROT13 to trywialny szyfr podstawieniowy.",
+   "ru": "WPA2 использует стойкое шифрование AES (CCMP) и является самым надёжным из перечисленных. У WEP и WPA (TKIP) известны уязвимости, а ROT13 — тривиальный шифр подстановки."
+  }
+ },
+ "6fcda2ce": {
+  "ru": {
+   "stem": "Какой из IP-адресов является частным?",
+   "answers": [
+    "192.168.0.1",
+    "190.5.7.126",
+    "131.107.5.65",
+    "38.176.55.44"
+   ]
+  },
+  "expl": {
+   "pl": "Pule prywatne (RFC 1918) to 10.0.0.0/8, 172.16.0.0/12 i 192.168.0.0/16 – adres 192.168.0.1 do nich należy. Pozostałe adresy są publiczne.",
+   "ru": "Частные диапазоны (RFC 1918): 10.0.0.0/8, 172.16.0.0/12 и 192.168.0.0/16 — адрес 192.168.0.1 входит в них. Остальные адреса публичные."
+  }
+ },
+ "72586e3e": {
+  "ru": {
+   "stem": "Файл имеет размер 2 KiB. Это",
+   "answers": [
+    "2000 бит.",
+    "2048 бит.",
+    "16000 бит.",
+    "16384 бита."
+   ]
+  },
+  "expl": {
+   "pl": "2 KiB = 2 × 1024 B = 2048 B; 2048 B × 8 = 16384 bity. 2048 to liczba bajtów, a nie bitów, a 16000 bitów odpowiadałoby 2 kB dziesiętnym.",
+   "ru": "2 KiB = 2 × 1024 B = 2048 B; 2048 B × 8 = 16384 бита. 2048 — это число байтов, а не битов, а 16000 бит соответствовало бы десятичным 2 kB."
+  }
+ },
+ "72af5887": {
+  "ru": {
+   "stem": "Какая команда позволяет проверить значение записи MX для указанного домена?",
+   "answers": [
+    "Сеть не транслирует (не рассылает) идентификатор SSID.",
+    "На сетевой карте включён DHCP.",
+    "Сеть защищена паролем.",
+    "Сетевая карта включена."
+   ]
+  },
+  "expl": {
+   "pl": "Odpowiedź wskazuje sieć, która nie rozgłasza swojego SSID (sieć ukryta): nie pojawia się na liście z nazwą, a żeby się z nią połączyć, trzeba ręcznie wpisać jej nazwę. Hasło czy włączone DHCP nie ukrywają nazwy sieci.",
+   "ru": "Ответ указывает на сеть, не транслирующую свой SSID (скрытая сеть): она не отображается в списке с именем, и для подключения нужно вручную ввести её имя. Пароль или включённый DHCP не скрывают имя сети."
+  },
+  "topic": "netdevices",
+  "doubt": "Treść pytania (rekord MX) nie pasuje do odpowiedzi o sieci Wi-Fi – treść zamieniona z innym pytaniem; oryginalnej treści (prawdopodobnie z rysunkiem) nie da się odtworzyć."
+ },
+ "73e24911": {
+  "ru": {
+   "stem": "Какое действие приведёт к безвозвратной потере данных в случае повреждения файловой системы?",
+   "answers": [
+    "Форматирование диска.",
+    "Включение операционной системы.",
+    "Сканирование антивирусной программой.",
+    "Проверка диска программой scandisk."
+   ]
+  },
+  "expl": {
+   "pl": "Formatowanie tworzy nowy, pusty system plików i nadpisuje struktury (tablicę plików), przez co odzyskanie danych z uszkodzonego systemu plików staje się praktycznie niemożliwe. Skanowanie i uruchomienie systemu nie usuwają danych celowo.",
+   "ru": "Форматирование создаёт новую пустую файловую систему и перезаписывает структуры (таблицу файлов), поэтому восстановить данные с повреждённой ФС становится практически невозможно. Сканирование и запуск системы данные намеренно не удаляют."
+  }
+ },
+ "7419d740": {
+  "ru": {
+   "stem": "Укажите неправильное разбиение диска MBR на разделы",
+   "answers": [
+    "3 основных раздела и 1 расширенный.",
+    "2 основных раздела и 1 расширенный.",
+    "1 основной раздел и 1 расширенный.",
+    "1 основной раздел и 2 расширенных."
+   ]
+  },
+  "expl": {
+   "pl": "Na dysku MBR może być najwyżej jedna partycja rozszerzona, a łącznie maksymalnie 4 wpisy (podstawowe + rozszerzona). Dwie partycje rozszerzone są więc niedozwolone.",
+   "ru": "На диске MBR может быть не более одного расширенного раздела, а всего максимум 4 записи (основные + расширенный). Поэтому два расширенных раздела недопустимы."
+  }
+ },
+ "756d7b21": {
+  "ru": {
+   "stem": "На рисунке изображена компьютерная сеть в топологии",
+   "answers": [
+    "звезды.",
+    "шины.",
+    "смешанной.",
+    "кольца."
+   ]
+  },
+  "expl": {
+   "pl": "Komputery są przyłączone do zamkniętego okręgu – każdy węzeł ma połączenie z dwoma sąsiadami, a dane krążą w pętli. To topologia pierścienia. W gwieździe wszystkie stacje łączyłyby się z centralnym urządzeniem.",
+   "ru": "Компьютеры подключены к замкнутой окружности — каждый узел связан с двумя соседями, данные идут по кольцу. Это топология «кольцо». В «звезде» все станции подключались бы к центральному устройству."
+  }
+ },
+ "763562de": {
+  "ru": {
+   "stem": "Какому десятичному числу соответствует число FF, записанное в шестнадцатеричной системе?",
+   "answers": [
+    "248",
+    "250",
+    "254",
+    "255"
+   ]
+  },
+  "expl": {
+   "pl": "FF = 15×16 + 15 = 240 + 15 = 255 (binarnie 11111111).",
+   "ru": "FF = 15×16 + 15 = 240 + 15 = 255 (в двоичной 11111111)."
+  }
+ },
+ "775cd6cd": {
+  "ru": {
+   "stem": "В IP-адресе класса A значение первого байта находится в диапазоне",
+   "answers": [
+    "0 – 127",
+    "128 – 191",
+    "192 – 223",
+    "224 – 240"
+   ]
+  },
+  "expl": {
+   "pl": "Klasa A ma pierwszy bit 0, więc pierwszy oktet to 0–127 (adresy 0 i 127 są zarezerwowane). 128–191 to klasa B, 192–223 klasa C, 224–239 klasa D.",
+   "ru": "Класс A имеет первый бит 0, поэтому первый октет 0–127 (0 и 127 зарезервированы). 128–191 — класс B, 192–223 — класс C, 224–239 — класс D."
+  },
+  "topic": "addressing"
+ },
+ "77988c69": {
+  "ru": {
+   "stem": "Лицензия свободного и открытого ПО — это лицензия",
+   "answers": [
+    "Trial",
+    "OEM",
+    "Adware",
+    "GNU GPL"
+   ]
+  },
+  "expl": {
+   "pl": "GNU GPL to licencja wolnego oprogramowania: pozwala uruchamiać, analizować, modyfikować i rozpowszechniać program wraz z kodem źródłowym. Trial, OEM i Adware to licencje komercyjne lub z ograniczeniami.",
+   "ru": "GNU GPL — лицензия свободного ПО: разрешает запускать, изучать, изменять и распространять программу вместе с исходным кодом. Trial, OEM и Adware — коммерческие или ограниченные лицензии."
+  }
+ },
+ "7991ab84": {
+  "ru": {
+   "stem": "Роль маршрутизатора —",
+   "answers": [
+    "устранение коллизий.",
+    "преобразование имён в IP-адреса.",
+    "защита сети от атак извне и изнутри.",
+    "передача пакетов TCP/IP из исходной сети в сеть назначения."
+   ]
+  },
+  "expl": {
+   "pl": "Router działa w warstwie 3 i na podstawie tablicy routingu przekazuje pakiety IP między sieciami – od sieci źródłowej do docelowej. Tłumaczeniem nazw zajmuje się DNS, a ochroną – zapora sieciowa.",
+   "ru": "Маршрутизатор работает на 3-м уровне и по таблице маршрутизации передаёт IP-пакеты между сетями — из исходной в сеть назначения. Преобразованием имён занимается DNS, а защитой — брандмауэр."
+  },
+  "topic": "netdevices"
+ },
+ "7c2aae74": {
+  "ru": {
+   "stem": "Для правильной работы VoIP-телефона необходимо настроить адрес",
+   "answers": [
+    "широковещательный.",
+    "станции ISDN",
+    "MAR/MAV",
+    "IP"
+   ]
+  },
+  "expl": {
+   "pl": "Telefon VoIP przesyła głos w pakietach IP, więc jak każdy host sieciowy musi mieć skonfigurowany adres IP (statycznie lub z DHCP). Centrala ISDN dotyczy telefonii tradycyjnej.",
+   "ru": "VoIP-телефон передаёт голос в IP-пакетах, поэтому, как любой сетевой хост, должен иметь настроенный IP-адрес (статически или через DHCP). Станция ISDN относится к традиционной телефонии."
+  }
+ },
+ "7c837e67": {
+  "ru": {
+   "stem": "Передача маркера (англ. token) происходит в сети с физической структурой",
+   "answers": [
+    "сетки.",
+    "звезды.",
+    "шины.",
+    "кольца."
+   ]
+  },
+  "expl": {
+   "pl": "Metoda przekazywania żetonu (Token Ring, FDDI) działa w pierścieniu: żeton krąży od stacji do stacji, a nadawać może tylko ta, która go posiada. Eliminuje to kolizje.",
+   "ru": "Метод передачи маркера (Token Ring, FDDI) работает в кольце: маркер передаётся от станции к станции, передавать может только та, у которой он есть. Это исключает коллизии."
+  },
+  "topic": "netdevices"
+ },
+ "7d227eb6": {
+  "ru": {
+   "stem": "Какой из протоколов является протоколом синхронизации времени?",
+   "answers": [
+    "FTP",
+    "NTP",
+    "HTTP",
+    "NNTP"
+   ]
+  },
+  "expl": {
+   "pl": "NTP (Network Time Protocol, port UDP 123) synchronizuje zegary komputerów z serwerami czasu. NNTP – podobna nazwa – służy do grup dyskusyjnych (Usenet).",
+   "ru": "NTP (Network Time Protocol, порт UDP 123) синхронизирует часы компьютеров с серверами времени. NNTP — похожее название — служит для групп новостей (Usenet)."
+  },
+  "topic": "protocols"
+ },
+ "80efbf34": {
+  "ru": {
+   "stem": "Какой IP-адрес соответствует мнемоническому имени localhost?",
+   "answers": [
+    "127.0.0.1",
+    "192.168.1.0",
+    "192.168.1.1",
+    "192.168.1.255"
+   ]
+  },
+  "expl": {
+   "pl": "localhost to adres pętli zwrotnej (loopback) 127.0.0.1 – wskazuje na ten sam komputer. Adresy 192.168.1.x to adresy sieci prywatnej (sieci, hosta, rozgłoszeniowy).",
+   "ru": "localhost — адрес петли (loopback) 127.0.0.1, указывающий на этот же компьютер. Адреса 192.168.1.x — адреса частной сети (сети, хоста, широковещательный)."
+  }
+ },
+ "836a340c": {
+  "ru": {
+   "stem": "Для проверки MAC-адресов компьютеров, подключённых к коммутатору, можно использовать команду",
+   "answers": [
+    "show mac address-table",
+    "clear mac address-table",
+    "ip http serwer",
+    "ip http port"
+   ]
+  },
+  "expl": {
+   "pl": "W przełącznikach Cisco show mac address-table wyświetla tablicę adresów MAC wraz z portami i VLAN-ami. clear mac address-table ją czyści, a polecenia ip http dotyczą serwera WWW przełącznika.",
+   "ru": "В коммутаторах Cisco show mac address-table выводит таблицу MAC-адресов с портами и VLAN. clear mac address-table очищает её, а команды ip http относятся к веб-серверу коммутатора."
+  },
+  "topic": "netdevices"
+ },
+ "83789e0f": {
+  "ru": {
+   "stem": "Расходным материалом для цветного лазерного принтера является",
+   "answers": [
+    "CMOS-преобразователь.",
+    "лоток для бумаги.",
+    "картридж с тонером.",
+    "память печати."
+   ]
+  },
+  "expl": {
+   "pl": "Drukarka laserowa drukuje tonerem – w kolorowej są cztery kartridże z tonerem CMYK, które się zużywają i wymienia. Podajnik i pamięć to stałe elementy urządzenia.",
+   "ru": "Лазерный принтер печатает тонером — в цветном четыре картриджа с тонером CMYK, которые расходуются и заменяются. Лоток и память — постоянные части устройства."
+  }
+ },
+ "83fb2c0b": {
+  "ru": {
+   "stem": "Сеть Ethernet работает в логической топологии",
+   "answers": [
+    "сетчатой.",
+    "широковещательной.",
+    "сетки и звезды.",
+    "кольцевой и линейной."
+   ]
+  },
+  "expl": {
+   "pl": "Ethernet logicznie działa w topologii rozgłaszania: ramka wysłana przez stację trafia do wszystkich w domenie, a odbiera ją ten, którego adres się zgadza (CSMA/CD). Fizycznie zwykle jest to gwiazda.",
+   "ru": "Ethernet логически работает в широковещательной топологии: кадр, отправленный станцией, доходит до всех в домене, а принимает его тот, чей адрес совпадает (CSMA/CD). Физически это обычно «звезда»."
+  },
+  "topic": "netdevices"
+ },
+ "841349e6": {
+  "ru": {
+   "stem": "Основная функция FTP-сервера —",
+   "answers": [
+    "мониторинг сети.",
+    "синхронизация времени.",
+    "предоставление доступа к файлам.",
+    "управление почтовыми ящиками."
+   ]
+  },
+  "expl": {
+   "pl": "Serwer FTP (File Transfer Protocol) udostępnia pliki do pobierania i wysyłania przez sieć. Synchronizacją czasu zajmuje się NTP, a monitoringiem sieci np. SNMP.",
+   "ru": "FTP-сервер (File Transfer Protocol) предоставляет файлы для загрузки и выгрузки по сети. Синхронизацией времени занимается NTP, мониторингом сети — например, SNMP."
+  },
+  "topic": "protocols"
+ },
+ "8413badb": {
+  "ru": {
+   "stem": "Для защиты сетевых систем от атак извне следует использовать",
+   "answers": [
+    "диспетчер подключений.",
+    "сетевой брандмауэр (межсетевой экран).",
+    "протокол SSH.",
+    "сервер DHCP."
+   ]
+  },
+  "expl": {
+   "pl": "Zapora sieciowa (firewall) filtruje ruch na granicy sieci według reguł i blokuje niepożądane połączenia z zewnątrz. SSH szyfruje tylko pojedyncze sesje, a DHCP przydziela adresy.",
+   "ru": "Брандмауэр (firewall) фильтрует трафик на границе сети по правилам и блокирует нежелательные подключения извне. SSH лишь шифрует отдельные сеансы, а DHCP выдаёт адреса."
+  },
+  "topic": "security"
+ },
+ "865726ea": {
+  "ru": {
+   "stem": "В классовой адресации IP-адрес 74.100.7.8 относится к",
+   "answers": [
+    "классу A.",
+    "классу B.",
+    "классу C.",
+    "классу D."
+   ]
+  },
+  "expl": {
+   "pl": "Pierwszy oktet 74 mieści się w przedziale 1–126, więc to klasa A. Klasa B to 128–191, C 192–223, D 224–239.",
+   "ru": "Первый октет 74 входит в диапазон 1–126, значит, это класс A. Класс B — 128–191, C — 192–223, D — 224–239."
+  }
+ },
+ "88fea79e": {
+  "ru": {
+   "stem": "После включения компьютера появилось сообщение \"Non-system disk or disk error. Replace and strike any key when ready\". Причиной может быть",
+   "answers": [
+    "отсутствие файла NTLDR.",
+    "повреждённый контроллер DMA.",
+    "стёртый BIOS компьютера.",
+    "дискета, вставленная в дисковод."
+   ]
+  },
+  "expl": {
+   "pl": "Komunikat oznacza, że BIOS próbuje uruchomić system z nośnika bez systemu – typowo z niesystemowej dyskietki pozostawionej w napędzie, gdy stacja dyskietek jest pierwsza w kolejności rozruchu. Brak NTLDR daje komunikat „NTLDR is missing”.",
+   "ru": "Сообщение означает, что BIOS пытается загрузиться с несистемного носителя — обычно с дискеты, оставленной в дисководе, если он стоит первым в порядке загрузки. Отсутствие NTLDR даёт сообщение «NTLDR is missing»."
+  },
+  "topic": "hardware"
+ },
+ "8abd4da0": {
+  "ru": {
+   "stem": "Внутренний жёсткий диск IDE питается через разъём типа",
+   "answers": [
+    "Molex",
+    "SATA",
+    "PCIe",
+    "ATX"
+   ]
+  },
+  "expl": {
+   "pl": "Dyski IDE (PATA) zasilane są 4-pinowym złączem Molex (+5 V i +12 V). Złącze zasilania SATA stosuje się w dyskach SATA, a ATX to złącze zasilania płyty głównej.",
+   "ru": "Диски IDE (PATA) питаются через 4-контактный разъём Molex (+5 В и +12 В). Разъём питания SATA используется в дисках SATA, а ATX — разъём питания материнской платы."
+  }
+ },
+ "8c717bf0": {
+  "ru": {
+   "stem": "Интерфейсом, позволяющим передавать данные между изображённой на рисунке материнской платой и внешним устройством без одновременного питания внешнего устройства через этот интерфейс, является",
+   "answers": [
+    "PCI",
+    "USB",
+    "PCIe",
+    "SATA"
+   ]
+  },
+  "expl": {
+   "pl": "Złącze danych SATA przesyła tylko dane – urządzenie musi mieć osobne zasilanie (wtyk zasilający SATA lub zewnętrzny zasilacz). USB dostarcza napięcie 5 V, a PCI i PCIe zasilają karty osadzone w gnieździe.",
+   "ru": "Разъём данных SATA передаёт только данные — устройству нужно отдельное питание (разъём питания SATA или внешний блок). USB подаёт 5 В, а PCI и PCIe питают карты, вставленные в слот."
+  },
+  "topic": "hardware"
+ },
+ "8f1af69c": {
+  "ru": {
+   "stem": "Какое обозначение определяет стандарт, касающийся структурированной кабельной системы?",
+   "answers": [
+    "EN 50173",
+    "ISO 11801",
+    "EIA/TIA 568A",
+    "PN-EN 50173-1:2004"
+   ]
+  },
+  "expl": {
+   "pl": "EIA/TIA 568A to amerykańska norma okablowania strukturalnego (m.in. sekwencja kolorów T568A dla złącza RJ-45). Według klucza to właściwa odpowiedź.",
+   "ru": "EIA/TIA 568A — американский стандарт структурированной кабельной системы (в т.ч. цветовая схема T568A для разъёма RJ-45). По ключу это правильный ответ."
+  },
+  "doubt": "EN 50173, ISO/IEC 11801 i PN-EN 50173-1 to również normy okablowania strukturalnego – pytanie ma kilka poprawnych odpowiedzi."
+ },
+ "9043c12a": {
+  "ru": {
+   "stem": "При подключении принтера с параллельным разъёмом к компьютеру, имеющему только порты USB, следует использовать адаптер",
+   "answers": [
+    "USB на PS/2",
+    "USB на LPT",
+    "USB на COM",
+    "USB на RS-232"
+   ]
+  },
+  "expl": {
+   "pl": "Port równoległy drukarki to LPT (Centronics), więc potrzebny jest adapter USB–LPT. COM i RS-232 to porty szeregowe, a PS/2 służy do klawiatury i myszy.",
+   "ru": "Параллельный порт принтера — это LPT (Centronics), поэтому нужен адаптер USB–LPT. COM и RS-232 — последовательные порты, а PS/2 — для клавиатуры и мыши."
+  },
+  "topic": "printers"
+ },
+ "94cb004b": {
+  "ru": {
+   "stem": "Какой протокол используется командой ping?",
+   "answers": [
+    "FTP",
+    "RDP",
+    "LDAP",
+    "ICMP"
+   ]
+  },
+  "expl": {
+   "pl": "ping wysyła komunikaty ICMP Echo Request i czeka na Echo Reply – dzięki temu sprawdza osiągalność hosta i czas odpowiedzi.",
+   "ru": "ping отправляет сообщения ICMP Echo Request и ожидает Echo Reply — так проверяется доступность хоста и время отклика."
+  },
+  "topic": "protocols"
+ },
+ "999405eb": {
+  "ru": {
+   "stem": "После подключения исправной клавиатуры к любому из портов USB невозможно выбрать безопасный режим загрузки Windows. Тем не менее клавиатура после запуска системы в обычном режиме работает правильно. Это указывает на",
+   "answers": [
+    "повреждённый контроллер клавиатуры.",
+    "неверные настройки BIOS.",
+    "повреждённые порты USB.",
+    "повреждённый блок питания."
+   ]
+  },
+  "expl": {
+   "pl": "Przed załadowaniem Windows klawiatura USB działa tylko dzięki obsłudze w BIOS (USB Legacy Support). Skoro w systemie klawiatura i porty działają, przyczyną jest wyłączona ta opcja w BIOS.",
+   "ru": "До загрузки Windows USB-клавиатура работает только благодаря поддержке в BIOS (USB Legacy Support). Раз в системе клавиатура и порты работают, причина — отключённая опция в BIOS."
+  },
+  "topic": "hardware"
+ },
+ "9a8f2e8f": {
+  "ru": {
+   "stem": "Укажите правильный порядок действий по подготовке нового ноутбука к работе?",
+   "answers": [
+    "Установка аккумулятора, подключение внешнего сетевого питания, включение ноутбука, установка операционной системы, выключение ноутбука после установки операционной системы.",
+    "Подключение внешнего сетевого питания, включение ноутбука, установка операционной системы, установка аккумулятора, выключение ноутбука после установки операционной системы.",
+    "Подключение внешнего сетевого питания, включение ноутбука, установка аккумулятора, установка операционной системы, выключение ноутбука после установки операционной системы.",
+    "Включение ноутбука, установка аккумулятора, установка операционной системы, подключение внешнего сетевого питания, выключение ноутбука после установки операционной системы."
+   ]
+  },
+  "expl": {
+   "pl": "Baterię montuje się przy wyłączonym i odłączonym od zasilania laptopie, dopiero potem podłącza zasilacz i włącza urządzenie. Wkładanie baterii do pracującego laptopa grozi uszkodzeniem, a instalacja na samej baterii – przerwaniem przez rozładowanie.",
+   "ru": "Аккумулятор устанавливают в выключенный и отключённый от сети ноутбук, затем подключают блок питания и включают устройство. Установка аккумулятора в работающий ноутбук грозит повреждением, а установка ОС только от батареи — прерыванием из-за разряда."
+  },
+  "topic": "hardware"
+ },
+ "9ce79b09": {
+  "ru": {
+   "stem": "Какой тип разъёма должна иметь материнская плата, чтобы пользователь мог установить изображённую на рисунке видеокарту?",
+   "answers": [
+    "AGP",
+    "PCI",
+    "PCIe x1",
+    "PCIe x16"
+   ]
+  },
+  "expl": {
+   "pl": "Pokazana karta graficzna ma długie złącze krawędziowe PCI Express x16 – standardowe dla współczesnych kart graficznych. PCIe x1 jest znacznie krótsze, a AGP i PCI mają inny kształt.",
+   "ru": "Изображённая видеокарта имеет длинный краевой разъём PCI Express x16 — стандарт для современных видеокарт. PCIe x1 значительно короче, а AGP и PCI имеют другую форму."
+  }
+ },
+ "9f1446e9": {
+  "ru": {
+   "stem": "Какая из команд Linux завершает процесс?",
+   "answers": [
+    "kill",
+    "end",
+    "null",
+    "dead"
+   ]
+  },
+  "expl": {
+   "pl": "kill wysyła sygnał do procesu o podanym PID (domyślnie SIGTERM, a kill -9 – SIGKILL), kończąc jego działanie. Pozostałe polecenia nie istnieją w tej roli.",
+   "ru": "kill отправляет сигнал процессу с указанным PID (по умолчанию SIGTERM, а kill -9 — SIGKILL), завершая его. Остальных команд в такой роли не существует."
+  }
+ },
+ "a503f39a": {
+  "ru": {
+   "stem": "Семейство протоколов, характерной чертой которого является общая техника шифрования, — это",
+   "answers": [
+    "PPP",
+    "SSH",
+    "UDP",
+    "SPX/IPX"
+   ]
+  },
+  "expl": {
+   "pl": "SSH to rodzina protokołów (m.in. terminal SSH, SCP, SFTP), które korzystają z tego samego mechanizmu szyfrowania tunelu SSH. PPP, UDP i SPX/IPX nie zapewniają szyfrowania.",
+   "ru": "SSH — семейство протоколов (терминал SSH, SCP, SFTP), использующих один механизм шифрования туннеля SSH. PPP, UDP и SPX/IPX шифрования не обеспечивают."
+  }
+ },
+ "a5744bce": {
+  "ru": {
+   "stem": "В Windows XP для изменения файловой системы с FAT32 на NTFS следует использовать программу",
+   "answers": [
+    "convert.exe",
+    "replace.exe",
+    "subst.exe",
+    "attrib.exe"
+   ]
+  },
+  "expl": {
+   "pl": "convert (np. convert C: /FS:NTFS) zamienia FAT32 na NTFS bez utraty danych. subst przypisuje literę dysku do folderu, attrib zmienia atrybuty plików, replace zastępuje pliki.",
+   "ru": "convert (например, convert C: /FS:NTFS) преобразует FAT32 в NTFS без потери данных. subst назначает букву диска папке, attrib меняет атрибуты файлов, replace заменяет файлы."
+  },
+  "topic": "windows"
+ },
+ "a77d7ab1": {
+  "ru": {
+   "stem": "В операционных системах Windows ограничить пользователям доступ к отдельным каталогам, файлам или дискам позволяет файловая система",
+   "answers": [
+    "FAT16",
+    "FAT32",
+    "NTFS",
+    "Ext2"
+   ]
+  },
+  "expl": {
+   "pl": "NTFS obsługuje listy kontroli dostępu (ACL), dzięki którym można nadawać uprawnienia do plików i folderów poszczególnym użytkownikom. FAT16/FAT32 nie mają uprawnień, a Ext2 to system plików Linuksa.",
+   "ru": "NTFS поддерживает списки управления доступом (ACL), позволяющие назначать разрешения на файлы и папки отдельным пользователям. В FAT16/FAT32 разрешений нет, а Ext2 — файловая система Linux."
+  },
+  "topic": "windows"
+ },
+ "a7d1c17f": {
+  "ru": {
+   "stem": "Правильный адрес компьютера для маски 255.255.255.0 — это адрес",
+   "answers": [
+    "122.0.0.255",
+    "122.168.1.0",
+    "192.168.1.1",
+    "192.168.1.255"
+   ]
+  },
+  "expl": {
+   "pl": "Przy masce /24 ostatni oktet to część hosta: wartość 0 oznacza adres sieci, a 255 – adres rozgłoszeniowy, więc nie można ich nadać komputerowi. Poprawny jest 192.168.1.1.",
+   "ru": "При маске /24 последний октет — часть хоста: значение 0 означает адрес сети, 255 — широковещательный, их нельзя назначить компьютеру. Правильный — 192.168.1.1."
+  }
+ },
+ "a857f4c1": {
+  "ru": {
+   "stem": "Какое из обозначений указывает, что это кабель типа витая пара с двойным экранированием?",
+   "answers": [
+    "UTP",
+    "FTP",
+    "SFTP",
+    "S-STP"
+   ]
+  },
+  "expl": {
+   "pl": "S-STP (S/FTP) ma ekran ogólny (oplot) oraz osobny ekran każdej pary – to podwójne ekranowanie. UTP nie ma ekranu, a FTP ma tylko jeden ekran z folii.",
+   "ru": "S-STP (S/FTP) имеет общий экран (оплётку) и отдельный экран каждой пары — двойное экранирование. UTP без экрана, а FTP имеет только один экран из фольги."
+  },
+  "topic": "cabling"
+ },
+ "a92d14bf": {
+  "ru": {
+   "stem": "На рисунке изображено устройство для",
+   "answers": [
+    "обжима разъёмов RJ-45.",
+    "обжима разъёмов BNC.",
+    "снятия изоляции с кабелей.",
+    "монтажа проводов в сетевой розетке."
+   ]
+  },
+  "expl": {
+   "pl": "Na rysunku jest ściągacz izolacji (stripper) z regulowanym nożykiem – służy do zdejmowania zewnętrznej izolacji kabli, np. skrętki czy koncentryka. Zaciskarka ma szczęki z gniazdami na wtyki.",
+   "ru": "На рисунке — стриппер с регулируемым ножом, служащий для снятия внешней изоляции кабелей (витой пары, коаксиала). Обжимной инструмент имеет губки с гнёздами под разъёмы."
+  }
+ },
+ "a9899b5f": {
+  "ru": {
+   "stem": "Интерфейс SLI (англ. Scalable Link Interface) служит для соединения",
+   "answers": [
+    "двух видеокарт.",
+    "кардридера с материнской платой.",
+    "привода Blu-ray со звуковой картой.",
+    "видеокарты с ТВ-приёмником."
+   ]
+  },
+  "expl": {
+   "pl": "SLI to technologia NVIDIA łącząca dwie (lub więcej) karty graficzne mostkiem, aby wspólnie renderowały obraz. Odpowiednikiem AMD jest CrossFire.",
+   "ru": "SLI — технология NVIDIA, объединяющая две (или более) видеокарты мостиком для совместного рендеринга. Аналог у AMD — CrossFire."
+  },
+  "topic": "hardware"
+ },
+ "aa80da46": {
+  "ru": {
+   "stem": "В документации одного из компонентов компьютера указано, что устройство поддерживает OpenGL. Документация относится к",
+   "answers": [
+    "микропроцессору.",
+    "сетевой карте.",
+    "видеокарте.",
+    "жёсткому диску."
+   ]
+  },
+  "expl": {
+   "pl": "OpenGL to biblioteka (API) grafiki 2D/3D, którą obsługuje sterownik i układ karty graficznej. Inne podzespoły nie wykonują operacji graficznych.",
+   "ru": "OpenGL — графическая библиотека (API) 2D/3D, поддерживаемая драйвером и чипом видеокарты. Другие компоненты графических операций не выполняют."
+  }
+ },
+ "b27ed789": {
+  "ru": {
+   "stem": "В операционной системе Fedora домашние каталоги пользователей находятся в каталоге",
+   "answers": [
+    "/bin",
+    "/user",
+    "/users",
+    "/home"
+   ]
+  },
+  "expl": {
+   "pl": "W Linuksie katalogi domowe użytkowników są w /home (np. /home/jan), a katalog domowy roota to /root. /bin zawiera podstawowe programy, a /user i /users nie są standardowe.",
+   "ru": "В Linux домашние каталоги пользователей находятся в /home (например, /home/jan), домашний каталог root — /root. /bin содержит базовые программы, а /user и /users не стандартны."
+  }
+ },
+ "b3622197": {
+  "ru": {
+   "stem": "К свойствам отдельной учётной записи пользователя в системе Windows Server относится",
+   "answers": [
+    "номер телефона, по которому сервер должен перезвонить, если пользователь установил телефонное соединение.",
+    "максимальный размер одного файла, который пользователь может сохранить на диске сервера.",
+    "максимальный размер рабочего стола пользователя",
+    "максимальный размер профиля пользователя."
+   ]
+  },
+  "expl": {
+   "pl": "Na karcie „Telefonowanie” (Dial-in) właściwości konta można ustawić oddzwanianie na określony numer telefonu. Limit rozmiaru pojedynczego pliku czy pulpitu nie jest cechą konta użytkownika.",
+   "ru": "На вкладке «Входящие звонки» (Dial-in) свойств учётной записи можно задать обратный вызов на указанный номер телефона. Ограничение размера отдельного файла или рабочего стола не является свойством учётной записи."
+  },
+  "topic": "winserver"
+ },
+ "b500f37a": {
+  "ru": {
+   "stem": "Какова будет стоимость замены видеокарты в компьютере, если карта стоит 250 zł, замена займёт у сотрудника сервиса 80 минут, а каждый начатый рабочий час стоит 50 zł?",
+   "answers": [
+    "250 zł",
+    "300 zł",
+    "350 zł",
+    "400 zł"
+   ]
+  },
+  "expl": {
+   "pl": "80 min to 1 h 20 min, czyli 2 rozpoczęte roboczogodziny: 2 × 50 zł = 100 zł. Razem z kartą: 250 + 100 = 350 zł.",
+   "ru": "80 мин = 1 ч 20 мин, т.е. 2 начатых рабочих часа: 2 × 50 zł = 100 zł. Вместе с картой: 250 + 100 = 350 zł."
+  }
+ },
+ "b5951a15": {
+  "ru": {
+   "stem": "Какой протокол используется при инициировании сеанса VoIP?",
+   "answers": [
+    "MCGP",
+    "MIME",
+    "SDP",
+    "SIP"
+   ]
+  },
+  "expl": {
+   "pl": "SIP (Session Initiation Protocol) nawiązuje, modyfikuje i kończy sesje VoIP. SDP jedynie opisuje parametry sesji (kodeki, porty) przenoszone wewnątrz wiadomości SIP.",
+   "ru": "SIP (Session Initiation Protocol) устанавливает, изменяет и завершает сеансы VoIP. SDP лишь описывает параметры сеанса (кодеки, порты), передаваемые внутри сообщений SIP."
+  }
+ },
+ "b6926ca2": {
+  "ru": {
+   "stem": "В системе Windows настройки текущего пользователя компьютера хранятся в ветви реестра с сокращённым названием",
+   "answers": [
+    "HKCC",
+    "HKCR",
+    "HKCU",
+    "HKLM"
+   ]
+  },
+  "expl": {
+   "pl": "HKCU = HKEY_CURRENT_USER – ustawienia aktualnie zalogowanego użytkownika. HKLM dotyczy całego komputera, HKCR skojarzeń plików, a HKCC bieżącego profilu sprzętowego.",
+   "ru": "HKCU = HKEY_CURRENT_USER — настройки текущего пользователя. HKLM относится ко всему компьютеру, HKCR — к ассоциациям файлов, HKCC — к текущему аппаратному профилю."
+  }
+ },
+ "b7107659": {
+  "ru": {
+   "stem": "В сети Ethernet 100BaseTX для передачи данных используются жилы кабеля UTP, подключённые к контактам",
+   "answers": [
+    "4, 5, 6, 7",
+    "1, 2, 5, 6",
+    "1, 2, 3, 4",
+    "1, 2, 3, 6"
+   ]
+  },
+  "expl": {
+   "pl": "W 100BaseTX para na pinach 1 i 2 służy do nadawania (TX), a para na pinach 3 i 6 do odbioru (RX). Piny 4, 5, 7, 8 nie są używane.",
+   "ru": "В 100BaseTX пара на контактах 1 и 2 служит для передачи (TX), а пара на контактах 3 и 6 — для приёма (RX). Контакты 4, 5, 7, 8 не используются."
+  },
+  "topic": "cabling"
+ },
+ "b839ff3d": {
+  "ru": {
+   "stem": "При запуске компьютера появляется сообщение «CMOS checksum error press F1 to continue press DEL to setup». Нажатие клавиши DEL приведёт к",
+   "answers": [
+    "удалению файла setup.",
+    "входу в BIOS компьютера.",
+    "очистке содержимого памяти CMOS.",
+    "переходу к настройке системы Windows."
+   ]
+  },
+  "expl": {
+   "pl": "Klawisz DEL na tym etapie uruchamia program konfiguracyjny BIOS (Setup), w którym można przywrócić i zapisać ustawienia. Błąd sumy kontrolnej CMOS często oznacza rozładowaną baterię płyty głównej.",
+   "ru": "Клавиша DEL на этом этапе запускает программу настройки BIOS (Setup), где можно восстановить и сохранить параметры. Ошибка контрольной суммы CMOS часто означает разряженную батарейку материнской платы."
+  },
+  "topic": "hardware"
+ },
+ "b91ef63b": {
+  "ru": {
+   "stem": "Преимущество файловой системы NTFS —",
+   "answers": [
+    "возможность форматирования носителя малой ёмкости (от 1,44 MiB).",
+    "сохранение файлов с именем длиннее 255 символов.",
+    "хранение только одной копии таблицы файлов.",
+    "возможность шифрования папок и файлов."
+   ]
+  },
+  "expl": {
+   "pl": "NTFS pozwala szyfrować pliki i foldery (EFS), a także nadawać uprawnienia, kompresować i stosować przydziały dysku. Nazwy plików są ograniczone do 255 znaków, a MFT ma kopię zapasową.",
+   "ru": "NTFS позволяет шифровать файлы и папки (EFS), а также назначать разрешения, сжимать и задавать квоты. Имена файлов ограничены 255 символами, а у MFT есть резервная копия."
+  },
+  "topic": "windows"
+ },
+ "bc4c4b75": {
+  "ru": {
+   "stem": "Границ домена коллизий не определяют порты таких устройств, как",
+   "answers": [
+    "коммутатор (англ. switch).",
+    "концентратор (англ. hub).",
+    "мост (англ. bridge).",
+    "маршрутизатор (router)."
+   ]
+  },
+  "expl": {
+   "pl": "Koncentrator powtarza sygnał na wszystkie porty, więc wszystkie podłączone do niego stacje są w jednej domenie kolizyjnej. Porty przełącznika, mostu i routera rozdzielają domeny kolizyjne.",
+   "ru": "Концентратор повторяет сигнал на все порты, поэтому все подключённые к нему станции находятся в одном домене коллизий. Порты коммутатора, моста и маршрутизатора разделяют домены коллизий."
+  },
+  "topic": "netdevices"
+ },
+ "bd2e22f2": {
+  "ru": {
+   "stem": "В стандарте IEEE 802.3af подачу электропитания к различным сетевым устройствам описывает технология",
+   "answers": [
+    "Power over Classifications.",
+    "Power under Control.",
+    "Power over Internet.",
+    "Power over Ethernet."
+   ]
+  },
+  "expl": {
+   "pl": "IEEE 802.3af to standard PoE (Power over Ethernet) – zasilanie urządzeń (punkty dostępowe, kamery IP, telefony VoIP) przez skrętkę, do ok. 15,4 W na port.",
+   "ru": "IEEE 802.3af — стандарт PoE (Power over Ethernet): питание устройств (точек доступа, IP-камер, VoIP-телефонов) по витой паре, до ~15,4 Вт на порт."
+  },
+  "topic": "netdevices"
+ },
+ "bdc351e7": {
+  "ru": {
+   "stem": "Программа WinRAR вывела информационное окно, показанное на рисунке. Каким типом лицензии на программу до сих пор пользовался пользователь?",
+   "answers": [
+    "Adware.",
+    "Freeware.",
+    "Shareware.",
+    "Public domain."
+   ]
+  },
+  "expl": {
+   "pl": "Komunikat mówi, że WinRAR nie jest darmowy i po 40 dniach używania trzeba kupić licencję – to cecha shareware (program do wypróbowania przed zakupem). Freeware i public domain są bezpłatne bez ograniczeń czasowych.",
+   "ru": "Сообщение говорит, что WinRAR не бесплатен и после 40 дней нужно купить лицензию — это признак shareware (программа для пробного использования перед покупкой). Freeware и public domain бесплатны без ограничений по времени."
+  },
+  "topic": "law_bhp"
+ },
+ "bdd97bcb": {
+  "ru": {
+   "stem": "Низкоуровневое форматирование диска IDE HDD",
+   "answers": [
+    "создаёт расширенный раздел.",
+    "создаёт основной раздел.",
+    "выполняется производителем диска.",
+    "помещает загрузчик в MBR."
+   ]
+  },
+  "expl": {
+   "pl": "Formatowanie niskopoziomowe tworzy fizyczną strukturę ścieżek i sektorów na talerzach – we współczesnych dyskach wykonuje je fabrycznie producent. Partycje tworzy się później narzędziami do partycjonowania.",
+   "ru": "Низкоуровневое форматирование создаёт физическую структуру дорожек и секторов на пластинах — у современных дисков его выполняет производитель на заводе. Разделы создаются позже утилитами разметки."
+  }
+ },
+ "c1be452d": {
+  "ru": {
+   "stem": "Какая запись в двоичной системе соответствует числу 111, записанному в десятичной системе?",
+   "answers": [
+    "1101111",
+    "1110111",
+    "1111110",
+    "1111111"
+   ]
+  },
+  "expl": {
+   "pl": "111 = 64 + 32 + 8 + 4 + 2 + 1 → 1101111 (brak 16). Dla porównania 1111111 = 127.",
+   "ru": "111 = 64 + 32 + 8 + 4 + 2 + 1 → 1101111 (без 16). Для сравнения: 1111111 = 127."
+  }
+ },
+ "c3b8a118": {
+  "ru": {
+   "stem": "В результате команды ipconfig была выведена конфигурация, показанная на рисунке. IP-адрес тестируемой рабочей станции —",
+   "answers": [
+    "62.21.99.95",
+    "192.168.0.1",
+    "192.168.0.11",
+    "255.255.255.0"
+   ]
+  },
+  "expl": {
+   "pl": "W wierszu „Adres IP” widnieje 192.168.0.11. 192.168.0.1 to brama domyślna i serwer DHCP, 62.21.99.95 to serwer DNS, a 255.255.255.0 to maska podsieci.",
+   "ru": "В строке «Adres IP» указано 192.168.0.11. 192.168.0.1 — шлюз по умолчанию и DHCP-сервер, 62.21.99.95 — DNS-сервер, 255.255.255.0 — маска подсети."
+  }
+ },
+ "c3d8512b": {
+  "ru": {
+   "stem": "Изображённый на рисунке графический символ обозначает упаковку",
+   "answers": [
+    "соответствующую стандарту TCO.",
+    "многоразового использования.",
+    "пригодную для переработки.",
+    "изготовленную из вторсырья."
+   ]
+  },
+  "expl": {
+   "pl": "Według klucza symbol strzałki zamkniętej w okrąg (pętla Möbiusa/cykl) oznacza opakowanie nadające się do recyklingu. Zgodność z TCO oznacza się logo „TCO Certified”.",
+   "ru": "По ключу символ стрелки, замкнутой в круг (цикл), означает упаковку, пригодную для переработки. Соответствие TCO обозначается логотипом «TCO Certified»."
+  }
+ },
+ "c92b917e": {
+  "ru": {
+   "stem": "Команда Gpresult",
+   "answers": [
+    "выводит информацию о контроллере.",
+    "обновляет параметры групповой политики.",
+    "восстанавливает политики групп по умолчанию для контроллера.",
+    "выводит результирующий набор политик для пользователя или компьютера."
+   ]
+  },
+  "expl": {
+   "pl": "gpresult pokazuje wynikowy zestaw zasad (RSoP) zastosowanych do użytkownika lub komputera. Aktualizację zasad grupy wykonuje gpupdate.",
+   "ru": "gpresult показывает результирующий набор политик (RSoP), применённых к пользователю или компьютеру. Обновление групповой политики выполняет gpupdate."
+  }
+ },
+ "caf401f0": {
+  "ru": {
+   "stem": "Операционная система не занимается",
+   "answers": [
+    "предоставлением механизмов синхронизации задач и взаимодействия между задачами.",
+    "планированием и распределением процессорного времени отдельным задачам.",
+    "контролем и распределением оперативной памяти для запущенных задач.",
+    "созданием исходного кода системных приложений."
+   ]
+  },
+  "expl": {
+   "pl": "System operacyjny zarządza procesorem, pamięcią i komunikacją między procesami, ale nie tworzy kodu źródłowego aplikacji – to zadanie programistów i narzędzi programistycznych.",
+   "ru": "Операционная система управляет процессором, памятью и взаимодействием процессов, но не создаёт исходный код приложений — это задача программистов и средств разработки."
+  },
+  "topic": "basics"
+ },
+ "cb58eccd": {
+  "ru": {
+   "stem": "Планировщик заданий в Windows позволяет назначить",
+   "answers": [
+    "более пяти сроков выполнения для указанной программы.",
+    "не более трёх сроков выполнения для указанной программы.",
+    "не более четырёх сроков выполнения для указанной программы.",
+    "не более пяти сроков выполнения для указанной программы."
+   ]
+  },
+  "expl": {
+   "pl": "Harmonogram zadań pozwala dodać do jednego zadania wiele wyzwalaczy (terminów uruchomienia) – liczba nie jest ograniczona do 3, 4 czy 5.",
+   "ru": "Планировщик заданий позволяет добавить одному заданию много триггеров (сроков запуска) — их число не ограничено 3, 4 или 5."
+  },
+  "topic": "windows"
+ },
+ "cbda20a2": {
+  "ru": {
+   "stem": "Маска для IP-адреса 92.168.1.10/8 имеет вид",
+   "answers": [
+    "255.255.255.0",
+    "255.255.0.0",
+    "255.0.255.0",
+    "255.0.0.0"
+   ]
+  },
+  "expl": {
+   "pl": "Prefiks /8 oznacza 8 bitów jedynek w masce, czyli pierwszy oktet = 255, a reszta zera: 255.0.0.0. Maska 255.0.255.0 jest niepoprawna (nieciągłe jedynki).",
+   "ru": "Префикс /8 означает 8 единичных битов в маске: первый октет 255, остальные нули — 255.0.0.0. Маска 255.0.255.0 некорректна (единицы не подряд)."
+  }
+ },
+ "ccd33271": {
+  "ru": {
+   "stem": "Сетевое устройство мост (англ. bridge)",
+   "answers": [
+    "не анализирует кадр на предмет MAC-адреса",
+    "работает на нулевом уровне модели OSI",
+    "работает на восьмом уровне модели OSI",
+    "является устройством типа store and forward"
+   ]
+  },
+  "expl": {
+   "pl": "Most działa w warstwie 2 OSI: odbiera całą ramkę, zapisuje ją w buforze, sprawdza adres MAC i sumę kontrolną, a potem przekazuje dalej – to tryb store and forward. Model OSI nie ma warstwy 0 ani 8.",
+   "ru": "Мост работает на 2-м уровне OSI: принимает весь кадр, сохраняет в буфере, проверяет MAC-адрес и контрольную сумму, затем пересылает — это режим store and forward. Уровней 0 и 8 в OSI нет."
+  },
+  "topic": "netdevices"
+ },
+ "d148345e": {
+  "ru": {
+   "stem": "Какая служба заключается в централизованном управлении удостоверениями, разрешениями и объектами в сети?",
+   "answers": [
+    "AD (Active Directory).",
+    "NAS (Network File System).",
+    "WDS (Windows Deployment Services).",
+    "DHCP (Dynamic Host Configuration Protocol)."
+   ]
+  },
+  "expl": {
+   "pl": "Active Directory to usługa katalogowa przechowująca centralnie konta użytkowników, grupy, komputery i ich uprawnienia w domenie. WDS służy do instalacji systemów przez sieć, a DHCP przydziela adresy.",
+   "ru": "Active Directory — служба каталогов, централизованно хранящая учётные записи, группы, компьютеры и их разрешения в домене. WDS служит для установки ОС по сети, DHCP выдаёт адреса."
+  },
+  "topic": "winserver"
+ },
+ "d151710f": {
+  "ru": {
+   "stem": "На материнской плате вышла из строя встроенная сетевая карта. Компьютер не имеет жёсткого диска и никаких других приводов, таких как дисковод или CD-ROM. Клиент утверждает, что в корпоративной сети компьютеры не имеют приводов и всё «читается» с сервера. Чтобы восстановить утраченную функциональность, нужно установить",
+   "answers": [
+    "в компьютер жёсткий диск.",
+    "в компьютер привод CD-ROM.",
+    "в слот расширения сетевую карту, самостоятельно поддерживающую функцию Postboot Execution Enumeration.",
+    "в слот расширения сетевую карту, самостоятельно поддерживающую функцию Preboot Execution Environment."
+   ]
+  },
+  "expl": {
+   "pl": "Komputery bezdyskowe uruchamiają system przez sieć dzięki PXE (Preboot Execution Environment) – karta sieciowa z własnym bootromem PXE pobiera obraz z serwera. „Postboot Execution Enumeration” nie istnieje.",
+   "ru": "Бездисковые компьютеры загружают систему по сети благодаря PXE (Preboot Execution Environment) — сетевая карта с собственным загрузочным ПЗУ PXE загружает образ с сервера. «Postboot Execution Enumeration» не существует."
+  }
+ },
+ "d4dd26fa": {
+  "ru": {
+   "stem": "Для отслеживания маршрута IP-датаграммы до пункта назначения служит команда",
+   "answers": [
+    "ping",
+    "route",
+    "tracert",
+    "nslookup"
+   ]
+  },
+  "expl": {
+   "pl": "tracert wysyła pakiety z rosnącym TTL i wypisuje kolejne routery (przeskoki) na trasie do celu. ping sprawdza tylko osiągalność, a route wyświetla/zmienia lokalną tablicę routingu.",
+   "ru": "tracert отправляет пакеты с растущим TTL и выводит промежуточные маршрутизаторы (хопы) до цели. ping проверяет лишь доступность, а route показывает/изменяет локальную таблицу маршрутизации."
+  }
+ },
+ "d8660b45": {
+  "ru": {
+   "stem": "Чтобы проверить, какая программа больше всего нагружает процессор в Windows, нужно запустить программу",
+   "answers": [
+    "диспетчер задач.",
+    "msconfig.",
+    "regedit.",
+    "dxdiag."
+   ]
+  },
+  "expl": {
+   "pl": "Menedżer zadań (Ctrl+Shift+Esc) pokazuje procesy wraz z bieżącym użyciem CPU i pamięci, a listę można posortować według obciążenia procesora. msconfig służy do konfiguracji rozruchu.",
+   "ru": "Диспетчер задач (Ctrl+Shift+Esc) показывает процессы с текущей загрузкой CPU и памяти, список можно отсортировать по загрузке процессора. msconfig служит для настройки загрузки."
+  },
+  "topic": "windows"
+ },
+ "d8cd238f": {
+  "ru": {
+   "stem": "Какая из перечисленных памятей RAM использует для передачи данных нарастающий и спадающий фронт тактового сигнала?",
+   "answers": [
+    "SIMM",
+    "SDR",
+    "DDR",
+    "SIPP"
+   ]
+  },
+  "expl": {
+   "pl": "DDR (Double Data Rate) przesyła dane na obu zboczach zegara, czyli dwa razy na takt. SDR przesyła dane tylko na jednym zboczu, a SIMM i SIPP to rodzaje modułów, nie typy transmisji.",
+   "ru": "DDR (Double Data Rate) передаёт данные по обоим фронтам тактового сигнала, т.е. дважды за такт. SDR — только по одному фронту, а SIMM и SIPP — типы модулей, а не способы передачи."
+  }
+ },
+ "d9e97695": {
+  "ru": {
+   "stem": "В операционной системе Ubuntu для создания архива данных нужно использовать программу",
+   "answers": [
+    "set",
+    "tar",
+    "sed",
+    "awk"
+   ]
+  },
+  "expl": {
+   "pl": "tar łączy pliki i katalogi w jedno archiwum (np. tar -cvf archiwum.tar katalog, z -z także kompresja gzip). sed i awk to narzędzia do przetwarzania tekstu, a set ustawia zmienne powłoki.",
+   "ru": "tar объединяет файлы и каталоги в один архив (например, tar -cvf archiwum.tar каталог, с -z — ещё и сжатие gzip). sed и awk — инструменты обработки текста, set задаёт переменные оболочки."
+  },
+  "topic": "linux"
+ },
+ "dcdb865c": {
+  "ru": {
+   "stem": "Перемещаемый профиль превращается в обязательный профиль пользователя после",
+   "answers": [
+    "удаления файла NTUSER.DAT",
+    "удаления файла NTUSER.MAN",
+    "изменения имени файла NTUSER.MAN на NTUSER.DAT",
+    "изменения имени файла NTUSER.DAT на NTUSER.MAN"
+   ]
+  },
+  "expl": {
+   "pl": "Profil obowiązkowy powstaje przez zmianę nazwy pliku NTUSER.DAT na NTUSER.MAN – wtedy zmiany wprowadzone przez użytkownika nie są zapisywane po wylogowaniu. Zmiana odwrotna przywraca profil zwykły.",
+   "ru": "Обязательный профиль получается переименованием файла NTUSER.DAT в NTUSER.MAN — тогда изменения пользователя не сохраняются после выхода. Обратное переименование возвращает обычный профиль."
+  }
+ },
+ "e09aaae2": {
+  "ru": {
+   "stem": "Максимально быструю передачу данных в беспроводной сети обеспечивает стандарт",
+   "answers": [
+    "802.11a",
+    "802.11b",
+    "802.11g",
+    "802.11n"
+   ]
+  },
+  "expl": {
+   "pl": "802.11n (MIMO) osiąga do 600 Mb/s. 802.11a i 802.11g – do 54 Mb/s, a 802.11b – do 11 Mb/s.",
+   "ru": "802.11n (MIMO) достигает 600 Мбит/с. 802.11a и 802.11g — до 54 Мбит/с, 802.11b — до 11 Мбит/с."
+  }
+ },
+ "e371c741": {
+  "ru": {
+   "stem": "На новом компьютере антивирусную программу следует установить",
+   "answers": [
+    "во время установки операционной системы.",
+    "до установки операционной системы.",
+    "сразу после установки операционной системы.",
+    "после установки скачанных из Интернета программ."
+   ]
+  },
+  "expl": {
+   "pl": "Antywirus instaluje się zaraz po systemie, zanim komputer zacznie pobierać pliki i programy z Internetu. Przed instalacją systemu nie da się go zainstalować, a późniejsza instalacja zostawia okno na infekcję.",
+   "ru": "Антивирус устанавливают сразу после ОС, до того как компьютер начнёт скачивать файлы и программы из Интернета. До установки ОС его поставить нельзя, а более поздняя установка оставляет окно для заражения."
+  },
+  "topic": "security"
+ },
+ "e4adef02": {
+  "ru": {
+   "stem": "В системе Linux у файла установлены права 541. Владелец может файл",
+   "answers": [
+    "изменять.",
+    "только выполнять.",
+    "читать и выполнять.",
+    "читать, записывать и выполнять."
+   ]
+  },
+  "expl": {
+   "pl": "Pierwsza cyfra (5) dotyczy właściciela: 5 = 4 (r) + 1 (x) = r-x, czyli odczyt i wykonanie bez zapisu. Grupa ma 4 (r--), pozostali 1 (--x).",
+   "ru": "Первая цифра (5) — права владельца: 5 = 4 (r) + 1 (x) = r-x, т.е. чтение и выполнение без записи. Группа — 4 (r--), остальные — 1 (--x)."
+  }
+ },
+ "e77e7edc": {
+  "ru": {
+   "stem": "На фотографии изображен(а)",
+   "answers": [
+    "рефлектометр.",
+    "сетевой тестер.",
+    "обжимной инструмент для гильз (наконечников).",
+    "обжимной инструмент для разъёмов RJ45."
+   ]
+  },
+  "expl": {
+   "pl": "Na zdjęciu jest zaciskarka z gniazdami na wtyki modularne 8P8C (RJ45) i nożami do przycinania kabla – służy do zarabiania końcówek skrętki. Tester sieciowy i reflektometr to urządzenia pomiarowe.",
+   "ru": "На фото обжимной инструмент с гнёздами под модульные разъёмы 8P8C (RJ45) и ножами для обрезки кабля — для обжима витой пары. Сетевой тестер и рефлектометр — измерительные приборы."
+  }
+ },
+ "ead0f8ff": {
+  "ru": {
+   "stem": "На рисунке изображено сечение кабеля",
+   "answers": [
+    "S/UTP",
+    "U/UTP",
+    "оптического.",
+    "коаксиального."
+   ]
+  },
+  "expl": {
+   "pl": "Kabel ma przewodnik wewnętrzny, izolator, przewodnik zewnętrzny (ekran) i osłonę – ułożone współosiowo. To budowa kabla koncentrycznego. Skrętka ma pary skręconych żył.",
+   "ru": "Кабель имеет внутренний проводник, изолятор, внешний проводник (экран) и оболочку — расположенные соосно. Это строение коаксиального кабеля. Витая пара состоит из скрученных пар жил."
+  }
+ },
+ "eb317bc3": {
+  "ru": {
+   "stem": "После установки Windows 7 в BIOS компьютера изменили конфигурацию диска SATA с AHCI на IDE. После перезагрузки компьютера система будет",
+   "answers": [
+    "перезагружаться во время запуска.",
+    "запускаться без изменений.",
+    "работать быстрее.",
+    "работать медленнее."
+   ]
+  },
+  "expl": {
+   "pl": "Windows zainstalowany w trybie AHCI ma załadowany tylko sterownik AHCI; po przełączeniu na IDE nie widzi dysku rozruchowego – pojawia się BSOD 0x7B (INACCESSIBLE_BOOT_DEVICE) i komputer się resetuje.",
+   "ru": "Windows, установленная в режиме AHCI, загружает только драйвер AHCI; после переключения на IDE она не видит загрузочный диск — появляется BSOD 0x7B (INACCESSIBLE_BOOT_DEVICE) и компьютер перезагружается."
+  }
+ },
+ "ec9dc7a2": {
+  "ru": {
+   "stem": "Каждый следующий IP-маршрутизатор на пути пакета",
+   "answers": [
+    "увеличивает значение TTL передаваемого пакета на два.",
+    "увеличивает значение TTL передаваемого пакета на один.",
+    "уменьшает значение TTL передаваемого пакета на один.",
+    "уменьшает значение TTL передаваемого пакета на два."
+   ]
+  },
+  "expl": {
+   "pl": "Każdy router zmniejsza TTL o 1; gdy TTL osiągnie 0, pakiet jest odrzucany (i wysyłany jest komunikat ICMP Time Exceeded). Zapobiega to krążeniu pakietów w pętlach.",
+   "ru": "Каждый маршрутизатор уменьшает TTL на 1; когда TTL становится 0, пакет отбрасывается (и отправляется ICMP Time Exceeded). Это предотвращает зацикливание пакетов."
+  }
+ },
+ "ee110e84": {
+  "ru": {
+   "stem": "Каков максимальный размер одной датаграммы IPv4 с учётом её заголовка?",
+   "answers": [
+    "32 kB",
+    "64 kB",
+    "128 kB",
+    "256 kB"
+   ]
+  },
+  "expl": {
+   "pl": "Pole „Total Length” w nagłówku IPv4 ma 16 bitów, więc maksymalny rozmiar datagramu to 2^16 − 1 = 65 535 B ≈ 64 kB (razem z nagłówkiem).",
+   "ru": "Поле «Total Length» в заголовке IPv4 имеет 16 бит, поэтому максимальный размер датаграммы 2^16 − 1 = 65 535 B ≈ 64 kB (вместе с заголовком)."
+  },
+  "topic": "protocols"
+ },
+ "f018d865": {
+  "ru": {
+   "stem": "Если единица распределения (кластер) составляет 1024 байта, то файлы из таблицы займут на диске",
+   "answers": [
+    "3 кластера.",
+    "4 кластера.",
+    "5 кластеров.",
+    "6 кластеров."
+   ]
+  },
+  "expl": {
+   "pl": "Każdy plik zajmuje co najmniej jeden pełny klaster: Ala.exe (50 B) – 1, Dom.bat (1024 B) – 1, Wirus.exe (2 kB) – 2, Domes.exr (350 B) – 1. Razem 1+1+2+1 = 5 klastrów.",
+   "ru": "Каждый файл занимает минимум один целый кластер: Ala.exe (50 B) — 1, Dom.bat (1024 B) — 1, Wirus.exe (2 kB) — 2, Domes.exr (350 B) — 1. Итого 1+1+2+1 = 5 кластеров."
+  }
+ },
+ "f04a5047": {
+  "ru": {
+   "stem": "В файловой системе NTFS переименование файла позволяет разрешение",
+   "answers": [
+    "записи.",
+    "чтения.",
+    "изменения.",
+    "чтения и выполнения."
+   ]
+  },
+  "expl": {
+   "pl": "Zmiana nazwy pliku wymaga prawa do usuwania (stara nazwa znika), które zawiera uprawnienie Modyfikacja (odczyt, zapis, wykonanie i usuwanie). Samo uprawnienie Zapis nie obejmuje usuwania.",
+   "ru": "Переименование файла требует права на удаление (старое имя исчезает), которое входит в разрешение «Изменение» (чтение, запись, выполнение и удаление). Одно разрешение «Запись» удаления не включает."
+  }
+ },
+ "f480c66f": {
+  "ru": {
+   "stem": "Периодические резервные копии дисков сервера нельзя создавать на съёмных носителях типа",
+   "answers": [
+    "карты SD",
+    "карты MMC",
+    "диски CD-RW",
+    "диски DVD-ROM"
+   ]
+  },
+  "expl": {
+   "pl": "DVD-ROM to nośnik tylko do odczytu (ROM – Read Only Memory), więc nie można na nim zapisać kopii. Karty SD, MMC oraz płyty CD-RW pozwalają na zapis.",
+   "ru": "DVD-ROM — носитель только для чтения (ROM — Read Only Memory), поэтому записать на него копию нельзя. Карты SD, MMC и диски CD-RW допускают запись."
+  }
+ },
+ "f6b270cc": {
+  "ru": {
+   "stem": "Какую сетевую конфигурацию может иметь компьютер, принадлежащий той же сети LAN, что и компьютер с адресом 192.168.1.10/24?",
+   "answers": [
+    "192.168.0.11 и 255.255.255.0",
+    "192.168.1.11 и 255.255.255.0",
+    "192.168.0.11 и 255.255.0.0",
+    "192.168.1.11 и 255.255.0.0"
+   ]
+  },
+  "expl": {
+   "pl": "Sieć 192.168.1.10/24 to 192.168.1.0 z maską 255.255.255.0, więc drugi komputer musi mieć adres 192.168.1.x i tę samą maskę – 192.168.1.11/255.255.255.0. Z maską 255.255.0.0 miałby inną sieć.",
+   "ru": "Сеть 192.168.1.10/24 — это 192.168.1.0 с маской 255.255.255.0, значит второй компьютер должен иметь адрес 192.168.1.x и ту же маску — 192.168.1.11/255.255.255.0. С маской 255.255.0.0 сеть была бы другой."
+  }
+ },
+ "f6dfccfc": {
+  "ru": {
+   "stem": "Какое утверждение об учётной записи пользователя Active Directory в системе Windows верно?",
+   "answers": [
+    "Имя входа пользователя должно содержать меньше 21 символа.",
+    "Имя входа пользователя должно содержать меньше 20 символов.",
+    "Имя входа пользователя может иметь длину более 100 байт.",
+    "Имя входа пользователя не может иметь длину более 100 байт."
+   ]
+  },
+  "expl": {
+   "pl": "Nazwa logowania (UPN, np. jan@firma.pl) w Active Directory może mieć długość większą niż 100 bajtów. Limit 20 znaków dotyczy tylko nazwy zgodnej z systemami starszymi niż Windows 2000 (sAMAccountName).",
+   "ru": "Имя входа (UPN, например jan@firma.pl) в Active Directory может быть длиннее 100 байт. Ограничение в 20 символов касается только имени для систем старше Windows 2000 (sAMAccountName)."
+  },
+  "topic": "winserver"
+ },
+ "f7e463a6": {
+  "ru": {
+   "stem": "В Windows XP для создания нового пользователя с именем egzamin и паролем qwerty нужно использовать команду",
+   "answers": [
+    "net user egzamin qwerty /add",
+    "useradd egzamin qwerty /add",
+    "adduser egzamin qwerty /add",
+    "user net egzamin qwerty /add"
+   ]
+  },
+  "expl": {
+   "pl": "W Windows konto tworzy się poleceniem net user nazwa hasło /add. useradd i adduser to polecenia Linuksa (i nie mają opcji /add).",
+   "ru": "В Windows учётная запись создаётся командой net user имя пароль /add. useradd и adduser — команды Linux (и опции /add у них нет)."
+  },
+  "topic": "windows"
+ },
+ "fb5758e7": {
+  "ru": {
+   "stem": "Какой инструмент нужно выбрать, чтобы подключить жилы витой пары к гнезду Ethernet?",
+   "answers": [
+    "Инструмент для заделки LSA (punch-down)",
+    "Обжимной инструмент BNC",
+    "Обжимной инструмент RJ-45",
+    "Обжимной инструмент RJ-11"
+   ]
+  },
+  "expl": {
+   "pl": "Żyły skrętki w gnieździe (keystone) i panelu krosowym wciska się w złącza IDC/LSA narzędziem uderzeniowym (wciskacz LSA). Zaciskarka RJ-45 służy do zarabiania wtyków, a nie gniazd.",
+   "ru": "Жилы витой пары в розетке (keystone) и патч-панели вдавливают в контакты IDC/LSA ударным инструментом (LSA punch-down). Обжимник RJ-45 предназначен для вилок, а не для розеток."
+  },
+  "topic": "cabling"
+ },
+ "fea4fc1d": {
+  "ru": {
+   "stem": "AES (англ. Advanced Encryption Standard)",
+   "answers": [
+    "является предшественником DES (англ. Data Encryption Standard).",
+    "не может использоваться для шифрования файлов.",
+    "использует симметричный алгоритм шифрования.",
+    "не может быть реализован аппаратно."
+   ]
+  },
+  "expl": {
+   "pl": "AES to szyfr symetryczny – ten sam klucz służy do szyfrowania i deszyfrowania. Jest następcą (nie poprzednikiem) DES, szyfruje pliki (np. EFS, BitLocker) i ma wsparcie sprzętowe w procesorach (AES-NI).",
+   "ru": "AES — симметричный шифр: один и тот же ключ используется для шифрования и расшифровки. Он преемник (а не предшественник) DES, шифрует файлы (EFS, BitLocker) и имеет аппаратную поддержку в процессорах (AES-NI)."
+  }
+ },
+ "fee9fe2a": {
+  "ru": {
+   "stem": "На рисунке изображен(а)",
+   "answers": [
+    "патч-панель.",
+    "коммутатор.",
+    "концентратор.",
+    "сетевая карта."
+   ]
+  },
+  "expl": {
+   "pl": "To panel krosowy (patch panel) do szafy rack 19” z rzędem gniazd RJ-45 – zakańcza się na nim kable z gniazd abonenckich. Nie ma diod ani zasilania jak przełącznik czy koncentrator.",
+   "ru": "Это коммутационная панель (patch panel) для стойки 19” с рядом гнёзд RJ-45 — на ней оконечиваются кабели от абонентских розеток. У неё нет индикаторов и питания, как у коммутатора или концентратора."
+  },
+  "topic": "cabling"
+ },
+ "feee3a95": {
+  "ru": {
+   "stem": "Какой протокол используют компьютеры для уведомления маршрутизатора о членстве в данной группе многоадресной рассылки?",
+   "answers": [
+    "IGMP",
+    "OSPF",
+    "UDP",
+    "RIP"
+   ]
+  },
+  "expl": {
+   "pl": "IGMP (Internet Group Management Protocol) pozwala hostom zgłaszać routerowi przyłączenie do grupy multicast lub jej opuszczenie. OSPF i RIP to protokoły routingu, a UDP – transportowy.",
+   "ru": "IGMP (Internet Group Management Protocol) позволяет хостам сообщать маршрутизатору о вступлении в группу multicast или выходе из неё. OSPF и RIP — протоколы маршрутизации, UDP — транспортный."
+  },
+  "topic": "protocols"
+ },
+ "ff091862": {
+  "ru": {
+   "stem": "Измеряемая в децибелах величина, являющаяся разностью мощности сигнала, передаваемого в мешающей паре, и сигнала, наведённого в паре, подверженной помехам, —",
+   "answers": [
+    "сопротивление шлейфа.",
+    "дальние перекрёстные помехи (FEXT).",
+    "ближние перекрёстные помехи (NEXT).",
+    "уровень выходной мощности"
+   ]
+  },
+  "expl": {
+   "pl": "Przesłuch zbliżny (NEXT) mierzy się na tym samym końcu kabla, na którym nadawany jest sygnał – jako różnicę (w dB) mocy w parze zakłócającej i sygnału indukowanego w parze zakłócanej. FEXT mierzy się na przeciwnym końcu.",
+   "ru": "Ближние перекрёстные помехи (NEXT) измеряются на том же конце кабеля, где подаётся сигнал, — как разность (в дБ) мощности в мешающей паре и наведённого сигнала в паре, подверженной помехам. FEXT измеряется на противоположном конце."
+  },
+  "topic": "cabling"
+ }
+}

@@ -1,0 +1,265 @@
+                                                                             Arkusz zawiera informacje
+                                                                          prawnie chronione do momentu
+                                                                               rozpoczęcia egzaminu
+
+
+
+Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych
+                    i lokalnych sieci komputerowych
+Oznaczenie kwalifikacji: INF.02
+Numer zadania: 01
+Wersja arkusza: SG
+
+                                       Wypełnia zdający
+                                                                             Miejsce na naklejkę z numerem
+Numer PESEL zdającego*                                                         PESEL i z kodem ośrodka
+
+
+
+
+Czas trwania egzaminu: 150 minut.                                                       INF.02-01-23.06-SG
+
+EGZAMIN ZAWODOWY
+                                                              PODSTAWA PROGRAMOWA
+Rok 2023
+                                                                      2019
+CZĘŚĆ PRAKTYCZNA
+
+
+Instrukcja dla zdającego
+    1.  Na pierwszej stronie arkusza egzaminacyjnego wpisz w oznaczonym miejscu swój numer PESEL
+        i naklej naklejkę z numerem PESEL i z kodem ośrodka.
+    2. Na KARCIE OCENY w oznaczonym miejscu przyklej naklejkę z numerem PESEL oraz wpisz:
+        − swój numer PESEL*,
+        − oznaczenie kwalifikacji,
+        − numer zadania,
+        − numer stanowiska.
+    3. KARTĘ OCENY przekaż zespołowi nadzorującemu.
+    4. Sprawdź, czy arkusz egzaminacyjny zawiera 5 stron i nie zawiera błędów. Ewentualny brak stron lub
+        inne usterki zgłoś przez podniesienie ręki przewodniczącemu zespołu nadzorującego.
+    5. Zapoznaj się z treścią zadania oraz stanowiskiem egzaminacyjnym. Masz na to 10 minut. Czas ten
+        nie jest wliczany do czasu trwania egzaminu.
+    6. Czas rozpoczęcia i zakończenia pracy zapisze w widocznym miejscu przewodniczący zespołu
+        nadzorującego.
+    7. Wykonaj samodzielnie zadanie egzaminacyjne. Przestrzegaj zasad bezpieczeństwa i organizacji
+        pracy.
+    8. Jeżeli w zadaniu egzaminacyjnym występuje polecenie „zgłoś gotowość do oceny przez podniesienie
+        ręki”, to zastosuj się do polecenia i poczekaj na decyzję przewodniczącego zespołu nadzorującego.
+    9. Po zakończeniu wykonania zadania pozostaw rezultaty oraz arkusz egzaminacyjny na swoim
+        stanowisku lub w miejscu wskazanym przez przewodniczącego zespołu nadzorującego.
+    10. Po uzyskaniu zgody zespołu nadzorującego możesz opuścić salę/miejsce przeprowadzania egzaminu.
+
+                                                                                               Powodzenia!
+* w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+
+Układ graficzny
+© CKE 2020
+Zadanie egzaminacyjne
+Wykorzystując dostępne narzędzia znajdujące się na stanowisku egzaminacyjnym, wykonaj modernizację
+stacji roboczej oraz podłączenie urządzeń sieciowych. Wykonaj konfigurację urządzeń sieciowych oraz
+konfigurację systemów zainstalowanych na dysku twardym stacji roboczej i serwera.
+Do konfiguracji serwera oraz stacji roboczej z zainstalowanym systemem Windows wykorzystaj konto
+Administrator z hasłem ZAQ!2wsx
+Do konfiguracji serwera oraz stacji roboczej z zainstalowanym systemem Linux wykorzystaj konto
+administrator z hasłem ZAQ!2wsx (konto z prawem podniesienia uprawnień do root z hasłem ZAQ!2wsx )
+
+ 1.    Wykonaj okablowanie sieciowe:
+      ‒ wykonaj kabel połączeniowy prosty według sekwencji T568B, zastosuj odpowiedni typ okablowania
+      ‒ przeprowadź test poprawności wykonanego okablowania.
+
+UWAGA: Po wykonaniu okablowania zgłoś Przewodniczącemu ZN – przez podniesienie ręki –
+gotowość do przeprowadzenia testu okablowania. W obecności egzaminatora ponownie sprawdź za pomocą
+testera okablowania poprawność wykonania kabla połączeniowego.
+
+ 2.    Na stacji roboczej w systemie Windows przeprowadź identyfikację parametrów karty graficznej:
+      ‒ zainstaluj program GPU-Z dostępny na nośniku opisanym DOKUMENTACJA/PROGRAMY
+      ‒ za pomocą programu GPU-Z sprawdź parametry karty graficznej, ujęte w Tabeli 1. Podzespół stacji
+         roboczej. Parametry wpisz do tabeli w arkuszu egzaminacyjnym. W przypadku braku możliwości
+         identyfikacji parametru podzespołu przez program, zapisz: brak danych
+      ‒ wykonaj zrzuty dokumentujące przeprowadzone testy, a następnie zapisz je jako pliki graficzne
+         w folderze o nazwie KARTA na nośniku USB opisanym EGZAMIN-x, gdzie x oznacza numer
+         stanowiska zdającego.
+
+ 3.   Skonfiguruj ruter zgodnie z następującymi zaleceniami:
+     ‒ interfejs WAN:
+         − adres IP 20.20.20.2/28
+         − brama domyślna 20.20.20.1
+         − serwer DNS 8.8.8.8, drugi serwer DNS 8.8.5.5, jeżeli jest wymagany
+     ‒ interfejs LAN: adres IP 172.31.3.1/24
+     ‒ serwer DHCP włączony
+     ‒ ustawiona pula adresowa DHCP 172.31.3.20 ÷ 172.31.3.200
+     ‒ wykonana rezerwacja adresu IP 172.31.3.27 dla przewodowego interfejsu sieciowego stacji
+        roboczej.
+Ruter pracuje na ustawieniach fabrycznych zgodnie z dokumentacją, która jest dostępna w folderze RUTER
+na nośniku opisanym DOKUMENTACJA/PROGRAMY. Jeżeli ruter wymaga zmiany hasła, ustaw je zgodnie
+z wymogami tego urządzenia.
+
+UWAGA: Po wykonaniu konfiguracji zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+oceny ustawień rutera.
+
+ 4.   Skonfiguruj przełącznik zgodnie z następującymi zaleceniami:
+      − adres IP: 172.31.3.2 z maską 255.255.255.0
+      − brama domyślna, jeśli jest wymagana: adres IP rutera
+      − utworzona nowa sieć VLAN 802.1q o ID = 2
+      ‒ porty przełącznika: 1, 2 i 3 przypisane bez tagowania do sieci VLAN o ID = 2
+
+Przełącznik pracuje na ustawieniach fabrycznych zgodnie z dokumentacją, która jest dostępna w folderze
+PRZEŁĄCZNIK na nośniku opisanym DOKUMENTACJA/PROGRAMY. Jeżeli przełącznik wymaga zmiany
+hasła, ustaw je zgodnie z wymogami tego urządzenia.
+
+UWAGA: Po wykonaniu konfiguracji zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+oceny ustawień przełącznika.
+
+ 5.   Za pomocą kabli połączeniowych znajdujących się na stanowisku egzaminacyjnym połącz urządzenia
+      zgodnie ze schematem.
+                                              Strona 2 z 5
+                                    Schemat połączenia urządzeń
+
+ 6.   Skonfiguruj serwer z zainstalowanym systemem Linux:
+      − interfejs sieciowy serwera podłączony do przełącznika:
+          − adres IP: 172.31.3.7/24
+          − brama domyślna: adres IP rutera
+          − serwer DNS: localhost
+      − drugi interfejs sieciowy serwera: wyłączony
+      − utwórz w katalogu domowym użytkownika administrator podkatalog o nazwie KOPIE
+      − wykonaj kopię pliku konfiguracyjnego serwera SSH i zapisz ją w katalogu KOPIE pod nazwą ssh_old
+      − nadaj prawa do katalogu KOPIE
+          − użytkownik: pełne prawa
+          − grupa: tylko prawo do odczytu
+          − pozostali: brak praw
+      − sprawdź ilość wolnego miejsca na dysku i efekt przekieruj do pliku tekstowego o nazwie dysk
+        w katalogu domowym użytkownika administrator
+
+ 7.   Skonfiguruj stację roboczą z zainstalowanym systemem Windows:
+      − skonfiguruj przewodowy interfejs sieciowy:
+          − nazwa połączenia: Egzamin1
+          − adres IP: uzyskiwany automatycznie
+          − serwer DNS: uzyskiwany automatycznie
+      − za pomocą polecenia systemowego wykonaj na stacji roboczej test poprawności pobrania adresu
+        IP z serwera DHCP
+
+UWAGA: Zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość do sprawdzenia poprawności
+nadania adresu IP dla stacji roboczej.
+
+      − na dysku C:\ utwórz folder o nazwie WSPÓLNY
+      − za pomocą poleceń systemowych udostępnij folder WSPÓLNY jako zasób sieciowy:
+         − nazwa udziału: NASZ_EGZAMIN
+         − maksymalna liczba użytkowników: 10
+         − opis: Materiały egzaminacyjne zdających
+      W arkuszu egzaminacyjnym w Tabeli 2. Polecenia Windows zapisz użyte polecenie z wszystkimi
+      wymaganymi parametrami
+      − za pomocą poleceń systemowych dodaj użytkownika uczen1 z hasłem zaq1@WSX z ustawionym
+        czasem wygaśnięcia konta na 25.11.2025 r. W arkuszu egzaminacyjnym w tabeli 2 zapisz użyte
+        polecenie z wszystkimi wymaganymi parametrami
+      − za pomocą poleceń systemowych utwórz grupę użytkowników o nazwie uczniowie W arkuszu
+        egzaminacyjnym w tabeli 2 zapisz użyte polecenie z wszystkimi wymaganymi parametrami
+      − dodaj konto uczen1 do grupy uczniowie
+      − zmień właściciela folderu WSPÓLNY na użytkownika uczen1
+                                             Strona 3 z 5
+ 8.   Wykonaj test komunikacji serwera z ruterem oraz stacją roboczą:
+
+UWAGA: Po wykonaniu testu komunikacji zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość
+do ponownego przeprowadzenia testu komunikacji serwera z ruterem oraz stacją roboczą. Sprawdzenie
+wykonaj w obecności egzaminatora.
+
+ 9.    Korzystając z Cennika usług komputerowych, sporządź w arkuszu kalkulacyjnym kosztorys
+       zaplanowanych w arkuszu egzaminacyjnym prac serwisowych. Kosztorys wykonaj zgodnie
+       z Tabelą 3. Wzór kosztorysu. Plik zawierający kosztorys zapisz pod nazwą Kosztorys na dysku USB
+       o opisanym EGZAMIN-x
+      ‒ obliczenia w kolumnie VAT w zł powinny wykonywać się automatycznie w oparciu o stawkę
+          podatku VAT równą 23%
+      ‒ rabat wynosi 5%, gdy łączna wartość wykonanych usług brutto przekracza 500 zł
+      ‒ obliczenia w kolumnie Cena brutto w zł powinny wykonywać się automatycznie po wypełnieniu
+          kolumny Cena netto w zł oraz VAT w zł
+      ‒ sumowanie kolumny Wartość brutto w zł oraz obliczenia w kolumnie Wartość brutto w zł powinny
+          wykonywać się automatycznie, po wypełnieniu kolumny Cena brutto w zł oraz Ilość
+      ‒ obliczenie wartości rabatu powinno odbywać się automatycznie, na podstawie obliczenia wartości
+          wykonanych usług
+      ‒ pola znajdujące się w kolumnach Cena netto w zł, VAT w zł, Cena brutto w zł, Wartość brutto w zł
+          oraz komórki zawierające: sumę kolumny Wartość brutto w zł, wartość rabatu oraz kwotę do zapłaty
+          powinny mieć format waluty zł lub PLN.
+
+                                     Cennik usług komputerowych
+                                                                            Wartość usługi
+           Lp                       Nazwa usługi
+                                                                              netto w zł
+             1.   Konfiguracja systemu Windows/Linux                                     65,00
+             2.   Instalacja oprogramowania                                              24,00
+             3.   Konfiguracja oprogramowania                                            22,00
+             4.   Testowanie/specyfikacja podzespołu                                     30,00
+             5.   Instalacja systemu Windows/Linux                                       90,00
+             6.   Montaż okablowania                                                     15,00
+             7.   Zabezpieczenie danych                                                  20,00
+             8.   Konfiguracja przełącznika                                              25,00
+             9.   Konfiguracja rutera                                                    33,00
+
+
+UWAGA: Po zakończeniu prac nie wylogowuj się i nie wyłączaj komputerów oraz urządzeń sieciowych
+znajdujących się na Twoim stanowisku egzaminacyjnym.
+
+UWAGA: Zawartość nośnika USB, wykorzystywanego podczas egzaminu do zapisu zrzutów ekranowych lub
+dokumentów, jest usuwana po egzaminie i nie stanowi dokumentacji egzaminacyjnej przekazywanej wraz
+z arkuszem do OKE.
+
+Czas przeznaczony na wykonanie zadania wynosi 150 minut.
+
+Ocenie podlegać będzie 6 rezultatów:
+ − montaż okablowania oraz podłączenie urządzeń,
+ − diagnostyka,
+ − skonfigurowane urządzenia sieciowe,
+ − skonfigurowany serwer,
+ − skonfigurowana stacja robocza,
+ − kosztorys
+
+oraz
+przebieg montażu okablowania.
+
+
+
+                                               Strona 4 z 5
+                                     Tabela 1. Podzespół stacji roboczej
+  Badany element          Parametr                                    Wartość parametru
+
+                          Nazwa
+
+                          Użyta technologia
+
+      Karta graficzna     Typ pamięci
+
+                          Wersja sterownika
+
+                          Temperatura GPU
+
+
+
+                                        Tabela 2. Polecenia Windows
+                Czynność                            Polecenie wraz z wymaganymi parametrami
+Udostępnienie folderu C:\WSPÓLNY
+pod nazwą NASZ_EGZAMIN,
+maksymalna liczba użytkowników: 10,
+opis o treści: Materiały egzaminacyjne
+zdających
+Utworzenie konta użytkownika uczen1
+z hasłem zaq1@WSX oraz czasem
+wygaśnięcia konta: 25.11.2025 r.
+Utworzenie grupy użytkowników
+uczniowie
+
+
+                                         Tabela 3. Wzór kosztorysu
+                            Stawka rabatu dla usług o łącznym koszcie powyżej 500 zł        5%
+Lp.        Nazwa usługi        Cena netto        VAT        Cena brutto      Ilość     Wartość brutto
+                                  w zł           w zł          w zł                        w zł
+
+
+
+
+                                                        ŁĄCZNA WARTOŚĆ USŁUG
+                                                              UDZIELONY RABAT:
+                                                                   DO ZAPŁATY
+
+
+
+
+                                                  Strona 5 z 5
+

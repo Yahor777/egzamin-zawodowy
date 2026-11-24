@@ -1,0 +1,249 @@
+                          Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+                                                                              Arkusz zawiera informacje
+                                                                           prawnie chronione do momentu
+                                                                                rozpoczęcia egzaminu
+
+
+
+Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych
+                    i lokalnych sieci komputerowych
+Symbol kwalifikacji: INF.02
+Numer zadania: 02
+Wersja arkusza: SG
+
+                                       Wypełnia zdający
+                                                                               Miejsce na naklejkę z numerem
+Numer PESEL zdającego*                                                           PESEL i z kodem ośrodka
+
+
+
+
+Czas trwania egzaminu: 150 minut.                                                            INF.02-02-25.01-SG
+
+EGZAMIN ZAWODOWY
+                                                              PODSTAWA PROGRAMOWA
+Rok 2025
+                                                                      2019
+CZĘŚĆ PRAKTYCZNA
+
+
+Instrukcja dla zdającego
+    1.  Na pierwszej stronie arkusza egzaminacyjnego wpisz w oznaczonym miejscu swój numer PESEL
+        i naklej naklejkę z numerem PESEL i z kodem ośrodka.
+    2. Na KARCIE OCENY w oznaczonym miejscu przyklej naklejkę z numerem PESEL oraz wpisz:
+        − swój numer PESEL*,
+        − oznaczenie kwalifikacji,
+        − numer zadania,
+        − numer stanowiska.
+    3. KARTĘ OCENY przekaż zespołowi nadzorującemu.
+    4. Sprawdź, czy arkusz egzaminacyjny zawiera 5 stron i nie zawiera błędów. Ewentualny brak stron lub
+        inne usterki zgłoś przez podniesienie ręki przewodniczącemu zespołu nadzorującego.
+    5. Zapoznaj się z treścią zadania oraz stanowiskiem egzaminacyjnym. Masz na to 10 minut. Czas ten
+        nie jest wliczany do czasu trwania egzaminu.
+    6. Czas rozpoczęcia i zakończenia pracy zapisze w widocznym miejscu przewodniczący zespołu
+        nadzorującego.
+    7. Wykonaj samodzielnie zadanie egzaminacyjne. Przestrzegaj zasad bezpieczeństwa i organizacji
+        pracy.
+    8. Jeżeli w zadaniu egzaminacyjnym występuje polecenie „zgłoś gotowość do oceny przez podniesienie
+        ręki”, to zastosuj się do polecenia i poczekaj na decyzję przewodniczącego zespołu nadzorującego.
+    9. Po zakończeniu wykonania zadania pozostaw rezultaty oraz arkusz egzaminacyjny na swoim
+        stanowisku lub w miejscu wskazanym przez przewodniczącego zespołu nadzorującego.
+    10. Po uzyskaniu zgody zespołu nadzorującego możesz opuścić salę/miejsce przeprowadzania egzaminu.
+
+                                                                                                   Powodzenia!
+* w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+
+Układ graficzny
+© CKE 2023
+
+
+
+
+                       Wi cej materia ów na stronie https://www.Testy.EgzaminZawodowy.info
+                        Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+Zadanie egzaminacyjne
+
+Korzystając z dostępnych narzędzi, oprogramowania oraz elementów znajdujących się na stanowisku
+egzaminacyjnym, wykonaj montaż okablowania oraz połączenie urządzeń sieciowych. Przeprowadź
+konfigurację urządzeń sieciowych i systemów operacyjnych zainstalowanych na dyskach twardych stacji
+roboczej i serwera, a także wykonaj identyfikację podzespołów stacji roboczej.
+Na serwerze z systemem Linux wykorzystaj konto administrator z hasłem ZAQ!2wsx (konto z prawem
+podniesienia uprawnień do root z hasłem ZAQ!2wsx ).
+Na stacji roboczej z systemem Windows wykorzystaj konto Administrator z hasłem ZAQ!2wsx
+
+1. Wykonaj montaż okablowania sieciowego:
+   − wykonaj podłączenie kabla U/UTP do panelu krosowego według sekwencji T568B
+  −   panel krosowy zamontuj w szafie lub stelażu RACK
+  −   drugi koniec kabla U/UTP zakończ wtykiem 8P8C, uzyskując połączenie proste
+
+UWAGA: Po wykonaniu montażu okablowania zgłoś Przewodniczącemu ZN – przez podniesienie ręki –
+gotowość do przeprowadzenia testu. W obecności egzaminatora sprawdź za pomocą testera poprawność
+wykonanego okablowania.
+
+2. Skonfiguruj ruter zgodnie z następującymi zaleceniami:
+   − adres IP interfejsu WAN: 55.55.55.55/28
+  −   brama domyślna interfejsu WAN: 55.55.55.50
+  −   serwer DNS interfejsu WAN: 4.4.4.4 oraz drugi serwer DNS: 7.7.7.7, jeśli jest wymagany
+  −   adres IP interfejsu LAN: 192.168.0.1/24
+  −   serwer DHCP wyłączony
+
+Ruter pracuje na ustawieniach fabrycznych zgodnie z dokumentacją, która jest dostępna w folderze RUTER
+na nośniku opisanym DOKUMENTACJA/PROGRAMY. Jeżeli ruter wymaga zmiany hasła, ustaw je zgodnie
+z wymogami urządzenia.
+
+UWAGA: Po wykonaniu konfiguracji zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+oceny ustawień rutera.
+
+3. Skonfiguruj przełącznik zgodnie z następującymi zaleceniami:
+   − adres IP: 192.168.0.2/24
+  −   brama domyślna: 192.168.0.1
+
+Przełącznik pracuje na ustawieniach fabrycznych zgodnie z dokumentacją, która jest dostępna w folderze
+PRZEŁĄCZNIK na nośniku opisanym DOKUMENTACJA/PROGRAMY. Jeżeli przełącznik wymaga zmiany
+hasła, ustaw je zgodnie z wymogami urządzenia.
+
+UWAGA: Po wykonaniu konfiguracji zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość
+do oceny ustawień przełącznika.
+
+
+
+
+                                                Strona 2 z 5
+
+                     Wi cej materia ów na stronie https://www.Testy.EgzaminZawodowy.info
+                       Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+4. Za pomocą kabli połączeniowych znajdujących się na stanowisku egzaminacyjnym połącz urządzenia
+   zgodnie ze schematem, a następnie podłącz je do sieci zasilającej.
+
+
+
+
+                                      Schemat połączenia urządzeń
+
+5. Na stacji roboczej w systemie Windows zainstaluj program CPU-Z, znajdujący się na nośniku opisanym
+   DOKUMENTACJA/PROGRAMY. Przeprowadź za jego pomocą identyfikację pamięci RAM komputera.
+   Wykonaj dokumentację identyfikacji parametrów w postaci zrzutów ekranowych. Pliki ze zrzutami zapisz
+   w katalogu Identyfikacja_stacji_roboczej na dysku USB oznaczonym nazwą Egzamin-x, gdzie x to numer
+   stanowiska egzaminacyjnego. Uzyskane wyniki zapisz w Tabeli 1. Identyfikacja parametrów pamięci
+   RAM serwera oraz stacji roboczej znajdującej się w arkuszu egzaminacyjnym. W przypadku braku
+   możliwości identyfikacji wymaganych parametrów przez system należy zapisać brak danych.
+
+6. Na serwerze w systemie Linux przeprowadź identyfikację pamięci RAM serwera. Uzyskane wyniki
+   przekieruj do plików tekstowych. Pliki tekstowe zapisz w katalogu Identyfikacja_serwera w katalogu
+   domowym użytkownika administrator. Uzyskane wyniki zapisz w tabeli 1 znajdującej się w arkuszu
+   egzaminacyjnym. W przypadku braku możliwości identyfikacji wymaganych parametrów przez system
+   należy zapisać brak danych.
+
+7. Skonfiguruj serwer z zainstalowanym systemem operacyjnym Linux:
+  − skonfiguruj interfejs sieciowy serwera podłączony do portu 3 przełącznika:
+     ‒ adres IP: 192.168.0.4/24
+     ‒ brama domyślna: 192.168.0.1
+     ‒ serwer DNS: 4.4.4.4
+     − ustaw automatyczne uruchamianie serwera SSH przy starcie systemu operacyjnego i uruchom
+         serwer SSH
+
+8. Na stacji roboczej skonfiguruj system Windows:
+   − skonfiguruj przewodowy interfejs sieciowy stacji roboczej przyłączony do portu 4 przełącznika:
+       ‒ nazwa połączenia: LAN2
+       ‒ adres IP: 192.168.0.3/24
+       ‒ brama domyślna: 192.168.0.1
+       ‒ DNS: 4.4.4.4
+    − utwórz konto serwisant bez hasła należące do grupy Użytkownicy. Zabroń użytkownikowi zmiany
+      hasła
+                                               Strona 3 z 5
+
+                    Wi cej materia ów na stronie https://www.Testy.EgzaminZawodowy.info
+                           Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+  − utwórz konto kierownik z hasłem XSW@#EDA należące do grupy Użytkownicy
+  − utwórz grupę serwis oraz dodaj do niej konta serwisant i kierownik
+  − ustaw próg blokady kont po 4 nieudanych próbach logowania
+  − korzystając z programu PuTTY wykonaj następujące czynności, które udokumentuj zrzutami
+    ekranowymi umieszczonymi w katalogu Putty na dysku USB oznaczonym nazwą Egzamin-x, gdzie x
+    to numer stanowiska egzaminacyjnego:
+     ‒ skonfiguruj połączenie z serwerem, wykorzystując protokół SSH na porcie domyślnym, czynność
+        udokumentuj zrzutem putty1.jpg przedstawiającym konfigurację programu
+     ‒ zaloguj się na konto administrator na serwerze, czynność udokumentuj zrzutem putty2.jpg
+        przedstawiającym potwierdzenie zalogowania
+
+9. Na serwerze za pomocą poleceń systemowych wykonaj test komunikacji serwera ze stacją roboczą,
+   interfejsem LAN rutera oraz przełącznikiem. W razie potrzeby na stacji roboczej zmień odpowiednio
+   ustawienia zapory sieciowej.
+
+ UWAGA: Po wykonaniu testów połączenia zgłoś Przewodniczącemu ZN – przez podniesienie ręki –
+ gotowość do przeprowadzenia ponownego sprawdzenia komunikacji serwera z ruterem, przełącznikiem
+ oraz stacją roboczą. Sprawdzenie wykonaj w obecności egzaminatora.
+10. Sporządź w arkuszu kalkulacyjnym kosztorys wykonanych podczas egzaminu prac:
+   − plik wykonaj zgodnie z Tabelą 2 Wzór kosztorysu, zapisz pod nazwą Kosztorys na dysku USB
+      oznaczonym nazwą Egzamin-x, gdzie x to numer stanowiska egzaminacyjnego
+     −    wpisz 5 czynności, które należy wykonać w ramach prac ujętych w arkuszu egzaminacyjnym
+     −    oszacuj dla każdej czynności wpisanej do tabeli czas w godzinach [h] jaki jest przewidywany przez
+          Ciebie do jej wykonania
+     −    stawka za jedną roboczogodzinę wynosi 125 zł netto,
+     −    obliczenia w kolumnie Wartość robocizny netto muszą wykonywać się automatycznie
+     −    wartość pola Razem netto musi być obliczona z zastosowaniem funkcji sumującej
+     −    wartość pola Razem brutto musi obliczać się automatycznie na podstawie stawki podatku VAT
+          wynoszącej 23%
+     −    komórki zawierające kwoty w złotych należy sformatować kategorią walutową z symbolem zł lub
+          PLN
+UWAGA: Po zakończeniu prac nie wylogowuj się oraz nie wyłączaj komputerów i urządzeń sieciowych
+znajdujących się na stanowisku egzaminacyjnym.
+
+Czas na wykonanie zadania wynosi 150 minut.
+
+Ocenie będzie podlegać 6 rezultatów:
+ − wykonane okablowanie sieciowe oraz połączenie fizyczne urządzeń,
+ − identyfikacja parametrów,
+ −       skonfigurowane urządzenia sieciowe,
+ −       skonfigurowany serwer,
+  − skonfigurowana stacja robocza,
+  − kosztorys
+oraz
+     przebieg wykonywania okablowania sieciowego.
+
+
+
+                                                   Strona 4 z 5
+
+                        Wi cej materia ów na stronie https://www.Testy.EgzaminZawodowy.info
+                        Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+Uwaga: Zawartość dysku USB, wykorzystywanego podczas egzaminu do zapisu zrzutów ekranowych
+lub dokumentów, jest usuwana po egzaminie i nie stanowi dokumentacji egzaminacyjnej przekazywanej wraz
+z arkuszem do OKE.
+
+Tabela 1. Identyfikacja parametrów pamięci RAM serwera oraz stacji roboczej
+                                      Pamięć RAM                        Pamięć RAM
+          Parametr
+                                        SERWER                        STACJA ROBOCZA
+ Pojemność
+ Standard
+ Częstotliwość
+ Numer seryjny lub
+ numer produktu
+
+
+
+Tabela 2. Wzór kosztorysu
+                                                                                            Wartość
+                                                        Szacowany          Stawka za 1
+                 Nazwa czynności                                                           robocizny
+                                                         czas [h]        roboczogodzinę
+                                                                                             netto
+
+
+
+
+                                                                         Razem netto
+                                                                         Razem brutto
+
+
+
+
+                                                Strona 5 z 5
+
+                     Wi cej materia ów na stronie https://www.Testy.EgzaminZawodowy.info
+

@@ -1,0 +1,213 @@
+                                                                             Arkusz zawiera informacje
+                                                                          prawnie chronione do momentu
+                                                                               rozpoczęcia egzaminu
+
+
+
+Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych
+                    i lokalnych sieci komputerowych
+Symbol kwalifikacji: INF.02
+Numer zadania: 03
+Wersja arkusza: SG
+
+                                       Wypełnia zdający
+                                                                             Miejsce na naklejkę z numerem
+Numer PESEL zdającego*                                                         PESEL i z kodem ośrodka
+
+
+
+
+Czas trwania egzaminu: 150 minut.                                                       INF.02-03-24.01-SG
+
+EGZAMIN ZAWODOWY
+                                                              PODSTAWA PROGRAMOWA
+Rok 2024
+                                                                      2019
+CZĘŚĆ PRAKTYCZNA
+
+
+Instrukcja dla zdającego
+    1.  Na pierwszej stronie arkusza egzaminacyjnego wpisz w oznaczonym miejscu swój numer PESEL
+        i naklej naklejkę z numerem PESEL i z kodem ośrodka.
+    2. Na KARCIE OCENY w oznaczonym miejscu przyklej naklejkę z numerem PESEL oraz wpisz:
+        − swój numer PESEL*,
+        − oznaczenie kwalifikacji,
+        − numer zadania,
+        − numer stanowiska.
+    3. KARTĘ OCENY przekaż zespołowi nadzorującemu.
+    4. Sprawdź, czy arkusz egzaminacyjny zawiera 5 stron i nie zawiera błędów. Ewentualny brak stron lub
+        inne usterki zgłoś przez podniesienie ręki przewodniczącemu zespołu nadzorującego.
+    5. Zapoznaj się z treścią zadania oraz stanowiskiem egzaminacyjnym. Masz na to 10 minut. Czas ten
+        nie jest wliczany do czasu trwania egzaminu.
+    6. Czas rozpoczęcia i zakończenia pracy zapisze w widocznym miejscu przewodniczący zespołu
+        nadzorującego.
+    7. Wykonaj samodzielnie zadanie egzaminacyjne. Przestrzegaj zasad bezpieczeństwa i organizacji
+        pracy.
+    8. Jeżeli w zadaniu egzaminacyjnym występuje polecenie „zgłoś gotowość do oceny przez podniesienie
+        ręki”, to zastosuj się do polecenia i poczekaj na decyzję przewodniczącego zespołu nadzorującego.
+    9. Po zakończeniu wykonania zadania pozostaw rezultaty oraz arkusz egzaminacyjny na swoim
+        stanowisku lub w miejscu wskazanym przez przewodniczącego zespołu nadzorującego.
+    10. Po uzyskaniu zgody zespołu nadzorującego możesz opuścić salę/miejsce przeprowadzania egzaminu.
+
+                                                                                               Powodzenia!
+* w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+
+Układ graficzny
+© CKE 2023
+Zadanie egzaminacyjne
+
+Wykorzystując dostępne narzędzia, elementy i urządzenia sieciowe, podzespoły komputera oraz
+oprogramowanie znajdujące się na stanowisku egzaminacyjnym, wykonaj montaż okablowania i podłączenie
+urządzeń sieciowych. Przeprowadź modernizację stacji roboczej, konfigurację urządzenia sieciowego oraz
+wykonaj konfigurację systemów operacyjnych zainstalowanych na dysku twardym stacji roboczej oraz
+serwera.
+Do konfiguracji serwera i stacji roboczej w systemie Windows wykorzystaj konto Administrator z hasłem
+ZAQ!2wsx
+
+1. Wykonaj montaż okablowania sieciowego:
+   ‒ wykonaj podłączenie wszystkich żył kabla U/UTP do panelu krosowego według sekwencji T568B
+   ‒ zamontuj panel krosowy w szafie lub stelażu RACK
+   ‒ drugi koniec kabla U/UTP zakończ wtykiem 8P8C tak, aby uzyskać połączenie proste
+
+UWAGA: po wykonaniu montażu zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+przeprowadzenia testu wykonanego okablowania. W obecności egzaminatora sprawdź za pomocą testera
+okablowania poprawność wykonanego połączenia panel krosowy – wtyk.
+
+2. Zmodernizuj stację roboczą oraz sporządź w systemie Windows specyfikację techniczną zainstalowanej
+   i zapasowej pamięci RAM:
+   ‒ korzystając z programu CPU-Z dostępnego na nośniku DOKUMENTACJA/PROGRAMY sprawdź
+       parametry zainstalowanej pamięci RAM. Wykonaj zrzut ekranu potwierdzający przeprowadzoną
+       identyfikację. Zrzut zapisz w folderze TESTY na pulpicie konta lokalnego Administrator jako plik
+       graficzny RAM1.jpg
+   ‒ odczytane parametry zainstalowanej pamięci RAM zapisz w Tabeli 1. Specyfikacja pamięci RAM
+       arkusza egzaminacyjnego, w przypadku braku możliwości identyfikacji parametru przez system
+       należy zapisać „brak danych”
+   ‒ wymień zainstalowaną pamięć RAM na zapasową
+
+UWAGA: po wykonaniu montażu zapasowej pamięci RAM zgłoś Przewodniczącemu ZN – przez podniesienie
+ręki – gotowość do zakończenia prac montażowych. Po uzyskaniu zgody przystąp do końcowych czynności
+montażowych oraz uruchomienia systemu operacyjnego Windows.
+
+    ‒ sprawdź parametry zapasowej pamięci RAM. Wykonaj zrzut ekranu potwierdzający przeprowadzoną
+      identyfikację. Zrzut zapisz w folderze TESTY na pulpicie konta lokalnego Administrator jako plik
+      graficzny RAM2.jpg
+    ‒ odczytane parametry zapasowej pamięci RAM zapisz w tabeli 1.
+
+3. Skonfiguruj przełącznik według zaleceń:
+    ‒ adres IP: 10.10.10.1/24 z bramą domyślną 10.10.10.2 (jeśli jest wymagana)
+    ‒ włączony VLAN 802.1q
+    ‒ utworzony VLAN o ID = 101
+    ‒ utworzony VLAN o ID = 102
+    ‒ porty 1 i 3 przypisane bez tagowania (tryb access) do VLAN o ID = 101
+    ‒ porty 2 i 4 przypisane bez tagowania (tryb access) do VLAN o ID = 102
+Przełącznik pracuje na ustawieniach fabrycznych zgodnie z dokumentacją, która jest dostępna w folderze
+PRZEŁĄCZNIK na nośniku opisanym DOKUMENTACJA/PROGRAMY.
+
+
+
+
+                                             Strona 2 z 5
+UWAGA: po wykonaniu konfiguracji przełącznika zgłoś Przewodniczącemu ZN – przez podniesienie ręki –
+gotowość do oceny konfiguracji urządzenia.
+
+4. Za pomocą kabli połączeniowych znajdujących się na stanowisku egzaminacyjnym połącz urządzenia
+   zgodnie ze schematem.
+
+
+
+
+                                   Schemat połączenia urządzeń
+
+
+
+5. Skonfiguruj stację roboczą w systemie Windows:
+   ‒ interfejs sieci przewodowej:
+       ‒ nazwa połączenia: KOMPUTER
+       ‒ adres IP: 10.10.10.3/24
+       ‒ brama domyślna: brak
+       ‒ serwer DNS: IP interfejsu sieciowego serwera podłączonego do portu 2 przełącznika
+   ‒ nazwa komputera: STACJA00X, gdzie X to numer stanowiska egzaminacyjnego
+   ‒ zabroń użytkownikom dostępu do edytora rejestru systemowego. Wykonaj zrzut dokumentujący tą
+      czynność i zapisz go pod nawą rejestr.png na pulpicie użytkownika Administrator
+
+6. Skonfiguruj serwer z zainstalowanym systemem Windows:
+   ‒ interfejs sieciowy podłączony do portu nr 1 przełącznika:
+       ‒ nazwa połączenia: DRUKARKA
+       ‒ adres IP: 192.168.0.X/24, gdzie X to numer stanowiska egzaminacyjnego
+       ‒ brama domyślna: brak
+       ‒ serwer DNS: 127.0.0.1
+   ‒ interfejs sieciowy podłączony do portu nr 2 przełącznika:
+       ‒ nazwa połączenia: KOMPUTER
+       ‒ adres IP: 10.10.10.2/24
+       ‒ brama domyślna: brak
+       ‒ serwer DNS: 127.0.0.1
+   ‒ promuj serwer do roli kontrolera domeny. Utwórz nową domenę w nowym lesie o nazwie
+      egzamin.local Hasło trybu przywracania usług katalogowych dla konta Administrator ustaw na
+      ZAQ!2wsx (w przypadku konieczności zmiany hasła dla konta Administrator, należy ustawić nowe
+      hasło na ZAQ!2wsxc )
+
+
+
+                                           Strona 3 z 5
+   ‒ utwórz w domenie jednostkę organizacyjną Magazyn
+   ‒ w jednostce organizacyjnej Magazyn utwórz konto użytkownika:
+     ‒ imię i nazwisko: Katarzyna Nowak
+     ‒ nazwa logowania: knowak
+     ‒ hasło docelowe: zaq1@WSX
+   ‒ utwórz i udostępnij folder
+         o nazwa: WSPOLNY
+         o lokalizacja: C:\
+         o nazwa udostępnionego zasobu: wspolny$
+         o uprawnienia sieciowe: Wszyscy – Pełna kontrola
+         o zabezpieczenia: Administratorzy – Pełna kontrola, Użytkownicy – Zapis
+         o konfiguracja zabezpieczeń: wyłączone dziedziczenie
+   ‒ za pomocą poleceń systemowych wykonaj test komunikacji serwera z przełącznikiem, stacją roboczą
+     oraz drukarką o adresie IP 192.168.0.200.
+
+UWAGA: po wykonaniu polecenia zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+przeprowadzenia ponownego sprawdzenia komunikacji serwera z drukarką, przełącznikiem oraz stacją
+roboczą. Ponowne sprawdzenie wykonaj w obecności egzaminatora
+
+UWAGA: po zakończeniu prac nie wylogowuj się i nie wyłączaj komputerów oraz urządzeń sieciowych
+znajdujących się na Twoim stanowisku egzaminacyjnym.
+
+Czas przeznaczony na wykonanie zadania wynosi 150 minut.
+
+Ocenie podlegać będzie 5 rezultatów:
+    ‒ wykonane okablowanie sieciowe oraz połączenie fizyczne urządzeń,
+    ‒ diagnostyka i montaż podzespołów,
+    ‒ skonfigurowane urządzenie sieciowe,
+    ‒ skonfigurowany serwer,
+    ‒ skonfigurowana stacja robocza,
+oraz
+      przebieg wykonania okablowania sieciowego oraz montażu podzespołów
+
+UWAGA: zawartość nośnika USB, wykorzystywanego podczas egzaminu do zapisu zrzutów ekranowych lub
+dokumentów, jest usuwana po egzaminie i nie stanowi dokumentacji egzaminacyjnej przekazywanej wraz
+z arkuszem do OKE
+
+
+
+
+                                           Strona 4 z 5
+                            Tabela 1. Specyfikacja pamięci RAM
+
+                            Zainstalowana pamięć RAM1            Zapasowa pamięć RAM2
+
+Typ pamięci (Memory type)
+
+Rozmiar (Size)
+
+Maksymalna przepustowość
+(Max bandwidth)
+
+Producent (Manufacturer)
+
+Numer seryjny partii
+(Part Number)
+
+
+
+
+                                       Strona 5 z 5
+

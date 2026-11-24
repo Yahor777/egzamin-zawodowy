@@ -1,0 +1,243 @@
+                          Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+                                                                              Arkusz zawiera informacje
+                                                                           prawnie chronione do momentu
+                                                                                rozpoczęcia egzaminu
+
+
+
+Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych
+                    i lokalnych sieci komputerowych
+Symbol kwalifikacji: INF.02
+Numer zadania: 06
+Wersja arkusza: SG
+
+                                       Wypełnia zdający
+                                                                               Miejsce na naklejkę z numerem
+Numer PESEL zdającego*                                                           PESEL i z kodem ośrodka
+
+
+
+
+Czas trwania egzaminu: 150 minut.                                                            INF.02-06-25.06-SG
+
+EGZAMIN ZAWODOWY
+                                                              PODSTAWA PROGRAMOWA
+Rok 2025
+                                                                      2019
+CZĘŚĆ PRAKTYCZNA
+
+
+Instrukcja dla zdającego
+    1.  Na pierwszej stronie arkusza egzaminacyjnego wpisz w oznaczonym miejscu swój numer PESEL
+        i naklej naklejkę z numerem PESEL i z kodem ośrodka.
+    2. Na KARCIE OCENY w oznaczonym miejscu przyklej naklejkę z numerem PESEL oraz wpisz:
+        − swój numer PESEL*,
+        − oznaczenie kwalifikacji,
+        − numer zadania,
+        − numer stanowiska.
+    3. KARTĘ OCENY przekaż zespołowi nadzorującemu.
+    4. Sprawdź, czy arkusz egzaminacyjny zawiera 5 stron i nie zawiera błędów. Ewentualny brak stron lub
+        inne usterki zgłoś przez podniesienie ręki przewodniczącemu zespołu nadzorującego.
+    5. Zapoznaj się z treścią zadania oraz stanowiskiem egzaminacyjnym. Masz na to 10 minut. Czas ten
+        nie jest wliczany do czasu trwania egzaminu.
+    6. Czas rozpoczęcia i zakończenia pracy zapisze w widocznym miejscu przewodniczący zespołu
+        nadzorującego.
+    7. Wykonaj samodzielnie zadanie egzaminacyjne. Przestrzegaj zasad bezpieczeństwa i organizacji
+        pracy.
+    8. Jeżeli w zadaniu egzaminacyjnym występuje polecenie „zgłoś gotowość do oceny przez podniesienie
+        ręki”, to zastosuj się do polecenia i poczekaj na decyzję przewodniczącego zespołu nadzorującego.
+    9. Po zakończeniu wykonania zadania pozostaw rezultaty oraz arkusz egzaminacyjny na swoim
+        stanowisku lub w miejscu wskazanym przez przewodniczącego zespołu nadzorującego.
+    10. Po uzyskaniu zgody zespołu nadzorującego możesz opuścić salę/miejsce przeprowadzania egzaminu.
+
+                                                                                                   Powodzenia!
+* w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+
+Układ graficzny
+© CKE 2023
+
+
+
+
+                       Wi cej materia ów na stronie https://www.Testy.EgzaminZawodowy.info
+                        Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+Zadanie egzaminacyjne
+
+Korzystając z dostępnych narzędzi, oprogramowania oraz elementów znajdujących się na stanowisku
+egzaminacyjnym, wykonaj czynności zapisane w arkuszu egzaminacyjnym.
+W systemach Windows wykorzystaj konto Administrator z hasłem ZAQ!2wsx
+Ruter i przełącznik pracują na ustawieniach fabrycznych zgodnie z dokumentacją, która jest dostępna na
+nośniku opisanym DOKUMENTACJA/PROGRAMY. Jeżeli urządzenia wymagają zmiany hasła, ustaw je
+zgodnie z wymogami urządzenia.
+
+1. Wykonaj montaż okablowania sieciowego:
+   − podłącz kabel U/UTP do panelu krosowego według sekwencji T568B
+   − zastosuj odpowiedni typ kabla
+   − zamontuj panel krosowy w szafie lub stelażu RACK
+   − drugi koniec kabla podłącz do modułu Keystone gniazda naściennego według sekwencji T586B
+   − zmontuj gniazdo naścienne z jednym modułem Keystone
+
+UWAGA: Po wykonaniu montażu okablowania zgłoś Przewodniczącemu ZN – przez podniesienie ręki –
+gotowość do przeprowadzenia testu. W obecności egzaminatora sprawdź za pomocą testera poprawność
+wykonanego połączenia.
+
+2. Przeprowadź identyfikację parametrów dysku twardego stacji roboczej za pomocą dostępnych w systemie
+    operacyjnym Windows narzędzi. Odczytane dane zapisz w postaci zrzutów ekranowych, w katalogu
+    Identyfikacja na dysku USB oznaczonym nazwą Egzamin-x, gdzie x to numer stanowiska
+    egzaminacyjnego. Odczytane dane zapisz w Tabeli 1. Parametry techniczne dysku twardego znajdującej
+    się w arkuszu egzaminacyjnym. W przypadku braku możliwości identyfikacji wymaganych parametrów
+    przez system należy zapisać brak danych.
+
+3. Skonfiguruj ruter zgodnie z następującymi zaleceniami:
+    − adres IP interfejsu sieciowego LAN: 192.168.0.3/24
+    − serwer DHCP włączony z ustawieniami:
+      − zakres adresów: 192.168.0.30 ÷ 192.168.0.40
+      − zarezerwowany adres IP 192.168.0.30/24 dla interfejsu bezprzewodowego stacji roboczej
+    − sieć bezprzewodowa włączona z ustawieniami:
+      − SSID: STANOWISKO_XX, gdzie XX oznacza numer stanowiska egzaminacyjnego
+      − zabezpieczenie WPA2 z kluczem: stanowiskoXX, gdzie XX oznacza numer stanowiska
+          egzaminacyjnego i szyfrowaniem AES lub CCMP
+      − pasmo: 2,4 GHz
+      − numer kanału: numer stanowiska
+
+UWAGA: Jeżeli AP jest oddzielnym urządzeniem, należy skonfigurować interfejs LAN korzystając
+z dowolnego wolnego adresu należącego do podsieci LAN rutera. Adres bramy domyślnej: 192.168.0.3, tryb
+pracy Access Point.
+
+UWAGA: Po wykonaniu konfiguracji zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+oceny ustawień rutera.
+
+4. Skonfiguruj przełącznik 1 zgodnie z następującymi zaleceniami:
+   − utworzona sieć VLAN o ID = 10 z portami 1 i 2 bez tagowania (tryb dostępu)
+   − adres IP: 172.16.11.3/25 (dla przełącznika L3 adres IP przypisany do VLAN o ID=10)
+   − brama domyślna: adres IP interfejsu LAN_Z serwera
+
+5. Skonfiguruj przełącznik 2 zgodnie z następującymi zaleceniami:
+   − adres IP: 192.168.0.2/24
+   − brama domyślna: adres IP interfejsu LAN rutera
+
+UWAGA: Po wykonaniu konfiguracji zgłoś Przewodniczącemu ZN – przez podniesienie ręki – gotowość do
+oceny ustawień przełączników.
+
+
+                                                Strona 2 z 5
+
+                     Wi cej materia ów na stronie https://www.Testy.EgzaminZawodowy.info
+                       Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+6. Za pomocą kabli dostępnych na stanowisku połącz urządzenia sieciowe zgodnie ze schematem,
+    a następnie podłącz je do sieci zasilającej.
+
+
+
+
+                                    Schemat połączenia urządzeń
+
+UWAGA: Jeżeli AP jest oddzielnym urządzeniem, podłącz go w dowolny, poprawny sposób
+
+7. Skonfiguruj serwer z systemem Windows Serwer zgodnie z następującymi zaleceniami:
+      − przewodowa karta sieciowa podłączona do przełącznika 1:
+         − nazwa interfejsu: LAN_Z
+         − adres IP: 172.16.11.5/25
+         − brama domyślna: brak
+         − adres DNS: localhost
+      − przewodowa karta sieciowa podłączona do przełącznika 2:
+         − nazwa interfejsu: LAN_W
+         − adres IP: 192.168.0.10+XX/24, gdzie XX oznacza numer stanowiska egzaminacyjnego (np. dla
+             stanowiska egzaminacyjnego numer 5 adres IP to 192.168.0.15)
+         − brama domyślna: adres IP rutera
+         − adres serwera DNS: localhost
+      − utwórz folder C:\DODATKI i skopiuj plik index.html znajdujący się w folderze PLIKI na nośniku
+          DOKUMENTACJA/PROGRAMY
+      − zainstaluj role serwera IIS oraz DNS i skonfiguruj witrynę WWW z parametrami:
+          − nazwa witryny: INF.02
+          − witryna powiązana z adresem IP interfejsu LAN_W serwera
+          − katalog witryny: C:\DODATKI
+          − strona domyślna: index.html
+
+8. Skonfiguruj stację roboczą z systemem Windows zgodnie z następującymi zaleceniami:
+   − konfiguracja bezprzewodowego interfejsu sieciowego:
+      − nazwa interfejsu: LAN_K
+      − adresacja IP uzyskiwana automatycznie z serwera DHCP
+      − podłączony pod utworzoną sieć Wi-Fi
+      − odświeżony adres IP z serwera DHCP
+   − nazwa komputera: stacja_XX, gdzie XX oznacza numer stanowiska egzaminacyjnego
+   − opis komputera: stacja_XX_robocza, gdzie XX oznacza numer stanowiska egzaminacyjnego
+   − grupa robocza: INF02
+   − utwórz konto z ograniczonymi uprawnieniami (grupa Użytkownicy) i nazwą logowania: jnowak
+       z hasłem docelowym: JN!20#
+   − po zalogowaniu na konto jnowak wyświetl w przeglądarce internetowej stronę index.html
+       udostępnioną na serwerze
+                                               Strona 3 z 5
+
+                    Wi cej materia ów na stronie https://www.Testy.EgzaminZawodowy.info
+                        Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+
+UWAGA: Po uruchomieniu strony index.html zgłoś Przewodniczącemu ZN – przez podniesienie ręki –
+gotowość do sprawdzenia działania strony. Sprawdzenie wykonaj w obecności egzaminatora.
+
+9. Zainstaluj drukarkę sieciową na serwerze. Drukarka jest dostępna przez port TCP/IP pod adresem
+    192.168.0.200 poprzez protokół RAW. Sterowniki znajdują się w folderze DRUKARKA na nośniku
+    opisanym DOKUMENTACJA/PROGRAMY
+   − skonfiguruj domyślne ustawienia drukowania dla zainstalowanej drukarki:
+       − dostępność: od godziny 7:30 do godziny 21:30
+       − orientacja: pozioma
+       − włączona oszczędność tonera / tryb ekonomiczny
+   − udostępnij drukarkę w sieci pod nazwą udziału druk_XX, gdzie XX oznacza numer stanowiska
+        egzaminacyjnego
+   − wydrukuj stronę testową, chęć wydruku zgłoś przez podniesienie ręki. Stronę testową dołącz do
+        arkusza egzaminacyjnego
+
+10. Za pomocą poleceń systemowych wykonaj test komunikacji serwera z interfejsem LAN rutera, stacją
+    roboczą i drukarką. Na stacji roboczej wyświetl automatycznie uzyskany adres IP. W razie potrzeby zmień
+    konfigurację zapory sieciowej stacji roboczej.
+
+UWAGA: Po wykonaniu testów połączenia zgłoś Przewodniczącemu ZN – przez podniesienie ręki –
+gotowość do przeprowadzenia ponownego sprawdzenia komunikacji między urządzeniami. Sprawdzenie
+wykonaj w obecności egzaminatora.
+
+
+
+Czas przeznaczony na wykonanie zadania wynosi 150 minut.
+
+Ocenie podlegać będzie 6 rezultatów:
+   − wykonane okablowanie sieciowe oraz połączenie fizyczne urządzeń,
+   − identyfikacja parametrów,
+   − skonfigurowane urządzenia sieciowe,
+   − skonfigurowany serwer,
+   − skonfigurowana stacja robocza,
+   − skonfigurowane urządzenie peryferyjne
+oraz
+przebieg wykonywania okablowania sieciowego.
+
+
+
+
+                                                Strona 4 z 5
+
+                     Wi cej materia ów na stronie https://www.Testy.EgzaminZawodowy.info
+                     Plik pobrany ze strony https://www.Testy.EgzaminZawodowy.info
+
+                        Tabela 1. Parametry techniczne dysku twardego
+Lp.            Parametr                                           Wartość
+
+1.    Pojemność dysku [GB]
+
+2.    Model
+
+3.    Liczba partycji
+
+4.    Typ partycji
+
+5.    Wersja sterownika
+
+
+
+
+                                             Strona 5 z 5
+
+               Wi cej materia ów na stronie https://www.Testy.EgzaminZawodowy.info
+

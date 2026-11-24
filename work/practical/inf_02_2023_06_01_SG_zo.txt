@@ -1,0 +1,215 @@
+ Układ graficzny © CKE 2019                                                           EGZAMIN ZAWODOWY
+                                                                                           Rok 2023
+                                                                                       ZASADY OCENIANIA
+
+                                                                              Arkusz zawiera informacje prawnie chronione
+                                                                                  do momentu rozpoczęcia egzaminu
+
+
+
+
+      Nazwa kwalifikacji: Administracja i eksploatacja systemów komputerowych, urządzeń peryferyjnych i lokalnych sieci komputerowych
+      Oznaczenie arkusza: INF.02-01-23.06-SG
+      Oznaczenie kwalifikacji: INF.02
+      Numer zadania: 01
+                                                                                         PODSTAWA PROGRAMOWA
+      Wersja arkusza: SG                                                                                2019
+
+
+                                                                           Wypełnia egzaminator
+
+                                                                                                                                Numer
+                                   Kod ośrodka                         –                             Numer PESEL zdającego*   stanowiska
+
+
+
+                              Kod egzaminatora
+
+
+                                Data egzaminu
+                                                 Dzień Miesiąc   Rok
+
+
+Godzina rozpoczęcia egzaminu                            :
+
+
+
+ * w przypadku braku numeru PESEL – seria i numer paszportu lub innego dokumentu potwierdzającego tożsamość
+Egzaminatorze!
+ − Oceniaj prace zdających rzetelnie i z zaangażowaniem. Dokumentuj wyniki oceny.
+
+ − Stosuj przyjęte zasady oceniania w sposób obiektywny.
+
+ − Jeżeli zdający, wykonując zadanie egzaminacyjne, uzyskuje inne rezultaty albo pożądane rezultaty uzyskuje w inny sposób niż uwzględniony
+   w zasadach oceniania lub przedstawia nietypowe rozwiązanie, ale zgodnie ze sztuką w zawodzie, to nadal oceniaj zgodnie z kryteriami
+   zawartymi w zasadach oceniania. Informacje o tym, że zasady oceniania nie przewidują zaistniałej sytuacji, przekaż niezwłocznie w formie
+   pisemnej notatki do Przewodniczącego Zespołu Egzaminacyjnego z prośbą o przekazanie jej do Okręgowej Komisji Egzaminacyjnej. Notatka
+   może być sporządzona odręcznie w trybie roboczym.
+ − Informuj przewodniczącego zespołu nadzorującego o wszystkich nieprawidłowościach zaistniałych w trakcie egzaminu, w tym w szczególności
+   o naruszeniach przepisów bezpieczeństwa i higieny pracy i o podejrzeniach niesamodzielności w wykonaniu zadania przez zdającego.
+
+
+
+
+                                                             Strona 2 z 7
+                                                                                                                   stanowiska
+                                                                                                                     Numer
+                                                                                                                                Egzaminator wpisuje T,
+                                                                                                                                 jeżeli zdający spełnił
+                                        Elementy podlegające ocenie/kryteria oceny                                              kryterium albo N, jeżeli
+                                                                                                                                       nie spełnił
+
+Rezultat 1: Montaż okablowania oraz podłączenie urządzeń
+Uwaga: Oceny kryteriów 1.1 ÷ 1.4 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do przeprowadzenia testu
+okablowania. Przebieg montażu należy ocenić zgodnie z kryteriami zapisanymi w przebiegu 1
+1 Wtyki 8P8C zaciśnięto zgodnie z sekwencją T568B
+
+2 Zatrzask wtyków oparto na izolacji kabla U/UTP
+
+3 Do montażu użyto kabla sieciowego typu linka
+    Przeprowadzono w obecności egzaminatora test wykonania kabla połączeniowego prostego za pomocą testera okablowania
+4
+    oraz test potwierdził poprawność jego wykonania
+5 Urządzenia sieciowe podłączono zgodnie ze schematem - Załącznik 1
+
+Rezultat 2: Diagnostyka
+Uwaga: Diagnostyka została przeprowadzona na stacji roboczej w systemie Windows. Pliki zawierające zrzuty ekranu potwierdzające przeprowadzoną
+identyfikację są zapisane w folderze KARTA na nośniku USB opisanym EGZAMIN-x, gdzie x oznacza numer stanowiska egzaminacyjnego. Zapisy
+parametrów znajdują się w arkuszu egzaminacyjnym w tabeli 1. Zapisy muszą być zgodne ze zrzutami ekranu. Dopuszcza się zapis świadczący
+o braku wartości parametru, jeżeli zostało to udokumentowane na zrzucie
+1 Zainstalowano program diagnostyczny GPU-Z
+
+2 Sprawdzono nazwę i użytą technologię karty graficznej, co udokumentowano za pomocą minimum 1 zrzutu ekranu
+
+3 Sprawdzono typ pamięci oraz wersję sterownika karty graficznej, co udokumentowano za pomocą minimum 1 zrzutu ekranu
+
+4 Sprawdzono temperaturę GPU dla karty graficznej, co udokumentowano za pomocą minimum 1 zrzutu ekranu
+
+5 Zapisano w tabeli 1 nazwę i użytą technologię karty graficznej
+
+6 Zapisano w tabeli 1 typ pamięci oraz wersję sterownika karty graficznej
+
+7 Zapisano w tabeli 1 temperaturę GPU karty graficznej
+
+
+                                                                   Strona 3 z 7
+                                                                                                                       stanowiska
+                                                                                                                         Numer
+Rezultat 3: Skonfigurowane urządzenia sieciowe
+Uwaga: oceny kryteriów należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny konfiguracji rutera, a następnie
+przełącznika
+1 Skonfigurowano interfejs WAN rutera: adres IP 20.20.20.2/28, brama domyślna 20.20.20.1, serwer DNS 8.8.8.8
+
+2 Skonfigurowano interfejs LAN rutera: adres IP 172.31.3.1/24
+
+3 Włączono na ruterze serwer DHCP
+
+4 Ustawiono na ruterze pulę adresową DHCP: 172.31.3.20 ÷ 172.31.3.200
+
+5 Wykonano na ruterze rezerwację adresu IP 172.31.3.27 dla przewodowego interfejsu sieciowego stacji roboczej
+
+6 Skonfigurowano przełącznik: ustawiono adres IP: 172.31.3.2
+
+7 Skonfigurowano przełącznik: utworzono sieć VLAN 802.1q o ID = 2
+
+8 Skonfigurowano przełącznik: port 1, 2 i 3 przypisano bez tagowania do utworzonej sieci VLAN
+Rezultat 4: Skonfigurowany serwer
+Uwaga: oceny rezultatu należy dokonać dla serwera w systemie Linux, konto administrator z hasłem ZAQ!2wsx
+Oceny kryteriów 4.7 ÷ 4.8 należy dokonać po informacji od Przewodniczącego ZN o gotowości zdającego do oceny komunikacji pomiędzy
+urządzeniami sieciowymi. Sprawdzenie komunikacji zdający wykonuje w obecności egzaminatora
+   Ustawiono adres IP: 172.31.3.7/24 dla interfejsu sieciowego podłączonego do przełącznika, brama domyślna: 172.31.3.1,
+ 1
+   serwer DNS: localhost
+2 Wyłączono drugi interfejs sieciowy
+
+3 Utworzono w katalogu domowym użytkownika administrator podkatalog o nazwie KOPIE
+
+4 Zapisano kopię pliku konfiguracyjnego serwera SSH pod nazwą ssh_old w utworzonym podkatalogu
+
+5 Nadano prawa do utworzonego katalogu: użytkownik: pełne prawa, grupa: tylko prawo do odczytu, pozostali: brak praw
+    Sprawdzono ilość wolnego miejsca na dysku z przekierowaniem do pliku o nazwie dysk w katalogu domowym
+6
+    użytkownika administrator. Plik zawiera wynik działania polecenia systemowego np. df
+7 Wykonano test komunikacji serwera z ruterem, uzyskano odpowiedź na polecenie np. ping 172.31.3.1
+
+8 Wykonano test komunikacji serwera ze stacją roboczą, uzyskano odpowiedź na polecenie np. ping 172.31.3.27
+                                                                Strona 4 z 7
+                                                                                                                 stanowiska
+                                                                                                                   Numer
+Rezultat 5: Skonfigurowana stacja robocza
+Uwaga: ocenie podlega konfiguracja w systemie Windows, konto Administrator z hasłem ZAQ!2wsx. Oceny kryterium 5.1 należy dokonać po
+informacji Przewodniczącego ZN o gotowości zdającego do oceny nadania adresu IP dla stacji roboczej. Tabela 2 znajduje się w arkuszu
+egzaminacyjnym
+    Ustawiono nazwę połączenia na Egzamin1 oraz dla sieciowego interfejsu przewodowego uzyskano w sposób automatyczny
+ 1
+    adres IP 172.31.3.27 i adres serwera DNS
+2 Utworzono folder C:\WSPÓLNY
+  Udostępniono za pomocą polecenia systemowego utworzony folder: nazwa udziału: NASZ_EGZAMIN; maksymalna liczba
+3 użytkowników: 10; opis: Materiały egzaminacyjne zdających. W tabeli 2 zapisano użyte polecenie prowadzące do
+  utworzenia udziału sieciowego o zadanych parametrach
+  Utworzono za pomocą polecenia systemowego konto użytkownika uczen1 oraz w tabeli 2 zapisano poprawne użyte polecenie
+4
+  prowadzące do utworzenia konta z hasłem zaq1@WSX
+  Ustawiono za pomocą polecenia systemowego dla dodanego użytkownika czas wygaśnięcia konta na 25.11.2025 r.
+5
+  W tabeli 2 zapisano użyte polecenie prowadzące do ustawienia wygaśnięcia konta
+  Utworzono za pomocą polecenia systemowego grupę uczniowie oraz w tabeli 2 zapisano poprawnie użyte polecenie
+6
+  systemowe prowadzące do utworzenia grupy użytkowników
+7 Dodano utworzone konto do grupy uczniowie
+
+8 Zmieniono właściciela folderu WSPÓLNY na utworzonego użytkownika
+
+
+
+
+                                                              Strona 5 z 7
+                                                                                                                                  stanowiska
+                                                                                                                                    Numer
+Rezultat 6: Kosztorys
+Uwaga: Plik przeznaczony do oceny zapisany jest na nośniku USB opisanym EGZAMIN-x. W przypadku braku pliku zawierającego kosztorys kryteria
+nie są spełnione
+    Sporządzono kosztorys w arkuszu kalkulacyjnym w postaci pliku Kosztorys oraz w pliku arkusza utworzono tabelę
+ 1
+    zawierającą 7 kolumn: Lp., Nazwa usługi, Cena netto w zł, VAT w zł, Cena brutto w zł, Ilość, Wartość brutto w zł
+2 W kosztorysie uwzględniono dwukrotnie usługę: konfiguracja systemu Windows/Linux
+
+3 W kosztorysie uwzględniono usługę: testowanie/specyfikacja podzespołu oraz instalacja oprogramowania
+
+4 W kosztorysie uwzględniono usługi: konfiguracja przełącznika oraz konfiguracja rutera
+
+5 W kosztorysie uwzględniono usługi: montaż okablowania oraz zabezpieczenie danych
+  Zastosowano formuły umożliwiające wykonywanie obliczeń zgodnych ze stanem faktycznym w kolumnach VAT w zł, Cena
+6
+  brutto w zł oraz Wartość brutto w zł
+  Zastosowano formuły umożliwiające automatyczne sumowanie kolumny Wartość brutto w zł, automatyczne obliczenie
+7 wartości rabatu dla usług o łącznym koszcie brutto przekraczającym 500 zł oraz obliczenie kwoty do zapłaty po
+  uwzględnieniu rabatu
+  Zastosowano format waluty w zł lub PLN dla kolumn: Cena netto w zł, VAT w zł, Cena brutto w zł, Wartość brutto w zł oraz
+8
+  dla komórki z łączną wartością usług, z rabatem i z wartością usług po rabacie
+9 W kosztorysie zawarto jedynie faktycznie zaplanowane w zadaniu usługi wymienione w kryteriach 6.2 ÷ 6.5
+
+Przebieg 1: Montaż okablowania
+
+Zdający:
+    poprawnie wykorzystywał narzędzia do montażu okablowania i stosował się do przepisów BHP podczas wykonywania
+1
+    montażu
+2 zostawił uporządkowane stanowisko po zakończeniu wszystkich prac
+
+
+Egzaminator …………………………………………………………………………….                                                           ..........................................................................
+                                         imię i nazwisko                                                                  data i czytelny podpis
+
+
+
+
+                                                                 Strona 6 z 7
+Załącznik 1 - Schemat połączenia urządzeń
+
+
+
+
+                                            Strona 7 z 7
+
