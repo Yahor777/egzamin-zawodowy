@@ -1,0 +1,457 @@
+#!/bin/bash
+# systemctl for the exam VM (egz). There is no systemd inside the browser VM
+# (CheerpX has no init system and no real network), so this script EMULATES the
+# state of the exam services, but the configuration checks are REAL: on
+# start/restart/reload it runs the same validators the daemons would
+# (dhcpd -t, apache2ctl configtest, testparm, named-checkconf, sshd -t, netplan)
+# and fails like systemd does when the config is broken. Logs go to
+# /var/lib/egz-systemd/<unit>.log and are shown by `systemctl status` and
+# `journalctl -u <unit>`.
+
+STATE=/var/lib/egz-systemd
+EGZ=/usr/local/lib/egz
+HOST=$(cat /etc/hostname 2>/dev/null || echo serwer)
+
+# ---------- unit table ----------
+# canonical name -> description | loaded line | docs | main process name
+declare -A DESC LOADED DOCS PROC
+unit_def() { DESC[$1]=$2; LOADED[$1]=$3; DOCS[$1]=$4; PROC[$1]=$5; }
+unit_def isc-dhcp-server 'LSB: DHCP server' '/etc/init.d/isc-dhcp-server; generated' 'man:systemd-sysv-generator(8)' dhcpd
+unit_def apache2 'The Apache HTTP Server' '/lib/systemd/system/apache2.service; %s; preset: enabled' 'https://httpd.apache.org/docs/2.4/' apache2
+unit_def smbd 'Samba SMB Daemon' '/lib/systemd/system/smbd.service; %s; preset: enabled' 'man:smbd(8) man:samba(7) man:smb.conf(5)' smbd
+unit_def nmbd 'Samba NMB Daemon' '/lib/systemd/system/nmbd.service; %s; preset: enabled' 'man:nmbd(8) man:samba(7) man:smb.conf(5)' nmbd
+unit_def ssh 'OpenBSD Secure Shell server' '/lib/systemd/system/ssh.service; %s; preset: enabled' 'man:sshd(8) man:sshd_config(5)' sshd
+unit_def named 'BIND Domain Name Server' '/lib/systemd/system/named.service; %s; preset: enabled' 'man:named(8)' named
+unit_def cron 'Regular background program processing daemon' '/lib/systemd/system/cron.service; %s; preset: enabled' 'man:cron(8)' cron
+unit_def nfs-server 'NFS server and services' '/lib/systemd/system/nfs-server.service; %s; preset: enabled' 'man:rpc.nfsd(8) man:exportfs(8)' rpc.nfsd
+unit_def systemd-networkd 'Network Configuration' '/lib/systemd/system/systemd-networkd.service; %s; preset: enabled' 'man:systemd-networkd.service(8)' systemd-networkd
+UNITS="apache2 cron isc-dhcp-server named nfs-server nmbd smbd ssh systemd-networkd"
+
+canon() { # strip .service, resolve aliases; prints nothing for unknown units
+  local u=${1%.service}
+  case $u in
+    sshd) u=ssh ;;
+    bind9) u=named ;;
+    nfs-kernel-server) u=nfs-server ;;
+    httpd) u=apache2 ;;
+  esac
+  [ -n "${DESC[$u]}" ] && echo "$u"
+}
+# Units that exist on Debian but are masked (as in real Debian/Ubuntu).
+is_masked_builtin() { case ${1%.service} in samba|isc-dhcp-server6) return 0 ;; esac; return 1; }
+
+is_root() { [ "$(id -u)" = 0 ]; }
+ts() { date '+%b %d %H:%M:%S'; }
+fakepid() { local n; n=$(printf '%s' "$1" | cksum | cut -d' ' -f1); echo $(( n % 900 + 400 )); }
+getstate() { cat "$STATE/$1.state" 2>/dev/null || echo inactive; }
+enabled() { [ -e "$STATE/$1.enabled" ]; }
+masked() { [ -e "$STATE/$1.masked" ]; }
+log() { # unit, ident, message lines...
+  local u=$1 who=$2; shift 2
+  local t; t=$(ts)
+  local line
+  for line in "$@"; do printf '%s %s %s: %s\n' "$t" "$HOST" "$who" "$line"; done >> "$STATE/$u.log"
+}
+logfile() { # unit, ident, file with output
+  local u=$1 who=$2 f=$3 t line
+  t=$(ts)
+  while IFS= read -r line; do printf '%s %s %s: %s\n' "$t" "$HOST" "$who" "$line"; done < "$f" >> "$STATE/$u.log"
+}
+setstate() { # unit state
+  echo "$2" > "$STATE/$1.state"
+  date +%s > "$STATE/$1.since"
+}
+
+# ---------- real configuration checks ----------
+# check_<unit> writes diagnostics to $OUT and returns non-zero on failure.
+OUT=$(mktemp 2>/dev/null || echo /tmp/egz-systemctl.$$)
+trap 'rm -f "$OUT"' EXIT
+
+check_isc-dhcp-server() {
+  local conf=/etc/dhcp/dhcpd.conf
+  if [ ! -r "$conf" ]; then echo "Can't open $conf: No such file or directory" > "$OUT"; return 1; fi
+  dhcpd -t -4 -cf "$conf" > "$OUT" 2>&1 || return 1
+  # Interfaces: INTERFACESv4 from /etc/default/isc-dhcp-server, addresses from
+  # the last `netplan apply` (emulated NICs enp0s3/enp0s8).
+  local ifs
+  ifs=$( . /etc/default/isc-dhcp-server 2>/dev/null; echo "$INTERFACESv4" )
+  python3 "$EGZ/netplan.py" dhcp-check "$conf" $ifs >> "$OUT" 2>&1
+}
+check_apache2() {
+  mkdir -p /var/run/apache2 /var/lock/apache2 2>/dev/null
+  apache2ctl configtest > "$OUT" 2>&1
+}
+check_smbd() { testparm -s /etc/samba/smb.conf > /dev/null 2> "$OUT"; }
+check_nmbd() { check_smbd; }
+check_ssh() { mkdir -p /run/sshd 2>/dev/null; /usr/sbin/sshd -t > "$OUT" 2>&1; }
+check_named() { named-checkconf -z /etc/bind/named.conf > "$OUT" 2>&1; }
+check_cron() { : > "$OUT"; }
+check_nfs-server() {
+  : > "$OUT"
+  # Basic /etc/exports syntax: "path client(options)"
+  local n=0 line
+  while IFS= read -r line; do
+    n=$((n+1))
+    line=${line%%#*}
+    [ -z "${line// /}" ] && continue
+    if ! [[ $line =~ ^[[:space:]]*(/[^[:space:]]*|\"/[^\"]*\")([[:space:]]+[^[:space:]()]*(\([^()]*\))?)*[[:space:]]*$ ]]; then
+      echo "exportfs: /etc/exports:$n: syntax error: bad option list" >> "$OUT"; return 1
+    fi
+  done < /etc/exports
+}
+check_systemd-networkd() { python3 "$EGZ/netplan.py" generate > "$OUT" 2>&1; }
+
+# Post-start "running" output for the journal (what the daemon would log).
+started_lines() {
+  case $1 in
+    isc-dhcp-server) echo "Starting ISC DHCPv4 server: dhcpd." ;;
+    apache2) ;;
+    *) ;;
+  esac
+}
+
+# Real daemon for cron (no network needed): best effort.
+start_real() {
+  if [ "$1" = cron ]; then
+    if [ -r /run/crond.pid ] && kill -0 "$(cat /run/crond.pid)" 2>/dev/null; then return 0; fi
+    /usr/sbin/cron 2>/dev/null
+  fi
+}
+stop_real() {
+  if [ "$1" = cron ] && [ -r /run/crond.pid ]; then
+    kill "$(cat /run/crond.pid)" 2>/dev/null; rm -f /run/crond.pid
+  fi
+}
+mainpid() {
+  if [ "$1" = cron ] && [ -r /run/crond.pid ] && kill -0 "$(cat /run/crond.pid)" 2>/dev/null; then
+    cat /run/crond.pid
+  else
+    fakepid "$1"
+  fi
+}
+
+# ---------- actions ----------
+ident_for() { # who logs the check output
+  case $1 in
+    isc-dhcp-server) echo "isc-dhcp-server[$(fakepid "$1x")]" ;;
+    apache2) echo "apachectl[$(fakepid "$1x")]" ;;
+    *) echo "${PROC[$1]}[$(fakepid "$1")]" ;;
+  esac
+}
+
+do_start() { # unit verb(start|restart|reload) ; returns 0/1
+  local u=$1 verb=$2 rc
+  local d=${DESC[$u]}
+  [ "$verb" = reload ] && log "$u" "systemd[1]" "Reloading $u.service - $d..." \
+                       || log "$u" "systemd[1]" "Starting $u.service - $d..."
+  "check_$u"; rc=$?
+  [ -s "$OUT" ] && logfile "$u" "$(ident_for "$u")" "$OUT"
+  if [ $rc -ne 0 ]; then
+    if [ "$verb" = reload ]; then
+      log "$u" "systemd[1]" "$u.service: Control process exited, code=exited, status=1/FAILURE" \
+        "Reload failed for $u.service - $d."
+      echo "Job for $u.service failed because the control process exited with error code."
+      echo "See \"systemctl status $u.service\" and \"journalctl -xeu $u.service\" for details."
+      return 1
+    fi
+    stop_real "$u"
+    log "$u" "systemd[1]" "$u.service: Control process exited, code=exited, status=1/FAILURE" \
+      "$u.service: Failed with result 'exit-code'." "Failed to start $u.service - $d."
+    setstate "$u" failed
+    echo "Job for $u.service failed because the control process exited with error code."
+    echo "See \"systemctl status $u.service\" and \"journalctl -xeu $u.service\" for details."
+    return 1
+  fi
+  if [ "$verb" = reload ]; then
+    log "$u" "systemd[1]" "Reloaded $u.service - $d."
+    return 0
+  fi
+  start_real "$u"
+  local extra; extra=$(started_lines "$u")
+  [ -n "$extra" ] && log "$u" "$(ident_for "$u")" "$extra"
+  log "$u" "systemd[1]" "Started $u.service - $d."
+  setstate "$u" active
+  return 0
+}
+
+do_stop() {
+  local u=$1
+  [ "$(getstate "$u")" = active ] || { setstate "$u" inactive; return 0; }
+  log "$u" "systemd[1]" "Stopping $u.service - ${DESC[$u]}..."
+  stop_real "$u"
+  log "$u" "systemd[1]" "$u.service: Deactivated successfully." "Stopped $u.service - ${DESC[$u]}."
+  setstate "$u" inactive
+}
+
+wants_link() { echo "/etc/systemd/system/multi-user.target.wants/$1.service"; }
+do_enable() {
+  local u=$1
+  if masked "$u"; then echo "Failed to enable unit: Unit file /etc/systemd/system/$u.service is masked."; return 1; fi
+  if [ "$u" = isc-dhcp-server ]; then
+    echo "Synchronizing state of $u.service with SysV service script with /lib/systemd/systemd-sysv-install."
+    echo "Executing: /lib/systemd/systemd-sysv-install enable $u"
+    touch "$STATE/$u.enabled"; return 0
+  fi
+  if ! enabled "$u"; then
+    mkdir -p /etc/systemd/system/multi-user.target.wants
+    ln -sf "/lib/systemd/system/$u.service" "$(wants_link "$u")" 2>/dev/null
+    echo "Created symlink $(wants_link "$u") → /lib/systemd/system/$u.service."
+    touch "$STATE/$u.enabled"
+  fi
+}
+do_disable() {
+  local u=$1
+  if [ "$u" = isc-dhcp-server ]; then
+    echo "Synchronizing state of $u.service with SysV service script with /lib/systemd/systemd-sysv-install."
+    echo "Executing: /lib/systemd/systemd-sysv-install disable $u"
+    rm -f "$STATE/$u.enabled"; return 0
+  fi
+  if enabled "$u"; then
+    rm -f "$(wants_link "$u")" "$STATE/$u.enabled"
+    echo "Removed \"$(wants_link "$u")\"."
+  fi
+}
+
+since_text() { # unit -> "Tue 2026-11-24 15:00:01 UTC; 3min 2s ago"
+  local s now d ago
+  s=$(cat "$STATE/$1.since" 2>/dev/null) || s=$(date +%s)
+  now=$(date +%s); d=$((now - s)); [ $d -lt 0 ] && d=0
+  if [ $d -lt 60 ]; then ago="${d}s"
+  elif [ $d -lt 3600 ]; then ago="$((d/60))min $((d%60))s"
+  elif [ $d -lt 86400 ]; then ago="$((d/3600))h $(((d%3600)/60))min"
+  else ago="$((d/86400)) days"; fi
+  echo "$(date -d "@$s" '+%a %Y-%m-%d %H:%M:%S %Z'); $ago ago"
+}
+
+do_status() {
+  local u=$1 st en dot active loaded
+  st=$(getstate "$u")
+  if masked "$u"; then en=masked; elif enabled "$u"; then en=enabled; else en=disabled; fi
+  # shellcheck disable=SC2059
+  loaded=$(printf "${LOADED[$u]}" "$en")
+  local G='' R='' N=''
+  if [ -t 1 ]; then G=$'\e[0;1;32m' R=$'\e[0;1;31m' N=$'\e[0m'; fi
+  case $st in
+    active) dot="${G}●${N}"; active="${G}active (running)${N} since $(since_text "$u")" ;;
+    failed) dot="${R}×${N}"; active="${R}failed${N} (Result: exit-code) since $(since_text "$u")" ;;
+    *) dot='○'; active="inactive (dead)"
+       [ -e "$STATE/$u.since" ] && active="inactive (dead) since $(since_text "$u")" ;;
+  esac
+  echo "$dot $u.service - ${DESC[$u]}"
+  echo "     Loaded: loaded ($loaded)"
+  echo "     Active: $active"
+  echo "       Docs: ${DOCS[$u]}"
+  if [ "$st" = active ]; then
+    local pid; pid=$(mainpid "$u")
+    echo "   Main PID: $pid (${PROC[$u]})"
+    echo "      Tasks: 1 (limit: 2307)"
+    echo "     Memory: 4.2M"
+    echo "        CPU: 31ms"
+    echo "     CGroup: /system.slice/$u.service"
+    echo "             └─$pid ${PROC[$u]}"
+  elif [ "$st" = failed ]; then
+    echo "    Process: $(fakepid "$u") ExecStart=${LOADED[$u]%%;*} (code=exited, status=1/FAILURE)"
+  fi
+  if [ -s "$STATE/$u.log" ]; then
+    echo
+    tail -n "${LINES_N:-10}" "$STATE/$u.log"
+  fi
+  [ "$st" = active ] && return 0 || return 3
+}
+
+list_units() {
+  local u st sub load
+  printf '  %-34s %-6s %-8s %-8s %s\n' UNIT LOAD ACTIVE SUB DESCRIPTION
+  local n=0
+  for u in $UNITS; do
+    st=$(getstate "$u")
+    [ "$ALL" != 1 ] && [ "$st" = inactive ] && continue
+    case $st in active) sub=running ;; failed) sub=failed ;; *) sub=dead ;; esac
+    load=loaded; masked "$u" && load=masked
+    if [ "$st" = failed ]; then printf '●'; else printf ' '; fi
+    printf ' %-34s %-6s %-8s %-8s %s\n' "$u.service" "$load" "$st" "$sub" "${DESC[$u]}"
+    n=$((n+1))
+  done
+  echo
+  echo "LOAD   = Reflects whether the unit definition was properly loaded."
+  echo "ACTIVE = The high-level unit activation state, i.e. generalization of SUB."
+  echo "SUB    = The low-level unit activation state, values depend on unit type."
+  echo "$n loaded units listed."
+}
+list_unit_files() {
+  local u en
+  printf '%-34s %-15s %s\n' 'UNIT FILE' STATE PRESET
+  for u in $UNITS; do
+    if masked "$u"; then en=masked; elif enabled "$u"; then en=enabled; else en=disabled; fi
+    [ "$u" = isc-dhcp-server ] && en=generated
+    printf '%-34s %-15s %s\n' "$u.service" "$en" enabled
+  done
+  echo
+  echo "$(echo $UNITS | wc -w) unit files listed."
+}
+
+# ---------- argument parsing ----------
+ARGS=() NOW=0 ALL=0 QUIET=0 LINES_N=10
+for a in "$@"; do
+  case $a in
+    --now) NOW=1 ;;
+    -a|--all) ALL=1 ;;
+    -q|--quiet) QUIET=1 ;;
+    -n*) LINES_N=${a#-n}; [ -z "$LINES_N" ] && LINES_N=10 ;;
+    --lines=*) LINES_N=${a#--lines=} ;;
+    --type=*|-t|--no-pager|-l|--full|--no-legend|--system|--state=*|--plain|-f|--force|--no-block) ;;
+    --version)
+      echo "systemd 252 (252.33-1~deb12u1)"
+      echo "+PAM +AUDIT +SELINUX +APPARMOR +IMA +SMACK +SECCOMP +GCRYPT -GNUTLS +OPENSSL +ACL +BLKID +CURL +ELFUTILS"
+      echo "(egz: w tej maszynie systemd jest emulowany / здесь systemd эмулирован)"
+      exit 0 ;;
+    -h|--help)
+      echo "systemctl [OPTIONS...] COMMAND ..."
+      echo
+      echo "Emulated in this exam VM: start stop restart reload status is-active is-enabled"
+      echo "is-failed enable disable mask unmask list-units list-unit-files daemon-reload"
+      exit 0 ;;
+    *) ARGS+=("$a") ;;
+  esac
+done
+CMD=${ARGS[0]:-list-units}
+UNITARGS=("${ARGS[@]:1}")
+
+need_unit() {
+  if [ ${#UNITARGS[@]} -eq 0 ]; then
+    echo "Too few arguments."; exit 1
+  fi
+}
+access_denied() { # verb unit
+  echo "Failed to $1 $2.service: Access denied"
+  [ "$1" = enable ] || [ "$1" = disable ] || echo "See system logs and 'systemctl status $2.service' for details."
+  exit 1
+}
+
+mkdir -p "$STATE" 2>/dev/null
+
+case $CMD in
+  start|stop|restart|reload|try-restart|reload-or-restart|condrestart|force-reload)
+    need_unit
+    rc=0
+    for raw in "${UNITARGS[@]}"; do
+      u=$(canon "$raw")
+      if [ -z "$u" ]; then
+        if is_masked_builtin "$raw"; then
+          echo "Failed to $CMD ${raw%.service}.service: Unit ${raw%.service}.service is masked."
+        else
+          echo "Failed to $CMD ${raw%.service}.service: Unit ${raw%.service}.service not found."
+        fi
+        rc=5; continue
+      fi
+      is_root || access_denied "$CMD" "$u"
+      if masked "$u" && [ "$CMD" != stop ]; then
+        echo "Failed to $CMD $u.service: Unit $u.service is masked."; rc=1; continue
+      fi
+      case $CMD in
+        start) [ "$(getstate "$u")" = active ] || do_start "$u" start || rc=1 ;;
+        stop) do_stop "$u" ;;
+        restart|force-reload|reload-or-restart)
+          if [ "$CMD" = reload-or-restart ] && [ "$(getstate "$u")" = active ]; then
+            do_start "$u" reload || rc=1
+          else
+            [ "$(getstate "$u")" = active ] && log "$u" "systemd[1]" "Stopping $u.service - ${DESC[$u]}..." \
+              "$u.service: Deactivated successfully." "Stopped $u.service - ${DESC[$u]}."
+            do_start "$u" start || rc=1
+          fi ;;
+        try-restart|condrestart)
+          [ "$(getstate "$u")" = active ] && { do_start "$u" start || rc=1; } ;;
+        reload)
+          if [ "$(getstate "$u")" != active ]; then
+            echo "Job for $u.service invalid."; rc=1
+          else
+            do_start "$u" reload || rc=1
+          fi ;;
+      esac
+    done
+    exit $rc ;;
+  status)
+    if [ ${#UNITARGS[@]} -eq 0 ]; then
+      echo "● $HOST"
+      echo "    State: running"
+      echo "    Units: emulated (egz) — $(echo $UNITS | wc -w) exam services"
+      echo "   CGroup: /"
+      exit 0
+    fi
+    rc=0 first=1
+    for raw in "${UNITARGS[@]}"; do
+      [ $first = 1 ] || echo
+      first=0
+      u=$(canon "$raw")
+      if [ -z "$u" ]; then
+        if is_masked_builtin "$raw"; then
+          echo "○ ${raw%.service}.service"
+          echo "     Loaded: masked (Reason: Unit ${raw%.service}.service is masked.)"
+          echo "     Active: inactive (dead)"
+          rc=3
+        else
+          echo "Unit ${raw%.service}.service could not be found."; rc=4
+        fi
+        continue
+      fi
+      do_status "$u" || rc=3
+    done
+    exit $rc ;;
+  is-active|is-failed)
+    need_unit; rc=3
+    [ "$CMD" = is-failed ] && rc=1
+    for raw in "${UNITARGS[@]}"; do
+      u=$(canon "$raw"); st=inactive
+      [ -n "$u" ] && st=$(getstate "$u")
+      [ $QUIET = 1 ] || echo "$st"
+      if [ "$CMD" = is-active ] && [ "$st" = active ]; then rc=0; fi
+      if [ "$CMD" = is-failed ] && [ "$st" = failed ]; then rc=0; fi
+    done
+    exit $rc ;;
+  is-enabled)
+    need_unit; rc=1
+    for raw in "${UNITARGS[@]}"; do
+      u=$(canon "$raw")
+      if [ -z "$u" ]; then
+        if is_masked_builtin "$raw"; then [ $QUIET = 1 ] || echo masked
+        else echo "Failed to get unit file state for ${raw%.service}.service: No such file or directory"; fi
+        continue
+      fi
+      if masked "$u"; then st=masked; elif enabled "$u"; then st=enabled; rc=0; else st=disabled; fi
+      [ $QUIET = 1 ] || echo "$st"
+    done
+    exit $rc ;;
+  enable|disable|mask|unmask)
+    need_unit; rc=0
+    for raw in "${UNITARGS[@]}"; do
+      u=$(canon "$raw")
+      if [ -z "$u" ]; then
+        echo "Failed to $CMD unit: Unit file ${raw%.service}.service does not exist."; rc=1; continue
+      fi
+      is_root || access_denied "$CMD" "$u"
+      case $CMD in
+        enable) do_enable "$u" || rc=1
+                [ $NOW = 1 ] && { [ "$(getstate "$u")" = active ] || do_start "$u" start || rc=1; } ;;
+        disable) do_disable "$u"
+                 [ $NOW = 1 ] && do_stop "$u" ;;
+        mask) if ! masked "$u"; then
+                touch "$STATE/$u.masked"
+                echo "Created symlink /etc/systemd/system/$u.service → /dev/null."
+              fi ;;
+        unmask) if masked "$u"; then
+                  rm -f "$STATE/$u.masked"
+                  echo "Removed \"/etc/systemd/system/$u.service\"."
+                fi ;;
+      esac
+    done
+    exit $rc ;;
+  list-units) list_units ;;
+  list-unit-files) list_unit_files ;;
+  daemon-reload|daemon-reexec)
+    is_root || { echo "Failed to reload daemon: Access denied"; exit 1; } ;;
+  reboot|poweroff|halt|suspend)
+    echo "(egz) $CMD: эмуляция — чтобы «перезагрузить» эту машину, обнови страницу браузера."
+    exit 1 ;;
+  *)
+    echo "Unknown command verb '$CMD'."; exit 1 ;;
+esac

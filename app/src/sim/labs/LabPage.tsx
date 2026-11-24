@@ -47,6 +47,10 @@ function load(lab: Lab): LabSave {
 
 type Tab = 'tasks' | 'bench' | 'router' | 'switch' | 'linux' | 'pc'
 
+// newest session first: code "INF.02-01-26.01-SG" → "26.01"
+const sessionKey = (code: string) => code.match(/(\d\d)\.(\d\d)-S/)?.slice(1).join('') ?? ''
+const SORTED_LABS = [...LABS].sort((a, b) => sessionKey(b.code).localeCompare(sessionKey(a.code)) || a.code.localeCompare(b.code))
+
 export function LabList() {
   const lang = useLang()
   return (
@@ -61,7 +65,7 @@ export function LabList() {
           : 'Prawdziwe zadania CKE: konfigurujesz ruter, przełącznik, serwer Linux i stację Windows w przeglądarce, a potem „Sprawdź” — punkt po punkcie. Próg: 75%.'}
       </p>
       <div className="topic-table">
-        {LABS.map((l) => {
+        {SORTED_LABS.map((l) => {
           let pct: number | null = null
           try {
             const raw = localStorage.getItem(key(l.id) + '.best')

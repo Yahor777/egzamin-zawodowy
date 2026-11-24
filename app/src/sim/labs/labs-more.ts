@@ -616,7 +616,7 @@ const lab_25_06_05: Lab = {
     linux: { hostname: 'ubuntu-server', users: [ADMIN], rootPassword: PASS, interfaces: [{ name: 'enp0s3', mac: '08:00:27:25:65:03' }] },
     pc: { hostname: 'DESKTOP-UCZEN', adapters: [pcAd('wlan0', 'Wi-Fi', '08-00-27-25-65-0A')] },
   },
-  ports: { router: RT_PORTS, linux: ['enp0s3'] },
+  ports: { router: RT_PORTS, linux: ['enp0s3'], pc: [] }, // the station only has a Wi-Fi card
   requiredLinks: L_25_06_05,
   schema_ru: ['Serwer Linux ↔ ruter LAN1', 'Stacja robocza ↔ sieć Wi-Fi Egzamin_05 (bezprzewodowo)'],
   tasks: [

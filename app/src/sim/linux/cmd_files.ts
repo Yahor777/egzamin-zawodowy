@@ -791,27 +791,88 @@ function sedRun(cmds: SedCmd[], data: string, quiet: boolean, ere: boolean): str
   return out
 }
 register('sed', async (c) => {
-  const o = getopt(c, c.args, 'ne:i::Erf:s', { quiet: 'n', silent: 'n', expression: 'e', 'in-place': 'i', 'regexp-extended': 'E' })
-  if (!o) return 1
+  // GNU sed option parsing: -i takes an *attached* optional suffix (-i.bak), -e/-f take an argument
   const args = c.args
-  const inPlace = args.some((a) => a === '-i' || a.startsWith('--in-place') || (/^-[a-zA-Z]*i/.test(a) && !a.startsWith('--')))
-  let script: string
+  let quiet = false
+  let ere = false
+  let inPlace = false
+  let suffix = ''
   const scripts: string[] = []
-  for (let i = 0; i < args.length; i++) if (args[i] === '-e' || args[i] === '--expression') scripts.push(args[i + 1])
-  let files = o.rest
-  if (o.v.i !== undefined && o.v.i !== '' && !scripts.length && !o.v.e) {
-    // -i consumed next arg as suffix by our parser; treat it as script
-    files = [o.v.i, ...files]
+  let files: string[] = []
+  const usage = 'Usage: sed [OPTION]... {script-only-if-no-other-script} [input-file]...\n'
+  const scriptFile = (f: string) => {
+    const d = readArg(c, f)
+    if (d === null) return false
+    scripts.push(d.replace(/\n$/, ''))
+    return true
   }
+  for (let i = 0; i < args.length; i++) {
+    const a = args[i]
+    if (a === '--') {
+      files.push(...args.slice(i + 1))
+      break
+    }
+    if (a.startsWith('--')) {
+      const [k, v] = a.includes('=') ? [a.slice(0, a.indexOf('=')), a.slice(a.indexOf('=') + 1)] : [a, undefined]
+      if (k === '--quiet' || k === '--silent') quiet = true
+      else if (k === '--regexp-extended') ere = true
+      else if (k === '--in-place') {
+        inPlace = true
+        suffix = v ?? ''
+      } else if (k === '--expression' || k === '--file') {
+        const val = v ?? args[++i]
+        if (val === undefined) {
+          c.err(`sed: option '${k}' requires an argument\n${usage}`)
+          return 1
+        }
+        if (k === '--file') {
+          if (!scriptFile(val)) return 1
+        } else scripts.push(val)
+      } else if (k !== '--separate' && k !== '--posix' && k !== '--debug') {
+        c.err(`sed: unrecognized option '${a}'\n${usage}`)
+        return 1
+      }
+      continue
+    }
+    if (a.startsWith('-') && a.length > 1) {
+      for (let j = 1; j < a.length; j++) {
+        const ch = a[j]
+        if (ch === 'n') quiet = true
+        else if (ch === 'E' || ch === 'r') ere = true
+        else if (ch === 's' || ch === 'u' || ch === 'z') continue
+        else if (ch === 'i') {
+          inPlace = true
+          suffix = a.slice(j + 1)
+          break
+        } else if (ch === 'e' || ch === 'f') {
+          const val = a.slice(j + 1) || args[++i]
+          if (val === undefined) {
+            c.err(`sed: option requires an argument -- '${ch}'\n${usage}`)
+            return 1
+          }
+          if (ch === 'f') {
+            if (!scriptFile(val)) return 1
+          } else scripts.push(val)
+          break
+        } else {
+          c.err(`sed: invalid option -- '${ch}'\n${usage}`)
+          return 1
+        }
+      }
+      continue
+    }
+    files.push(a)
+  }
+  let script: string
   if (scripts.length) script = scripts.join('\n')
   else {
     if (!files.length) {
-      c.err('Usage: sed [OPTION]... {script-only-if-no-other-script} [input-file]...\n')
+      c.err(usage)
       return 1
     }
     script = files.shift()!
   }
-  const ere = o.f.has('E') || o.f.has('r')
+  files = [...files]
   const cmds = parseSed(script, ere)
   if (typeof cmds === 'string') {
     c.err(`sed: ${cmds}\n`)
@@ -826,7 +887,8 @@ register('sed', async (c) => {
       const d = readArg(c, f)
       if (d === null) return 4
       try {
-        writeFile(c.st, c.abs(f), sedRun(cmds, d, o.f.has('n'), ere), c.cred)
+        if (suffix) writeFile(c.st, c.abs(suffix.includes('*') ? suffix.replace(/\*/g, f.split('/').pop()!) : f + suffix), d, c.cred)
+        writeFile(c.st, c.abs(f), sedRun(cmds, d, quiet, ere), c.cred)
       } catch (e) {
         c.err(`sed: couldn't open temporary file ${dirOf(c.abs(f))}/sedXXXXXX: ${c.fsMsg(e)}\n`)
         return 4
@@ -841,7 +903,7 @@ register('sed', async (c) => {
       st = 2
       continue
     }
-    c.out(sedRun(cmds, inp.data, o.f.has('n'), ere))
+    c.out(sedRun(cmds, inp.data, quiet, ere))
   }
   return st
 })
