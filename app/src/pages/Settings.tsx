@@ -48,6 +48,10 @@ export function Settings() {
           {msg && <span className="muted">{msg}</span>}
         </div>
       </div>
+      <p className="muted small">
+        {window.innerWidth}×{window.innerHeight} · screen {screen.width}×{screen.height} · dpr {window.devicePixelRatio} · zoom{' '}
+        {document.documentElement.style.zoom || '1'}
+      </p>
       <div className="panel">
         <button
           className="btn danger"

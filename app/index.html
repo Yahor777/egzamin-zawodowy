@@ -11,19 +11,22 @@
   </head>
   <body>
     <script>
-      // Some in-app browsers lay the page out wider than the screen and zoom it out.
-      // Pin the layout width to the real screen width on touch devices.
+      // On some phones the page is laid out wider than the screen (Safari page zoom,
+      // "desktop website" mode, in-app browsers) and everything looks tiny.
+      // Detect that and scale the page back up so 1 CSS px matches the screen again.
       ;(function () {
+        var root = document.documentElement
         function fix() {
-          var m = document.querySelector('meta[name=viewport]')
+          if (!('ontouchstart' in window)) return
+          root.style.zoom = ''
           var sw = Math.min(screen.width, screen.height)
-          if (m && 'ontouchstart' in window && window.innerWidth > sw * 1.15) {
-            m.setAttribute('content', 'width=' + sw + ', initial-scale=1, viewport-fit=cover')
-          }
+          if (window.matchMedia('(orientation: landscape)').matches) sw = Math.max(screen.width, screen.height)
+          var ratio = window.innerWidth / sw
+          if (ratio > 1.15 && ratio < 4) root.style.zoom = String(Math.round(ratio * 100) / 100)
         }
         fix()
         window.addEventListener('load', fix)
-        window.addEventListener('orientationchange', function () { setTimeout(fix, 300) })
+        window.addEventListener('resize', fix)
       })()
     </script>
     <div id="root"></div>
