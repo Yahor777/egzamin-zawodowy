@@ -53,7 +53,12 @@ jobs:
         env:
           VM_VERSION: ${{ hashFiles('vm-image/**') }}
         run: |
-          docker buildx build --platform linux/386 --load -t egz-vm vm-image
+          ok=0
+          for i in 1 2 3; do
+            if docker buildx build --network host --platform linux/386 --load -t egz-vm vm-image; then ok=1; break; fi
+            echo "::warning::docker build attempt $i failed, retrying"; sleep 10
+          done
+          [ "$ok" = 1 ] || { echo "::error::VM image build failed"; exit 1; }
           bash vm-image/build-ext2.sh egz-vm vm-disk "$VM_VERSION"
       - name: VM disk - add to site
         continue-on-error: true
