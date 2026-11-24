@@ -1,0 +1,5 @@
+{"ob4d2887": {
+ "answersFix": ["monitów dotyczących uruchamiania skryptów.", "powiadamiania o wygasłych certyfikatach.", "blokady wyskakujących okienek.", "funkcji zapamiętywania haseł."],
+ "ru": {"stem": "При просмотре веб-страниц для повышения безопасности личных данных рекомендуется отключить в настройках браузера", "answers": ["запросы о запуске скриптов.", "уведомления об истёкших сертификатах.", "блокировку всплывающих окон.", "функцию запоминания паролей."]},
+ "expl": {"pl": "Hasła zapamiętane w przeglądarce może odczytać każdy, kto ma dostęp do komputera, albo złośliwe oprogramowanie. Pozostałe opcje chronią użytkownika, więc ich wyłączenie obniżyłoby bezpieczeństwo.",
+          "ru": "Пароли, сохранённые в браузере, может достать любой, у кого есть доступ к компьютеру, или вредоносная программа. Остальные функции защищают пользователя, и их отключение снизило бы безопасность."}}}

@@ -1,0 +1,770 @@
+{
+ "1e3016a9": {
+  "ru": {
+   "stem": "Из представленного снимка экрана следует, что с помощью веб-браузера было выполнено измерение",
+   "answers": [
+    "потерь оптической мощности.",
+    "затухания медного кабеля.",
+    "времени отклика выбранного сервера.",
+    "количества пакетов, передаваемых между выбранными серверами."
+   ]
+  },
+  "expl": {
+   "pl": "Przeglądarkowe testy (np. speedtest) mierzą ping, czyli czas odpowiedzi serwera, oraz prędkość pobierania i wysyłania. Tłumienia kabla czy strat mocy optycznej nie da się zmierzyć z przeglądarki — wymaga to mierników sprzętowych.",
+   "ru": "Браузерные тесты (например, speedtest) измеряют ping, то есть время отклика сервера, и скорость загрузки/отдачи. Затухание кабеля или потери оптической мощности из браузера не измерить — нужны аппаратные измерители."
+  },
+  "topic": "netdevices"
+ },
+ "17ff408b": {
+  "ru": {
+   "stem": "На рисунке представлен фрагмент технической документации материнской платы GA-K8NF-9-RH rev. 2.x. Из неё следует, что максимальное количество устанавливаемых плат расширения (не считая интерфейса USB) равно",
+   "answers": [
+    "6",
+    "5",
+    "3",
+    "2"
+   ]
+  },
+  "expl": {
+   "pl": "Płyta ma łącznie 6 gniazd rozszerzeń: 1 × PCI Express x16, 2 × PCI Express x1 i 3 × PCI. Sumujemy wszystkie sloty, bo w każdy można włożyć osobną kartę.",
+   "ru": "На плате всего 6 слотов расширения: 1 × PCI Express x16, 2 × PCI Express x1 и 3 × PCI. Складываем все слоты, так как в каждый можно установить отдельную карту."
+  },
+  "topic": "hardware"
+ },
+ "442a9eb4": {
+  "ru": {
+   "stem": "На рисунке представлена конфигурация устройства, из которой следует, что",
+   "answers": [
+    "созданы два новых VLAN: ID13, ID48",
+    "к VLAN с ID48 назначены все порты.",
+    "созданы три новых VLAN: ID1, ID13, ID48",
+    "VLAN с ID48 настроен как управляющий."
+   ]
+  },
+  "expl": {
+   "pl": "W tabeli VLAN są wpisy 1, 13 i 48, ale VLAN 1 to domyślny VLAN istniejący fabrycznie, więc utworzono tylko VLAN 13 i 48. Do VLAN 48 nie należą wszystkie porty — porty 1 i 3 są w nim „NotMember”.",
+   "ru": "В таблице VLAN есть записи 1, 13 и 48, но VLAN 1 — заводской VLAN по умолчанию, поэтому созданы только VLAN 13 и 48. К VLAN 48 относятся не все порты — порты 1 и 3 в нём «NotMember»."
+  }
+ },
+ "4ca854d1": {
+  "ru": {
+   "stem": "Совместимые компоненты обозначены в таблице номерами",
+   "answers": [
+    "1, 3, 5",
+    "1, 4, 6",
+    "2, 4, 5",
+    "2, 4, 6"
+   ]
+  },
+  "expl": {
+   "pl": "Ryzen 7 1800X ma gniazdo AM4, pasujące do płyty Asus X370 (s-AM4), która obsługuje DDR4 — stąd pamięć Corsair DDR4. Płyta z X99/AM3+ i Intel s-1150 nie pasują, a DDR3 nie zadziała na płycie DDR4.",
+   "ru": "Ryzen 7 1800X имеет сокет AM4, подходящий к плате Asus X370 (s-AM4), которая поддерживает DDR4 — отсюда память Corsair DDR4. Плата X99/AM3+ и Intel s-1150 не подходят, а DDR3 не работает в плате под DDR4."
+  },
+  "topic": "hardware"
+ },
+ "b3b240ea": {
+  "ru": {
+   "stem": "Какой IP-адрес относится к классу A?",
+   "answers": [
+    "239.0.255.15",
+    "217.12.45.1",
+    "129.10.0.17",
+    "125.11.0.7"
+   ]
+  },
+  "expl": {
+   "pl": "Klasa A obejmuje adresy z pierwszym oktetem 1–126 (0xxxxxxx), więc 125.11.0.7 należy do niej. 129 to klasa B (128–191), 217 klasa C (192–223), 239 klasa D (multicast).",
+   "ru": "Класс A — адреса с первым октетом 1–126 (0xxxxxxx), поэтому 125.11.0.7 относится к нему. 129 — класс B (128–191), 217 — класс C (192–223), 239 — класс D (multicast)."
+  }
+ },
+ "b9a6fe51": {
+  "ru": {
+   "stem": "С помощью программы Acrylic Wi-Fi Home выполнен тест, результаты которого представлены на снимке. На их основании можно утверждать, что доступная беспроводная сеть",
+   "answers": [
+    "не зашифрована.",
+    "использует каналы 10 ÷ 12.",
+    "имеет очень хорошее качество сигнала.",
+    "достигает максимальной скорости передачи 72 Mbps."
+   ]
+  },
+  "expl": {
+   "pl": "W kolumnie zabezpieczeń programu sieć ma status „Open”, czyli brak szyfrowania (żadnego WEP/WPA/WPA2). Pozostałe parametry odczytane ze zrzutu nie zgadzają się z treścią pozostałych odpowiedzi.",
+   "ru": "В столбце безопасности программы сеть имеет статус «Open», то есть без шифрования (ни WEP, ни WPA/WPA2). Остальные параметры на снимке не совпадают с другими вариантами ответа."
+  },
+  "topic": "netdevices"
+ },
+ "d7c176fe": {
+  "ru": {
+   "stem": "На представленной материнской плате возможна установка процессора в корпусе типа",
+   "answers": [
+    "LGA",
+    "PGA",
+    "SECC",
+    "SPGA"
+   ]
+  },
+  "expl": {
+   "pl": "Gniazdo na płycie ma sprężyste styki w podstawce i ramkę dociskową, co odpowiada obudowie LGA (Land Grid Array) — procesor ma płaskie pola stykowe, a nie nóżki. PGA/SPGA wymagają gniazda z otworami na piny, a SECC to kartridż slotowy.",
+   "ru": "Сокет на плате имеет пружинные контакты и прижимную рамку, что соответствует корпусу LGA (Land Grid Array) — у процессора плоские контактные площадки, а не ножки. PGA/SPGA требуют сокета с отверстиями под пины, а SECC — картридж для слота."
+  }
+ },
+ "o0355840": {
+  "ru": {
+   "stem": "Интерфейс SATA 2 (3 Gb/s) обеспечивает пропускную способность",
+   "answers": [
+    "150 MB/s",
+    "300 MB/s",
+    "375 MB/s",
+    "750 MB/s"
+   ]
+  },
+  "expl": {
+   "pl": "Według klucza: 3 Gb/s ÷ 8 = 375 MB/s (przepływność surowa). Uwaga: SATA używa kodowania 8b/10b, więc realna przepustowość danych to 3000 ÷ 10 = 300 MB/s i ta wartość zwykle podawana jest w specyfikacjach.",
+   "ru": "По ключу: 3 Gb/s ÷ 8 = 375 MB/s (сырая скорость). Внимание: SATA использует кодирование 8b/10b, поэтому реальная скорость данных 3000 ÷ 10 = 300 MB/s — именно её обычно указывают в спецификациях."
+  },
+  "doubt": "Effective SATA 2 throughput is 300 MB/s (8b/10b); 375 is raw bits/8"
+ },
+ "o092aca8": {
+  "ru": {
+   "stem": "В системе Linux инструментом для мониторинга использования процессора, памяти, процессов и нагрузки системы из командной оболочки является",
+   "answers": [
+    "top",
+    "pwd",
+    "dxdiag",
+    "passwd"
+   ]
+  },
+  "expl": {
+   "pl": "Klucz wskazuje passwd, ale to polecenie służy do zmiany hasła użytkownika. Do monitorowania procesora, pamięci i procesów w czasie rzeczywistym służy top; pwd pokazuje bieżący katalog, a dxdiag to narzędzie Windows.",
+   "ru": "Ключ указывает passwd, но эта команда меняет пароль пользователя. Для мониторинга процессора, памяти и процессов в реальном времени служит top; pwd показывает текущий каталог, а dxdiag — инструмент Windows."
+  },
+  "doubt": "Correct answer is top; passwd changes passwords",
+  "topic": "linux"
+ },
+ "o099a055": {
+  "ru": {
+   "stem": "Укажите 24-контактный или 29-контактный разъём (гнездо), который может передавать сжатый цифровой сигнал на монитор.",
+   "answers": [
+    "VGA",
+    "HDMI",
+    "RCA",
+    "DVI"
+   ]
+  },
+  "expl": {
+   "pl": "Złącze DVI występuje w wersjach 24-pinowej (DVI-D) i 29-pinowej (DVI-I, z pinami analogowymi) i przesyła sygnał cyfrowy do monitora. HDMI ma 19 pinów, VGA 15, a RCA to pojedynczy wtyk analogowy.",
+   "ru": "Разъём DVI бывает 24-контактным (DVI-D) и 29-контактным (DVI-I, с аналоговыми контактами) и передаёт цифровой сигнал на монитор. HDMI имеет 19 контактов, VGA — 15, а RCA — одиночный аналоговый разъём."
+  }
+ },
+ "o0c29c4e": {
+  "ru": {
+   "stem": "Какой тип разъёма нужно использовать, чтобы подключить питание к CD-ROM?",
+   "answers": [
+    "Berg",
+    "Molex",
+    "Mini-Molex",
+    "20-контактный ATX"
+   ]
+  },
+  "expl": {
+   "pl": "Klucz wskazuje Mini-Molex, jednak napędy CD-ROM (ATA) zasilane są standardowo 4-pinowym złączem Molex. Mini-Molex (Berg) zasilał stacje dyskietek, a 20-pinowe ATX zasila płytę główną.",
+   "ru": "Ключ указывает Mini-Molex, однако приводы CD-ROM (ATA) обычно питаются от стандартного 4-контактного разъёма Molex. Mini-Molex (Berg) питал дисководы гибких дисков, а 20-контактный ATX — материнскую плату."
+  },
+  "doubt": "CD-ROM uses standard Molex; Mini-Molex is for floppy drives",
+  "outdated": true
+ },
+ "o1600197": {
+  "ru": {
+   "stem": "Отключение автоматического обновления системы Windows приводит к",
+   "answers": [
+    "автоматической загрузке обновлений без их установки.",
+    "блокировке любого способа загрузки обновлений системы.",
+    "блокировке самостоятельной загрузки обновлений системой.",
+    "автоматической проверке наличия обновлений и уведомлению о них пользователя."
+   ]
+  },
+  "expl": {
+   "pl": "Klucz wskazuje automatyczne pobieranie bez instalacji, ale to osobna opcja ustawień Windows Update. Wyłączenie aktualizacji automatycznych blokuje samodzielne pobieranie uaktualnień przez system — ręcznie nadal można je pobrać, więc nie blokuje „każdego sposobu”.",
+   "ru": "Ключ указывает автоматическую загрузку без установки, но это отдельная опция Windows Update. Отключение автоматических обновлений блокирует самостоятельную загрузку обновлений системой — вручную скачать их можно, поэтому «любой способ» не блокируется."
+  },
+  "doubt": "Disabling auto-update blocks the system's own downloading; download-only is a separate setting",
+  "outdated": true
+ },
+ "o16c69d6": {
+  "ru": {
+   "stem": "Светочувствительный барабан — необходимый элемент работы принтера",
+   "answers": [
+    "матричного (игольчатого).",
+    "лазерного.",
+    "струйного.",
+    "сублимационного."
+   ]
+  },
+  "expl": {
+   "pl": "Klucz wskazuje drukarkę igłową, jednak bęben światłoczuły (OPC) jest elementem drukarki laserowej: laser naświetla go, tworząc obraz elektrostatyczny, do którego przywiera toner. Drukarka igłowa drukuje przez taśmę barwiącą uderzaną igłami.",
+   "ru": "Ключ указывает матричный принтер, однако светочувствительный барабан (OPC) — элемент лазерного принтера: лазер засвечивает его, создавая электростатическое изображение, к которому прилипает тонер. Матричный принтер печатает иглами через красящую ленту."
+  },
+  "doubt": "Photosensitive drum belongs to laser printers"
+ },
+ "o2c20f6c": {
+  "ru": {
+   "stem": "Для создания в системе Linux резервной копии выбранных файлов из командной строки нужно использовать программу",
+   "answers": [
+    "set",
+    "tar",
+    "cal",
+    "gdb"
+   ]
+  },
+  "expl": {
+   "pl": "Klucz wskazuje set, ale to polecenie powłoki do ustawiania opcji i zmiennych. Kopię zapasową plików tworzy się programem tar (archiwizator, np. tar -czf kopia.tar.gz pliki); cal to kalendarz, a gdb to debuger.",
+   "ru": "Ключ указывает set, но это команда оболочки для настройки опций и переменных. Резервную копию файлов создают программой tar (архиватор, например tar -czf kopia.tar.gz файлы); cal — календарь, gdb — отладчик."
+  },
+  "doubt": "Correct answer is tar; set is a shell builtin",
+  "topic": "linux"
+ },
+ "o33fabda": {
+  "ru": {
+   "stem": "За распределение процессорного времени между задачами отвечает",
+   "answers": [
+    "чипсет.",
+    "оперативная память (RAM).",
+    "кэш процессора.",
+    "операционная система."
+   ]
+  },
+  "expl": {
+   "pl": "Klucz wskazuje pamięć RAM, jednak przydzielaniem czasu procesora zadaniom zajmuje się planista (scheduler) systemu operacyjnego. RAM tylko przechowuje dane i kod procesów, nie decyduje o kolejności ich wykonywania.",
+   "ru": "Ключ указывает RAM, однако распределением процессорного времени занимается планировщик (scheduler) операционной системы. RAM лишь хранит данные и код процессов и не решает, в каком порядке они выполняются."
+  },
+  "doubt": "CPU time is allocated by the OS scheduler",
+  "topic": "basics"
+ },
+ "o3de3077": {
+  "ru": {
+   "stem": "Самая частая причина размазывания тонера на отпечатках лазерного принтера —",
+   "answers": [
+    "слишком низкая температура узла термозакрепления.",
+    "повреждение роликов.",
+    "замятие бумаги.",
+    "загрязнение внутренней части принтера."
+   ]
+  },
+  "expl": {
+   "pl": "Klucz wskazuje zacięcie papieru, jednak typową przyczyną rozmazywania tonera jest zbyt niska temperatura utrwalacza (fusera) — toner nie stapia się z papierem i ściera się. Zacięcie papieru zatrzymuje wydruk, a nie rozmazuje toner.",
+   "ru": "Ключ указывает замятие бумаги, однако типичная причина размазывания тонера — слишком низкая температура фьюзера: тонер не сплавляется с бумагой и стирается. Замятие бумаги останавливает печать, а не размазывает тонер."
+  },
+  "doubt": "Typical cause is too low fuser temperature"
+ },
+ "o48d2616": {
+  "ru": {
+   "stem": "На стабильность изображения в мониторах CRT существенно влияет",
+   "answers": [
+    "время отклика.",
+    "многочастотность.",
+    "цветопередача.",
+    "частота обновления."
+   ]
+  },
+  "expl": {
+   "pl": "Klucz wskazuje wieloczęstotliwość (zdolność monitora do pracy z różnymi częstotliwościami synchronizacji). Zwykle jednak za stabilność obrazu CRT (brak migotania) odpowiada częstotliwość odświeżania — im wyższa (≥85 Hz), tym obraz stabilniejszy.",
+   "ru": "Ключ указывает многочастотность (способность монитора работать с разными частотами синхронизации). Однако обычно за стабильность изображения CRT (отсутствие мерцания) отвечает частота обновления — чем выше (≥85 Hz), тем изображение стабильнее."
+  },
+  "doubt": "Usually refresh rate determines CRT image stability (flicker)",
+  "outdated": true
+ },
+ "o4b0c755": {
+  "ru": {
+   "stem": "В системе Windows 7 для изменения конфигурации загрузки компьютера с помощью командной строки следует использовать команду",
+   "answers": [
+    "bootcfg",
+    "bootfix",
+    "bcdedit",
+    "config"
+   ]
+  },
+  "expl": {
+   "pl": "Od Windows Vista/7 konfiguracja rozruchu przechowywana jest w magazynie BCD i edytuje się ją poleceniem bcdedit. Bootcfg służył do edycji boot.ini w Windows XP, a bootfix i config nie są takimi narzędziami.",
+   "ru": "Начиная с Windows Vista/7 конфигурация загрузки хранится в хранилище BCD и редактируется командой bcdedit. Bootcfg редактировал boot.ini в Windows XP, а bootfix и config такими инструментами не являются."
+  },
+  "answersFix": [
+   "bootcfg",
+   "bootfix",
+   "bcdedit",
+   "config"
+  ]
+ },
+ "o57bba5a": {
+  "ru": {
+   "stem": "Изношенное электрическое или электронное устройство, на котором размещён знак, показанный на рисунке, следует",
+   "answers": [
+    "сдать в пункт приёма металлолома.",
+    "выбросить в контейнеры для бытовых отходов.",
+    "сдать в пункт приёма отработанной электроники.",
+    "выбросить в контейнеры, обозначенные этим знаком."
+   ]
+  },
+  "expl": {
+   "pl": "Przekreślony kosz na kółkach (dyrektywa WEEE) oznacza zakaz wyrzucania urządzenia razem z odpadami komunalnymi. Zużyty sprzęt trzeba oddać do punktu zbiórki elektroodpadów (lub sklepu), a nie do skupu złomu.",
+   "ru": "Перечёркнутый мусорный бак на колёсах (директива WEEE) означает запрет выбрасывать устройство вместе с бытовыми отходами. Отработанную технику нужно сдать в пункт сбора электроотходов (или магазин), а не в пункт приёма металлолома."
+  },
+  "stemFix": "Zużyte urządzenie elektryczne lub elektroniczne, na którym umieszczony jest znak przedstawiony na rysunku, należy",
+  "topic": "law_bhp"
+ },
+ "o5b47065": {
+  "ru": {
+   "stem": "Программа типа firewall не защищает от",
+   "answers": [
+    "вирусов, распространяющихся через электронную почту.",
+    "атак, генерирующих повышенный сетевой трафик.",
+    "получения доступа к компьютеру хакерами.",
+    "шпионажа и кражи конфиденциальных данных пользователя."
+   ]
+  },
+  "expl": {
+   "pl": "Klucz wskazuje szpiegowanie i kradzież danych, ale zapora częściowo przed tym chroni, blokując nieautoryzowane połączenia wychodzące. Klasycznie firewall nie chroni przed wirusami w poczcie e-mail — przepuszcza ruch pocztowy, a jego zawartość sprawdza antywirus.",
+   "ru": "Ключ указывает шпионаж и кражу данных, но брандмауэр частично защищает от этого, блокируя несанкционированные исходящие соединения. Классически firewall не защищает от вирусов в e-mail — он пропускает почтовый трафик, а содержимое проверяет антивирус."
+  },
+  "doubt": "Classic answer: firewall does not protect against e-mail viruses",
+  "answersFix": [
+   "wirusami rozprzestrzeniającymi się pocztą e-mail.",
+   "atakami generującymi wzmożony ruch w sieci.",
+   "uzyskaniem dostępu do komputera przez hakerów.",
+   "szpiegowaniem i wykradaniem poufnych danych użytkownika."
+  ],
+  "topic": "security"
+ },
+ "o650a9c2": {
+  "ru": {
+   "stem": "Сколько устройств может быть подключено к порту IEEE1394",
+   "answers": [
+    "1",
+    "8",
+    "55",
+    "63"
+   ]
+  },
+  "expl": {
+   "pl": "Magistrala IEEE 1394 (FireWire) pozwala połączyć do 63 urządzeń w jednej sieci (6-bitowy identyfikator węzła, jeden adres zarezerwowany). Dla porównania USB obsługuje do 127 urządzeń.",
+   "ru": "Шина IEEE 1394 (FireWire) позволяет соединить до 63 устройств (6-битный идентификатор узла, один адрес зарезервирован). Для сравнения, USB поддерживает до 127 устройств."
+  },
+  "answersFix": [
+   "1",
+   "8",
+   "55",
+   "63"
+  ],
+  "topic": "peripherals"
+ },
+ "o6d909f2": {
+  "ru": {
+   "stem": "Представленная на рисунке запись в журнале событий относится к событиям типа",
+   "answers": [
+    "ошибки.",
+    "сведения (информация).",
+    "предупреждения.",
+    "аудит отказов."
+   ]
+  },
+  "expl": {
+   "pl": "W oknie właściwości zdarzenia pole „Poziom” ma wartość „Informacje”, a treść to zwykły komunikat o uruchomieniu usługi (User Notification Service started). Błędy i ostrzeżenia mają inny poziom, a inspekcja niepowodzeń dotyczy dziennika Zabezpieczenia.",
+   "ru": "В окне свойств события поле «Уровень» имеет значение «Информация», а текст — обычное сообщение о запуске службы (User Notification Service started). Ошибки и предупреждения имеют другой уровень, а аудит отказов относится к журналу безопасности."
+  },
+  "stemFix": "Przedstawiony na rysunku wpis w dzienniku zdarzeń zalicza się do zdarzeń typu",
+  "topic": "windows"
+ },
+ "o7949cc8": {
+  "ru": {
+   "stem": "В операционной системе Linux объём свободного места на дисках можно проверить командой",
+   "answers": [
+    "du",
+    "df",
+    "fstab",
+    "mkfs"
+   ]
+  },
+  "expl": {
+   "pl": "Klucz wskazuje du, ale ono pokazuje zajętość katalogów i plików. Wolne miejsce na systemach plików pokazuje df (disk free, np. df -h); fstab to plik konfiguracji montowania, a mkfs tworzy system plików.",
+   "ru": "Ключ указывает du, но она показывает занятое место каталогами и файлами. Свободное место на файловых системах показывает df (disk free, например df -h); fstab — файл настроек монтирования, а mkfs создаёт файловую систему."
+  },
+  "doubt": "Free space is shown by df; du shows used space",
+  "topic": "linux"
+ },
+ "o7fb669d": {
+  "ru": {
+   "stem": "При выборе компьютерного блока питания наибольшее значение",
+   "answers": [
+    "имеет тип процессора.",
+    "имеет форм-фактор корпуса.",
+    "имеет суммарная мощность всех компонентов компьютера.",
+    "имеют параметры установленной операционной системы."
+   ]
+  },
+  "expl": {
+   "pl": "Klucz wskazuje format obudowy (zasilacz musi pasować fizycznie, np. ATX/SFX). Zwykle jednak najważniejsza jest łączna moc wszystkich podzespołów — zasilacz musi ją pokryć z zapasem.",
+   "ru": "Ключ указывает форм-фактор корпуса (БП должен физически подходить, например ATX/SFX). Однако обычно важнее всего суммарная мощность всех компонентов — БП должен покрывать её с запасом."
+  },
+  "doubt": "Usually total power of components is the key criterion",
+  "answersFix": [
+   "ma typ procesora.",
+   "ma współczynnik kształtu obudowy.",
+   "ma łączna moc wszystkich podzespołów komputera.",
+   "mają parametry zainstalowanego systemu operacyjnego."
+  ],
+  "topic": "hardware"
+ },
+ "o94fe0f2": {
+  "ru": {
+   "stem": "Носители данных, такие как жёсткий диск, хранят информацию порциями, называемыми секторами, размер которых равен",
+   "answers": [
+    "128B",
+    "512B",
+    "512KB",
+    "1024 KB"
+   ]
+  },
+  "expl": {
+   "pl": "Klucz wskazuje 1024 KB, jednak klasyczny sektor dysku twardego ma 512 B (nowsze dyski Advanced Format — 4096 B). 512 KB czy 1024 KB to rozmiary znacznie większe od jakiegokolwiek sektora.",
+   "ru": "Ключ указывает 1024 KB, однако классический сектор жёсткого диска равен 512 B (новые диски Advanced Format — 4096 B). 512 KB или 1024 KB намного больше любого сектора."
+  },
+  "doubt": "Standard sector is 512 B"
+ },
+ "o9a0ce63": {
+  "ru": {
+   "stem": "Какая команда в системе Linux запускает проверку диска и позволяет исправить его ошибки?",
+   "answers": [
+    "fsck",
+    "lshw",
+    "fdisk",
+    "mksf"
+   ]
+  },
+  "expl": {
+   "pl": "fsck (file system check) sprawdza spójność systemu plików i naprawia błędy (na odmontowanej partycji). lshw wyświetla listę sprzętu, fdisk służy do partycjonowania, a „mksf” nie istnieje (tworzenie systemu plików to mkfs).",
+   "ru": "fsck (file system check) проверяет целостность файловой системы и исправляет ошибки (на размонтированном разделе). lshw выводит список оборудования, fdisk служит для разметки, а «mksf» не существует (создание ФС — mkfs)."
+  },
+  "answersFix": [
+   "fsck",
+   "lshw",
+   "fdisk",
+   "mksf"
+  ],
+  "topic": "linux"
+ },
+ "o9a48125": {
+  "ru": {
+   "stem": "На рисунке представлен элемент, являющийся составной частью",
+   "answers": [
+    "HDD.",
+    "плоттера.",
+    "матричного принтера.",
+    "привода CD-ROM."
+   ]
+  },
+  "expl": {
+   "pl": "Według klucza jest to element plotera. Zdjęcie przedstawia jednak płaski silnik z wrzecionem, typowy dla napędów (np. silnik obracający dysk), dlatego odpowiedź klucza budzi wątpliwości.",
+   "ru": "По ключу это элемент плоттера. Однако на фото плоский двигатель со шпинделем, типичный для приводов (например, мотор вращения диска), поэтому ответ ключа вызывает сомнения."
+  },
+  "doubt": "Photo looks like a drive spindle motor, not a plotter part",
+  "stemFix": "Na rysunku przedstawiono element, który jest częścią składową",
+  "topic": "hardware"
+ },
+ "oa359650": {
+  "ru": {
+   "stem": "Представленные на рисунке настройки относятся к",
+   "answers": [
+    "сетевой карте.",
+    "модему.",
+    "принтеру.",
+    "сканеру."
+   ]
+  },
+  "expl": {
+   "pl": "Klucz wskazuje drukarkę, jednak okno dotyczy portu szeregowego COM3 z buforami FIFO układu UART 16550 — takie ustawienia zaawansowane typowo konfiguruje się dla modemu. Drukarki zwykle korzystały z portu równoległego LPT lub USB.",
+   "ru": "Ключ указывает принтер, однако окно относится к последовательному порту COM3 с буферами FIFO микросхемы UART 16550 — такие дополнительные настройки обычно задают для модема. Принтеры обычно использовали параллельный порт LPT или USB."
+  },
+  "doubt": "COM port UART FIFO settings typically belong to a modem",
+  "stemFix": "Przedstawione na rysunku ustawienia dotyczą",
+  "answersFix": [
+   "karty sieciowej.",
+   "modemu.",
+   "drukarki.",
+   "skanera."
+  ],
+  "topic": "peripherals",
+  "outdated": true
+ },
+ "oa415adb": {
+  "ru": {
+   "stem": "В какой системе счисления записаны диапазоны ввода/вывода, представленные на рисунке?",
+   "answers": [
+    "Двоичной.",
+    "Восьмеричной.",
+    "Десятичной.",
+    "Шестнадцатеричной."
+   ]
+  },
+  "expl": {
+   "pl": "Klucz wskazuje system ósemkowy, ale zakresy mają prefiks 0x i zawierają cyfry A–F (np. 0x0000002C, 0x00000CF7), co jednoznacznie oznacza zapis szesnastkowy. W systemie ósemkowym nie ma cyfr 8, 9 ani liter.",
+   "ru": "Ключ указывает восьмеричную систему, но диапазоны имеют префикс 0x и содержат цифры A–F (например, 0x0000002C, 0x00000CF7), что однозначно означает шестнадцатеричную запись. В восьмеричной системе нет цифр 8, 9 и букв."
+  },
+  "doubt": "0x prefix and A–F digits mean hexadecimal",
+  "stemFix": "W jakim systemie liczbowym są zapisane zakresy We/Wy przedstawione na rysunku?",
+  "answersFix": [
+   "Binarnym.",
+   "Ósemkowym.",
+   "Dziesiętnym.",
+   "Szesnastkowym."
+  ]
+ },
+ "oaf2b472": {
+  "ru": {
+   "stem": "Разъём, показанный на фото, позволяет подключить",
+   "answers": [
+    "монитор.",
+    "принтер.",
+    "модем.",
+    "мышь."
+   ]
+  },
+  "expl": {
+   "pl": "Na zdjęciu jest żeńskie złącze D-Sub z 15 pinami w trzech rzędach, czyli VGA (DE-15) — analogowe wyjście obrazu do monitora. Port COM (modem, mysz) ma 9 pinów w dwóch rzędach, a LPT drukarki 25 otworów.",
+   "ru": "На фото гнездо D-Sub с 15 контактами в три ряда, то есть VGA (DE-15) — аналоговый видеовыход для монитора. Порт COM (модем, мышь) имеет 9 контактов в два ряда, а LPT принтера — 25 отверстий."
+  },
+  "stemFix": "Złącze przedstawione na zdjęciu umożliwia podłączenie",
+  "topic": "peripherals"
+ },
+ "ob6c3d97": {
+  "ru": {
+   "stem": "Программное обеспечение, привязанное к одному компьютеру или его части, что делает невозможной повторную установку на новом оборудовании, купленном тем же пользователем, — это",
+   "answers": [
+    "MPL",
+    "CPL",
+    "MOLP",
+    "OEM"
+   ]
+  },
+  "expl": {
+   "pl": "Klucz wskazuje MPL (Mozilla Public License — licencja open source). Opis pasuje jednak do licencji OEM: jest przypisana do komputera, z którym ją kupiono, i nie wolno jej przenieść na nowy sprzęt. MOLP to licencjonowanie zbiorowe Microsoft.",
+   "ru": "Ключ указывает MPL (Mozilla Public License — лицензия open source). Однако описание соответствует лицензии OEM: она привязана к компьютеру, с которым куплена, и её нельзя перенести на новое железо. MOLP — корпоративное лицензирование Microsoft."
+  },
+  "doubt": "Description matches OEM licence; MPL is an open-source licence"
+ },
+ "oc5aee96": {
+  "ru": {
+   "stem": "Файловая система, которая в Windows позволяет сжимать данные и назначать права доступа к папкам и файлам, — это",
+   "answers": [
+    "FAT",
+    "FAT32",
+    "NTFS",
+    "EXT"
+   ]
+  },
+  "expl": {
+   "pl": "Klucz wskazuje FAT, jednak FAT nie obsługuje ani uprawnień, ani kompresji. Kompresję i uprawnienia (ACL) do plików i folderów zapewnia NTFS; EXT to system plików Linuksa.",
+   "ru": "Ключ указывает FAT, однако FAT не поддерживает ни права доступа, ни сжатие. Сжатие и права (ACL) на файлы и папки обеспечивает NTFS; EXT — файловая система Linux."
+  },
+  "doubt": "Correct answer is NTFS",
+  "stemFix": "System plików, który umożliwia w systemie Windows kompresję danych i nadawanie uprawnień do folderów i plików, to",
+  "answersFix": [
+   "FAT",
+   "FAT32",
+   "NTFS",
+   "EXT"
+  ]
+ },
+ "oca4de32": {
+  "ru": {
+   "stem": "Показанную на рисунке плату расширения можно установить в компьютер, на материнской плате которого есть хотя бы один свободный слот",
+   "answers": [
+    "ISA",
+    "PCI",
+    "AGP",
+    "PCIe"
+   ]
+  },
+  "expl": {
+   "pl": "Karta (Asus PCI-USB2) ma złącze krawędziowe PCI — długie, z jednym wcięciem, napięcie 3,3/5 V. ISA jest dłuższe i szersze, AGP przeznaczone tylko dla kart graficznych, a PCIe ma krótsze złącze o innym kształcie.",
+   "ru": "Плата (Asus PCI-USB2) имеет краевой разъём PCI — с одним вырезом, 3,3/5 V. ISA длиннее и шире, AGP предназначен только для видеокарт, а PCIe имеет другой, более короткий разъём."
+  },
+  "stemFix": "Przedstawioną na rysunku kartę rozszerzeń można zainstalować w komputerze, w którym na płycie głównej jest co najmniej jeden wolny slot",
+  "answersFix": [
+   "ISA",
+   "PCI",
+   "AGP",
+   "PCIe"
+  ]
+ },
+ "ocb428dd": {
+  "ru": {
+   "stem": "Представленный на рисунке знак, соответствующий стандарту Energy Star, означает устройство",
+   "answers": [
+    "энергосберегающее.",
+    "с повышенным энергопотреблением.",
+    "ставшее победителем конкурса EnergyStar.",
+    "произведённое фирмой EnergyStar Co."
+   ]
+  },
+  "expl": {
+   "pl": "Klucz wskazuje zwycięzcę plebiscytu, ale Energy Star to program EPA (USA) — znak otrzymują urządzenia spełniające wymagania efektywności energetycznej, czyli energooszczędne. Nie jest to nagroda w plebiscycie ani nazwa producenta.",
+   "ru": "Ключ указывает победителя конкурса, но Energy Star — программа EPA (США): знак получают устройства, отвечающие требованиям энергоэффективности, то есть энергосберегающие. Это не награда конкурса и не название производителя."
+  },
+  "doubt": "Energy Star means energy-efficient device",
+  "stemFix": "Przedstawiony na rysunku znak zgodny ze standardem Energy Star oznacza urządzenie",
+  "topic": "law_bhp"
+ },
+ "od2dc29f": {
+  "ru": {
+   "stem": "Основное значение при построении рабочей станции, на которой будет работать много виртуальных машин, имеет",
+   "answers": [
+    "высококлассная сетевая карта.",
+    "система водяного охлаждения.",
+    "мощная видеокарта.",
+    "количество ядер процессора."
+   ]
+  },
+  "expl": {
+   "pl": "Klucz wskazuje chłodzenie wodne, jednak dla wielu maszyn wirtualnych kluczowa jest liczba rdzeni procesora (oraz ilość RAM) — każda VM dostaje własne wirtualne procesory. Chłodzenie jest tylko dodatkiem.",
+   "ru": "Ключ указывает водяное охлаждение, однако для многих виртуальных машин ключевым является количество ядер процессора (и объём RAM) — каждая VM получает свои виртуальные процессоры. Охлаждение лишь дополнение."
+  },
+  "doubt": "Number of CPU cores is the key factor for VMs",
+  "topic": "hardware"
+ },
+ "odbf7604": {
+  "ru": {
+   "stem": "Какое устройство не следует ремонтировать при использовании антистатических средств?",
+   "answers": [
+    "Модем.",
+    "Память.",
+    "Блок питания.",
+    "Жёсткий диск."
+   ]
+  },
+  "expl": {
+   "pl": "Zasilacz zawiera wysokie napięcia (m.in. naładowane kondensatory), a opaska antystatyczna łączy serwisanta z masą — grozi to porażeniem. Dlatego zasilacza nie naprawia się z założoną opaską antystatyczną; pozostałe podzespoły wręcz wymagają ochrony ESD.",
+   "ru": "Блок питания содержит высокие напряжения (в т. ч. заряженные конденсаторы), а антистатический браслет соединяет мастера с землёй — это грозит поражением током. Поэтому БП не ремонтируют в антистатическом браслете; остальные компоненты, наоборот, требуют защиты от ESD."
+  },
+  "topic": "law_bhp"
+ },
+ "odc70b3f": {
+  "ru": {
+   "stem": "Какой из интерфейсов является параллельным портом?",
+   "answers": [
+    "USB",
+    "RS232",
+    "IEEE1394",
+    "IEEE1284"
+   ]
+  },
+  "expl": {
+   "pl": "IEEE 1284 to standard portu równoległego (LPT, Centronics), używanego dawniej głównie przez drukarki. USB, RS-232 i IEEE 1394 (FireWire) to interfejsy szeregowe.",
+   "ru": "IEEE 1284 — стандарт параллельного порта (LPT, Centronics), раньше использовавшегося в основном для принтеров. USB, RS-232 и IEEE 1394 (FireWire) — последовательные интерфейсы."
+  },
+  "answersFix": [
+   "USB",
+   "RS232",
+   "IEEE1394",
+   "IEEE1284"
+  ],
+  "outdated": true
+ },
+ "ode164e6": {
+  "ru": {
+   "stem": "Число 10101110110, записанное в шестнадцатеричной системе, имеет вид",
+   "answers": [
+    "AE6",
+    "536",
+    "576",
+    "A76"
+   ]
+  },
+  "expl": {
+   "pl": "Klucz wskazuje AE6, ale grupując bity po 4 od prawej: 101|0111|0110 = 5|7|6, czyli 576₁₆ (1398₁₀). AE6 to 1010 1110 0110 — inna liczba (12 bitów).",
+   "ru": "Ключ указывает AE6, но, группируя биты по 4 справа: 101|0111|0110 = 5|7|6, то есть 576₁₆ (1398₁₀). AE6 — это 1010 1110 0110, другое число (12 бит)."
+  },
+  "doubt": "10101110110₂ = 576₁₆"
+ },
+ "oeeacafd": {
+  "ru": {
+   "stem": "Чтобы в Windows предоставить пользователю право изменять системное время, нужно использовать оснастку",
+   "answers": [
+    "secpol.msc",
+    "eventvwr.msc",
+    "certmgr.msc",
+    "services.msc"
+   ]
+  },
+  "expl": {
+   "pl": "Prawo „Zmień czas systemowy” znajduje się w Zasadach zabezpieczeń lokalnych (secpol.msc) → Zasady lokalne → Przypisywanie praw użytkownika. eventvwr.msc to Podgląd zdarzeń, certmgr.msc — certyfikaty, services.msc — usługi.",
+   "ru": "Право «Изменение системного времени» находится в локальной политике безопасности (secpol.msc) → Локальные политики → Назначение прав пользователя. eventvwr.msc — просмотр событий, certmgr.msc — сертификаты, services.msc — службы."
+  },
+  "topic": "windows"
+ },
+ "of668acb": {
+  "ru": {
+   "stem": "Что позволяет поддерживать равномерное распределение тепла между процессором и радиатором?",
+   "answers": [
+    "Термосмесь (термоинтерфейс).",
+    "Графитовая паста.",
+    "Силиконовый спрей.",
+    "Клей."
+   ]
+  },
+  "expl": {
+   "pl": "Klucz wskazuje silikonowy spray, jednak między procesor a radiator nakłada się pastę/mieszankę termoprzewodzącą, która wypełnia mikroszczeliny i poprawia przewodzenie ciepła. Spray silikonowy to środek smarny, nie materiał termoprzewodzący.",
+   "ru": "Ключ указывает силиконовый спрей, однако между процессором и радиатором наносят термопасту (термосмесь), заполняющую микрозазоры и улучшающую теплопередачу. Силиконовый спрей — смазка, а не теплопроводящий материал."
+  },
+  "doubt": "Thermal paste/compound is used, not silicone spray"
+ },
+ "of9c8304": {
+  "ru": {
+   "stem": "После подключения исправной клавиатуры к любому из USB-портов нельзя выбрать безопасный режим загрузки Windows. Тем не менее после запуска системы в обычном режиме клавиатура работает правильно. Это указывает на",
+   "answers": [
+    "неисправный блок питания.",
+    "неправильные настройки BIOS.",
+    "повреждённые порты USB.",
+    "неисправный контроллер клавиатуры."
+   ]
+  },
+  "expl": {
+   "pl": "Klucz wskazuje uszkodzony kontroler klawiatury. Jednak skoro klawiatura działa w Windows, typową przyczyną są ustawienia BIOS — wyłączona obsługa USB Legacy (USB Keyboard Support), przez co klawiatura USB nie działa przed załadowaniem sterowników.",
+   "ru": "Ключ указывает неисправный контроллер клавиатуры. Однако раз клавиатура работает в Windows, типичная причина — настройки BIOS: отключена поддержка USB Legacy (USB Keyboard Support), из-за чего USB-клавиатура не работает до загрузки драйверов."
+  },
+  "doubt": "Works in Windows, so likely BIOS USB legacy setting",
+  "topic": "peripherals"
+ },
+ "ofa8c685": {
+  "ru": {
+   "stem": "Какой инструмент в Windows следует использовать для отображения информации о системных проблемах?",
+   "answers": [
+    "Групповая политика.",
+    "Просмотр событий.",
+    "Общие папки.",
+    "Планировщик заданий."
+   ]
+  },
+  "expl": {
+   "pl": "Klucz wskazuje Harmonogram zadań, który jednak służy do planowania uruchamiania zadań. Informacje o błędach i problemach systemu wyświetla Podgląd zdarzeń (eventvwr.msc) w dziennikach System i Aplikacja.",
+   "ru": "Ключ указывает Планировщик заданий, который служит для планирования запуска задач. Информацию об ошибках и проблемах системы показывает Просмотр событий (eventvwr.msc) в журналах «Система» и «Приложение»."
+  },
+  "doubt": "System problems are shown in Event Viewer",
+  "topic": "windows"
+ },
+ "ofc72b1d": {
+  "ru": {
+   "stem": "Какая копия в процессе архивации файлов оставляет атрибут (маркер) архивации?",
+   "answers": [
+    "Нормальная (обычная).",
+    "Разностная (дифференциальная).",
+    "Полная.",
+    "Добавочная (инкрементальная)."
+   ]
+  },
+  "expl": {
+   "pl": "Klucz wskazuje kopię całościową, jednak w Windows kopia normalna (pełna) i przyrostowa czyszczą znacznik archiwizacji. Pozostawia go kopia różnicowa — dlatego każda kolejna kopia różnicowa zawiera wszystkie zmiany od ostatniej kopii pełnej.",
+   "ru": "Ключ указывает полную копию, однако в Windows обычная (полная) и добавочная копии сбрасывают атрибут архивации. Оставляет его разностная копия — поэтому каждая следующая разностная копия содержит все изменения с последней полной."
+  },
+  "doubt": "Differential backup leaves the archive bit; full/normal clears it",
+  "topic": "windows"
+ }
+}
