@@ -19,6 +19,7 @@ import {
   IcSearch,
   IcShield,
   IcSystem,
+  IcTools,
   IcUser,
   IcUsers,
 } from './icons'

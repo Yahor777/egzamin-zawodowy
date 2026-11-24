@@ -122,7 +122,7 @@ function SysPage({ go }: { go: (a: string) => void }) {
         <IcPc size={56} />
         <div>
           <strong>{api.state.hostname}</strong>
-          <span>{st.hardware ? hw.board.sysModel : 'Virtual Machine'}</span>
+          <span>{api.state.hardware ? api.state.hardware.board.sysModel : 'Virtual Machine'}</span>
           <button className="set-link" onClick={() => setRen(true)}>
             Zmień nazwę
           </button>
@@ -149,7 +149,7 @@ function AboutPage() {
         <IcPc size={48} />
         <div>
           <strong>{st.hostname}</strong>
-          <span>Virtual Machine</span>
+          <span>{st.hardware ? hw.board.sysModel : 'Virtual Machine'}</span>
         </div>
         <button className="w11-btn" onClick={() => setRen(true)}>
           Zmień nazwę tego komputera
