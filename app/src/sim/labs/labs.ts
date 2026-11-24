@@ -63,6 +63,8 @@ export interface Lab {
   requiredLinks: Link[]
   schema_ru: string[]
   tasks: LabTask[]
+  /** adjust the fresh state (e.g. stop a service that must be started in the task) */
+  prepare?: (s: import('./ctx').LabSave) => import('./ctx').LabSave
 }
 
 // ---------------- helpers used in checks ----------------

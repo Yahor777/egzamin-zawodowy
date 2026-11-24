@@ -5,7 +5,8 @@
     <link rel="icon" type="image/svg+xml" href="./icon.svg" />
     <link rel="apple-touch-icon" href="./icon-192.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#1f5fcf" />
+    <meta name="theme-color" content="#f3f4f1" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#17191b" media="(prefers-color-scheme: dark)" />
     <meta name="description" content="Nauka do egzaminu zawodowego INF.02: pytania z arkuszy CKE, egzamin próbny, powtórki." />
     <title>INF.02 Trener</title>
   </head>
@@ -16,6 +17,9 @@
       // Detect that and scale the page back up so 1 CSS px matches the screen again.
       ;(function () {
         var root = document.documentElement
+        // phone flag for layouts: width media queries are unreliable under the zoom below
+        var touch = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+        if (touch && Math.min(screen.width, screen.height) < 700) root.classList.add('phone')
         function fix() {
           if (!('ontouchstart' in window)) return
           root.style.zoom = ''

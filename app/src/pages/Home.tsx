@@ -1,9 +1,10 @@
 import { Icon } from '../components/Icon'
 import { stats, useBank } from '../lib/bank'
-import { TOPIC_NAMES, plural, useT } from '../lib/i18n'
+import { plural, useT } from '../lib/i18n'
 import { useLang, useProgress } from '../lib/store'
 import type { ExamRecord } from '../lib/types'
 import { go } from '../router'
+import { TodayPractice } from '../sim/drills/DrillPages'
 
 const DAY_FORMS = { pl: ['dzień', 'dni', 'dni'] as [string, string, string], ru: ['день', 'дня', 'дней'] as [string, string, string] }
 
@@ -13,15 +14,59 @@ export function daysLeft() {
   return Math.max(0, Math.ceil((EXAM_DATE.getTime() - Date.now()) / 86400_000))
 }
 
+export const PRACTICAL_EXAM = new Date('2027-01-15T09:00:00+01:00')
+const until = (d: Date) => Math.max(0, Math.ceil((d.getTime() - Date.now()) / 86400_000))
+
 export function Home() {
   const t = useT()
   const lang = useLang()
+  const ru = lang === 'ru'
+  const written = daysLeft()
+  const practical = until(PRACTICAL_EXAM)
+  return (
+    <div className="home">
+      <div className="countdown" role="group" aria-label={ru ? 'До экзаменов' : 'Do egzaminów'}>
+        <div>
+          <strong>{written}</strong>
+          <span>
+            {plural(lang, written, DAY_FORMS)} {ru ? 'до письменного' : 'do pisemnego'} <small>{ru ? '7–13 янв.' : '7–13 sty'}</small>
+          </span>
+        </div>
+        <div>
+          <strong>{practical}</strong>
+          <span>
+            {plural(lang, practical, DAY_FORMS)} {ru ? 'до практического' : 'do praktycznego'} <small>{ru ? '15–19 янв.' : '15–19 sty'}</small>
+          </span>
+        </div>
+      </div>
+      <div className="home-grid">
+        <div className="home-main">
+          <TodayPractice />
+        </div>
+        <div className="home-side">
+          <TestToday />
+          <ExamCard />
+          <button className="card link-card" onClick={() => go('/topics')}>
+            <span className="lc-title">{t('theory')}</span>
+            <span className="lc-sub">{ru ? 'Конспекты, наша документация, шпаргалки, словарь PL–RU' : 'Notatki, dokumentacja, ściągi, słowniczek'}</span>
+            <Icon name="chevron" size={18} />
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/** Written-exam questions for today (new + due), mistakes and starred. */
+export function TestToday() {
+  const t = useT()
+  const lang = useLang()
+  const ru = lang === 'ru'
   const bank = useBank()
   const p = useProgress()
   const days = daysLeft()
   const s = bank ? stats(bank, p) : null
   const mistakes = bank ? bank.filter((q) => p.cards[q.id]?.lastWrong).length : 0
-
   const startOfDay = new Date()
   startOfDay.setHours(0, 0, 0, 0)
   const cards = Object.values(p.cards)
@@ -32,132 +77,66 @@ export function Home() {
   const due = s?.due ?? 0
   const goal = answeredToday + newLeft + due
   const done = s ? newLeft === 0 && due === 0 : false
-
-  // topics: weakest by accuracy once there is data, otherwise the biggest ones
-  const topicStats = bank
-    ? Object.keys(TOPIC_NAMES)
-        .map((id) => ({ id, s: stats(bank, p, id) }))
-        .filter((x) => x.s.total > 0 && x.id !== 'other')
-    : []
-  const withData = topicStats.filter((x) => x.s.accuracy !== null && x.s.mastered + x.s.learning >= 5)
-  const weak = withData.length >= 3
-  const topicList = weak
-    ? [...withData].sort((a, b) => (a.s.accuracy ?? 0) - (b.s.accuracy ?? 0)).slice(0, 4)
-    : [...topicStats].sort((a, b) => b.s.total - a.s.total).slice(0, 4)
-
   return (
-    <div className="home">
-      <div className="home-main">
-        <section className="today card">
-          <div className="today-head">
-            <h1>{done ? t('todayDone') : t('today')}</h1>
-            <span className="days-chip">
-              <strong>{days}</strong> {plural(lang, days, DAY_FORMS)} {t('daysToExam')}
-            </span>
-          </div>
-          {s && (
-            <div className="today-nums">
-              <div>
-                <strong>{newLeft}</strong>
-                <span>{t('newQ')}</span>
-              </div>
-              <div>
-                <strong>{due}</strong>
-                <span>{t('repeatQ')}</span>
-              </div>
-              <div>
-                <strong>{answeredToday}</strong>
-                <span>{t('answeredToday')}</span>
-              </div>
-            </div>
-          )}
-          <div className="bar" role="img" aria-label={`${answeredToday}/${goal}`}>
-            <span style={{ width: `${goal ? Math.min(100, (answeredToday / goal) * 100) : 0}%` }} />
-          </div>
-          <button className="btn primary btn-wide" onClick={() => go('/learn')}>
-            {done ? t('keepGoing') : t('learnNow')}
-          </button>
-        </section>
-
-        <section className="card">
-          <h2>{weak ? t('weakTopics') : t('bigTopics')}</h2>
-          <div className="list">
-            {topicList.map(({ id, s: ts }) => (
-              <button key={id} className="list-row" onClick={() => go(`/learn/${id}`)}>
-                <span className="lr-main">
-                  <span className="lr-title">{TOPIC_NAMES[id][lang]}</span>
-                  <MasteryBar mastered={ts.mastered} learning={ts.learning} total={ts.total} />
-                </span>
-                <span className="lr-side">
-                  {weak && ts.accuracy !== null ? `${Math.round(ts.accuracy * 100)}%` : ts.total}
-                </span>
-                <Icon name="chevron" size={18} />
-              </button>
-            ))}
-          </div>
-          {!weak && <p className="hint">{t('weakEmpty')}</p>}
-          <button className="text-btn" onClick={() => go('/topics')}>
-            {t('allTopics')}
-          </button>
-        </section>
-      </div>
-
-      <div className="home-side">
-        <div className="list card flush">
-          <button className="list-row" onClick={() => go('/mistakes')}>
-            <Icon name="repeat" size={22} />
-            <span className="lr-title">{t('mistakes')}</span>
-            <span className={`lr-side ${mistakes ? 'alert' : ''}`}>{mistakes}</span>
-            <Icon name="chevron" size={18} />
-          </button>
-          <button className="list-row" onClick={() => go('/starred')}>
-            <Icon name="star" size={22} />
-            <span className="lr-title">{t('starred')}</span>
-            <span className="lr-side">{p.starred.length}</span>
-            <Icon name="chevron" size={18} />
-          </button>
-        </div>
-
+    <section className="card test-today">
+      <div className="card-head">
+        <h2>{done ? (ru ? 'Вопросы на сегодня — готово' : 'Pytania na dziś — gotowe') : ru ? 'Вопросы на сегодня' : 'Pytania na dziś'}</h2>
         {s && (
-          <section className="card">
-            <div className="card-head">
-              <h2>{t('overall')}</h2>
-              <span className="num">
-                {s.mastered} / {s.total}
-              </span>
-            </div>
-            <MasteryBar mastered={s.mastered} learning={s.learning} total={s.total} />
-            <div className="legend">
-              <span>
-                <i className="sw sw-m" /> {t('mastered')} {s.mastered}
-              </span>
-              <span>
-                <i className="sw sw-l" /> {t('learning')} {s.learning}
-              </span>
-              <span>
-                <i className="sw sw-n" /> {t('notSeen')} {s.fresh}
-              </span>
-            </div>
-          </section>
+          <span className="num">
+            {s.mastered}/{s.total}
+          </span>
         )}
-
-        <section className="card">
-          <div className="card-head">
-            <h2>{t('examsTitle')}</h2>
-            {p.exams.length > 0 && (
-              <span className={`num ${p.exams[p.exams.length - 1].score >= 20 ? 'ok' : 'bad'}`}>
-                {Math.round((p.exams[p.exams.length - 1].score / p.exams[p.exams.length - 1].total) * 100)}%
-              </span>
-            )}
-          </div>
-          {p.exams.length > 1 && <ExamChart exams={p.exams.slice(-10)} lang={lang} threshold={t('threshold')} />}
-          {p.exams.length === 0 && <p className="hint">{t('examsEmpty')}</p>}
-          <button className="btn" onClick={() => go('/exam')}>
-            {t('startExamShort')}
-          </button>
-        </section>
       </div>
-    </div>
+      {s && (
+        <div className="today-nums">
+          <div>
+            <strong>{newLeft}</strong>
+            <span>{t('newQ')}</span>
+          </div>
+          <div>
+            <strong>{due}</strong>
+            <span>{t('repeatQ')}</span>
+          </div>
+          <div>
+            <strong>{answeredToday}</strong>
+            <span>{t('answeredToday')}</span>
+          </div>
+        </div>
+      )}
+      <div className="bar" role="img" aria-label={`${answeredToday}/${goal}`}>
+        <span style={{ width: `${goal ? Math.min(100, (answeredToday / goal) * 100) : 0}%` }} />
+      </div>
+      <div className="row">
+        <button className={`btn ${done ? '' : 'primary'}`} onClick={() => go('/learn')}>
+          {done ? t('keepGoing') : t('learnNow')}
+        </button>
+        {mistakes > 0 && (
+          <button className="btn" onClick={() => go('/mistakes')}>
+            {t('mistakes')} · {mistakes}
+          </button>
+        )}
+      </div>
+    </section>
+  )
+}
+
+export function ExamCard() {
+  const t = useT()
+  const lang = useLang()
+  const p = useProgress()
+  const last = p.exams[p.exams.length - 1]
+  return (
+    <section className="card">
+      <div className="card-head">
+        <h2>{t('examsTitle')}</h2>
+        {last && <span className={`num ${last.score >= 20 ? 'ok' : 'bad'}`}>{Math.round((last.score / last.total) * 100)}%</span>}
+      </div>
+      {p.exams.length > 1 && <ExamChart exams={p.exams.slice(-10)} lang={lang} threshold={t('threshold')} />}
+      {p.exams.length === 0 && <p className="hint">{lang === 'ru' ? '40 вопросов, 60 минут, как на настоящем экзамене. Порог — 50%.' : '40 pytań, 60 minut. Próg 50%.'}</p>}
+      <button className="btn" onClick={() => go('/exam')}>
+        {t('startExamShort')}
+      </button>
+    </section>
   )
 }
 

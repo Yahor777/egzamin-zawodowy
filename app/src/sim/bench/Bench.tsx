@@ -9,6 +9,8 @@ import { DEV_PL, DEV_RU } from './diagnose'
 import { benchDevices, portLabel, portsOf } from './ports'
 import type { BenchLab, Station } from './station'
 import { useCompact } from './useCompact'
+import { Hint } from '../../components/Hint'
+import { Icon } from '../../components/Icon'
 import './bench.css'
 
 const CABLE_COLORS = ['#2f6fd0', '#2e8b57', '#c7772a', '#8a56b8', '#1f8f99', '#b0505a', '#6d7a2e', '#5a6470']
@@ -17,16 +19,19 @@ export function Bench({
   lab,
   s,
   st,
-  realistic,
   onLinks,
   onOpenPc,
+  hintKey = 'bench',
 }: {
   lab: BenchLab
   s: LabSave
   st: Station
-  realistic: boolean
+  /** @deprecated realistic mode is the only mode */
+  realistic?: boolean
   onLinks: (l: Link[]) => void
   onOpenPc?: () => void
+  /** key under which the open/closed state of hints is remembered */
+  hintKey?: string
 }) {
   const lang = useLang()
   const ru = lang === 'ru'
@@ -70,52 +75,47 @@ export function Bench({
 
   return (
     <div ref={ref} className={`bench ${compact ? 'bd-compact' : ''}`}>
-      {conflicts.map((c) => (
-        <div key={c.ip} className="bd-note warn" role="status">
-          <strong>{ru ? `Конфликт адресов ${c.ip}` : `Konflikt adresów ${c.ip}`}</strong>
-          <span>
-            {ru
-              ? `${c.devices.map(name).join(' и ')} в одной сети и оба имеют адрес ${c.ip} (так у TP-Link с завода). Браузер будет открывать то одно, то другое. Настраивай по одному: сначала подключи к ПК только свитч и смени ему адрес, потом роутер.`
-              : `${c.devices.map(name).join(' i ')} mają ten sam adres ${c.ip}. Konfiguruj urządzenia po kolei.`}
-          </span>
-        </div>
-      ))}
-      {realistic && anyPc && (
-        <details className="bd-note" open={!links.length}>
-          <summary>{ru ? 'Как настроить устройство, как на экзамене' : 'Jak skonfigurować urządzenie'}</summary>
+      <div className="bd-top">
+        <p className="bd-lead">
+          {ru
+            ? 'Нажми порт одного устройства, затем порт другого — так подключается кабель. Роутер и свитч настраиваются из браузера на компьютере.'
+            : 'Kliknij port jednego urządzenia, potem drugiego, aby połączyć je kablem.'}
+        </p>
+        {anyPc && onOpenPc && (
+          <button className="btn small" onClick={onOpenPc}>
+            {ru ? 'Браузер на ПК' : 'Przeglądarka'}
+          </button>
+        )}
+      </div>
+      <Hint id={`${hintKey}.bench`} label={ru ? 'Подсказка: как зайти на роутер или свитч' : 'Podpowiedź: jak wejść do panelu'}>
+        {conflicts.map((c) => (
+          <p key={c.ip} className="bd-warn">
+            <strong>{ru ? `Сейчас в сети два устройства с адресом ${c.ip}` : `Dwa urządzenia mają adres ${c.ip}`}</strong> ({c.devices.map(name).join(ru ? ' и ' : ' i ')}).{' '}
+            {ru ? 'Браузер будет открывать то одно, то другое. Настраивай по одному: сначала подключи к ПК только свитч и смени ему адрес, потом роутер.' : 'Konfiguruj urządzenia po kolei.'}
+          </p>
+        ))}
+        {ru ? (
           <ol>
-            {ru ? (
-              <>
-                <li>Соедини кабелем ПК с тем устройством, которое настраиваешь. Свитч — первым, пока роутер не подключён: с завода у обоих адрес 192.168.0.1.</li>
-                <li>Дождись адреса. От роутера ПК получит его сам по DHCP (192.168.0.100). Свитч адреса не раздаёт — задай ПК вручную 192.168.0.10 / 255.255.255.0.</li>
-                <li>
-                  Открой{' '}
-                  {onOpenPc ? (
-                    <button className="text-btn inline" onClick={onOpenPc}>
-                      Windows → Przeglądarka
-                    </button>
-                  ) : (
-                    'Windows → Przeglądarka'
-                  )}{' '}
-                  и впиши адрес устройства (например http://192.168.0.1), логин admin / admin.
-                </li>
-                <li>Когда все устройства настроены — соедини всё по схеме из листа.</li>
-              </>
-            ) : (
-              <>
-                <li>Połącz komputer kablem z konfigurowanym urządzeniem (najpierw przełącznik).</li>
-                <li>Poczekaj na adres (DHCP z rutera) albo ustaw statyczny 192.168.0.10/24.</li>
-                <li>Windows → Przeglądarka → http://192.168.0.1, admin / admin.</li>
-                <li>Na końcu połącz wszystko zgodnie ze schematem.</li>
-              </>
-            )}
+            <li>Адрес и логин устройства с завода — на наклейке снизу («Перевернуть»).</li>
+            <li>Соедини кабелем ПК с LAN-портом того устройства, которое настраиваешь. Если и роутер, и свитч с заводскими настройками — подключай их по одному: у обоих один адрес.</li>
+            <li>ПК должен быть в той же сети, что и устройство. Роутер сам выдаст ПК адрес по DHCP. Свитч адреса не раздаёт — задай ПК вручную адрес из сети свитча (например 192.168.0.10 / 255.255.255.0).</li>
+            <li>Открой Windows → Przeglądarka и впиши адрес устройства.</li>
+            <li>Сменил адрес устройства — переходи в браузере на новый адрес (и, если нужно, поменяй адрес ПК).</li>
+            <li>В конце соедини всё по схеме из листа: проверка смотрит итоговые кабели.</li>
           </ol>
-        </details>
-      )}
+        ) : (
+          <ol>
+            <li>Adres i login fabryczny — na naklejce pod spodem urządzenia.</li>
+            <li>Połącz komputer kablem z konfigurowanym urządzeniem.</li>
+            <li>Komputer musi być w tej samej podsieci.</li>
+            <li>Windows → Przeglądarka → adres urządzenia.</li>
+          </ol>
+        )}
+      </Hint>
 
       <div className="bd-grid">
         {devices.map((d) => (
-          <DeviceCard key={d} d={d} lab={lab} s={s} st={st} pick={pick} sel={sel} onPort={tapPort} />
+          <DeviceCard key={d} d={d} lab={lab} s={s} st={st} pick={pick} sel={sel} onPort={tapPort} hintKey={hintKey} />
         ))}
       </div>
 
@@ -181,19 +181,17 @@ export function Bench({
                 const done = req ? linksMatch([req], links) : false
                 return (
                   <li key={x} className={done ? 'ok' : ''}>
-                    {done ? '✓ ' : ''}
+                    {done && <Icon name="check" size={15} />}
                     {x}
                   </li>
                 )
               })}
             </ul>
-            {realistic && <p className="hint">{ru ? 'Схему собирают в конце, когда устройства уже настроены — проверка смотрит итоговые кабели.' : 'Schemat łączy się na końcu.'}</p>}
           </div>
         )}
       </section>
 
-      <details className="bd-panel bd-why-all">
-        <summary>{ru ? 'Зачем всё это: перезагрузка, сброс, адреса' : 'Po co: restart, reset, adresy'}</summary>
+      <Hint id={`${hintKey}.why`} className="bd-panel bd-why-all" label={ru ? 'Справка: адреса, перезагрузка, RESET' : 'Pomoc: adresy, restart, RESET'}>
         {ru ? (
           <ul>
             <li>
@@ -227,14 +225,15 @@ export function Bench({
             <li>RESET przywraca ustawienia fabryczne.</li>
           </ul>
         )}
-      </details>
+      </Hint>
     </div>
   )
 }
 
-function DeviceCard({ d, lab, s, st, pick, sel, onPort }: { d: DeviceKey; lab: BenchLab; s: LabSave; st: Station; pick: string | null; sel: number | null; onPort: (p: string) => void }) {
+function DeviceCard({ d, lab, s, st, pick, sel, onPort, hintKey }: { d: DeviceKey; lab: BenchLab; s: LabSave; st: Station; pick: string | null; sel: number | null; onPort: (p: string) => void; hintKey: string }) {
   const lang = useLang()
   const ru = lang === 'ru'
+  const [flipped, setFlipped] = useState(false)
   const on = st.isPowered(d)
   const boot = st.boot[d]
   const state = !on ? 'off' : boot ? 'boot' : 'on'
@@ -278,7 +277,7 @@ function DeviceCard({ d, lab, s, st, pick, sel, onPort }: { d: DeviceKey; lab: B
         })}
       </div>
 
-      <DeviceInfo d={d} s={s} st={st} lab={lab} />
+      {flipped && <Sticker d={d} s={s} />}
 
       <div className="bd-actions">
         <button className={`btn small ${on ? '' : 'primary'}`} onClick={() => st.setPower(d, !on)} aria-pressed={on}>
@@ -288,8 +287,16 @@ function DeviceCard({ d, lab, s, st, pick, sel, onPort }: { d: DeviceKey; lab: B
           {ru ? 'Перезагрузить' : 'Uruchom ponownie'}
         </button>
         {(d === 'router' || d === 'switch') && <ResetButton disabled={!on || !!boot} onReset={() => st.factoryReset(d)} />}
+        {(d === 'router' || d === 'switch' || d === 'printer') && (
+          <button className="btn small" aria-pressed={flipped} onClick={() => setFlipped(!flipped)}>
+            {flipped ? (ru ? 'Вернуть' : 'Odwróć z powrotem') : ru ? 'Перевернуть' : 'Odwróć'}
+          </button>
+        )}
       </div>
-      <Why d={d} />
+      <Hint id={`${hintKey}.dev.${d}`} label={ru ? 'Подсказка' : 'Podpowiedź'} className="bd-why">
+        <DeviceInfo d={d} s={s} st={st} lab={lab} />
+        <Why d={d} />
+      </Hint>
     </section>
   )
 }
@@ -374,11 +381,47 @@ function Why({ d }: { d: DeviceKey }) {
       'Служебный ноутбук: на этом листе нет Windows-станции, а роутер настраивают из браузера. Подключи его к LAN роутера или к свитчу, настрой устройство, затем отключи. В проверку не входит.',
     printer: 'У принтера фиксированный адрес; его страницу состояния можно открыть в браузере ПК из той же подсети.',
   }
+  return <p className="bd-why-text">{text[d]}</p>
+}
+
+/** The label on the bottom of the device: factory address and login, as on a real TP-Link. */
+function Sticker({ d, s }: { d: DeviceKey; s: LabSave }) {
+  const lang = useLang()
+  const ru = lang === 'ru'
+  const rows: [string, string][] =
+    d === 'router'
+      ? [
+          ['Model', `TL-${(s.router?.model ?? 'WR840N').split(' ')[0]}`],
+          ['Default Access', 'http://192.168.0.1'],
+          ['Username', 'admin'],
+          ['Password', 'admin'],
+          ['MAC', s.router?.lan.mac ?? ''],
+          ['Power', '9V ⎓ 0.6A'],
+        ]
+      : d === 'switch'
+        ? [
+            ['Model', `TL-${(s.switch?.model ?? 'SG108E').split(' ')[0]}`],
+            ['Default IP', '192.168.0.1'],
+            ['Username', 'admin'],
+            ['Password', 'admin'],
+            ['Power', '5V ⎓ 0.6A'],
+          ]
+        : [
+            ['Model', 'LaserJet M404'],
+            ['Network', ru ? 'адрес задан администратором — см. лист' : 'adres — patrz arkusz'],
+          ]
   return (
-    <details className="bd-why">
-      <summary>Зачем?</summary>
-      <p>{text[d]}</p>
-    </details>
+    <div className="bd-sticker" aria-label={ru ? 'Наклейка снизу устройства' : 'Naklejka'}>
+      <span className="bd-sticker-cap">{ru ? 'Наклейка на днище' : 'Naklejka spodnia'}</span>
+      <dl>
+        {rows.map(([k, v]) => (
+          <div key={k}>
+            <dt>{k}</dt>
+            <dd>{v}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
   )
 }
 

@@ -5,13 +5,12 @@ import { go } from '../router'
 import { Bench } from './bench/Bench'
 import { useStation, type BenchLab } from './bench/station'
 import type { LabSave } from './labs/ctx'
-import { LinuxTab, ModeSwitch, PcTab } from './labs/LabPage'
+import { LinuxTab, PcTab } from './labs/LabPage'
 import { createLinuxState, LinuxTerminal, type LinuxState } from './linux'
 import { defaultPcState } from './net'
 import type { PcView } from './pc/PcSim'
-import { defaultRouterState, RouterSim } from './router'
-import { defaultSwitchState, SwitchSim } from './switch'
-import type { RouterState, SwitchState } from './types'
+import { defaultRouterState } from './router'
+import { defaultSwitchState } from './switch'
 
 // Free practice with a single device; state is kept per device in this browser.
 function useSaved<T>(key: string, init: () => T): [T, Dispatch<SetStateAction<T>>] {
@@ -48,34 +47,32 @@ const sandboxLinux = () =>
   })
 
 export function Sandbox({ kind }: { kind: string }) {
-  if (kind === 'net') return <NetSandbox />
-  return <DeviceSandbox kind={kind} />
+  if (kind === 'linux') return <LinuxSandbox />
+  return <NetSandbox />
 }
 
-function DeviceSandbox({ kind }: { kind: string }) {
+function LinuxSandbox() {
   const lang = useLang()
-  const [router, setRouter] = useSaved<RouterState>('inf02.sandbox.router', () => defaultRouterState())
-  const [sw, setSw] = useSaved<SwitchState>('inf02.sandbox.switch', () => defaultSwitchState())
   const [linux, setLinux] = useSaved<LinuxState>('inf02.sandbox.linux', sandboxLinux)
-  const reset = () => {
-    if (kind === 'router') setRouter(defaultRouterState())
-    if (kind === 'switch') setSw(defaultSwitchState())
-    if (kind === 'linux') localStorage.removeItem('inf02.sandbox.linux'), location.reload()
-  }
+  const [k, setK] = useState(0)
   return (
     <div className="lab">
       <div className="lab-head">
         <button className="back-link" onClick={() => go('/practice')}>
           <Icon name="back" size={18} /> {lang === 'ru' ? 'Практика' : 'Praktyka'}
         </button>
-        <button className="btn small" onClick={reset}>
-          {lang === 'ru' ? 'Заводские настройки' : 'Ustawienia fabryczne'}
+        <button
+          className="btn small"
+          onClick={() => {
+            setLinux(sandboxLinux())
+            setK((x) => x + 1)
+          }}
+        >
+          {lang === 'ru' ? 'Чистая система' : 'Od nowa'}
         </button>
       </div>
-      {kind === 'linux' && <p className="hint">{lang === 'ru' ? 'Пароль для sudo: ZAQ!2wsx. Набери help, чтобы увидеть команды.' : 'Hasło sudo: ZAQ!2wsx.'}</p>}
-      {kind === 'router' && <RouterSim state={router} onChange={setRouter} />}
-      {kind === 'switch' && <SwitchSim state={sw} onChange={setSw} />}
-      {kind === 'linux' && <LinuxTerminal state={linux} onChange={setLinux} />}
+      <p className="hint">{lang === 'ru' ? 'Свободная практика. Логин administrator, пароль для sudo: ZAQ!2wsx. help — список команд.' : 'Hasło sudo: ZAQ!2wsx.'}</p>
+      <LinuxTerminal key={k} state={linux} onChange={setLinux} />
     </div>
   )
 }
@@ -96,7 +93,7 @@ const freshNet = (): LabSave => ({
   checked: null,
 })
 
-type NetTab = 'bench' | 'router' | 'switch' | 'linux' | 'pc'
+type NetTab = 'bench' | 'linux' | 'pc'
 
 function NetSandbox() {
   const lang = useLang()
@@ -107,15 +104,8 @@ function NetSandbox() {
   const [confirm, setConfirm] = useState(false)
   const update = useCallback((p: Partial<LabSave>) => setS((x) => ({ ...x, ...p })), [setS])
   const st = useStation(NET_LAB, s, update)
-  const realistic = s.mode !== 'simple'
   const tabs: [NetTab, string][] = [
     ['bench', ru ? 'Стол' : 'Stanowisko'],
-    ...(!realistic
-      ? ([
-          ['router', ru ? 'Роутер' : 'Ruter'],
-          ['switch', ru ? 'Свитч' : 'Przełącznik'],
-        ] as [NetTab, string][])
-      : []),
     ['linux', 'Linux'],
     ['pc', 'Windows'],
   ]
@@ -135,7 +125,7 @@ function NetSandbox() {
             <button
               className="btn small danger"
               onClick={() => {
-                setS({ ...freshNet(), mode: s.mode })
+                setS(freshNet())
                 setConfirm(false)
               }}
             >
@@ -147,7 +137,6 @@ function NetSandbox() {
           </>
         )}
       </div>
-      <ModeSwitch realistic={realistic} onChange={(r) => update({ mode: r ? 'real' : 'simple' })} />
       <div className="lab-tabs" role="tablist">
         {tabs.map(([t, label]) => (
           <button key={t} role="tab" aria-selected={cur === t} className={cur === t ? 'on' : ''} onClick={() => setTab(t)}>
@@ -161,7 +150,7 @@ function NetSandbox() {
             lab={NET_LAB}
             s={s}
             st={st}
-            realistic={realistic}
+            hintKey="sandbox"
             onLinks={(links) => update({ links })}
             onOpenPc={() => {
               setTab('pc')
@@ -169,8 +158,6 @@ function NetSandbox() {
             }}
           />
         )}
-        {cur === 'router' && s.router && <RouterSim state={s.router} onChange={(router) => update({ router })} />}
-        {cur === 'switch' && s.switch && <SwitchSim state={s.switch} onChange={(sw) => update({ switch: sw })} />}
         {cur === 'linux' && <LinuxTab s={s} st={st} update={update} />}
         {cur === 'pc' && <PcTab pcKey="pc" s={s} st={st} update={update} view={pcView} onView={setPcView} memKey="sandbox" />}
       </div>

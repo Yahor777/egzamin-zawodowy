@@ -202,3 +202,7 @@
   border-top: 1px solid var(--line);
   font-size: 0.95rem;
 }
+html.phone .lab-tabs button {
+  flex: 1 0 auto;
+  padding: 10px 8px;
+}

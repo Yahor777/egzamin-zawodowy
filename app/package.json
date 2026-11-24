@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "test:sim": "node src/sim/linux/__tests__/scenarios.test.ts && node --import ./src/sim/labs/__tests__/register.mjs src/sim/labs/__tests__/labs.test.ts"
+    "test:sim": "node src/sim/linux/__tests__/scenarios.test.ts && node --import ./src/sim/labs/__tests__/register.mjs src/sim/labs/__tests__/labs.test.ts && node --import ./src/sim/labs/__tests__/register.mjs src/sim/drills/__tests__/drills.test.ts"
   },
   "dependencies": {
     "@fontsource/golos-text": "^5.3.0",

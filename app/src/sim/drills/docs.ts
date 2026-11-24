@@ -1,0 +1,51 @@
+// "Наша документация": short how-to pages (public/content/howto/*.md) + existing notes/cheat sheets.
+import type { DocRef } from './kit'
+
+const h = (slug: string, ru: string, pl: string): DocRef => ({ to: `doc/${slug}`, ru, pl })
+
+export const HOWTO: DocRef[] = [
+  h('bench', 'Стенд: кабели, адреса, вход на устройство', 'Stanowisko: kable, adresy, logowanie'),
+  h('router', 'Роутер: WAN, LAN, DHCP, резервирование', 'Ruter: WAN, LAN, DHCP, rezerwacje'),
+  h('router-wifi', 'Роутер: Wi‑Fi, проброс портов, пароль', 'Ruter: Wi‑Fi, przekierowanie portów, hasło'),
+  h('switch', 'Свитч: IP управления и VLAN 802.1Q', 'Przełącznik: IP i VLAN 802.1Q'),
+  h('windows-net', 'Windows: сетевой адаптер, IPv4, ping, брандмауэр', 'Windows: karta sieciowa, IPv4, zapora'),
+  h('subnets', 'Подсети: /25–/30 быстро и без ошибок', 'Podsieci: /25–/30'),
+  h('linux-users', 'Linux: пользователи и группы', 'Linux: konta i grupy'),
+  h('linux-perms', 'Linux: права и владельцы', 'Linux: uprawnienia'),
+  h('linux-netplan', 'Linux: сеть через netplan', 'Linux: sieć (netplan)'),
+  h('linux-dhcp', 'Linux: DHCP-сервер', 'Linux: serwer DHCP'),
+  h('linux-script', 'Linux: скрипты bash', 'Linux: skrypty bash'),
+  h('linux-disk', 'Linux: диски, разделы, fstab', 'Linux: dyski i montowanie'),
+  h('linux-samba', 'Linux: Samba', 'Linux: Samba'),
+  h('linux-apache', 'Linux: Apache', 'Linux: Apache'),
+  h('linux-ssh', 'Linux: SSH', 'Linux: SSH'),
+  h('linux-files', 'Linux: файлы, архивы, перенаправление', 'Linux: pliki, archiwa, przekierowania'),
+  h('linux-services', 'Linux: службы и cron', 'Linux: usługi i cron'),
+]
+const by = (slug: string) => HOWTO.find((x) => x.to === `doc/${slug}`)!
+
+export const D = {
+  bench: by('bench'),
+  router: by('router'),
+  routerWifi: by('router-wifi'),
+  switch: by('switch'),
+  windowsNet: by('windows-net'),
+  subnets: by('subnets'),
+  linuxUsers: by('linux-users'),
+  linuxPerms: by('linux-perms'),
+  linuxNetplan: by('linux-netplan'),
+  linuxDhcp: by('linux-dhcp'),
+  linuxScript: by('linux-script'),
+  linuxDisk: by('linux-disk'),
+  linuxSamba: by('linux-samba'),
+  linuxApache: by('linux-apache'),
+  linuxSsh: by('linux-ssh'),
+  linuxFiles: by('linux-files'),
+  linuxServices: by('linux-services'),
+  cheatLinux: { to: 'practice/cheat-linux-server', ru: 'Шпаргалка: Linux-сервер', pl: 'Ściąga: serwer Linux' },
+  cheatRouter: { to: 'practice/cheat-router-switch', ru: 'Шпаргалка: роутер и свитч', pl: 'Ściąga: ruter i przełącznik' },
+  cheatWindows: { to: 'practice/cheat-windows-client', ru: 'Шпаргалка: Windows', pl: 'Ściąga: Windows' },
+  notesLinux: { to: 'notes/linux', ru: 'Конспект: Linux', pl: 'Notatki: Linux' },
+  notesAddressing: { to: 'notes/addressing', ru: 'Конспект: адресация IPv4', pl: 'Notatki: adresacja' },
+  notesNetdevices: { to: 'notes/netdevices', ru: 'Конспект: сетевые устройства', pl: 'Notatki: urządzenia sieciowe' },
+} satisfies Record<string, DocRef>

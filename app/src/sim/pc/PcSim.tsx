@@ -1,13 +1,43 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
-import { apipaFor, ipToInt, maskToPrefix, pcAddress, type PcAdapter, type PcState } from '../net'
+// Windows 11 workstation: boot + lock screen, desktop, taskbar, Start, windows, and the system tools
+// the INF.02 exam needs (ncpa.cpl, IPv4 properties, Settings, cmd/PowerShell, firewall, users, sysdm).
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import type { PcState } from '../net'
+import { isPhone, useCompact } from '../bench/useCompact'
+import { AdapterProps, AdapterStatus, ControlPanel, CP_TITLES, Ipv4Advanced, Ipv4Props, NetDetails } from './apps-net'
+import { Explorer, EXPLORER_TITLES, FirewallMmc, FwProfilesDlg, FwRuleProps, FwWizard, GroupProps, LocalUsers, NewUser, RunDialog, SetPassword, Sysdm, SysName, UserProps } from './apps-sys'
+import {
+  IcBin,
+  IcChevron,
+  IcCmd,
+  IcControl,
+  IcEdge,
+  IcEthernet,
+  IcFirewall,
+  IcFolder,
+  IcGlobe,
+  IcMgmt,
+  IcPc,
+  IcPower,
+  IcPs,
+  IcRun,
+  IcSearch,
+  IcSettings,
+  IcStart,
+  IcSystem,
+  IcTools,
+  IcTrayNet,
+  IcUser,
+  IcUsers,
+  IcVolume,
+} from './icons'
+import { clock, longDate, trayState, type PcNetwork } from './model'
+import { SettingsApp } from './settings'
+import { GUI_CMDS } from './shell'
+import { Terminal } from './Terminal'
+import { ContextMenu, Frame, PcCtx, useLongPress, usePc, type MenuItem, type PcApi, type WinProps } from './ui'
 import './pc.css'
 
-export interface PcNetwork {
-  renew(adapter: PcAdapter): PcAdapter['lease']
-  ping(fromAdapter: PcAdapter, ip: string): { ok: boolean; reason?: string }
-  /** physical link (cable plugged, other end powered); default: always up */
-  link?(adapter: PcAdapter): boolean
-}
+export type { PcNetwork } from './model'
 
 export type PcView = 'adapters' | 'browser' | 'firewall' | 'cmd'
 
@@ -15,7 +45,7 @@ export interface PcSimProps {
   state: PcState
   onChange: (s: PcState) => void
   network: PcNetwork
-  /** renders the "Przeglądarka" app (omit to hide it) */
+  /** renders the "Microsoft Edge" app (omit to hide it) */
   browser?: () => ReactNode
   /** false = the computer is switched off */
   powered?: boolean
@@ -26,391 +56,913 @@ export interface PcSimProps {
   onView?: (v: PcView) => void
 }
 
-export function PcSim({ state, onChange, network, browser, powered = true, booting = false, onPowerOn, view: cView, onView }: PcSimProps) {
-  const [uView, setUView] = useState<PcView>('adapters')
-  const view = cView ?? uView
-  const setView = (v: PcView) => (onView ? onView(v) : setUView(v))
-  if (!powered || booting)
-    return (
-      <div className="pc pc-off">
-        {booting ? (
-          <div className="pc-boot">
-            <span className="pc-spin" aria-hidden="true" />
-            <span>Uruchamianie systemu Windows…</span>
-          </div>
-        ) : (
-          <div className="pc-boot">
-            <span>Komputer jest wyłączony.</span>
-            {onPowerOn && (
-              <button className="w-btn primary" onClick={onPowerOn}>
-                Włącz zasilanie
+// ---------------- app registry ----------------
+interface AppDef {
+  title: (arg: string | undefined, st: PcState) => string
+  icon: (arg?: string) => ReactNode
+  size: [number, number]
+  dialog?: boolean
+  /** small dialog that stays a dialog on a phone (Run) */
+  small?: boolean
+  bare?: boolean
+  /** one window per app (+arg when 'arg') — opening again focuses it */
+  single?: boolean | 'arg'
+  render: (p: WinProps) => ReactNode
+  help?: boolean
+}
+
+const adName = (st: PcState, id?: string) => st.adapters.find((a) => a.id === id)?.name ?? ''
+
+const APPS: Record<string, AppDef> = {
+  control: { title: (a) => CP_TITLES[a ?? 'home'] ?? 'Panel sterowania', icon: (a) => (a === 'ncpa' || a === 'ncsc' || a === 'net' ? <IcEthernet size={16} /> : a === 'fw' || a === 'fwcustom' ? <IcFirewall size={16} /> : <IcControl size={16} />), size: [780, 470], single: true, render: (p) => <ControlPanel {...p} /> },
+  adstatus: { title: (a, st) => `Stan: ${adName(st, a)}`, icon: () => <IcEthernet size={16} />, size: [380, 500], dialog: true, single: 'arg', render: (p) => <AdapterStatus {...p} /> },
+  netdetails: { title: () => 'Szczegóły połączenia sieciowego', icon: () => <IcEthernet size={16} />, size: [440, 470], dialog: true, single: 'arg', render: (p) => <NetDetails {...p} /> },
+  adprops: { title: (a, st) => `Właściwości: ${adName(st, a)}`, icon: () => <IcEthernet size={16} />, size: [410, 560], dialog: true, single: 'arg', render: (p) => <AdapterProps {...p} /> },
+  ipv4: { title: () => 'Właściwości: Protokół internetowy w wersji 4 (TCP/IPv4)', icon: () => <IcEthernet size={16} />, size: [430, 560], dialog: true, single: 'arg', help: true, render: (p) => <Ipv4Props {...p} /> },
+  ipv4adv: { title: () => 'Zaawansowane ustawienia TCP/IP', icon: () => <IcEthernet size={16} />, size: [430, 470], dialog: true, single: 'arg', render: (p) => <Ipv4Advanced {...p} /> },
+  settings: { title: () => 'Ustawienia', icon: () => <IcSettings size={16} />, size: [860, 580], single: true, render: (p) => <SettingsApp {...p} /> },
+  cmd: { title: (a) => (a === 'ps' ? 'Administrator: Windows PowerShell' : 'Administrator: Wiersz polecenia'), icon: (a) => (a === 'ps' ? <IcPs size={16} /> : <IcCmd size={16} />), size: [700, 430], render: (p) => <Terminal {...p} /> },
+  edge: { title: () => 'Microsoft Edge', icon: () => <IcEdge size={16} />, size: [940, 620], bare: true, single: true, render: () => <EdgeHost /> },
+  wf: { title: () => 'Zapora Windows Defender z zabezpieczeniami zaawansowanymi', icon: () => <IcFirewall size={16} />, size: [940, 540], single: true, render: (p) => <FirewallMmc {...p} /> },
+  fwrule: { title: (a) => `Właściwości: ${(a ?? '').split('|')[1] ?? ''}`, icon: () => <IcFirewall size={16} />, size: [450, 520], dialog: true, single: 'arg', render: (p) => <FwRuleProps {...p} /> },
+  fwprops: { title: () => 'Właściwości: Zapora Windows Defender z zabezpieczeniami zaawansowanymi na Komputer lokalny', icon: () => <IcFirewall size={16} />, size: [460, 440], dialog: true, single: true, render: (p) => <FwProfilesDlg {...p} /> },
+  fwwizard: { title: (a) => (a === 'out' ? 'Kreator nowej reguły ruchu wychodzącego' : 'Kreator nowej reguły ruchu przychodzącego'), icon: () => <IcFirewall size={16} />, size: [660, 500], dialog: true, single: true, render: (p) => <FwWizard {...p} /> },
+  sysdm: { title: () => 'Właściwości systemu', icon: () => <IcSystem size={16} />, size: [430, 500], dialog: true, single: true, render: (p) => <Sysdm {...p} /> },
+  sysname: { title: () => 'Zmiany nazwy/domeny komputera', icon: () => <IcSystem size={16} />, size: [380, 470], dialog: true, single: true, render: (p) => <SysName {...p} /> },
+  lusrmgr: { title: () => 'lusrmgr — [Użytkownicy i grupy lokalne (Lokalny)]', icon: () => <IcUsers size={16} />, size: [860, 480], single: true, render: (p) => <LocalUsers {...p} /> },
+  compmgmt: { title: () => 'Zarządzanie komputerem', icon: () => <IcMgmt size={16} />, size: [940, 520], single: true, render: (p) => <LocalUsers {...p} full /> },
+  newuser: { title: () => 'Nowy użytkownik', icon: () => <IcUser size={16} />, size: [420, 500], dialog: true, single: true, render: (p) => <NewUser {...p} /> },
+  userprops: { title: (a) => `Właściwości: ${a}`, icon: () => <IcUser size={16} />, size: [430, 500], dialog: true, single: 'arg', render: (p) => <UserProps {...p} /> },
+  groupprops: { title: (a) => `Właściwości: ${a}`, icon: () => <IcUsers size={16} />, size: [430, 470], dialog: true, single: 'arg', render: (p) => <GroupProps {...p} /> },
+  newgroup: { title: () => 'Nowa grupa', icon: () => <IcUsers size={16} />, size: [430, 470], dialog: true, single: true, render: (p) => <GroupProps {...p} create /> },
+  setpass: { title: (a) => `Ustawianie hasła dla ${a}`, icon: () => <IcUser size={16} />, size: [400, 280], dialog: true, single: 'arg', render: (p) => <SetPassword {...p} /> },
+  explorer: { title: (a) => EXPLORER_TITLES[a ?? 'thispc'] ?? 'Eksplorator plików', icon: (a) => (a === 'recycle' ? <IcBin size={16} /> : a === 'tools' ? <IcTools size={16} /> : <IcFolder size={16} />), size: [780, 480], render: (p) => <Explorer {...p} /> },
+  run: { title: () => 'Uruchom', icon: () => <IcRun size={16} />, size: [420, 230], dialog: true, small: true, single: true, render: (p) => <RunDialog {...p} /> },
+}
+
+const viewOf = (w: WinRec): PcView | null => (w.app === 'control' && w.arg === 'ncpa' ? 'adapters' : w.app === 'edge' ? 'browser' : w.app === 'wf' ? 'firewall' : w.app === 'cmd' ? 'cmd' : null)
+
+// ---------------- Start menu content ----------------
+interface StartApp {
+  key: string
+  label: string
+  icon: ReactNode
+  run: string
+}
+const START_APPS: StartApp[] = [
+  { key: 'edge', label: 'Microsoft Edge', icon: <IcEdge size={30} />, run: 'msedge' },
+  { key: 'explorer', label: 'Eksplorator plików', icon: <IcFolder size={30} />, run: 'explorer' },
+  { key: 'settings', label: 'Ustawienia', icon: <IcSettings size={30} />, run: 'ms-settings:' },
+  { key: 'control', label: 'Panel sterowania', icon: <IcControl size={30} />, run: 'control' },
+  { key: 'cmd', label: 'Wiersz polecenia', icon: <IcCmd size={30} />, run: 'cmd' },
+  { key: 'ps', label: 'Windows PowerShell', icon: <IcPs size={30} />, run: 'powershell' },
+  { key: 'wf', label: 'Zapora Windows Defender z zabezpieczeniami zaawansowanymi', icon: <IcFirewall size={30} />, run: 'wf.msc' },
+  { key: 'tools', label: 'Narzędzia systemu Windows', icon: <IcTools size={30} />, run: 'tools' },
+  { key: 'run', label: 'Uruchom', icon: <IcRun size={30} />, run: 'run' },
+  { key: 'compmgmt', label: 'Zarządzanie komputerem', icon: <IcMgmt size={30} />, run: 'compmgmt.msc' },
+  { key: 'ncpa', label: 'Połączenia sieciowe', icon: <IcEthernet size={30} />, run: 'ncpa.cpl' },
+  { key: 'lusrmgr', label: 'Użytkownicy i grupy lokalne', icon: <IcUsers size={30} />, run: 'lusrmgr.msc' },
+]
+const PINNED = ['edge', 'explorer', 'settings', 'control', 'cmd', 'ps', 'wf', 'tools', 'run']
+
+// ---------------- memory (survives switching the lab tabs) ----------------
+interface WinRec {
+  id: number
+  app: string
+  arg?: string
+  x: number
+  y: number
+  w: number
+  h: number
+  max: boolean
+  min: boolean
+  z: number
+  data: Record<string, unknown>
+}
+type Phase = 'lock' | 'signin' | 'welcome' | 'desktop' | 'restart' | 'boot'
+interface Mem {
+  wins: WinRec[]
+  next: number
+  z: number
+  phase: Phase
+}
+const MEM = new Map<string, Mem>()
+
+function useScreenHeight(compact: boolean) {
+  const calc = useCallback(() => {
+    if (typeof window === 'undefined') return 600
+    const zoom = parseFloat(document.documentElement.style.zoom || '1') || 1
+    const vh = window.innerHeight / zoom
+    if (compact || isPhone()) return Math.max(460, Math.round(vh - 96))
+    return Math.max(540, Math.min(760, Math.round(vh - 170)))
+  }, [compact])
+  const [h, setH] = useState(calc)
+  useEffect(() => {
+    const f = () => setH(calc())
+    f()
+    window.addEventListener('resize', f)
+    return () => window.removeEventListener('resize', f)
+  }, [calc])
+  return h
+}
+
+// ---------------- the component ----------------
+export function PcSim({ state, onChange, network, browser, powered = true, booting = false, onPowerOn, view, onView }: PcSimProps) {
+  const rootRef = useRef<HTMLDivElement>(null)
+  const layerRef = useRef<HTMLDivElement>(null)
+  const compact = useCompact(rootRef, 640)
+  const height = useScreenHeight(compact)
+  const memKey = state.adapters.map((a) => a.mac).join('|') || state.hostname
+  const mem = useMemo(() => {
+    let m = MEM.get(memKey)
+    if (!m) MEM.set(memKey, (m = { wins: [], next: 1, z: 1, phase: 'lock' }))
+    return m
+  }, [memKey])
+  const [wins, setWinsRaw] = useState<WinRec[]>(mem.wins)
+  const [phase, setPhaseRaw] = useState<Phase>(mem.phase)
+  const setWins = useCallback(
+    (f: (w: WinRec[]) => WinRec[]) =>
+      setWinsRaw((w) => {
+        const n = f(w)
+        mem.wins = n
+        return n
+      }),
+    [mem],
+  )
+  const setPhase = useCallback(
+    (p: Phase) => {
+      mem.phase = p
+      setPhaseRaw(p)
+    },
+    [mem],
+  )
+  const [start, setStart] = useState<false | 'pinned' | 'all'>(false)
+  const [startQ, setStartQ] = useState('')
+  const [menu, setMenu] = useState<{ x: number; y: number; items: MenuItem[] } | null>(null)
+  const [flyout, setFlyout] = useState<null | 'net' | 'cal'>(null)
+  const [now, setNow] = useState(() => new Date())
+  useEffect(() => {
+    const t = window.setInterval(() => setNow(new Date()), 15000)
+    return () => window.clearInterval(t)
+  }, [])
+
+  // power: switching off closes everything; booting ends on the lock screen
+  const prevPower = useRef(powered && !booting)
+  useEffect(() => {
+    const on = powered && !booting
+    if (!on) {
+      if (mem.wins.length) setWins(() => [])
+      if (mem.phase !== 'lock') setPhase('lock')
+    }
+    prevPower.current = on
+  }, [powered, booting, mem, setWins, setPhase])
+
+  // restart animation (Start → Uruchom ponownie, sysdm)
+  useEffect(() => {
+    if (phase === 'restart') {
+      const t = window.setTimeout(() => setPhase('boot'), 1400)
+      return () => window.clearTimeout(t)
+    }
+    if (phase === 'boot') {
+      const t = window.setTimeout(() => setPhase('lock'), 1300)
+      return () => window.clearTimeout(t)
+    }
+    if (phase === 'welcome') {
+      const t = window.setTimeout(() => setPhase('desktop'), 700)
+      return () => window.clearTimeout(t)
+    }
+  }, [phase, setPhase])
+
+  const stateRef = useRef(state)
+  stateRef.current = state
+  const update = useCallback(
+    (fn: (s: PcState) => PcState) => {
+      const n = fn(stateRef.current)
+      if (n !== stateRef.current) {
+        stateRef.current = n
+        onChange(n)
+      }
+    },
+    [onChange],
+  )
+
+  const layerSize = () => {
+    const el = layerRef.current
+    return { W: el?.offsetWidth ?? 900, H: el?.offsetHeight ?? 560 }
+  }
+
+  const open = useCallback(
+    (app: string, arg?: string) => {
+      const def = APPS[app]
+      if (!def) return
+      setStart(false)
+      setFlyout(null)
+      setWins((ws) => {
+        const z = ++mem.z
+        const ex = def.single ? ws.find((w) => w.app === app && (def.single === true || w.arg === arg)) : undefined
+        if (ex) return ws.map((w) => (w === ex ? { ...w, z, min: false, arg: arg ?? w.arg } : w))
+        const { W, H } = layerSize()
+        const n = ws.length
+        const w = Math.min(def.size[0], W - 16)
+        const h = Math.min(def.size[1], H - 16)
+        const big = !def.dialog && (W < 760 || def.size[0] > W - 40)
+        const x = def.dialog ? Math.max(8, (W - w) / 2 + (n % 4) * 18) : Math.max(8, Math.min(W - w - 8, 36 + (n % 6) * 26))
+        const y = def.dialog ? Math.max(8, Math.min(H - h - 8, (H - h) / 2 - 20 + (n % 4) * 18)) : Math.max(8, Math.min(H - h - 8, 20 + (n % 6) * 24))
+        return [...ws, { id: mem.next++, app, arg, x, y, w, h, max: big || (app === 'edge' && W < 1000), min: false, z, data: {} }]
+      })
+    },
+    [mem, setWins],
+  )
+
+  const closeWin = useCallback((id: number) => setWins((ws) => ws.filter((w) => w.id !== id)), [setWins])
+  const closeApp = useCallback((app: string, arg?: string) => setWins((ws) => ws.filter((w) => !(w.app === app && (arg === undefined || w.arg === arg)))), [setWins])
+  const focus = (id: number) =>
+    setWins((ws) => {
+      const top = ws.reduce((m, w) => Math.max(m, w.z), 0)
+      const me = ws.find((w) => w.id === id)
+      if (!me || (me.z === top && !me.min)) return ws
+      const z = ++mem.z
+      return ws.map((w) => (w.id === id ? { ...w, z, min: false } : w))
+    })
+  const patchWin = (id: number, p: Partial<WinRec>) => setWins((ws) => ws.map((w) => (w.id === id ? { ...w, ...p } : w)))
+
+  const restart = useCallback(() => {
+    setWins(() => [])
+    setStart(false)
+    setPhase('restart')
+  }, [setWins, setPhase])
+
+  const launch = useCallback(
+    (key: string) => {
+      if (key.startsWith('edge')) return open('edge')
+      const map: Record<string, [string, string?]> = {
+        ncpa: ['control', 'ncpa'],
+        control: ['control', 'home'],
+        firewallcpl: ['control', 'fw'],
+        wf: ['wf'],
+        sysdm: ['sysdm'],
+        lusrmgr: ['lusrmgr'],
+        compmgmt: ['compmgmt'],
+        explorer: ['explorer', 'thispc'],
+        settings: ['settings', 'system'],
+        'settings-net': ['settings', 'net'],
+        'settings-eth': ['settings', 'eth'],
+        'settings-about': ['settings', 'about'],
+      }
+      if (key === 'restart') return restart()
+      const m = map[key]
+      if (m) open(m[0], m[1])
+    },
+    [open, restart],
+  )
+
+  const run = useCallback(
+    (raw: string): boolean => {
+      const c = raw.trim()
+      const low = c.toLowerCase().replace(/\.exe$/, '')
+      if (!c) return false
+      if (low === 'cmd' || low === 'wt' || low === 'terminal') return open('cmd', 'cmd'), true
+      if (low === 'powershell' || low === 'pwsh') return open('cmd', 'ps'), true
+      if (low === 'tools') return open('explorer', 'tools'), true
+      if (low === 'run') return open('run'), true
+      if (/^(https?:\/\/|www\.)/i.test(c) || /^\d{1,3}(\.\d{1,3}){3}(\/.*)?$/.test(c)) return open('edge'), true
+      const g = GUI_CMDS[low] ?? GUI_CMDS[c.toLowerCase()] ?? (low.startsWith('control ') ? GUI_CMDS[low.slice(8).trim()] : undefined)
+      if (g) return launch(g), true
+      if (low === 'ms-settings:network-status') return open('settings', 'net'), true
+      if (low.startsWith('ms-settings:')) return open('settings', 'system'), true
+      return false
+    },
+    [open, launch],
+  )
+
+  const menuAt = useCallback((cx: number, cy: number, items: MenuItem[]) => {
+    const el = rootRef.current
+    if (!el) return
+    const r = el.getBoundingClientRect()
+    const scale = r.width / (el.offsetWidth || 1) || 1
+    setMenu({ x: (cx - r.left) / scale, y: (cy - r.top) / scale, items })
+  }, [])
+
+  const pending = useMemo(() => new Map(), [])
+  const api: PcApi = { state, update, network, compact, open, closeApp, menuAt, pending, restart, run, launch, browser }
+
+  // ---- controlled view (bench "open the browser", LabPage tab memory) ----
+  const active = wins.filter((w) => !w.min).sort((a, b) => b.z - a.z)[0]
+  const lastView = useRef<PcView | undefined>(undefined)
+  const mounted = useRef(false)
+  useEffect(() => {
+    const first = !mounted.current
+    mounted.current = true
+    if (!view || phase !== 'desktop') return
+    if (view === lastView.current && !first) return
+    lastView.current = view
+    if (first && view === 'adapters') return
+    if (active && viewOf(active) === view) return
+    if (view === 'browser' && browser) open('edge')
+    else if (view === 'adapters') open('control', 'ncpa')
+    else if (view === 'firewall') open('wf')
+    else if (view === 'cmd') {
+      const t = wins.filter((w) => w.app === 'cmd').sort((a, b) => b.z - a.z)[0]
+      if (t) focus(t.id)
+      else open('cmd', 'cmd')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [view, phase])
+  useEffect(() => {
+    const v = active ? viewOf(active) : null
+    if (v && v !== view && onView) {
+      lastView.current = v
+      onView(v)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active?.id, active?.arg])
+
+  // keep windows inside the screen when it gets smaller
+  useLayoutEffect(() => {
+    const { W, H } = layerSize()
+    if (wins.some((w) => !w.max && (w.x + 60 > W || w.y + 30 > H || w.w > W || w.h > H)))
+      setWins((ws) => ws.map((w) => (w.max ? w : { ...w, w: Math.min(w.w, W - 8), h: Math.min(w.h, H - 8), x: Math.max(0, Math.min(w.x, W - Math.min(w.w, W - 8))), y: Math.max(0, Math.min(w.y, H - 40)) })))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [height, compact])
+
+  // ---------------- screens before the desktop ----------------
+  const shell = (cls: string, body: ReactNode) => (
+    <div ref={rootRef} className={`pc ${cls} ${compact ? 'compact' : ''}`} style={{ height }}>
+      {body}
+    </div>
+  )
+  if (!powered)
+    return shell(
+      'pc-black',
+      <div className="pc-off">
+        <span className="pc-off-t">Komputer jest wyłączony.</span>
+        {onPowerOn && (
+          <button className="pc-power" onClick={onPowerOn} aria-label="Włącz zasilanie">
+            <IcPower size={30} />
+            <span>Włącz zasilanie</span>
+          </button>
+        )}
+      </div>,
+    )
+  if (booting || phase === 'boot')
+    return shell(
+      'pc-black',
+      <div className="pc-boot" aria-label="Uruchamianie systemu Windows">
+        <IcStart size={72} />
+        <Dots />
+      </div>,
+    )
+  if (phase === 'restart')
+    return shell(
+      'pc-blue',
+      <div className="pc-boot">
+        <Dots light />
+        <span className="pc-boot-t">Ponowne uruchamianie</span>
+      </div>,
+    )
+  if (phase === 'lock' || phase === 'signin' || phase === 'welcome')
+    return shell('pc-lockscr', <LockScreen phase={phase} now={now} onUnlock={() => setPhase('signin')} onSignIn={() => setPhase('welcome')} password={state.users.find((u) => u.name === 'Administrator')?.password ?? ''} />)
+
+  // ---------------- desktop ----------------
+  const tray = trayState(state, network)
+  const c = clock(now)
+  const taskApps = (() => {
+    const pinned = [
+      { key: 'explorer', icon: <IcFolder size={24} />, label: 'Eksplorator plików', match: (w: WinRec) => w.app === 'explorer', launch: () => open('explorer', 'thispc') },
+      ...(browser ? [{ key: 'edge', icon: <IcEdge size={24} />, label: 'Microsoft Edge', match: (w: WinRec) => w.app === 'edge', launch: () => open('edge') }] : []),
+      { key: 'cmd', icon: <IcCmd size={24} />, label: 'Wiersz polecenia', match: (w: WinRec) => w.app === 'cmd', launch: () => open('cmd', 'cmd') },
+    ]
+    const others = wins.filter((w) => !pinned.some((p) => p.match(w))).sort((a, b) => a.id - b.id)
+    return { pinned, others }
+  })()
+  const clickTask = (ws: WinRec[], launchIt?: () => void) => {
+    if (!ws.length) return launchIt?.()
+    const top = ws.sort((a, b) => b.z - a.z)[0]
+    if (active && active.id === top.id) {
+      if (ws.length > 1) {
+        // cycle through the app's windows
+        const nextW = ws[ws.length - 1]
+        return focus(nextW.id)
+      }
+      return patchWin(top.id, { min: true })
+    }
+    focus(top.id)
+  }
+  const desktopMenu: MenuItem[] = [
+    { label: 'Widok', disabled: true },
+    { label: 'Sortuj według', disabled: true },
+    { label: 'Odśwież', onClick: () => {} },
+    { sep: true },
+    { label: 'Nowy', disabled: true },
+    { sep: true },
+    { label: 'Ustawienia ekranu', onClick: () => open('settings', 'system') },
+    { label: 'Personalizuj', onClick: () => open('settings', 'person') },
+    { sep: true },
+    { label: 'Otwórz w terminalu', onClick: () => open('cmd', 'cmd') },
+  ]
+  const winX: MenuItem[] = [
+    { label: 'Aplikacje zainstalowane', onClick: () => open('settings', 'apps') },
+    { label: 'Opcje zasilania', onClick: () => open('settings', 'system') },
+    { label: 'System', onClick: () => open('settings', 'about') },
+    { label: 'Menedżer urządzeń', onClick: () => open('compmgmt') },
+    { label: 'Połączenia sieciowe', onClick: () => open('settings', 'net') },
+    { label: 'Zarządzanie komputerem', onClick: () => open('compmgmt') },
+    { label: 'Terminal', onClick: () => open('cmd', 'ps') },
+    { label: 'Terminal (Administrator)', onClick: () => open('cmd', 'ps') },
+    { sep: true },
+    { label: 'Ustawienia', onClick: () => open('settings', 'system') },
+    { label: 'Eksplorator plików', onClick: () => open('explorer', 'thispc') },
+    { label: 'Wyszukaj', onClick: () => setStart('pinned') },
+    { label: 'Uruchom', onClick: () => open('run') },
+    { sep: true },
+    { label: 'Uruchom ponownie', onClick: restart },
+    { label: 'Pulpit', onClick: () => setWins((ws) => ws.map((w) => ({ ...w, min: true }))) },
+  ]
+
+  return (
+    <PcCtx.Provider value={api}>
+      <div
+        ref={rootRef}
+        className={`pc pc-desk ${compact ? 'compact' : ''}`}
+        style={{ height }}
+        onKeyDown={(e) => {
+          if ((e.metaKey || e.altKey) && e.key.toLowerCase() === 'r' && e.shiftKey === false && e.metaKey) {
+            e.preventDefault()
+            open('run')
+          }
+          if (e.ctrlKey && e.key === 'Escape') {
+            e.preventDefault()
+            setStart((s) => (s ? false : 'pinned'))
+          }
+        }}
+      >
+        <div className="pc-wall" aria-hidden="true" />
+        <DesktopIcons open={open} browser={!!browser} menuAt={menuAt} desktopMenu={desktopMenu} />
+        <div ref={layerRef} className="pc-layer">
+          {wins.map((w) => {
+            const def = APPS[w.app]
+            if (!def || w.min) return null
+            const isActive = active?.id === w.id
+            const maxed = compact ? !def.small : w.max
+            return (
+              <div key={w.id} className="pc-wslot" style={{ zIndex: w.z }}>
+                <Frame
+                  title={def.title(w.arg, state)}
+                  icon={def.icon(w.arg)}
+                  active={isActive}
+                  max={maxed}
+                  dialog={def.dialog}
+                  bare={def.bare}
+                  compact={compact}
+                  help={def.help}
+                  rect={{ x: w.x, y: w.y, w: w.w, h: w.h }}
+                  onFocus={() => focus(w.id)}
+                  onClose={() => closeWin(w.id)}
+                  onMin={() => patchWin(w.id, { min: true })}
+                  onMax={() => patchWin(w.id, { max: !w.max })}
+                  onRect={(r) => patchWin(w.id, r)}
+                  className={`app-${w.app}`}
+                >
+                  {def.render({ id: w.id, arg: w.arg, close: () => closeWin(w.id), setArg: (a) => patchWin(w.id, { arg: a }), data: w.data })}
+                </Frame>
+              </div>
+            )
+          })}
+        </div>
+        {start && (
+          <StartMenu
+            mode={start}
+            setMode={setStart}
+            q={startQ}
+            setQ={setStartQ}
+            run={(cmd) => {
+              setStart(false)
+              setStartQ('')
+              run(cmd)
+            }}
+            onPower={(x, y) =>
+              menuAt(x, y, [
+                { label: 'Uśpij', onClick: () => (setStart(false), setPhase('lock')) },
+                { label: 'Uruchom ponownie', onClick: restart },
+              ])
+            }
+            onUser={(x, y) =>
+              menuAt(x, y, [
+                { label: 'Zmień ustawienia konta', onClick: () => open('settings', 'accounts') },
+                { label: 'Zablokuj', onClick: () => (setStart(false), setPhase('lock')) },
+                { label: 'Wyloguj się', onClick: () => (setStart(false), setWins(() => []), setPhase('lock')) },
+              ])
+            }
+            browser={!!browser}
+            compact={compact}
+          />
+        )}
+        {flyout === 'net' && (
+          <>
+            <div className="pc-veil" onPointerDown={() => setFlyout(null)} />
+            <div className="pc-flyout" role="dialog" aria-label="Sieć">
+              <div className="fly-net">
+                <span className={`fly-net-ic ${tray.state}`}>
+                  <IcTrayNet state={tray.state} size={22} />
+                </span>
+                <div>
+                  <strong>{tray.title}</strong>
+                  <span>{tray.sub}</span>
+                </div>
+              </div>
+              {state.adapters.map((a) => (
+                <div key={a.id} className="fly-ad">
+                  <IcEthernet size={16} /> {a.name}
+                </div>
+              ))}
+              <button className="fly-link" onClick={() => open('settings', 'net')}>
+                Ustawienia sieci i Internetu
+              </button>
+              <button className="fly-link" onClick={() => open('control', 'ncpa')}>
+                Zmień opcje karty sieciowej
+              </button>
+            </div>
+          </>
+        )}
+        {flyout === 'cal' && (
+          <>
+            <div className="pc-veil" onPointerDown={() => setFlyout(null)} />
+            <div className="pc-flyout cal" role="dialog" aria-label="Kalendarz">
+              <strong>{longDate(now)}</strong>
+              <span className="fly-big">{c.time}</span>
+            </div>
+          </>
+        )}
+        <div className="pc-taskbar" role="toolbar" aria-label="Pasek zadań">
+          <div className="tb-center">
+            <StartButton
+              on={!!start}
+              onClick={() => {
+                setFlyout(null)
+                setStart((s) => (s ? false : 'pinned'))
+              }}
+              onMenu={(x, y) => menuAt(x, y, winX)}
+            />
+            {compact ? (
+              <button className="tb-btn" aria-label="Wyszukaj" onClick={() => setStart('pinned')}>
+                <IcSearch size={20} />
+              </button>
+            ) : (
+              <button className="tb-search" onClick={() => setStart('pinned')}>
+                <IcSearch size={15} />
+                <span>Wyszukaj</span>
               </button>
             )}
+            {taskApps.pinned.map((p) => {
+              const ws = wins.filter(p.match)
+              const on = ws.some((w) => w.id === active?.id)
+              return (
+                <button key={p.key} className={`tb-btn ${ws.length ? 'run' : ''} ${on ? 'on' : ''}`} aria-label={p.label} title={p.label} onClick={() => clickTask(ws, p.launch)}>
+                  {p.icon}
+                </button>
+              )
+            })}
+            {taskApps.others.map((w) => {
+              const def = APPS[w.app]
+              return (
+                <button key={w.id} className={`tb-btn run ${active?.id === w.id ? 'on' : ''}`} aria-label={def.title(w.arg, state)} title={def.title(w.arg, state)} onClick={() => clickTask([w])}>
+                  <span className="tb-ic24">{def.icon(w.arg)}</span>
+                </button>
+              )
+            })}
           </div>
-        )}
+          <div className="tb-tray">
+            {!compact && (
+              <button className="tb-tray-btn" aria-label="Pokaż ukryte ikony">
+                <IcChevron dir="up" size={12} />
+              </button>
+            )}
+            <button className={`tb-tray-btn net ${tray.state}`} aria-label={`${tray.title} — ${tray.sub}`} title={`${tray.title}\n${tray.sub}`} onClick={() => setFlyout((f) => (f === 'net' ? null : 'net'))} data-tray={tray.state}>
+              <IcTrayNet state={tray.state} />
+              {!compact && <IcVolume />}
+            </button>
+            <button className="tb-clock" onClick={() => setFlyout((f) => (f === 'cal' ? null : 'cal'))} aria-label="Zegar">
+              <span>{c.time}</span>
+              <span>{c.date}</span>
+            </button>
+          </div>
+        </div>
+        {menu && <ContextMenu x={menu.x} y={menu.y} items={menu.items} onClose={() => setMenu(null)} />}
+      </div>
+    </PcCtx.Provider>
+  )
+}
+
+function Dots({ light }: { light?: boolean }) {
+  return (
+    <span className={`pc-dots ${light ? 'light' : ''}`} aria-hidden="true">
+      {[0, 1, 2, 3, 4].map((i) => (
+        <i key={i} style={{ animationDelay: `${i * 0.12}s` }} />
+      ))}
+    </span>
+  )
+}
+
+function EdgeHost() {
+  const api = usePc()
+  if (!api.browser)
+    return (
+      <div className="edge-missing">
+        <p>Przeglądarka nie jest dostępna w tym ćwiczeniu.</p>
       </div>
     )
-  const apps: [PcView, string][] = [
-    ['adapters', 'Połączenia sieciowe'],
-    ...(browser ? ([['browser', 'Przeglądarka']] as [PcView, string][]) : []),
-    ['cmd', 'Wiersz polecenia'],
-    ['firewall', 'Zapora Windows'],
+  return <div className="edge-host">{api.browser()}</div>
+}
+
+function StartButton({ on, onClick, onMenu }: { on: boolean; onClick: () => void; onMenu: (x: number, y: number) => void }) {
+  const lp = useLongPress(onMenu)
+  return (
+    <button className={`tb-btn start ${on ? 'on' : ''}`} aria-label="Start" title="Start" onClick={onClick} {...lp}>
+      <IcStart size={22} />
+    </button>
+  )
+}
+
+function DesktopIcons({ open, browser, menuAt, desktopMenu }: { open: (a: string, arg?: string) => void; browser: boolean; menuAt: (x: number, y: number, items: MenuItem[]) => void; desktopMenu: MenuItem[] }) {
+  const [sel, setSel] = useState<string | null>(null)
+  const items: { key: string; label: string; icon: ReactNode; open: () => void; menu: MenuItem[] }[] = [
+    {
+      key: 'pc',
+      label: 'Ten komputer',
+      icon: <IcPc size={40} />,
+      open: () => open('explorer', 'thispc'),
+      menu: [
+        { label: 'Otwórz', bold: true, onClick: () => open('explorer', 'thispc') },
+        { label: 'Zarządzaj', onClick: () => open('compmgmt') },
+        { sep: true },
+        { label: 'Właściwości', onClick: () => open('settings', 'about') },
+      ],
+    },
+    { key: 'bin', label: 'Kosz', icon: <IcBin size={40} />, open: () => open('explorer', 'recycle'), menu: [{ label: 'Otwórz', bold: true, onClick: () => open('explorer', 'recycle') }, { label: 'Opróżnij Kosz', disabled: true }] },
+    ...(browser ? [{ key: 'edge', label: 'Microsoft Edge', icon: <IcEdge size={40} />, open: () => open('edge'), menu: [{ label: 'Otwórz', bold: true, onClick: () => open('edge') }] }] : []),
+    { key: 'cp', label: 'Panel sterowania', icon: <IcControl size={40} />, open: () => open('control', 'home'), menu: [{ label: 'Otwórz', bold: true, onClick: () => open('control', 'home') }] },
   ]
+  const blank = useLongPress((x, y) => menuAt(x, y, desktopMenu))
   return (
-    <div className="pc">
-      <div className="pc-taskbar" role="tablist">
-        {apps.map(([v, label]) => (
-          <button key={v} role="tab" aria-selected={view === v} className={view === v ? 'on' : ''} onClick={() => setView(v)}>
-            {label}
-          </button>
-        ))}
-      </div>
-      <div className="pc-desktop">
-        {view === 'adapters' && <Adapters state={state} onChange={onChange} network={network} />}
-        {view === 'browser' && browser?.()}
-        {view === 'firewall' && <Firewall state={state} onChange={onChange} />}
-        {view === 'cmd' && <Cmd state={state} onChange={onChange} network={network} />}
-      </div>
+    <div className="pc-icons" onClick={(e) => e.target === e.currentTarget && setSel(null)} {...blank}>
+      {items.map((it) => (
+        <DeskIcon key={it.key} label={it.label} icon={it.icon} sel={sel === it.key} onSel={() => setSel(it.key)} onOpen={it.open} onMenu={(x, y) => (setSel(it.key), menuAt(x, y, it.menu))} />
+      ))}
     </div>
   )
 }
 
-function NicIcon() {
+function DeskIcon({ label, icon, sel, onSel, onOpen, onMenu }: { label: string; icon: ReactNode; sel: boolean; onSel: () => void; onOpen: () => void; onMenu: (x: number, y: number) => void }) {
+  const lp = useLongPress(onMenu)
+  const [tap, setTap] = useState(0)
   return (
-    <svg width="34" height="34" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-      <rect x="4" y="6" width="24" height="15" rx="2" fill="#dbe7f5" stroke="#4a6f9c" />
-      <rect x="11" y="21" width="10" height="5" fill="#9fb6d0" stroke="#4a6f9c" />
-      <path d="M8 26h16" stroke="#4a6f9c" />
-    </svg>
+    <button
+      className={`pc-icon ${sel ? 'sel' : ''}`}
+      onClick={(e) => {
+        e.stopPropagation()
+        onSel()
+        const n = Date.now()
+        // touch: a quick second tap opens (like double-click)
+        if (n - tap < 450 && 'ontouchstart' in window) onOpen()
+        setTap(n)
+      }}
+      onDoubleClick={onOpen}
+      onKeyDown={(e) => e.key === 'Enter' && onOpen()}
+      {...lp}
+    >
+      {icon}
+      <span>{label}</span>
+    </button>
   )
 }
 
-function Win({ title, children, onClose }: { title: string; children: React.ReactNode; onClose?: () => void }) {
-  return (
-    <div className="win">
-      <div className="win-title">
-        <span>{title}</span>
-        {onClose && (
-          <button className="win-x" onClick={onClose} aria-label="Zamknij">
-            ✕
-          </button>
-        )}
-      </div>
-      <div className="win-body">{children}</div>
-    </div>
-  )
-}
-
-function adapterStatus(a: PcAdapter, network: PcNetwork): string {
-  if (!a.enabled) return 'Wyłączone'
-  if (network.link && !network.link(a)) return 'Kabel sieciowy odłączony'
-  const c = pcAddress(a)
-  if (!c) return a.dhcp ? 'Identyfikowanie…' : 'Sieć niezidentyfikowana'
-  if (c.addr.ip.startsWith('169.254.')) return 'Sieć niezidentyfikowana'
-  return 'Sieć'
-}
-
-function Adapters({ state, onChange, network }: { state: PcState; onChange: (s: PcState) => void; network: PcNetwork }) {
-  const [editing, setEditing] = useState<string | null>(null)
-  const [renaming, setRenaming] = useState<string | null>(null)
-  const [newName, setNewName] = useState('')
-  const update = (id: string, patch: Partial<PcAdapter>) => onChange({ ...state, adapters: state.adapters.map((a) => (a.id === id ? { ...a, ...patch } : a)) })
-  const ad = state.adapters.find((a) => a.id === editing)
+function StartMenu({
+  mode,
+  setMode,
+  q,
+  setQ,
+  run,
+  onPower,
+  onUser,
+  browser,
+  compact,
+}: {
+  mode: 'pinned' | 'all'
+  setMode: (m: false | 'pinned' | 'all') => void
+  q: string
+  setQ: (q: string) => void
+  run: (cmd: string) => void
+  onPower: (x: number, y: number) => void
+  onUser: (x: number, y: number) => void
+  browser: boolean
+  compact: boolean
+}) {
+  const apps = START_APPS.filter((a) => browser || a.key !== 'edge')
+  const ql = q.trim().toLowerCase()
+  const matches = ql ? apps.filter((a) => a.label.toLowerCase().includes(ql) || a.run.toLowerCase().startsWith(ql)) : []
+  const cmdHit = ql && (GUI_CMDS[ql] || ['cmd', 'powershell', 'control'].includes(ql) || /^\d{1,3}(\.\d{1,3}){3}$/.test(ql) || /^https?:\/\//.test(ql))
   return (
     <>
-      <Win title="Panel sterowania › Sieć i Internet › Połączenia sieciowe">
-        <div className="adapter-list">
-          {state.adapters.map((a) => (
-            <div key={a.id} className={`adapter ${a.enabled ? '' : 'off'}`}>
-              <div className="ad-icon">
-                <NicIcon />
-              </div>
-              <div className="ad-info">
-                {renaming === a.id ? (
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault()
-                      if (newName.trim()) update(a.id, { name: newName.trim() })
-                      setRenaming(null)
-                    }}
-                  >
-                    <input id={`rename-${a.id}`} className="w-input" value={newName} onChange={(e) => setNewName(e.target.value)} autoFocus />
-                    <button className="w-btn">OK</button>
-                  </form>
-                ) : (
-                  <strong>{a.name}</strong>
-                )}
-                <span>{adapterStatus(a, network)}</span>
-                {a.enabled && pcAddress(a) && (!network.link || network.link(a)) && (
-                  <span className="muted-w">
-                    IPv4: {pcAddress(a)!.addr.ip}/{pcAddress(a)!.addr.prefix}
-                  </span>
-                )}
-                <span className="muted-w">Intel(R) PRO/1000 MT Network Connection</span>
-              </div>
-              <div className="ad-actions">
-                <button
-                  className="w-btn"
-                  onClick={() => {
-                    setRenaming(a.id)
-                    setNewName(a.name)
-                  }}
-                >
-                  Zmień nazwę
-                </button>
-                <button className="w-btn" onClick={() => setEditing(a.id)}>
-                  Właściwości
-                </button>
-                <button className="w-btn" onClick={() => update(a.id, { enabled: !a.enabled })}>
-                  {a.enabled ? 'Wyłącz' : 'Włącz'}
-                </button>
-              </div>
-            </div>
-          ))}
+      <div className="pc-veil" onPointerDown={() => setMode(false)} />
+      <div className={`pc-start ${compact ? 'compact' : ''}`} role="dialog" aria-label="Start">
+        <div className="st-search">
+          <IcSearch size={15} />
+          <input
+            id="pc-start-search"
+            aria-label="Wyszukaj aplikacje, ustawienia i dokumenty"
+            placeholder="Wyszukaj aplikacje, ustawienia i dokumenty"
+            value={q}
+            autoFocus={!compact}
+            onChange={(e) => setQ(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                if (cmdHit) run(q.trim())
+                else if (matches[0]) run(matches[0].run)
+              }
+              if (e.key === 'Escape') setMode(false)
+            }}
+            autoCapitalize="off"
+            autoCorrect="off"
+            spellCheck={false}
+            enterKeyHint="go"
+          />
         </div>
-      </Win>
-      {ad && <Ipv4Dialog key={ad.id} adapter={ad} onSave={(p) => update(ad.id, p)} onClose={() => setEditing(null)} />}
+        <div className="st-body">
+          {ql ? (
+            <div className="st-results">
+              <div className="st-h">Najlepsze dopasowanie</div>
+              {cmdHit && (
+                <button className="st-res" onClick={() => run(q.trim())}>
+                  <IcRun size={28} />
+                  <span>
+                    <strong>{q.trim()}</strong>
+                    <small>Polecenie uruchomienia</small>
+                  </span>
+                </button>
+              )}
+              {matches.map((a) => (
+                <button key={a.key} className="st-res" onClick={() => run(a.run)}>
+                  {a.icon}
+                  <span>
+                    <strong>{a.label}</strong>
+                    <small>Aplikacja</small>
+                  </span>
+                </button>
+              ))}
+              {!cmdHit && !matches.length && <p className="st-none">Brak wyników dla „{q}”.</p>}
+            </div>
+          ) : mode === 'pinned' ? (
+            <>
+              <div className="st-row">
+                <span className="st-h">Przypięte</span>
+                <button className="st-all" onClick={() => setMode('all')}>
+                  Wszystkie aplikacje <IcChevron size={10} />
+                </button>
+              </div>
+              <div className="st-grid">
+                {PINNED.map((k) => apps.find((a) => a.key === k))
+                  .filter((a): a is StartApp => !!a)
+                  .map((a) => (
+                    <button key={a.key} className="st-app" onClick={() => run(a.run)} title={a.label}>
+                      {a.icon}
+                      <span>{a.label === 'Zapora Windows Defender z zabezpieczeniami zaawansowanymi' ? 'Zapora Windows Defender…' : a.label}</span>
+                    </button>
+                  ))}
+              </div>
+              <div className="st-row">
+                <span className="st-h">Polecane</span>
+              </div>
+              <div className="st-rec">
+                <button className="st-res" onClick={() => run('ncpa.cpl')}>
+                  <IcEthernet size={24} />
+                  <span>
+                    <strong>Połączenia sieciowe</strong>
+                    <small>ncpa.cpl</small>
+                  </span>
+                </button>
+                <button className="st-res" onClick={() => run('lusrmgr.msc')}>
+                  <IcUsers size={24} />
+                  <span>
+                    <strong>Użytkownicy i grupy lokalne</strong>
+                    <small>lusrmgr.msc</small>
+                  </span>
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="st-row">
+                <span className="st-h">Wszystkie aplikacje</span>
+                <button className="st-all" onClick={() => setMode('pinned')}>
+                  <IcChevron size={10} dir="left" /> Wstecz
+                </button>
+              </div>
+              <div className="st-list">
+                {[...apps]
+                  .sort((a, b) => a.label.localeCompare(b.label, 'pl'))
+                  .map((a, i, arr) => (
+                    <div key={a.key}>
+                      {(i === 0 || arr[i - 1].label[0] !== a.label[0]) && <div className="st-letter">{a.label[0]}</div>}
+                      <button className="st-li" onClick={() => run(a.run)}>
+                        <span className="st-li-ic">{a.icon}</span>
+                        {a.label}
+                      </button>
+                    </div>
+                  ))}
+                <div className="st-letter">S</div>
+                <button className="st-li" onClick={() => run('sysdm.cpl')}>
+                  <span className="st-li-ic">
+                    <IcSystem size={24} />
+                  </span>
+                  System (sysdm.cpl)
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+        <div className="st-foot">
+          <button className="st-user" onClick={(e) => onUser(e.clientX, e.clientY)}>
+            <span className="st-avatar">
+              <IcUser size={20} />
+            </span>
+            Administrator
+          </button>
+          <button className="st-pow" aria-label="Zasilanie" onClick={(e) => onPower(e.clientX, e.clientY)}>
+            <IcPower />
+          </button>
+        </div>
+      </div>
     </>
   )
 }
 
-function Ipv4Dialog({ adapter, onSave, onClose }: { adapter: PcAdapter; onSave: (p: Partial<PcAdapter>) => void; onClose: () => void }) {
-  const [f, setF] = useState({ ...adapter })
-  const [err, setErr] = useState('')
-  const set = (k: keyof PcAdapter, v: string | boolean) => setF((x) => ({ ...x, [k]: v }))
-  const ok = () => {
-    if (!f.dhcp) {
-      if (ipToInt(f.ip) === null) return setErr('Wprowadzony adres IP jest nieprawidłowy.')
-      if (maskToPrefix(f.mask) === null) return setErr('Wprowadzona maska podsieci jest nieprawidłowa.')
-      if (f.gateway && ipToInt(f.gateway) === null) return setErr('Brama domyślna jest nieprawidłowa.')
+function LockScreen({ phase, now, onUnlock, onSignIn, password }: { phase: Phase; now: Date; onUnlock: () => void; onSignIn: () => void; password: string }) {
+  const c = clock(now)
+  const [pw, setPw] = useState(password)
+  const [err, setErr] = useState(false)
+  useEffect(() => {
+    if (phase !== 'lock') return
+    const k = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') onUnlock()
     }
-    if (!f.dnsAuto && f.dns1 && ipToInt(f.dns1) === null) return setErr('Adres serwera DNS jest nieprawidłowy.')
-    onSave({ dhcp: f.dhcp, ip: f.ip, mask: f.mask, gateway: f.gateway, dnsAuto: f.dhcp ? f.dnsAuto : false, dns1: f.dns1, dns2: f.dns2, lease: f.dhcp ? adapter.lease : null, autoconf: f.dhcp ? adapter.autoconf : null, released: false })
-    onClose()
-  }
-  return (
-    <div className="w-modal">
-      <Win title={`Właściwości: Protokół internetowy w wersji 4 (TCP/IPv4) — ${adapter.name}`} onClose={onClose}>
-        <div className="ipv4">
-          <label className="w-radio">
-            <input type="radio" name="ipmode" checked={f.dhcp} onChange={() => set('dhcp', true)} /> Uzyskaj adres IP automatycznie
-          </label>
-          <label className="w-radio">
-            <input type="radio" name="ipmode" checked={!f.dhcp} onChange={() => set('dhcp', false)} /> Użyj następującego adresu IP:
-          </label>
-          <div className={`w-grid ${f.dhcp ? 'dis' : ''}`}>
-            <label htmlFor="pc-ip">Adres IP:</label>
-            <input id="pc-ip" className="w-input" disabled={f.dhcp} value={f.ip} onChange={(e) => set('ip', e.target.value)} inputMode="decimal" />
-            <label htmlFor="pc-mask">Maska podsieci:</label>
-            <input id="pc-mask" className="w-input" disabled={f.dhcp} value={f.mask} onChange={(e) => set('mask', e.target.value)} inputMode="decimal" />
-            <label htmlFor="pc-gw">Brama domyślna:</label>
-            <input id="pc-gw" className="w-input" disabled={f.dhcp} value={f.gateway} onChange={(e) => set('gateway', e.target.value)} inputMode="decimal" />
-          </div>
-          <label className="w-radio">
-            <input type="radio" name="dnsmode" disabled={!f.dhcp} checked={f.dhcp && f.dnsAuto} onChange={() => set('dnsAuto', true)} /> Uzyskaj adres serwera DNS automatycznie
-          </label>
-          <label className="w-radio">
-            <input type="radio" name="dnsmode" checked={!f.dhcp || !f.dnsAuto} onChange={() => set('dnsAuto', false)} /> Użyj następujących adresów serwerów DNS:
-          </label>
-          <div className={`w-grid ${f.dhcp && f.dnsAuto ? 'dis' : ''}`}>
-            <label htmlFor="pc-dns1">Preferowany serwer DNS:</label>
-            <input id="pc-dns1" className="w-input" disabled={f.dhcp && f.dnsAuto} value={f.dns1} onChange={(e) => set('dns1', e.target.value)} inputMode="decimal" />
-            <label htmlFor="pc-dns2">Alternatywny serwer DNS:</label>
-            <input id="pc-dns2" className="w-input" disabled={f.dhcp && f.dnsAuto} value={f.dns2} onChange={(e) => set('dns2', e.target.value)} inputMode="decimal" />
-          </div>
-          {err && <p className="w-err">{err}</p>}
-          <div className="w-buttons">
-            <button className="w-btn primary" onClick={ok}>
-              OK
-            </button>
-            <button className="w-btn" onClick={onClose}>
-              Anuluj
-            </button>
-          </div>
-        </div>
-      </Win>
-    </div>
-  )
-}
-
-function Firewall({ state, onChange }: { state: PcState; onChange: (s: PcState) => void }) {
-  return (
-    <Win title="Zapora Windows Defender z zabezpieczeniami zaawansowanymi › Reguły przychodzące">
-      <table className="fw">
-        <thead>
-          <tr>
-            <th>Nazwa</th>
-            <th>Profil</th>
-            <th>Włączona</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Pulpit zdalny — tryb użytkownika (TCP przychodzący)</td>
-            <td>Wszystkie</td>
-            <td>Nie</td>
-          </tr>
-          <tr className="fw-row">
-            <td>Udostępnianie plików i drukarek (Żądanie echa — ICMPv4 — ruch przychodzący)</td>
-            <td>Prywatny, Publiczny</td>
-            <td>
-              <label className="w-check">
-                <input type="checkbox" checked={state.firewallIcmp} onChange={(e) => onChange({ ...state, firewallIcmp: e.target.checked })} />{' '}
-                {state.firewallIcmp ? 'Tak' : 'Nie'}
-              </label>
-            </td>
-          </tr>
-          <tr>
-            <td>Wykrywanie sieci (NB-Name — ruch przychodzący)</td>
-            <td>Prywatny</td>
-            <td>Nie</td>
-          </tr>
-        </tbody>
-      </table>
-      <p className="muted-w">Zaznacz regułę, aby ją włączyć (Akcje › Włącz regułę).</p>
-    </Win>
-  )
-}
-
-function fmtIpconfig(state: PcState, all: boolean, network: PcNetwork): string[] {
-  const out = ['', 'Konfiguracja IP systemu Windows', '']
-  if (all) out.push(`   Nazwa hosta . . . . . . . . . . . : ${state.hostname}`, '')
-  for (const a of state.adapters) {
-    out.push(`Karta Ethernet ${a.name}:`, '')
-    if (!a.enabled || (network.link && !network.link(a))) {
-      out.push('   Stan nośnika. . . . . . . . . . . : Nośnik odłączony', '')
-      continue
-    }
-    if (all) {
-      out.push(`   Opis. . . . . . . . . . . . . . . : Intel(R) PRO/1000 MT Network Connection`)
-      out.push(`   Adres fizyczny. . . . . . . . . . : ${a.mac}`)
-      out.push(`   DHCP włączone . . . . . . . . . . : ${a.dhcp ? 'Tak' : 'Nie'}`)
-    }
-    const cfg = pcAddress(a)
-    if (cfg && cfg.addr.ip.startsWith('169.254.')) {
-      out.push(`   Adres IPv4 autokonfiguracji . . . : ${cfg.addr.ip}${all ? '(Preferowane)' : ''}`, '   Maska podsieci. . . . . . . . . . : 255.255.0.0', '   Brama domyślna. . . . . . . . . . :')
-    } else if (cfg) {
-      out.push(`   Adres IPv4. . . . . . . . . . . . : ${cfg.addr.ip}${all ? '(Preferowane)' : ''}`)
-      out.push(`   Maska podsieci. . . . . . . . . . : ${a.dhcp ? a.lease?.mask : a.mask}`)
-      out.push(`   Brama domyślna. . . . . . . . . . : ${cfg.gateway ?? ''}`)
-      if (all) {
-        const dns = a.dhcp && a.dnsAuto ? (a.lease?.dns ?? []) : [a.dns1, a.dns2].filter(Boolean)
-        if (a.dhcp && a.lease) out.push(`   Serwer DHCP . . . . . . . . . . . : ${a.lease.server}`)
-        out.push(`   Serwery DNS . . . . . . . . . . . : ${dns.join('\n                                       ')}`)
-      }
-    }
-    out.push('')
-  }
-  return out
-}
-
-function Cmd({ state, onChange, network }: { state: PcState; onChange: (s: PcState) => void; network: PcNetwork }) {
-  const [lines, setLines] = useState<string[]>(['Microsoft Windows [Version 10.0.26100]', '(c) Microsoft Corporation. Wszelkie prawa zastrzeżone.', ''])
-  const [input, setInput] = useState('')
-  const [hist, setHist] = useState(0)
-  const endRef = useRef<HTMLDivElement>(null)
-  useEffect(() => endRef.current?.scrollIntoView({ block: 'end' }), [lines])
-
-  const run = (raw: string) => {
-    const cmd = raw.trim()
-    const out: string[] = [`C:\\Users\\Administrator>${raw}`]
-    let next = { ...state, history: [...state.history, cmd].slice(-200) }
-    const words = cmd.split(/\s+/)
-    const c = (words[0] ?? '').toLowerCase()
-    if (!cmd) {
-      // nothing
-    } else if (c === 'ipconfig') {
-      const opt = (words[1] ?? '').toLowerCase()
-      if (opt === '/release') {
-        next = { ...next, adapters: next.adapters.map((a) => (a.dhcp ? { ...a, lease: null, autoconf: null, released: true } : a)) }
-        out.push(...fmtIpconfig(next, false, network))
-      } else if (opt === '/renew') {
-        const linked = (a: PcAdapter) => a.enabled && (!network.link || network.link(a))
-        for (const a of next.adapters.filter((x) => x.dhcp && x.enabled && !linked(x)))
-          out.push('', `Nie można wykonać żadnej operacji na interfejsie ${a.name}, ponieważ jego nośnik jest odłączony.`)
-        const adapters = next.adapters.map((a) => {
-          if (!a.dhcp || !linked(a)) return a
-          const lease = network.renew(a)
-          return { ...a, lease, autoconf: lease ? null : apipaFor(a.mac), released: false }
-        })
-        next = { ...next, adapters }
-        const failed = adapters.filter((a) => a.dhcp && linked(a) && !a.lease)
-        for (const a of failed) out.push('', `Wystąpił błąd podczas odnawiania interfejsu ${a.name} : nie można skontaktować się z serwerem DHCP. Upłynął limit czasu żądania.`)
-        out.push(...fmtIpconfig(next, false, network))
-      } else out.push(...fmtIpconfig(next, opt === '/all', network))
-    } else if (c === 'ping') {
-      const ip = words.slice(1).find((w) => ipToInt(w) !== null)
-      if (!ip || ipToInt(ip) === null) out.push('Żądanie ping nie może znaleźć hosta. Sprawdź nazwę i ponów próbę.')
-      else {
-        const ad = next.adapters.find((a) => a.enabled && pcAddress(a) && (!network.link || network.link(a)))
-        const r = ad ? network.ping(ad, ip) : { ok: false, reason: 'no address' }
-        out.push('', `Badanie ${ip} z 32 bajtami danych:`)
-        for (let i = 0; i < 4; i++) out.push(r.ok ? `Odpowiedź z ${ip}: bajtów=32 czas<1ms TTL=64` : r.reason === 'no address' ? 'Błąd ogólny.' : 'Upłynął limit czasu żądania.')
-        out.push('', `Statystyka badania ping dla ${ip}:`, `    Pakiety: Wysłane = 4, Odebrane = ${r.ok ? 4 : 0}, Utracone = ${r.ok ? 0 : 4}`, `             (${r.ok ? 0 : 100}% straty),`)
-      }
-    } else if (c === 'hostname') out.push(state.hostname)
-    else if (c === 'cls') {
-      setLines([])
-      onChange(next)
-      return
-    } else if (c === 'netsh' && /interface\s+set\s+interface/i.test(cmd)) {
-      const m = /name="?([^"]+?)"?\s+newname="?([^"]+?)"?$/i.exec(cmd)
-      if (m && next.adapters.some((a) => a.name.toLowerCase() === m[1].toLowerCase())) {
-        next = { ...next, adapters: next.adapters.map((a) => (a.name.toLowerCase() === m[1].toLowerCase() ? { ...a, name: m[2] } : a)) }
-      } else out.push('Nie można odnaleźć interfejsu o podanej nazwie.')
-    } else if (c === 'netsh' && /ip(v4)?\s+set\s+address/i.test(cmd)) {
-      const m = /name="?([^"]+?)"?\s+(?:source=)?(static|dhcp)(?:\s+(?:addr=)?(\S+)\s+(?:mask=)?(\S+)(?:\s+(?:gateway=)?(\S+))?)?/i.exec(cmd)
-      const ad = m && next.adapters.find((a) => a.name.toLowerCase() === m[1].toLowerCase())
-      if (!m || !ad) out.push('Nie można odnaleźć interfejsu o podanej nazwie.')
-      else if (m[2].toLowerCase() === 'dhcp') next = { ...next, adapters: next.adapters.map((a) => (a === ad ? { ...a, dhcp: true, released: false } : a)) }
-      else next = { ...next, adapters: next.adapters.map((a) => (a === ad ? { ...a, dhcp: false, ip: m[3] ?? '', mask: m[4] ?? '', gateway: m[5] && m[5] !== 'none' ? m[5] : '', lease: null, autoconf: null } : a)) }
-    } else if (c === 'whoami') out.push(`${state.hostname.toLowerCase()}\\administrator`)
-    else if (c === 'help') out.push('Dostępne w symulatorze: ipconfig [/all|/release|/renew], ping <adres>, hostname, netsh interface set interface name="X" newname="Y", netsh interface ip set address name="X" static IP MASKA BRAMA | dhcp, whoami, cls')
-    else out.push(`'${words[0]}' nie jest rozpoznawane jako polecenie wewnętrzne lub zewnętrzne,`, 'program wykonywalny lub plik wsadowy.')
-    out.push('')
-    setLines((l) => [...l, ...out].slice(-400))
-    onChange(next)
-  }
-
-  return (
-    <Win title="Wiersz polecenia">
-      <div className="cmd" onClick={() => document.getElementById('pc-cmd')?.focus()}>
-        {lines.map((l, i) => (
-          <div key={i} className="cmd-line">
-            {l || ' '}
-          </div>
-        ))}
-        <form
-          className="cmd-row"
-          onSubmit={(e) => {
-            e.preventDefault()
-            run(input)
-            setInput('')
-            setHist(0)
-          }}
-        >
-          <span>C:\Users\Administrator&gt;</span>
-          <input
-            id="pc-cmd"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-                e.preventDefault()
-                const h = state.history
-                const n = Math.max(0, Math.min(h.length, hist + (e.key === 'ArrowUp' ? 1 : -1)))
-                setHist(n)
-                setInput(n ? h[h.length - n] : '')
-              }
-            }}
-            autoCapitalize="off"
-            autoCorrect="off"
-            autoComplete="off"
-            spellCheck={false}
-          />
-        </form>
-        <div ref={endRef} />
+    window.addEventListener('keydown', k)
+    return () => window.removeEventListener('keydown', k)
+  }, [phase, onUnlock])
+  if (phase === 'lock')
+    return (
+      <button className="lock" onClick={onUnlock} aria-label="Ekran blokady — kliknij, aby się zalogować">
+        <span className="lock-time">{c.time}</span>
+        <span className="lock-date">{longDate(now)}</span>
+        <span className="lock-hint">Kliknij lub naciśnij Enter, aby się zalogować</span>
+        <span className="lock-tray">
+          <IcGlobe size={18} />
+        </span>
+      </button>
+    )
+  if (phase === 'welcome')
+    return (
+      <div className="signin">
+        <span className="signin-av">
+          <IcUser size={64} />
+        </span>
+        <strong>Administrator</strong>
+        <Dots light />
+        <span>Witamy</span>
       </div>
-    </Win>
+    )
+  return (
+    <form
+      className="signin"
+      onSubmit={(e) => {
+        e.preventDefault()
+        if (password && pw !== password) {
+          setErr(true)
+          return
+        }
+        onSignIn()
+      }}
+    >
+      <span className="signin-av">
+        <IcUser size={64} />
+      </span>
+      <strong>Administrator</strong>
+      {err ? (
+        <>
+          <span className="signin-err">Hasło jest niepoprawne. Spróbuj ponownie.</span>
+          <button type="button" className="signin-ok" onClick={() => (setErr(false), setPw(password))}>
+            OK
+          </button>
+        </>
+      ) : (
+        <span className="signin-row">
+          <input type="password" aria-label="Hasło" value={pw} onChange={(e) => setPw(e.target.value)} autoFocus={!isPhone()} placeholder="Hasło" />
+          <button className="signin-go" aria-label="Zaloguj">
+            <IcChevron size={16} />
+          </button>
+        </span>
+      )}
+      <span className="signin-tip">Hasło egzaminacyjne jest już wpisane — naciśnij →</span>
+    </form>
   )
 }
+

@@ -26,7 +26,7 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,json}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,json,md}'],
         // /vm/ is a separate page (real Linux via CheerpX) with its own
         // cross-origin-isolation service worker: never precache it and never
         // answer its navigations with the SPA shell.

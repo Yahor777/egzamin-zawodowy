@@ -7,7 +7,9 @@ import { Home } from './pages/Home'
 import { Learn } from './pages/Learn'
 import { Settings } from './pages/Settings'
 import { Generator } from './pages/Tools'
-import { Theory, Note } from './pages/Theory'
+import { Theory, Note, Doc } from './pages/Theory'
+import { TestHub } from './pages/Test'
+import { DrillList, DrillPage } from './sim/drills/DrillPages'
 import { Practice, Guide } from './pages/Practice'
 import { Glossary } from './pages/Glossary'
 import { Commands } from './pages/Commands'
@@ -28,6 +30,14 @@ function Page({ route }: { route: string }) {
       return <Learn key={route} mode="starred" />
     case 'exam':
       return <Exam />
+    case 'test':
+      return <TestHub />
+    case 'drills':
+      return <DrillList />
+    case 'drill':
+      return b ? <DrillPage key={b} id={b} /> : <DrillList />
+    case 'doc':
+      return <Doc key={b} slug={b} />
     case 'topics':
     case 'tools':
       return <Theory />
@@ -59,15 +69,16 @@ export default function App() {
   const nav: [string, string, string][] = [
     ['/', 'home', t('home')],
     ['/topics', 'learn', t('theory')],
-    ['/exam', 'exam', t('exam')],
+    ['/test', 'exam', lang === 'ru' ? 'Тест' : 'Test'],
     ['/practice', 'wrench', t('practice')],
   ]
   const group: Record<string, string[]> = {
-    '/topics': ['/topics', '/learn', '/notes', '/gen', '/glossary', '/mistakes', '/starred', '/tools'],
-    '/practice': ['/practice', '/commands', '/lab', '/sim'],
-    '/exam': ['/exam'],
+    '/topics': ['/topics', '/notes', '/gen', '/glossary', '/tools', '/commands', '/doc', '/practice/cheat-'],
+    '/practice': ['/practice/inf02', '/lab', '/sim', '/drill'],
+    '/test': ['/test', '/exam', '/learn', '/mistakes', '/starred'],
   }
-  const active = (p: string) => (p === '/' ? route === '/' : (group[p] ?? [p]).some((g) => route.startsWith(g)))
+  const active = (p: string) =>
+    p === '/' ? route === '/' : p === '/practice' && route === '/practice' ? true : (group[p] ?? [p]).some((g) => route.startsWith(g))
   return (
     <div className="shell">
       <aside className="side">
@@ -116,7 +127,7 @@ export default function App() {
         {nav.map(([p, icon, label]) => (
           <button key={p} className={active(p) ? 'active' : ''} onClick={() => go(p)}>
             <Icon name={icon} size={22} />
-            <span>{p === '/exam' ? t('examShort') : label}</span>
+            <span>{label}</span>
           </button>
         ))}
       </nav>

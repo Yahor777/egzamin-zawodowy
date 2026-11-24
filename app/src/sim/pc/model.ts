@@ -182,7 +182,7 @@ export function addToGroup(st: PcState, group: string, user: string): PcState | 
   if (g.members.some((m) => m.toLowerCase() === user.toLowerCase())) return st
   return withGroups(
     st,
-    groupsOf(st).map((x) => (x === g ? { ...x, members: [...x.members, user] } : x)),
+    groupsOf(st).map((x) => (x.name === g.name ? { ...x, members: [...x.members, user] } : x)),
   )
 }
 
@@ -191,7 +191,7 @@ export function removeFromGroup(st: PcState, group: string, user: string): PcSta
   if (!g) return st
   return withGroups(
     st,
-    groupsOf(st).map((x) => (x === g ? { ...x, members: x.members.filter((m) => m.toLowerCase() !== user.toLowerCase()) } : x)),
+    groupsOf(st).map((x) => (x.name === g.name ? { ...x, members: x.members.filter((m) => m.toLowerCase() !== user.toLowerCase()) } : x)),
   )
 }
 

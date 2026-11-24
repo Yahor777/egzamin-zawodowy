@@ -307,7 +307,7 @@
   font-size: 0.78rem;
   color: var(--ink-2);
 }
-.bd-why summary {
+.bd-why:not(.hint-box) summary {
   color: var(--pen);
   font-weight: 600;
   font-size: 0.88rem;
@@ -468,4 +468,75 @@
   flex-direction: column;
   gap: 10px;
   align-items: flex-start;
+}
+
+/* top line, hints, sticker */
+.bd-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.bd-lead {
+  flex: 1 1 260px;
+  color: var(--ink-2);
+  font-size: 0.93rem;
+}
+.bd-warn {
+  color: var(--ink);
+}
+.bd-why-text {
+  color: var(--ink-2);
+  font-size: 0.9rem;
+}
+.bd-card .hint-box {
+  font-size: 0.9rem;
+}
+.bd-sticker {
+  border: 1px dashed var(--ink-3);
+  border-radius: 8px;
+  background: var(--sunken);
+  padding: 8px 12px;
+  font-size: 0.85rem;
+}
+.bd-sticker-cap {
+  display: block;
+  color: var(--ink-3);
+  font-size: 0.78rem;
+  margin-bottom: 4px;
+}
+.bd-sticker dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 12px;
+}
+.bd-sticker dl > div {
+  display: contents;
+}
+.bd-sticker dt {
+  color: var(--ink-2);
+}
+.bd-sticker dd {
+  margin: 0;
+  font-family: var(--mono);
+  overflow-wrap: anywhere;
+}
+.bd-schema li {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.bd-compact .bd-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.bd-compact .bd-actions .btn,
+.bd-compact .bd-reset-wrap {
+  min-width: 0;
+  width: 100%;
+}
+.bd-compact .bd-reset-wrap .btn {
+  width: 100%;
 }

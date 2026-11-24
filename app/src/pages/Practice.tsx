@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Icon } from '../components/Icon'
 import { Markdown } from '../components/Markdown'
-import { CHEATS, useContent, useContentList, type GuideMeta } from '../lib/content'
+import { useContent, useContentList, type GuideMeta } from '../lib/content'
+import { DRILLS, TOPICS } from '../sim/drills'
+import { dKey, lKey, SHEETS, statusOf, usePractice } from '../sim/drills/progress'
 import { useT } from '../lib/i18n'
 import { useLang } from '../lib/store'
 import { go } from '../router'
@@ -37,94 +39,118 @@ const TAG_RU: Record<string, string> = {
 export function Practice() {
   const t = useT()
   const lang = useLang()
+  const ru = lang === 'ru'
+  const pr = usePractice()
   const lists = useContentList<GuideMeta[]>(['content/practice/index-a.json', 'content/practice/index-b.json', 'content/practice/index-c.json'])
   const guides = (lists ?? []).flat().sort((a, b) => b.session.localeCompare(a.session) || a.code.localeCompare(b.code))
   const [tag, setTag] = useState<string | null>(null)
+  const [showGuides, setShowGuides] = useState(false)
   const tags = [...new Set(guides.flatMap((g) => g.tags))].sort()
   const shown = tag ? guides.filter((g) => g.tags.includes(tag)) : guides
   const base = import.meta.env.BASE_URL
+  const passed = DRILLS.filter((d) => statusOf(pr, dKey(d.id)).status === 'passed').length
+  const sheetsPassed = SHEETS.filter((l) => statusOf(pr, lKey(l.id)).status === 'passed').length
 
   return (
     <div className="page">
       <h1>{t('practice')}</h1>
 
-      <button className="sim-hero" onClick={() => go('/lab')}>
-        <span className="sh-title">{lang === 'ru' ? 'Экзамен на симуляторе' : 'Egzamin na symulatorze'}</span>
-        <span className="sh-sub">
-          {lang === 'ru'
-            ? 'Роутер, свитч, Linux-сервер и Windows прямо в браузере. Задания из настоящих листов CKE с автопроверкой.'
-            : 'Ruter, przełącznik, serwer Linux i Windows w przeglądarce. Zadania z arkuszy CKE z automatyczną oceną.'}
-        </span>
-      </button>
-      <div className="sandbox-row">
-        <button className="btn" onClick={() => go('/sim/router')}>
-          {lang === 'ru' ? 'Роутер' : 'Ruter'}
+      <div className="two-col">
+        <button className="card big-link" onClick={() => go('/drills')}>
+          <span className="bl-top">
+            <span className="bl-title">{ru ? 'Задания на один навык' : 'Zadania na jedną umiejętność'}</span>
+            <span className="num">
+              {passed}/{DRILLS.length}
+            </span>
+          </span>
+          <span className="bl-sub">
+            {ru
+              ? 'Linux, роутер, свитч, Windows, адресация — по 10–25 минут, с автопроверкой и нашей документацией.'
+              : 'Linux, ruter, przełącznik, Windows, adresacja — 10–25 minut.'}
+          </span>
+          <span className="bl-tags">
+            {TOPICS.map((x) => (
+              <span key={x.id}>
+                {x[lang]} {DRILLS.filter((d) => d.topic === x.id).length}
+              </span>
+            ))}
+          </span>
         </button>
-        <button className="btn" onClick={() => go('/sim/switch')}>
-          {lang === 'ru' ? 'Свитч' : 'Przełącznik'}
+        <button className="card big-link" onClick={() => go('/lab')}>
+          <span className="bl-top">
+            <span className="bl-title">{ru ? 'Полные экзаменационные листы' : 'Pełne arkusze egzaminacyjne'}</span>
+            <span className="num">
+              {sheetsPassed}/{SHEETS.length}
+            </span>
+          </span>
+          <span className="bl-sub">
+            {ru ? 'Настоящие задания CKE целиком: 150 минут, все устройства на столе, оценка по критериям, порог 75%.' : 'Prawdziwe arkusze CKE: 150 minut, próg 75%.'}
+          </span>
         </button>
-        <button className="btn" onClick={() => go('/sim/linux')}>
-          Linux
-        </button>
-        <button className="btn" onClick={() => go('/sim/net')} style={{ gridColumn: '1 / -1' }}>
-          {lang === 'ru' ? 'Сеть на столе: кабели, питание, браузер' : 'Sieć na stanowisku'}
-        </button>
-        <a
-          className="btn"
-          href={`${import.meta.env.BASE_URL}vm/`}
-          style={{ gridColumn: '1 / -1', color: 'inherit', textDecoration: 'none' }}
-        >
-          {lang === 'ru' ? 'Настоящий Linux' : 'Prawdziwy Linux'}
-        </a>
       </div>
 
-      <h2 className="sec">{t('cheatSheets')}</h2>
-      <div className="topic-table">
-        {CHEATS.map((c) => (
-          <button key={c.slug} className="topic-row" onClick={() => go(`/practice/${c.slug}`)}>
-            <span className="t-name">{c[lang]}</span>
-            <Icon name="chevron" size={18} />
-          </button>
-        ))}
-        <button className="topic-row" onClick={() => go('/commands')}>
-          <span className="t-name">
-            {t('commands')}
-            <span className="t-sub">{t('commandsHint')}</span>
+      <h2 className="sec">{ru ? 'Свободная практика' : 'Wolna praktyka'}</h2>
+      <div className="list card flush">
+        <button className="list-row" onClick={() => go('/sim/net')}>
+          <span className="lr-main">
+            <span className="lr-title">{ru ? 'Сеть на столе' : 'Sieć na stanowisku'}</span>
+            <span className="lr-sub">{ru ? 'Роутер, свитч, Linux и Windows: кабели, питание, браузер — без задания' : 'Ruter, przełącznik, Linux i Windows bez zadania'}</span>
           </span>
           <Icon name="chevron" size={18} />
         </button>
+        <button className="list-row" onClick={() => go('/sim/linux')}>
+          <span className="lr-main">
+            <span className="lr-title">{ru ? 'Терминал Linux' : 'Terminal Linux'}</span>
+            <span className="lr-sub">{ru ? 'Симулятор Ubuntu Server: быстро, работает офлайн' : 'Symulator Ubuntu Server'}</span>
+          </span>
+          <Icon name="chevron" size={18} />
+        </button>
+        <a className="list-row" href={`${base}vm/`}>
+          <span className="lr-main">
+            <span className="lr-title">{ru ? 'Настоящий Linux в браузере' : 'Prawdziwy Linux w przeglądarce'}</span>
+            <span className="lr-sub">{ru ? 'Виртуальная машина: настоящие команды и файлы (грузится дольше)' : 'Maszyna wirtualna'}</span>
+          </span>
+          <Icon name="chevron" size={18} />
+        </a>
       </div>
 
       <h2 className="sec">{t('guides')}</h2>
-      <p className="hint">{t('guidesHint')}</p>
-      {tags.length > 0 && (
-        <div className="chips" role="group">
-          <button className={`chip-btn ${tag === null ? 'on' : ''}`} onClick={() => setTag(null)}>
-            {t('allTags')}
-          </button>
-          {tags.map((tg) => (
-            <button key={tg} className={`chip-btn ${tag === tg ? 'on' : ''}`} onClick={() => setTag(tg)}>
-              {lang === 'ru' ? (TAG_RU[tg] ?? tg) : tg}
-            </button>
-          ))}
-        </div>
+      <p className="hint sec-hint">{t('guidesHint')}</p>
+      {!showGuides ? (
+        <button className="btn" onClick={() => setShowGuides(true)}>
+          {ru ? `Показать разборы (${guides.length || '…'})` : `Pokaż (${guides.length || '…'})`}
+        </button>
+      ) : (
+        <>
+          {tags.length > 0 && (
+            <div className="chips" role="group">
+              <button className={`chip-btn ${tag === null ? 'on' : ''}`} onClick={() => setTag(null)}>
+                {t('allTags')}
+              </button>
+              {tags.map((tg) => (
+                <button key={tg} className={`chip-btn ${tag === tg ? 'on' : ''}`} onClick={() => setTag(tg)}>
+                  {lang === 'ru' ? (TAG_RU[tg] ?? tg) : tg}
+                </button>
+              ))}
+            </div>
+          )}
+          <div className="list card flush">
+            {lists === null && <p className="hint pad">{t('loading')}</p>}
+            {shown.map((g) => (
+              <button key={g.slug} className="list-row" onClick={() => go(`/practice/${g.slug}`)}>
+                <span className="lr-main">
+                  <span className="lr-title">{lang === 'ru' ? g.title_ru : g.title_pl}</span>
+                  <span className="lr-sub">
+                    {g.code}
+                    {g.summary_ru && lang === 'ru' ? ` — ${g.summary_ru}` : ''}
+                  </span>
+                </span>
+                <Icon name="chevron" size={18} />
+              </button>
+            ))}
+          </div>
+        </>
       )}
-      <div className="topic-table">
-        {lists === null && <p className="hint pad">{t('loading')}</p>}
-        {lists !== null && shown.length === 0 && <p className="hint pad">{t('comingSoon')}</p>}
-        {shown.map((g) => (
-          <button key={g.slug} className="topic-row" onClick={() => go(`/practice/${g.slug}`)}>
-            <span className="t-name">
-              {lang === 'ru' ? g.title_ru : g.title_pl}
-              <span className="t-sub">
-                {g.code}
-                {g.summary_ru && lang === 'ru' ? ` — ${g.summary_ru}` : ''}
-              </span>
-            </span>
-            <Icon name="chevron" size={18} />
-          </button>
-        ))}
-      </div>
 
       <h2 className="sec">{t('scripts')}</h2>
       <div className="card">
@@ -149,8 +175,8 @@ export function Guide({ slug }: { slug: string }) {
   return (
     <div className="page reading">
       <div className="guide-top">
-        <button className="back-link" onClick={() => go('/practice')}>
-          <Icon name="back" size={18} /> {t('practice')}
+        <button className="back-link" onClick={() => (history.length > 1 ? history.back() : go(isSheet ? '/practice' : '/topics'))}>
+          <Icon name="back" size={18} /> {t('prev')}
         </button>
         {isSheet && <Stopwatch />}
       </div>
