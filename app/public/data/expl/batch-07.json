@@ -1976,5 +1976,818 @@
    "pl": "Dla Ethernetu na skrętce (10Base-T do 1000Base-T) maksymalna długość segmentu to 100 m. 500 m to segment grubego koncentryka 10Base5.",
    "ru": "Для Ethernet по витой паре (10Base-T…1000Base-T) максимальная длина сегмента — 100 m. 500 m — сегмент толстого коаксиала 10Base5."
   }
+ },
+ "01f8d216": {
+  "ru": {
+   "stem": "Программа firewall (брандмауэр) применяется для защиты",
+   "answers": [
+    "диска от переполнения.",
+    "системы от ошибочных программ.",
+    "сети LAN и систем от злоумышленников.",
+    "процессора от перегрузки со стороны системы."
+   ]
+  },
+  "topic": "security",
+  "expl": {
+   "pl": "Firewall filtruje ruch sieciowy według reguł i blokuje nieautoryzowane połączenia, chroniąc sieć LAN i komputery przed intruzami. Nie ma wpływu na zajętość dysku ani obciążenie procesora.",
+   "ru": "Firewall фильтрует сетевой трафик по правилам и блокирует несанкционированные соединения, защищая LAN и компьютеры от злоумышленников. На заполнение диска и загрузку процессора он не влияет."
+  }
+ },
+ "0cf4947b": {
+  "ru": {
+   "stem": "«Горячее подключение» («hot-plug») означает, что подключаемое устройство",
+   "answers": [
+    "управляется температурой.",
+    "совместимо с компьютером.",
+    "работает после установки нужных драйверов.",
+    "работает сразу после подключения, без необходимости выключения или перезагрузки системы."
+   ]
+  },
+  "topic": "peripherals",
+  "expl": {
+   "pl": "Hot-plug pozwala podłączyć urządzenie (np. USB, SATA z AHCI) do działającego komputera i od razu z niego korzystać, bez wyłączania i restartu. Słowo „gorące” odnosi się do pracującego systemu, nie do temperatury.",
+   "ru": "Hot-plug позволяет подключить устройство (напр. USB, SATA с AHCI) к работающему компьютеру и сразу пользоваться им без выключения и перезагрузки. «Горячее» относится к работающей системе, а не к температуре."
+  }
+ },
+ "13bc5298": {
+  "ru": {
+   "stem": "Клавишей F5 в Проводнике Windows стандартно активируется действие",
+   "answers": [
+    "копирования.",
+    "открытия окна поиска.",
+    "обновления содержимого текущего окна.",
+    "запуска печати снимка экрана."
+   ]
+  },
+  "expl": {
+   "pl": "F5 odświeża zawartość okna (w Eksploratorze i przeglądarkach). Wyszukiwanie otwiera F3 lub Ctrl+F, a zrzut ekranu wykonuje klawisz Print Screen.",
+   "ru": "F5 обновляет содержимое окна (в Проводнике и браузерах). Поиск открывает F3 или Ctrl+F, а снимок экрана делает клавиша Print Screen."
+  }
+ },
+ "1947f8fd": {
+  "ru": {
+   "stem": "Внутренним интерфейсом компьютера является",
+   "answers": [
+    "DVI",
+    "AGP",
+    "IrDA",
+    "RJ-45"
+   ]
+  },
+  "topic": "hardware",
+  "expl": {
+   "pl": "AGP to gniazdo na płycie głównej dla karty graficznej, czyli interfejs wewnętrzny. DVI, IrDA i RJ-45 to złącza zewnętrzne (monitor, podczerwień, sieć).",
+   "ru": "AGP — слот на материнской плате для видеокарты, то есть внутренний интерфейс. DVI, IrDA и RJ-45 — внешние разъёмы (монитор, инфракрасный порт, сеть)."
+  }
+ },
+ "19aefc7f": {
+  "ru": {
+   "stem": "На рисунке показана сеть с топологией",
+   "answers": [
+    "ячеистой (сетки).",
+    "дерева.",
+    "звезды.",
+    "шины."
+   ]
+  },
+  "expl": {
+   "pl": "Wszystkie komputery są podłączone do jednego wspólnego kabla (magistrali) zakończonego na obu końcach – to topologia magistrali. W gwieździe każdy komputer łączyłby się z centralnym urządzeniem.",
+   "ru": "Все компьютеры подключены к одному общему кабелю (шине), заканчивающемуся с обеих сторон, — это топология «шина». В «звезде» каждый компьютер подключался бы к центральному устройству."
+  }
+ },
+ "1d8d6bd6": {
+  "ru": {
+   "stem": "Какой тип кабеля нужно использовать для подключения компьютера в помещении с электромагнитными помехами?",
+   "answers": [
+    "UTP Cat 5",
+    "UTP Cat 6",
+    "UTP Cat 5e",
+    "FTP Cat 5e"
+   ]
+  },
+  "expl": {
+   "pl": "FTP ma ekran z folii, który chroni pary przed zakłóceniami elektromagnetycznymi. Wszystkie kable UTP są nieekranowane, niezależnie od kategorii.",
+   "ru": "У FTP есть экран из фольги, защищающий пары от электромагнитных помех. Все кабели UTP неэкранированные, независимо от категории."
+  }
+ },
+ "23c6d37f": {
+  "ru": {
+   "stem": "Компьютерная программа, служащая для управления структурой файлов и каталогов, — это",
+   "answers": [
+    "файловая система.",
+    "текстовый редактор.",
+    "файловый менеджер.",
+    "диспетчер устройств."
+   ]
+  },
+  "expl": {
+   "pl": "Menedżer plików (np. Eksplorator Windows, Total Commander) to program do kopiowania, przenoszenia i usuwania plików i folderów. System plików to sposób zapisu danych na dysku, a nie program.",
+   "ru": "Файловый менеджер (напр. Проводник Windows, Total Commander) — программа для копирования, перемещения и удаления файлов и папок. Файловая система — способ хранения данных на диске, а не программа."
+  }
+ },
+ "279fd78f": {
+  "ru": {
+   "stem": "На приведённом снимке панели конфигурации маршрутизатора видно, что DHCP-сервер",
+   "answers": [
+    "может выдать максимально 10 IP-адресов",
+    "может выдать максимально 154 IP-адреса",
+    "выдаёт IP-адреса из диапазона 192.168.1.1 – 192.168.1.10",
+    "выдаёт IP-адреса из диапазона 192.168.1.1 – 192.168.1.100"
+   ]
+  },
+  "stemFix": "Na zamieszczonym zrzucie panelu konfiguracyjnego rutera widać, że serwer DHCP",
+  "expl": {
+   "pl": "Pole „Maximum Number of DHCP Users” = 10, więc serwer przydzieli najwyżej 10 adresów. Pula zaczyna się od 192.168.1.100 (Starting IP Address), czyli obejmuje 192.168.1.100–192.168.1.109.",
+   "ru": "Поле «Maximum Number of DHCP Users» = 10, значит сервер выдаст максимум 10 адресов. Пул начинается с 192.168.1.100 (Starting IP Address), т.е. охватывает 192.168.1.100–192.168.1.109."
+  }
+ },
+ "2894ee70": {
+  "ru": {
+   "stem": "Указывающим устройством является",
+   "answers": [
+    "сканер.",
+    "принтер.",
+    "USB-накопитель.",
+    "сенсорный экран."
+   ]
+  },
+  "topic": "peripherals",
+  "expl": {
+   "pl": "Urządzenie wskazujące steruje kursorem/wskazuje punkt na ekranie – jak mysz, touchpad czy ekran dotykowy. Skaner to urządzenie wejściowe obrazu, drukarka – wyjściowe, a pamięć USB to nośnik danych.",
+   "ru": "Указывающее устройство управляет курсором/указывает точку на экране — как мышь, тачпад или сенсорный экран. Сканер — устройство ввода изображения, принтер — вывода, USB-накопитель — носитель данных."
+  }
+ },
+ "2c64a4ab": {
+  "ru": {
+   "stem": "Распределением процессорного времени между определёнными задачами занимается",
+   "answers": [
+    "чипсет.",
+    "оперативная память.",
+    "кэш процессора.",
+    "операционная система."
+   ]
+  },
+  "expl": {
+   "pl": "Planista (scheduler) systemu operacyjnego przydziela procesom i wątkom kwanty czasu procesora (wielozadaniowość). Chipset i pamięci są sprzętem i nie decydują o kolejności zadań.",
+   "ru": "Планировщик (scheduler) операционной системы выделяет процессам и потокам кванты процессорного времени (многозадачность). Чипсет и память — аппаратура и не решают порядок задач."
+  }
+ },
+ "2d332636": {
+  "ru": {
+   "stem": "Стандарт передачи Gigabit Ethernet описывает норма",
+   "answers": [
+    "IEEE 802.3i",
+    "IEEE 802.3u",
+    "IEEE 802.3x",
+    "IEEE 802.3ab"
+   ]
+  },
+  "topic": "netdevices",
+  "expl": {
+   "pl": "IEEE 802.3ab definiuje 1000Base-T, czyli Gigabit Ethernet na skrętce kat. 5e. 802.3i to 10Base-T, 802.3u – Fast Ethernet (100 Mb/s), a 802.3x – sterowanie przepływem.",
+   "ru": "IEEE 802.3ab определяет 1000Base-T — Gigabit Ethernet по витой паре кат. 5e. 802.3i — 10Base-T, 802.3u — Fast Ethernet (100 Mb/s), 802.3x — управление потоком."
+  }
+ },
+ "2f52b6bb": {
+  "ru": {
+   "stem": "Если на одной территории будут одновременно работать две сети WLAN стандарта 802.11g, то для исключения взаимных помех им нужно назначить каналы с номерами, отличающимися на",
+   "answers": [
+    "2",
+    "3",
+    "4",
+    "5"
+   ]
+  },
+  "expl": {
+   "pl": "W paśmie 2,4 GHz kanały są co 5 MHz, a sygnał zajmuje ok. 22 MHz, więc nienakładające się kanały muszą różnić się o co najmniej 5 (np. 1, 6, 11).",
+   "ru": "В диапазоне 2,4 GHz каналы идут через 5 MHz, а сигнал занимает ~22 MHz, поэтому непересекающиеся каналы должны отличаться минимум на 5 (напр. 1, 6, 11)."
+  }
+ },
+ "309cf616": {
+  "ru": {
+   "stem": "Какую команду в Windows нужно использовать для мониторинга списка активных соединений сетевой карты в компьютере?",
+   "answers": [
+    "Ping.",
+    "Telnet.",
+    "Netstat.",
+    "Ipconfig."
+   ]
+  },
+  "topic": "windows",
+  "expl": {
+   "pl": "netstat wyświetla aktywne połączenia TCP/UDP z adresami, portami i stanem (np. -a, -n). ipconfig pokazuje konfigurację IP, a ping testuje osiągalność hosta.",
+   "ru": "netstat показывает активные соединения TCP/UDP с адресами, портами и состоянием (напр. -a, -n). ipconfig показывает IP-конфигурацию, ping проверяет доступность хоста."
+  }
+ },
+ "44be9650": {
+  "ru": {
+   "stem": "Какую функцию выполняет ISA Server в операционной системе Windows?",
+   "answers": [
+    "Выполняет функцию брандмауэра.",
+    "Разрешает доменные имена.",
+    "Является системой обмена файлами.",
+    "Является веб-сервером."
+   ]
+  },
+  "expl": {
+   "pl": "Microsoft ISA Server (Internet Security and Acceleration) to zapora sieciowa i serwer proxy z buforowaniem. Nazwy rozwiązuje DNS, a strony WWW udostępnia IIS.",
+   "ru": "Microsoft ISA Server (Internet Security and Acceleration) — межсетевой экран и кэширующий прокси-сервер. Имена разрешает DNS, а веб-страницы раздаёт IIS."
+  }
+ },
+ "45f8745e": {
+  "ru": {
+   "stem": "Какая серверная служба обеспечивает автоматическую настройку сетевых параметров рабочих станций?",
+   "answers": [
+    "NAT",
+    "DNS",
+    "DHCP",
+    "WINS"
+   ]
+  },
+  "expl": {
+   "pl": "DHCP automatycznie przekazuje stacjom adres IP, maskę, bramę domyślną i serwery DNS. NAT tłumaczy adresy, DNS – nazwy domen, a WINS – nazwy NetBIOS.",
+   "ru": "DHCP автоматически передаёт станциям IP-адрес, маску, шлюз по умолчанию и DNS-серверы. NAT транслирует адреса, DNS — доменные имена, WINS — имена NetBIOS."
+  }
+ },
+ "46734d57": {
+  "ru": {
+   "stem": "Сеть с IP-адресом 192.168.2.0/24 разделили на четыре подсети. Какую маску имеют новые подсети?",
+   "answers": [
+    "255.255.255.128",
+    "255.255.255.192",
+    "255.255.255.224",
+    "255.255.255.240"
+   ]
+  },
+  "expl": {
+   "pl": "4 podsieci = 2^2, więc pożyczamy 2 bity: /24 + 2 = /26. Czwarty oktet 11000000 = 192 → 255.255.255.192 (po 64 adresy w podsieci).",
+   "ru": "4 подсети = 2^2, заимствуем 2 бита: /24 + 2 = /26. Четвёртый октет 11000000 = 192 → 255.255.255.192 (по 64 адреса в подсети)."
+  }
+ },
+ "4c47f583": {
+  "ru": {
+   "stem": "Причиной неконтролируемого заполнения диска может быть",
+   "answers": [
+    "компьютерный вирус.",
+    "частая дефрагментация.",
+    "слишком маленькие единицы размещения файлов.",
+    "неправильно настроенная виртуальная память."
+   ]
+  },
+  "topic": "security",
+  "expl": {
+   "pl": "Wirus może się namnażać, tworząc kopie plików lub zapisując dane, przez co dysk zapełnia się bez wiedzy użytkownika. Defragmentacja nie zajmuje dodatkowego miejsca, a plik wymiany ma określony rozmiar.",
+   "ru": "Вирус может размножаться, создавая копии файлов или записывая данные, и диск заполняется без ведома пользователя. Дефрагментация не занимает дополнительного места, а файл подкачки имеет заданный размер."
+  }
+ },
+ "4c673d44": {
+  "ru": {
+   "stem": "Маркировка CE сообщает, что",
+   "answers": [
+    "изделие соответствует стандартам ISO.",
+    "изделие произведено на территории Европейского союза.",
+    "производитель проверил продукт с точки зрения производительности и эргономики.",
+    "изделие отвечает требованиям безопасности использования, охраны здоровья и окружающей среды."
+   ]
+  },
+  "topic": "law_bhp",
+  "expl": {
+   "pl": "Znak CE to deklaracja producenta, że wyrób spełnia zasadnicze wymagania dyrektyw UE dotyczące bezpieczeństwa, zdrowia i ochrony środowiska. Nie oznacza produkcji w UE ani zgodności z ISO.",
+   "ru": "Знак CE — заявление производителя, что изделие отвечает основным требованиям директив ЕС по безопасности, здоровью и охране среды. Он не означает производство в ЕС или соответствие ISO."
+  }
+ },
+ "4d64c489": {
+  "ru": {
+   "stem": "Почтовый протокол, с помощью которого можно получать почту с сервера, — это",
+   "answers": [
+    "FTP",
+    "POP3",
+    "SMTP",
+    "HTTP"
+   ]
+  },
+  "expl": {
+   "pl": "POP3 (port 110) pobiera wiadomości z serwera pocztowego do klienta. SMTP służy do wysyłania poczty, a FTP i HTTP do plików i stron WWW.",
+   "ru": "POP3 (порт 110) загружает письма с почтового сервера в клиент. SMTP служит для отправки почты, а FTP и HTTP — для файлов и веб-страниц."
+  }
+ },
+ "4dcad3c9": {
+  "ru": {
+   "stem": "Главной целью механизма Plug and Play является",
+   "answers": [
+    "автоматический запуск последней открытой игры.",
+    "автоматическое создание копии данных на вновь подключённом носителе.",
+    "обнаружение вновь подключённого оборудования и автоматическое выделение ему ресурсов.",
+    "автоматическое удаление драйверов, которые долгое время не использовались."
+   ]
+  },
+  "topic": "peripherals",
+  "expl": {
+   "pl": "Plug and Play wykrywa nowe urządzenie, instaluje sterownik i automatycznie przydziela mu zasoby (IRQ, DMA, adresy I/O), bez ręcznej konfiguracji zworkami.",
+   "ru": "Plug and Play обнаруживает новое устройство, устанавливает драйвер и автоматически выделяет ему ресурсы (IRQ, DMA, адреса ввода-вывода) без ручной настройки перемычками."
+  }
+ },
+ "500a8bf6": {
+  "ru": {
+   "stem": "В скольких подсетях работают компьютеры с адресами: 192.168.5.12/25, 192.168.5.50/25, 192.168.5.200/25 и 192.158.5.250/25?",
+   "answers": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ]
+  },
+  "expl": {
+   "pl": "/25 dzieli oktet na 0–127 i 128–255. 192.168.5.12 i .50 → sieć 192.168.5.0; 192.168.5.200 → 192.168.5.128; 192.158.5.250 to inny adres (158!) → 192.158.5.128. Razem 3 podsieci.",
+   "ru": "/25 делит октет на 0–127 и 128–255. 192.168.5.12 и .50 → сеть 192.168.5.0; 192.168.5.200 → 192.168.5.128; 192.158.5.250 — другой адрес (158!) → 192.158.5.128. Итого 3 подсети."
+  }
+ },
+ "5304c3b6": {
+  "ru": {
+   "stem": "Какую пропускную способность определяет стандарт сети Ethernet IEEE 802.3z?",
+   "answers": [
+    "1 Gb",
+    "10 Mb",
+    "100 Mb",
+    "100 GB"
+   ]
+  },
+  "topic": "netdevices",
+  "expl": {
+   "pl": "IEEE 802.3z (1998) to Gigabit Ethernet na światłowodzie (1000Base-SX/LX), czyli 1 Gb/s. Gigabit na skrętce opisuje 802.3ab, a 100 Mb/s – 802.3u.",
+   "ru": "IEEE 802.3z (1998) — Gigabit Ethernet по оптоволокну (1000Base-SX/LX), т.е. 1 Gb/s. Гигабит по витой паре описывает 802.3ab, а 100 Mb/s — 802.3u."
+  }
+ },
+ "546079f5": {
+  "ru": {
+   "stem": "Стандарт EN 50167 касается кабельной системы",
+   "answers": [
+    "вертикальной.",
+    "горизонтальной.",
+    "магистральной.",
+    "кампусной."
+   ]
+  },
+  "expl": {
+   "pl": "EN 50167 określa wymagania dla ekranowanych kabli okablowania poziomego (do gniazd abonenckich). Kable pionowe/szkieletowe opisuje EN 50169, a przyłączeniowe – EN 50168.",
+   "ru": "EN 50167 задаёт требования к экранированным кабелям горизонтальной подсистемы (до абонентских розеток). Вертикальные/магистральные кабели описывает EN 50169, коммутационные — EN 50168."
+  }
+ },
+ "55e1fe0c": {
+  "ru": {
+   "stem": "Сумма двоичных чисел 1010 + 111, записанная в десятичной системе, составит",
+   "answers": [
+    "16",
+    "17",
+    "18",
+    "19"
+   ]
+  },
+  "expl": {
+   "pl": "1010 (bin) = 10, 111 (bin) = 7; 10 + 7 = 17. Binarnie: 1010 + 111 = 10001 = 16 + 1 = 17.",
+   "ru": "1010 (bin) = 10, 111 (bin) = 7; 10 + 7 = 17. В двоичной: 1010 + 111 = 10001 = 16 + 1 = 17."
+  }
+ },
+ "56a4bb8b": {
+  "ru": {
+   "stem": "Программное обеспечение OEM (Original Equipment Manufacturer) привязано к",
+   "answers": [
+    "владельцу/покупателю компьютера.",
+    "компьютеру (или его части), на котором оно установлено.",
+    "операционной системе, установленной на данном компьютере.",
+    "всем компьютерам в данном домохозяйстве."
+   ]
+  },
+  "expl": {
+   "pl": "Licencja OEM jest sprzedawana z nowym sprzętem i przypisana na stałe do tego komputera (np. płyty głównej) – nie można jej przenieść na inny. Licencja BOX jest przypisana do użytkownika.",
+   "ru": "Лицензия OEM продаётся с новым оборудованием и навсегда привязана к этому компьютеру (напр. к материнской плате) — перенести её на другой нельзя. Лицензия BOX привязана к пользователю."
+  }
+ },
+ "571946de": {
+  "ru": {
+   "stem": "Установка службы Active Directory в операционной системе Windows Server требует предварительной установки и настройки сервера",
+   "answers": [
+    "FTP",
+    "DNS",
+    "WWW",
+    "DHCP"
+   ]
+  },
+  "expl": {
+   "pl": "Active Directory używa DNS (rekordy SRV) do lokalizowania kontrolerów domeny, więc DNS jest niezbędny – kreator promowania często instaluje go razem z AD DS. DHCP, FTP i WWW nie są wymagane.",
+   "ru": "Active Directory использует DNS (записи SRV) для поиска контроллеров домена, поэтому DNS обязателен — мастер повышения роли часто ставит его вместе с AD DS. DHCP, FTP и WWW не требуются."
+  }
+ },
+ "57e50aa3": {
+  "ru": {
+   "stem": "Карта расширения, показанная на рисунке, имеет охлаждение",
+   "answers": [
+    "активное.",
+    "пассивное.",
+    "принудительное.",
+    "симметричное."
+   ]
+  },
+  "expl": {
+   "pl": "Karta ma tylko duży aluminiowy radiator z żebrami, bez wentylatora – to chłodzenie pasywne (ciche, oparte na konwekcji). Chłodzenie aktywne wymagałoby wentylatora.",
+   "ru": "На карте только большой алюминиевый радиатор с рёбрами, без вентилятора — это пассивное охлаждение (тихое, за счёт конвекции). Активное охлаждение требовало бы вентилятора."
+  }
+ },
+ "5ce05a2f": {
+  "ru": {
+   "stem": "Fast Ethernet — это стандарт проводной сети, позволяющий передавать данные с максимальной скоростью",
+   "answers": [
+    "54 Mbps",
+    "100 Mbps",
+    "108 Mbps",
+    "1000 Mbps"
+   ]
+  },
+  "topic": "netdevices",
+  "expl": {
+   "pl": "Fast Ethernet (IEEE 802.3u, np. 100Base-TX) działa z prędkością 100 Mb/s. 1000 Mb/s to Gigabit Ethernet, a 54 i 108 Mb/s to prędkości Wi-Fi 802.11g.",
+   "ru": "Fast Ethernet (IEEE 802.3u, напр. 100Base-TX) работает на 100 Mb/s. 1000 Mb/s — Gigabit Ethernet, а 54 и 108 Mb/s — скорости Wi-Fi 802.11g."
+  }
+ },
+ "61441f8c": {
+  "ru": {
+   "stem": "Программа, используемая для перехвата и возможного анализа сетевого трафика, — это",
+   "answers": [
+    "viewer.",
+    "сниффер (sniffer).",
+    "spywer.",
+    "кейлоггер."
+   ]
+  },
+  "expl": {
+   "pl": "Sniffer (np. Wireshark, tcpdump) przechwytuje pakiety w sieci i pozwala je analizować. Keylogger rejestruje naciśnięcia klawiszy, a spyware szpieguje użytkownika.",
+   "ru": "Сниффер (напр. Wireshark, tcpdump) перехватывает пакеты в сети и позволяет их анализировать. Кейлоггер записывает нажатия клавиш, а spyware шпионит за пользователем."
+  }
+ },
+ "65cdf086": {
+  "ru": {
+   "stem": "Какое предложение описывает протокол SSH (Secure Shell)?",
+   "answers": [
+    "Безопасный протокол сетевого терминала, предоставляющий шифрование соединения.",
+    "Протокол удалённой работы на другом компьютере, не обеспечивающий кодирования передачи.",
+    "Сеансы SSH передают обычный текст, незашифрованные данные.",
+    "Сеансы SSH не позволяют определить, подлинны ли конечные точки."
+   ]
+  },
+  "expl": {
+   "pl": "SSH to bezpieczny protokół terminala zdalnego: szyfruje całą sesję i uwierzytelnia serwer (klucze hosta). Brak szyfrowania i przesyłanie tekstu jawnego to cechy Telnetu.",
+   "ru": "SSH — безопасный протокол удалённого терминала: шифрует весь сеанс и аутентифицирует сервер (ключи хоста). Отсутствие шифрования и открытый текст — особенности Telnet."
+  }
+ },
+ "67817d42": {
+  "ru": {
+   "stem": "На рисунке показана задняя панель",
+   "answers": [
+    "маршрутизатора.",
+    "моста.",
+    "модема.",
+    "концентратора."
+   ]
+  },
+  "expl": {
+   "pl": "Panel ma osobny port WAN, cztery porty LAN, porty USB, przycisk Reset i antenę – to ruter (bezprzewodowy). Port WAN łączy z siecią dostawcy, a LAN – z siecią lokalną.",
+   "ru": "На панели отдельный порт WAN, четыре порта LAN, порты USB, кнопка Reset и антенна — это (беспроводной) маршрутизатор. WAN подключается к сети провайдера, LAN — к локальной сети."
+  }
+ },
+ "6a1033da": {
+  "ru": {
+   "stem": "В системе Windows, установленной в версии с поддержкой дисковых квот, пользователь с именем Гость (Gość)",
+   "answers": [
+    "не может входить ни в одну группу.",
+    "может входить только в глобальную группу.",
+    "может входить только в группу с именем Гости.",
+    "может входить в локальные и глобальные группы."
+   ]
+  },
+  "expl": {
+   "pl": "Konto Gość jest zwykłym kontem wbudowanym i, jak inne konta, może być członkiem grup lokalnych oraz (w domenie) globalnych. Domyślnie należy do grupy Goście, ale nie jest to jedyna możliwość.",
+   "ru": "Учётная запись «Гость» — обычная встроенная учётная запись и, как и другие, может быть членом локальных и (в домене) глобальных групп. По умолчанию она входит в группу «Гости», но это не единственный вариант."
+  }
+ },
+ "6a4afaad": {
+  "ru": {
+   "stem": "Какое максимальное число хостов можно адресовать в локальной сети, имея в распоряжении одну сеть класса C адресов IPv4?",
+   "answers": [
+    "254",
+    "255",
+    "510",
+    "512"
+   ]
+  },
+  "expl": {
+   "pl": "Klasa C ma maskę /24, czyli 8 bitów na hosty: 2^8 − 2 = 254 (odejmujemy adres sieci i rozgłoszeniowy).",
+   "ru": "У класса C маска /24, т.е. 8 бит для хостов: 2^8 − 2 = 254 (вычитаем адрес сети и широковещательный)."
+  }
+ },
+ "6f456322": {
+  "ru": {
+   "stem": "На рисунке показан разъём питания",
+   "answers": [
+    "дисковода гибких дисков.",
+    "ATX12V питания процессора.",
+    "внутренних дисков S-ATA.",
+    "Molex для жёстких дисков."
+   ]
+  },
+  "expl": {
+   "pl": "Czteropinowa wtyczka 2×2 z zatrzaskiem to złącze ATX12V (P4) zasilające procesor. Molex ma 4 piny w jednym rzędzie, a złącze SATA jest płaskie i 15-pinowe.",
+   "ru": "Четырёхконтактная вилка 2×2 с защёлкой — разъём ATX12V (P4) для питания процессора. Molex имеет 4 контакта в один ряд, а разъём SATA плоский, 15-контактный."
+  }
+ },
+ "700f4311": {
+  "ru": {
+   "stem": "Какой стандарт содержит спецификацию параметров передачи компонентов категории 5e?",
+   "answers": [
+    "CSA T527",
+    "EIA/TIA 607",
+    "TIA/EIA–568-B-1",
+    "TIA/EIA–568-B-2"
+   ]
+  },
+  "topic": "cabling",
+  "expl": {
+   "pl": "TIA/EIA-568-B-2 opisuje komponenty okablowania skrętkowego i ich parametry transmisyjne (m.in. kat. 5e i 6). 568-B-1 zawiera wymagania ogólne, a TIA/EIA-607 dotyczy uziemień.",
+   "ru": "TIA/EIA-568-B-2 описывает компоненты кабельной системы на витой паре и их параметры передачи (в т.ч. кат. 5e и 6). 568-B-1 содержит общие требования, TIA/EIA-607 касается заземления."
+  }
+ },
+ "72024cd7": {
+  "ru": {
+   "stem": "Протоколом пользовательских датаграмм, выполняющим службу доставки датаграмм без установления соединения, является",
+   "answers": [
+    "IP",
+    "TCP",
+    "ARP",
+    "UDP"
+   ]
+  },
+  "expl": {
+   "pl": "UDP (User Datagram Protocol) jest bezpołączeniowy – wysyła datagramy bez potwierdzeń i nawiązywania sesji. TCP jest połączeniowy i niezawodny.",
+   "ru": "UDP (User Datagram Protocol) работает без установления соединения — отправляет датаграммы без подтверждений и сеанса. TCP ориентирован на соединение и надёжен."
+  }
+ },
+ "7552b561": {
+  "ru": {
+   "stem": "Стандарт IEEE 802.11b является стандартом сетей",
+   "answers": [
+    "телефонных.",
+    "проводных.",
+    "оптоволоконных.",
+    "беспроводных."
+   ]
+  },
+  "expl": {
+   "pl": "Rodzina IEEE 802.11 to sieci bezprzewodowe Wi-Fi; 802.11b działa w paśmie 2,4 GHz z prędkością do 11 Mb/s. Sieci przewodowe Ethernet to 802.3.",
+   "ru": "Семейство IEEE 802.11 — беспроводные сети Wi-Fi; 802.11b работает в 2,4 GHz со скоростью до 11 Mb/s. Проводной Ethernet — 802.3."
+  }
+ },
+ "7710ab22": {
+  "ru": {
+   "stem": "Закон от 14 декабря 2012 г. об отходах предписывает",
+   "answers": [
+    "хранение отходов максимально 1 год.",
+    "сжигание отходов при как можно более высокой температуре.",
+    "направление отходов в первую очередь на вторичное использование (рекуперацию).",
+    "нейтрализацию отходов любым способом в кратчайшие сроки."
+   ]
+  },
+  "topic": "law_bhp",
+  "expl": {
+   "pl": "Ustawa wprowadza hierarchię postępowania z odpadami: zapobieganie, przygotowanie do ponownego użycia, recykling i inne procesy odzysku, a unieszkodliwianie dopiero na końcu.",
+   "ru": "Закон вводит иерархию обращения с отходами: предотвращение, подготовка к повторному использованию, переработка и другие виды рекуперации, а обезвреживание — только в последнюю очередь."
+  }
+ },
+ "79236e0c": {
+  "ru": {
+   "stem": "Рециклинг (переработку) можно определить как",
+   "answers": [
+    "вторичное использование (рекуперация).",
+    "производство.",
+    "сортировку.",
+    "экономию."
+   ]
+  },
+  "expl": {
+   "pl": "Recykling to jedna z form odzysku – ponowne przetworzenie odpadów na surowce lub produkty. Segregacja jest tylko etapem przygotowującym do recyklingu.",
+   "ru": "Рециклинг — одна из форм рекуперации (odzysk): повторная переработка отходов в сырьё или продукцию. Сортировка — лишь подготовительный этап к переработке."
+  }
+ },
+ "7b0b8287": {
+  "ru": {
+   "stem": "Какой RAID-массив построен на основе репликации (зеркалирования) двух или более физических дисков?",
+   "answers": [
+    "RAID 0",
+    "RAID 1",
+    "RAID 3",
+    "RAID 5"
+   ]
+  },
+  "expl": {
+   "pl": "RAID 1 (mirroring) zapisuje te same dane na dwóch lub więcej dyskach – pojemność jednego dysku, ale odporność na awarię. RAID 0 to striping bez nadmiarowości, a RAID 3/5 używają parzystości.",
+   "ru": "RAID 1 (зеркалирование) записывает одни и те же данные на два или более диска — ёмкость одного диска, но отказоустойчивость. RAID 0 — чередование без избыточности, RAID 3/5 используют чётность."
+  }
+ },
+ "7b42705a": {
+  "ru": {
+   "stem": "Определение оптимального маршрута для сетевого соединения — это",
+   "answers": [
+    "маршрутизация (routing).",
+    "сниффинг.",
+    "трекинг.",
+    "conntrack."
+   ]
+  },
+  "topic": "netdevices",
+  "expl": {
+   "pl": "Routing to wyznaczanie najlepszej trasy pakietów między sieciami na podstawie tablic routingu i metryk. Sniffing to podsłuchiwanie ruchu, a conntrack – śledzenie stanu połączeń w zaporze Linux.",
+   "ru": "Маршрутизация (routing) — определение лучшего пути пакетов между сетями по таблицам маршрутизации и метрикам. Сниффинг — прослушивание трафика, conntrack — отслеживание состояния соединений в брандмауэре Linux."
+  }
+ },
+ "7c7753e5": {
+  "ru": {
+   "stem": "В структурированной сети рекомендуется размещать одну абонентскую точку на площади",
+   "answers": [
+    "5 m²",
+    "10 m²",
+    "20 m²",
+    "30 m²"
+   ]
+  },
+  "expl": {
+   "pl": "Zgodnie z zaleceniami norm okablowania strukturalnego przewiduje się jeden punkt abonencki (zwykle podwójne gniazdo) na każde 10 m² powierzchni biurowej.",
+   "ru": "Согласно рекомендациям стандартов СКС, на каждые 10 m² офисной площади предусматривается одна абонентская точка (обычно двойная розетка)."
+  }
+ },
+ "7cb3bec2": {
+  "ru": {
+   "stem": "Размер точки (шаг пикселя) монитора LCD равен",
+   "answers": [
+    "размеру одного пикселя, отображаемого на экране.",
+    "размеру области, на которой отображается 1024 пикселя.",
+    "расстоянию от начала одного до начала следующего пикселя.",
+    "размеру области, на которой можно отобразить все цвета, поддерживаемые монитором."
+   ]
+  },
+  "expl": {
+   "pl": "Plamka (dot pitch, plamka pikseli) to odległość między początkami sąsiednich pikseli, np. 0,265 mm. Im mniejsza, tym ostrzejszy obraz przy danej przekątnej.",
+   "ru": "Размер точки (dot pitch) — расстояние между началами соседних пикселей, напр. 0,265 mm. Чем он меньше, тем чётче изображение при данной диагонали."
+  }
+ },
+ "8485b315": {
+  "ru": {
+   "stem": "Вредоносной программой, основной целью которой является распространение по компьютерной сети, является",
+   "answers": [
+    "червь.",
+    "троян.",
+    "бэкдор.",
+    "кейлоггер."
+   ]
+  },
+  "expl": {
+   "pl": "Robak (worm) samodzielnie kopiuje się i rozprzestrzenia przez sieć, wykorzystując luki, bez udziału użytkownika. Trojan podszywa się pod użyteczny program, a keylogger rejestruje klawisze.",
+   "ru": "Червь (worm) самостоятельно копируется и распространяется по сети, используя уязвимости, без участия пользователя. Троян маскируется под полезную программу, кейлоггер записывает нажатия клавиш."
+  }
+ },
+ "8cbe937b": {
+  "ru": {
+   "stem": "Отключение автоматического обновления Windows приводит к",
+   "answers": [
+    "автоматической загрузке обновлений без их установки.",
+    "блокировке любого способа загрузки обновлений системы.",
+    "блокировке самостоятельной загрузки обновлений системой.",
+    "автоматической проверке наличия обновлений и уведомлению о них пользователя."
+   ]
+  },
+  "expl": {
+   "pl": "Po wyłączeniu aktualizacji automatycznych system sam nie pobiera poprawek, ale użytkownik nadal może je pobrać ręcznie (np. przez Windows Update lub katalog Microsoft). Pobieranie bez instalacji i powiadamianie to osobne opcje.",
+   "ru": "После отключения автообновления система сама не загружает исправления, но пользователь может скачать их вручную (через Windows Update или каталог Microsoft). Загрузка без установки и уведомление — отдельные режимы."
+  }
+ },
+ "8cf96620": {
+  "ru": {
+   "stem": "Команда md в командной строке Windows служит для",
+   "answers": [
+    "создания файла.",
+    "создания каталога.",
+    "переименования файла.",
+    "перехода в родительский каталог."
+   ]
+  },
+  "expl": {
+   "pl": "md (mkdir, make directory) tworzy nowy katalog. Zmiana nazwy to ren, a przejście do katalogu nadrzędnego – cd ..",
+   "ru": "md (mkdir, make directory) создаёт новый каталог. Переименование — ren, переход в родительский каталог — cd .."
+  }
+ },
+ "8dcf2528": {
+  "ru": {
+   "stem": "Какой интерфейс позволяет передавать данные в цифровой и аналоговой форме между компьютером и монитором?",
+   "answers": [
+    "HDMI",
+    "DVI-I",
+    "DFP",
+    "DISPLAY PORT"
+   ]
+  },
+  "expl": {
+   "pl": "DVI-I (Integrated) ma zarówno linie cyfrowe (TMDS), jak i analogowe (RGB jak w VGA). DVI-D, HDMI, DisplayPort i DFP przesyłają tylko sygnał cyfrowy.",
+   "ru": "DVI-I (Integrated) имеет и цифровые (TMDS), и аналоговые линии (RGB, как в VGA). DVI-D, HDMI, DisplayPort и DFP передают только цифровой сигнал."
+  }
+ },
+ "96c98d96": {
+  "ru": {
+   "stem": "Чтобы восстановить данные, удалённые с помощью сочетания клавиш Shift+Delete, нужно",
+   "answers": [
+    "восстановить их из системной корзины.",
+    "использовать сочетание клавиш Shift+Insert.",
+    "восстановить их из каталога временных файлов.",
+    "воспользоваться программой для восстановления данных."
+   ]
+  },
+  "topic": "windows",
+  "expl": {
+   "pl": "Shift+Delete usuwa pliki z pominięciem Kosza, więc nie można ich stamtąd przywrócić. Pozostaje program do odzyskiwania danych (np. Recuva), dopóki obszar nie zostanie nadpisany.",
+   "ru": "Shift+Delete удаляет файлы, минуя Корзину, поэтому восстановить их оттуда нельзя. Остаётся программа восстановления данных (напр. Recuva), пока область не перезаписана."
+  }
+ },
+ "9c2bc975": {
+  "ru": {
+   "stem": "Чтобы защитить локальную компьютерную сеть от атак типа Smurf из сети Интернет, нужно установить и правильно настроить",
+   "answers": [
+    "межсетевой экран (брандмауэр).",
+    "антивирусный сканер.",
+    "антиспамовое программное обеспечение.",
+    "безопасный веб-браузер."
+   ]
+  },
+  "topic": "security",
+  "expl": {
+   "pl": "Atak Smurf zalewa ofiarę odpowiedziami ICMP echo wysłanymi na adres rozgłoszeniowy z podrobionym adresem źródłowym. Zapora blokuje ruch ICMP do adresów rozgłoszeniowych z zewnątrz; antywirus czy antyspam tu nie pomogą.",
+   "ru": "Атака Smurf заваливает жертву ответами ICMP echo, отправленными на широковещательный адрес с подделанным адресом источника. Брандмауэр блокирует внешний ICMP на широковещательные адреса; антивирус и антиспам тут не помогут."
+  }
+ },
+ "9c818800": {
+  "ru": {
+   "stem": "После установки с настройками по умолчанию система Windows XP не поддерживает файловую систему",
+   "answers": [
+    "EXT",
+    "NTFS",
+    "FAT16",
+    "FAT32"
+   ]
+  },
+  "expl": {
+   "pl": "EXT (ext2/3/4) to system plików Linuksa – Windows XP domyślnie go nie obsługuje. NTFS, FAT16 i FAT32 są natywnie wspierane przez Windows XP.",
+   "ru": "EXT (ext2/3/4) — файловая система Linux, Windows XP по умолчанию её не поддерживает. NTFS, FAT16 и FAT32 Windows XP поддерживает изначально."
+  }
+ },
+ "9f0c5aee": {
+  "ru": {
+   "stem": "Какой из профилей пользователя изменяется и хранится на сервере для клиента, работающего в сети Windows?",
+   "answers": [
+    "Перемещаемый (мобильный).",
+    "Локальный.",
+    "Временный.",
+    "Обязательный."
+   ]
+  },
+  "expl": {
+   "pl": "Profil mobilny (wędrujący) jest przechowywany na serwerze, pobierany przy logowaniu i zapisywany ze zmianami przy wylogowaniu. Profil obowiązkowy też leży na serwerze, ale zmiany nie są zapisywane.",
+   "ru": "Перемещаемый (мобильный) профиль хранится на сервере, загружается при входе и сохраняется с изменениями при выходе. Обязательный профиль тоже на сервере, но изменения не сохраняются."
+  }
+ },
+ "a8f455c0": {
+  "ru": {
+   "stem": "Стандартом связи между сканером и графической программой является",
+   "answers": [
+    "USB",
+    "OPC",
+    "SCAN",
+    "TWAIN"
+   ]
+  },
+  "topic": "peripherals",
+  "expl": {
+   "pl": "TWAIN to programowy standard (API) pozwalający aplikacjom graficznym pobierać obraz bezpośrednio ze skanera. USB to tylko fizyczny interfejs połączenia.",
+   "ru": "TWAIN — программный стандарт (API), позволяющий графическим программам получать изображение прямо со сканера. USB — лишь физический интерфейс подключения."
+  }
+ },
+ "aa16a37b": {
+  "ru": {
+   "stem": "Чтобы проверить схему соединений кабеля UTP Cat 5e в локальной сети, нужно использовать",
+   "answers": [
+    "кабельный тестер.",
+    "кабельный рефлектометр TDR.",
+    "оптический рефлектометр OTDR.",
+    "анализатор сетевых протоколов."
+   ]
+  },
+  "expl": {
+   "pl": "Mapę połączeń (wire map) sprawdza tester okablowania – wykrywa przerwy, zwarcia i błędną kolejność żył. Reflektometr TDR lokalizuje miejsce uszkodzenia, OTDR dotyczy światłowodów, a analizator protokołów bada ruch.",
+   "ru": "Схему соединений (wire map) проверяет кабельный тестер — он находит обрывы, замыкания и неверный порядок жил. TDR определяет место повреждения, OTDR — для оптоволокна, анализатор протоколов исследует трафик."
+  }
  }
 }
