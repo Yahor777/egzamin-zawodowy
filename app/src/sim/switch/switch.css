@@ -1,0 +1,25 @@
+/* Switch simulator theme: dark navy banner and navigation (Easy Smart style). */
+.dv-theme-switch {
+  --dv-head: #1d3550;
+  --dv-head-2: #2c5379;
+  --dv-accent: #2f7fc1;
+  --dv-accent-hover: #21649d;
+  --dv-nav-bg: #263b52;
+  --dv-nav-text: #e8eef4;
+  --dv-nav-cur-bg: #3a5d80;
+  --dv-nav-cur-text: #ffffff;
+}
+.dv-theme-switch .dv-nav {
+  border-right-color: #1b2c3e;
+}
+.dv-theme-switch .dv-nav button.dv-cur {
+  box-shadow: inset 3px 0 0 #7fc2ff;
+}
+.dv-theme-switch .dv-panel-title {
+  color: #1d3550;
+}
+.dv-theme-switch .dv-vlan-ports td,
+.dv-theme-switch .dv-vlan-ports th {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}

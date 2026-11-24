@@ -645,7 +645,8 @@
   }
   .dv-menu-cur {
     font-weight: normal;
-    color: var(--dv-text-2);
+    color: var(--dv-nav-text);
+    opacity: 0.8;
     font-size: 13px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -703,4 +704,10 @@
   .dv-restart {
     padding: 28px 16px;
   }
+}
+.dv-plain {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
 }

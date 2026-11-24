@@ -1,0 +1,13 @@
+/* Router simulator theme: classic teal/green home-router admin look. */
+.dv-theme-router {
+  --dv-head: #0d6f76;
+  --dv-head-2: #18a0a0;
+  --dv-accent: #1679b8;
+  --dv-accent-hover: #0f5f93;
+  --dv-nav-bg: #f4f7f6;
+  --dv-nav-cur-bg: #d9efee;
+  --dv-nav-cur-text: #0b5a5f;
+}
+.dv-theme-router .dv-panel-title {
+  color: #0d6f76;
+}
