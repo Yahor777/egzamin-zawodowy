@@ -48,6 +48,26 @@ export function Practice() {
     <div className="page">
       <h1>{t('practice')}</h1>
 
+      <button className="sim-hero" onClick={() => go('/lab')}>
+        <span className="sh-title">{lang === 'ru' ? 'Экзамен на симуляторе' : 'Egzamin na symulatorze'}</span>
+        <span className="sh-sub">
+          {lang === 'ru'
+            ? 'Роутер, свитч, Linux-сервер и Windows прямо в браузере. Задания из настоящих листов CKE с автопроверкой.'
+            : 'Ruter, przełącznik, serwer Linux i Windows w przeglądarce. Zadania z arkuszy CKE z automatyczną oceną.'}
+        </span>
+      </button>
+      <div className="sandbox-row">
+        <button className="btn" onClick={() => go('/sim/router')}>
+          {lang === 'ru' ? 'Роутер' : 'Ruter'}
+        </button>
+        <button className="btn" onClick={() => go('/sim/switch')}>
+          {lang === 'ru' ? 'Свитч' : 'Przełącznik'}
+        </button>
+        <button className="btn" onClick={() => go('/sim/linux')}>
+          Linux
+        </button>
+      </div>
+
       <h2 className="sec">{t('cheatSheets')}</h2>
       <div className="topic-table">
         {CHEATS.map((c) => (

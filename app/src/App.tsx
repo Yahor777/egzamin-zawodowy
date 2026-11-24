@@ -11,6 +11,8 @@ import { Theory, Note } from './pages/Theory'
 import { Practice, Guide } from './pages/Practice'
 import { Glossary } from './pages/Glossary'
 import { Commands } from './pages/Commands'
+import { LabList, LabPage } from './sim/labs/LabPage'
+import { Sandbox } from './sim/Sandbox'
 import { go, useRoute } from './router'
 
 function Page({ route }: { route: string }) {
@@ -37,6 +39,10 @@ function Page({ route }: { route: string }) {
       return <Glossary />
     case 'commands':
       return <Commands />
+    case 'lab':
+      return b ? <LabPage key={b} id={b} /> : <LabList />
+    case 'sim':
+      return <Sandbox key={b} kind={b} />
     case 'gen':
       return b in GENERATORS ? <Generator key={b} id={b as GenId} /> : <Theory />
     case 'settings':
@@ -58,7 +64,7 @@ export default function App() {
   ]
   const group: Record<string, string[]> = {
     '/topics': ['/topics', '/learn', '/notes', '/gen', '/glossary', '/mistakes', '/starred', '/tools'],
-    '/practice': ['/practice', '/commands'],
+    '/practice': ['/practice', '/commands', '/lab', '/sim'],
     '/exam': ['/exam'],
   }
   const active = (p: string) => (p === '/' ? route === '/' : (group[p] ?? [p]).some((g) => route.startsWith(g)))
