@@ -21,6 +21,7 @@ import {
 import { loadNetplan, applyNetplan } from './netplan.ts'
 import { mountAll } from './cmd_disk.ts'
 import { openEditor } from './cmd_files.ts'
+import { apacheDefaultLinks } from './apache.ts'
 
 // ------------------------------------------------------------------ polkit
 export async function polkit(c: Ctx, action: string, msg: string): Promise<boolean> {
@@ -452,8 +453,7 @@ register(['apt', 'apt-get'], async (c) => {
           }
         }
         if (p === 'apache2') {
-          c.st.fs['/etc/apache2/sites-enabled'] = c.st.fs['/etc/apache2/sites-enabled'] || { t: 'd', mode: 0o755, uid: 0, gid: 0, mtime: Date.now() }
-          c.st.fs['/etc/apache2/sites-enabled/000-default.conf'] = { t: 'l', mode: 0o777, uid: 0, gid: 0, target: '../sites-available/000-default.conf', mtime: Date.now() }
+          apacheDefaultLinks(c.st)
           c.st.fs['/var/www/html'] = c.st.fs['/var/www/html'] || { t: 'd', mode: 0o755, uid: 0, gid: 0, mtime: Date.now() }
         }
         installBins(c.st)

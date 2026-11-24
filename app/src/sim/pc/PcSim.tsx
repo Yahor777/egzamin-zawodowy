@@ -1,35 +1,87 @@
-import { useEffect, useRef, useState } from 'react'
-import { ipToInt, maskToPrefix, pcAddress, type PcAdapter, type PcState } from '../net'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { apipaFor, ipToInt, maskToPrefix, pcAddress, type PcAdapter, type PcState } from '../net'
 import './pc.css'
 
 export interface PcNetwork {
   renew(adapter: PcAdapter): PcAdapter['lease']
   ping(fromAdapter: PcAdapter, ip: string): { ok: boolean; reason?: string }
+  /** physical link (cable plugged, other end powered); default: always up */
+  link?(adapter: PcAdapter): boolean
 }
 
-type View = 'adapters' | 'firewall' | 'cmd'
+export type PcView = 'adapters' | 'browser' | 'firewall' | 'cmd'
 
-export function PcSim({ state, onChange, network }: { state: PcState; onChange: (s: PcState) => void; network: PcNetwork }) {
-  const [view, setView] = useState<View>('adapters')
+export interface PcSimProps {
+  state: PcState
+  onChange: (s: PcState) => void
+  network: PcNetwork
+  /** renders the "Przeglądarka" app (omit to hide it) */
+  browser?: () => ReactNode
+  /** false = the computer is switched off */
+  powered?: boolean
+  booting?: boolean
+  onPowerOn?: () => void
+  /** controlled current app (optional) */
+  view?: PcView
+  onView?: (v: PcView) => void
+}
+
+export function PcSim({ state, onChange, network, browser, powered = true, booting = false, onPowerOn, view: cView, onView }: PcSimProps) {
+  const [uView, setUView] = useState<PcView>('adapters')
+  const view = cView ?? uView
+  const setView = (v: PcView) => (onView ? onView(v) : setUView(v))
+  if (!powered || booting)
+    return (
+      <div className="pc pc-off">
+        {booting ? (
+          <div className="pc-boot">
+            <span className="pc-spin" aria-hidden="true" />
+            <span>Uruchamianie systemu Windows…</span>
+          </div>
+        ) : (
+          <div className="pc-boot">
+            <span>Komputer jest wyłączony.</span>
+            {onPowerOn && (
+              <button className="w-btn primary" onClick={onPowerOn}>
+                Włącz zasilanie
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+    )
+  const apps: [PcView, string][] = [
+    ['adapters', 'Połączenia sieciowe'],
+    ...(browser ? ([['browser', 'Przeglądarka']] as [PcView, string][]) : []),
+    ['cmd', 'Wiersz polecenia'],
+    ['firewall', 'Zapora Windows'],
+  ]
   return (
     <div className="pc">
-      <div className="pc-taskbar">
-        <button className={view === 'adapters' ? 'on' : ''} onClick={() => setView('adapters')}>
-          Połączenia sieciowe
-        </button>
-        <button className={view === 'firewall' ? 'on' : ''} onClick={() => setView('firewall')}>
-          Zapora Windows
-        </button>
-        <button className={view === 'cmd' ? 'on' : ''} onClick={() => setView('cmd')}>
-          Wiersz polecenia
-        </button>
+      <div className="pc-taskbar" role="tablist">
+        {apps.map(([v, label]) => (
+          <button key={v} role="tab" aria-selected={view === v} className={view === v ? 'on' : ''} onClick={() => setView(v)}>
+            {label}
+          </button>
+        ))}
       </div>
       <div className="pc-desktop">
-        {view === 'adapters' && <Adapters state={state} onChange={onChange} />}
+        {view === 'adapters' && <Adapters state={state} onChange={onChange} network={network} />}
+        {view === 'browser' && browser?.()}
         {view === 'firewall' && <Firewall state={state} onChange={onChange} />}
         {view === 'cmd' && <Cmd state={state} onChange={onChange} network={network} />}
       </div>
     </div>
+  )
+}
+
+function NicIcon() {
+  return (
+    <svg width="34" height="34" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <rect x="4" y="6" width="24" height="15" rx="2" fill="#dbe7f5" stroke="#4a6f9c" />
+      <rect x="11" y="21" width="10" height="5" fill="#9fb6d0" stroke="#4a6f9c" />
+      <path d="M8 26h16" stroke="#4a6f9c" />
+    </svg>
   )
 }
 
@@ -49,7 +101,16 @@ function Win({ title, children, onClose }: { title: string; children: React.Reac
   )
 }
 
-function Adapters({ state, onChange }: { state: PcState; onChange: (s: PcState) => void }) {
+function adapterStatus(a: PcAdapter, network: PcNetwork): string {
+  if (!a.enabled) return 'Wyłączone'
+  if (network.link && !network.link(a)) return 'Kabel sieciowy odłączony'
+  const c = pcAddress(a)
+  if (!c) return a.dhcp ? 'Identyfikowanie…' : 'Sieć niezidentyfikowana'
+  if (c.addr.ip.startsWith('169.254.')) return 'Sieć niezidentyfikowana'
+  return 'Sieć'
+}
+
+function Adapters({ state, onChange, network }: { state: PcState; onChange: (s: PcState) => void; network: PcNetwork }) {
   const [editing, setEditing] = useState<string | null>(null)
   const [renaming, setRenaming] = useState<string | null>(null)
   const [newName, setNewName] = useState('')
@@ -61,8 +122,8 @@ function Adapters({ state, onChange }: { state: PcState; onChange: (s: PcState) 
         <div className="adapter-list">
           {state.adapters.map((a) => (
             <div key={a.id} className={`adapter ${a.enabled ? '' : 'off'}`}>
-              <div className="ad-icon" aria-hidden="true">
-                🖧
+              <div className="ad-icon">
+                <NicIcon />
               </div>
               <div className="ad-info">
                 {renaming === a.id ? (
@@ -79,7 +140,12 @@ function Adapters({ state, onChange }: { state: PcState; onChange: (s: PcState) 
                 ) : (
                   <strong>{a.name}</strong>
                 )}
-                <span>{a.enabled ? 'Sieć' : 'Wyłączone'}</span>
+                <span>{adapterStatus(a, network)}</span>
+                {a.enabled && pcAddress(a) && (!network.link || network.link(a)) && (
+                  <span className="muted-w">
+                    IPv4: {pcAddress(a)!.addr.ip}/{pcAddress(a)!.addr.prefix}
+                  </span>
+                )}
                 <span className="muted-w">Intel(R) PRO/1000 MT Network Connection</span>
               </div>
               <div className="ad-actions">
@@ -119,7 +185,7 @@ function Ipv4Dialog({ adapter, onSave, onClose }: { adapter: PcAdapter; onSave: 
       if (f.gateway && ipToInt(f.gateway) === null) return setErr('Brama domyślna jest nieprawidłowa.')
     }
     if (!f.dnsAuto && f.dns1 && ipToInt(f.dns1) === null) return setErr('Adres serwera DNS jest nieprawidłowy.')
-    onSave({ dhcp: f.dhcp, ip: f.ip, mask: f.mask, gateway: f.gateway, dnsAuto: f.dhcp ? f.dnsAuto : false, dns1: f.dns1, dns2: f.dns2, lease: f.dhcp ? adapter.lease : null })
+    onSave({ dhcp: f.dhcp, ip: f.ip, mask: f.mask, gateway: f.gateway, dnsAuto: f.dhcp ? f.dnsAuto : false, dns1: f.dns1, dns2: f.dns2, lease: f.dhcp ? adapter.lease : null, autoconf: f.dhcp ? adapter.autoconf : null, released: false })
     onClose()
   }
   return (
@@ -206,12 +272,12 @@ function Firewall({ state, onChange }: { state: PcState; onChange: (s: PcState) 
   )
 }
 
-function fmtIpconfig(state: PcState, all: boolean): string[] {
+function fmtIpconfig(state: PcState, all: boolean, network: PcNetwork): string[] {
   const out = ['', 'Konfiguracja IP systemu Windows', '']
   if (all) out.push(`   Nazwa hosta . . . . . . . . . . . : ${state.hostname}`, '')
   for (const a of state.adapters) {
     out.push(`Karta Ethernet ${a.name}:`, '')
-    if (!a.enabled) {
+    if (!a.enabled || (network.link && !network.link(a))) {
       out.push('   Stan nośnika. . . . . . . . . . . : Nośnik odłączony', '')
       continue
     }
@@ -221,7 +287,9 @@ function fmtIpconfig(state: PcState, all: boolean): string[] {
       out.push(`   DHCP włączone . . . . . . . . . . : ${a.dhcp ? 'Tak' : 'Nie'}`)
     }
     const cfg = pcAddress(a)
-    if (cfg) {
+    if (cfg && cfg.addr.ip.startsWith('169.254.')) {
+      out.push(`   Adres IPv4 autokonfiguracji . . . : ${cfg.addr.ip}${all ? '(Preferowane)' : ''}`, '   Maska podsieci. . . . . . . . . . : 255.255.0.0', '   Brama domyślna. . . . . . . . . . :')
+    } else if (cfg) {
       out.push(`   Adres IPv4. . . . . . . . . . . . : ${cfg.addr.ip}${all ? '(Preferowane)' : ''}`)
       out.push(`   Maska podsieci. . . . . . . . . . : ${a.dhcp ? a.lease?.mask : a.mask}`)
       out.push(`   Brama domyślna. . . . . . . . . . : ${cfg.gateway ?? ''}`)
@@ -230,8 +298,6 @@ function fmtIpconfig(state: PcState, all: boolean): string[] {
         if (a.dhcp && a.lease) out.push(`   Serwer DHCP . . . . . . . . . . . : ${a.lease.server}`)
         out.push(`   Serwery DNS . . . . . . . . . . . : ${dns.join('\n                                       ')}`)
       }
-    } else if (a.dhcp) {
-      out.push('   Adres IPv4 autokonfiguracji . . . : 169.254.12.34', '   Maska podsieci. . . . . . . . . . : 255.255.0.0', '   Brama domyślna. . . . . . . . . . :')
     }
     out.push('')
   }
@@ -256,20 +322,27 @@ function Cmd({ state, onChange, network }: { state: PcState; onChange: (s: PcSta
     } else if (c === 'ipconfig') {
       const opt = (words[1] ?? '').toLowerCase()
       if (opt === '/release') {
-        next = { ...next, adapters: next.adapters.map((a) => (a.dhcp ? { ...a, lease: null } : a)) }
-        out.push(...fmtIpconfig(next, false))
+        next = { ...next, adapters: next.adapters.map((a) => (a.dhcp ? { ...a, lease: null, autoconf: null, released: true } : a)) }
+        out.push(...fmtIpconfig(next, false, network))
       } else if (opt === '/renew') {
-        const adapters = next.adapters.map((a) => (a.dhcp && a.enabled ? { ...a, lease: network.renew(a) } : a))
+        const linked = (a: PcAdapter) => a.enabled && (!network.link || network.link(a))
+        for (const a of next.adapters.filter((x) => x.dhcp && x.enabled && !linked(x)))
+          out.push('', `Nie można wykonać żadnej operacji na interfejsie ${a.name}, ponieważ jego nośnik jest odłączony.`)
+        const adapters = next.adapters.map((a) => {
+          if (!a.dhcp || !linked(a)) return a
+          const lease = network.renew(a)
+          return { ...a, lease, autoconf: lease ? null : apipaFor(a.mac), released: false }
+        })
         next = { ...next, adapters }
-        const failed = adapters.filter((a) => a.dhcp && a.enabled && !a.lease)
+        const failed = adapters.filter((a) => a.dhcp && linked(a) && !a.lease)
         for (const a of failed) out.push('', `Wystąpił błąd podczas odnawiania interfejsu ${a.name} : nie można skontaktować się z serwerem DHCP. Upłynął limit czasu żądania.`)
-        out.push(...fmtIpconfig(next, false))
-      } else out.push(...fmtIpconfig(next, opt === '/all'))
+        out.push(...fmtIpconfig(next, false, network))
+      } else out.push(...fmtIpconfig(next, opt === '/all', network))
     } else if (c === 'ping') {
       const ip = words.slice(1).find((w) => ipToInt(w) !== null)
       if (!ip || ipToInt(ip) === null) out.push('Żądanie ping nie może znaleźć hosta. Sprawdź nazwę i ponów próbę.')
       else {
-        const ad = next.adapters.find((a) => a.enabled && pcAddress(a))
+        const ad = next.adapters.find((a) => a.enabled && pcAddress(a) && (!network.link || network.link(a)))
         const r = ad ? network.ping(ad, ip) : { ok: false, reason: 'no address' }
         out.push('', `Badanie ${ip} z 32 bajtami danych:`)
         for (let i = 0; i < 4; i++) out.push(r.ok ? `Odpowiedź z ${ip}: bajtów=32 czas<1ms TTL=64` : r.reason === 'no address' ? 'Błąd ogólny.' : 'Upłynął limit czasu żądania.')
@@ -289,8 +362,8 @@ function Cmd({ state, onChange, network }: { state: PcState; onChange: (s: PcSta
       const m = /name="?([^"]+?)"?\s+(?:source=)?(static|dhcp)(?:\s+(?:addr=)?(\S+)\s+(?:mask=)?(\S+)(?:\s+(?:gateway=)?(\S+))?)?/i.exec(cmd)
       const ad = m && next.adapters.find((a) => a.name.toLowerCase() === m[1].toLowerCase())
       if (!m || !ad) out.push('Nie można odnaleźć interfejsu o podanej nazwie.')
-      else if (m[2].toLowerCase() === 'dhcp') next = { ...next, adapters: next.adapters.map((a) => (a === ad ? { ...a, dhcp: true } : a)) }
-      else next = { ...next, adapters: next.adapters.map((a) => (a === ad ? { ...a, dhcp: false, ip: m[3] ?? '', mask: m[4] ?? '', gateway: m[5] && m[5] !== 'none' ? m[5] : '' } : a)) }
+      else if (m[2].toLowerCase() === 'dhcp') next = { ...next, adapters: next.adapters.map((a) => (a === ad ? { ...a, dhcp: true, released: false } : a)) }
+      else next = { ...next, adapters: next.adapters.map((a) => (a === ad ? { ...a, dhcp: false, ip: m[3] ?? '', mask: m[4] ?? '', gateway: m[5] && m[5] !== 'none' ? m[5] : '', lease: null, autoconf: null } : a)) }
     } else if (c === 'whoami') out.push(`${state.hostname.toLowerCase()}\\administrator`)
     else if (c === 'help') out.push('Dostępne w symulatorze: ipconfig [/all|/release|/renew], ping <adres>, hostname, netsh interface set interface name="X" newname="Y", netsh interface ip set address name="X" static IP MASKA BRAMA | dhcp, whoami, cls')
     else out.push(`'${words[0]}' nie jest rozpoznawane jako polecenie wewnętrzne lub zewnętrzne,`, 'program wykonywalny lub plik wsadowy.')

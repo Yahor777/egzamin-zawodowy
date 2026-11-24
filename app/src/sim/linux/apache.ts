@@ -32,7 +32,7 @@ export interface ApacheLoad {
 
 function envvars(st: LinuxState) {
   const txt = tryLookup(st, ROOT + '/envvars')?.c ?? ''
-  const get = (k: string, d: string) => new RegExp(`^\\s*export\\s+${k}=(\\S+)`, 'm').exec(txt)?.[1]?.replace(/^['"]|['"]$/g, '') ?? d
+  const get = (k: string, d: string) => new RegExp(`^\\s*export\\s+${k}=(\\S+)`, 'm').exec(txt)?.[1]?.replace(/^['"]|['"]$/g, '').replace('$SUFFIX', '') ?? d
   return { user: get('APACHE_RUN_USER', 'www-data'), group: get('APACHE_RUN_GROUP', 'www-data'), logDir: get('APACHE_LOG_DIR', '/var/log/apache2') }
 }
 
@@ -47,6 +47,18 @@ function expandGlob(st: LinuxState, pat: string): string[] {
     .filter((n) => re.test(n))
     .sort()
     .map((n) => joinPath(dir, n))
+}
+
+/** symlinks created by the apache2 package (a2ensite/a2enmod/a2enconf defaults) */
+export function apacheDefaultLinks(st: LinuxState) {
+  const now = Date.now()
+  for (const d of ['sites-enabled', 'mods-enabled', 'conf-enabled']) st.fs[`${ROOT}/${d}`] = st.fs[`${ROOT}/${d}`] || { t: 'd', mode: 0o755, uid: 0, gid: 0, mtime: now }
+  const link = (p: string, target: string) => {
+    st.fs[p] = { t: 'l', mode: 0o777, uid: 0, gid: 0, target, mtime: now }
+  }
+  link(`${ROOT}/sites-enabled/000-default.conf`, '../sites-available/000-default.conf')
+  link(`${ROOT}/mods-enabled/dir.conf`, '../mods-available/dir.conf')
+  link(`${ROOT}/conf-enabled/security.conf`, '../conf-available/security.conf')
 }
 
 export function loadApache(st: LinuxState): ApacheLoad {

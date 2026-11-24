@@ -1,0 +1,281 @@
+/* Edge-like browser inside the Windows PC (fixed light palette, like the rest of .pc). */
+.edge-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+.edge {
+  background: #fff;
+  border: 1px solid #a9b3bf;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.16);
+  color: #1b1b1b;
+  min-width: 0;
+}
+.edge-tabs {
+  background: #e8ebef;
+  padding: 6px 8px 0;
+  display: flex;
+}
+.edge-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  border-radius: 8px 8px 0 0;
+  padding: 7px 12px;
+  font-size: 0.8rem;
+  max-width: 260px;
+  min-width: 0;
+}
+.edge-tab span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.edge-spin {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid #c6d3e3;
+  border-top-color: #0067c0;
+  animation: edge-rot 0.8s linear infinite;
+  flex: none;
+}
+@keyframes edge-rot {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.edge-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px;
+  border-bottom: 1px solid #e1e1e1;
+}
+.edge-ic {
+  width: 40px;
+  height: 44px;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  color: #333;
+  flex: none;
+}
+.edge-ic:disabled {
+  color: #b5b5b5;
+}
+.edge-url {
+  flex: 1;
+  min-width: 0;
+  height: 40px;
+  border: 1px solid #c9c9c9;
+  border-radius: 20px;
+  padding: 0 14px;
+  font: inherit;
+  font-size: 16px;
+  background: #f7f7f7;
+  color: #1b1b1b;
+}
+.edge-url:focus {
+  outline: 2px solid #0067c0;
+  outline-offset: 0;
+  background: #fff;
+}
+.edge-go {
+  flex: none;
+  min-height: 40px;
+  padding: 0 12px;
+  border-radius: 20px;
+  background: #0067c0;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.edge-page {
+  min-height: 300px;
+  background: #fff;
+  min-width: 0;
+}
+.edge-blank {
+  min-height: 300px;
+}
+.edge-new {
+  min-height: 300px;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  text-align: center;
+  color: #5f5f5f;
+  background: linear-gradient(#f4f7fb, #fff);
+}
+.edge-infobar {
+  background: #fff4ce;
+  border-bottom: 1px solid #e8d48b;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+}
+.edge-err {
+  padding: 28px 22px 22px;
+  max-width: 620px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.92rem;
+}
+.edge-err h1 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #1b1b1b;
+}
+.edge-err ul {
+  margin: 0;
+  padding-left: 20px;
+}
+.edge-try {
+  margin-top: 6px;
+}
+.edge-code {
+  color: #6b6b6b;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+}
+.edge-why {
+  margin-top: 12px;
+  border: 1px solid #c9d6ea;
+  background: #f2f6fc;
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: var(--font);
+}
+.edge-why ul {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.edge-why .fix {
+  display: block;
+  margin-top: 2px;
+  color: #1f5a2f;
+  font-weight: 600;
+}
+
+/* printer embedded web server */
+.prn-head {
+  background: #2c3e50;
+  color: #fff;
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+}
+.prn-body {
+  padding: 14px;
+}
+.prn-body h2 {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+.prn-body table {
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  width: 100%;
+}
+.prn-body th,
+.prn-body td {
+  text-align: left;
+  padding: 6px 4px;
+  border-bottom: 1px solid #e5e5e5;
+}
+.prn-ok {
+  color: #1f7a45;
+  font-weight: 600;
+}
+.prn-meter {
+  display: inline-block;
+  width: 100px;
+  height: 8px;
+  background: #e4e4e4;
+  border-radius: 4px;
+  overflow: hidden;
+  vertical-align: middle;
+}
+.prn-meter span {
+  display: block;
+  height: 100%;
+  background: #333;
+}
+
+/* "Какой адрес вписать?" (trainer helper, app palette) */
+.addr-help {
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-family: var(--font);
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.addr-help > summary {
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+}
+.addr-help code {
+  font-family: var(--mono);
+  font-size: 0.86rem;
+}
+.ah-me {
+  color: var(--ink-2);
+  margin: 4px 0 6px;
+}
+.ah-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-top: 1px solid var(--line);
+  padding: 8px 0;
+}
+.ah-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-wrap: anywhere;
+}
+.ah-main small {
+  color: var(--bad);
+  font-size: 0.82rem;
+}
+.ah-row.ok .ah-main small {
+  color: var(--ok);
+}
+.ah-open {
+  flex: none;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+.ah-foot {
+  color: var(--ink-2);
+  font-size: 0.82rem;
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+}

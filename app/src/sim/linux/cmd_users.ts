@@ -26,6 +26,9 @@ import {
 } from './users.ts'
 import { getopt, delay } from './cmdutil.ts'
 
+// shadow-utils (useradd/usermod/groupadd) accept upper case and dots; adduser keeps NAME_REGEX
+const SHADOW_NAME_RE = /^[a-zA-Z_][a-zA-Z0-9_.-]*\$?$/
+
 function lockMsg(c: Ctx, file = '/etc/passwd') {
   c.err(`${c.name}: Permission denied.\n${c.name}: cannot lock ${file}; try again later.\n`)
   return 1
@@ -84,13 +87,22 @@ register(
     }
     if (!c.root) return lockMsg(c)
     const name = o.rest[0]
-    if (!NAME_RE.test(name) || name.length > 32) {
+    if (!SHADOW_NAME_RE.test(name) || name.length > 32) {
       c.err(`useradd: invalid user name '${name}': use --badname to ignore\n`)
       return 3
     }
     if (userByName(c.st, name)) {
       c.err(`useradd: user '${name}' already exists\n`)
       return 9
+    }
+    let expireDays = ''
+    if (o.v.e) {
+      const t = /^\d{4}-\d{2}-\d{2}$/.test(o.v.e) ? Date.parse(o.v.e + 'T00:00:00Z') : NaN
+      if (isNaN(t)) {
+        c.err(`useradd: invalid date '${o.v.e}'\n`)
+        return 3
+      }
+      expireDays = String(Math.floor(t / 86400000))
     }
     const groups = readGroup(c.st)
     let gid: number
@@ -145,6 +157,13 @@ register(
     pw.push({ name, pw: 'x', uid, gid, gecos: o.v.c ?? '', home, shell: o.v.s ?? '/bin/sh' })
     writePasswd(c.st, pw)
     shadowSet(c, name, o.v.p !== undefined ? o.v.p : '!')
+    if (o.v.e || o.v.f !== undefined) {
+      const sh = readShadow(c.st)
+      const e = sh.find((s) => s.name === name)!
+      if (o.v.e) e.expire = expireDays
+      if (o.v.f !== undefined) e.inactive = o.v.f === '-1' ? '' : o.v.f
+      writeShadow(c.st, sh)
+    }
     if (o.v.p !== undefined && !o.v.p.startsWith('$'))
       c.err('\x1b[2m(symulator) uwaga: -p oczekuje hasła już zaszyfrowanego (jak w /etc/shadow); do ustawienia hasła użyj passwd lub chpasswd\x1b[0m\n')
     if (o.f.has('m') && !o.f.has('M')) {
@@ -359,7 +378,7 @@ register(
     let newName = name
     if (o.v.l !== undefined) {
       newName = o.v.l
-      if (!NAME_RE.test(newName)) {
+      if (!SHADOW_NAME_RE.test(newName)) {
         c.err(`usermod: invalid user name '${newName}': use --badname to ignore\n`)
         return 3
       }
@@ -507,7 +526,7 @@ register(
     }
     if (!c.root) return lockMsg(c, '/etc/group')
     const name = o.rest[0]
-    if (!NAME_RE.test(name)) {
+    if (!SHADOW_NAME_RE.test(name)) {
       c.err(`groupadd: '${name}' is not a valid group name\n`)
       return 3
     }
@@ -664,7 +683,7 @@ async function askNewPassword(c: Ctx): Promise<string | null> {
   return p1
 }
 register('passwd', async (c) => {
-  const o = getopt(c, c.args, 'ludSea', { lock: 'l', unlock: 'u', delete: 'd', status: 'S', expire: 'e', all: 'a' })
+  const o = getopt(c, c.args, 'ludSean:x:w:i:', { lock: 'l', unlock: 'u', delete: 'd', status: 'S', expire: 'e', all: 'a', mindays: 'n', maxdays: 'x', warndays: 'w', inactive: 'i' })
   if (!o) return 1
   const target = o.rest[0] ?? c.p.user
   if (!userByName(c.st, target)) {
@@ -681,6 +700,27 @@ register('passwd', async (c) => {
     const st = e.hash.startsWith('!') ? 'L' : e.hash === '' ? 'NP' : e.hash === '*' ? 'L' : 'P'
     const d = new Date(+e.lastchg * 86400000)
     c.outln(`${target} ${st} ${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}/${d.getFullYear()} ${e.min || 0} ${e.max || 99999} ${e.warn || 7} ${e.inactive || -1}`)
+    return 0
+  }
+  const aging = (['n', 'x', 'w', 'i'] as const).filter((k) => o.v[k] !== undefined)
+  if (aging.length) {
+    if (!c.root) {
+      c.err('passwd: Permission denied.\n')
+      return 1
+    }
+    for (const k of aging) {
+      const v = o.v[k]!
+      if (!/^-?\d+$/.test(v)) {
+        c.err(`passwd: invalid numeric argument '${v}'\n`)
+        return 3
+      }
+      if (k === 'n') e.min = v
+      if (k === 'x') e.max = v
+      if (k === 'w') e.warn = v
+      if (k === 'i') e.inactive = v === '-1' ? '' : v
+    }
+    writeShadow(c.st, sh)
+    c.outln('passwd: password expiry information changed.')
     return 0
   }
   if (o.f.has('l') || o.f.has('u') || o.f.has('d') || o.f.has('e')) {

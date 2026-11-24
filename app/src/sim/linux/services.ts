@@ -194,6 +194,7 @@ export const PKGS: Record<string, PkgDef> = {
     }),
   },
   'openssh-server': { deps: ['openssh-sftp-server'], sizeKB: 523, version: '1:9.6p1-3ubuntu13.5', desc: 'secure shell (SSH) server', services: ['ssh'] },
+  smartmontools: { deps: ['libcap-ng0'], sizeKB: 643, version: '7.4-2build1', desc: 'control and monitor storage systems using S.M.A.R.T.', services: [] },
   'net-tools': { deps: [], sizeKB: 204, version: '2.10-0.1ubuntu4', desc: 'NET-3 networking toolkit' },
   mc: { deps: ['mc-data', 'libssh2-1t64', 'unzip'], sizeKB: 1532, version: '3:4.8.30-1ubuntu0.1', desc: 'Midnight Commander - a powerful file manager' },
   tree: { deps: [], sizeKB: 47, version: '2.1.1-2ubuntu3', desc: 'displays an indented directory tree, in color' },

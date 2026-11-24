@@ -2,16 +2,21 @@ import { useState, type FormEvent } from 'react'
 import type { PortMembership, SwitchState } from '../types'
 import {
   Actions,
+  ConfirmBox,
+  DataTable,
   MsgBox,
   Panel,
   PlHint,
   RadioRow,
+  Row,
   SelectRow,
   TextRow,
   useMsg,
   validateNewPassword,
   type ShellApi,
 } from '../router/shell'
+import { GenericForm, GenericList, type Values } from '../router/generic'
+import { SWITCH_FORMS, SWITCH_LISTS } from './specs'
 import { isHostIn, isIp, isUnset, isValidMask, sameSubnet } from '../router/ip'
 import { defaultSwitchState } from './defaults'
 
@@ -23,32 +28,46 @@ export interface SwitchPageProps {
 }
 
 export function SwitchPage(props: SwitchPageProps) {
-  switch (props.page) {
+  const { page, state, onChange } = props
+  switch (page) {
     case 'sys-info':
       return <SystemInfoPage {...props} />
     case 'sys-ip':
       return <IpSettingPage {...props} />
     case 'sys-user':
       return <UserAccountPage {...props} />
+    case 'sys-backup':
+      return <BackupPage {...props} />
+    case 'sys-reboot':
+      return <RebootPage {...props} />
+    case 'sys-reset':
+      return <ResetPage {...props} />
+    case 'sys-fw':
+      return <FirmwarePage {...props} />
     case 'sw-port':
       return <PortSettingPage {...props} />
     case 'sw-igmp':
       return <IgmpPage {...props} />
+    case 'mon-stats':
+      return <PortStatsPage {...props} />
     case 'mon-mirror':
       return <MirrorPage {...props} />
+    case 'mon-cable':
+      return <CableTestPage {...props} />
     case 'mon-loop':
       return <LoopPage {...props} />
     case 'vlan-q':
       return <VlanPage {...props} />
     case 'vlan-pvid':
       return <PvidPage {...props} />
-    case 'tools-reboot':
-      return <RebootPage {...props} />
-    case 'tools-reset':
-      return <ResetPage {...props} />
-    default:
-      return <SystemInfoPage {...props} />
   }
+  const saveExtra = (v: unknown) => onChange({ ...state, extra: { ...(state.extra ?? {}), [page]: v } })
+  const form = SWITCH_FORMS[page]
+  if (form) return <GenericForm pageId={page} idPrefix="sw" spec={form(state)} stored={state.extra?.[page]} onSave={saveExtra} />
+  const list = SWITCH_LISTS[page]
+  if (list)
+    return <GenericList pageId={page} idPrefix="sw" spec={list(state)} stored={state.extra?.[page]} onSave={(rows: Values[]) => saveExtra(rows)} />
+  return <SystemInfoPage {...props} />
 }
 
 // ---------------------------------------------------------------------------
@@ -56,7 +75,9 @@ export function SwitchPage(props: SwitchPageProps) {
 // ---------------------------------------------------------------------------
 
 const APPLIED = 'Operation successful.'
-const SWITCH_MAC = '02-5A-7C-11-4F-2A'
+export const SWITCH_MAC = '02-5A-7C-11-4F-2A'
+export const SWITCH_FW = '1.0.0 Build 20230218 Rel.61318'
+
 
 function portNums(n: number): number[] {
   return Array.from({ length: n }, (_, i) => i + 1)
@@ -134,22 +155,6 @@ function linkStatus(s: SwitchState, i: number): string {
   return i < 3 ? '1000M Full' : i === 3 ? '100M Full' : 'Link Down'
 }
 
-function ConfirmBox(props: { text: string; onOk: () => void; onCancel: () => void; danger?: boolean }) {
-  return (
-    <div className="dv-confirm" role="alertdialog" aria-label="Confirm">
-      <p>{props.text}</p>
-      <Actions>
-        <button type="button" className={`dv-btn${props.danger ? ' dv-btn-danger' : ''}`} onClick={props.onOk} autoFocus>
-          OK
-        </button>
-        <button type="button" className="dv-btn dv-btn-2" onClick={props.onCancel}>
-          Cancel
-        </button>
-      </Actions>
-    </div>
-  )
-}
-
 // ---------------------------------------------------------------------------
 // System
 // ---------------------------------------------------------------------------
@@ -157,24 +162,19 @@ function ConfirmBox(props: { text: string; onOk: () => void; onCancel: () => voi
 function SystemInfoPage({ state }: SwitchPageProps) {
   return (
     <Panel title="System Info">
-      <dl className="dv-kv">
-        <dt>Device Description</dt>
-        <dd>{state.model}</dd>
-        <dt>MAC Address</dt>
-        <dd className="dv-mono">{SWITCH_MAC}</dd>
-        <dt>IP Address</dt>
-        <dd>{state.ip.ip}</dd>
-        <dt>Subnet Mask</dt>
-        <dd>{state.ip.mask}</dd>
-        <dt>Default Gateway</dt>
-        <dd>{state.ip.gateway || '0.0.0.0'}</dd>
-        <dt>DHCP Setting</dt>
-        <dd>{state.ip.dhcp ? 'Enabled' : 'Disabled'}</dd>
-        <dt>Firmware Version</dt>
-        <dd>1.0.0 Build 20230218 Rel.61318</dd>
-        <dt>Hardware Version</dt>
-        <dd>{state.model.replace(/\s*\(.*\)\s*$/, '')} 6.0</dd>
-      </dl>
+      <DataTable
+        className="dv-kvtable"
+        columns={['Item', 'Value']}
+        rows={[
+          ['Device Description', state.model],
+          ['MAC Address', SWITCH_MAC],
+          ['IP Address', state.ip.ip],
+          ['Subnet Mask', state.ip.mask],
+          ['Default Gateway', state.ip.gateway || '0.0.0.0'],
+          ['Firmware Version', SWITCH_FW],
+          ['Hardware Version', `${state.model.replace(/\s*\(.*\)\s*$/, '')} 6.0`],
+        ].map(([k, v]) => ({ key: k, cells: [k, v] }))}
+      />
     </Panel>
   )
 }
@@ -239,7 +239,7 @@ function IpSettingPage({ state, onChange }: SwitchPageProps) {
   )
 }
 
-function UserAccountPage({ state, onChange, api }: SwitchPageProps) {
+function UserAccountPage({ state, onChange }: SwitchPageProps) {
   const [user, setUser] = useState(state.adminUser)
   const [old, setOld] = useState('')
   const [pw, setPw] = useState('')
@@ -259,8 +259,8 @@ function UserAccountPage({ state, onChange, api }: SwitchPageProps) {
     } else if (u === state.adminUser) {
       return setMsg({ kind: 'err', text: 'Please enter the new password.' })
     }
+    // the session ends (credentials changed) → login page, as on the real switch
     onChange({ ...state, adminUser: u, adminPassword: newPw, passwordChanged: state.passwordChanged || newPw !== state.adminPassword })
-    api.reboot('The user account has been modified. Please log in again…')
   }
   return (
     <form onSubmit={save} noValidate>
@@ -277,23 +277,67 @@ function UserAccountPage({ state, onChange, api }: SwitchPageProps) {
           autoComplete="new-password"
           hint="(6–16 characters, no spaces)"
         />
-        <TextRow
-          id="sw-user-confirm"
-          label="Confirm Password"
-          type="password"
-          value={pw2}
-          onChange={setPw2}
-          maxLength={16}
-          autoComplete="new-password"
-        />
+        <TextRow id="sw-user-confirm" label="Confirm Password" type="password" value={pw2} onChange={setPw2} maxLength={16} autoComplete="new-password" />
         <MsgBox msg={msg} />
         <Actions>
           <button type="submit" className="dv-btn">
             Apply
           </button>
         </Actions>
+        <PlHint>Po zmianie konta przełącznik wyloguje Cię – zaloguj się nowymi danymi.</PlHint>
       </Panel>
     </form>
+  )
+}
+
+function BackupPage({ api }: SwitchPageProps) {
+  const [msg, setMsg] = useMsg()
+  return (
+    <>
+      <Panel title="Backup">
+        <p className="dv-intro">Click the Backup button to save the current configuration to your computer.</p>
+        <MsgBox msg={msg} />
+        <Actions>
+          <button type="button" className="dv-btn" onClick={() => setMsg({ kind: 'ok', text: 'The configuration file has been saved.' })}>
+            Backup Config
+          </button>
+        </Actions>
+      </Panel>
+      <Panel title="Restore">
+        <Row id="sw-restore-file" label="Configuration File">
+          <input id="sw-restore-file" type="file" className="dv-file" />
+        </Row>
+        <Actions>
+          <button type="button" className="dv-btn" onClick={() => api.reboot('Restoring the configuration, the switch will reboot…')}>
+            Restore Config
+          </button>
+        </Actions>
+      </Panel>
+    </>
+  )
+}
+
+function FirmwarePage({ state }: SwitchPageProps) {
+  const [msg, setMsg] = useMsg()
+  return (
+    <Panel title="Firmware Upgrade">
+      <Row label="Firmware Version">
+        <span className="dv-static">{SWITCH_FW}</span>
+      </Row>
+      <Row label="Hardware Version">
+        <span className="dv-static">{state.model.replace(/\s*\(.*\)\s*$/, '')} 6.0</span>
+      </Row>
+      <Row id="sw-fw-file" label="Firmware File">
+        <input id="sw-fw-file" type="file" className="dv-file" />
+      </Row>
+      <MsgBox msg={msg} />
+      <Actions>
+        <button type="button" className="dv-btn" onClick={() => setMsg({ kind: 'err', text: 'Please select a firmware file.' })}>
+          Upgrade
+        </button>
+      </Actions>
+      <PlHint>Nie wyłączaj zasilania podczas aktualizacji oprogramowania.</PlHint>
+    </Panel>
   )
 }
 
@@ -312,42 +356,27 @@ function PortSettingPage({ state, onChange }: SwitchPageProps) {
   return (
     <form onSubmit={save} noValidate>
       <Panel title="Port Setting">
-        <div className="dv-table-wrap">
-          <table className="dv-table">
-            <thead>
-              <tr>
-                <th scope="col">Port</th>
-                <th scope="col">Status</th>
-                <th scope="col">Speed/Duplex</th>
-                <th scope="col">Flow Control</th>
-                <th scope="col">Link Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {portNums(state.ports).map((p, i) => (
-                <tr key={p}>
-                  <th scope="row">
-                    <label htmlFor={`sw-port-${p}`}>Port {p}</label>
-                  </th>
-                  <td>
-                    <select
-                      id={`sw-port-${p}`}
-                      className="dv-select dv-input-sm"
-                      value={en[i] ? 'on' : 'off'}
-                      onChange={(e) => setEn(en.map((x, j) => (j === i ? e.target.value === 'on' : x)))}
-                    >
-                      <option value="on">Enable</option>
-                      <option value="off">Disable</option>
-                    </select>
-                  </td>
-                  <td>Auto</td>
-                  <td>Off</td>
-                  <td>{linkStatus({ ...state, portEnabled: en }, i)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <DataTable
+          columns={['Port', 'Status', 'Speed/Duplex', 'Flow Control', 'Link Status']}
+          rows={portNums(state.ports).map((p, i) => ({
+            key: String(p),
+            cells: [
+              <label htmlFor={`sw-port-${p}`}>Port {p}</label>,
+              <select
+                id={`sw-port-${p}`}
+                className="dv-select dv-input-sm"
+                value={en[i] ? 'on' : 'off'}
+                onChange={(e) => setEn(en.map((x, j) => (j === i ? e.target.value === 'on' : x)))}
+              >
+                <option value="on">Enable</option>
+                <option value="off">Disable</option>
+              </select>,
+              'Auto',
+              'Off',
+              linkStatus({ ...state, portEnabled: en }, i),
+            ],
+          }))}
+        />
         <MsgBox msg={msg} />
         <Actions>
           <button type="submit" className="dv-btn">
@@ -418,25 +447,84 @@ function IgmpPage({ state, onChange }: SwitchPageProps) {
 
 function LoopPage({ state, onChange }: SwitchPageProps) {
   return (
-    <>
-      <ToggleForm
-        title="Loop Prevention"
-        name="sw-loop"
-        label="Loop Prevention"
-        value={state.loopPrevention}
-        onSave={(v) => onChange({ ...state, loopPrevention: v })}
-        hint="Detects and blocks loops in the network."
-        pl="Zapobieganie pętlom – blokuje port, na którym wykryto pętlę."
+    <ToggleForm
+      title="Loop Prevention"
+      name="sw-loop"
+      label="Loop Prevention"
+      value={state.loopPrevention}
+      onSave={(v) => onChange({ ...state, loopPrevention: v })}
+      pl="Zapobieganie pętlom – blokuje port, na którym wykryto pętlę."
+    />
+  )
+}
+
+function PortStatsPage({ state }: SwitchPageProps) {
+  const [, setN] = useState(0)
+  return (
+    <Panel title="Port Statistics Info">
+      <DataTable
+        columns={['Port', 'Status', 'Link Status', 'TxGoodPkt', 'TxBadPkt', 'RxGoodPkt', 'RxBadPkt']}
+        rows={portNums(state.ports).map((p, i) => {
+          const up = linkStatus(state, i) !== 'Link Down'
+          return {
+            key: String(p),
+            cells: [`Port ${p}`, state.portEnabled[i] ? 'Enabled' : 'Disabled', linkStatus(state, i), up ? 41250 + p * 977 : 0, 0, up ? 38712 + p * 811 : 0, 0],
+          }
+        })}
       />
-      <ToggleForm
-        title="Spanning Tree"
-        name="sw-stp"
-        label="STP"
-        value={state.stp}
-        onSave={(v) => onChange({ ...state, stp: v })}
-        pl="STP (802.1D) – protokół drzewa rozpinającego, eliminuje pętle przy połączeniach nadmiarowych."
+      <Actions>
+        <button type="button" className="dv-btn" onClick={() => setN((x) => x + 1)}>
+          Refresh
+        </button>
+        <button type="button" className="dv-btn dv-btn-2">
+          Clear
+        </button>
+      </Actions>
+    </Panel>
+  )
+}
+
+function CableTestPage({ state }: SwitchPageProps) {
+  const [sel, setSel] = useState<number[]>([])
+  const [res, setRes] = useState<Record<number, [string, string]>>({})
+  return (
+    <Panel title="Cable Test">
+      <fieldset className="dv-row dv-fieldset">
+        <legend className="dv-label">Select Port:</legend>
+        <div className="dv-field">
+          <div className="dv-radios">
+            {portNums(state.ports).map((p) => (
+              <label key={p} htmlFor={`sw-cable-${p}`} className="dv-radio">
+                <input
+                  id={`sw-cable-${p}`}
+                  type="checkbox"
+                  checked={sel.includes(p)}
+                  onChange={(e) => setSel(e.target.checked ? [...sel, p] : sel.filter((x) => x !== p))}
+                />
+                Port {p}
+              </label>
+            ))}
+          </div>
+        </div>
+      </fieldset>
+      <Actions>
+        <button
+          type="button"
+          className="dv-btn"
+          onClick={() => {
+            const r: Record<number, [string, string]> = {}
+            for (const p of sel) r[p] = linkStatus(state, p - 1) !== 'Link Down' ? ['Normal', `${2 + p}`] : ['Open', '0']
+            setRes(r)
+          }}
+        >
+          Apply
+        </button>
+      </Actions>
+      <DataTable
+        columns={['Port', 'Test Result', 'Cable Fault Distance (m)']}
+        rows={portNums(state.ports).map((p) => ({ key: String(p), cells: [`Port ${p}`, res[p]?.[0] ?? '--', res[p]?.[1] ?? '--'] }))}
       />
-    </>
+    </Panel>
   )
 }
 
@@ -704,41 +792,29 @@ function VlanPage({ state, onChange }: SwitchPageProps) {
       </form>
 
       <Panel title="VLAN Table">
-        <div className="dv-table-wrap">
-          <table className="dv-table">
-            <thead>
-              <tr>
-                <th scope="col">VLAN ID</th>
-                <th scope="col">VLAN Name</th>
-                <th scope="col">Member Ports</th>
-                <th scope="col">Tagged Ports</th>
-                <th scope="col">Untagged Ports</th>
-                <th scope="col">Operation</th>
-              </tr>
-            </thead>
-            <tbody>
-              {state.vlans.map((v) => (
-                <tr key={v.id}>
-                  <td>{v.id}</td>
-                  <td>{v.name || '—'}</td>
-                  <td>{portList(membersOf(v.members, 'any'))}</td>
-                  <td>{portList(membersOf(v.members, 'tagged'))}</td>
-                  <td>{portList(membersOf(v.members, 'untagged'))}</td>
-                  <td>
-                    <button type="button" className="dv-link" onClick={() => edit(v.id)} disabled={off}>
-                      Edit
-                    </button>
-                    {v.id !== 1 ? (
-                      <button type="button" className="dv-link" onClick={() => del(v.id)} disabled={off}>
-                        Delete
-                      </button>
-                    ) : null}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <DataTable
+          columns={['VLAN ID', 'VLAN Name', 'Member Ports', 'Tagged Ports', 'Untagged Ports', 'Operation']}
+          rows={state.vlans.map((v) => ({
+            key: String(v.id),
+            cells: [
+              v.id,
+              v.name || '—',
+              portList(membersOf(v.members, 'any')),
+              portList(membersOf(v.members, 'tagged')),
+              portList(membersOf(v.members, 'untagged')),
+              <span className="dv-ops">
+                <button type="button" className="dv-link" onClick={() => edit(v.id)} disabled={off}>
+                  Edit
+                </button>
+                {v.id !== 1 ? (
+                  <button type="button" className="dv-link" onClick={() => del(v.id)} disabled={off}>
+                    Delete
+                  </button>
+                ) : null}
+              </span>,
+            ],
+          }))}
+        />
         <Hints state={state} />
         <PlHint>
           Untagged = port dostępowy (komputer), Tagged = port trunk (łącze z innym przełącznikiem/ruterem). VLAN 1 nie można
@@ -780,50 +856,32 @@ function PvidPage({ state, onChange }: SwitchPageProps) {
         {off ? <div className="dv-msg dv-msg-info">802.1Q VLAN is disabled. Enable it in VLAN → 802.1Q VLAN.</div> : null}
         <fieldset className="dv-plain" disabled={off}>
           <TextRow id="sw-pvid-value" label="PVID" value={pvid} onChange={setPvid} inputMode="numeric" maxLength={4} hint="(1–4094)" />
-          <div className="dv-table-wrap">
-            <table className="dv-table">
-              <thead>
-                <tr>
-                  <th scope="col" className="dv-center">
-                    <input
-                      type="checkbox"
-                      id="sw-pvid-all"
-                      aria-label="Select all ports"
-                      checked={all}
-                      onChange={(e) => setSel(e.target.checked ? portNums(n) : [])}
-                    />
-                  </th>
-                  <th scope="col">Port</th>
-                  <th scope="col">PVID</th>
-                  <th scope="col">Untagged in VLAN</th>
-                </tr>
-              </thead>
-              <tbody>
-                {portNums(n).map((p, i) => (
-                  <tr key={p}>
-                    <td className="dv-center">
-                      <input
-                        type="checkbox"
-                        id={`sw-pvid-sel-${p}`}
-                        checked={sel.includes(p)}
-                        onChange={(e) => setSel(e.target.checked ? [...sel, p] : sel.filter((x) => x !== p))}
-                      />
-                    </td>
-                    <td>
-                      <label htmlFor={`sw-pvid-sel-${p}`}>Port {p}</label>
-                    </td>
-                    <td>{state.pvid[i] ?? 1}</td>
-                    <td>
-                      {state.vlans
-                        .filter((v) => v.members[i] === 'untagged')
-                        .map((v) => v.id)
-                        .join(', ') || '—'}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <DataTable
+            columns={['Select', 'Port', 'PVID', 'Untagged in VLAN']}
+            rows={portNums(n).map((p, i) => ({
+              key: String(p),
+              cells: [
+                <input
+                  type="checkbox"
+                  id={`sw-pvid-sel-${p}`}
+                  aria-label={`Port ${p}`}
+                  checked={sel.includes(p)}
+                  onChange={(e) => setSel(e.target.checked ? [...sel, p] : sel.filter((x) => x !== p))}
+                />,
+                <label htmlFor={`sw-pvid-sel-${p}`}>Port {p}</label>,
+                state.pvid[i] ?? 1,
+                state.vlans
+                  .filter((v) => v.members[i] === 'untagged')
+                  .map((v) => v.id)
+                  .join(', ') || '—',
+              ],
+            }))}
+          />
+          <Actions>
+            <button type="button" className="dv-btn dv-btn-2" id="sw-pvid-all" onClick={() => setSel(all ? [] : portNums(n))}>
+              {all ? 'Unselect All' : 'Select All'}
+            </button>
+          </Actions>
         </fieldset>
         <MsgBox msg={msg} />
         <Actions>
@@ -846,15 +904,13 @@ function RebootPage({ api }: SwitchPageProps) {
   const [ask, setAsk] = useState(false)
   return (
     <Panel title="System Reboot">
-      <p>Click the Reboot button to reboot the switch.</p>
+      <p className="dv-intro">Click the Reboot button to reboot the switch.</p>
       <Actions>
         <button type="button" className="dv-btn" onClick={() => setAsk(true)} disabled={ask}>
           Reboot
         </button>
       </Actions>
-      {ask ? (
-        <ConfirmBox text="Are you sure you want to reboot the switch?" onOk={() => api.reboot()} onCancel={() => setAsk(false)} />
-      ) : null}
+      {ask ? <ConfirmBox text="Are you sure you want to reboot the switch?" onOk={() => api.reboot()} onCancel={() => setAsk(false)} /> : null}
     </Panel>
   )
 }

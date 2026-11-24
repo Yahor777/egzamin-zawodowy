@@ -3,6 +3,7 @@ import type { FsNode, LinuxState, Disk } from './model.ts'
 import { hashPassword, writePasswd, writeGroup, writeShadow, readPasswd, readGroup, readShadow, today, type PwEntry, type GrEntry } from './users.ts'
 import { loadNetplan, applyNetplan, writeResolv } from './netplan.ts'
 import { PKGS, BASE_PACKAGES, installBins, putFile, findService, startService, svcState, SERVICES, journal } from './services.ts'
+import { apacheDefaultLinks, loadApache } from './apache.ts'
 
 export interface LinuxSetup {
   hostname: string
@@ -495,17 +496,25 @@ SHELL=/bin/sh
     const files = def?.files?.() || {}
     for (const [p, c] of Object.entries(files)) putFile(st, p, c)
   }
-  if (st.packages.includes('apache2')) {
-    L('/etc/apache2/sites-enabled/000-default.conf', '../sites-available/000-default.conf')
-    fs['/etc/apache2/sites-enabled'] = { t: 'd', mode: 0o755, uid: 0, gid: 0, mtime: T0 }
-  }
+  if (st.packages.includes('apache2')) apacheDefaultLinks(st)
   installBins(st)
 
   // ---- setup files
   const users = readPasswd(st)
   for (const [path, content] of Object.entries(setup.files || {})) {
-    const owner = users.find((u) => u.uid >= 1000 && u.uid < 65534 && path.startsWith(u.home + '/'))
+    const owner = users.find((u) => u.uid >= 1000 && u.uid < 65534 && (path.startsWith(u.home + '/') || path.startsWith(`/media/${u.name}/`)))
     putFile(st, path, content, 0o644, owner?.uid ?? 0, owner?.gid ?? 0)
+    // removable media (/media/<user>/<LABEL>/...) is mounted with the user's uid
+    const media = owner && path.startsWith(`/media/${owner.name}/`)
+    if (media) {
+      fs[`/media/${owner.name}`].mode = 0o750
+      fs[`/media/${owner.name}`].gid = owner.gid
+      let cur = `/media/${owner.name}`
+      for (const part of path.slice(cur.length + 1).split('/').slice(0, -1)) {
+        cur += '/' + part
+        Object.assign(fs[cur], { uid: owner.uid, gid: owner.gid })
+      }
+    }
   }
 
   // ---- network
@@ -536,6 +545,7 @@ SHELL=/bin/sh
     }
     enable(d.unit)
     journal(st, d.unit, 'systemd[1]', `Started ${d.unit}.service - ${d.desc}.`)
+    if (d.unit === 'apache2') st.apache = loadApache(st).rt
   }
   return st
 }

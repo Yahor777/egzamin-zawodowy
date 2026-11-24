@@ -43,6 +43,7 @@ export function defaultRouterState(overrides?: Partial<RouterState>): RouterStat
     wifi24: { ...baseWifi },
     wifi5: { ...baseWifi, ssid: 'Router_4F2A_5G', mode: '11a/n/ac mixed' },
     forwarding: [],
+    staticRoutes: [],
     remoteManagement: { enabled: false, port: 80 },
     clients: [
       { name: 'DESKTOP-PC01', mac: '3C-52-82-1A-7B-10', ip: '192.168.0.100', wireless: false },

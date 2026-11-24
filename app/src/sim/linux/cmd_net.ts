@@ -7,7 +7,8 @@ import { checkConf, DHCPD_CONF, DHCPD_HEADER } from './dhcpd.ts'
 import { toApiIfaces, defaultRoute } from './api.ts'
 import { journal } from './services.ts'
 import { delay } from './cmdutil.ts'
-import { readFile, FsError, tryLookup, writeFile } from './vfs.ts'
+import { readFile, FsError, writeFile } from './vfs.ts'
+import { apacheServe, apacheRuntime } from './apache.ts'
 
 function idx(st: LinuxState, i: NetIface) {
   return st.ifaces.indexOf(i) + 2
@@ -485,7 +486,7 @@ function sockets(st: LinuxState): Sock[] {
   if (st.ifaces[0]?.addrs.some((a) => a.dynamic)) out.push({ proto: 'udp', local: st.ifaces[0].addrs.find((a) => a.dynamic)!.cidr.split('/')[0] + '%' + st.ifaces[0].name, port: 68, proc: 'systemd-network', pid: 512 })
   if (on('isc-dhcp-server')) out.push({ proto: 'udp', local: '0.0.0.0', port: 67, proc: 'dhcpd', pid: s('isc-dhcp-server').pid })
   if (on('ssh')) out.push({ proto: 'tcp', local: '0.0.0.0', port: 22, proc: 'sshd', pid: s('ssh').pid }, { proto: 'tcp', local: '[::]', port: 22, proc: 'sshd', pid: s('ssh').pid, v6: true })
-  if (on('apache2')) out.push({ proto: 'tcp', local: '*', port: 80, proc: 'apache2', pid: s('apache2').pid })
+  if (on('apache2')) for (const port of apacheRuntime(st)?.listen ?? [80]) out.push({ proto: 'tcp', local: '*', port, proc: 'apache2', pid: s('apache2').pid })
   if (on('smbd')) out.push({ proto: 'tcp', local: '0.0.0.0', port: 445, proc: 'smbd', pid: s('smbd').pid }, { proto: 'tcp', local: '0.0.0.0', port: 139, proc: 'smbd', pid: s('smbd').pid })
   if (on('nmbd')) out.push({ proto: 'udp', local: '0.0.0.0', port: 137, proc: 'nmbd', pid: s('nmbd').pid }, { proto: 'udp', local: '0.0.0.0', port: 138, proc: 'nmbd', pid: s('nmbd').pid })
   if (on('named')) {
@@ -858,12 +859,7 @@ async function httpGet(c: Ctx, url: string): Promise<{ ok: true; body: string; s
     if ('unreachable' in rr) return { ok: false, code: 7, msg: `Failed to connect to ${host} port ${port} after 0 ms: Couldn't connect to server` }
     return { ok: false, code: 28, msg: `Failed to connect to ${host} port ${port} after 3002 ms: Timeout was reached` }
   }
-  if (port !== 80 || c.st.services.apache2?.active !== 'active') return { ok: false, code: 7, msg: `Failed to connect to ${host} port ${port} after 0 ms: Couldn't connect to server` }
-  let fp = '/var/www/html' + path
-  if (fp.endsWith('/')) fp += 'index.html'
-  const n = tryLookup(c.st, fp)
-  if (!n || n.t !== 'f') return { ok: true, status: 404, body: `<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">\n<html><head>\n<title>404 Not Found</title>\n</head><body>\n<h1>Not Found</h1>\n<p>The requested URL was not found on this server.</p>\n<hr>\n<address>Apache/2.4.58 (Ubuntu) Server at ${host} Port 80</address>\n</body></html>\n` }
-  return { ok: true, status: 200, body: n.c || '' }
+  return apacheServe(c.st, host, port, path)
 }
 register('curl', async (c) => {
   const url = c.args.filter((a) => !a.startsWith('-'))[0]
@@ -873,11 +869,12 @@ register('curl', async (c) => {
   }
   const r = await httpGet(c, url)
   if (!r.ok) {
-    c.err(`curl: (${r.code}) ${r.msg}\n`)
+    const sf = c.args.filter((a) => /^-[a-zA-Z]+$/.test(a)).join('')
+    if (!sf.includes('s') || sf.includes('S')) c.err(`curl: (${r.code}) ${r.msg}\n`)
     return r.code
   }
   if (c.args.includes('-I') || c.args.includes('--head')) {
-    c.outln(`HTTP/1.1 ${r.status === 200 ? '200 OK' : '404 Not Found'}\nDate: ${new Date().toUTCString()}\nServer: Apache/2.4.58 (Ubuntu)\nContent-Length: ${r.body.length}\nContent-Type: text/html\n`)
+    c.outln(`HTTP/1.1 ${r.status} ${r.status === 200 ? 'OK' : r.status === 403 ? 'Forbidden' : 'Not Found'}\nDate: ${new Date().toUTCString()}\nServer: Apache/2.4.58 (Ubuntu)\nContent-Length: ${r.body.length}\nContent-Type: text/html\n`)
     return 0
   }
   c.out(r.body)
@@ -896,7 +893,8 @@ register('wget', async (c) => {
     return 4
   }
   if (r.status !== 200) {
-    c.err(`HTTP request sent, awaiting response... 404 Not Found\n${new Date().toISOString().slice(0, 19).replace('T', ' ')} ERROR 404: Not Found.\n\n`)
+    const t = r.status === 403 ? 'Forbidden' : 'Not Found'
+    c.err(`HTTP request sent, awaiting response... ${r.status} ${t}\n${new Date().toISOString().slice(0, 19).replace('T', ' ')} ERROR ${r.status}: ${t}.\n\n`)
     return 8
   }
   const name = url.replace(/\/$/, '/index.html').split('/').pop() || 'index.html'

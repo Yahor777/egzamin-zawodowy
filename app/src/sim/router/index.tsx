@@ -2,36 +2,39 @@ import { useState } from 'react'
 import type { RouterState } from '../types'
 import { DeviceLayout, DeviceShell, type MenuItem } from './shell'
 import { RouterPage } from './pages'
+import { ROUTER_HELP } from './help'
 import './router.css'
 
 export { defaultRouterState } from './defaults'
 
+// Menu tree of the classic web UI of the TL-WR840N-class router.
 export const ROUTER_MENU: MenuItem[] = [
   { id: 'status', label: 'Status' },
+  { id: 'quick', label: 'Quick Setup' },
+  { id: 'opmode', label: 'Operation Mode' },
   {
     id: 'network',
     label: 'Network',
     children: [
       { id: 'wan', label: 'WAN' },
       { id: 'lan', label: 'LAN' },
+      { id: 'iptv', label: 'IPTV' },
+      { id: 'macclone', label: 'MAC Clone' },
     ],
   },
   {
-    id: 'wl24',
-    label: 'Wireless 2.4GHz',
+    id: 'wireless',
+    label: 'Wireless',
     children: [
-      { id: 'wl24-basic', label: 'Basic Settings' },
-      { id: 'wl24-sec', label: 'Wireless Security' },
+      { id: 'wl-basic', label: 'Wireless Settings' },
+      { id: 'wl-wps', label: 'WPS' },
+      { id: 'wl-sec', label: 'Wireless Security' },
+      { id: 'wl-mac', label: 'Wireless MAC Filtering' },
+      { id: 'wl-adv', label: 'Wireless Advanced' },
+      { id: 'wl-stats', label: 'Wireless Statistics' },
     ],
   },
-  {
-    id: 'wl5',
-    label: 'Wireless 5GHz',
-    children: [
-      { id: 'wl5-basic', label: 'Basic Settings' },
-      { id: 'wl5-sec', label: 'Wireless Security' },
-    ],
-  },
+  { id: 'guest', label: 'Guest Network' },
   {
     id: 'dhcp',
     label: 'DHCP',
@@ -44,49 +47,127 @@ export const ROUTER_MENU: MenuItem[] = [
   {
     id: 'fwd',
     label: 'Forwarding',
-    children: [{ id: 'fwd-vs', label: 'Virtual Servers' }],
+    children: [
+      { id: 'fwd-vs', label: 'Virtual Servers' },
+      { id: 'fwd-pt', label: 'Port Triggering' },
+      { id: 'fwd-dmz', label: 'DMZ' },
+      { id: 'fwd-upnp', label: 'UPnP' },
+    ],
+  },
+  {
+    id: 'security',
+    label: 'Security',
+    children: [
+      { id: 'sec-basic', label: 'Basic Security' },
+      { id: 'sec-adv', label: 'Advanced Security' },
+      { id: 'sec-local', label: 'Local Management' },
+      { id: 'sec-remote', label: 'Remote Management' },
+    ],
+  },
+  { id: 'parental', label: 'Parental Controls' },
+  {
+    id: 'acl',
+    label: 'Access Control',
+    children: [
+      { id: 'acl-rule', label: 'Rule' },
+      { id: 'acl-host', label: 'Host' },
+      { id: 'acl-target', label: 'Target' },
+      { id: 'acl-sched', label: 'Schedule' },
+    ],
+  },
+  {
+    id: 'routing',
+    label: 'Advanced Routing',
+    children: [
+      { id: 'rt-static', label: 'Static Routing List' },
+      { id: 'rt-table', label: 'System Routing Table' },
+    ],
+  },
+  {
+    id: 'bw',
+    label: 'Bandwidth Control',
+    children: [
+      { id: 'bw-settings', label: 'Control Settings' },
+      { id: 'bw-rules', label: 'Rules List' },
+    ],
+  },
+  {
+    id: 'ipmac',
+    label: 'IP & MAC Binding',
+    children: [
+      { id: 'ipmac-set', label: 'Binding Settings' },
+      { id: 'ipmac-arp', label: 'ARP List' },
+    ],
+  },
+  { id: 'ddns', label: 'Dynamic DNS' },
+  {
+    id: 'ipv6',
+    label: 'IPv6',
+    children: [
+      { id: 'ipv6-status', label: 'IPv6 Status' },
+      { id: 'ipv6-wan', label: 'IPv6 WAN' },
+      { id: 'ipv6-lan', label: 'IPv6 LAN' },
+    ],
   },
   {
     id: 'sys',
     label: 'System Tools',
     children: [
-      { id: 'sys-remote', label: 'Remote Management' },
-      { id: 'sys-password', label: 'Password' },
-      { id: 'sys-reboot', label: 'Reboot' },
+      { id: 'sys-time', label: 'Time Settings' },
+      { id: 'sys-diag', label: 'Diagnostic' },
+      { id: 'sys-fw', label: 'Firmware Upgrade' },
       { id: 'sys-factory', label: 'Factory Defaults' },
+      { id: 'sys-backup', label: 'Backup & Restore' },
+      { id: 'sys-reboot', label: 'Reboot' },
+      { id: 'sys-password', label: 'Password' },
+      { id: 'sys-log', label: 'System Log' },
+      { id: 'sys-stats', label: 'Statistics' },
     ],
   },
+  { id: 'logout', label: 'Logout' },
 ]
 
-export function RouterSim({ state, onChange }: { state: RouterState; onChange: (s: RouterState) => void }) {
+export interface RouterSimProps {
+  state: RouterState
+  onChange: (s: RouterState) => void
+  /** true: render only the device web UI (the host provides the browser and checks the address) */
+  embedded?: boolean
+  onLogout?: () => void
+}
+
+export function RouterSim({ state, onChange, embedded, onLogout }: RouterSimProps) {
   const [page, setPage] = useState('status')
   const [notice, setNotice] = useState('')
+  const short = state.model.replace(/\s*\(.*\)\s*$/, '')
   return (
     <DeviceShell
       theme="dv-theme-router"
       idPrefix="rt"
       model={state.model}
-      deviceKind="Wireless N Router — Web Management"
+      deviceKind="300Mbps Wireless N Router"
       deviceIp={state.lan.ip}
-      username="admin"
+      username={state.adminUser ?? 'admin'}
       password={state.adminPassword}
-      mustChangePassword={!state.passwordChanged}
-      pwMin={6}
-      pwMax={32}
-      onSetPassword={(pw) => onChange({ ...state, adminPassword: pw, passwordChanged: true })}
-      factoryHint="Dane fabryczne (naklejka na spodzie): użytkownik admin, hasło admin."
+      ipChangeBehavior="reboot"
+      embedded={embedded}
+      onLogout={onLogout}
+      factoryHint="Dane fabryczne (naklejka na spodzie): http://192.168.0.1, użytkownik admin, hasło admin."
       renderApp={(api) => (
         <DeviceLayout
           idPrefix="rt"
           model={state.model}
-          subtitle="Wireless N Router · 300 Mbps"
+          subtitle={`300Mbps Wireless N Router · Model No. ${short}`}
           menu={ROUTER_MENU}
           page={page}
+          help={ROUTER_HELP}
           onNavigate={(p) => {
             setPage(p)
             setNotice('')
           }}
-          onLogout={api.logout}
+          onLogout={() => {
+            setPage('status')
+            api.logout()
+          }}
         >
           {notice ? (
             <div className="dv-msg dv-msg-info" role="status">
@@ -96,15 +177,7 @@ export function RouterSim({ state, onChange }: { state: RouterState; onChange: (
               </button>
             </div>
           ) : null}
-          <RouterPage
-            key={page}
-            page={page}
-            state={state}
-            onChange={onChange}
-            api={api}
-            go={setPage}
-            setNotice={setNotice}
-          />
+          <RouterPage key={page} page={page} state={state} onChange={onChange} api={api} go={setPage} setNotice={setNotice} />
         </DeviceLayout>
       )}
     />

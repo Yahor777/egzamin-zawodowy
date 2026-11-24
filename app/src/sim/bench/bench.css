@@ -1,0 +1,448 @@
+/* Lab bench ("Стол"): device cards with a front panel, ports, LEDs and patch cables. */
+.bench {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  --face: #2b3135;
+  --face-2: #3a4146;
+  --face-ink: #d7dcd9;
+  --jack: #14181a;
+  --led-on: #4cc477;
+  --led-boot: #e0a43a;
+}
+.bd-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.bd-compact .bd-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+.bd-note {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.93rem;
+}
+.bd-note.warn {
+  background: color-mix(in srgb, var(--learn) 12%, var(--surface));
+  border-color: color-mix(in srgb, var(--learn) 45%, var(--line));
+}
+.bd-note summary {
+  font-weight: 600;
+  cursor: pointer;
+  min-height: 28px;
+}
+.bd-note ol {
+  margin: 6px 0 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.bd-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 12px 14px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  position: relative;
+  overflow: hidden;
+}
+.bd-card.st-off .bd-title {
+  opacity: 0.65;
+}
+.bd-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.bd-title {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+  line-height: 1.25;
+}
+.bd-title small {
+  color: var(--ink-3);
+  font-size: 0.8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.bd-state {
+  font-size: 0.82rem;
+  color: var(--ink-2);
+  flex: none;
+}
+.bd-state.on {
+  color: var(--ok);
+}
+.bd-state.boot {
+  color: var(--learn);
+}
+.bd-pled {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--new);
+  flex: none;
+}
+.bd-pled.on {
+  background: var(--led-on);
+}
+.bd-pled.boot {
+  background: var(--led-boot);
+  animation: bd-blink 0.9s steps(2, start) infinite;
+}
+@keyframes bd-blink {
+  to {
+    opacity: 0.2;
+  }
+}
+.bd-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background: var(--learn);
+  transform-origin: left;
+  animation: bd-fill linear forwards;
+}
+@keyframes bd-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* front panel */
+.bd-face {
+  background: linear-gradient(var(--face-2), var(--face));
+  border-radius: 10px;
+  padding: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.25);
+}
+.bd-face.face-switch {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+}
+.bd-compact .bd-face.face-switch {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.bd-face.face-router .bd-port.wan .pl {
+  color: #8fb6f0;
+}
+.bd-face.face-pc,
+.bd-face.face-laptop,
+.bd-face.face-linux,
+.bd-face.face-printer {
+  background: linear-gradient(#4a5257, #3a4146);
+}
+.bd-port {
+  min-width: 48px;
+  min-height: 56px;
+  padding: 4px 4px 2px;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  color: var(--face-ink);
+  touch-action: manipulation;
+}
+.bd-face:not(.face-switch) .bd-port {
+  flex: 0 1 64px;
+}
+.bd-port:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+.bd-port .jack {
+  position: relative;
+  width: 34px;
+  height: 26px;
+  border-radius: 3px 3px 6px 6px;
+  background: var(--jack);
+  box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  display: grid;
+  place-items: center;
+}
+.bd-port .led {
+  position: absolute;
+  top: -5px;
+  right: -3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #50585d;
+}
+.bd-port.lit .led {
+  background: var(--led-on);
+  box-shadow: 0 0 5px var(--led-on);
+}
+.bd-port .plug {
+  width: 26px;
+  height: 20px;
+  border-radius: 3px;
+  background: var(--cc);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.25);
+}
+.bd-port .pl {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+.bd-port.pick {
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 0 0 2px #fff inset;
+}
+.bd-port.pick .jack {
+  box-shadow: 0 0 0 2px #fff;
+}
+.bd-port.sel {
+  box-shadow: 0 0 0 2px var(--cc) inset;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.bd-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.86rem;
+  color: var(--ink-2);
+  min-width: 0;
+}
+.bd-info:empty {
+  display: none;
+}
+.bd-info span {
+  overflow-wrap: anywhere;
+}
+.bd-info code {
+  font-family: var(--mono);
+  color: var(--ink);
+  font-size: 0.85rem;
+}
+.bd-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: flex-start;
+}
+.bd-actions .btn.small {
+  min-height: 44px;
+}
+.bd-reset-wrap {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.bd-reset {
+  position: relative;
+  overflow: hidden;
+  font-family: var(--mono);
+  letter-spacing: 0.04em;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+}
+.bd-hold {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--bad) 22%, transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.bd-reset.holding .bd-hold {
+  animation: bd-fill 3s linear forwards;
+}
+.bd-reset-hint {
+  font-size: 0.78rem;
+  color: var(--ink-2);
+}
+.bd-why summary {
+  color: var(--pen);
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+}
+.bd-why p {
+  font-size: 0.88rem;
+  color: var(--ink-2);
+}
+
+/* selection bar */
+.bd-bar {
+  position: sticky;
+  bottom: calc(8px + env(safe-area-inset-bottom));
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  background: var(--surface);
+  border: 1px solid var(--ink-3);
+  border-radius: 12px;
+  padding: 8px 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  font-size: 0.92rem;
+}
+.bd-bar-text {
+  flex: 1 1 180px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.bd-bar-msg {
+  color: var(--bad);
+  font-size: 0.85rem;
+}
+.bd-bar .btn.small {
+  min-height: 44px;
+}
+.bd-compact .bd-bar {
+  bottom: calc(72px + env(safe-area-inset-bottom));
+}
+
+/* cables + schema */
+.bd-panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.bd-panel > summary {
+  font-weight: 600;
+  cursor: pointer;
+  min-height: 32px;
+}
+.bd-panel ul {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.92rem;
+}
+.bd-cable {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+}
+.bd-cable.sel .bd-cable-name {
+  color: var(--pen);
+}
+.bd-cable-name {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.93rem;
+  min-height: 44px;
+  justify-content: center;
+}
+.bd-cable-name small {
+  color: var(--ink-3);
+  font-size: 0.8rem;
+}
+.bd-cable-name small.ok {
+  color: var(--ok);
+}
+.bd-swatch {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+.bd-schema {
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.bd-schema h3 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+.bd-schema li.ok {
+  color: var(--ok);
+}
+
+/* lab mode switch */
+.lab-mode {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.seg {
+  display: inline-flex;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.seg button {
+  padding: 6px 12px;
+  min-height: 40px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+.seg button[aria-pressed='true'] {
+  background: var(--pen-soft);
+  color: var(--pen);
+}
+.lab-mode .hint {
+  font-size: 0.82rem;
+  flex: 1 1 200px;
+}
+.dev-off {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 24px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}

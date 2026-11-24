@@ -1,7 +1,7 @@
 // Pure helpers shared by LabPage and the headless lab tests.
 import { linuxApi } from '../linux/api'
 import type { LinuxState } from '../linux/model'
-import { canPing, networkOf, prefixToMask, type DeviceKey, type DhcpServer, type Link, type NetworkModel, type PcState } from '../net'
+import { canPing, defaultPcState, networkOf, prefixToMask, type DeviceKey, type DhcpServer, type Link, type NetworkModel, type PcState } from '../net'
 import type { RouterState, SwitchState } from '../types'
 import type { Lab, LabCtx } from './labs'
 
@@ -101,4 +101,10 @@ export function buildCtx(s: LabSave, model: NetworkModel): LabCtx {
       return !!s.pc && canPing(model, s.pc.adapters.map((a) => `pc:${a.id}`), ip).ok
     },
   }
+}
+
+/** Service laptop for labs without a Windows workstation (so the router can be configured from a browser). */
+export function serviceLaptop(): PcState {
+  const pc = defaultPcState({ hostname: 'LAPTOP-SERWIS' })
+  return { ...pc, adapters: pc.adapters.map((a) => ({ ...a, mac: '3C-52-82-7E-40-19' })) }
 }

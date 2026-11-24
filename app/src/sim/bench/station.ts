@@ -75,7 +75,8 @@ export function useStation(lab: BenchLab, s: LabSave, apply: (p: Partial<LabSave
   const startBoot = useCallback((d: DeviceKey, reason: BootReason, ms = BOOT_MS[d]) => {
     window.clearTimeout(timers.current[d])
     setBoot((b) => ({ ...b, [d]: { until: Date.now() + ms, total: ms, reason } }))
-    setEpoch((e) => ({ ...e, [d]: (e[d] ?? 0) + 1 }))
+    // a reboot started from the web UI keeps the page (it shows the device's own restart screen)
+    if (reason !== 'ui') setEpoch((e) => ({ ...e, [d]: (e[d] ?? 0) + 1 }))
     timers.current[d] = window.setTimeout(() => {
       setBoot((b) => {
         const n = { ...b }

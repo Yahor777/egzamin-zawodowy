@@ -356,6 +356,6 @@ export function addressBook(m: NetworkModel, key: PcKey, booting?: Iterable<Devi
     if (!t.ip) return { ...t, ok: false, note: 'адрес выдаётся по DHCP — смотри список клиентов DHCP роутера', conflict: false }
     const r = browse(m, key, t.ip, { booting })
     const conflict = conf.some((c) => c.ip === t.ip && c.devices.includes(t.key))
-    return { ...t, ok: r.ok && (!r.conflict || r.conflict.includes(t.key)), note: r.ok ? (r.conflict ? r.why[0].short : 'доступен с этого компьютера') : (r.why.at(-1)?.short ?? 'недоступен'), conflict }
+    return { ...t, ok: r.ok && (!r.conflict || r.conflict.includes(t.key)), note: r.ok ? (r.conflict ? r.why[0].short : 'доступен с этого компьютера') : (r.why[0]?.short ?? 'недоступен'), conflict }
   })
 }
