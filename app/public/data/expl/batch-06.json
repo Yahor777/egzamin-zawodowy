@@ -2145,5 +2145,645 @@
    "ru": "Угрозы из Интернета снижаются программно: антивирус с актуальными базами, включённый брандмауэр и обновлённая система (патчи безопасности). Остальные наборы касаются в основном ТБ и оборудования."
   },
   "topic": "security"
+ },
+ "679de96e": {
+  "ru": {
+   "stem": "Для проверки размера каталога в Linux служит команда",
+   "answers": [
+    "du",
+    "cp",
+    "ps",
+    "rm"
+   ]
+  },
+  "expl": {
+   "pl": "du (disk usage) pokazuje zajętość miejsca przez katalogi i pliki, np. du -sh /home. cp kopiuje, ps wyświetla procesy, rm usuwa.",
+   "ru": "du (disk usage) показывает занятое каталогами и файлами место, например du -sh /home. cp копирует, ps показывает процессы, rm удаляет."
+  }
+ },
+ "6857842d": {
+  "ru": {
+   "stem": "Чтобы предотвратить несанкционированные изменения в учётной записи пользователя Windows 7, 8 или 10, требующие прав администратора, нужно настроить",
+   "answers": [
+    "UAC",
+    "JOBS",
+    "POPD",
+    "SUDO"
+   ]
+  },
+  "expl": {
+   "pl": "UAC (Kontrola konta użytkownika) wymaga potwierdzenia lub hasła administratora przed zmianami wymagającymi podwyższonych uprawnień. sudo to mechanizm Linuksa, a popd – polecenie zmiany katalogu.",
+   "ru": "UAC (Контроль учётных записей) требует подтверждения или пароля администратора перед изменениями, требующими повышенных прав. sudo – механизм Linux, а popd – команда смены каталога."
+  },
+  "topic": "security"
+ },
+ "6a78833f": {
+  "ru": {
+   "stem": "Показанный встроенный инструмент систем Windows в версиях Enterprise или Ultimate служит для",
+   "answers": [
+    "криптографической защиты данных на дисках.",
+    "консолидации данных на дисках.",
+    "создания копии диска.",
+    "сжатия диска."
+   ]
+  },
+  "expl": {
+   "pl": "Na zrzucie widać BitLocker i BitLocker To Go – narzędzie do szyfrowania całych dysków (także wymiennych), czyli kryptograficznej ochrony danych.",
+   "ru": "На скриншоте BitLocker и BitLocker To Go – инструмент шифрования целых дисков (в том числе съёмных), т.е. криптографической защиты данных."
+  }
+ },
+ "70bec285": {
+  "ru": {
+   "stem": "В Windows использование представленной команды вызовет временное изменение цвета",
+   "answers": [
+    "фона и шрифта окна Windows.",
+    "строки заголовка окна Windows.",
+    "шрифта командной строки.",
+    "фона окна командной строки."
+   ]
+  },
+  "expl": {
+   "pl": "color z jedną cyfrą szesnastkową ustawia tylko kolor tekstu w bieżącym oknie wiersza poleceń (1 = niebieski), tło pozostaje domyślne (czarne). Dwie cyfry ustawiłyby tło i tekst.",
+   "ru": "color с одной шестнадцатеричной цифрой задаёт только цвет текста в текущем окне командной строки (1 = синий), фон остаётся по умолчанию (чёрный). Две цифры задали бы фон и текст."
+  }
+ },
+ "70d727ce": {
+  "ru": {
+   "stem": "Разделом Linux, временно хранящим данные при нехватке свободной RAM, является",
+   "answers": [
+    "var",
+    "sys",
+    "tmp",
+    "swap"
+   ]
+  },
+  "expl": {
+   "pl": "Partycja swap (wymiany) przechowuje strony pamięci przenoszone z RAM, gdy jej brakuje. /tmp to katalog plików tymczasowych, a /var – danych zmiennych (logi, kolejki).",
+   "ru": "Раздел swap (подкачки) хранит страницы памяти, вытесненные из RAM при её нехватке. /tmp – каталог временных файлов, а /var – изменяемых данных (логи, очереди)."
+  }
+ },
+ "750e1a1d": {
+  "ru": {
+   "stem": "Представленные команды, выполненные в CLI маршрутизатора CISCO, приведут к",
+   "answers": [
+    "разрешению трафика, исходящего из сети с адресом 10.0.0.1",
+    "определению пула внутренних адресов 10.0.0.1 ÷ 255.255.255.0",
+    "настройке внешнего интерфейса с адресом 10.0.0.1/24 для технологии NAT",
+    "настройке внутреннего интерфейса с адресом 10.0.0.1/24 для технологии NAT"
+   ]
+  },
+  "expl": {
+   "pl": "Interfejsowi FastEthernet 0/0 nadano adres 10.0.0.1 z maską 255.255.255.0 (/24), a ip nat inside oznacza go jako wewnętrzny dla NAT. Interfejs zewnętrzny oznacza się ip nat outside.",
+   "ru": "Интерфейсу FastEthernet 0/0 назначен адрес 10.0.0.1 с маской 255.255.255.0 (/24), а ip nat inside помечает его как внутренний для NAT. Внешний интерфейс помечают ip nat outside."
+  }
+ },
+ "7532eb1d": {
+  "ru": {
+   "stem": "В сканере с микросхемами CIS освещающим сканируемый документ элементом является",
+   "answers": [
+    "лампа дневного света.",
+    "набор ламп накаливания.",
+    "флуоресцентная лампа.",
+    "группа трёхцветных светодиодов LED."
+   ]
+  },
+  "expl": {
+   "pl": "W skanerach CIS (Contact Image Sensor) dokument oświetla listwa diod LED w trzech kolorach (RGB) tuż przy czujniku. Świetlówka (lampa fluorescencyjna) jest typowa dla skanerów CCD.",
+   "ru": "В сканерах CIS (Contact Image Sensor) документ освещает линейка трёхцветных светодиодов (RGB) прямо у датчика. Люминесцентная лампа характерна для сканеров CCD."
+  }
+ },
+ "75e83af6": {
+  "ru": {
+   "stem": "Сразу после обнаружения потери важных файлов на жёстком диске пользователь должен",
+   "answers": [
+    "защитить диск от записи новых данных.",
+    "выполнить тест S. M. A. R. T. этого диска.",
+    "установить диагностическую программу.",
+    "выполнить дефрагментацию диска."
+   ]
+  },
+  "expl": {
+   "pl": "Usunięte pliki fizycznie wciąż są na dysku, dopóki nie zostaną nadpisane – dlatego trzeba natychmiast przerwać zapis. Instalacja programów czy defragmentacja mogą nadpisać dane i uniemożliwić odzyskanie.",
+   "ru": "Удалённые файлы физически остаются на диске, пока не перезаписаны, поэтому запись нужно сразу прекратить. Установка программ или дефрагментация могут перезаписать данные и сделать восстановление невозможным."
+  }
+ },
+ "76c7884a": {
+  "ru": {
+   "stem": "К показанной на рисунке материнской плате нельзя подключить устройство, использующее разъём",
+   "answers": [
+    "IDE",
+    "PCI",
+    "AGP",
+    "SATA"
+   ]
+  },
+  "expl": {
+   "pl": "Płyta ma białe gniazda PCI, niebieskie PCI Express x16 dla grafiki, kolorowe złącza SATA i złącze IDE – ale nie ma gniazda AGP (zastąpionego przez PCIe x16).",
+   "ru": "У платы есть белые слоты PCI, синий PCI Express x16 для видеокарты, цветные разъёмы SATA и разъём IDE – но нет слота AGP (его заменил PCIe x16)."
+  },
+  "stemFix": "Do przedstawionej na rysunku płyty głównej nie można podłączyć urządzenia wykorzystującego złącze"
+ },
+ "79b0e841": {
+  "ru": {
+   "stem": "На показанной материнской плате возможна установка процессора с корпусом типа",
+   "answers": [
+    "LGA",
+    "PGA",
+    "SECC",
+    "SPGA"
+   ]
+  },
+  "expl": {
+   "pl": "Na schemacie jest gniazdo z ramką dociskową i dźwignią, bez otworów na piny – to gniazdo LGA (piny są w gnieździe, procesor ma płaskie pola stykowe). PGA i SPGA mają piny w procesorze, SECC to obudowa kartridżowa.",
+   "ru": "На схеме сокет с прижимной рамкой и рычагом, без отверстий под контакты – это LGA (контакты в сокете, у процессора плоские площадки). У PGA и SPGA ножки на процессоре, SECC – картриджный корпус."
+  }
+ },
+ "7b018a00": {
+  "ru": {
+   "stem": "Какой тип лицензии даёт право на любые модификации, копирование и распространение после внесения произвольной оплаты в пользу автора?",
+   "answers": [
+    "adware.",
+    "shareware.",
+    "postcardware.",
+    "donationware."
+   ]
+  },
+  "expl": {
+   "pl": "Donationware to oprogramowanie, za które użytkownik płaci dobrowolną, dowolną kwotę (darowiznę) autorowi. Postcardware wymaga wysłania pocztówki, a adware jest finansowane reklamami.",
+   "ru": "Donationware – ПО, за которое пользователь платит автору добровольную произвольную сумму (пожертвование). Postcardware требует отправить открытку, а adware финансируется рекламой."
+  }
+ },
+ "7b3c951d": {
+  "ru": {
+   "stem": "Чтобы повысить производительность компьютера, можно установить процессор с поддержкой технологии Hyper-Threading, позволяющей",
+   "answers": [
+    "увеличить тактовую частоту.",
+    "выполнять одним ядром процессора две независимые задачи одновременно.",
+    "автоматически регулировать частоту ядер процессора в зависимости от нагрузки.",
+    "обмениваться данными между процессором и жёстким диском со скоростью работы процессора."
+   ]
+  },
+  "expl": {
+   "pl": "Hyper-Threading pozwala jednemu fizycznemu rdzeniowi obsługiwać dwa wątki naraz (system widzi dwa rdzenie logiczne). Automatyczna regulacja częstotliwości to Turbo Boost/SpeedStep.",
+   "ru": "Hyper-Threading позволяет одному физическому ядру обрабатывать два потока одновременно (система видит два логических ядра). Автоматическая регулировка частоты – это Turbo Boost/SpeedStep."
+  }
+ },
+ "7c0d6157": {
+  "ru": {
+   "stem": "Администратор Linux вывел содержимое каталога /home/szkoła в терминале и получил следующий результат. Затем он выполнил команду. Каким будет результат её действия, выведенный в окне терминала?",
+   "answers": [
+    "-rw- rw- rw- 1 admin admin 25 04-09 15:17 szkola.txt",
+    "-rwx --x rw- 1 admin admin 25 04-09 15:17 szkola.txt",
+    "-rwx r-x r-x 1 admin admin 25 04-09 15:17 szkola.txt",
+    "-rw- rw- r-x 1 admin admin 25 04-09 15:17 szkola.txt"
+   ]
+  },
+  "expl": {
+   "pl": "Przed: -rwx --x r-x. chmod ug=rw ustawia dokładnie rw dla właściciela i grupy (x właściciela znika), a prawa innych (r-x) pozostają bez zmian. Wynik: -rw- rw- r-x.",
+   "ru": "До: -rwx --x r-x. chmod ug=rw устанавливает ровно rw для владельца и группы (x у владельца пропадает), а права остальных (r-x) не меняются. Результат: -rw- rw- r-x."
+  }
+ },
+ "7c719f38": {
+  "ru": {
+   "stem": "Сотрудник сервиса при обслуживании и чистке лазерного принтера, отключённого от сети, может использовать в качестве средства индивидуальной защиты",
+   "answers": [
+    "салфетку для удаления загрязнений.",
+    "ручной компьютерный пылесос",
+    "узел закрепления.",
+    "защитные перчатки."
+   ]
+  },
+  "expl": {
+   "pl": "Środek ochrony indywidualnej chroni samego pracownika – rękawiczki zabezpieczają dłonie przed tonerem i gorącymi elementami. Chusteczka i odkurzacz to narzędzia do czyszczenia.",
+   "ru": "Средство индивидуальной защиты защищает самого работника – перчатки берегут руки от тонера и горячих деталей. Салфетка и пылесос – это инструменты для чистки."
+  }
+ },
+ "7cdd6201": {
+  "ru": {
+   "stem": "После проверки компьютера диагностической программой выяснилось, что рабочая температура видеокарты с выходами HDMI и D-SUB, установленной в слот PCI Express стационарного компьютера, составляет 87°C. В таком случае сервисный специалист должен",
+   "answers": [
+    "заменить сигнальный кабель D-SUB на HDMI.",
+    "проверить, исправен ли вентилятор и не запылён ли он.",
+    "установить дополнительный модуль RAM, чтобы разгрузить карту.",
+    "заменить жёсткий диск на новый, аналогичного объёма и скорости вращения."
+   ]
+  },
+  "expl": {
+   "pl": "Zbyt wysoka temperatura karty graficznej najczęściej wynika z niesprawnego lub zakurzonego wentylatora/radiatora – to trzeba sprawdzić najpierw. Kabel sygnałowy, RAM czy dysk nie wpływają na jej chłodzenie.",
+   "ru": "Слишком высокая температура видеокарты чаще всего вызвана неисправным или запылённым вентилятором/радиатором – это проверяют в первую очередь. Сигнальный кабель, RAM или диск на её охлаждение не влияют."
+  },
+  "topic": "hardware"
+ },
+ "7d710ed7": {
+  "ru": {
+   "stem": "Управляющим протоколом семейства TCP/IP, задачей которого является, в частности, обнаружение отказов сетевых устройств, является",
+   "answers": [
+    "FDDI",
+    "ICMP",
+    "IMAP",
+    "SMTP"
+   ]
+  },
+  "expl": {
+   "pl": "ICMP przesyła komunikaty o błędach i stanie sieci (np. Destination Unreachable, Echo) – pozwala wykryć niedostępne urządzenia. FDDI to technologia sieci światłowodowej, IMAP i SMTP obsługują pocztę.",
+   "ru": "ICMP передаёт сообщения об ошибках и состоянии сети (например Destination Unreachable, Echo) – позволяет обнаружить недоступные устройства. FDDI – технология оптоволоконной сети, IMAP и SMTP обслуживают почту."
+  }
+ },
+ "8ea2b6ed": {
+  "ru": {
+   "stem": "Настройку сетевого интерфейса в Linux можно выполнить, редактируя файл",
+   "answers": [
+    "/etc/hosts",
+    "/etc/host.conf",
+    "/etc/resolv.conf",
+    "/etc/network/interfaces"
+   ]
+  },
+  "expl": {
+   "pl": "W Debianie/Ubuntu adres IP, maskę i bramę interfejsu ustawia się w /etc/network/interfaces. /etc/hosts mapuje nazwy na IP lokalnie, a /etc/resolv.conf wskazuje serwery DNS.",
+   "ru": "В Debian/Ubuntu IP-адрес, маску и шлюз интерфейса задают в /etc/network/interfaces. /etc/hosts локально сопоставляет имена и IP, а /etc/resolv.conf указывает DNS-серверы."
+  }
+ },
+ "9244bd8a": {
+  "ru": {
+   "stem": "Сервисный специалист выполнил в рамках заказа работы, перечисленные в таблице. Стоимость заказа включает цену услуг из таблицы и стоимость работы специалиста, почасовая ставка которого 60,00 zł нетто. Определите полную стоимость заказа брутто. Ставка НДС на услуги – 23%.",
+   "answers": [
+    "492,00 zł",
+    "455,20 zł",
+    "436,80 zł",
+    "400,00 zł"
+   ]
+  },
+  "expl": {
+   "pl": "Usługi: 20 + 50 + 25 + 45 + 20 = 160 zł. Czas: 35 + 80 + 30 + 65 + 30 = 240 min = 4 h × 60 zł = 240 zł. Netto 400 zł × 1,23 = 492,00 zł brutto.",
+   "ru": "Услуги: 20 + 50 + 25 + 45 + 20 = 160 zł. Время: 35 + 80 + 30 + 65 + 30 = 240 мин = 4 ч × 60 zł = 240 zł. Нетто 400 zł × 1,23 = 492,00 zł брутто."
+  },
+  "topic": "other"
+ },
+ "9464e007": {
+  "ru": {
+   "stem": "Последовательностные схемы, построенные из набора триггеров, чаще всего синхронных типа D, служащие для хранения данных, – это",
+   "answers": [
+    "вентили.",
+    "шифраторы.",
+    "регистры.",
+    "дешифраторы."
+   ]
+  },
+  "expl": {
+   "pl": "Rejestr to zespół przerzutników (zwykle D) przechowujący słowo binarne – każdy przerzutnik pamięta jeden bit. Bramki, kodery i dekodery to układy kombinacyjne bez pamięci.",
+   "ru": "Регистр – набор триггеров (обычно D), хранящий двоичное слово: каждый триггер хранит один бит. Вентили, шифраторы и дешифраторы – комбинационные схемы без памяти."
+  },
+  "topic": "basics"
+ },
+ "949c9ec7": {
+  "ru": {
+   "stem": "Какой процессор нужно использовать при сборке персонального компьютера на базе материнской платы Asus M5A78L-M/USB3 AMD760G socket AM3+?",
+   "answers": [
+    "AMD A8-7600 s.FM2 BOX",
+    "AMD APU A4 6320 3800MHz FM2",
+    "AMD FX 8300 3300MHz AM3+ Oem",
+    "AMD APU A8 7650K 3300MHz FM2+ BOX"
+   ]
+  },
+  "expl": {
+   "pl": "Płyta ma gniazdo AM3+, więc pasuje tylko procesor AM3+ – AMD FX 8300. Procesory APU z gniazdami FM2/FM2+ są fizycznie niekompatybilne.",
+   "ru": "У платы сокет AM3+, поэтому подходит только процессор AM3+ – AMD FX 8300. APU с сокетами FM2/FM2+ физически несовместимы."
+  }
+ },
+ "952d705c": {
+  "ru": {
+   "stem": "Какая лицензия носит групповой характер и позволяет коммерческим учреждениям или образовательным, государственным, благотворительным организациям покупать на выгодных условиях большее количество программного обеспечения Microsoft?",
+   "answers": [
+    "MPL",
+    "OEM",
+    "APSL",
+    "MOLP"
+   ]
+  },
+  "expl": {
+   "pl": "MOLP (Microsoft Open License Program) to licencja grupowa (zbiorcza) Microsoft dla firm i instytucji kupujących wiele licencji. OEM jest przypisana do jednego komputera, a MPL i APSL to licencje open source.",
+   "ru": "MOLP (Microsoft Open License Program) – групповая (корпоративная) лицензия Microsoft для организаций, покупающих много лицензий. OEM привязана к одному компьютеру, а MPL и APSL – лицензии open source."
+  }
+ },
+ "959d4df3": {
+  "ru": {
+   "stem": "Пользователь Windows с помощью программы Cipher может",
+   "answers": [
+    "защищать данные путём шифрования файлов.",
+    "просканировать систему на наличие вредоносного ПО.",
+    "выполнить инкрементную резервную копию системных файлов.",
+    "удалить учётную запись пользователя вместе с её профилем и документами."
+   ]
+  },
+  "expl": {
+   "pl": "cipher to narzędzie wiersza poleceń do szyfrowania i odszyfrowywania plików i folderów w systemie EFS na NTFS (cipher /e szyfruje). Nie skanuje malware ani nie robi kopii.",
+   "ru": "cipher – утилита командной строки для шифрования и расшифровки файлов и папок через EFS на NTFS (cipher /e шифрует). Она не ищет вредоносное ПО и не делает копий."
+  }
+ },
+ "9c1739f5": {
+  "ru": {
+   "stem": "Функцию буфера между медленной оперативной памятью и быстрым процессором выполняет память",
+   "answers": [
+    "SSD",
+    "FDD",
+    "ROM",
+    "CACHE"
+   ]
+  },
+  "expl": {
+   "pl": "Pamięć podręczna cache (L1, L2, L3) jest szybka i leży blisko procesora – przechowuje często używane dane, by procesor nie czekał na wolniejszą RAM. SSD i FDD to nośniki danych, ROM – pamięć stała.",
+   "ru": "Кэш-память (L1, L2, L3) быстрая и находится рядом с процессором – хранит часто используемые данные, чтобы процессор не ждал медленную RAM. SSD и FDD – накопители, ROM – постоянная память."
+  }
+ },
+ "9cf59670": {
+  "ru": {
+   "stem": "Импульсный трансформатор в показанном блоке питания обозначен символом",
+   "answers": [
+    "",
+    "",
+    "",
+    ""
+   ]
+  },
+  "expl": {
+   "pl": "Transformator impulsowy to żółty element z uzwojeniem na rdzeniu ferrytowym i oznaczeniem typu – symbol A. B to radiator, C – kondensator elektrolityczny, D – dławik (cewka toroidalna).",
+   "ru": "Импульсный трансформатор – жёлтый элемент с обмоткой на ферритовом сердечнике и маркировкой – символ A. B – радиатор, C – электролитический конденсатор, D – дроссель (тороидальная катушка)."
+  }
+ },
+ "9e870d7e": {
+  "ru": {
+   "stem": "Чтобы демонтировать жёсткий диск, закреплённый в ноутбуке показанными монтажными винтами, лучше всего использовать отвёртку типа",
+   "answers": [
+    "spanner.",
+    "philips.",
+    "imbus.",
+    "torx."
+   ]
+  },
+  "expl": {
+   "pl": "Śruby mają na łbie krzyżowe nacięcie typu Phillips, więc potrzebny jest wkrętak krzyżowy philips. Torx to gwiazdka, imbus – sześciokąt, spanner – dwa otworki.",
+   "ru": "У винтов на головке крестовой шлиц Phillips, поэтому нужна крестовая отвёртка philips. Torx – звёздочка, imbus – шестигранник, spanner – два отверстия."
+  }
+ },
+ "a473caa4": {
+  "ru": {
+   "stem": "С помощью программы Acrylic Wi-Fi Home выполнен тест, результаты которого показаны на скриншоте. На их основе можно утверждать, что доступная беспроводная сеть",
+   "answers": [
+    "не зашифрована.",
+    "использует каналы 10 ÷ 12.",
+    "имеет очень хорошее качество сигнала.",
+    "достигает максимальной скорости передачи 72 Mbps."
+   ]
+  },
+  "expl": {
+   "pl": "W kolumnie WEP/WPA widnieje Open, a Network Security ma pół gwiazdki – sieć jest otwarta, bez szyfrowania. Kanały to 6+10, maksymalna prędkość 150 Mbps, a jakość sygnału (RSSI −72) jest słaba.",
+   "ru": "В колонке WEP/WPA указано Open, а Network Security – ползвезды: сеть открыта, без шифрования. Каналы – 6+10, максимальная скорость 150 Mbps, а качество сигнала (RSSI −72) слабое."
+  }
+ },
+ "a8978935": {
+  "ru": {
+   "stem": "В системах Linux для добавления репозитория можно использовать команды",
+   "answers": [
+    "zypper ar и add-apt-repository",
+    "zypper ref и add-apt-repository",
+    "zypper rr и remove-apt-repository",
+    "zypper lr и remove-apt-repository"
+   ]
+  },
+  "expl": {
+   "pl": "zypper ar (addrepo) dodaje repozytorium w openSUSE, a add-apt-repository – w Ubuntu/Debianie. zypper ref odświeża, rr usuwa, a lr wyświetla listę repozytoriów.",
+   "ru": "zypper ar (addrepo) добавляет репозиторий в openSUSE, а add-apt-repository – в Ubuntu/Debian. zypper ref обновляет, rr удаляет, lr выводит список репозиториев."
+  }
+ },
+ "a924decb": {
+  "ru": {
+   "stem": "Чтобы предотвратить различия в цветах между отсканированными фотографиями на мониторе компьютера и их оригиналами, нужно выполнить",
+   "answers": [
+    "моделирование сканера.",
+    "интерполяцию сканера.",
+    "кадрирование сканера.",
+    "калибровку сканера."
+   ]
+  },
+  "expl": {
+   "pl": "Kalibracja skanera (np. z użyciem wzorca kolorów i profilu ICC) zapewnia wierne odwzorowanie barw. Interpolacja zwiększa rozdzielczość programowo, a kadrowanie przycina obraz.",
+   "ru": "Калибровка сканера (например по цветовой мишени с профилем ICC) обеспечивает точную цветопередачу. Интерполяция программно увеличивает разрешение, а кадрирование обрезает изображение."
+  }
+ },
+ "a949f069": {
+  "ru": {
+   "stem": "Компьютер, ремонт которого должен быть выполнен у клиента, не реагирует на нажатие кнопки POWER. Первым действием в плане работ по поиску и устранению этой неисправности должна быть",
+   "answers": [
+    "отключение всех компонентов, не нужных для работы компьютера.",
+    "проверка питания в сетевой розетке.",
+    "составление сервисной расписки.",
+    "составление сметы ремонта."
+   ]
+  },
+  "expl": {
+   "pl": "Diagnostykę zaczyna się od najprostszej przyczyny: czy w gniazdku jest napięcie (i czy kabel jest podłączony). Dopiero potem rozbiera się komputer; rewers i kosztorys nie lokalizują usterki.",
+   "ru": "Диагностику начинают с самой простой причины: есть ли напряжение в розетке (и подключён ли кабель). Лишь потом разбирают компьютер; расписка и смета не помогают найти неисправность."
+  },
+  "topic": "hardware"
+ },
+ "ab0df381": {
+  "ru": {
+   "stem": "Чтобы можно было использовать телефонный аппарат PSTN для звонков через компьютерную сеть, его нужно подключить к",
+   "answers": [
+    "аналоговому модему.",
+    "сетевому мосту.",
+    "повторителю сигнала.",
+    "шлюзу VoIP."
+   ]
+  },
+  "expl": {
+   "pl": "Bramka VoIP (z portem FXS) zamienia sygnał analogowego telefonu na pakiety IP przesyłane siecią komputerową. Modem analogowy służy do transmisji danych przez linię telefoniczną.",
+   "ru": "VoIP-шлюз (с портом FXS) преобразует сигнал аналогового телефона в IP-пакеты, передаваемые по компьютерной сети. Аналоговый модем служит для передачи данных по телефонной линии."
+  }
+ },
+ "afdd2468": {
+  "ru": {
+   "stem": "На схеме, иллюстрирующей принцип работы плазменного монитора, цифрой 6 обозначены",
+   "answers": [
+    "люминофорный слой.",
+    "слой диэлектрика.",
+    "адресные электроды.",
+    "электроды дисплея."
+   ]
+  },
+  "expl": {
+   "pl": "Numer 6 wskazuje żółte paski na tylnej warstwie panelu, za komórkami – to elektrody adresujące, wybierające komórkę do zapłonu. Elektrody wyświetlacza leżą z przodu, przy przedniej szybie.",
+   "ru": "Цифра 6 указывает на жёлтые полоски на задней части панели, за ячейками – это адресные электроды, выбирающие ячейку для зажигания. Электроды дисплея расположены спереди, у переднего стекла."
+  },
+  "topic": "peripherals"
+ },
+ "b3477444": {
+  "ru": {
+   "stem": "Для подключения мультимедийного проектора к компьютеру не следует использовать разъём",
+   "answers": [
+    "D-SUB",
+    "HDMI",
+    "SATA",
+    "USB"
+   ]
+  },
+  "expl": {
+   "pl": "SATA to interfejs wewnętrzny do podłączania dysków i napędów, nie przesyła obrazu. Projektor podłącza się przez D-SUB (VGA), HDMI lub USB (obraz/sterowanie).",
+   "ru": "SATA – внутренний интерфейс для подключения дисков и приводов, изображение он не передаёт. Проектор подключают через D-SUB (VGA), HDMI или USB (изображение/управление)."
+  }
+ },
+ "b81c1129": {
+  "ru": {
+   "stem": "Программа fsck используется в Linux для",
+   "answers": [
+    "обнаружения структуры сети и диагностики пропускной способности локальной сети.",
+    "мониторинга рабочих параметров и производительности компонентов компьютера.",
+    "оценки состояния файловой системы и обнаружения повреждённых секторов.",
+    "проведения тестов производительности веб-сервера путём отправки большого числа запросов."
+   ]
+  },
+  "expl": {
+   "pl": "fsck (file system check) sprawdza i naprawia spójność systemu plików, może też wykrywać uszkodzone bloki (np. fsck -c przy ext). Nie ma nic wspólnego z siecią ani testami serwera WWW.",
+   "ru": "fsck (file system check) проверяет и исправляет целостность файловой системы, может обнаруживать повреждённые блоки (например fsck -c для ext). К сети и тестам веб-сервера отношения не имеет."
+  }
+ },
+ "b923d5f7": {
+  "ru": {
+   "stem": "Какой инструмент лучше всего использовать для лёгкого отгибания листа металла корпуса компьютера и закрепления монтажного винта в труднодоступном месте?",
+   "answers": [
+    "",
+    "",
+    "",
+    ""
+   ]
+  },
+  "expl": {
+   "pl": "Szczypce półokrągłe wydłużone (D) mają cienkie, długie szczęki – sięgają w ciasne miejsca, przytrzymają śrubkę i lekko odegną blachę. A to nożyce do blachy, B – kombinerki, C – nożyce do prętów.",
+   "ru": "Удлинённые круглогубцы (D) имеют тонкие длинные губки – достают в тесные места, удержат винт и слегка отогнут металл. A – ножницы по металлу, B – пассатижи, C – болторез."
+  }
+ },
+ "bba7a4ac": {
+  "ru": {
+   "stem": "Инструментом Windows для проверки попыток входа в систему является журнал",
+   "answers": [
+    "Setup.",
+    "System.",
+    "приложений.",
+    "безопасности."
+   ]
+  },
+  "expl": {
+   "pl": "Próby logowania (udane i nieudane, np. zdarzenia 4624 i 4625) są rejestrowane w dzienniku Zabezpieczenia w Podglądzie zdarzeń. Dziennik System dotyczy usług i sterowników.",
+   "ru": "Попытки входа (успешные и неудачные, например события 4624 и 4625) записываются в журнал «Безопасность» в Просмотре событий. Журнал System касается служб и драйверов."
+  }
+ },
+ "bef141e4": {
+  "ru": {
+   "stem": "Отсутствие информации о чётности числа или о знаке результата операции, выполняемой в ALU, может свидетельствовать о проблемах в работе",
+   "answers": [
+    "кэш-памяти.",
+    "указателя стека.",
+    "таблицы команд.",
+    "регистра флагов."
+   ]
+  },
+  "expl": {
+   "pl": "Rejestr flagowy przechowuje znaczniki wyniku ostatniej operacji ALU, m.in. flagę parzystości (P), znaku (S), zera (Z) i przeniesienia (C). Brak tych informacji wskazuje na jego usterkę.",
+   "ru": "Регистр флагов хранит признаки результата последней операции ALU, в том числе флаги чётности (P), знака (S), нуля (Z) и переноса (C). Отсутствие этих данных указывает на его неисправность."
+  },
+  "topic": "hardware"
+ },
+ "ca8e9940": {
+  "ru": {
+   "stem": "Чтобы в Windows Server выполнить резервирование IP-адресов на основе физических MAC-адресов устройств, нужно настроить службу",
+   "answers": [
+    "DNS",
+    "NAT",
+    "RRAS",
+    "DHCP"
+   ]
+  },
+  "expl": {
+   "pl": "Rezerwacja w serwerze DHCP przypisuje stały adres IP do konkretnego adresu MAC – urządzenie zawsze dostaje ten sam adres. DNS tłumaczy nazwy, a NAT/RRAS zajmują się routingiem i translacją.",
+   "ru": "Резервирование на DHCP-сервере закрепляет постоянный IP-адрес за конкретным MAC-адресом – устройство всегда получает тот же адрес. DNS преобразует имена, а NAT/RRAS занимаются маршрутизацией и трансляцией."
+  },
+  "topic": "winserver"
+ },
+ "cd590c31": {
+  "ru": {
+   "stem": "Запись числа семь в восьмеричной системе – это",
+   "answers": [
+    "7 (B)",
+    "7 (O)",
+    "7 (D)",
+    "7 (H)"
+   ]
+  },
+  "expl": {
+   "pl": "Indeks O (octal) oznacza system ósemkowy, B – dwójkowy, D – dziesiętny, H – szesnastkowy. Dodatkowo w systemie dwójkowym cyfra 7 nie istnieje (7 = 111 B).",
+   "ru": "Индекс O (octal) обозначает восьмеричную систему, B – двоичную, D – десятичную, H – шестнадцатеричную. К тому же в двоичной системе цифры 7 нет (7 = 111 B)."
+  }
+ },
+ "d0264631": {
+  "ru": {
+   "stem": "На рисунке показан результат выполнения программы",
+   "answers": [
+    "dir",
+    "vol",
+    "tree",
+    "sort"
+   ]
+  },
+  "expl": {
+   "pl": "Graficzna struktura katalogów i podkatalogów rysowana liniami to wynik polecenia tree. dir wyświetla listę plików jednego katalogu, a vol – etykietę i numer seryjny woluminu.",
+   "ru": "Графическая структура каталогов и подкаталогов, нарисованная линиями, – результат команды tree. dir выводит список файлов одного каталога, а vol – метку и серийный номер тома."
+  },
+  "topic": "windows"
+ },
+ "d0bbef9f": {
+  "ru": {
+   "stem": "Какую из опций настройки параметров пользователя с ограниченными правами в Windows позволяет оснастка secpol?",
+   "answers": [
+    "Разрешение на изменение системного времени.",
+    "Запрет записи на CD-диски.",
+    "Блокировку определённых элементов в панели управления.",
+    "Очистку истории недавно открытых документов."
+   ]
+  },
+  "expl": {
+   "pl": "secpol.msc (Zasady zabezpieczeń lokalnych) zawiera Przypisywanie praw użytkownika, m.in. prawo Zmień czas systemowy. Blokada elementów Panelu sterowania czy czyszczenie historii dokumentów to ustawienia gpedit (Szablony administracyjne).",
+   "ru": "secpol.msc (Локальная политика безопасности) содержит Назначение прав пользователя, в т.ч. право «Изменение системного времени». Блокировка элементов Панели управления и очистка истории документов – настройки gpedit (Административные шаблоны)."
+  }
+ },
+ "d20daaf5": {
+  "ru": {
+   "stem": "Укажите сигнал, означающий ошибку видеокарты компьютера с BIOS POST фирмы AWARD.",
+   "answers": [
+    "1 длинный, 1 короткий.",
+    "1 длинный, 2 коротких.",
+    "1 длинный, 5 коротких.",
+    "1 длинный, 9 коротких."
+   ]
+  },
+  "expl": {
+   "pl": "W BIOS AWARD sygnał 1 długi i 2 krótkie oznacza błąd karty graficznej (lub jej brak). 1 długi i 1 krótki wskazuje na problem z płytą główną/pamięcią.",
+   "ru": "В BIOS AWARD сигнал 1 длинный и 2 коротких означает ошибку видеокарты (или её отсутствие). 1 длинный и 1 короткий указывает на проблему с платой/памятью."
+  }
+ },
+ "ddbf6222": {
+  "ru": {
+   "stem": "На иллюстрации стрелками отмечена функция кнопок на корпусе мультимедийного проектора. С помощью этих кнопок можно",
+   "answers": [
+    "переключать входные сигналы.",
+    "корректировать искажённое изображение.",
+    "изменять уровень яркости изображения.",
+    "регулировать отображение цветового пространства."
+   ]
+  },
+  "expl": {
+   "pl": "Symbole trapezu przy przyciskach oznaczają korekcję trapezową (keystone) – prostowanie obrazu zniekształconego przez ukośne ustawienie projektora. Przyciski z głośnikiem regulują głośność.",
+   "ru": "Символы трапеции у кнопок означают трапецеидальную коррекцию (keystone) – выравнивание изображения, искажённого из-за наклона проектора. Кнопки с динамиком регулируют громкость."
+  }
  }
 }
