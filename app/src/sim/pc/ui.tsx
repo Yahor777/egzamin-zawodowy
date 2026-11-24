@@ -412,18 +412,21 @@ export function IpInput({
                 const arr = [...segs]
                 arr[i] = v
                 emit(arr)
-                if (v && i < 3) window.setTimeout(() => focus(i + 1))
+                if (v && i < 3) focus(i + 1)
                 return
               }
               v = v.replace(/\D/g, '').slice(0, 3)
               const arr = [...segs]
               arr[i] = v
               emit(arr)
-              if (v.length === 3 && i < 3) window.setTimeout(() => focus(i + 1))
+              if (v.length === 3 && i < 3) focus(i + 1)
             }}
             onKeyDown={(e) => {
               const el = e.currentTarget
-              if (e.key === 'Backspace' && el.value === '' && i > 0) {
+              if (e.key === '.' || e.key === ',' || e.key === ' ') {
+                e.preventDefault()
+                if (el.value !== '' && i < 3) focus(i + 1)
+              } else if (e.key === 'Backspace' && el.value === '' && i > 0) {
                 e.preventDefault()
                 focus(i - 1)
               } else if (e.key === 'ArrowLeft' && el.selectionStart === 0 && i > 0) {

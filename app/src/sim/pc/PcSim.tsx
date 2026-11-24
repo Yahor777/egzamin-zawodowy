@@ -2,7 +2,7 @@
 // the INF.02 exam needs (ncpa.cpl, IPv4 properties, Settings, cmd/PowerShell, firewall, users, sysdm).
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import type { PcState } from '../net'
-import { isPhone, useCompact } from '../bench/useCompact'
+import { isPhone } from '../bench/useCompact'
 import { AdapterProps, AdapterStatus, ControlPanel, CP_TITLES, Ipv4Advanced, Ipv4Props, NetDetails } from './apps-net'
 import { Explorer, EXPLORER_TITLES, FirewallMmc, FwProfilesDlg, FwRuleProps, FwWizard, GroupProps, LocalUsers, NewUser, RunDialog, SetPassword, Sysdm, SysName, UserProps } from './apps-sys'
 import {
@@ -168,9 +168,22 @@ function useScreenHeight(compact: boolean) {
 
 // ---------------- the component ----------------
 export function PcSim({ state, onChange, network, browser, powered = true, booting = false, onPowerOn, view, onView }: PcSimProps) {
-  const rootRef = useRef<HTMLDivElement>(null)
+  const rootRef = useRef<HTMLDivElement | null>(null)
   const layerRef = useRef<HTMLDivElement>(null)
-  const compact = useCompact(rootRef, 640)
+  // compact (phone) layout: decided in JS (media queries are unreliable under CSS zoom);
+  // a callback ref re-attaches the observer when the screen element changes (lock → desktop)
+  const [narrow, setNarrow] = useState(false)
+  const roRef = useRef<ResizeObserver | null>(null)
+  const setRoot = useCallback((el: HTMLDivElement | null) => {
+    rootRef.current = el
+    roRef.current?.disconnect()
+    if (!el) return
+    const check = () => setNarrow(el.clientWidth > 0 && el.clientWidth < 640)
+    check()
+    roRef.current = new ResizeObserver(check)
+    roRef.current.observe(el)
+  }, [])
+  const compact = isPhone() || narrow
   const height = useScreenHeight(compact)
   const memKey = state.adapters.map((a) => a.mac).join('|') || state.hostname
   const mem = useMemo(() => {
@@ -234,7 +247,9 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
   }, [phase, setPhase])
 
   const stateRef = useRef(state)
-  stateRef.current = state
+  useLayoutEffect(() => {
+    stateRef.current = state
+  }, [state])
   const update = useCallback(
     (fn: (s: PcState) => PcState) => {
       const n = fn(stateRef.current)
@@ -351,9 +366,9 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
   const lastView = useRef<PcView | undefined>(undefined)
   const mounted = useRef(false)
   useEffect(() => {
+    if (!view || phase !== 'desktop') return
     const first = !mounted.current
     mounted.current = true
-    if (!view || phase !== 'desktop') return
     if (view === lastView.current && !first) return
     lastView.current = view
     if (first && view === 'adapters') return
@@ -387,7 +402,7 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
 
   // ---------------- screens before the desktop ----------------
   const shell = (cls: string, body: ReactNode) => (
-    <div ref={rootRef} className={`pc ${cls} ${compact ? 'compact' : ''}`} style={{ height }}>
+    <div ref={setRoot} className={`pc ${cls} ${compact ? 'compact' : ''}`} style={{ height }}>
       {body}
     </div>
   )
@@ -432,7 +447,7 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
       ...(browser ? [{ key: 'edge', icon: <IcEdge size={24} />, label: 'Microsoft Edge', match: (w: WinRec) => w.app === 'edge', launch: () => open('edge') }] : []),
       { key: 'cmd', icon: <IcCmd size={24} />, label: 'Wiersz polecenia', match: (w: WinRec) => w.app === 'cmd', launch: () => open('cmd', 'cmd') },
     ]
-    const others = wins.filter((w) => !pinned.some((p) => p.match(w))).sort((a, b) => a.id - b.id)
+    const others = wins.filter((w) => !pinned.some((p) => p.match(w)) && (compact || !APPS[w.app]?.dialog || APPS[w.app]?.small)).sort((a, b) => a.id - b.id)
     return { pinned, others }
   })()
   const clickTask = (ws: WinRec[], launchIt?: () => void) => {
@@ -482,7 +497,7 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
   return (
     <PcCtx.Provider value={api}>
       <div
-        ref={rootRef}
+        ref={setRoot}
         className={`pc pc-desk ${compact ? 'compact' : ''}`}
         style={{ height }}
         onKeyDown={(e) => {
@@ -603,11 +618,7 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
               }}
               onMenu={(x, y) => menuAt(x, y, winX)}
             />
-            {compact ? (
-              <button className="tb-btn" aria-label="Wyszukaj" onClick={() => setStart('pinned')}>
-                <IcSearch size={20} />
-              </button>
-            ) : (
+            {!compact && (
               <button className="tb-search" onClick={() => setStart('pinned')}>
                 <IcSearch size={15} />
                 <span>Wyszukaj</span>
@@ -643,7 +654,7 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
             </button>
             <button className="tb-clock" onClick={() => setFlyout((f) => (f === 'cal' ? null : 'cal'))} aria-label="Zegar">
               <span>{c.time}</span>
-              <span>{c.date}</span>
+              {!compact && <span>{c.date}</span>}
             </button>
           </div>
         </div>

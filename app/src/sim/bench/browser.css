@@ -1,39 +1,73 @@
-/* Edge-like browser inside the Windows PC (fixed light palette, like the rest of .pc). */
+/* Microsoft Edge (light) inside the Windows PC window. Fixed palette, like the rest of .pc. */
 .edge-wrap {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  min-width: 0;
-}
-.edge {
   background: #fff;
-  border: 1px solid #a9b3bf;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.16);
   color: #1b1b1b;
   min-width: 0;
+  font-family: 'Segoe UI Variable Text', 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+  font-size: 13px;
+  position: relative;
 }
 .edge-tabs {
-  background: #e8ebef;
-  padding: 6px 8px 0;
+  flex: none;
+  height: 40px;
   display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  padding: 0 150px 0 8px;
+  background: #e8ebf0;
+  touch-action: none;
+}
+.compact .edge-tabs,
+.edge-wrap.compact .edge-tabs {
+  padding-right: 104px;
 }
 .edge-tab {
   display: flex;
   align-items: center;
   gap: 8px;
+  height: 33px;
   background: #fff;
   border-radius: 8px 8px 0 0;
-  padding: 7px 12px;
-  font-size: 0.8rem;
-  max-width: 260px;
+  padding: 0 6px 0 12px;
+  width: 240px;
   min-width: 0;
+  flex: 0 1 240px;
+  font-size: 12px;
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
 }
-.edge-tab span {
+.edge-tab > span {
+  flex: 1;
+  min-width: 0;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+.edge-tab-x,
+.edge-newtab {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  display: grid;
+  place-items: center;
+  flex: none;
+  color: #333;
+  background: none;
+  border: 0;
+}
+.edge-newtab {
+  width: 30px;
+  height: 30px;
+  align-self: center;
+}
+.edge-tab-x:hover,
+.edge-newtab:hover,
+.edge-ic:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.06);
 }
 .edge-spin {
   width: 14px;
@@ -50,67 +84,166 @@
   }
 }
 .edge-bar {
+  flex: none;
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 6px 8px;
-  border-bottom: 1px solid #e1e1e1;
+  gap: 2px;
+  padding: 4px 8px;
+  background: #fff;
+  border-bottom: 1px solid #e3e3e3;
 }
 .edge-ic {
-  width: 40px;
-  height: 44px;
-  border-radius: 6px;
+  width: 34px;
+  height: 34px;
+  border-radius: 4px;
   display: grid;
   place-items: center;
   color: #333;
   flex: none;
+  background: none;
+  border: 0;
 }
 .edge-ic:disabled {
   color: #b5b5b5;
 }
+.edge-omni {
+  flex: 1;
+  min-width: 0;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 4px;
+  padding: 0 4px 0 10px;
+  background: #f1f3f6;
+  border: 1px solid transparent;
+  border-radius: 16px;
+}
+.edge-omni:focus-within {
+  background: #fff;
+  border-color: #0067c0;
+  box-shadow: 0 0 0 1px #0067c0;
+}
+.edge-sec {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #5f5f5f;
+  font-size: 12px;
+  flex: none;
+  white-space: nowrap;
+  padding-right: 6px;
+  border-right: 1px solid #d0d0d0;
+}
 .edge-url {
   flex: 1;
   min-width: 0;
-  height: 40px;
-  border: 1px solid #c9c9c9;
-  border-radius: 20px;
-  padding: 0 14px;
+  height: 30px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  padding: 0 4px;
   font: inherit;
-  font-size: 16px;
-  background: #f7f7f7;
+  font-size: 14px;
   color: #1b1b1b;
 }
-.edge-url:focus {
-  outline: 2px solid #0067c0;
-  outline-offset: 0;
-  background: #fff;
+.edge-wrap.compact .edge-url,
+.compact .edge-url {
+  font-size: 16px;
 }
-.edge-go {
-  flex: none;
-  min-height: 40px;
-  padding: 0 12px;
+.edge-wrap.compact .edge-omni {
+  height: 40px;
   border-radius: 20px;
-  background: #0067c0;
-  color: #fff;
-  font-size: 0.85rem;
-  font-weight: 600;
+}
+.edge-wrap.compact .edge-ic {
+  width: 40px;
+  height: 44px;
+}
+.edge-hintbtn {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 28px;
+  padding: 0 9px;
+  border-radius: 14px;
+  border: 1px dashed #b9b9b9;
+  background: #fff;
+  color: #6b6b6b;
+  font-size: 12px;
+}
+.edge-wrap.compact .edge-hintbtn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  justify-content: center;
+  border-radius: 20px;
+}
+.edge-hintbtn:hover,
+.edge-hintbtn.on {
+  border-style: solid;
+  border-color: #c79a1d;
+  color: #7a5a00;
+  background: #fff8e1;
+}
+.edge-progress {
+  flex: none;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #0067c0 40%, transparent);
+  background-size: 50% 100%;
+  background-repeat: no-repeat;
+  animation: edge-prog 1s linear infinite;
+}
+@keyframes edge-prog {
+  from {
+    background-position: -50% 0;
+  }
+  to {
+    background-position: 150% 0;
+  }
 }
 .edge-page {
-  min-height: 300px;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
   background: #fff;
   min-width: 0;
+  -webkit-overflow-scrolling: touch;
 }
 .edge-blank {
-  min-height: 300px;
+  min-height: 100%;
 }
 .edge-new {
-  min-height: 180px;
-  display: grid;
-  place-items: center;
-  padding: 24px;
-  text-align: center;
-  color: #5f5f5f;
-  background: linear-gradient(#f4f7fb, #fff);
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 14% 16px 24px;
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(180, 215, 255, 0.55), transparent 60%),
+    radial-gradient(ellipse at 90% 100%, rgba(200, 235, 220, 0.5), transparent 60%),
+    #f7f9fc;
+}
+.edge-new-search {
+  width: min(560px, 100%);
+  height: 46px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px;
+  background: #fff;
+  border-radius: 23px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+.edge-new-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-size: 16px;
+  color: #1b1b1b;
 }
 .edge-infobar {
   background: #fff4ce;
@@ -119,43 +252,116 @@
   font-size: 0.85rem;
 }
 .edge-err {
-  padding: 28px 22px 22px;
-  max-width: 620px;
+  padding: 56px 28px 28px;
+  max-width: 640px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  font-size: 0.92rem;
+  font-size: 14px;
+  color: #1b1b1b;
+}
+.edge-err-ic {
+  margin-bottom: 12px;
 }
 .edge-err h1 {
-  font-size: 1.35rem;
+  font-size: 26px;
   font-weight: 600;
-  color: #1b1b1b;
+  margin: 0 0 6px;
+  line-height: 1.25;
+}
+.edge-err p {
+  margin: 0;
 }
 .edge-err ul {
   margin: 0;
-  padding-left: 20px;
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 .edge-try {
-  margin-top: 6px;
+  margin-top: 10px !important;
 }
 .edge-code {
   color: #6b6b6b;
-  font-size: 0.78rem;
+  font-size: 12px;
+  margin-top: 10px !important;
   letter-spacing: 0.02em;
 }
+.edge-err-btns {
+  margin-top: 18px;
+}
+.edge-refresh {
+  min-height: 36px;
+  min-width: 110px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 4px;
+  background: #0067c0;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+}
+.edge-refresh:hover {
+  background: #1a76c9;
+}
+.edge-wrap.compact .edge-err {
+  padding: 28px 18px;
+}
+.edge-wrap.compact .edge-err h1 {
+  font-size: 21px;
+}
+.edge-wrap.compact .edge-refresh {
+  min-height: 44px;
+}
+
+/* the trainer's optional hint (Russian) */
+.edge-hint {
+  flex: none;
+  max-height: 55%;
+  overflow: auto;
+  background: #fffbea;
+  border-bottom: 1px solid #ecd98f;
+  padding: 10px 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13px;
+  box-shadow: inset 0 -6px 10px -8px rgba(0, 0, 0, 0.2);
+}
+.edge-hint-h {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.edge-hint-h span {
+  flex: 1;
+  color: #8a6d00;
+  font-size: 12px;
+}
+.edge-hint-x {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: none;
+  color: #5f5f5f;
+}
 .edge-why {
-  margin-top: 12px;
   border: 1px solid #c9d6ea;
   background: #f2f6fc;
   border-radius: 8px;
-  padding: 12px 14px;
+  padding: 10px 12px;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  font-family: var(--font);
 }
 .edge-why ul {
+  margin: 0;
+  padding-left: 18px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -215,15 +421,13 @@
   background: #333;
 }
 
-/* "Какой адрес вписать?" (trainer helper, app palette) */
+/* "Какой адрес вписать?" (inside the hint panel) */
 .addr-help {
-  background: var(--surface);
-  color: var(--ink);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 10px 14px;
-  font-family: var(--font);
-  font-size: 0.9rem;
+  background: #fff;
+  color: #1b1b1b;
+  border: 1px solid #e0d7b4;
+  border-radius: 8px;
+  padding: 6px 12px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -231,23 +435,26 @@
 .addr-help > summary {
   font-weight: 700;
   cursor: pointer;
-  min-height: 32px;
+  min-height: 36px;
   display: flex;
   align-items: center;
 }
 .addr-help code {
-  font-family: var(--mono);
-  font-size: 0.86rem;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 0.92em;
 }
 .ah-me {
-  color: var(--ink-2);
+  color: #444;
   margin: 4px 0 6px;
+}
+.ah-me > span {
+  display: block;
 }
 .ah-row {
   display: flex;
   align-items: center;
   gap: 10px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid #eee;
   padding: 8px 0;
 }
 .ah-main {
@@ -258,27 +465,25 @@
   overflow-wrap: anywhere;
 }
 .ah-main small {
-  color: var(--bad);
-  font-size: 0.82rem;
+  color: #b3261e;
+  font-size: 0.92em;
 }
 .ah-row.ok .ah-main small {
-  color: var(--ok);
+  color: #1f7a45;
 }
 .ah-open {
   flex: none;
   min-height: 44px;
   padding: 0 14px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
+  border: 1px solid #c9c9c9;
+  border-radius: 8px;
+  background: #fff;
+  color: #1b1b1b;
   font-weight: 600;
-  font-size: 0.88rem;
 }
 .ah-foot {
-  color: var(--ink-2);
-  font-size: 0.82rem;
-  border-top: 1px solid var(--line);
+  color: #555;
+  font-size: 0.92em;
+  border-top: 1px solid #eee;
   padding-top: 8px;
-}
-.ah-me > span {
-  display: block;
 }

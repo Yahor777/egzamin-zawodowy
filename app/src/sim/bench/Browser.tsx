@@ -1,15 +1,16 @@
-// "Przeglądarka" on the Windows PC: type a device's address, get its web UI only if the
-// PC can actually reach it (cable, power, address, subnet, VLAN). Otherwise an Edge-like
-// error page with a Russian "Почему?" box computed from the real bench state.
+// "Microsoft Edge" on the Windows PC: type a device's address, get its web UI only if the
+// PC can actually reach it (cable, power, address, subnet, VLAN). Otherwise an Edge error page
+// whose code matches the real cause. The Russian "Почему?" diagnostic and the address helper are
+// hidden behind an optional "Подсказка" button (the student types the address himself).
 import { useEffect, useRef, useState } from 'react'
-import { pcAddress, type PcState } from '../net'
+import { ipToInt, linkUp, pcAddress, sameSubnet, type NetworkModel, type PcState } from '../net'
 import { RouterSim } from '../router'
 import { SwitchSim } from '../switch'
 import type { RouterState, SwitchState } from '../types'
 import { addressBook, browse, DEV_RU, type BrowseResult, type PcKey, type WebDevice } from './diagnose'
 import type { Station } from './station'
+import { useCompact } from './useCompact'
 import './browser.css'
-
 export interface BrowserProps {
   st: Station
   pcKey: PcKey
@@ -28,13 +29,18 @@ const memory = new Map<string, { input: string; nav: string | null }>()
 
 export function Browser({ st, pcKey, pc, router, switch: sw, printer, onRouter, onSwitch, memKey = '' }: BrowserProps) {
   const mk = `${memKey}:${pcKey}`
+  const rootRef = useRef<HTMLDivElement>(null)
+  const compact = useCompact(rootRef, 560)
   const [input, setInput] = useState(() => memory.get(mk)?.input ?? '')
   const [nav, setNav] = useState<string | null>(() => memory.get(mk)?.nav ?? null)
   useEffect(() => {
     memory.set(mk, { input, nav })
   }, [mk, input, nav])
+  const [back, setBack] = useState<(string | null)[]>([])
+  const [fwd, setFwd] = useState<(string | null)[]>([])
   const [attempt, setAttempt] = useState(0)
   const [loading, setLoading] = useState(false)
+  const [hint, setHint] = useState(false)
   const [shown, setShown] = useState<WebDevice | null>(null)
   const routerIp = router?.lan.ip
 
@@ -49,22 +55,31 @@ export function Browser({ st, pcKey, pc, router, switch: sw, printer, onRouter, 
     }
   }, [routerIp, nav, shown])
 
+  const r: BrowseResult | null = nav ? browse(st.model, pcKey, nav, { booting: st.booting, pick: attempt }) : null
+  const kind = r && !r.ok ? errKind(r, pc, st.model, pcKey) : null
+
   useEffect(() => {
     if (!loading) return
-    const t = window.setTimeout(() => setLoading(false), 450)
+    const t = window.setTimeout(() => setLoading(false), kind === 'timeout' ? 1500 : kind ? 650 : 450)
     return () => window.clearTimeout(t)
-  }, [loading])
+  }, [loading, kind])
 
+  const show = (a: string | null) => {
+    setNav(a)
+    setInput(a ? (/^[a-z]+:\/\//i.test(a) ? a : `http://${a.replace(/\/+$/, '')}/`) : '')
+    if (a) {
+      setAttempt((x) => x + 1)
+      setLoading(true)
+    }
+  }
   const go = (addr: string) => {
     const a = addr.trim()
     if (!a) return
-    setNav(a)
-    setInput(/^[a-z]+:\/\//i.test(a) ? a : `http://${a.replace(/\/+$/, '')}/`)
-    setAttempt((x) => x + 1)
-    setLoading(true)
+    setBack((b) => [...b, nav])
+    setFwd([])
+    show(a)
   }
 
-  const r: BrowseResult | null = nav ? browse(st.model, pcKey, nav, { booting: st.booting, pick: attempt }) : null
   // the device restarts because of a change made in its own page: keep that page (it shows its restart screen)
   const keepUi = shown && st.uiRestart(shown) ? shown : null
   const device: WebDevice | null = keepUi ?? (r?.ok ? r.device! : null)
@@ -72,40 +87,91 @@ export function Browser({ st, pcKey, pc, router, switch: sw, printer, onRouter, 
   if (!loading && device !== shown) setShown(device)
 
   let title = 'Nowa karta'
-  if (nav && loading) title = 'Łączenie…'
+  if (nav && loading) title = r?.host ?? 'Ładowanie…'
   else if (device === 'router') title = router?.model ?? 'Router'
   else if (device === 'switch') title = sw?.model ?? 'Switch'
   else if (device === 'printer') title = 'Drukarka — stan'
   else if (r) title = r.host
 
   const ep = (d: WebDevice) => `${d}-${st.epoch[d] ?? 0}-${attempt}`
+  const secure = nav && /^https:/i.test(input)
 
   return (
-    <div className="edge-wrap">
-      <div className="edge">
-        <div className="edge-tabs">
-          <div className="edge-tab">
-            {loading ? <span className="edge-spin" aria-hidden="true" /> : <PageIcon />}
-            <span>{title}</span>
-          </div>
+    <div ref={rootRef} className={`edge-wrap ${compact ? 'compact' : ''}`}>
+      <div className="edge-tabs">
+        <div className="edge-tab" title={title}>
+          {loading ? <span className="edge-spin" aria-hidden="true" /> : <PageIcon />}
+          <span>{title}</span>
+          <button type="button" className="edge-tab-x" aria-label="Zamknij kartę" onClick={() => (setBack((b) => [...b, nav]), show(null))}>
+            <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+              <path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="1.2" />
+            </svg>
+          </button>
         </div>
-        <form
-          className="edge-bar"
-          onSubmit={(e) => {
-            e.preventDefault()
-            go(input)
+        <button type="button" className="edge-newtab" aria-label="Nowa karta" onClick={() => (setBack((b) => [...b, nav]), show(null))}>
+          <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+            <path d="M7 1v12M1 7h12" stroke="currentColor" strokeWidth="1.3" />
+          </svg>
+        </button>
+      </div>
+      <form
+        className="edge-bar"
+        onSubmit={(e) => {
+          e.preventDefault()
+          go(input)
+          ;(document.activeElement as HTMLElement | null)?.blur?.()
+        }}
+      >
+        <button
+          type="button"
+          className="edge-ic"
+          aria-label="Wstecz"
+          disabled={!back.length}
+          onClick={() => {
+            const p = back[back.length - 1]
+            setBack((b) => b.slice(0, -1))
+            setFwd((f) => [nav, ...f])
+            show(p ?? null)
           }}
         >
-          <button type="button" className="edge-ic" aria-label="Wstecz" disabled={!nav} onClick={() => (setNav(null), setInput(''))}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-              <path d="M19 12H5M11 6l-6 6 6 6" />
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+            <path d="M20 12H5M11 5l-7 7 7 7" />
+          </svg>
+        </button>
+        {!compact && (
+          <button
+            type="button"
+            className="edge-ic"
+            aria-label="Dalej"
+            disabled={!fwd.length}
+            onClick={() => {
+              const [p, ...rest] = fwd
+              setFwd(rest)
+              setBack((b) => [...b, nav])
+              show(p ?? null)
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+              <path d="M4 12h15M13 5l7 7-7 7" />
             </svg>
           </button>
-          <button type="button" className="edge-ic" aria-label="Odśwież" disabled={!nav} onClick={() => nav && go(nav)}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-              <path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7" />
-            </svg>
-          </button>
+        )}
+        <button type="button" className="edge-ic" aria-label="Odśwież" disabled={!nav} onClick={() => nav && show(nav)}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+            <path d="M20 12a8 8 0 1 1-2.6-5.9M20 4v5h-5" />
+          </svg>
+        </button>
+        <div className="edge-omni">
+          {nav && !loading && (
+            <span className={`edge-sec ${secure ? 'ok' : ''}`} title={secure ? 'Połączenie jest bezpieczne' : 'Niezabezpieczone'}>
+              <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+                <circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" strokeWidth="1.2" />
+                <path d="M8 7v4.5" stroke="currentColor" strokeWidth="1.4" />
+                <circle cx="8" cy="4.8" r=".9" fill="currentColor" />
+              </svg>
+              {!compact && !secure && <span>Niezabezpieczone</span>}
+            </span>
+          )}
           <input
             className="edge-url"
             id={`${pcKey}-url`}
@@ -121,92 +187,194 @@ export function Browser({ st, pcKey, pc, router, switch: sw, printer, onRouter, 
             spellCheck={false}
             enterKeyHint="go"
           />
-          <button className="edge-go">Przejdź</button>
-        </form>
-        <div className="edge-page">
-          {!nav ? (
-            <NewTab />
-          ) : loading ? (
-            <div className="edge-blank" aria-busy="true" />
-          ) : device === 'router' && router ? (
-            <>
-              {r?.conflict && <ConflictBar r={r} />}
-              <RouterSim key={ep('router')} state={router} onChange={onRouter} embedded onReboot={() => st.reboot('router')} onFactoryReset={() => st.factoryReset('router')} />
-            </>
-          ) : device === 'switch' && sw ? (
-            <>
-              {r?.conflict && <ConflictBar r={r} />}
-              <SwitchSim key={ep('switch')} state={sw} onChange={onSwitch} embedded onReboot={() => st.reboot('switch')} onFactoryReset={() => st.factoryReset('switch')} />
-            </>
-          ) : device === 'printer' && printer ? (
-            <PrinterPage ip={printer.ip} prefix={printer.prefix} />
-          ) : r ? (
-            <ErrorPage r={r} />
-          ) : null}
         </div>
+        <button type="button" className={`edge-hintbtn ${hint ? 'on' : ''}`} aria-expanded={hint} onClick={() => setHint(!hint)} lang="ru" title="Подсказка тренажёра (на экзамене её нет)">
+          <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M8 1.5a4.5 4.5 0 0 0-2.6 8.2c.4.3.6.7.6 1.1V12h4v-1.2c0-.4.2-.8.6-1.1A4.5 4.5 0 0 0 8 1.5z" fill="none" stroke="currentColor" strokeWidth="1.2" />
+            <path d="M6.2 14h3.6" stroke="currentColor" strokeWidth="1.2" />
+          </svg>
+          {!compact && <span>Подсказка</span>}
+        </button>
+        {!compact && (
+          <button type="button" className="edge-ic" aria-label="Ustawienia i nie tylko">
+            <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="5" cy="12" r="1.6" fill="currentColor" />
+              <circle cx="12" cy="12" r="1.6" fill="currentColor" />
+              <circle cx="19" cy="12" r="1.6" fill="currentColor" />
+            </svg>
+          </button>
+        )}
+      </form>
+      {loading && <div className="edge-progress" aria-hidden="true" />}
+      {hint && <HintPanel r={loading ? null : r} st={st} pcKey={pcKey} pc={pc} onOpen={(a) => (setHint(false), go(a))} onClose={() => setHint(false)} />}
+      <div className="edge-page">
+        {!nav ? (
+          <NewTab onGo={go} />
+        ) : loading ? (
+          <div className="edge-blank" aria-busy="true" />
+        ) : device === 'router' && router ? (
+          <>
+            {r?.conflict && <ConflictBar r={r} />}
+            <RouterSim key={ep('router')} state={router} onChange={onRouter} embedded onReboot={() => st.reboot('router')} onFactoryReset={() => st.factoryReset('router')} />
+          </>
+        ) : device === 'switch' && sw ? (
+          <>
+            {r?.conflict && <ConflictBar r={r} />}
+            <SwitchSim key={ep('switch')} state={sw} onChange={onSwitch} embedded onReboot={() => st.reboot('switch')} onFactoryReset={() => st.factoryReset('switch')} />
+          </>
+        ) : device === 'printer' && printer ? (
+          <PrinterPage ip={printer.ip} prefix={printer.prefix} />
+        ) : r && kind ? (
+          <ErrorPage r={r} kind={kind} onRetry={() => show(nav)} />
+        ) : null}
       </div>
-      <AddressHelper st={st} pcKey={pcKey} pc={pc} onOpen={go} />
     </div>
   )
 }
 
+type ErrKind = 'offline' | 'unreach' | 'timeout' | 'refused' | 'nxdomain' | 'badurl'
+
+/** which Edge error the real Windows would show for this failure */
+function errKind(r: BrowseResult, pc: PcState, m: NetworkModel, key: PcKey): ErrKind {
+  if (r.error === 'nxdomain') return 'nxdomain'
+  if (r.error === 'badurl') return 'badurl'
+  if (r.error === 'refused' || r.error === 'self') return 'refused'
+  const live = pc.adapters.filter((a) => a.enabled && linkUp(m, `${key}:${a.id}`))
+  if (!live.length) return 'offline'
+  const cfgs = live.map(pcAddress).filter((c): c is NonNullable<typeof c> => !!c)
+  if (!cfgs.length) return 'unreach'
+  if (ipToInt(r.host) !== null) {
+    const local = cfgs.some((c) => sameSubnet(c.addr.ip, r.host, c.addr.prefix))
+    if (!local && !cfgs.some((c) => c.gateway && !c.addr.ip.startsWith('169.254.'))) return 'unreach'
+  }
+  return 'timeout'
+}
+
 function PageIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-      <path d="M6 3h8l4 4v14H6z" />
+    <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M3.5 1.5h6l3 3v10h-9z" fill="#fff" stroke="#6b6b6b" />
+      <path d="M9.5 1.5v3h3" fill="none" stroke="#6b6b6b" />
     </svg>
   )
 }
 
-function NewTab() {
+function NewTab({ onGo }: { onGo: (a: string) => void }) {
+  const [q, setQ] = useState('')
   return (
     <div className="edge-new">
-      <p>Wpisz adres urządzenia w pasku adresu, np. http://192.168.0.1</p>
+      <form
+        className="edge-new-search"
+        onSubmit={(e) => {
+          e.preventDefault()
+          onGo(q)
+        }}
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="10" cy="10" r="6.5" fill="none" stroke="#5f5f5f" strokeWidth="1.8" />
+          <path d="M15 15l6 6" stroke="#5f5f5f" strokeWidth="2" strokeLinecap="round" />
+        </svg>
+        <input aria-label="Wyszukaj w sieci Web" placeholder="Wyszukaj w sieci Web" value={q} onChange={(e) => setQ(e.target.value)} autoCapitalize="off" autoCorrect="off" spellCheck={false} enterKeyHint="search" />
+      </form>
     </div>
   )
 }
 
 function ConflictBar({ r }: { r: BrowseResult }) {
   return (
-    <div className="edge-infobar" role="status">
+    <div className="edge-infobar" role="status" lang="ru">
       <strong>Конфликт адресов.</strong> {r.why[0]?.text} {r.why[0]?.fix}
     </div>
   )
 }
 
-const ERR: Record<NonNullable<BrowseResult['error']>, [string, string]> = {
-  timeout: ['Połączenie z {h} trwało zbyt długo.', 'ERR_CONNECTION_TIMED_OUT'],
-  refused: ['Odmowa połączenia z {h}.', 'ERR_CONNECTION_REFUSED'],
-  nxdomain: ['Nie można znaleźć adresu DNS serwera {h}.', 'DNS_PROBE_FINISHED_NXDOMAIN'],
-  badurl: ['Nieprawidłowy adres.', 'ERR_INVALID_URL'],
-  self: ['Odmowa połączenia z {h}.', 'ERR_CONNECTION_REFUSED'],
+const ERR: Record<ErrKind, { h1: string; line: string; code: string; tryList: string[] }> = {
+  offline: {
+    h1: 'Nie masz połączenia z Internetem',
+    line: 'Komputer nie jest połączony z żadną siecią.',
+    code: 'ERR_INTERNET_DISCONNECTED',
+    tryList: ['Sprawdzanie kabli sieciowych, modemu i routera', 'Ponowne łączenie z siecią', 'Uruchamianie diagnostyki sieci systemu Windows'],
+  },
+  unreach: {
+    h1: 'Nie można uzyskać dostępu do tej strony',
+    line: 'Adres {h} jest nieosiągalny.',
+    code: 'ERR_ADDRESS_UNREACHABLE',
+    tryList: ['Sprawdzanie połączenia', 'Sprawdzanie ustawień sieciowych komputera', 'Uruchamianie diagnostyki sieci systemu Windows'],
+  },
+  timeout: {
+    h1: 'Nie można uzyskać dostępu do tej strony',
+    line: 'Odpowiedź z witryny {h} trwała zbyt długo.',
+    code: 'ERR_CONNECTION_TIMED_OUT',
+    tryList: ['Sprawdzanie połączenia', 'Sprawdzanie serwera proxy i zapory', 'Uruchamianie diagnostyki sieci systemu Windows'],
+  },
+  refused: {
+    h1: 'Nie można uzyskać dostępu do tej strony',
+    line: 'Odmowa połączenia z {h}.',
+    code: 'ERR_CONNECTION_REFUSED',
+    tryList: ['Sprawdzanie połączenia', 'Sprawdzanie serwera proxy i zapory'],
+  },
+  nxdomain: {
+    h1: 'Nie można uzyskać dostępu do tej strony',
+    line: 'Nie można znaleźć adresu DNS serwera {h}.',
+    code: 'DNS_PROBE_FINISHED_NXDOMAIN',
+    tryList: ['Sprawdzanie, czy w adresie {h} nie ma literówki', 'Sprawdzanie połączenia', 'Uruchamianie diagnostyki sieci systemu Windows'],
+  },
+  badurl: {
+    h1: 'Nie można uzyskać dostępu do tej strony',
+    line: 'Adres strony jest nieprawidłowy.',
+    code: 'ERR_INVALID_URL',
+    tryList: ['Sprawdzanie, czy adres jest poprawnie wpisany'],
+  },
 }
 
-function ErrorPage({ r }: { r: BrowseResult }) {
-  const offline = r.why.some((w) => /кабель в ПК|не работает|порт свитча выключен|сетевая карта/.test(w.short)) && r.error === 'timeout'
-  const [line, code] = offline ? ['Nie masz połączenia z siecią.', 'ERR_INTERNET_DISCONNECTED'] : ERR[r.error ?? 'timeout']
+function ErrorPage({ r, kind, onRetry }: { r: BrowseResult; kind: ErrKind; onRetry: () => void }) {
+  const e = ERR[kind]
+  const h = r.host || 'tej strony'
   return (
     <div className="edge-err">
-      <svg className="edge-err-ic" width="56" height="56" viewBox="0 0 48 48" fill="none" stroke="#6b6b6b" strokeWidth="2" aria-hidden="true">
-        <path d="M12 6h17l9 9v27H12z" />
-        <path d="M29 6v9h9" />
-        <circle cx="20" cy="27" r="1.5" fill="#6b6b6b" />
-        <circle cx="30" cy="27" r="1.5" fill="#6b6b6b" />
-        <path d="M19 35c3-3 9-3 12 0" />
+      <svg className="edge-err-ic" width="64" height="64" viewBox="0 0 64 64" aria-hidden="true">
+        <path d="M14 6h26l12 12v40H14z" fill="#f3f3f3" stroke="#8a8a8a" strokeWidth="2" strokeLinejoin="round" />
+        <path d="M40 6v12h12" fill="none" stroke="#8a8a8a" strokeWidth="2" strokeLinejoin="round" />
+        <circle cx="26" cy="34" r="2" fill="#6b6b6b" />
+        <circle cx="40" cy="34" r="2" fill="#6b6b6b" />
+        <path d="M25 46c4-4 12-4 16 0" fill="none" stroke="#6b6b6b" strokeWidth="2" strokeLinecap="round" />
       </svg>
-      <h1>{offline ? 'Nie masz połączenia' : 'Nie można uzyskać dostępu do tej strony'}</h1>
-      <p>{line.replace('{h}', r.host)}</p>
+      <h1>{e.h1}</h1>
+      <p>{e.line.replace('{h}', h)}</p>
       <p className="edge-try">Spróbuj:</p>
       <ul>
-        <li>Sprawdzić połączenie</li>
-        <li>Sprawdzić adres IP komputera i urządzenia</li>
+        {e.tryList.map((t) => (
+          <li key={t}>{t.replace('{h}', h)}</li>
+        ))}
       </ul>
-      <p className="edge-code">{code}</p>
-      {r.why.length > 0 && (
-        <div className="edge-why" lang="ru">
-          <strong>Почему? (подсказка тренажёра)</strong>
+      <p className="edge-code">{e.code}</p>
+      <div className="edge-err-btns">
+        <button className="edge-refresh" onClick={onRetry}>
+          Odśwież
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function HintPanel({ r, st, pcKey, pc, onOpen, onClose }: { r: BrowseResult | null; st: Station; pcKey: PcKey; pc: PcState; onOpen: (ip: string) => void; onClose: () => void }) {
+  const why = r && !r.ok ? r.why : []
+  return (
+    <div className="edge-hint" lang="ru" role="region" aria-label="Подсказка тренажёра">
+      <div className="edge-hint-h">
+        <strong>Подсказка тренажёра</strong>
+        <span>на экзамене её не будет</span>
+        <button className="edge-hint-x" onClick={onClose} aria-label="Закрыть подсказку">
+          <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+            <path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="1.3" />
+          </svg>
+        </button>
+      </div>
+      {why.length > 0 && (
+        <div className="edge-why">
+          <strong>Почему не открывается?</strong>
           <ul>
-            {r.why.map((w, i) => (
+            {why.map((w, i) => (
               <li key={i}>
                 {w.text}
                 {w.fix && <span className="fix">{w.fix}</span>}
@@ -215,6 +383,7 @@ function ErrorPage({ r }: { r: BrowseResult }) {
           </ul>
         </div>
       )}
+      <AddressHelper st={st} pcKey={pcKey} pc={pc} onOpen={onOpen} />
     </div>
   )
 }
@@ -267,7 +436,7 @@ function PrinterPage({ ip, prefix }: { ip: string; prefix: number }) {
 function AddressHelper({ st, pcKey, pc, onOpen }: { st: Station; pcKey: PcKey; pc: PcState; onOpen: (ip: string) => void }) {
   const book = addressBook(st.model, pcKey, st.booting)
   return (
-    <details className="addr-help" open>
+    <details className="addr-help">
       <summary>Какой адрес вписать?</summary>
       <div className="ah-me">
         Этот компьютер:{' '}

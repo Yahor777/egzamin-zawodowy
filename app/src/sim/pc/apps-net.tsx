@@ -124,11 +124,11 @@ const Link = ({ children, onClick }: { children: ReactNode; onClick?: () => void
 function CpHome({ go }: { go: (p: string) => void }) {
   const api = usePc()
   const cats: [ReactNode, string, [string, () => void][]][] = [
-    [<IcShield size={40} />, 'System i zabezpieczenia', [['Przejrzyj stan komputera', () => go('sys')], ['Zapora Windows Defender', () => go('fw')], ['Zobacz nazwę tego komputera', () => api.open('sysdm')]]],
-    [<IcEthernet size={40} />, 'Sieć i Internet', [['Wyświetl stan sieci i zadania', () => go('ncsc')], ['Połączenia sieciowe', () => go('ncpa')]]],
-    [<IcSystem size={40} />, 'Sprzęt i dźwięk', [['Wyświetl urządzenia i drukarki', () => {}]]],
-    [<IcControl size={40} />, 'Programy', [['Odinstaluj program', () => {}]]],
-    [<IcUsers size={40} />, 'Konta użytkowników', [['Zmień typ konta', () => go('accounts')]]],
+    [<IcShield key="k1" size={40} />, 'System i zabezpieczenia', [['Przejrzyj stan komputera', () => go('sys')], ['Zapora Windows Defender', () => go('fw')], ['Zobacz nazwę tego komputera', () => api.open('sysdm')]]],
+    [<IcEthernet key="k2" size={40} />, 'Sieć i Internet', [['Wyświetl stan sieci i zadania', () => go('ncsc')], ['Połączenia sieciowe', () => go('ncpa')]]],
+    [<IcSystem key="k3" size={40} />, 'Sprzęt i dźwięk', [['Wyświetl urządzenia i drukarki', () => {}]]],
+    [<IcControl key="k4" size={40} />, 'Programy', [['Odinstaluj program', () => {}]]],
+    [<IcUsers key="k5" size={40} />, 'Konta użytkowników', [['Zmień typ konta', () => go('accounts')]]],
   ]
   const titles: Record<string, string> = { 'System i zabezpieczenia': 'sys', 'Sieć i Internet': 'net', 'Konta użytkowników': 'accounts' }
   return (
@@ -676,12 +676,13 @@ export function AdapterStatus({ arg, close }: WinProps) {
 
 export function NetDetails({ arg, close }: WinProps) {
   const api = usePc()
+  const [opened] = useState(() => new Date())
   const { state, network } = api
   const a = state.adapters.find((x) => x.id === arg)
   if (!a) return null
   const c = linked(a, network) ? curIp(a) : null
   const lease = a.dhcp && a.lease
-  const now = new Date()
+  const now = opened
   const d = (x: Date) => `${x.getDate()} ${['stycznia', 'lutego', 'marca', 'kwietnia', 'maja', 'czerwca', 'lipca', 'sierpnia', 'września', 'października', 'listopada', 'grudnia'][x.getMonth()]} ${x.getFullYear()} ${x.toLocaleTimeString('pl-PL')}`
   const rows: [string, string][] = [
     ['Sufiks DNS konkretnego połączenia', a.dnsSuffix ?? ''],
@@ -776,7 +777,8 @@ export function AdapterProps({ arg, close }: WinProps) {
   const finish = (apply: boolean) => {
     const p = api.pending.get(a.id)
     api.pending.delete(a.id)
-    if (apply) api.update((s) => ({ ...s, adapters: s.adapters.map((x) => (x.id === a.id ? { ...x, ...(p ?? {}), components: comps } : x)) }))
+    const changed = Object.fromEntries(COMPONENTS.filter(([k, , d]) => comps[k] !== d).map(([k]) => [k, comps[k]]))
+    if (apply) api.update((s) => ({ ...s, adapters: s.adapters.map((x) => (x.id === a.id ? { ...x, ...(p ?? {}), components: Object.keys(changed).length ? changed : undefined } : x)) }))
     api.closeApp('ipv4', a.id)
     api.closeApp('ipv4adv', a.id)
     close()

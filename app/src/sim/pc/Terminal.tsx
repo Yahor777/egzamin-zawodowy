@@ -28,7 +28,9 @@ export function Terminal({ arg, close, setArg, data }: WinProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
   const apiRef = useRef(api)
-  apiRef.current = api
+  useLayoutEffect(() => {
+    apiRef.current = api
+  })
   const arp = (() => {
     const k = api.state.adapters.map((a) => a.mac).join()
     if (!arpCache.has(k)) arpCache.set(k, new Set())
@@ -105,7 +107,8 @@ export function Terminal({ arg, close, setArg, data }: WinProps) {
       setTd((d) => ({ ...d, lines: [...d.lines, echo, ...r.out], stack: [...d.stack, r.push!] }))
       return
     }
-    const tail = !cmd || r.job ? [] : kind === 'cmd' ? [{ t: '' }] : []
+    const lastBlank = r.out.length > 0 && r.out[r.out.length - 1].t === ''
+    const tail = !cmd || r.job || lastBlank ? [] : kind === 'cmd' ? [{ t: '' }] : []
     setTd((d) => ({ ...d, lines: [...d.lines, echo, ...r.out, ...tail].slice(-800) }))
     if (r.job) setJob(r.job)
   }

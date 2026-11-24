@@ -1445,13 +1445,13 @@ export function SetPassword({ arg = '', close }: WinProps) {
 
 // ---------------- Explorer ----------------
 const TOOLS: [string, string, ReactNode][] = [
-  ['cmd', 'Wiersz polecenia', <IcCmd size={32} />],
-  ['powershell', 'Windows PowerShell', <IcPs size={32} />],
-  ['control', 'Panel sterowania', <IcControl size={32} />],
-  ['run', 'Uruchom', <IcRun size={32} />],
-  ['compmgmt.msc', 'Zarządzanie komputerem', <IcMgmt size={32} />],
-  ['wf.msc', 'Zapora Windows Defender z zabezpieczeniami zaawansowanymi', <IcFirewall size={32} />],
-  ['explorer', 'Eksplorator plików', <IcFolder size={32} />],
+  ['cmd', 'Wiersz polecenia', <IcCmd key="k1" size={32} />],
+  ['powershell', 'Windows PowerShell', <IcPs key="k2" size={32} />],
+  ['control', 'Panel sterowania', <IcControl key="k3" size={32} />],
+  ['run', 'Uruchom', <IcRun key="k4" size={32} />],
+  ['compmgmt.msc', 'Zarządzanie komputerem', <IcMgmt key="k5" size={32} />],
+  ['wf.msc', 'Zapora Windows Defender z zabezpieczeniami zaawansowanymi', <IcFirewall key="k6" size={32} />],
+  ['explorer', 'Eksplorator plików', <IcFolder key="k7" size={32} />],
 ]
 
 export const EXPLORER_TITLES: Record<string, string> = { thispc: 'Ten komputer', tools: 'Narzędzia systemu Windows', recycle: 'Kosz', home: 'Narzędzia główne', net: 'Sieć' }

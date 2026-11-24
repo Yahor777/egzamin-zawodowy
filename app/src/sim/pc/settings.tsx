@@ -6,15 +6,15 @@ import { adapterState, curIp, linked, linkLocal6, networkName, nicDesc, setDhcp,
 import { Toggle, usePc, type WinProps } from './ui'
 
 const NAV: [string, string, ReactNode][] = [
-  ['system', 'System', <IcPc size={18} />],
-  ['bt', 'Bluetooth i urządzenia', <IcSettings size={18} />],
-  ['net', 'Sieć i Internet', <IcGlobe size={18} />],
-  ['person', 'Personalizacja', <IcSettings size={18} />],
-  ['apps', 'Aplikacje', <IcSettings size={18} />],
-  ['accounts', 'Konta', <IcUsers size={18} />],
-  ['time', 'Czas i język', <IcSettings size={18} />],
-  ['privacy', 'Prywatność i zabezpieczenia', <IcSettings size={18} />],
-  ['update', 'Windows Update', <IcSettings size={18} />],
+  ['system', 'System', <IcPc key="k1" size={18} />],
+  ['bt', 'Bluetooth i urządzenia', <IcSettings key="k2" size={18} />],
+  ['net', 'Sieć i Internet', <IcGlobe key="k3" size={18} />],
+  ['person', 'Personalizacja', <IcSettings key="k4" size={18} />],
+  ['apps', 'Aplikacje', <IcSettings key="k5" size={18} />],
+  ['accounts', 'Konta', <IcUsers key="k6" size={18} />],
+  ['time', 'Czas i język', <IcSettings key="k7" size={18} />],
+  ['privacy', 'Prywatność i zabezpieczenia', <IcSettings key="k8" size={18} />],
+  ['update', 'Windows Update', <IcSettings key="k9" size={18} />],
 ]
 
 export const SETTINGS_PAGES: Record<string, string> = { system: 'System', about: 'Informacje', net: 'Sieć i Internet', eth: 'Ethernet', adv: 'Zaawansowane ustawienia sieci', accounts: 'Konta' }
