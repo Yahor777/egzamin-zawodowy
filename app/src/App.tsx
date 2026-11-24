@@ -1,3 +1,4 @@
+import { Icon, WireMark } from './components/Icon'
 import { useT } from './lib/i18n'
 import { setLang, useLang } from './lib/store'
 import { GENERATORS, type GenId } from './lib/generators'
@@ -40,39 +41,75 @@ export default function App() {
   const t = useT()
   const lang = useLang()
   const nav: [string, string, string][] = [
-    ['/', '🏠', t('home')],
-    ['/learn', '📚', t('learn')],
-    ['/exam', '⏱️', t('exam')],
-    ['/topics', '🗂️', t('topics')],
-    ['/settings', '⚙️', t('settings')],
+    ['/', 'home', t('home')],
+    ['/learn', 'learn', t('learn')],
+    ['/exam', 'exam', t('exam')],
+    ['/topics', 'topics', t('topics')],
+    ['/tools', 'calc', t('tools')],
   ]
-  const active = (p: string) => (p === '/' ? route === '/' : route.startsWith(p))
+  const active = (p: string) =>
+    p === '/' ? route === '/' : route.startsWith(p) || (p === '/tools' && route.startsWith('/gen')) || (p === '/learn' && (route.startsWith('/mistakes') || route.startsWith('/starred')))
   return (
-    <div className="app">
-      <header className="top">
+    <div className="shell">
+      <aside className="side">
         <button className="brand" onClick={() => go('/')}>
-          <span className="logo">INF.02</span>
-          <span className="brand-sub">{lang === 'ru' ? 'подготовка к экзамену' : 'przygotowanie do egzaminu'}</span>
+          <span className="brand-name">INF.02</span>
+          <WireMark />
+          <span className="brand-sub">{lang === 'ru' ? 'тренажёр к экзамену' : 'trener egzaminacyjny'}</span>
         </button>
-        <nav className="top-nav">
+        <nav className="side-nav" aria-label="Menu">
           {nav.map(([p, icon, label]) => (
-            <button key={p} className={active(p) ? 'active' : ''} onClick={() => go(p)}>
-              {icon} {label}
+            <button key={p} className={active(p) ? 'active' : ''} onClick={() => go(p)} aria-current={active(p) ? 'page' : undefined}>
+              <Icon name={icon} />
+              <span>{label}</span>
             </button>
           ))}
         </nav>
-        <button className="lang" onClick={() => setLang(lang === 'ru' ? 'pl' : 'ru')}>
-          {lang === 'ru' ? 'RU' : 'PL'}
+        <div className="side-foot">
+          <button className={route.startsWith('/settings') ? 'active' : ''} onClick={() => go('/settings')}>
+            <Icon name="settings" />
+            <span>{t('settings')}</span>
+          </button>
+          <div className="lang-switch" role="group" aria-label={t('language')}>
+            <button className={lang === 'ru' ? 'on' : ''} onClick={() => setLang('ru')}>
+              RU
+            </button>
+            <button className={lang === 'pl' ? 'on' : ''} onClick={() => setLang('pl')}>
+              PL
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <header className="mobile-top">
+        <button className="brand" onClick={() => go('/')}>
+          <span className="brand-name">INF.02</span>
+          <WireMark />
         </button>
+        <div className="mobile-actions">
+          <div className="lang-switch" role="group" aria-label={t('language')}>
+            <button className={lang === 'ru' ? 'on' : ''} onClick={() => setLang('ru')}>
+              RU
+            </button>
+            <button className={lang === 'pl' ? 'on' : ''} onClick={() => setLang('pl')}>
+              PL
+            </button>
+          </div>
+          <button className="icon-btn" onClick={() => go('/settings')} aria-label={t('settings')}>
+            <Icon name="settings" />
+          </button>
+        </div>
       </header>
-      <main>
+
+      <main className="main">
         <Page route={route} />
       </main>
-      <nav className="bottom-nav">
+
+      <nav className="tabbar" aria-label="Menu">
         {nav.map(([p, icon, label]) => (
           <button key={p} className={active(p) ? 'active' : ''} onClick={() => go(p)}>
-            <span className="bn-icon">{icon}</span>
-            <span className="bn-label">{label}</span>
+            <Icon name={icon} size={22} />
+            <span>{p === '/exam' ? t('examShort') : label}</span>
           </button>
         ))}
       </nav>

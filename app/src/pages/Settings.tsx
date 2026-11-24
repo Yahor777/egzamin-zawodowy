@@ -21,7 +21,7 @@ export function Settings() {
   return (
     <div className="page">
       <h1>{t('settings')}</h1>
-      <div className="card">
+      <div className="panel">
         <h2>{t('language')}</h2>
         <div className="row">
           <button className={`btn ${lang === 'ru' ? 'primary' : ''}`} onClick={() => setLang('ru')}>
@@ -32,7 +32,7 @@ export function Settings() {
           </button>
         </div>
       </div>
-      <div className="card">
+      <div className="panel">
         <h2>{t('sync')}</h2>
         <p className="muted">{t('syncHelp')}</p>
         <div className="row">
@@ -48,7 +48,7 @@ export function Settings() {
           {msg && <span className="muted">{msg}</span>}
         </div>
       </div>
-      <div className="card">
+      <div className="panel">
         <button
           className="btn danger"
           onClick={() => {

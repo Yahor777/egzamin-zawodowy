@@ -75,6 +75,17 @@ const dict = {
   practical: { pl: 'Część praktyczna', ru: 'Практическая часть' },
   sessionDone: { pl: 'Seria ukończona', ru: 'Серия завершена' },
   sessionStats: { pl: 'w tej serii', ru: 'в этой серии' },
+  readiness: { pl: 'Postęp nauki', ru: 'Прогресс подготовки' },
+  perDay: { pl: 'nowych pytań dziennie, aby zdążyć przed egzaminem', ru: 'новых вопросов в день, чтобы успеть до экзамена' },
+  continueLearn: { pl: 'Kontynuuj naukę', ru: 'Продолжить учёбу' },
+  more: { pl: 'Więcej trybów', ru: 'Другие режимы' },
+  last10: { pl: 'Ostatnie egzaminy próbne', ru: 'Последние пробные экзамены' },
+  threshold: { pl: 'próg 50%', ru: 'порог 50%' },
+  days: { pl: 'dni', ru: 'дн.' },
+  toExam: { pl: 'do części pisemnej', ru: 'до письменной части' },
+  keysHint: { pl: 'Klawisze A–D lub 1–4, Enter — dalej', ru: 'Клавиши A–D или 1–4, Enter — дальше' },
+  ofQuestions: { pl: 'z', ru: 'из' },
+  examShort: { pl: 'Egzamin', ru: 'Экзамен' },
 } as const
 
 export type TKey = keyof typeof dict
@@ -84,20 +95,20 @@ export function useT() {
   return (k: TKey) => dict[k][lang]
 }
 
-export const TOPIC_NAMES: Record<string, { pl: string; ru: string; icon: string }> = {
-  hardware: { pl: 'Sprzęt i podzespoły', ru: 'Железо и комплектующие', icon: '🧩' },
-  peripherals: { pl: 'Urządzenia peryferyjne', ru: 'Периферия', icon: '🖱️' },
-  printers: { pl: 'Drukarki i skanery', ru: 'Принтеры и сканеры', icon: '🖨️' },
-  windows: { pl: 'Windows', ru: 'Windows', icon: '🪟' },
-  linux: { pl: 'Linux', ru: 'Linux', icon: '🐧' },
-  winserver: { pl: 'Windows Server i usługi', ru: 'Windows Server и службы', icon: '🗄️' },
-  addressing: { pl: 'Adresacja IP i podsieci', ru: 'IP-адресация и подсети', icon: '🔢' },
-  protocols: { pl: 'Protokoły i model OSI', ru: 'Протоколы и модель OSI', icon: '📡' },
-  netdevices: { pl: 'Urządzenia sieciowe i Wi‑Fi', ru: 'Сетевые устройства и Wi‑Fi', icon: '🛜' },
-  cabling: { pl: 'Okablowanie', ru: 'Кабели и монтаж', icon: '🔌' },
-  security: { pl: 'Bezpieczeństwo', ru: 'Безопасность', icon: '🛡️' },
-  basics: { pl: 'Podstawy (systemy liczbowe, elektryka)', ru: 'Основы (системы счисления, электрика)', icon: '➗' },
-  law_bhp: { pl: 'BHP, prawo, licencje', ru: 'Охрана труда, право, лицензии', icon: '⚖️' },
-  english: { pl: 'Język angielski', ru: 'Английский язык', icon: '🇬🇧' },
-  other: { pl: 'Inne', ru: 'Другое', icon: '📦' },
+export const TOPIC_NAMES: Record<string, { pl: string; ru: string; icon: string }> /* icon = short code shown as a label */ = {
+  hardware: { pl: 'Sprzęt i podzespoły', ru: 'Железо и комплектующие', icon: 'HW' },
+  peripherals: { pl: 'Urządzenia peryferyjne', ru: 'Периферия', icon: 'I/O' },
+  printers: { pl: 'Drukarki i skanery', ru: 'Принтеры и сканеры', icon: 'PRN' },
+  windows: { pl: 'Windows', ru: 'Windows', icon: 'WIN' },
+  linux: { pl: 'Linux', ru: 'Linux', icon: 'LNX' },
+  winserver: { pl: 'Windows Server i usługi', ru: 'Windows Server и службы', icon: 'SRV' },
+  addressing: { pl: 'Adresacja IP i podsieci', ru: 'IP-адресация и подсети', icon: 'IP' },
+  protocols: { pl: 'Protokoły i model OSI', ru: 'Протоколы и модель OSI', icon: 'OSI' },
+  netdevices: { pl: 'Urządzenia sieciowe i Wi‑Fi', ru: 'Сетевые устройства и Wi‑Fi', icon: 'NET' },
+  cabling: { pl: 'Okablowanie', ru: 'Кабели и монтаж', icon: 'CAB' },
+  security: { pl: 'Bezpieczeństwo', ru: 'Безопасность', icon: 'SEC' },
+  basics: { pl: 'Podstawy (systemy liczbowe, elektryka)', ru: 'Основы (системы счисления, электрика)', icon: 'BIN' },
+  law_bhp: { pl: 'BHP, prawo, licencje', ru: 'Охрана труда, право, лицензии', icon: 'BHP' },
+  english: { pl: 'Język angielski', ru: 'Английский язык', icon: 'ENG' },
+  other: { pl: 'Inne', ru: 'Другое', icon: 'ETC' },
 }

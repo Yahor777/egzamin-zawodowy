@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { QuestionView } from '../components/QuestionView'
+import { Icon, Score } from '../components/Icon'
 import { pickLearn, useBank } from '../lib/bank'
 import { TOPIC_NAMES, useT } from '../lib/i18n'
 import { getProgress, recordAnswer, useLang } from '../lib/store'
@@ -34,7 +35,7 @@ export function Learn({ mode, topic }: { mode: 'learn' | 'mistakes' | 'starred';
     return (
       <div className="page">
         <h1>{title}</h1>
-        <div className="card center">
+        <div className="panel empty">
           <p>{mode === 'mistakes' ? t('noMistakes') : '—'}</p>
           <button className="btn" onClick={() => go('/')}>
             {t('backHome')}
@@ -47,11 +48,9 @@ export function Learn({ mode, topic }: { mode: 'learn' | 'mistakes' | 'starred';
     return (
       <div className="page">
         <h1>{title}</h1>
-        <div className="card center">
+        <div className="panel empty">
           <h2>{t('sessionDone')}</h2>
-          <p className="big">
-            ✅ {score.ok} &nbsp; ❌ {score.bad}
-          </p>
+          <Score ok={score.ok} bad={score.bad} />
           <div className="row">
             <button className="btn primary" onClick={newBatch}>
               {t('again')}
@@ -81,20 +80,23 @@ export function Learn({ mode, topic }: { mode: 'learn' | 'mistakes' | 'starred';
     <div className="page">
       <div className="page-head">
         <h1>{title}</h1>
-        <span className="muted">
-          {idx + 1} / {batch.length} · ✅ {score.ok} ❌ {score.bad}
+        <span className="head-meta">
+          <span className="counter">
+            {idx + 1}/{batch.length}
+          </span>
+          <Score ok={score.ok} bad={score.bad} />
         </span>
       </div>
       <div className="progress-bar">
         <div style={{ width: `${(idx / batch.length) * 100}%` }} />
       </div>
-      <div className="card">
-        <QuestionView key={q.id} q={q} selected={selected} onSelect={answer} reveal={selected !== null} />
+      <div className="q-card">
+        <QuestionView key={q.id} q={q} selected={selected} onSelect={answer} reveal={selected !== null} keyboard />
         {selected !== null && (
           <div className="feedback">
             <span className={selected === q.correct ? 'ok' : 'bad'}>{selected === q.correct ? t('correct') : t('wrong')}</span>
             <button className="btn primary" onClick={next} autoFocus>
-              {t('next')} →
+              {t('next')} <Icon name="arrow" size={18} />
             </button>
           </div>
         )}

@@ -192,8 +192,8 @@ export function genChmod(): Question {
 }
 
 export const GENERATORS = {
-  subnet: { fn: genSubnet, icon: '🔢', pl: 'Podsieci i maski', ru: 'Подсети и маски' },
-  number: { fn: genNumber, icon: '➗', pl: 'Systemy liczbowe i U2', ru: 'Системы счисления и U2' },
-  chmod: { fn: genChmod, icon: '🐧', pl: 'Uprawnienia chmod', ru: 'Права chmod' },
+  subnet: { fn: genSubnet, icon: 'IP', sample: '192.168.10.77/27 → ?', pl: 'Podsieci i maski', ru: 'Подсети и маски' },
+  number: { fn: genNumber, icon: 'BIN', sample: '(AB)₁₆ = ?₁₀ · U2', pl: 'Systemy liczbowe i U2', ru: 'Системы счисления и U2' },
+  chmod: { fn: genChmod, icon: 'LNX', sample: 'chmod 754 = rwxr-xr--', pl: 'Uprawnienia chmod', ru: 'Права chmod' },
 } as const
 export type GenId = keyof typeof GENERATORS

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { QuestionView } from '../components/QuestionView'
+import { Icon } from '../components/Icon'
 import { pickExam, useBank } from '../lib/bank'
 import { useT } from '../lib/i18n'
 import { recordAnswer, recordExam } from '../lib/store'
@@ -64,10 +65,21 @@ export function Exam() {
     return (
       <div className="page">
         <h1>{t('exam')}</h1>
-        <div className="card center">
-          <p>
-            40 × A/B/C/D · 60 min · ≥ 20 pkt (50%)
-          </p>
+        <div className="panel exam-intro">
+          <dl className="facts">
+            <div>
+              <dt>40</dt>
+              <dd>{t('questions')}</dd>
+            </div>
+            <div>
+              <dt>60</dt>
+              <dd>min</dd>
+            </div>
+            <div>
+              <dt>20</dt>
+              <dd>{t('threshold')}</dd>
+            </div>
+          </dl>
           <button className="btn primary big-btn" onClick={start}>
             {t('startExam')}
           </button>
@@ -81,12 +93,27 @@ export function Exam() {
     return (
       <div className="page">
         <h1>{t('result')}</h1>
-        <div className={`card center result ${pct >= 50 ? 'pass' : 'fail'}`}>
-          <div className="score">
-            {score} / {qs.length}
+        <div className={`panel result ${pct >= 50 ? 'pass' : 'fail'}`}>
+          <div className="result-top">
+            <div className="score">
+              {score}
+              <span>/{qs.length}</span>
+              <span className="pct">{pct}%</span>
+            </div>
+            <div className={`verdict ${pct >= 50 ? 'ok' : 'bad'}`}>
+              <Icon name={pct >= 50 ? 'check' : 'x'} size={18} />
+              {pct >= 50 ? t('passed') : t('failed')}
+            </div>
           </div>
-          <div className="pct">{pct}%</div>
-          <div className="verdict">{pct >= 50 ? t('passed') : t('failed')}</div>
+          <div className="meter" role="img" aria-label={`${pct}%`}>
+            <span className="fill" style={{ width: `${pct}%` }} />
+            <i className="mark" style={{ left: '50%' }} />
+          </div>
+          <div className="meter-scale">
+            <span>0%</span>
+            <span>{t('threshold')}</span>
+            <span>100%</span>
+          </div>
           <div className="row">
             <button className="btn primary" onClick={start}>
               {t('again')}
@@ -103,9 +130,9 @@ export function Exam() {
           </label>
         </div>
         {list.map(({ q, i }) => (
-          <div className="card" key={q.id}>
-            <div className="muted small">
-              {t('question')} {i + 1} {answers[i] === q.correct ? '✅' : '❌'}
+          <div className="q-card" key={q.id}>
+            <div className={`q-num ${answers[i] === q.correct ? 'ok' : 'bad'}`}>
+              <Icon name={answers[i] === q.correct ? 'check' : 'x'} size={16} /> {t('question')} {i + 1}
             </div>
             <QuestionView q={q} selected={answers[i]} onSelect={() => {}} reveal shuffleAnswers={false} />
           </div>
@@ -120,7 +147,7 @@ export function Exam() {
     <div className="page">
       <div className="exam-bar">
         <span className={`timer ${left < 300 ? 'warn' : ''}`}>
-          ⏱ {t('timeLeft')}: {fmt(left)}
+          <Icon name="exam" size={18} /> {fmt(left)}
         </span>
         <span className="muted">
           {answeredCount}/40 {t('answered')}
@@ -141,8 +168,8 @@ export function Exam() {
           </button>
         ))}
       </div>
-      <div className="card">
-        <div className="muted small">
+      <div className="q-card">
+        <div className="q-num">
           {t('question')} {idx + 1} / 40
         </div>
         <QuestionView
@@ -153,14 +180,26 @@ export function Exam() {
           onSelect={(a) => setAnswers((arr) => arr.map((v, i) => (i === idx ? a : v)))}
           reveal={false}
           shuffleAnswers={false}
+          keyboard
         />
         <div className="row between">
           <button className="btn" disabled={idx === 0} onClick={() => setIdx(idx - 1)}>
-            ← {t('prev')}
+            <Icon name="back" size={18} /> {t('prev')}
           </button>
-          <button className="btn primary" disabled={idx === qs.length - 1} onClick={() => setIdx(idx + 1)}>
-            {t('next')} →
-          </button>
+          {idx < qs.length - 1 ? (
+            <button className="btn primary" onClick={() => setIdx(idx + 1)}>
+              {t('next')} <Icon name="arrow" size={18} />
+            </button>
+          ) : (
+            <button
+              className="btn primary"
+              onClick={() => {
+                if (answeredCount === qs.length || confirm(t('confirmFinish'))) finish()
+              }}
+            >
+              <Icon name="flag" size={18} /> {t('finish')}
+            </button>
+          )}
         </div>
       </div>
     </div>

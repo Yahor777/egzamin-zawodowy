@@ -1,8 +1,10 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { Question } from '../lib/types'
 import { TOPIC_NAMES, useT } from '../lib/i18n'
 import { toggleStar, useLang, useProgress } from '../lib/store'
 import { shuffle } from '../lib/bank'
+import { Icon } from './Icon'
+import { RichText } from './RichText'
 
 const LETTERS = ['A', 'B', 'C', 'D']
 
@@ -16,9 +18,11 @@ interface Props {
   /** shuffle answer order (not for picture answers) */
   shuffleAnswers?: boolean
   showMeta?: boolean
+  /** react to A–D / 1–4 keys */
+  keyboard?: boolean
 }
 
-export function QuestionView({ q, selected, onSelect, reveal, shuffleAnswers = true, showMeta = true }: Props) {
+export function QuestionView({ q, selected, onSelect, reveal, shuffleAnswers = true, showMeta = true, keyboard = false }: Props) {
   const t = useT()
   const lang = useLang()
   const progress = useProgress()
@@ -28,9 +32,23 @@ export function QuestionView({ q, selected, onSelect, reveal, shuffleAnswers = t
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [q.id],
   )
+
+  useEffect(() => {
+    if (!keyboard || reveal) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.ctrlKey || e.metaKey || e.altKey) return
+      const k = e.key.toLowerCase()
+      const pos = ['a', 'b', 'c', 'd'].indexOf(k) >= 0 ? ['a', 'b', 'c', 'd'].indexOf(k) : ['1', '2', '3', '4'].indexOf(k)
+      if (pos >= 0) {
+        e.preventDefault()
+        onSelect(order[pos])
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [keyboard, reveal, order, onSelect])
+
   const base = import.meta.env.BASE_URL
-  const stemFigs = q.figures.filter((f) => f.where === 'stem')
-  const ansFigs = q.figures.filter((f) => f.where === 'answers')
   const isStarred = progress.starred.includes(q.id)
   const stem = showRu && q.ru ? q.ru.stem : q.stem
   const answers = showRu && q.ru ? q.ru.answers : q.answers
@@ -41,33 +59,35 @@ export function QuestionView({ q, selected, onSelect, reveal, shuffleAnswers = t
       {showMeta && (
         <div className="q-meta">
           {q.topics.map((tp) => (
-            <span key={tp} className="chip">
-              {TOPIC_NAMES[tp]?.icon} {TOPIC_NAMES[tp]?.[lang] ?? tp}
+            <span key={tp} className="tag" title={TOPIC_NAMES[tp]?.[lang]}>
+              <b>{TOPIC_NAMES[tp]?.icon}</b> {TOPIC_NAMES[tp]?.[lang] ?? tp}
             </span>
           ))}
-          <span className="chip muted" title={q.seen.join(', ')}>
-            {t('seenIn')}: ×{q.seen.length}
-          </span>
+          {q.seen.length > 0 && (
+            <span className={`tag ghost ${q.seen.length > 1 ? 'hot' : ''}`} title={q.seen.join(', ')}>
+              CKE ×{q.seen.length}
+            </span>
+          )}
           <span className="spacer" />
           {lang === 'ru' && q.ru && (
-            <button className="link-btn" onClick={() => setShowRu((v) => !v)}>
+            <button className="text-btn" onClick={() => setShowRu((v) => !v)}>
               {showRu ? t('showPl') : t('showRu')}
             </button>
           )}
-          <button className={`star ${isStarred ? 'on' : ''}`} onClick={() => toggleStar(q.id)} aria-label={t('star')}>
-            {isStarred ? '★' : '☆'}
+          <button className={`icon-btn star ${isStarred ? 'on' : ''}`} onClick={() => toggleStar(q.id)} aria-label={t('star')} aria-pressed={isStarred}>
+            <Icon name="star" filled={isStarred} size={18} />
           </button>
         </div>
       )}
-      <p className="stem">{stem}</p>
-      {stemFigs.map((f) => (
-        <img key={f.src} className="fig" src={base + f.src} width={f.w} height={f.h} alt="" loading="lazy" />
+      <p className="stem">
+        <RichText text={stem} />
+      </p>
+      {q.figures.map((f) => (
+        <figure key={f.src} className="fig">
+          <img src={base + f.src} width={f.w} height={f.h} alt="" loading="lazy" />
+        </figure>
       ))}
-      {ansFigs.map((f) => (
-        <img key={f.src} className="fig" src={base + f.src} width={f.w} height={f.h} alt="" loading="lazy" />
-      ))}
-      {q.imageAnswers && <p className="hint">{t('picture')}</p>}
-      <div className="answers">
+      <div className={`answers ${q.imageAnswers ? 'pics' : ''}`}>
         {order.map((orig, pos) => {
           const isSel = selected === orig
           const isCorrect = orig === q.correct
@@ -77,16 +97,23 @@ export function QuestionView({ q, selected, onSelect, reveal, shuffleAnswers = t
           if (reveal && isSel && !isCorrect) cls += ' wrong'
           const label = q.imageAnswers ? LETTERS[orig] : LETTERS[pos]
           return (
-            <button key={orig} className={cls} onClick={() => onSelect(orig)} disabled={reveal}>
-              <span className="letter">{label}</span>
-              <span className="text">{q.imageAnswers ? '' : answers[orig]}</span>
+            <button key={orig} className={cls} onClick={() => onSelect(orig)} disabled={reveal} aria-pressed={isSel}>
+              <kbd className="key">{label}</kbd>
+              {!q.imageAnswers && (
+                <span className="text">
+                  <RichText text={answers[orig]} />
+                </span>
+              )}
+              {reveal && isCorrect && <Icon name="check" size={18} />}
+              {reveal && isSel && !isCorrect && <Icon name="x" size={18} />}
             </button>
           )
         })}
       </div>
       {reveal && expl && (
         <div className="expl">
-          <strong>{t('explanation')}:</strong> {expl}
+          <span className="eyebrow">{t('explanation')}</span>
+          <p>{expl}</p>
         </div>
       )}
     </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { QuestionView } from '../components/QuestionView'
+import { Icon, Score } from '../components/Icon'
 import { GENERATORS, type GenId } from '../lib/generators'
 import { useT } from '../lib/i18n'
 import { useLang } from '../lib/store'
@@ -12,18 +13,23 @@ export function Tools() {
     <div className="page">
       <h1>{t('tools')}</h1>
       <p className="muted">{t('generators')}</p>
-      <div className="topic-list">
+      <div className="topic-table">
         {(Object.keys(GENERATORS) as GenId[]).map((id) => (
-          <button key={id} className="topic card" onClick={() => go(`/gen/${id}`)}>
-            <span className="topic-icon">{GENERATORS[id].icon}</span>
-            <span className="topic-name">{GENERATORS[id][lang]}</span>
-            <span className="muted small">∞</span>
+          <button key={id} className="topic-row" onClick={() => go(`/gen/${id}`)}>
+            <span className="code">{GENERATORS[id].icon}</span>
+            <span className="t-name">
+              {GENERATORS[id][lang]}
+              <small className="muted">{GENERATORS[id].sample}</small>
+            </span>
+            <span className="t-meta">∞</span>
+            <Icon name="arrow" size={16} />
           </button>
         ))}
-        <div className="topic card disabled">
-          <span className="topic-icon">🛠️</span>
-          <span className="topic-name">{t('practical')}</span>
-          <span className="muted small">{t('comingSoon')}</span>
+        <div className="topic-row disabled">
+          <span className="code">LAB</span>
+          <span className="t-name">{t('practical')}</span>
+          <span className="t-meta">{t('comingSoon')}</span>
+          <span />
         </div>
       </div>
     </div>
@@ -41,20 +47,17 @@ export function Generator({ id }: { id: GenId }) {
   return (
     <div className="page">
       <div className="page-head">
-        <h1>
-          {g.icon} {g[lang]}
-        </h1>
-        <span className="muted">
-          ✅ {score.ok} ❌ {score.bad}
-        </span>
+        <h1>{g[lang]}</h1>
+        <Score ok={score.ok} bad={score.bad} />
       </div>
-      <div className="card">
+      <div className="q-card">
         <QuestionView
           key={q.id}
           q={q}
           showMeta={false}
           selected={sel}
           shuffleAnswers={false}
+          keyboard
           reveal={sel !== null}
           onSelect={(i) => {
             if (sel !== null) return
@@ -62,7 +65,7 @@ export function Generator({ id }: { id: GenId }) {
             setScore((s) => (i === q.correct ? { ...s, ok: s.ok + 1 } : { ...s, bad: s.bad + 1 }))
           }}
         />
-        {lang === 'ru' && q.ru && <p className="muted small">🇷🇺 {q.ru.stem}</p>}
+        {lang === 'ru' && q.ru && <p className="translation">{q.ru.stem}</p>}
         {sel !== null && (
           <div className="feedback">
             <span className={sel === q.correct ? 'ok' : 'bad'}>{sel === q.correct ? t('correct') : t('wrong')}</span>
@@ -74,7 +77,7 @@ export function Generator({ id }: { id: GenId }) {
                 setSel(null)
               }}
             >
-              {t('next')} →
+              {t('next')} <Icon name="arrow" size={18} />
             </button>
           </div>
         )}
