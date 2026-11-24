@@ -53,9 +53,16 @@ jobs:
         env:
           VM_VERSION: ${{ hashFiles('vm-image/**') }}
         run: |
+          # DNS inside 32-bit build containers fails on the runner: resolve on the host
+          # and pin the Debian mirror via --add-host (deb.debian.org also serves debian-security).
+          echo "--- dns debug"; cat /etc/resolv.conf || true
+          docker run --rm --platform linux/386 i386/debian:bookworm getent hosts deb.debian.org || echo "i386 container: no dns"
+          docker run --rm debian:bookworm getent hosts deb.debian.org || echo "amd64 container: no dns"
+          MIRROR_IP=$(getent ahostsv4 deb.debian.org | awk 'NR==1{print $1}')
+          echo "deb.debian.org -> $MIRROR_IP"
           ok=0
           for i in 1 2 3; do
-            if docker buildx build --network host --platform linux/386 --load -t egz-vm vm-image; then ok=1; break; fi
+            if docker buildx build --add-host "deb.debian.org:$MIRROR_IP" --platform linux/386 --load -t egz-vm vm-image; then ok=1; break; fi
             echo "::warning::docker build attempt $i failed, retrying"; sleep 10
           done
           [ "$ok" = 1 ] || { echo "::error::VM image build failed"; exit 1; }
