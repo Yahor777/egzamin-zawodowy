@@ -48,8 +48,12 @@ fi
 
 echo "== mkfs.ext2"
 IMG="$WORK/$NAME"
-# -r 0: ext2 revision 0, as WebVM's workflow does; -m 1: 1% reserved for root
-$SUDO mkfs.ext2 -q -r 0 -b 4096 -m 1 -N $((INODES + 20000)) -L serwer -d "$ROOTFS" "$IMG" "${SIZE_MB}M"
+# rev 0 like WebVM. Newer e2fsprogs (>= 1.47.1) removed `-r`; it takes `-E revision=0`.
+MKFS_ARGS=(-q -b 4096 -m 1 -N $((INODES + 20000)) -L serwer -d "$ROOTFS" "$IMG" "${SIZE_MB}M")
+if ! $SUDO mkfs.ext2 -r 0 "${MKFS_ARGS[@]}" 2>/dev/null; then
+  $SUDO rm -f "$IMG"
+  $SUDO mkfs.ext2 -E revision=0 "${MKFS_ARGS[@]}"
+fi
 $SUDO e2fsck -fn "$IMG" >/dev/null
 
 echo "== split into chunks"
