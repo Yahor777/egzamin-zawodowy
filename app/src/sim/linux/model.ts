@@ -99,6 +99,18 @@ export interface DhcpSubnet {
   hosts?: { name: string; mac?: string; ip?: string }[]
 }
 
+/** apache2 configuration as loaded by the running server (snapshot at start/restart) */
+export interface ApacheRuntime {
+  listen: number[]
+  vhosts: { port: number; docroot: string; names: string[]; file: string }[] // port 0 = *
+  docroot: string // main server DocumentRoot
+  dirs: { path: string; granted: boolean | null; indexes: boolean | null }[]
+  index: string[]
+  user: string
+  group: string
+  serverName: string
+}
+
 export interface LinuxState {
   version: 1
   hostname: string
@@ -115,4 +127,5 @@ export interface LinuxState {
   bootTime: number
   nextPid: number
   loginUser: string
+  apache?: ApacheRuntime
 }

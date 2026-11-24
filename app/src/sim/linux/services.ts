@@ -1,6 +1,7 @@
 // systemd services + package catalogue
 import type { LinuxState, FsNode } from './model.ts'
 import { startDhcpd, defaultDhcpdConf, defaultDhcpdDefaults } from './dhcpd.ts'
+import { loadApache } from './apache.ts'
 import { CMDS } from './shell.ts'
 import { fmtDate } from './shell.ts'
 
@@ -81,6 +82,23 @@ export function startService(st: LinuxState, d: SvcDef): boolean {
     }
     st.dhcp = { subnets: r.subnets || [], interfaces: r.interfaces || [] }
   }
+  if (d.unit === 'apache2') {
+    const r = loadApache(st)
+    if (r.warnings.length || r.errors.length) journal(st, d.unit, `apachectl[${pid}]`, [...r.errors, ...r.warnings].flatMap((m) => m.split('\n')))
+    if (!r.ok) {
+      s.active = 'failed'
+      s.since = Date.now()
+      s.pid = pid
+      delete st.apache
+      journal(st, d.unit, 'systemd[1]', [
+        `${d.unit}.service: Control process exited, code=exited, status=1/FAILURE`,
+        `${d.unit}.service: Failed with result 'exit-code'.`,
+        `Failed to start ${d.unit}.service - ${d.desc}.`,
+      ])
+      return false
+    }
+    st.apache = r.rt
+  }
   s.active = 'active'
   s.since = Date.now()
   s.pid = pid
@@ -97,6 +115,7 @@ export function stopService(st: LinuxState, d: SvcDef) {
   s.since = Date.now()
   s.pid = 0
   if (d.unit === 'isc-dhcp-server') st.dhcp = null
+  if (d.unit === 'apache2') delete st.apache
 }
 
 export function uptimeStr(st: LinuxState): string {
@@ -149,7 +168,12 @@ export const PKGS: Record<string, PkgDef> = {
     desc: 'Apache HTTP Server',
     services: ['apache2'],
     files: () => ({
-      '/etc/apache2/apache2.conf': '# This is the main Apache server configuration file.\nDefaultRuntimeDir ${APACHE_RUN_DIR}\nPidFile ${APACHE_PID_FILE}\nTimeout 300\nKeepAlive On\nUser ${APACHE_RUN_USER}\nGroup ${APACHE_RUN_GROUP}\nHostnameLookups Off\nErrorLog ${APACHE_LOG_DIR}/error.log\nLogLevel warn\nIncludeOptional mods-enabled/*.load\nIncludeOptional mods-enabled/*.conf\nInclude ports.conf\n<Directory /var/www/>\n\tOptions Indexes FollowSymLinks\n\tAllowOverride None\n\tRequire all granted\n</Directory>\nAccessFileName .htaccess\nIncludeOptional conf-enabled/*.conf\nIncludeOptional sites-enabled/*.conf\n',
+      '/etc/apache2/apache2.conf':
+        '# This is the main Apache server configuration file.  It contains the\n# configuration directives that give the server its instructions.\n# See http://httpd.apache.org/docs/2.4/ for detailed information about\n# the directives and /usr/share/doc/apache2/README.Debian about Debian specific\n# hints.\n#\n# Summary of how the Apache 2 configuration works in Debian:\n#\n#\t/etc/apache2/\n#\t|-- apache2.conf\n#\t|\t`--  ports.conf\n#\t|-- mods-enabled\n#\t|\t|-- *.load\n#\t|\t`-- *.conf\n#\t|-- conf-enabled\n#\t|\t`-- *.conf\n#\t`-- sites-enabled\n#\t \t`-- *.conf\n#\n# * The user and group the server runs as are defined in /etc/apache2/envvars\n\nDefaultRuntimeDir ${APACHE_RUN_DIR}\nPidFile ${APACHE_PID_FILE}\nTimeout 300\nKeepAlive On\nMaxKeepAliveRequests 100\nKeepAliveTimeout 5\n\n# These need to be set in /etc/apache2/envvars\nUser ${APACHE_RUN_USER}\nGroup ${APACHE_RUN_GROUP}\n\nHostnameLookups Off\nErrorLog ${APACHE_LOG_DIR}/error.log\nLogLevel warn\n\n# Include module configuration:\nIncludeOptional mods-enabled/*.load\nIncludeOptional mods-enabled/*.conf\n\n# Include list of ports to listen on\nInclude ports.conf\n\n# Sets the default security model of the Apache2 HTTPD server. It does\n# not allow access to the root filesystem outside of /usr/share and /var/www.\n<Directory />\n\tOptions FollowSymLinks\n\tAllowOverride None\n\tRequire all denied\n</Directory>\n\n<Directory /usr/share>\n\tAllowOverride None\n\tRequire all granted\n</Directory>\n\n<Directory /var/www/>\n\tOptions Indexes FollowSymLinks\n\tAllowOverride None\n\tRequire all granted\n</Directory>\n\n#<Directory /srv/>\n#\tOptions Indexes FollowSymLinks\n#\tAllowOverride None\n#\tRequire all granted\n#</Directory>\n\nAccessFileName .htaccess\n\n<FilesMatch "^\\.ht">\n\tRequire all denied\n</FilesMatch>\n\nLogFormat "%v:%p %h %l %u %t \\"%r\\" %>s %O \\"%{Referer}i\\" \\"%{User-Agent}i\\"" vhost_combined\nLogFormat "%h %l %u %t \\"%r\\" %>s %O \\"%{Referer}i\\" \\"%{User-Agent}i\\"" combined\n\n# Include generic snippets of statements\nIncludeOptional conf-enabled/*.conf\n\n# Include the virtual host configurations:\nIncludeOptional sites-enabled/*.conf\n',
+      '/etc/apache2/envvars':
+        '# envvars - default environment variables for apache2ctl\n\n# this won\'t be correct after changing uid\nunset HOME\n\n# for supporting multiple apache2 instances\nif [ "${APACHE_CONFDIR##/etc/apache2-}" != "${APACHE_CONFDIR}" ] ; then\n\tSUFFIX="-${APACHE_CONFDIR##/etc/apache2-}"\nelse\n\tSUFFIX=\nfi\n\n# Since there is no sane way to get the parsed apache2 config in scripts, some\n# settings are defined via environment variables and then used in apache2ctl,\n# /etc/init.d/apache2, /etc/logrotate.d/apache2, etc.\nexport APACHE_RUN_USER=www-data\nexport APACHE_RUN_GROUP=www-data\n# temporary state file location. This might be changed to /run in Wheezy+1\nexport APACHE_PID_FILE=/var/run/apache2$SUFFIX/apache2.pid\nexport APACHE_RUN_DIR=/var/run/apache2$SUFFIX\nexport APACHE_LOCK_DIR=/var/lock/apache2$SUFFIX\n# Only /var/log/apache2 is handled by /etc/logrotate.d/apache2.\nexport APACHE_LOG_DIR=/var/log/apache2$SUFFIX\n\n## The locale used by some modules like mod_dav\nexport LANG=C\n\nexport LANG\n',
+      '/etc/apache2/mods-available/dir.conf': '<IfModule mod_dir.c>\n\tDirectoryIndex index.html index.cgi index.pl index.php index.xhtml index.htm\n</IfModule>\n',
+      '/etc/apache2/conf-available/security.conf': '# Changing the following options will not really affect the security of the\n# server, but might make attacks slightly more difficult in some cases.\nServerTokens OS\nServerSignature On\nTraceEnable Off\n',
       '/etc/apache2/ports.conf': 'Listen 80\n\n<IfModule ssl_module>\n\tListen 443\n</IfModule>\n\n<IfModule mod_gnutls.c>\n\tListen 443\n</IfModule>\n',
       '/etc/apache2/sites-available/000-default.conf': '<VirtualHost *:80>\n\t#ServerName www.example.com\n\n\tServerAdmin webmaster@localhost\n\tDocumentRoot /var/www/html\n\n\tErrorLog ${APACHE_LOG_DIR}/error.log\n\tCustomLog ${APACHE_LOG_DIR}/access.log combined\n</VirtualHost>\n',
       '/etc/apache2/sites-available/default-ssl.conf': '<VirtualHost *:443>\n\tServerAdmin webmaster@localhost\n\tDocumentRoot /var/www/html\n\tSSLEngine on\n</VirtualHost>\n',

@@ -45,9 +45,29 @@ export interface RouterState {
   wifi24: RouterWifiBand
   wifi5: RouterWifiBand
   forwarding: { name: string; externalPort: string; internalIp: string; internalPort: string; protocol: 'TCP' | 'UDP' | 'ALL'; enabled: boolean }[]
-  remoteManagement: { enabled: boolean; port: number }
+  remoteManagement: {
+    enabled: boolean
+    port: number
+    /** Remote Management IP Address (classic UI): 255.255.255.255 = any host; empty/undefined = any */
+    ip?: string
+  }
   /** devices that will appear in the DHCP client list / wireless stations */
   clients: { name: string; mac: string; ip: string; wireless: boolean }[]
+  /** login user name (classic UI lets you change it on System Tools → Password); undefined = 'admin' */
+  adminUser?: string
+  /** Advanced Routing → Static Routing List */
+  staticRoutes?: RouterStaticRoute[]
+  /** Values of the "secondary" pages (Guest Network, DDNS, …) keyed by page id; not used by checkers. */
+  extra?: Record<string, unknown>
+}
+
+export interface RouterStaticRoute {
+  /** Destination Network, e.g. 10.10.0.0 */
+  dest: string
+  mask: string
+  /** Default Gateway (next hop) */
+  gateway: string
+  enabled: boolean
 }
 
 // ---------------- Switch (TP-Link Easy Smart-like, 8 ports) ----------------
@@ -69,6 +89,8 @@ export interface SwitchState {
   stp: boolean
   igmpSnooping: boolean
   loopPrevention: boolean
+  /** Values of the "secondary" pages (LAG, QoS, …) keyed by page id; not used by checkers. */
+  extra?: Record<string, unknown>
 }
 
 // ---------------- Linux server ----------------

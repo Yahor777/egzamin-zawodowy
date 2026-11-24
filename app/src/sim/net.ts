@@ -74,6 +74,12 @@ export interface PcAdapter {
   enabled: boolean
   /** lease obtained from a DHCP server (set by the network model) */
   lease?: { ip: string; mask: string; gateway: string; dns: string[]; server: string } | null
+  /** APIPA address (169.254.x.x) Windows picks when DHCP gets no answer */
+  autoconf?: string | null
+  /** last known link (media) state — used to renew DHCP when the cable/peer comes up */
+  media?: boolean
+  /** true after `ipconfig /release` until `/renew` or the next link-up */
+  released?: boolean
 }
 
 export interface PcState {
@@ -115,8 +121,10 @@ export function defaultPcState(over: Partial<PcState> = {}): PcState {
 export type PortId = string
 export type Link = [PortId, PortId]
 
+export type DeviceKey = 'router' | 'switch' | 'linux' | 'pc' | 'laptop' | 'printer'
+
 export interface Endpoint {
-  device: 'router' | 'switch' | 'linux' | 'pc' | 'printer'
+  device: DeviceKey
   label: string
   port: PortId // where this L3 interface is attached in the topology
   addrs: Addr[]
@@ -131,13 +139,46 @@ export interface NetworkModel {
   linuxGateway?: string | null
   pc?: PcState
   printer?: { ip: string; prefix: number }
+  /** service laptop on the bench (Windows, port prefix "laptop:") */
+  laptop?: PcState
   links: Link[]
+  /** power state per device; missing = on. A booting device counts as off. */
+  power?: Partial<Record<DeviceKey, boolean>>
+}
+
+export const devOf = (p: PortId) => p.split(':')[0] as DeviceKey
+
+/** Is the device powered (and finished booting)? */
+export function isOn(m: NetworkModel, d: DeviceKey): boolean {
+  return m.power?.[d] !== false
+}
+
+/** The port at the other end of the cable plugged into `port`, if any. */
+export function peerOf(m: NetworkModel, port: PortId): PortId | null {
+  for (const [a, b] of m.links) {
+    if (a === port) return b
+    if (b === port) return a
+  }
+  return null
+}
+
+function switchPortEnabled(m: NetworkModel, port: PortId): boolean {
+  if (devOf(port) !== 'switch') return true
+  const n = Number(port.split(':')[1])
+  return !m.switch || m.switch.portEnabled[n - 1] !== false
+}
+
+/** Physical link state of a port: cable plugged and both ends powered (and switch port enabled). */
+export function linkUp(m: NetworkModel, port: PortId): boolean {
+  const peer = peerOf(m, port)
+  if (!peer) return false
+  return isOn(m, devOf(port)) && isOn(m, devOf(peer)) && switchPortEnabled(m, port) && switchPortEnabled(m, peer)
 }
 
 const ROUTER_LAN_PORTS = ['router:lan1', 'router:lan2', 'router:lan3', 'router:lan4']
 
 /** Which L2 domain does a port belong to? Returns a stable key; ports with the same key can talk. */
-function buildDomains(m: NetworkModel): Map<PortId, string> {
+export function buildDomains(m: NetworkModel, opts: { ignoreVlans?: boolean } = {}): Map<PortId, string> {
   // union-find over port ids
   const parent = new Map<string, string>()
   const find = (x: string): string => {
@@ -150,18 +191,22 @@ function buildDomains(m: NetworkModel): Map<PortId, string> {
   }
   const union = (a: string, b: string) => parent.set(find(a), find(b))
 
-  // cables
-  for (const [a, b] of m.links) union(a, b)
+  // cables (a link is up only when both ends are powered)
+  for (const [a, b] of m.links) {
+    find(a)
+    find(b)
+    if (isOn(m, devOf(a)) && isOn(m, devOf(b))) union(a, b)
+  }
   // router built-in LAN switch: all LAN ports + the router LAN interface
-  for (const p of ROUTER_LAN_PORTS) union(p, 'router:lan-if')
+  if (m.router && isOn(m, 'router')) for (const p of ROUTER_LAN_PORTS) union(p, 'router:lan-if')
   // managed switch: ports in the same VLAN (by PVID, with membership) are bridged
   const sw = m.switch
-  if (sw) {
+  if (sw && isOn(m, 'switch')) {
     for (let i = 0; i < sw.ports; i++) {
       if (!sw.portEnabled[i]) continue
-      const vlan = sw.dot1q ? sw.pvid[i] : 1
+      const vlan = sw.dot1q && !opts.ignoreVlans ? sw.pvid[i] : 1
       const v = sw.vlans.find((x) => x.id === vlan)
-      const member = !sw.dot1q || (v && v.members[i] !== 'none')
+      const member = !sw.dot1q || opts.ignoreVlans || (v && v.members[i] !== 'none')
       if (member) union(`switch:${i + 1}`, `switch:vlan${vlan}`)
     }
     // management interface lives in VLAN 1
@@ -174,7 +219,7 @@ function buildDomains(m: NetworkModel): Map<PortId, string> {
 
 export function endpoints(m: NetworkModel): Endpoint[] {
   const eps: Endpoint[] = []
-  const r = m.router
+  const r = isOn(m, 'router') ? m.router : undefined
   if (r) {
     const lp = maskToPrefix(r.lan.mask)
     if (lp !== null) eps.push({ device: 'router', label: 'Router LAN', port: 'router:lan-if', addrs: [{ ip: r.lan.ip, prefix: lp }], gateway: null, icmp: true })
@@ -183,30 +228,30 @@ export function endpoints(m: NetworkModel): Endpoint[] {
       if (wp !== null) eps.push({ device: 'router', label: 'Router WAN', port: 'router:wan', addrs: [{ ip: r.wan.ip, prefix: wp }], gateway: r.wan.gateway || null, icmp: true })
     }
   }
-  const sw = m.switch
+  const sw = isOn(m, 'switch') ? m.switch : undefined
   if (sw && !sw.ip.dhcp) {
     const sp = maskToPrefix(sw.ip.mask)
     if (sp !== null) eps.push({ device: 'switch', label: 'Switch', port: 'switch:mgmt', addrs: [{ ip: sw.ip.ip, prefix: sp }], gateway: sw.ip.gateway || null, icmp: true })
   }
-  for (const i of m.linuxIfaces ?? []) {
+  for (const i of isOn(m, 'linux') ? (m.linuxIfaces ?? []) : []) {
     if (!i.up) continue
     const addrs = i.addresses.map(parseCidr).filter((x): x is Addr => !!x)
     if (addrs.length) eps.push({ device: 'linux', label: `Linux ${i.name}`, port: `linux:${i.name}`, addrs, gateway: m.linuxGateway ?? null, icmp: true })
   }
-  const pc = m.pc
-  if (pc) {
+  for (const [key, pc] of [['pc', m.pc], ['laptop', m.laptop]] as const) {
+    if (!pc || !isOn(m, key)) continue
     for (const a of pc.adapters) {
       const cfg = pcAddress(a)
-      if (a.enabled && cfg) eps.push({ device: 'pc', label: `PC ${a.name}`, port: `pc:${a.id}`, addrs: [cfg.addr], gateway: cfg.gateway, icmp: pc.firewallIcmp })
+      if (a.enabled && cfg) eps.push({ device: key, label: `${key === 'pc' ? 'PC' : 'Laptop'} ${a.name}`, port: `${key}:${a.id}`, addrs: [cfg.addr], gateway: cfg.gateway, icmp: pc.firewallIcmp })
     }
   }
-  if (m.printer) eps.push({ device: 'printer', label: 'Printer', port: 'printer:eth0', addrs: [{ ip: m.printer.ip, prefix: m.printer.prefix }], gateway: null, icmp: true })
+  if (m.printer && isOn(m, 'printer')) eps.push({ device: 'printer', label: 'Printer', port: 'printer:eth0', addrs: [{ ip: m.printer.ip, prefix: m.printer.prefix }], gateway: null, icmp: true })
   return eps
 }
 
 export function pcAddress(a: PcAdapter): { addr: Addr; gateway: string | null } | null {
   if (a.dhcp) {
-    if (!a.lease) return null
+    if (!a.lease) return a.autoconf ? { addr: { ip: a.autoconf, prefix: 16 }, gateway: null } : null
     const p = maskToPrefix(a.lease.mask)
     return p === null ? null : { addr: { ip: a.lease.ip, prefix: p }, gateway: a.lease.gateway || null }
   }
@@ -228,29 +273,62 @@ export function canPing(m: NetworkModel, fromPort: PortId | PortId[], target: st
   const froms = (Array.isArray(fromPort) ? fromPort : [fromPort]).map((p) => eps.find((e) => e.port === p)).filter((e): e is Endpoint => !!e)
   if (!froms.length) return { ok: false, reason: 'no address' }
   if (froms.some((f) => f.addrs.some((a) => a.ip === target)) || target.startsWith('127.')) return { ok: true }
-  const dst = eps.find((e) => e.addrs.some((a) => a.ip === target))
-  if (!dst) return { ok: false, reason: 'host unreachable' }
+  const dsts = eps.filter((e) => e.addrs.some((a) => a.ip === target))
+  if (!dsts.length) return { ok: false, reason: 'host unreachable' }
+  for (const dst of dsts) {
+    if (reaches(m, domains, eps, froms, dst, target)) return dst.icmp ? { ok: true } : { ok: false, reason: 'timeout' }
+  }
+  return { ok: false, reason: 'timeout' }
+}
 
+/** Endpoints owning `target` that a packet from `fromPort(s)` can reach (L2 or via the router), ignoring firewalls. */
+export function reachableEndpoints(m: NetworkModel, fromPort: PortId | PortId[], target: string): Endpoint[] {
+  const domains = buildDomains(m)
+  const eps = endpoints(m)
+  const froms = (Array.isArray(fromPort) ? fromPort : [fromPort]).map((p) => eps.find((e) => e.port === p)).filter((e): e is Endpoint => !!e)
+  return eps.filter((e) => e.addrs.some((a) => a.ip === target) && reaches(m, domains, eps, froms, e, target))
+}
+
+function reaches(m: NetworkModel, domains: Map<PortId, string>, eps: Endpoint[], froms: Endpoint[], dst: Endpoint, target: string): boolean {
   const direct = (a: Endpoint, b: Endpoint, ipB: string) =>
     l2(domains, a.port, b.port) && a.addrs.some((x) => sameSubnet(x.ip, ipB, x.prefix)) && b.addrs.some((y) => a.addrs.some((x) => sameSubnet(y.ip, x.ip, y.prefix)))
 
   for (const src of froms) {
     // 1) same L2 segment + subnet
-    if (direct(src, dst, target)) return dst.icmp ? { ok: true } : { ok: false, reason: 'timeout' }
+    if (direct(src, dst, target)) return true
     // 2) via router (src gateway is a router interface it can reach, router can reach dst, dst routes back)
-    const r = m.router
-    if (!r || !src.gateway) continue
+    if (!m.router || !isOn(m, 'router') || !src.gateway) continue
     const rIfs = eps.filter((e) => e.device === 'router')
     const gwIf = rIfs.find((e) => e.addrs.some((a) => a.ip === src.gateway) && direct(src, e, src.gateway!))
     if (!gwIf) continue
-    if (dst.device === 'router') return { ok: true } // router answers on any of its addresses
+    if (dst.device === 'router') return true // router answers on any of its addresses
     const outIf = rIfs.find((e) => direct(e, dst, target))
     if (!outIf) continue
     const srcIp = src.addrs[0].ip
     const back = direct(dst, outIf, outIf.addrs[0].ip) && (dst.gateway === outIf.addrs[0].ip || dst.addrs.some((a) => sameSubnet(a.ip, srcIp, a.prefix)))
-    if (back) return dst.icmp ? { ok: true } : { ok: false, reason: 'timeout' }
+    if (back) return true
   }
-  return { ok: false, reason: 'timeout' }
+  return false
+}
+
+/** Two powered devices with the same IP in one L2 segment. */
+export function ipConflicts(m: NetworkModel): { ip: string; devices: DeviceKey[] }[] {
+  const domains = buildDomains(m)
+  const eps = endpoints(m)
+  const out: { ip: string; devices: DeviceKey[] }[] = []
+  for (let i = 0; i < eps.length; i++)
+    for (let j = i + 1; j < eps.length; j++) {
+      const a = eps[i]
+      const b = eps[j]
+      if (a.device === b.device || !l2(domains, a.port, b.port)) continue
+      for (const x of a.addrs)
+        if (b.addrs.some((y) => y.ip === x.ip)) {
+          const ex = out.find((o) => o.ip === x.ip)
+          if (ex) for (const d of [a.device, b.device]) if (!ex.devices.includes(d)) ex.devices.push(d)
+          if (!ex) out.push({ ip: x.ip, devices: [a.device, b.device] })
+        }
+    }
+  return out
 }
 
 /** Give DHCP leases to PC adapters from a reachable DHCP server (router or Linux isc-dhcp-server). */
@@ -268,11 +346,64 @@ export interface DhcpServer {
 export function leaseFor(m: NetworkModel, clientPort: PortId, mac: string, servers: DhcpServer[]): PcAdapter['lease'] {
   const domains = buildDomains(m)
   const normMac = (x: string) => x.replace(/[-:.]/g, '').toUpperCase()
+  if (!isOn(m, devOf(clientPort))) return null
   for (const s of servers) {
-    if (!l2(domains, clientPort, s.port)) continue
+    if (!isOn(m, devOf(s.port)) || !l2(domains, clientPort, s.port)) continue
     const res = s.reservations.find((r) => normMac(r.mac) === normMac(mac))
     const ip = res ? res.ip : s.start
     return { ip, mask: s.mask, gateway: s.gateway, dns: s.dns, server: s.serverIp }
   }
   return null
+}
+
+
+/** Deterministic APIPA address for a MAC (Windows picks a random one in 169.254.0.0/16). */
+export function apipaFor(mac: string): string {
+  const h = mac.replace(/[^0-9a-f]/gi, '').toUpperCase()
+  let x = 0
+  for (const ch of h) x = (x * 31 + ch.charCodeAt(0)) >>> 0
+  return `169.254.${1 + (x % 254)}.${1 + ((x >>> 8) % 254)}`
+}
+
+/**
+ * What Windows does on its own: when an adapter's link comes up it asks for a DHCP lease
+ * (and falls back to APIPA), when the link goes down it drops the address, and while it sits
+ * on APIPA it keeps retrying. Returns a new PcState or null when nothing changed.
+ */
+export function syncPcDhcp(m: NetworkModel, servers: DhcpServer[], pc: PcState, prefix: 'pc' | 'laptop' = 'pc'): PcState | null {
+  let changed = false
+  const adapters = pc.adapters.map((a) => {
+    const port = `${prefix}:${a.id}`
+    const up = a.enabled && isOn(m, prefix) && linkUp(m, port)
+    if (!up) {
+      if (a.media || (a.dhcp && (a.lease || a.autoconf))) {
+        changed = true
+        return { ...a, media: false, lease: a.dhcp ? null : a.lease, autoconf: null, released: false }
+      }
+      return a
+    }
+    if (!a.media) {
+      changed = true
+      if (!a.dhcp) return { ...a, media: true }
+      const lease = leaseFor(m, port, a.mac, servers)
+      return { ...a, media: true, lease, autoconf: lease ? null : apipaFor(a.mac), released: false }
+    }
+    if (a.dhcp && !a.lease && !a.released) {
+      const lease = leaseFor(m, port, a.mac, servers)
+      if (lease) {
+        changed = true
+        return { ...a, lease, autoconf: null }
+      }
+      if (!a.autoconf) {
+        changed = true
+        return { ...a, autoconf: apipaFor(a.mac) }
+      }
+    }
+    if (!a.dhcp && a.autoconf) {
+      changed = true
+      return { ...a, autoconf: null }
+    }
+    return a
+  })
+  return changed ? { ...pc, adapters } : null
 }

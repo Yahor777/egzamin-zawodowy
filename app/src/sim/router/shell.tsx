@@ -1,7 +1,7 @@
-// Shared "browser + device web page" shell for the router and switch simulators:
-// fake address bar, unreachable page, restart screen, login and forced password change,
-// plus the classic admin layout (banner, left navigation tree) and small form helpers.
-import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
+// Shared "device web page" shell for the router and switch simulators:
+// optional fake browser frame (free sandbox), unreachable / restart / hanging pages,
+// login, the admin layout (banner, navigation tree, per-page help) and small form helpers.
+import { useEffect, useLayoutEffect, useRef, useState, type FormEvent, type ReactNode, type RefObject } from 'react'
 import './device.css'
 
 // ---------------------------------------------------------------------------
@@ -132,12 +132,13 @@ export function RadioRow<T extends string>(props: {
   onChange: (v: T) => void
   disabled?: boolean
   hint?: ReactNode
+  vertical?: boolean
 }) {
   return (
     <fieldset className="dv-row dv-fieldset" disabled={props.disabled}>
       <legend className="dv-label">{props.label}:</legend>
       <div className="dv-field">
-        <div className="dv-radios">
+        <div className={`dv-radios${props.vertical ? ' dv-radios-v' : ''}`}>
           {props.options.map(([v, l]) => {
             const id = `${props.name}-${v}`
             return (
@@ -194,7 +195,7 @@ export function Actions({ children }: { children: ReactNode }) {
   return <div className="dv-actions">{children}</div>
 }
 
-/** Small Polish help hint (optional, secondary to the English GUI). */
+/** Small Polish hint (secondary to the English GUI). */
 export function PlHint({ children }: { children: ReactNode }) {
   return (
     <p className="dv-pl" lang="pl">
@@ -203,8 +204,117 @@ export function PlHint({ children }: { children: ReactNode }) {
   )
 }
 
+/**
+ * Table that reflows into "cards" in compact (phone) mode: every cell gets its
+ * column name as data-label, shown above/next to the value.
+ */
+export function DataTable(props: {
+  columns: string[]
+  rows: { key: string; cells: ReactNode[] }[]
+  empty?: string
+  className?: string
+}) {
+  return (
+    <div className="dv-table-wrap">
+      <table className={`dv-table dv-reflow${props.className ? ` ${props.className}` : ''}`}>
+        <thead>
+          <tr>
+            {props.columns.map((c) => (
+              <th key={c} scope="col">
+                {c}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {props.rows.length === 0 ? (
+            <tr className="dv-empty-row">
+              <td colSpan={props.columns.length} className="dv-empty">
+                {props.empty ?? 'No entries.'}
+              </td>
+            </tr>
+          ) : (
+            props.rows.map((r) => (
+              <tr key={r.key}>
+                {r.cells.map((c, i) => (
+                  <td key={i} data-label={props.columns[i]}>
+                    {c}
+                  </td>
+                ))}
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+export function ConfirmBox(props: { text: string; onOk: () => void; onCancel: () => void; danger?: boolean }) {
+  return (
+    <div className="dv-confirm" role="alertdialog" aria-label="Confirm">
+      <p>{props.text}</p>
+      <Actions>
+        <button type="button" className={`dv-btn${props.danger ? ' dv-btn-danger' : ''}`} onClick={props.onOk} autoFocus>
+          OK
+        </button>
+        <button type="button" className="dv-btn dv-btn-2" onClick={props.onCancel}>
+          Cancel
+        </button>
+      </Actions>
+    </div>
+  )
+}
+
 // ---------------------------------------------------------------------------
-// Admin layout (banner + navigation tree)
+// Compact (phone) detection
+// ---------------------------------------------------------------------------
+
+/**
+ * Phones: the app's index.html may set CSS `zoom` on <html> when the layout viewport
+ * is wider than the screen (iPhone "desktop" layouts). Then media / container queries
+ * see ~780px and never switch to the phone layout, so decide in JS instead:
+ * a touch device with a small screen is always a phone, otherwise measure the frame.
+ */
+function isPhoneScreen(): boolean {
+  if (typeof window === 'undefined') return false
+  const touch = 'ontouchstart' in window || (navigator.maxTouchPoints ?? 0) > 0
+  const s = Math.min(window.screen?.width ?? 9999, window.screen?.height ?? 9999)
+  return touch && s < 700
+}
+
+export const COMPACT_MAX = 720
+
+function useCompact(ref: RefObject<HTMLElement | null>): boolean {
+  const [compact, setCompact] = useState(isPhoneScreen)
+  useLayoutEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const update = () => {
+      const zoom = parseFloat(getComputedStyle(document.documentElement).zoom || '1') || 1
+      // clientWidth is in the element's own CSS px; with html zoom the visual width is
+      // clientWidth*zoom — whichever is smaller decides.
+      const w = Math.min(el.clientWidth, el.clientWidth * zoom, window.innerWidth)
+      setCompact(isPhoneScreen() || (w > 0 && w < COMPACT_MAX))
+    }
+    update()
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', update)
+      return () => window.removeEventListener('resize', update)
+    }
+    const ro = new ResizeObserver(update)
+    ro.observe(el)
+    window.addEventListener('resize', update)
+    return () => {
+      ro.disconnect()
+      window.removeEventListener('resize', update)
+    }
+  }, [ref])
+  return compact
+}
+
+// ---------------------------------------------------------------------------
+// Admin layout (banner + navigation tree + help)
 // ---------------------------------------------------------------------------
 
 export interface MenuItem {
@@ -213,30 +323,40 @@ export interface MenuItem {
   children?: { id: string; label: string }[]
 }
 
-function findLabel(menu: MenuItem[], page: string): string {
+function findPath(menu: MenuItem[], page: string): { group: MenuItem | null; label: string } {
   for (const m of menu) {
-    if (m.id === page) return m.label
-    for (const c of m.children ?? []) if (c.id === page) return `${m.label} › ${c.label}`
+    if (m.id === page) return { group: m, label: m.label }
+    for (const c of m.children ?? []) if (c.id === page) return { group: m, label: c.label }
   }
-  return ''
+  return { group: null, label: '' }
 }
 
 export function DeviceLayout(props: {
   idPrefix: string
+  /** big text in the banner (left) */
   model: string
+  /** small text in the banner (right / under the model) */
   subtitle: string
   menu: MenuItem[]
   page: string
   onNavigate: (page: string) => void
   onLogout: () => void
+  /** per-page help (Russian), shown behind the "?" button */
+  help?: Record<string, ReactNode>
   children: ReactNode
 }) {
   const [open, setOpen] = useState(false)
+  const [helpOpen, setHelpOpen] = useState(false)
+  const cur = findPath(props.menu, props.page)
+  const [expanded, setExpanded] = useState<string | null>(cur.group?.id ?? null)
   const go = (id: string) => {
     props.onNavigate(id)
     setOpen(false)
   }
   const navId = `${props.idPrefix}-nav`
+  const helpId = `${props.idPrefix}-help`
+  const help = props.help?.[props.page]
+  const crumb = cur.group && cur.group.id !== props.page ? `${cur.group.label} › ${cur.label}` : cur.label
   return (
     <div className="dv-app">
       <header className="dv-banner">
@@ -244,9 +364,6 @@ export function DeviceLayout(props: {
           <span className="dv-model">{props.model}</span>
           <span className="dv-sub">{props.subtitle}</span>
         </div>
-        <button type="button" className="dv-logout" onClick={props.onLogout}>
-          Logout
-        </button>
       </header>
       <div className="dv-body">
         <button
@@ -256,26 +373,47 @@ export function DeviceLayout(props: {
           aria-controls={navId}
           onClick={() => setOpen((o) => !o)}
         >
-          <span aria-hidden="true">☰</span> Menu
-          <span className="dv-menu-cur">{findLabel(props.menu, props.page)}</span>
+          <span aria-hidden="true" className="dv-burger">
+            ☰
+          </span>
+          <span>Menu</span>
+          <span className="dv-menu-cur">{crumb}</span>
         </button>
         <nav id={navId} className={`dv-nav${open ? ' dv-nav-open' : ''}`} aria-label="Device menu">
           <ul>
             {props.menu.map((m) => {
-              const groupActive = m.id === props.page || (m.children ?? []).some((c) => c.id === props.page)
+              const kids = m.children ?? []
+              const groupActive = m.id === props.page || kids.some((c) => c.id === props.page)
+              const isOpen = kids.length > 0 && expanded === m.id
               return (
-                <li key={m.id} className={groupActive ? 'dv-group-active' : undefined}>
+                <li key={m.id} className={`${groupActive ? 'dv-group-active' : ''}${isOpen ? ' dv-group-open' : ''}`}>
                   <button
                     type="button"
-                    className={`dv-nav-top${m.id === props.page ? ' dv-cur' : ''}`}
+                    className={`dv-nav-top${m.id === props.page ? ' dv-cur' : ''}${groupActive ? ' dv-in' : ''}`}
                     aria-current={m.id === props.page ? 'page' : undefined}
-                    onClick={() => go(m.children?.length ? m.children[0].id : m.id)}
+                    aria-expanded={kids.length ? isOpen : undefined}
+                    onClick={() => {
+                      if (m.id === 'logout') {
+                        setOpen(false)
+                        props.onLogout()
+                        return
+                      }
+                      if (!kids.length) return go(m.id)
+                      if (open) {
+                        // phone menu: just fold/unfold the group
+                        setExpanded(isOpen ? null : m.id)
+                        return
+                      }
+                      setExpanded(m.id)
+                      if (!groupActive) go(kids[0].id)
+                    }}
                   >
                     {m.label}
+                    {kids.length ? <span className="dv-caret" aria-hidden="true" /> : null}
                   </button>
-                  {m.children?.length ? (
+                  {kids.length ? (
                     <ul className="dv-nav-sub">
-                      {m.children.map((c) => (
+                      {kids.map((c) => (
                         <li key={c.id}>
                           <button
                             type="button"
@@ -294,7 +432,29 @@ export function DeviceLayout(props: {
             })}
           </ul>
         </nav>
-        <main className="dv-content">{props.children}</main>
+        <main className="dv-content">
+          <div className="dv-pagehead">
+            <span className="dv-crumb">{crumb}</span>
+            {help ? (
+              <button
+                type="button"
+                className="dv-help-btn"
+                aria-expanded={helpOpen}
+                aria-controls={helpId}
+                title="Подсказка"
+                onClick={() => setHelpOpen((h) => !h)}
+              >
+                ?<span className="dv-sr"> Подсказка</span>
+              </button>
+            ) : null}
+          </div>
+          {help && helpOpen ? (
+            <div id={helpId} className="dv-help" lang="ru">
+              {help}
+            </div>
+          ) : null}
+          {props.children}
+        </main>
       </div>
     </div>
   )
@@ -312,6 +472,7 @@ export interface ShellApi {
 
 interface Restart {
   text: string
+  /** new management address when the reboot was caused by an IP change */
   ipChange: string | null
 }
 
@@ -334,41 +495,64 @@ export function DeviceShell(props: {
   deviceIp: string
   username: string
   password: string
-  mustChangePassword: boolean
-  pwMin: number
-  pwMax: number
-  onSetPassword: (pw: string) => void
   /** text describing the factory login, shown as a small hint */
   factoryHint: string
+  /** what the device does after its management IP changes: router reboots, switch just stops answering */
+  ipChangeBehavior: 'reboot' | 'hang'
+  /** render only the device web UI (no browser frame); the host browser checks reachability */
+  embedded?: boolean
+  onLogout?: () => void
   renderApp: (api: ShellApi) => ReactNode
 }) {
-  const { deviceIp } = props
+  const { deviceIp, embedded } = props
+  const rootRef = useRef<HTMLDivElement>(null)
+  const compact = useCompact(rootRef)
   const [addr, setAddr] = useState(`http://${deviceIp}/`)
   const [host, setHost] = useState(deviceIp)
   const [loggedIn, setLoggedIn] = useState(false)
   const [restart, setRestart] = useState<Restart | null>(null)
+  const [hanging, setHanging] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
-  const [seenIp, setSeenIp] = useState(deviceIp)
+  const [seen, setSeen] = useState({ ip: deviceIp, user: props.username, pw: props.password })
 
-  // Device IP changed (LAN/management IP saved or factory reset): the page we are on goes away.
-  if (seenIp !== deviceIp) {
-    setSeenIp(deviceIp)
-    if (host === seenIp && (loggedIn || restart)) {
-      setLoggedIn(false)
-      setRestart({
-        text: `The IP address has been changed to ${deviceIp}. The device is applying the new settings…`,
-        ipChange: deviceIp,
-      })
-    } else if (host === seenIp) {
+  // Changes of the device configuration that end the web session (as on the real device).
+  if (seen.ip !== deviceIp || seen.user !== props.username || seen.pw !== props.password) {
+    setSeen({ ip: deviceIp, user: props.username, pw: props.password })
+    if (seen.ip !== deviceIp) {
+      const wasHere = embedded || host === seen.ip
+      if (wasHere && (loggedIn || restart)) {
+        setLoggedIn(false)
+        if (props.ipChangeBehavior === 'reboot') {
+          setRestart({
+            text: `The LAN IP address has been changed to ${deviceIp}. The router is rebooting to apply the new settings, please wait…`,
+            ipChange: deviceIp,
+          })
+        } else {
+          setRestart(null)
+          setHanging(seen.ip)
+        }
+      } else if (wasHere) {
+        setLoggedIn(false)
+      }
+      if (embedded) setHost(deviceIp)
+    } else if (loggedIn) {
+      // credentials changed → log in again
       setLoggedIn(false)
     }
   }
 
   useEffect(() => {
     if (!restart) return
-    const t = window.setTimeout(() => setRestart(null), restart.ipChange ? 4500 : 3500)
+    const t = window.setTimeout(() => setRestart(null), restart.ipChange ? 5000 : 3500)
     return () => window.clearTimeout(t)
   }, [restart])
+
+  useEffect(() => {
+    // the switch never answers at the old address: the browser waits, then gives up
+    if (!hanging || embedded) return
+    const t = window.setTimeout(() => setHanging(null), 6000)
+    return () => window.clearTimeout(t)
+  }, [hanging, embedded])
 
   useEffect(() => {
     if (!loading) return
@@ -382,23 +566,30 @@ export function DeviceShell(props: {
     setAddr(h ? `http://${h}/` : addr)
     if (h !== host || h !== deviceIp) setLoggedIn(false)
     setHost(h)
+    setHanging(null)
     setLoading(true)
   }
 
   const api: ShellApi = {
-    logout: () => setLoggedIn(false),
+    logout: () => {
+      setLoggedIn(false)
+      props.onLogout?.()
+    },
     reboot: (text) => {
       setLoggedIn(false)
-      setRestart({ text: text ?? 'The device is rebooting, please wait…', ipChange: null })
+      setRestart({ text: text ?? 'Restarting… Please wait.', ipChange: null })
     },
   }
 
+  const effectiveHost = embedded ? deviceIp : host
   let page: ReactNode
   if (loading) {
     page = <div className="dv-blank" aria-busy="true" />
+  } else if (hanging) {
+    page = <HangingPage host={hanging} />
   } else if (restart) {
-    page = <RestartPage restart={restart} />
-  } else if (host !== deviceIp) {
+    page = <RestartPage restart={restart} embedded={!!embedded} />
+  } else if (effectiveHost !== deviceIp) {
     page = <Unreachable host={host} />
   } else if (!loggedIn) {
     page = (
@@ -412,53 +603,47 @@ export function DeviceShell(props: {
         onLogin={() => setLoggedIn(true)}
       />
     )
-  } else if (props.mustChangePassword) {
-    page = (
-      <ChangePasswordPage
-        idPrefix={props.idPrefix}
-        model={props.model}
-        current={props.password}
-        min={props.pwMin}
-        max={props.pwMax}
-        onSet={props.onSetPassword}
-      />
-    )
   } else {
     page = props.renderApp(api)
   }
 
   const addrId = `${props.idPrefix}-addr`
   return (
-    <div className={`dv-root ${props.theme}`}>
-      <div className="dv-chrome">
-        <span className="dv-dots" aria-hidden="true">
-          <i />
-          <i />
-          <i />
-        </span>
-        <form className="dv-addr" onSubmit={navigate} role="search" aria-label="Browser address bar">
-          <label htmlFor={addrId} className="dv-sr">
-            Address
-          </label>
-          <span className="dv-lock" aria-hidden="true">
-            ⓘ
+    <div
+      ref={rootRef}
+      className={`dv-root ${props.theme}${compact ? ' dv-compact' : ''}${embedded ? ' dv-embedded' : ''}`}
+    >
+      {embedded ? null : (
+        <div className="dv-chrome">
+          <span className="dv-dots" aria-hidden="true">
+            <i />
+            <i />
+            <i />
           </span>
-          <input
-            id={addrId}
-            className="dv-addr-input"
-            value={addr}
-            onChange={(e) => setAddr(e.target.value)}
-            onFocus={(e) => e.target.select()}
-            inputMode="url"
-            autoComplete="off"
-            autoCapitalize="off"
-            spellCheck={false}
-          />
-          <button type="submit" className="dv-go">
-            Go
-          </button>
-        </form>
-      </div>
+          <form className="dv-addr" onSubmit={navigate} role="search" aria-label="Browser address bar">
+            <label htmlFor={addrId} className="dv-sr">
+              Address
+            </label>
+            <span className="dv-lock" aria-hidden="true">
+              ⓘ
+            </span>
+            <input
+              id={addrId}
+              className="dv-addr-input"
+              value={addr}
+              onChange={(e) => setAddr(e.target.value)}
+              onFocus={(e) => e.target.select()}
+              inputMode="url"
+              autoComplete="off"
+              autoCapitalize="off"
+              spellCheck={false}
+            />
+            <button type="submit" className="dv-go">
+              Go
+            </button>
+          </form>
+        </div>
+      )}
       <div className="dv-viewport">{page}</div>
     </div>
   )
@@ -477,16 +662,25 @@ function Unreachable({ host }: { host: string }) {
       <p className="dv-error-code">ERR_CONNECTION_TIMED_OUT</p>
       <PlHint>
         Pod tym adresem nie odpowiada żadne urządzenie. Jeśli zmieniono adres IP urządzenia, wpisz nowy adres w pasku
-        adresu (np. http://192.168.1.1/) i naciśnij Go / Enter.
+        adresu (np. http://192.168.1.1/) i naciśnij Go / Enter. Komputer musi mieć adres z tej samej podsieci.
       </PlHint>
     </div>
   )
 }
 
-function RestartPage({ restart }: { restart: Restart }) {
+function HangingPage({ host }: { host: string }) {
+  return (
+    <div className="dv-hanging" role="status" aria-live="polite">
+      <span className="dv-spinner" aria-hidden="true" />
+      <span>Waiting for {host}…</span>
+    </div>
+  )
+}
+
+function RestartPage({ restart, embedded }: { restart: Restart; embedded: boolean }) {
   return (
     <div className="dv-restart" role="status" aria-live="polite">
-      <h2>{restart.ipChange ? 'IP address changed' : 'Restarting…'}</h2>
+      <h2>Restarting…</h2>
       <p>{restart.text}</p>
       <div className="dv-progress" aria-hidden="true">
         <span key={restart.text + (restart.ipChange ?? '')} />
@@ -494,12 +688,11 @@ function RestartPage({ restart }: { restart: Restart }) {
       {restart.ipChange ? (
         <>
           <p>
-            Please use the new IP address to log in to the web management page:{' '}
-            <b className="dv-mono">http://{restart.ipChange}/</b>
+            After the reboot, please log in at the new address: <b className="dv-mono">http://{restart.ipChange}/</b>
           </p>
-          <PlHint>
-            Strona pod starym adresem przestanie odpowiadać. Wpisz nowy adres w pasku adresu przeglądarki.
-          </PlHint>
+          {embedded ? null : (
+            <PlHint>Strona pod starym adresem przestanie odpowiadać. Wpisz nowy adres w pasku adresu przeglądarki.</PlHint>
+          )}
         </>
       ) : null}
     </div>
@@ -565,74 +758,6 @@ function LoginPage(props: {
             Login
           </button>
           <PlHint>{props.factoryHint}</PlHint>
-        </div>
-      </form>
-    </div>
-  )
-}
-
-function ChangePasswordPage(props: {
-  idPrefix: string
-  model: string
-  current: string
-  min: number
-  max: number
-  onSet: (pw: string) => void
-}) {
-  const [pw, setPw] = useState('')
-  const [pw2, setPw2] = useState('')
-  const [err, setErr] = useState('')
-  const submit = (e: FormEvent) => {
-    e.preventDefault()
-    const v = validateNewPassword(pw, pw2, props.current, props.min, props.max)
-    if (v) {
-      setErr(v)
-      return
-    }
-    props.onSet(pw)
-  }
-  const p = props.idPrefix
-  return (
-    <div className="dv-login-wrap">
-      <form className="dv-login" onSubmit={submit}>
-        <div className="dv-login-head">
-          <span className="dv-model">{props.model}</span>
-          <span className="dv-sub">Change Password</span>
-        </div>
-        <div className="dv-login-body">
-          <p className="dv-note">
-            For security reasons, you must change the default password before continuing. The password must be{' '}
-            {props.min}–{props.max} characters (letters, digits, symbols; no spaces).
-          </p>
-          <label htmlFor={`${p}-cp-new`}>New Password</label>
-          <input
-            id={`${p}-cp-new`}
-            className="dv-input"
-            type="password"
-            value={pw}
-            maxLength={props.max}
-            onChange={(e) => setPw(e.target.value)}
-            autoComplete="new-password"
-          />
-          <label htmlFor={`${p}-cp-confirm`}>Confirm Password</label>
-          <input
-            id={`${p}-cp-confirm`}
-            className="dv-input"
-            type="password"
-            value={pw2}
-            maxLength={props.max}
-            onChange={(e) => setPw2(e.target.value)}
-            autoComplete="new-password"
-          />
-          {err ? (
-            <div className="dv-msg dv-msg-err" role="alert">
-              {err}
-            </div>
-          ) : null}
-          <button type="submit" className="dv-btn dv-btn-wide">
-            Save
-          </button>
-          <PlHint>Urządzenie wymaga zmiany fabrycznego hasła — ustaw je zgodnie z treścią zadania.</PlHint>
         </div>
       </form>
     </div>

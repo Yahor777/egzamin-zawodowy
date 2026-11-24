@@ -1,7 +1,7 @@
 // Pure helpers shared by LabPage and the headless lab tests.
 import { linuxApi } from '../linux/api'
 import type { LinuxState } from '../linux/model'
-import { canPing, networkOf, prefixToMask, type DhcpServer, type Link, type NetworkModel, type PcState } from '../net'
+import { canPing, networkOf, prefixToMask, type DeviceKey, type DhcpServer, type Link, type NetworkModel, type PcState } from '../net'
 import type { RouterState, SwitchState } from '../types'
 import type { Lab, LabCtx } from './labs'
 
@@ -11,12 +11,25 @@ export interface LabSave {
   switch?: SwitchState
   linux?: LinuxState
   pc?: PcState
+  /** service laptop put on the bench when the lab has no Windows PC (not graded) */
+  laptop?: PcState
   links: Link[]
+  /** power switches on the bench; missing = on */
+  power?: Partial<Record<DeviceKey, boolean>>
+  /** 'real' (default): routers/switches are configured from the PC browser; 'simple': direct tabs */
+  mode?: 'real' | 'simple'
   startedAt: number | null
   checked: Record<string, boolean> | null
 }
 
-export function buildModel(lab: Lab, s: LabSave): NetworkModel {
+/** Effective power: switched on and not in the middle of a (re)boot. */
+export function effectivePower(s: LabSave, booting?: Partial<Record<DeviceKey, unknown>>): Partial<Record<DeviceKey, boolean>> {
+  const out: Partial<Record<DeviceKey, boolean>> = { ...s.power }
+  for (const k of Object.keys(booting ?? {}) as DeviceKey[]) if (booting![k]) out[k] = false
+  return out
+}
+
+export function buildModel(lab: Pick<Lab, 'devices'>, s: LabSave, booting?: Partial<Record<DeviceKey, unknown>>): NetworkModel {
   const api = s.linux ? linuxApi(s.linux) : null
   return {
     router: s.router,
@@ -25,7 +38,9 @@ export function buildModel(lab: Lab, s: LabSave): NetworkModel {
     linuxGateway: api?.defaultGateway() ?? null,
     pc: s.pc,
     printer: lab.devices.printer,
+    laptop: s.laptop,
     links: s.links,
+    power: effectivePower(s, booting),
   }
 }
 
