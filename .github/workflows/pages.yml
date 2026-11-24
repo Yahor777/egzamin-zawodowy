@@ -1,4 +1,5 @@
 name: Deploy app to GitHub Pages
+# Runs on every push that changes app/ (or manually: Actions → this workflow → Run workflow)
 
 on:
   push:
