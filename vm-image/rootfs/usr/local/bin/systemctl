@@ -14,8 +14,13 @@ HOST=$(cat /etc/hostname 2>/dev/null || echo serwer)
 
 # ---------- unit table ----------
 # canonical name -> description | loaded line | docs | main process name
-declare -A DESC LOADED DOCS PROC
+declare -A DESC LOADED DOCS PROC EXEC
 unit_def() { DESC[$1]=$2; LOADED[$1]=$3; DOCS[$1]=$4; PROC[$1]=$5; }
+EXEC=([isc-dhcp-server]='/etc/init.d/isc-dhcp-server start' [apache2]='/usr/sbin/apachectl start'
+  [smbd]='/usr/sbin/smbd --foreground --no-process-group $SMBDOPTIONS'
+  [nmbd]='/usr/sbin/nmbd --foreground --no-process-group $NMBDOPTIONS'
+  [ssh]='/usr/sbin/sshd -D $SSHD_OPTS' [named]='/usr/sbin/named -f $OPTIONS' [cron]='/usr/sbin/cron -f $EXTRA_OPTS'
+  [nfs-server]='/usr/sbin/rpc.nfsd' [systemd-networkd]='/lib/systemd/systemd-networkd')
 unit_def isc-dhcp-server 'LSB: DHCP server' '/etc/init.d/isc-dhcp-server; generated' 'man:systemd-sysv-generator(8)' dhcpd
 unit_def apache2 'The Apache HTTP Server' '/lib/systemd/system/apache2.service; %s; preset: enabled' 'https://httpd.apache.org/docs/2.4/' apache2
 unit_def smbd 'Samba SMB Daemon' '/lib/systemd/system/smbd.service; %s; preset: enabled' 'man:smbd(8) man:samba(7) man:smb.conf(5)' smbd
@@ -70,12 +75,24 @@ trap 'rm -f "$OUT"' EXIT
 check_isc-dhcp-server() {
   local conf=/etc/dhcp/dhcpd.conf
   if [ ! -r "$conf" ]; then echo "Can't open $conf: No such file or directory" > "$OUT"; return 1; fi
-  dhcpd -t -4 -cf "$conf" > "$OUT" 2>&1 || return 1
+  echo "Launching IPv4 server only." > "$OUT"
+  if ! dhcpd -t -4 -cf "$conf" >> "$OUT" 2>&1; then
+    # drop dhcpd's "submit a bug" boilerplate so the real error stays visible
+    sed -i '/^If you think you have received/,/^process and the information/d' "$OUT"
+    printf '%s\n' "Starting ISC DHCPv4 server: dhcpdcheck syslog for diagnostics. ... failed!" " failed!" >> "$OUT"
+    return 1
+  fi
   # Interfaces: INTERFACESv4 from /etc/default/isc-dhcp-server, addresses from
   # the last `netplan apply` (emulated NICs enp0s3/enp0s8).
   local ifs
+  # shellcheck disable=SC1091,SC2154
   ifs=$( . /etc/default/isc-dhcp-server 2>/dev/null; echo "$INTERFACESv4" )
-  python3 "$EGZ/netplan.py" dhcp-check "$conf" $ifs >> "$OUT" 2>&1
+  # shellcheck disable=SC2086
+  if ! python3 "$EGZ/netplan.py" dhcp-check "$conf" $ifs >> "$OUT" 2>&1; then
+    sed -i '/^If you think you have received/,/^process and the information/d' "$OUT"
+    printf '%s\n' "Starting ISC DHCPv4 server: dhcpdcheck syslog for diagnostics. ... failed!" " failed!" >> "$OUT"
+    return 1
+  fi
 }
 check_apache2() {
   mkdir -p /var/run/apache2 /var/lock/apache2 2>/dev/null
@@ -105,8 +122,6 @@ check_systemd-networkd() { python3 "$EGZ/netplan.py" generate > "$OUT" 2>&1; }
 started_lines() {
   case $1 in
     isc-dhcp-server) echo "Starting ISC DHCPv4 server: dhcpd." ;;
-    apache2) ;;
-    *) ;;
   esac
 }
 
@@ -250,7 +265,7 @@ do_status() {
     echo "     CGroup: /system.slice/$u.service"
     echo "             └─$pid ${PROC[$u]}"
   elif [ "$st" = failed ]; then
-    echo "    Process: $(fakepid "$u") ExecStart=${LOADED[$u]%%;*} (code=exited, status=1/FAILURE)"
+    echo "    Process: $(fakepid "$u") ExecStart=${EXEC[$u]} (code=exited, status=1/FAILURE)"
   fi
   if [ -s "$STATE/$u.log" ]; then
     echo

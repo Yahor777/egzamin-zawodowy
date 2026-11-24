@@ -1,0 +1,61 @@
+#!/bin/bash
+# apt / apt-get for the exam VM (egz). There is no internet in the browser VM.
+#  - `update` prints what a successful update looks like (nothing to download);
+#  - everything else runs the REAL apt. The exam packages are preinstalled and
+#    their .deb files are in an offline repository (/var/lib/egz-repo), so
+#    install/reinstall/remove/purge of those packages really works;
+#  - a package outside that set gets apt's real "Unable to locate package"
+#    plus one hint line.
+name=${0##*/}
+real=/usr/bin/$name
+[ -x "$real" ] || real=/usr/bin/apt-get
+
+sub="" pkgs=()
+for a in "$@"; do
+  case $a in
+    -*) ;;
+    *) if [ -z "$sub" ]; then sub=$a; else pkgs+=("$a"); fi ;;
+  esac
+done
+
+if [ "$sub" = update ]; then
+  if [ "$(id -u)" != 0 ]; then
+    [ "$name" = apt ] && echo "Reading package lists... Done"
+    echo "E: Could not open lock file /var/lib/apt/lists/lock - open (13: Permission denied)"
+    echo "E: Unable to lock directory /var/lib/apt/lists/"
+    if [ "$name" = apt ]; then
+      echo "W: Problem unlinking the file /var/cache/apt/pkgcache.bin - RemoveCaches (13: Permission denied)"
+      echo "W: Problem unlinking the file /var/cache/apt/srcpkgcache.bin - RemoveCaches (13: Permission denied)"
+    fi
+    exit 100
+  fi
+  sleep 0.3; echo "Hit:1 http://deb.debian.org/debian bookworm InRelease"
+  sleep 0.2; echo "Hit:2 http://deb.debian.org/debian bookworm-updates InRelease"
+  sleep 0.2; echo "Hit:3 http://deb.debian.org/debian-security bookworm-security InRelease"
+  echo "Reading package lists... Done"
+  if [ "$name" = apt ]; then
+    echo "Building dependency tree... Done"
+    echo "Reading state information... Done"
+    echo "All packages are up to date."
+  fi
+  exit 0
+fi
+
+missing=()
+if [ "$(id -u)" = 0 ]; then
+  case $sub in
+    install|reinstall|download|source|show|policy)
+      for p in "${pkgs[@]}"; do
+        case $p in */*.deb|./*|/*) continue ;; esac
+        base=${p%%=*}; base=${base%%/*}; base=${base%[+-]}
+        apt-cache show --no-all-versions "$base" >/dev/null 2>&1 || missing+=("$base")
+      done ;;
+  esac
+fi
+
+"$real" "$@"
+rc=$?
+if [ ${#missing[@]} -gt 0 ]; then
+  echo "(песочница без интернета: доступны только пакеты экзамена — список: /usr/local/share/egz/packages.txt)"
+fi
+exit $rc

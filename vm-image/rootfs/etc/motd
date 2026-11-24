@@ -1,0 +1,10 @@
+
+ Debian GNU/Linux 12 (bookworm) - serwer ćwiczeniowy INF.02 / учебный сервер INF.02
+
+ PL  Prawdziwy Linux w przeglądarce. Konto: administrator, hasło ZAQ!2wsx (sudo).
+     Bez internetu: apt instaluje tylko pakiety egzaminacyjne (są już zainstalowane).
+     systemctl i sieć (netplan, ip) są emulowane, ale konfiguracje są sprawdzane naprawdę.
+ RU  Настоящий Linux в браузере. Вход: administrator, пароль ZAQ!2wsx (sudo).
+     Интернета нет: apt ставит только пакеты экзамена (они уже установлены).
+     systemctl и сеть (netplan, ip) эмулируются, но конфиги проверяются по-настоящему.
+

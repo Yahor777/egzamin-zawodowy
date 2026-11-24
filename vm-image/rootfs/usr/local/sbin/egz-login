@@ -1,0 +1,19 @@
+#!/bin/bash
+# Entry point of the exam VM, started by app/public/vm/vm.js as root.
+#   --boot  first session after the page loaded: "boot" the machine
+#           (emulated services + network, see boot.sh)
+# Then log in as administrator like a console login (motd, login shell with
+# the user's groups, so `id` shows sudo and sudo asks for the password).
+U=administrator
+[ "$1" = --boot ] && /usr/local/lib/egz/boot.sh
+[ -r /etc/motd ] && cat /etc/motd
+cd "/home/$U" 2>/dev/null || cd /
+export TERM=${TERM:-xterm-256color}
+if setpriv --reuid="$U" --regid="$U" --init-groups true 2>/dev/null; then
+  exec setpriv --reuid="$U" --regid="$U" --init-groups --reset-env /bin/bash --login
+fi
+if su -l "$U" -c true </dev/null >/dev/null 2>&1; then
+  exec su -l "$U"
+fi
+echo "(egz) nie udało się zalogować jako $U / не удалось войти как $U — открыта оболочка root"
+exec /bin/bash --login

@@ -1,12 +1,22 @@
 // Real Debian in the browser via CheerpX (Leaning Technologies).
 // CheerpX is free for individuals; it must be loaded from Leaning Tech's CDN
-// (re-hosting the build is not allowed). The disk image is WebVM's public
-// Debian image, streamed block by block; local changes go to IndexedDB.
+// (re-hosting the build is not allowed).
+//
+// Disk: our own exam image (vm-image/ in the repo, built by
+// .github/workflows/pages.yml) served from this site as 128 KiB chunks in
+// ./disk/ and read with CheerpX.GitHubDevice, like a self-hosted WebVM.
+// disk/manifest.json names the current image. If it is missing or fails to
+// load, we fall back to WebVM's public Debian 10 disk.
+// Local changes go to an IndexedDB overlay (one per image version: an overlay
+// only makes sense on top of the exact image it was made on).
 const CX_VERSION = '1.4.0'
 const CX_URL = `https://cxrtnc.leaningtech.com/${CX_VERSION}/cx.esm.js`
-// From github.com/leaningtech/webvm config_public_terminal.js
-const DISK_URL = 'wss://disks.webvm.io/debian_buster_large_permis_fixed_01-06-2026.ext2'
-const IDB_NAME = 'egz-vm-debian-1'
+const OWN_DISK_DIR = new URL('disk/', location.href)
+const IDB_PREFIX = 'egz-vm-serwer-'
+// Fallback: from github.com/leaningtech/webvm config_public_terminal.js
+const PUBLIC_DISK_URL = 'wss://disks.webvm.io/debian_buster_large_permis_fixed_01-06-2026.ext2'
+const PUBLIC_IDB_NAME = 'egz-vm-debian-1'
+const PATH = 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 
 const $ = (id) => document.getElementById(id)
 const statusEl = $('status')
@@ -185,21 +195,13 @@ async function boot() {
   }
 
   setStatus('Подключаю диск Debian…')
-  let disk
-  try {
-    disk = await CheerpX.CloudDevice.create(DISK_URL)
-  } catch (e) {
-    // WebSocket blocked? WebVM falls back to plain HTTPS.
-    console.warn('WS disk failed, trying HTTPS', e)
-    try {
-      disk = await CheerpX.CloudDevice.create('https:' + DISK_URL.slice('wss:'.length))
-    } catch (e2) {
-      console.error(e2)
-      fail('Нет связи с сервером диска (disks.webvm.io).' + FALLBACK)
-      return
-    }
+  const disk = await openDisk(CheerpX)
+  if (!disk) {
+    fail('Нет связи с сервером диска (ни наш диск, ни disks.webvm.io).' + FALLBACK)
+    return
   }
-  const cache = await CheerpX.IDBDevice.create(IDB_NAME)
+  $('diskLabel').textContent = disk.label
+  const cache = await CheerpX.IDBDevice.create(disk.idb)
   let wantReset = false
   try { wantReset = localStorage.getItem('vm-reset') === '1' } catch {}
   if (wantReset) {
@@ -208,7 +210,7 @@ async function boot() {
     try { localStorage.removeItem('vm-reset') } catch {}
     term.writeln('\x1b[33mСистема сброшена к исходному состоянию.\x1b[0m\r\n')
   }
-  const overlay = await CheerpX.OverlayDevice.create(disk, cache)
+  const overlay = await CheerpX.OverlayDevice.create(disk.dev, cache)
 
   setStatus('Запускаю Linux…')
   let cx
@@ -248,15 +250,76 @@ async function boot() {
   )
   window.__vm = cx
 
-  // Login shell as root; restart it if the user types `exit`.
-  for (;;) {
-    await cx.run('/bin/bash', ['--login'], {
-      env: ['HOME=/root', 'USER=root', 'LOGNAME=root', 'TERM=xterm', 'SHELL=/bin/bash', 'LANG=C.UTF-8', 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'],
-      cwd: '/root',
-      uid: 0,
-      gid: 0,
-    })
+  // Our disk: /usr/local/sbin/egz-login starts as root, "boots" the emulated
+  // services once per page load (--boot), then logs in as administrator
+  // (setpriv with the user's groups, so sudo works like on the exam).
+  // Public fallback disk: plain root shell, as before.
+  // Restart the session if the user types `exit`.
+  for (let first = true; ; first = false) {
+    if (disk.own) {
+      await cx.run('/bin/bash', ['/usr/local/sbin/egz-login', ...(first ? ['--boot'] : [])], {
+        env: ['HOME=/root', 'USER=root', 'LOGNAME=root', 'TERM=xterm-256color', 'SHELL=/bin/bash', 'LANG=C.UTF-8', PATH],
+        cwd: '/root',
+        uid: 0,
+        gid: 0,
+      })
+    } else {
+      await cx.run('/bin/bash', ['--login'], {
+        env: ['HOME=/root', 'USER=root', 'LOGNAME=root', 'TERM=xterm', 'SHELL=/bin/bash', 'LANG=C.UTF-8', PATH],
+        cwd: '/root',
+        uid: 0,
+        gid: 0,
+      })
+    }
     term.writeln('\r\n\x1b[33m[сессия завершена — запускаю новую]\x1b[0m\r\n')
+  }
+}
+
+// Our exam disk if this deploy has one, else WebVM's public disk.
+async function openDisk(CheerpX) {
+  try {
+    const r = await fetch(new URL('manifest.json', OWN_DISK_DIR), { cache: 'no-store' })
+    if (!r.ok) throw new Error(`manifest.json: HTTP ${r.status}`)
+    const m = await r.json()
+    const url = new URL(m.image, OWN_DISK_DIR).href
+    const dev = await CheerpX.GitHubDevice.create(url)
+    const idb = IDB_PREFIX + m.version
+    dropOldOverlays(idb)
+    console.log(`[vm] disk: ${url} (${m.os}, built ${m.built})`)
+    term.writeln(`\x1b[2mДиск: экзаменационный ${m.os}, версия ${m.version}.\x1b[0m`)
+    return { dev, own: true, idb, label: 'Debian 12 · serwer' }
+  } catch (e) {
+    console.warn('[vm] own disk unavailable, using the public WebVM disk', e)
+  }
+  term.writeln('\x1b[33mНаш экзаменационный диск недоступен — запускаю запасной публичный Debian 10 (WebVM): вход root, пакетов экзамена нет.\x1b[0m')
+  let dev
+  try {
+    dev = await CheerpX.CloudDevice.create(PUBLIC_DISK_URL)
+  } catch (e) {
+    // WebSocket blocked? WebVM falls back to plain HTTPS.
+    console.warn('WS disk failed, trying HTTPS', e)
+    try {
+      dev = await CheerpX.CloudDevice.create('https:' + PUBLIC_DISK_URL.slice('wss:'.length))
+    } catch (e2) {
+      console.error(e2)
+      return null
+    }
+  }
+  return { dev, own: false, idb: PUBLIC_IDB_NAME, label: 'Debian 10 (WebVM, запасной)' }
+}
+
+// Overlays of older image versions are useless (and can be large): delete them.
+async function dropOldOverlays(current) {
+  try {
+    if (!indexedDB.databases) return
+    for (const { name } of await indexedDB.databases()) {
+      if (name && name.includes(IDB_PREFIX) && !name.includes(current)) {
+        console.log('[vm] deleting old overlay', name)
+        indexedDB.deleteDatabase(name)
+      }
+    }
+  } catch (e) {
+    console.warn(e)
   }
 }
 

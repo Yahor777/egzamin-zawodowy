@@ -1,0 +1,4 @@
+#!/bin/sh
+# `ip` for the exam VM (egz). The browser VM has no network interfaces, so
+# addr/link/route show the emulated NICs configured by the last `netplan apply`.
+exec /usr/bin/python3 /usr/local/lib/egz/netplan.py ip "$@"

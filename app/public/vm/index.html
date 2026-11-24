@@ -164,25 +164,38 @@
 <body>
 <header>
   <a class="back" href="../#/practice">← Назад</a>
-  <h1>Настоящий Linux <small>Debian в браузере</small></h1>
+  <h1>Настоящий Linux <small id="diskLabel">Debian в браузере</small></h1>
   <button class="hbtn" id="infoBtn" aria-expanded="false" aria-controls="info">Что это?</button>
   <button class="hbtn" id="resetBtn" title="Вернуть систему в исходное состояние">Сбросить</button>
 </header>
 
 <main>
 <section id="info" hidden>
-  <p><b>Это настоящий Debian Linux</b> (32-bit, Debian 10), а не наш симулятор: обычные <code>bash</code>,
-    <code>useradd</code>, <code>groupadd</code>, <code>passwd</code>, <code>chmod</code>, <code>chown</code>,
-    <code>tar</code>, <code>nano</code>, <code>vim</code>, <code>find</code>, <code>grep</code>, <code>ps</code> и т.д.
-    Он работает прямо в браузере через WebAssembly (движок CheerpX); ничего устанавливать не надо.</p>
+  <p><b>Это настоящий Debian Linux</b> (Debian 12, 32-bit), а не наш симулятор, собранный как сервер на экзамене:
+    обычные <code>bash</code>, <code>useradd</code>, <code>passwd</code>, <code>chmod</code>, <code>chown</code>,
+    <code>setfacl</code>, <code>tar</code>, <code>nano</code>, <code>vim</code>, <code>mc</code>, <code>find</code>, <code>grep</code>, <code>ps</code>, <code>man</code> и т.д.
+    Работает прямо в браузере через WebAssembly (движок CheerpX); ничего устанавливать не надо.</p>
   <ul>
-    <li>Ты вошёл как <code>root</code>. Есть обычный пользователь <code>user</code> (пароль <code>password</code>): <code>su - user</code>, выход — <code>exit</code>.</li>
+    <li>Сервер <code>serwer</code>, ты вошёл как <code>administrator</code>, пароль <code>ZAQ!2wsx</code> (как на экзамене).
+      Команды администратора — через <code>sudo</code> (спросит этот пароль); у <code>root</code> тот же пароль: <code>su -</code>.</li>
+    <li><b>Уже установлено</b> всё, что встречается на INF.02: <code>isc-dhcp-server</code>, <code>samba</code> + <code>smbclient</code>,
+      <code>apache2</code>, <code>bind9</code>, <code>openssh-server</code>, <code>nfs-kernel-server</code>, <code>cron</code>,
+      <code>acl</code>, <code>quota</code>, <code>parted</code>, <code>fdisk</code>, <code>net-tools</code>, <code>dnsutils</code>, <code>htop</code>, <code>tree</code>…</li>
+    <li><b>Интернета внутри нет.</b> <code>sudo apt update</code> и <code>sudo apt install samba</code> работают «как настоящие» —
+      пакеты экзамена лежат во встроенном офлайн-репозитории (даже после <code>apt purge</code> их можно поставить снова).
+      Любой другой пакет: <code>E: Unable to locate package</code>.</li>
+    <li><b>Службы эмулируются:</b> настоящего systemd здесь нет, демоны не слушают сеть. Но <code>systemctl start/restart/status</code>,
+      <code>service</code>, <code>journalctl -xeu …</code> <b>по-настоящему проверяют конфиги</b> (<code>dhcpd -t</code>, <code>apache2ctl configtest</code>,
+      <code>testparm</code>, <code>named-checkconf</code>, <code>sshd -t</code>) и падают с настоящими ошибками, как на экзамене.
+      <code>enable/disable</code> тоже работают; после обновления страницы («перезагрузка») включённые службы стартуют заново.</li>
+    <li><b>Сеть эмулируется:</b> две «сетевые карты» как в VirtualBox — <code>enp0s3</code> (NAT, DHCP) и <code>enp0s8</code> (не настроена).
+      Настраивай <code>/etc/netplan/50-cloud-init.yaml</code> → <code>sudo netplan apply</code> (YAML проверяется, ошибки как в настоящем netplan),
+      смотри <code>ip a</code>, <code>ip r</code>. DHCP-сервер проверяет, что подсеть в <code>dhcpd.conf</code> совпадает с адресом интерфейса из
+      <code>INTERFACESv4</code>. Настоящих пакетов нет: <code>ping</code> наружу не пойдёт — связь между машинами тренируй в
+      <a href="../#/sim/linux">симуляторе</a>.</li>
     <li>Изменения (файлы, пользователи, права) <b>сохраняются в этом браузере</b> (IndexedDB). Кнопка «Сбросить» возвращает чистую систему.</li>
-    <li><b>Интернета внутри нет</b>: <code>apt install</code>, <code>ping</code>, <code>curl</code> не сработают.</li>
-    <li>Сеть и службы (<code>netplan</code>, <code>ip addr</code>, <code>isc-dhcp-server</code>, <code>systemctl</code>) здесь не работают как на сервере —
-      их тренируй в <a href="../#/sim/linux">симуляторе Linux-сервера</a> на сайте.</li>
-    <li>Первый запуск — до минуты: система подгружается частями с сервера. Нужен свежий браузер (Chrome, Edge, Firefox, Safari).
-      Если не запускается — открой <a href="https://webvm.io" target="_blank" rel="noopener">webvm.io</a> (тот же Debian).</li>
+    <li>Первый запуск — до минуты: система подгружается частями с сайта. Нужен свежий браузер (Chrome, Edge, Firefox, Safari).
+      Если вверху написано «Debian 10 (WebVM, запасной)» — наш диск не загрузился и работает публичный Debian без пакетов экзамена (вход root).</li>
   </ul>
   <p style="color:var(--ink-2);font-size:13px"><button class="hbtn" id="infoClose" style="float:right;margin-left:8px">Понятно</button>На телефоне: снизу есть клавиши Tab, Ctrl, Esc, стрелки. Ctrl нажимается, потом буква (Ctrl → c = прервать команду).</p>
 </section>

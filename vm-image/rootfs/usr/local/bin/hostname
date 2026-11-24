@@ -1,0 +1,16 @@
+#!/bin/sh
+# hostname for the exam VM (egz): the browser VM's kernel name is fixed, so
+# show the configured name from /etc/hostname (like after a reboot).
+case "$1" in
+  "") cat /run/egz-hostname 2>/dev/null || cat /etc/hostname ;;
+  -s|--short) cut -d. -f1 /etc/hostname ;;
+  -f|--fqdn|--long|-A|--all-fqdns) cat /etc/hostname ;;
+  -I|--all-ip-addresses) exec /usr/bin/python3 /usr/local/lib/egz/netplan.py hostname-I ;;
+  -i|--ip-address) echo 127.0.1.1 ;;
+  -*) exec /bin/hostname "$@" ;;
+  *)
+    if [ "$(id -u)" != 0 ]; then echo "hostname: you must be root to change the host name"; exit 1; fi
+    # transient change; the permanent one is /etc/hostname (or hostnamectl)
+    /bin/hostname "$1" 2>/dev/null
+    printf '%s\n' "$1" > /run/egz-hostname 2>/dev/null ;;
+esac

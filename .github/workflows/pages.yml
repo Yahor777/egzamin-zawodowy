@@ -1,10 +1,17 @@
 name: Deploy app to GitHub Pages
-# Runs on every push that changes app/ (or manually: Actions → this workflow → Run workflow)
+# Runs on every push that changes app/ or vm-image/ (or manually: Actions → this workflow → Run workflow)
+#
+# Besides the app it publishes the disk of the in-browser Linux (app/public/vm/):
+# vm-image/Dockerfile (Debian 12 i386, exam packages) -> ext2 -> 128 KiB chunks in
+# dist/vm/disk/ (same format as leaningtech/webvm, read by CheerpX.GitHubDevice).
+# The disk is cached by the hash of vm-image/**, so it is rebuilt only when that
+# folder changes. If building it fails, the site is still deployed and the VM page
+# falls back to WebVM's public Debian disk.
 
 on:
   push:
     branches: [main, master, claude/lucid-darwin-jey0v9]
-    paths: ['app/**', '.github/workflows/pages.yml']
+    paths: ['app/**', 'vm-image/**', '.github/workflows/pages.yml']
   workflow_dispatch:
 
 permissions:
@@ -30,6 +37,41 @@ jobs:
         working-directory: app
       - run: npm run build
         working-directory: app
+
+      # ---- Linux VM disk (optional: any failure here only disables our disk) ----
+      - name: VM disk - cache
+        id: vmcache
+        continue-on-error: true
+        uses: actions/cache@v4
+        with:
+          path: vm-disk
+          key: vm-disk-v1-${{ hashFiles('vm-image/**') }}
+      - name: VM disk - build image (docker, linux/386) and split into chunks
+        if: steps.vmcache.outputs.cache-hit != 'true'
+        continue-on-error: true
+        timeout-minutes: 45
+        env:
+          VM_VERSION: ${{ hashFiles('vm-image/**') }}
+        run: |
+          docker buildx build --platform linux/386 --load -t egz-vm vm-image
+          bash vm-image/build-ext2.sh egz-vm vm-disk "$VM_VERSION"
+      - name: VM disk - add to site
+        continue-on-error: true
+        run: |
+          if [ ! -f vm-disk/manifest.json ]; then
+            echo "::warning title=VM disk missing::No VM disk this run; the /vm/ page will use WebVM's public disk."
+            exit 0
+          fi
+          mkdir -p app/dist/vm/disk
+          cp vm-disk/* app/dist/vm/disk/
+          site_mb=$(du -sm app/dist | cut -f1)
+          echo "VM disk: $(cat vm-disk/manifest.json | tr -d '\n ')"
+          echo "Site size with VM disk: ${site_mb} MiB"
+          if [ "$site_mb" -gt 980 ]; then
+            echo "::warning title=Site too big::${site_mb} MiB > GitHub Pages 1 GB limit; publishing without the VM disk."
+            rm -rf app/dist/vm/disk
+          fi
+
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -1,0 +1,29 @@
+#!/bin/bash
+# journalctl for the exam VM (egz): shows the logs written by the emulated
+# systemctl (/var/lib/egz-systemd/<unit>.log).
+STATE=/var/lib/egz-systemd
+unit="" n="" want_unit=0
+for a in "$@"; do
+  if [ $want_unit = 1 ]; then unit=$a; want_unit=0; continue; fi
+  case $a in
+    --unit=*) unit=${a#--unit=} ;;
+    --unit) want_unit=1 ;;
+    --lines=*) n=${a#--lines=} ;;
+    --no-pager|--follow|-f|-b|--boot|-r|--reverse|--since=*|--until=*) ;;
+    --*) ;;
+    -*u) want_unit=1; case $a in *e*) n=${n:-1000} ;; esac ;;
+    -u*) unit=${a#-u} ;;
+    -n*) n=${a#-n} ;;
+    -*) case $a in *e*) n=${n:-1000} ;; esac ;;
+  esac
+done
+unit=${unit%.service}
+case $unit in sshd) unit=ssh ;; bind9) unit=named ;; nfs-kernel-server) unit=nfs-server ;; esac
+if [ -n "$unit" ]; then
+  f=$STATE/$unit.log
+  if [ ! -s "$f" ]; then echo "-- No entries --"; exit 0; fi
+  if [ -n "$n" ]; then tail -n "$n" "$f"; else cat "$f"; fi
+else
+  # all units, ordered by time stamp
+  cat "$STATE"/*.log 2>/dev/null | sort -s -k1,3 | { if [ -n "$n" ]; then tail -n "$n"; else cat; fi; }
+fi

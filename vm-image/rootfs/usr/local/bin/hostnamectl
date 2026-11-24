@@ -1,0 +1,23 @@
+#!/bin/bash
+# hostnamectl for the exam VM (egz): no systemd-hostnamed, edits /etc/hostname.
+name=$(cat /etc/hostname 2>/dev/null)
+case "$1" in
+  ""|status)
+    . /etc/os-release
+    echo " Static hostname: $name"
+    echo "       Icon name: computer-vm"
+    echo "         Chassis: vm"
+    echo "      Machine ID: $(cat /etc/machine-id 2>/dev/null || echo 0)"
+    echo "  Virtualization: oracle"
+    echo "Operating System: $PRETTY_NAME"
+    echo "          Kernel: $(uname -sr)"
+    echo "    Architecture: x86"
+    echo " Hardware Vendor: innotek GmbH"
+    echo "  Hardware Model: VirtualBox" ;;
+  set-hostname|hostname)
+    if [ -z "$2" ]; then echo "$name"; exit 0; fi
+    if [ "$(id -u)" != 0 ]; then echo "Could not set static hostname: Access denied"; exit 1; fi
+    if ! [[ $2 =~ ^[A-Za-z0-9]([A-Za-z0-9.-]{0,62})$ ]]; then echo "Invalid static hostname '$2'"; exit 1; fi
+    printf '%s\n' "$2" > /etc/hostname ;;
+  *) echo "Unknown command verb '$1'."; exit 1 ;;
+esac

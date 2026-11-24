@@ -1,0 +1,19 @@
+#!/bin/bash
+# service for the exam VM (egz): forwards to the emulated systemctl, like on
+# Debian/Ubuntu with systemd.
+if [ "$1" = --status-all ]; then
+  for u in apache2 cron isc-dhcp-server named nfs-kernel-server smbd nmbd ssh; do
+    if systemctl -q is-active "$u"; then s=+; else s=-; fi
+    echo " [ $s ]  $u"
+  done
+  exit 0
+fi
+if [ $# -lt 2 ]; then
+  echo "Usage: service < option > | --status-all | [ service_name [ command | --full-restart ] ]"
+  exit 1
+fi
+svc=$1 act=$2
+case $act in
+  --full-restart) act=restart ;;
+esac
+exec /usr/local/bin/systemctl "$act" "$svc"

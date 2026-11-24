@@ -7,7 +7,7 @@
 #
 # Local build:  docker buildx build --platform linux/386 -t egz-vm vm-image
 #               vm-image/build-ext2.sh egz-vm /tmp/out
-FROM --platform=linux/386 docker.io/i386/debian:bookworm
+FROM docker.io/i386/debian:bookworm
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Never start daemons from package scripts (no init system here, and the
@@ -18,9 +18,9 @@ RUN printf '#!/bin/sh\nexit 101\n' > /usr/sbin/policy-rc.d && chmod 755 /usr/sbi
 COPY rootfs/etc/dpkg/dpkg.cfg.d/01-egz-slim /etc/dpkg/dpkg.cfg.d/01-egz-slim
 
 # Packages a student meets at the INF.02 exam (list = vm-image/packages.txt).
-COPY packages.txt /tmp/packages.txt
+COPY packages.txt /usr/local/share/egz/packages.txt
 RUN apt-get update \
- && apt-get install -y --no-install-recommends $(grep -v '^#' /tmp/packages.txt) \
+ && apt-get install -y --no-install-recommends $(grep -v '^#' /usr/local/share/egz/packages.txt) \
  && apt-get clean
 
 # Offline "repository": the .deb of every exam package, so that
@@ -28,13 +28,13 @@ RUN apt-get update \
 # Dependencies stay installed; only the top-level packages are kept.
 RUN apt-get install -y --no-install-recommends apt-utils \
  && mkdir -p /var/lib/egz-repo && cd /var/lib/egz-repo && chown _apt /var/lib/egz-repo \
- && apt-get download $(grep -v '^#' /tmp/packages.txt) \
+ && apt-get download $(grep -v '^#' /usr/local/share/egz/packages.txt) \
  && chown -R root:root /var/lib/egz-repo \
  && apt-ftparchive packages . > Packages \
  && echo 'deb [trusted=yes] file:/var/lib/egz-repo ./' > /etc/apt/sources.list.d/egz-offline.list \
  && apt-get update \
  && apt-get clean \
- && rm -f /var/lib/apt/lists/deb.debian.org_* /tmp/packages.txt
+ && rm -f /var/lib/apt/lists/deb.debian.org_*
 
 # Exam accounts: administrator / ZAQ!2wsx (sudo), root has the same password.
 # (/etc/hostname and /etc/hosts are bind-mounted by Docker during the build;
