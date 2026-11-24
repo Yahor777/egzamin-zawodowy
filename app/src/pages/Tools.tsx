@@ -16,7 +16,6 @@ export function Tools() {
       <div className="topic-table">
         {(Object.keys(GENERATORS) as GenId[]).map((id) => (
           <button key={id} className="topic-row" onClick={() => go(`/gen/${id}`)}>
-            <span className="code">{GENERATORS[id].icon}</span>
             <span className="t-name">
               {GENERATORS[id][lang]}
               <small className="muted">{GENERATORS[id].sample}</small>
@@ -26,7 +25,6 @@ export function Tools() {
           </button>
         ))}
         <div className="topic-row disabled">
-          <span className="code">LAB</span>
           <span className="t-name">{t('practical')}</span>
           <span className="t-meta">{t('comingSoon')}</span>
           <span />

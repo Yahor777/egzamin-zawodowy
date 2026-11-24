@@ -20,14 +20,12 @@ export function Topics() {
       <h1>{t('topics')}</h1>
       <div className="topic-table">
         <button className="topic-row all" onClick={() => go('/learn')}>
-          <span className="code">ALL</span>
           <span className="t-name">{t('allTopics')}</span>
           <span className="t-meta">{bank.length}</span>
           <Icon name="arrow" size={16} />
         </button>
         {topics.map(({ id, s }) => (
           <button key={id} className="topic-row" onClick={() => go(`/learn/${id}`)}>
-            <span className="code">{TOPIC_NAMES[id].icon}</span>
             <span className="t-name">
               {TOPIC_NAMES[id][lang]}
               <MasteryBar mastered={s.mastered} learning={s.learning} total={s.total} />

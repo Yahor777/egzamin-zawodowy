@@ -58,14 +58,10 @@ export function QuestionView({ q, selected, onSelect, reveal, shuffleAnswers = t
     <div className="question">
       {showMeta && (
         <div className="q-meta">
-          {q.topics.map((tp) => (
-            <span key={tp} className="tag" title={TOPIC_NAMES[tp]?.[lang]}>
-              <b>{TOPIC_NAMES[tp]?.icon}</b> {TOPIC_NAMES[tp]?.[lang] ?? tp}
-            </span>
-          ))}
-          {q.seen.length > 0 && (
-            <span className={`tag ghost ${q.seen.length > 1 ? 'hot' : ''}`} title={q.seen.join(', ')}>
-              CKE ×{q.seen.length}
+          <span className="q-topic">{TOPIC_NAMES[q.topics[0]]?.[lang]}</span>
+          {q.seen.length > 1 && (
+            <span className="tag hot" title={q.seen.join(', ')}>
+              {t('seenIn')}: {q.seen.length}×
             </span>
           )}
           <span className="spacer" />

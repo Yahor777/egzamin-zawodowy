@@ -1,4 +1,4 @@
-import { Icon, WireMark } from './components/Icon'
+import { Icon } from './components/Icon'
 import { useT } from './lib/i18n'
 import { setLang, useLang } from './lib/store'
 import { GENERATORS, type GenId } from './lib/generators'
@@ -54,7 +54,6 @@ export default function App() {
       <aside className="side">
         <button className="brand" onClick={() => go('/')}>
           <span className="brand-name">INF.02</span>
-          <WireMark />
           <span className="brand-sub">{lang === 'ru' ? 'тренажёр к экзамену' : 'trener egzaminacyjny'}</span>
         </button>
         <nav className="side-nav" aria-label="Menu">
@@ -84,7 +83,6 @@ export default function App() {
       <header className="mobile-top">
         <button className="brand" onClick={() => go('/')}>
           <span className="brand-name">INF.02</span>
-          <WireMark />
         </button>
         <div className="mobile-actions">
           <div className="lang-switch" role="group" aria-label={t('language')}>

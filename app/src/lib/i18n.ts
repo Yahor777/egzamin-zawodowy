@@ -86,7 +86,29 @@ const dict = {
   keysHint: { pl: 'Klawisze A–D lub 1–4, Enter — dalej', ru: 'Клавиши A–D или 1–4, Enter — дальше' },
   ofQuestions: { pl: 'z', ru: 'из' },
   examShort: { pl: 'Egzamin', ru: 'Экзамен' },
+  todayPlan: { pl: 'Plan na dziś', ru: 'План на сегодня' },
+  todayDone: { pl: 'Plan na dziś wykonany', ru: 'План на сегодня выполнен' },
+  todayNew: { pl: 'nowych pytań', ru: 'новых вопросов' },
+  todayRepeat: { pl: 'powtórek', ru: 'повторений' },
+  answeredToday: { pl: 'odpowiedzi dziś', ru: 'ответов сегодня' },
+  start: { pl: 'Zacznij', ru: 'Начать' },
+  keepGoing: { pl: 'Ucz się dalej', ru: 'Учиться дальше' },
+  learnedOf: { pl: 'Opanowane pytania', ru: 'Выучено вопросов' },
+  mistakesHint: { pl: 'pytań do poprawy', ru: 'вопросов исправить' },
+  examHint: { pl: '40 pytań, 60 minut', ru: '40 вопросов, 60 минут' },
+  topicsHint: { pl: 'Ucz się po działach', ru: 'Учить по разделам' },
+  toolsHint: { pl: 'Podsieci, systemy liczbowe, chmod', ru: 'Подсети, системы счисления, chmod' },
+  lastExam: { pl: 'Ostatni egzamin próbny', ru: 'Последний пробный экзамен' },
+  examIn: { pl: 'Do egzaminu', ru: 'До экзамена' },
 } as const
+
+export function plural(lang: string, n: number, forms: { pl: [string, string, string]; ru: [string, string, string] }) {
+  const f = lang === 'ru' ? forms.ru : forms.pl
+  const n10 = n % 10, n100 = n % 100
+  if (lang === 'ru' ? n10 === 1 && n100 !== 11 : n === 1) return f[0]
+  if (n10 >= 2 && n10 <= 4 && (n100 < 12 || n100 > 14)) return f[1]
+  return f[2]
+}
 
 export type TKey = keyof typeof dict
 

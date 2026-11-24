@@ -1,11 +1,12 @@
 import { Icon } from '../components/Icon'
 import { stats, useBank } from '../lib/bank'
-import { useT } from '../lib/i18n'
+import { plural, useT } from '../lib/i18n'
 import { useLang, useProgress } from '../lib/store'
 import type { ExamRecord } from '../lib/types'
 import { go } from '../router'
 
 const EXAM_DATE = new Date('2027-01-07T09:00:00+01:00')
+const DAY_FORMS = { pl: ['dzień', 'dni', 'dni'] as [string, string, string], ru: ['день', 'дня', 'дней'] as [string, string, string] }
 
 export function Home() {
   const t = useT()
@@ -15,90 +16,112 @@ export function Home() {
   const days = Math.max(0, Math.ceil((EXAM_DATE.getTime() - Date.now()) / 86400_000))
   const s = bank ? stats(bank, p) : null
   const mistakes = bank ? bank.filter((q) => p.cards[q.id]?.lastWrong).length : 0
-  const perDay = s && days > 0 ? Math.ceil(s.fresh / days) : 0
+
+  // daily plan: spread unseen questions over remaining days, plus everything due
+  const startOfDay = new Date()
+  startOfDay.setHours(0, 0, 0, 0)
+  const cards = Object.values(p.cards)
+  const answeredToday = cards.filter((c) => c.last >= startOfDay.getTime()).length
+  const newToday = cards.filter((c) => c.last >= startOfDay.getTime() && c.right + c.wrong === 1).length
+  const perDay = s && days > 0 ? Math.ceil((s.fresh + newToday) / days) : 0
+  const newLeft = Math.max(0, perDay - newToday)
+  const goal = perDay + (s?.due ?? 0) + answeredToday - newToday
+  const done = s ? newLeft === 0 && s.due === 0 : false
+  const lastExam = p.exams[p.exams.length - 1]
 
   return (
     <div className="page home">
-      <section className="overview">
-        <div className="overview-main">
-          <span className="eyebrow">{t('readiness')}</span>
-          {s ? (
-            <>
-              <div className="big-figure">
-                <span className="num">{s.mastered}</span>
-                <span className="of">
-                  {t('ofQuestions')} {s.total}
-                </span>
-              </div>
-              <MasteryBar mastered={s.mastered} learning={s.learning} total={s.total} />
-              <div className="legend">
-                <span>
-                  <i className="sw sw-m" /> {s.mastered} {t('mastered')}
-                </span>
-                <span>
-                  <i className="sw sw-l" /> {s.learning} {t('learning')}
-                </span>
-                <span>
-                  <i className="sw sw-n" /> {s.fresh} {t('notSeen')}
-                </span>
-              </div>
-            </>
-          ) : (
-            <div className="big-figure muted">…</div>
-          )}
-        </div>
-        <div className="overview-side">
-          <div className="countdown">
-            <span className="num">{days}</span>
-            <span className="unit">{t('days')}</span>
-          </div>
-          <span className="muted small">{t('toExam')} · 7.01.2027</span>
-          {perDay > 0 && (
-            <p className="pace">
-              <strong>≈ {perDay}</strong> {t('perDay')}
+      <header className="home-head">
+        <p className="muted">{t('examIn')}</p>
+        <h1 className="days">
+          {days} {plural(lang, days, DAY_FORMS)}
+        </h1>
+        <p className="muted">{t('examDateNote')}</p>
+      </header>
+
+      <section className="today">
+        <h2>{done ? t('todayDone') : t('todayPlan')}</h2>
+        {s && (
+          <>
+            <ul className="today-list">
+              <li>
+                <strong>{newLeft}</strong> {t('todayNew')}
+              </li>
+              <li>
+                <strong>{s.due}</strong> {t('todayRepeat')}
+              </li>
+            </ul>
+            <div className="today-bar" role="img" aria-label={`${answeredToday}/${goal}`}>
+              <span style={{ width: `${goal ? Math.min(100, (answeredToday / goal) * 100) : 0}%` }} />
+            </div>
+            <p className="muted small">
+              {answeredToday} {t('answeredToday')}
             </p>
-          )}
-        </div>
+          </>
+        )}
+        <button className="btn primary btn-wide" onClick={() => go('/learn')}>
+          {done ? t('keepGoing') : t('start')}
+          <Icon name="arrow" size={20} />
+        </button>
       </section>
 
-      <button className="cta" onClick={() => go('/learn')}>
-        <span className="cta-text">
-          <span className="cta-title">{t('continueLearn')}</span>
-          <span className="cta-sub">{s ? `${s.due} ${t('due')} · ${s.fresh} ${t('notSeen')}` : ''}</span>
-        </span>
-        <Icon name="arrow" size={24} />
-      </button>
+      <div className="tiles">
+        <Tile icon="exam" title={t('exam')} hint={t('examHint')} onClick={() => go('/exam')} />
+        <Tile
+          icon="repeat"
+          title={t('mistakes')}
+          hint={mistakes > 0 ? `${mistakes} ${t('mistakesHint')}` : t('noMistakes')}
+          onClick={() => go('/mistakes')}
+          alert={mistakes > 0}
+        />
+        <Tile icon="topics" title={t('topics')} hint={t('topicsHint')} onClick={() => go('/topics')} />
+        <Tile icon="calc" title={t('tools')} hint={t('toolsHint')} onClick={() => go('/tools')} />
+      </div>
 
-      <section>
-        <h2 className="section-title">{t('more')}</h2>
-        <div className="mode-list">
-          <ModeRow icon="exam" title={t('exam')} meta="40 · 60 min" onClick={() => go('/exam')} />
-          <ModeRow icon="repeat" title={t('mistakes')} meta={String(mistakes)} onClick={() => go('/mistakes')} badge={mistakes > 0} />
-          <ModeRow icon="topics" title={t('topics')} meta={`${bank?.length ?? '…'} ${t('questions')}`} onClick={() => go('/topics')} />
-          <ModeRow icon="calc" title={t('tools')} meta="IP · BIN · chmod" onClick={() => go('/tools')} />
-          <ModeRow icon="star" title={t('starred')} meta={String(p.starred.length)} onClick={() => go('/starred')} />
-        </div>
-      </section>
+      {s && (
+        <section className="block">
+          <div className="block-head">
+            <h2>{t('learnedOf')}</h2>
+            <span className="figure">
+              {s.mastered} / {s.total}
+            </span>
+          </div>
+          <MasteryBar mastered={s.mastered} learning={s.learning} total={s.total} />
+          <div className="legend">
+            <span>
+              <i className="sw sw-m" /> {t('mastered')}: {s.mastered}
+            </span>
+            <span>
+              <i className="sw sw-l" /> {t('learning')}: {s.learning}
+            </span>
+            <span>
+              <i className="sw sw-n" /> {t('notSeen')}: {s.fresh}
+            </span>
+          </div>
+        </section>
+      )}
 
-      <section className="panel">
-        <h2 className="section-title">{t('last10')}</h2>
-        {p.exams.length === 0 ? <p className="muted">{t('noExams')}</p> : <ExamChart exams={p.exams.slice(-10)} lang={lang} threshold={t('threshold')} />}
-      </section>
-
-      <p className="footnote">{t('source')}</p>
+      {lastExam && (
+        <section className="block">
+          <div className="block-head">
+            <h2>{t('lastExam')}</h2>
+            <span className={`figure ${lastExam.score / lastExam.total >= 0.5 ? 'ok' : 'bad'}`}>
+              {Math.round((lastExam.score / lastExam.total) * 100)}%
+            </span>
+          </div>
+          {p.exams.length > 1 && <ExamChart exams={p.exams.slice(-10)} lang={lang} threshold={t('threshold')} />}
+        </section>
+      )}
     </div>
   )
 }
 
-function ModeRow({ icon, title, meta, onClick, badge }: { icon: string; title: string; meta: string; onClick: () => void; badge?: boolean }) {
+function Tile({ icon, title, hint, onClick, alert }: { icon: string; title: string; hint: string; onClick: () => void; alert?: boolean }) {
   return (
-    <button className="mode-row" onClick={onClick}>
-      <span className="mode-icon">
-        <Icon name={icon} />
-      </span>
-      <span className="mode-title">{title}</span>
-      <span className={`mode-meta ${badge ? 'badge' : ''}`}>{meta}</span>
-      <Icon name="arrow" size={16} />
+    <button className={`tile ${alert ? 'alert' : ''}`} onClick={onClick}>
+      <Icon name={icon} size={26} />
+      <span className="tile-title">{title}</span>
+      <span className="tile-hint">{hint}</span>
     </button>
   )
 }
@@ -120,16 +143,14 @@ function ExamChart({ exams, lang, threshold }: { exams: ExamRecord[]; lang: stri
   const H = 140
   const padL = 30
   const padB = 22
-  const padT = 10
+  const padT = 14
   const plotH = H - padB - padT
   const slot = (W - padL) / 10
   const bw = Math.min(18, slot - 6)
   const y = (pct: number) => padT + plotH - (pct / 100) * plotH
-  const last = exams[exams.length - 1]
-  const lastPct = Math.round((last.score / last.total) * 100)
   return (
     <div className="chart-wrap">
-      <svg viewBox={`0 0 ${W} ${H}`} className="chart" role="img" aria-label={`${lastPct}%`}>
+      <svg viewBox={`0 0 ${W} ${H}`} className="chart" role="img">
         {[0, 50, 100].map((v) => (
           <g key={v}>
             <line x1={padL} x2={W} y1={y(v)} y2={y(v)} className={v === 50 ? 'grid thr' : 'grid'} />

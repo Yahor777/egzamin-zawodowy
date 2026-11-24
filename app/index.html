@@ -5,11 +5,27 @@
     <link rel="icon" type="image/svg+xml" href="./icon.svg" />
     <link rel="apple-touch-icon" href="./icon-192.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#2f6df6" />
+    <meta name="theme-color" content="#1f5fcf" />
     <meta name="description" content="Nauka do egzaminu zawodowego INF.02: pytania z arkuszy CKE, egzamin próbny, powtórki." />
     <title>INF.02 Trener</title>
   </head>
   <body>
+    <script>
+      // Some in-app browsers lay the page out wider than the screen and zoom it out.
+      // Pin the layout width to the real screen width on touch devices.
+      ;(function () {
+        function fix() {
+          var m = document.querySelector('meta[name=viewport]')
+          var sw = Math.min(screen.width, screen.height)
+          if (m && 'ontouchstart' in window && window.innerWidth > sw * 1.15) {
+            m.setAttribute('content', 'width=' + sw + ', initial-scale=1, viewport-fit=cover')
+          }
+        }
+        fix()
+        window.addEventListener('load', fix)
+        window.addEventListener('orientationchange', function () { setTimeout(fix, 300) })
+      })()
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
