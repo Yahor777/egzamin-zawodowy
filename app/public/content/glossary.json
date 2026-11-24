@@ -1,0 +1,2994 @@
+[
+ {
+  "pl": "1000Base-LX",
+  "ru": "1000BASE-LX",
+  "en": "1000BASE-LX",
+  "topic": "cabling",
+  "note_ru": "Gigabit по оптике до 5 km"
+ },
+ {
+  "pl": "1000Base-T",
+  "ru": "1000BASE-T",
+  "en": "1000BASE-T",
+  "topic": "cabling",
+  "note_ru": "Gigabit Ethernet по Cat 5e (802.3ab)"
+ },
+ {
+  "pl": "100Base-FX",
+  "ru": "100BASE-FX",
+  "en": "100BASE-FX",
+  "topic": "cabling",
+  "note_ru": "Fast Ethernet по многомодовой оптике"
+ },
+ {
+  "pl": "100Base-TX",
+  "ru": "100BASE-TX",
+  "en": "100BASE-TX",
+  "topic": "cabling",
+  "note_ru": "Fast Ethernet по Cat 5"
+ },
+ {
+  "pl": "ACPI",
+  "ru": "ACPI",
+  "en": "Advanced Configuration and Power Interface",
+  "topic": "hardware",
+  "note_ru": "Управление конфигурацией и энергопотреблением"
+ },
+ {
+  "pl": "Active Directory",
+  "ru": "Active Directory",
+  "topic": "winserver",
+  "note_ru": "Служба каталогов: пользователи, группы, компьютеры"
+ },
+ {
+  "pl": "adres globalny unicast",
+  "ru": "глобальный индивидуальный адрес",
+  "en": "global unicast",
+  "topic": "addressing",
+  "note_ru": "IPv6 2000::/3"
+ },
+ {
+  "pl": "adres IP",
+  "ru": "IP-адрес",
+  "en": "IP address",
+  "topic": "addressing",
+  "note_ru": "Логический адрес узла (IPv4 — 32 бита)"
+ },
+ {
+  "pl": "adres link-local",
+  "ru": "локальный адрес канала",
+  "en": "link-local address",
+  "topic": "addressing",
+  "note_ru": "IPv6 fe80::/10"
+ },
+ {
+  "pl": "adres MAC",
+  "ru": "MAC-адрес",
+  "en": "MAC address",
+  "topic": "addressing",
+  "note_ru": "Физический адрес карты, 48 бит"
+ },
+ {
+  "pl": "adres prywatny",
+  "ru": "частный адрес",
+  "en": "private address",
+  "topic": "addressing",
+  "note_ru": "10/8, 172.16/12, 192.168/16"
+ },
+ {
+  "pl": "adres publiczny",
+  "ru": "публичный адрес",
+  "en": "public address",
+  "topic": "addressing",
+  "note_ru": "Маршрутизируется в Интернете"
+ },
+ {
+  "pl": "adres rozgłoszeniowy",
+  "ru": "широковещательный адрес",
+  "en": "broadcast address",
+  "topic": "addressing",
+  "note_ru": "Все биты хоста = 1"
+ },
+ {
+  "pl": "adres sieci",
+  "ru": "адрес сети",
+  "en": "network address",
+  "topic": "addressing",
+  "note_ru": "Все биты хоста = 0"
+ },
+ {
+  "pl": "ADSL",
+  "ru": "ADSL",
+  "en": "Asymmetric Digital Subscriber Line",
+  "topic": "netdevices",
+  "note_ru": "Асимметричный доступ по телефонной линии"
+ },
+ {
+  "pl": "adware",
+  "ru": "adware",
+  "topic": "law_bhp",
+  "note_ru": "Бесплатно с рекламой"
+ },
+ {
+  "pl": "AES",
+  "ru": "AES",
+  "en": "Advanced Encryption Standard",
+  "topic": "security",
+  "note_ru": "Симметричный алгоритм шифрования"
+ },
+ {
+  "pl": "AGP",
+  "ru": "шина AGP",
+  "en": "Accelerated Graphics Port",
+  "topic": "hardware",
+  "note_ru": "Старый внутренний порт для видеокарт"
+ },
+ {
+  "pl": "agregacja łączy",
+  "ru": "агрегация каналов",
+  "en": "link aggregation, LACP",
+  "topic": "netdevices",
+  "note_ru": "Несколько линков = один логический"
+ },
+ {
+  "pl": "aktualizacja zabezpieczeń",
+  "ru": "обновление безопасности",
+  "en": "security update",
+  "topic": "security",
+  "note_ru": "Исправляет уязвимости системы"
+ },
+ {
+  "pl": "ALU",
+  "ru": "АЛУ",
+  "en": "Arithmetic Logic Unit",
+  "topic": "hardware",
+  "note_ru": "Арифметико-логическое устройство процессора"
+ },
+ {
+  "pl": "Apache",
+  "ru": "Apache",
+  "en": "Apache HTTP Server",
+  "topic": "linux",
+  "note_ru": "Открытый веб-сервер"
+ },
+ {
+  "pl": "APIPA",
+  "ru": "APIPA",
+  "en": "Automatic Private IP Addressing",
+  "topic": "addressing",
+  "note_ru": "169.254.x.x при отсутствии DHCP"
+ },
+ {
+  "pl": "apt",
+  "ru": "apt / apt-get",
+  "en": "APT",
+  "topic": "linux",
+  "note_ru": "Менеджер пакетов Debian/Ubuntu"
+ },
+ {
+  "pl": "ARP",
+  "ru": "ARP",
+  "en": "Address Resolution Protocol",
+  "topic": "protocols",
+  "note_ru": "IP → MAC"
+ },
+ {
+  "pl": "backup",
+  "ru": "резервная копия",
+  "topic": "english",
+  "note_ru": "Копия данных"
+ },
+ {
+  "pl": "bajt",
+  "ru": "байт",
+  "en": "byte",
+  "topic": "basics",
+  "note_ru": "8 бит"
+ },
+ {
+  "pl": "bandwidth",
+  "ru": "полоса пропускания",
+  "topic": "english",
+  "note_ru": "Ширина канала/пропускная способность"
+ },
+ {
+  "pl": "bęben światłoczuły",
+  "ru": "фотобарабан",
+  "en": "photosensitive drum",
+  "topic": "printers",
+  "note_ru": "Переносит изображение тонером; дефект — полосы"
+ },
+ {
+  "pl": "BGP",
+  "ru": "BGP",
+  "en": "Border Gateway Protocol",
+  "topic": "protocols",
+  "note_ru": "Маршрутизация между провайдерами (EGP)"
+ },
+ {
+  "pl": "BHP",
+  "ru": "охрана труда",
+  "en": "occupational health and safety",
+  "topic": "law_bhp",
+  "note_ru": "Безопасность и гигиена труда"
+ },
+ {
+  "pl": "BIND",
+  "ru": "BIND",
+  "topic": "linux",
+  "note_ru": "DNS-сервер Linux"
+ },
+ {
+  "pl": "BIOS",
+  "ru": "BIOS",
+  "en": "Basic Input/Output System",
+  "topic": "hardware",
+  "note_ru": "Встроенное ПО платы, запускает POST"
+ },
+ {
+  "pl": "bit",
+  "ru": "бит",
+  "topic": "basics",
+  "note_ru": "Наименьшая единица информации, 0 или 1"
+ },
+ {
+  "pl": "BitLocker",
+  "ru": "BitLocker",
+  "topic": "windows",
+  "note_ru": "Шифрование целых дисков"
+ },
+ {
+  "pl": "Bluetooth",
+  "ru": "Bluetooth",
+  "topic": "peripherals",
+  "note_ru": "Беспроводная связь 2,4 GHz на малые расстояния"
+ },
+ {
+  "pl": "brama domyślna",
+  "ru": "шлюз по умолчанию",
+  "en": "default gateway",
+  "topic": "addressing",
+  "note_ru": "Роутер для пакетов в другие сети"
+ },
+ {
+  "pl": "bramka AND",
+  "ru": "вентиль И",
+  "en": "AND gate",
+  "topic": "basics",
+  "note_ru": "Коньюнкция, iloczyn logiczny"
+ },
+ {
+  "pl": "bramka logiczna",
+  "ru": "логический вентиль",
+  "en": "logic gate",
+  "topic": "basics",
+  "note_ru": "Элемент, реализующий логическую функцию"
+ },
+ {
+  "pl": "bramka NAND",
+  "ru": "вентиль И-НЕ",
+  "en": "NAND gate",
+  "topic": "basics",
+  "note_ru": "Iloczyn z negacją"
+ },
+ {
+  "pl": "bramka NOR",
+  "ru": "вентиль ИЛИ-НЕ",
+  "en": "NOR gate",
+  "topic": "basics",
+  "note_ru": "Alternatywa z negacją"
+ },
+ {
+  "pl": "bramka NOT",
+  "ru": "вентиль НЕ",
+  "en": "NOT gate",
+  "topic": "basics",
+  "note_ru": "Отрицание"
+ },
+ {
+  "pl": "bramka OR",
+  "ru": "вентиль ИЛИ",
+  "en": "OR gate",
+  "topic": "basics",
+  "note_ru": "Дизъюнкция, suma logiczna"
+ },
+ {
+  "pl": "bramka XOR",
+  "ru": "исключающее ИЛИ",
+  "en": "XOR gate",
+  "topic": "basics",
+  "note_ru": "Różnica symetryczna: 1, если входы различны"
+ },
+ {
+  "pl": "BSOD",
+  "ru": "синий экран смерти",
+  "en": "Blue Screen of Death",
+  "topic": "windows",
+  "note_ru": "Критическая ошибка системы"
+ },
+ {
+  "pl": "burza rozgłoszeniowa",
+  "ru": "широковещательный шторм",
+  "en": "broadcast storm",
+  "topic": "netdevices",
+  "note_ru": "Бесконечная циркуляция broadcast в петле"
+ },
+ {
+  "pl": "chipset",
+  "ru": "чипсет",
+  "topic": "hardware",
+  "note_ru": "Набор микросхем, управляющих обменом данными на плате"
+ },
+ {
+  "pl": "chkdsk",
+  "ru": "chkdsk",
+  "en": "Check Disk",
+  "topic": "windows",
+  "note_ru": "Проверка и исправление файловой системы"
+ },
+ {
+  "pl": "chmod",
+  "ru": "chmod",
+  "topic": "linux",
+  "note_ru": "Изменение прав доступа к файлу"
+ },
+ {
+  "pl": "chown",
+  "ru": "chown",
+  "topic": "linux",
+  "note_ru": "Изменение владельца файла"
+ },
+ {
+  "pl": "CIDR",
+  "ru": "CIDR",
+  "en": "Classless Inter-Domain Routing",
+  "topic": "addressing",
+  "note_ru": "Бесклассовая адресация с префиксом /n"
+ },
+ {
+  "pl": "computer aided manufacturing",
+  "ru": "автоматизированное производство",
+  "en": "CAM",
+  "topic": "english",
+  "note_ru": "Не вредоносное ПО"
+ },
+ {
+  "pl": "convert",
+  "ru": "convert",
+  "topic": "windows",
+  "note_ru": "Преобразует FAT32 в NTFS без потери данных"
+ },
+ {
+  "pl": "CRC",
+  "ru": "циклический избыточный код",
+  "en": "Cyclic Redundancy Check",
+  "topic": "netdevices",
+  "note_ru": "Проверка ошибок кадра Ethernet"
+ },
+ {
+  "pl": "CrossFireX",
+  "ru": "CrossFireX",
+  "topic": "hardware",
+  "note_ru": "Связка нескольких видеокарт AMD"
+ },
+ {
+  "pl": "CSMA/CA",
+  "ru": "CSMA/CA",
+  "en": "Carrier Sense Multiple Access with Collision Avoidance",
+  "topic": "netdevices",
+  "note_ru": "Доступ к среде в Wi‑Fi"
+ },
+ {
+  "pl": "CSMA/CD",
+  "ru": "CSMA/CD",
+  "en": "Carrier Sense Multiple Access with Collision Detection",
+  "topic": "netdevices",
+  "note_ru": "Доступ к среде в Ethernet"
+ },
+ {
+  "pl": "częstotliwość odświeżania",
+  "ru": "частота обновления",
+  "en": "refresh rate",
+  "topic": "peripherals",
+  "note_ru": "Сколько раз в секунду обновляется изображение, Hz"
+ },
+ {
+  "pl": "dane osobowe",
+  "ru": "персональные данные",
+  "en": "personal data",
+  "topic": "law_bhp",
+  "note_ru": "Данные, идентифицирующие человека"
+ },
+ {
+  "pl": "DDoS",
+  "ru": "DDoS-атака",
+  "en": "Distributed Denial of Service",
+  "topic": "security",
+  "note_ru": "Перегрузка сервера с множества адресов"
+ },
+ {
+  "pl": "DDR",
+  "ru": "DDR-память",
+  "en": "Double Data Rate",
+  "topic": "hardware",
+  "note_ru": "Передаёт данные по обоим фронтам тактового сигнала"
+ },
+ {
+  "pl": "device driver",
+  "ru": "драйвер устройства",
+  "topic": "english",
+  "note_ru": "Программа управления устройством"
+ },
+ {
+  "pl": "DHCP",
+  "ru": "DHCP",
+  "en": "Dynamic Host Configuration Protocol",
+  "topic": "protocols",
+  "note_ru": "Автоматическая выдача IP и параметров"
+ },
+ {
+  "pl": "diskpart",
+  "ru": "diskpart",
+  "topic": "windows",
+  "note_ru": "Управление дисками из консоли"
+ },
+ {
+  "pl": "DisplayPort",
+  "ru": "DisplayPort",
+  "topic": "peripherals",
+  "note_ru": "Цифровой видеоинтерфейс VESA"
+ },
+ {
+  "pl": "DNS",
+  "ru": "DNS",
+  "en": "Domain Name System",
+  "topic": "protocols",
+  "note_ru": "Перевод имён в IP-адреса"
+ },
+ {
+  "pl": "dokumentacja powykonawcza",
+  "ru": "исполнительная документация",
+  "en": "as-built documentation",
+  "topic": "law_bhp",
+  "note_ru": "Включает результаты тестов сети"
+ },
+ {
+  "pl": "domena",
+  "ru": "домен",
+  "en": "domain",
+  "topic": "winserver",
+  "note_ru": "Группа компьютеров с общим каталогом"
+ },
+ {
+  "pl": "domena kolizyjna",
+  "ru": "домен коллизий",
+  "en": "collision domain",
+  "topic": "netdevices",
+  "note_ru": "Сегмент, где кадры могут сталкиваться"
+ },
+ {
+  "pl": "domena publiczna",
+  "ru": "общественное достояние",
+  "en": "public domain",
+  "topic": "law_bhp",
+  "note_ru": "Без ограничений имущественных прав"
+ },
+ {
+  "pl": "domena rozgłoszeniowa",
+  "ru": "широковещательный домен",
+  "en": "broadcast domain",
+  "topic": "netdevices",
+  "note_ru": "Зона действия broadcast; граница — роутер"
+ },
+ {
+  "pl": "donationware",
+  "ru": "donationware",
+  "topic": "law_bhp",
+  "note_ru": "Добровольное пожертвование автору"
+ },
+ {
+  "pl": "drukarka atramentowa",
+  "ru": "струйный принтер",
+  "en": "inkjet printer",
+  "topic": "printers",
+  "note_ru": "Печать каплями чернил через сопла"
+ },
+ {
+  "pl": "drukarka 3D",
+  "ru": "3D-принтер",
+  "en": "3D printer",
+  "topic": "printers",
+  "note_ru": "Печать объектов из филамента"
+ },
+ {
+  "pl": "drukarka igłowa",
+  "ru": "матричный принтер",
+  "en": "dot matrix printer",
+  "topic": "printers",
+  "note_ru": "Иглы бьют по красящей ленте"
+ },
+ {
+  "pl": "drukarka laserowa",
+  "ru": "лазерный принтер",
+  "en": "laser printer",
+  "topic": "printers",
+  "note_ru": "Печать тонером; фотобарабан и фьюзер"
+ },
+ {
+  "pl": "drukarka sublimacyjna",
+  "ru": "сублимационный принтер",
+  "en": "dye-sublimation printer",
+  "topic": "printers",
+  "note_ru": "Печать фото сублимационными красками"
+ },
+ {
+  "pl": "drukarka termotransferowa",
+  "ru": "термотрансферный принтер",
+  "en": "thermal transfer printer",
+  "topic": "printers",
+  "note_ru": "Нагрев переносит краску с ленты"
+ },
+ {
+  "pl": "dsa.msc",
+  "ru": "Пользователи и компьютеры AD",
+  "en": "Active Directory Users and Computers",
+  "topic": "winserver",
+  "note_ru": "Добавление пользователей, групп, OU"
+ },
+ {
+  "pl": "DVI",
+  "ru": "DVI",
+  "en": "Digital Visual Interface",
+  "topic": "peripherals",
+  "note_ru": "Видео: DVI-D цифровой, DVI-I цифр.+аналог"
+ },
+ {
+  "pl": "dysk SSD",
+  "ru": "твердотельный накопитель",
+  "en": "SSD",
+  "topic": "hardware",
+  "note_ru": "Накопитель на флеш-памяти, без механики"
+ },
+ {
+  "pl": "dysk twardy HDD",
+  "ru": "жёсткий диск",
+  "en": "HDD",
+  "topic": "hardware",
+  "note_ru": "Магнитный диск с вращающимися пластинами"
+ },
+ {
+  "pl": "Dziadek-Ojciec-Syn",
+  "ru": "дед-отец-сын",
+  "en": "Grandfather-Father-Son",
+  "topic": "winserver",
+  "note_ru": "Ротация копий: день/неделя/месяц"
+ },
+ {
+  "pl": "dziedziczenie uprawnień",
+  "ru": "наследование прав",
+  "en": "permission inheritance",
+  "topic": "winserver",
+  "note_ru": "Права переходят от родителя к дочернему объекту"
+ },
+ {
+  "pl": "dzierżawa",
+  "ru": "аренда адреса",
+  "en": "lease",
+  "topic": "addressing",
+  "note_ru": "Время, на которое DHCP выдал IP"
+ },
+ {
+  "pl": "D-SUB",
+  "ru": "D-SUB (VGA)",
+  "en": "VGA, DE-15",
+  "topic": "peripherals",
+  "note_ru": "Аналоговый видеоразъём 15-контактный"
+ },
+ {
+  "pl": "802.11n",
+  "ru": "802.11n (Wi‑Fi 4)",
+  "topic": "netdevices",
+  "note_ru": "2,4 и 5 GHz, до 600 Mb/s"
+ },
+ {
+  "pl": "Edytor zasad grupy",
+  "ru": "Редактор групповой политики",
+  "en": "Group Policy Editor",
+  "topic": "windows",
+  "note_ru": "gpedit.msc"
+ },
+ {
+  "pl": "EFS",
+  "ru": "шифрующая файловая система",
+  "en": "Encrypting File System",
+  "topic": "windows",
+  "note_ru": "Шифрование файлов NTFS (cipher)"
+ },
+ {
+  "pl": "EIGRP",
+  "ru": "EIGRP",
+  "en": "Enhanced Interior Gateway Routing Protocol",
+  "topic": "protocols",
+  "note_ru": "Гибридный протокол Cisco"
+ },
+ {
+  "pl": "element bierny",
+  "ru": "пассивный элемент",
+  "en": "passive component",
+  "topic": "basics",
+  "note_ru": "Резистор, конденсатор, катушка"
+ },
+ {
+  "pl": "enkapsulacja",
+  "ru": "инкапсуляция",
+  "en": "encapsulation",
+  "topic": "protocols",
+  "note_ru": "Добавление заголовков уровней к данным"
+ },
+ {
+  "pl": "ergonomia",
+  "ru": "эргономика",
+  "en": "ergonomics",
+  "topic": "law_bhp",
+  "note_ru": "Приспособление рабочего места к человеку"
+ },
+ {
+  "pl": "eSATA",
+  "ru": "eSATA",
+  "en": "external SATA",
+  "topic": "peripherals",
+  "note_ru": "Внешний SATA для дисков"
+ },
+ {
+  "pl": "exploit",
+  "ru": "эксплойт",
+  "topic": "security",
+  "note_ru": "Использует уязвимость"
+ },
+ {
+  "pl": "farad",
+  "ru": "фарад",
+  "topic": "basics",
+  "note_ru": "Единица ёмкости"
+ },
+ {
+  "pl": "filament",
+  "ru": "филамент",
+  "topic": "printers",
+  "note_ru": "Пластиковая нить для 3D-печати"
+ },
+ {
+  "pl": "filtrowanie adresów MAC",
+  "ru": "фильтрация MAC",
+  "en": "MAC filtering",
+  "topic": "netdevices",
+  "note_ru": "Доступ только выбранным устройствам"
+ },
+ {
+  "pl": "find",
+  "ru": "find",
+  "topic": "linux",
+  "note_ru": "Поиск файлов по имени и атрибутам"
+ },
+ {
+  "pl": "FPU",
+  "ru": "блок плавающей запятой",
+  "en": "Floating Point Unit",
+  "topic": "hardware",
+  "note_ru": "Вычисления с плавающей запятой"
+ },
+ {
+  "pl": "fragmentacja",
+  "ru": "фрагментация",
+  "en": "fragmentation",
+  "topic": "hardware",
+  "note_ru": "Файл разбросан по диску; лечится дефрагментацией"
+ },
+ {
+  "pl": "freemium",
+  "ru": "freemium",
+  "topic": "law_bhp",
+  "note_ru": "Бесплатно; премиум-функции за плату"
+ },
+ {
+  "pl": "freeware",
+  "ru": "freeware",
+  "topic": "law_bhp",
+  "note_ru": "Бесплатно, без права модификации"
+ },
+ {
+  "pl": "fsck",
+  "ru": "fsck",
+  "en": "file system check",
+  "topic": "linux",
+  "note_ru": "Проверка файловой системы"
+ },
+ {
+  "pl": "FTP",
+  "ru": "FTP",
+  "en": "File Transfer Protocol",
+  "topic": "protocols",
+  "note_ru": "Передача файлов, порты 20/21"
+ },
+ {
+  "pl": "full duplex",
+  "ru": "полный дуплекс",
+  "topic": "netdevices",
+  "note_ru": "Передача одновременно в обе стороны"
+ },
+ {
+  "pl": "F/UTP",
+  "ru": "F/UTP (FTP)",
+  "en": "foiled twisted pair",
+  "topic": "cabling",
+  "note_ru": "Общий экран из фольги"
+ },
+ {
+  "pl": "głowica drukująca",
+  "ru": "печатающая головка",
+  "en": "print head",
+  "topic": "printers",
+  "note_ru": "Узел с соплами (струйный) или иглами"
+ },
+ {
+  "pl": "główny punkt dystrybucyjny",
+  "ru": "главный распределительный пункт",
+  "en": "MDF, main distribution frame",
+  "topic": "cabling",
+  "note_ru": "Окончание магистральных кабелей здания"
+ },
+ {
+  "pl": "gniazdo",
+  "ru": "сокет",
+  "en": "socket",
+  "topic": "addressing",
+  "note_ru": "IP-адрес + номер порта"
+ },
+ {
+  "pl": "gniazdo procesora",
+  "ru": "сокет процессора",
+  "en": "CPU socket",
+  "topic": "hardware",
+  "note_ru": "Разъём CPU: LGA (Intel), AM4/AM3+ (AMD)"
+ },
+ {
+  "pl": "gniazdo teleinformatyczne",
+  "ru": "телекоммуникационная розетка",
+  "en": "telecommunications outlet",
+  "topic": "cabling",
+  "note_ru": "Конец горизонтальной проводки у пользователя"
+ },
+ {
+  "pl": "GNU GPL",
+  "ru": "GNU GPL",
+  "en": "GNU General Public License",
+  "topic": "law_bhp",
+  "note_ru": "Свободная лицензия: исходный код, модификация"
+ },
+ {
+  "pl": "GPMC",
+  "ru": "консоль управления групповыми политиками",
+  "en": "Group Policy Management Console",
+  "topic": "winserver",
+  "note_ru": "Управление GPO"
+ },
+ {
+  "pl": "GPT",
+  "ru": "таблица разделов GPT",
+  "en": "GUID Partition Table",
+  "topic": "hardware",
+  "note_ru": "Разделы больше 2 TB, до 128 разделов"
+ },
+ {
+  "pl": "GPU",
+  "ru": "графический процессор",
+  "en": "Graphics Processing Unit",
+  "topic": "hardware",
+  "note_ru": "Процессор видеокарты"
+ },
+ {
+  "pl": "grep",
+  "ru": "grep",
+  "topic": "linux",
+  "note_ru": "Поиск строки в файлах"
+ },
+ {
+  "pl": "GRUB",
+  "ru": "загрузчик GRUB",
+  "en": "GRand Unified Bootloader",
+  "topic": "linux",
+  "note_ru": "Загрузчик Linux, /etc/default/grub"
+ },
+ {
+  "pl": "grupa globalna",
+  "ru": "глобальная группа",
+  "en": "global group",
+  "topic": "winserver",
+  "note_ru": "Члены из своего домена, права в любом"
+ },
+ {
+  "pl": "grupa lokalna domeny",
+  "ru": "локальная группа домена",
+  "en": "domain local group",
+  "topic": "winserver",
+  "note_ru": "Права только в своём домене"
+ },
+ {
+  "pl": "HKCR",
+  "ru": "HKEY_CLASSES_ROOT",
+  "en": "HKEY_CLASSES_ROOT",
+  "topic": "windows",
+  "note_ru": "Связи типов файлов с программами"
+ },
+ {
+  "pl": "HKCU",
+  "ru": "HKEY_CURRENT_USER",
+  "en": "HKEY_CURRENT_USER",
+  "topic": "windows",
+  "note_ru": "Настройки текущего пользователя"
+ },
+ {
+  "pl": "hot plugging",
+  "ru": "горячее подключение",
+  "en": "hot plug",
+  "topic": "hardware",
+  "note_ru": "Подключение без выключения питания"
+ },
+ {
+  "pl": "hot-plug",
+  "ru": "горячее подключение",
+  "topic": "english",
+  "note_ru": "Работает сразу без перезагрузки"
+ },
+ {
+  "pl": "HTTP",
+  "ru": "HTTP",
+  "en": "Hypertext Transfer Protocol",
+  "topic": "protocols",
+  "note_ru": "Передача веб-страниц, порт 80"
+ },
+ {
+  "pl": "HTTPS",
+  "ru": "HTTPS",
+  "en": "HTTP Secure",
+  "topic": "protocols",
+  "note_ru": "Шифрованный HTTP, порт 443"
+ },
+ {
+  "pl": "Hyper-V",
+  "ru": "Hyper-V",
+  "topic": "winserver",
+  "note_ru": "Роль виртуализации Windows Server"
+ },
+ {
+  "pl": "icacls",
+  "ru": "icacls",
+  "topic": "windows",
+  "note_ru": "Просмотр и изменение прав NTFS"
+ },
+ {
+  "pl": "ICMP",
+  "ru": "ICMP",
+  "en": "Internet Control Message Protocol",
+  "topic": "protocols",
+  "note_ru": "Сообщения об ошибках; используется ping"
+ },
+ {
+  "pl": "IEEE 1394",
+  "ru": "FireWire / i.Link",
+  "en": "FireWire",
+  "topic": "peripherals",
+  "note_ru": "Последовательный интерфейс для камер"
+ },
+ {
+  "pl": "IEEE 802.11",
+  "ru": "IEEE 802.11",
+  "topic": "netdevices",
+  "note_ru": "Семейство стандартов беспроводных сетей"
+ },
+ {
+  "pl": "IEEE 802.1Q",
+  "ru": "IEEE 802.1Q",
+  "topic": "netdevices",
+  "note_ru": "Стандарт тегирования кадров VLAN"
+ },
+ {
+  "pl": "IETF",
+  "ru": "IETF",
+  "en": "Internet Engineering Task Force",
+  "topic": "protocols",
+  "note_ru": "Публикует документы RFC"
+ },
+ {
+  "pl": "IGMP",
+  "ru": "IGMP",
+  "en": "Internet Group Management Protocol",
+  "topic": "protocols",
+  "note_ru": "Членство в группах multicast"
+ },
+ {
+  "pl": "IIS",
+  "ru": "IIS",
+  "en": "Internet Information Services",
+  "topic": "winserver",
+  "note_ru": "Роль веб-сервера (WWW, FTP)"
+ },
+ {
+  "pl": "IMAP",
+  "ru": "IMAP",
+  "en": "Internet Message Access Protocol",
+  "topic": "protocols",
+  "note_ru": "Приём почты, сначала заголовки, порт 143"
+ },
+ {
+  "pl": "impulsator",
+  "ru": "импульсатор",
+  "en": "logic pulser",
+  "topic": "basics",
+  "note_ru": "Подаёт импульс/высокий уровень на вход схемы"
+ },
+ {
+  "pl": "indukcyjność",
+  "ru": "индуктивность",
+  "en": "inductance",
+  "topic": "basics",
+  "note_ru": "Способность создавать магнитный поток, генри"
+ },
+ {
+  "pl": "intranet",
+  "ru": "интранет",
+  "topic": "netdevices",
+  "note_ru": "Внутренняя сеть одной организации"
+ },
+ {
+  "pl": "IP",
+  "ru": "IP",
+  "en": "Internet Protocol",
+  "topic": "protocols",
+  "note_ru": "Адресация и маршрутизация пакетов"
+ },
+ {
+  "pl": "ipconfig",
+  "ru": "ipconfig",
+  "topic": "netdevices",
+  "note_ru": "Конфигурация IP в Windows"
+ },
+ {
+  "pl": "IPS",
+  "ru": "система предотвращения вторжений",
+  "en": "Intrusion Prevention System",
+  "topic": "security",
+  "note_ru": "Обнаруживает и блокирует атаки"
+ },
+ {
+  "pl": "IPv6",
+  "ru": "IPv6",
+  "topic": "addressing",
+  "note_ru": "128-битный адрес, 8 блоков по 16 бит"
+ },
+ {
+  "pl": "IrDA",
+  "ru": "IrDA (ИК-порт)",
+  "en": "Infrared Data Association",
+  "topic": "peripherals",
+  "note_ru": "Беспроводная связь инфракрасным светом"
+ },
+ {
+  "pl": "jądro",
+  "ru": "ядро",
+  "en": "kernel",
+  "topic": "linux",
+  "note_ru": "Основа ОС; uname -a"
+ },
+ {
+  "pl": "jednostka organizacyjna",
+  "ru": "подразделение",
+  "en": "organizational unit, OU",
+  "topic": "winserver",
+  "note_ru": "Контейнер AD для объектов и GPO"
+ },
+ {
+  "pl": "kabel koncentryczny",
+  "ru": "коаксиальный кабель",
+  "en": "coaxial cable",
+  "topic": "cabling",
+  "note_ru": "Центральная жила + экран"
+ },
+ {
+  "pl": "kabel prosty",
+  "ru": "прямой кабель",
+  "en": "straight-through cable",
+  "topic": "cabling",
+  "note_ru": "Одинаковая раскладка на обоих концах"
+ },
+ {
+  "pl": "kabel skrosowany",
+  "ru": "перекрёстный кабель",
+  "en": "crossover cable",
+  "topic": "cabling",
+  "note_ru": "A на одном конце, B на другом"
+ },
+ {
+  "pl": "karta dźwiękowa",
+  "ru": "звуковая карта",
+  "en": "sound card",
+  "topic": "peripherals",
+  "note_ru": "Обработка звука, ЦАП/АЦП"
+ },
+ {
+  "pl": "karta graficzna",
+  "ru": "видеокарта",
+  "en": "graphics card",
+  "topic": "hardware",
+  "note_ru": "Формирует изображение; имеет GPU и VRAM"
+ },
+ {
+  "pl": "karta sieciowa",
+  "ru": "сетевая карта",
+  "en": "network interface card, NIC",
+  "topic": "netdevices",
+  "note_ru": "Преобразует кадры в сигналы, имеет MAC"
+ },
+ {
+  "pl": "kategoria 5e",
+  "ru": "категория 5e",
+  "en": "Cat 5e",
+  "topic": "cabling",
+  "note_ru": "100 MHz, до 1 Gb/s"
+ },
+ {
+  "pl": "kategoria 6",
+  "ru": "категория 6",
+  "en": "Cat 6",
+  "topic": "cabling",
+  "note_ru": "250 MHz, 1 Gb/s (10 Gb/s на коротких)"
+ },
+ {
+  "pl": "keylogger",
+  "ru": "кейлоггер",
+  "topic": "security",
+  "note_ru": "Записывает нажатия клавиш"
+ },
+ {
+  "pl": "kibibajt",
+  "ru": "кибибайт",
+  "en": "KiB",
+  "topic": "basics",
+  "note_ru": "1024 байта"
+ },
+ {
+  "pl": "kilobajt",
+  "ru": "килобайт",
+  "en": "kB",
+  "topic": "basics",
+  "note_ru": "1000 байт (SI)"
+ },
+ {
+  "pl": "klasa adresów",
+  "ru": "класс адресов",
+  "en": "address class",
+  "topic": "addressing",
+  "note_ru": "A, B, C, D, E по первым битам"
+ },
+ {
+  "pl": "klaster",
+  "ru": "кластер",
+  "en": "cluster",
+  "topic": "hardware",
+  "note_ru": "Минимальная единица выделения места на диске"
+ },
+ {
+  "pl": "kod 403",
+  "ru": "ошибка 403",
+  "en": "403 Forbidden",
+  "topic": "protocols",
+  "note_ru": "Нет прав к ресурсу"
+ },
+ {
+  "pl": "kod U2",
+  "ru": "дополнительный код",
+  "en": "two's complement",
+  "topic": "basics",
+  "note_ru": "Старший бит имеет отрицательный вес"
+ },
+ {
+  "pl": "koncentrator",
+  "ru": "концентратор",
+  "en": "hub",
+  "topic": "netdevices",
+  "note_ru": "Уровень 1, рассылает сигнал на все порты"
+ },
+ {
+  "pl": "kondensator",
+  "ru": "конденсатор",
+  "en": "capacitor",
+  "topic": "hardware",
+  "note_ru": "Пассивный элемент, накапливает заряд"
+ },
+ {
+  "pl": "kondygnacyjny punkt dystrybucyjny",
+  "ru": "этажный распределительный пункт",
+  "en": "FD, floor distributor",
+  "topic": "cabling",
+  "note_ru": "Обслуживает весь этаж"
+ },
+ {
+  "pl": "konflikt adresów IP",
+  "ru": "конфликт IP-адресов",
+  "en": "IP address conflict",
+  "topic": "addressing",
+  "note_ru": "Два устройства с одним IP"
+ },
+ {
+  "pl": "kontroler domeny",
+  "ru": "контроллер домена",
+  "en": "domain controller",
+  "topic": "winserver",
+  "note_ru": "Сервер с AD DS, хранит учётные записи домена"
+ },
+ {
+  "pl": "konwerter mediów",
+  "ru": "конвертер сред",
+  "en": "media converter",
+  "topic": "netdevices",
+  "note_ru": "Оптоволокно ↔ витая пара"
+ },
+ {
+  "pl": "koń trojański",
+  "ru": "троян",
+  "en": "trojan",
+  "topic": "security",
+  "note_ru": "Маскируется под полезную программу, открывает доступ"
+ },
+ {
+  "pl": "kopia przyrostowa",
+  "ru": "инкрементная копия",
+  "en": "incremental backup",
+  "topic": "winserver",
+  "note_ru": "Изменения с последней любой копии"
+ },
+ {
+  "pl": "kopia różnicowa",
+  "ru": "дифференциальная копия",
+  "en": "differential backup",
+  "topic": "winserver",
+  "note_ru": "Изменения с последней полной копии"
+ },
+ {
+  "pl": "kopia zapasowa",
+  "ru": "резервная копия",
+  "en": "backup",
+  "topic": "winserver",
+  "note_ru": "Копия данных на случай сбоя"
+ },
+ {
+  "pl": "LAN",
+  "ru": "локальная сеть",
+  "en": "Local Area Network",
+  "topic": "netdevices",
+  "note_ru": "Сеть здания/офиса"
+ },
+ {
+  "pl": "LDAP",
+  "ru": "LDAP",
+  "en": "Lightweight Directory Access Protocol",
+  "topic": "protocols",
+  "note_ru": "Доступ к службам каталогов"
+ },
+ {
+  "pl": "LGA",
+  "ru": "LGA (сокет)",
+  "en": "Land Grid Array",
+  "topic": "hardware",
+  "note_ru": "Контакты на сокете, а не на процессоре; Intel"
+ },
+ {
+  "pl": "licencja",
+  "ru": "лицензия",
+  "en": "license",
+  "topic": "law_bhp",
+  "note_ru": "Условия использования программы"
+ },
+ {
+  "pl": "licencja BOX",
+  "ru": "коробочная лицензия",
+  "en": "retail, BOX",
+  "topic": "law_bhp",
+  "note_ru": "Можно перенести на другой ПК"
+ },
+ {
+  "pl": "licencja BSD",
+  "ru": "лицензия BSD",
+  "en": "BSD license",
+  "topic": "law_bhp",
+  "note_ru": "Разрешительная открытая лицензия"
+ },
+ {
+  "pl": "licencja OEM",
+  "ru": "лицензия OEM",
+  "en": "Original Equipment Manufacturer",
+  "topic": "law_bhp",
+  "note_ru": "Привязана к конкретному компьютеру"
+ },
+ {
+  "pl": "liczba zmiennoprzecinkowa",
+  "ru": "число с плавающей запятой",
+  "en": "floating-point number",
+  "topic": "basics",
+  "note_ru": "Знак, экспонента, мантисса (IEEE 754)"
+ },
+ {
+  "pl": "liteware",
+  "ru": "liteware",
+  "topic": "law_bhp",
+  "note_ru": "Бесплатная урезанная версия"
+ },
+ {
+  "pl": "localhost",
+  "ru": "localhost",
+  "topic": "addressing",
+  "note_ru": "Имя адреса 127.0.0.1"
+ },
+ {
+  "pl": "macierz RAID",
+  "ru": "RAID-массив",
+  "en": "RAID",
+  "topic": "hardware",
+  "note_ru": "Объединение дисков для скорости/надёжности"
+ },
+ {
+  "pl": "mapa połączeń",
+  "ru": "карта соединений",
+  "en": "wire map",
+  "topic": "cabling",
+  "note_ru": "Проверка правильности разводки пар"
+ },
+ {
+  "pl": "maska podsieci",
+  "ru": "маска подсети",
+  "en": "subnet mask",
+  "topic": "addressing",
+  "note_ru": "Определяет часть сети и часть хоста"
+ },
+ {
+  "pl": "mata antystatyczna",
+  "ru": "антистатический коврик",
+  "en": "antistatic mat",
+  "topic": "law_bhp",
+  "note_ru": "Заземлённая поверхность для работы"
+ },
+ {
+  "pl": "matryca LCD",
+  "ru": "ЖК-матрица",
+  "en": "LCD panel",
+  "topic": "peripherals",
+  "note_ru": "Панель жидкокристаллического монитора"
+ },
+ {
+  "pl": "MBR",
+  "ru": "главная загрузочная запись",
+  "en": "Master Boot Record",
+  "topic": "hardware",
+  "note_ru": "Макс. 4 основных раздела, до 2 TB"
+ },
+ {
+  "pl": "Menedżer urządzeń",
+  "ru": "Диспетчер устройств",
+  "en": "Device Manager",
+  "topic": "windows",
+  "note_ru": "devmgmt.msc — устройства, драйверы, конфликты IRQ"
+ },
+ {
+  "pl": "Menedżer zadań",
+  "ru": "Диспетчер задач",
+  "en": "Task Manager",
+  "topic": "windows",
+  "note_ru": "taskmgr — процессы, завершение зависших"
+ },
+ {
+  "pl": "moc",
+  "ru": "мощность",
+  "en": "power",
+  "topic": "basics",
+  "note_ru": "P = U·I, единица — ватт"
+ },
+ {
+  "pl": "moc czynna",
+  "ru": "активная мощность",
+  "en": "active power",
+  "topic": "basics",
+  "note_ru": "Меряется ваттметром"
+ },
+ {
+  "pl": "model ISO/OSI",
+  "ru": "модель OSI",
+  "en": "OSI model",
+  "topic": "protocols",
+  "note_ru": "7-уровневая эталонная модель"
+ },
+ {
+  "pl": "model TCP/IP",
+  "ru": "модель TCP/IP",
+  "en": "TCP/IP model",
+  "topic": "protocols",
+  "note_ru": "4 уровня: приложений, транспорт, Интернет, доступ"
+ },
+ {
+  "pl": "modem",
+  "ru": "модем",
+  "topic": "netdevices",
+  "note_ru": "Аналоговый сигнал ↔ цифровой"
+ },
+ {
+  "pl": "moduł Keystone",
+  "ru": "модуль Keystone",
+  "en": "keystone jack",
+  "topic": "cabling",
+  "note_ru": "Гнездо RJ45 для розеток и панелей"
+ },
+ {
+  "pl": "MOLP",
+  "ru": "MOLP",
+  "en": "Microsoft Open License Program",
+  "topic": "law_bhp",
+  "note_ru": "Групповая лицензия для организаций"
+ },
+ {
+  "pl": "Monitor wydajności",
+  "ru": "Монитор производительности",
+  "en": "Performance Monitor",
+  "topic": "windows",
+  "note_ru": "perfmon.msc"
+ },
+ {
+  "pl": "most",
+  "ru": "мост",
+  "en": "bridge",
+  "topic": "netdevices",
+  "note_ru": "Уровень 2, соединяет сегменты, store and forward"
+ },
+ {
+  "pl": "mount",
+  "ru": "mount",
+  "topic": "linux",
+  "note_ru": "Подключение файловой системы к каталогу"
+ },
+ {
+  "pl": "msconfig",
+  "ru": "конфигурация системы",
+  "en": "System Configuration",
+  "topic": "windows",
+  "note_ru": "Автозагрузка, режимы загрузки"
+ },
+ {
+  "pl": "multicast",
+  "ru": "групповая рассылка",
+  "topic": "addressing",
+  "note_ru": "Передача группе получателей (224–239)"
+ },
+ {
+  "pl": "M.2",
+  "ru": "разъём M.2",
+  "topic": "hardware",
+  "note_ru": "Компактный разъём для SSD (SATA или NVMe)"
+ },
+ {
+  "pl": "nagware",
+  "ru": "nagware",
+  "topic": "law_bhp",
+  "note_ru": "Напоминания о необходимости оплаты"
+ },
+ {
+  "pl": "napięcie",
+  "ru": "напряжение",
+  "en": "voltage",
+  "topic": "basics",
+  "note_ru": "U, единица — вольт"
+ },
+ {
+  "pl": "narzędzie uderzeniowe",
+  "ru": "ударный инструмент",
+  "en": "punch-down tool",
+  "topic": "cabling",
+  "note_ru": "Заделка жил в LSA/110/Keystone"
+ },
+ {
+  "pl": "nasłuchiwanie",
+  "ru": "прослушивание",
+  "en": "sniffing",
+  "topic": "security",
+  "note_ru": "Перехват пакетов в сети"
+ },
+ {
+  "pl": "NAT",
+  "ru": "трансляция адресов",
+  "en": "Network Address Translation",
+  "topic": "addressing",
+  "note_ru": "Частные адреса ↔ публичные"
+ },
+ {
+  "pl": "NAT64",
+  "ru": "NAT64",
+  "topic": "addressing",
+  "note_ru": "Трансляция между IPv6 и IPv4"
+ },
+ {
+  "pl": "natężenie prądu",
+  "ru": "сила тока",
+  "en": "current",
+  "topic": "basics",
+  "note_ru": "I, единица — ампер"
+ },
+ {
+  "pl": "netstat",
+  "ru": "netstat",
+  "topic": "netdevices",
+  "note_ru": "Активные соединения и статистика"
+ },
+ {
+  "pl": "net accounts",
+  "ru": "net accounts",
+  "topic": "windows",
+  "note_ru": "Политика паролей, /MAXPWAGE"
+ },
+ {
+  "pl": "net user",
+  "ru": "net user",
+  "topic": "windows",
+  "note_ru": "Управление учётными записями из консоли"
+ },
+ {
+  "pl": "nmap",
+  "ru": "nmap",
+  "en": "Network Mapper",
+  "topic": "netdevices",
+  "note_ru": "Сканер сети и портов"
+ },
+ {
+  "pl": "nslookup",
+  "ru": "nslookup",
+  "topic": "netdevices",
+  "note_ru": "Запросы к серверу DNS"
+ },
+ {
+  "pl": "NTFS",
+  "ru": "NTFS",
+  "en": "New Technology File System",
+  "topic": "windows",
+  "note_ru": "ФС Windows: права, шифрование, сжатие"
+ },
+ {
+  "pl": "NTP",
+  "ru": "NTP",
+  "en": "Network Time Protocol",
+  "topic": "protocols",
+  "note_ru": "Синхронизация времени"
+ },
+ {
+  "pl": "OCR",
+  "ru": "распознавание текста",
+  "en": "Optical Character Recognition",
+  "topic": "printers",
+  "note_ru": "Скан → редактируемый текст"
+ },
+ {
+  "pl": "odblokowany mnożnik",
+  "ru": "разблокированный множитель",
+  "en": "unlocked multiplier",
+  "topic": "hardware",
+  "note_ru": "Позволяет разгон; Intel — суффикс K"
+ },
+ {
+  "pl": "okablowanie pionowe",
+  "ru": "вертикальная (магистральная) проводка",
+  "en": "backbone cabling",
+  "topic": "cabling",
+  "note_ru": "MDF ↔ этажные пункты"
+ },
+ {
+  "pl": "okablowanie poziome",
+  "ru": "горизонтальная проводка",
+  "en": "horizontal cabling",
+  "topic": "cabling",
+  "note_ru": "FD ↔ розетка, макс. 90 m"
+ },
+ {
+  "pl": "okablowanie strukturalne",
+  "ru": "структурированная кабельная система",
+  "en": "structured cabling",
+  "topic": "cabling",
+  "note_ru": "Стандартизированная кабельная инфраструктура здания"
+ },
+ {
+  "pl": "om",
+  "ru": "ом",
+  "en": "ohm",
+  "topic": "basics",
+  "note_ru": "Единица сопротивления"
+ },
+ {
+  "pl": "opaska antystatyczna",
+  "ru": "антистатический браслет",
+  "en": "antistatic wrist strap",
+  "topic": "law_bhp",
+  "note_ru": "Отводит заряд на землю"
+ },
+ {
+  "pl": "OSPF",
+  "ru": "OSPF",
+  "en": "Open Shortest Path First",
+  "topic": "protocols",
+  "note_ru": "Протокол состояния каналов"
+ },
+ {
+  "pl": "pakiet",
+  "ru": "пакет",
+  "en": "packet",
+  "topic": "protocols",
+  "note_ru": "PDU сетевого уровня"
+ },
+ {
+  "pl": "pamięć podręczna",
+  "ru": "кэш-память",
+  "en": "cache",
+  "topic": "hardware",
+  "note_ru": "Быстрая память между CPU и RAM"
+ },
+ {
+  "pl": "pamięć RAM",
+  "ru": "оперативная память",
+  "en": "RAM",
+  "topic": "hardware",
+  "note_ru": "Энергозависимая память для работающих программ"
+ },
+ {
+  "pl": "pamięć ROM",
+  "ru": "постоянная память",
+  "en": "ROM",
+  "topic": "hardware",
+  "note_ru": "Энергонезависимая память только для чтения"
+ },
+ {
+  "pl": "panel krosowy",
+  "ru": "коммутационная панель",
+  "en": "patch panel",
+  "topic": "cabling",
+  "note_ru": "Пассивная панель в шкафу"
+ },
+ {
+  "pl": "parowanie urządzeń",
+  "ru": "сопряжение устройств",
+  "en": "pairing",
+  "topic": "peripherals",
+  "note_ru": "Связывание устройств Bluetooth"
+ },
+ {
+  "pl": "partycja",
+  "ru": "раздел диска",
+  "en": "partition",
+  "topic": "hardware",
+  "note_ru": "Логическая часть диска"
+ },
+ {
+  "pl": "pasta termoprzewodząca",
+  "ru": "термопаста",
+  "en": "thermal paste",
+  "topic": "hardware",
+  "note_ru": "Улучшает теплопередачу CPU→радиатор"
+ },
+ {
+  "pl": "PAT",
+  "ru": "трансляция портов",
+  "en": "Port Address Translation",
+  "topic": "addressing",
+  "note_ru": "Много хостов за одним публичным IP"
+ },
+ {
+  "pl": "PCI Express",
+  "ru": "шина PCIe",
+  "topic": "hardware",
+  "note_ru": "Последовательная шина плат расширения; x16 для видеокарт"
+ },
+ {
+  "pl": "PCMCIA",
+  "ru": "PCMCIA (PC Card)",
+  "topic": "peripherals",
+  "note_ru": "Слот расширения старых ноутбуков"
+ },
+ {
+  "pl": "pętla zwrotna",
+  "ru": "петля",
+  "en": "loopback",
+  "topic": "addressing",
+  "note_ru": "127.0.0.1 / ::1 — проверка стека TCP/IP"
+ },
+ {
+  "pl": "phishing",
+  "ru": "фишинг",
+  "topic": "security",
+  "note_ru": "Выманивание данных поддельными сообщениями"
+ },
+ {
+  "pl": "pigtail",
+  "ru": "пигтейл",
+  "topic": "cabling",
+  "note_ru": "Отрезок волокна с разъёмом для сварки"
+ },
+ {
+  "pl": "ping",
+  "ru": "ping",
+  "topic": "netdevices",
+  "note_ru": "Проверка связи ICMP echo"
+ },
+ {
+  "pl": "pióro świetlne",
+  "ru": "световое перо",
+  "en": "light pen",
+  "topic": "peripherals",
+  "note_ru": "Указатель для CRT со светочувствительным элементом"
+ },
+ {
+  "pl": "plik wymiany",
+  "ru": "файл подкачки",
+  "en": "page file",
+  "topic": "windows",
+  "note_ru": "pagefile.sys — виртуальная память"
+ },
+ {
+  "pl": "plik /etc/passwd",
+  "ru": "файл /etc/passwd",
+  "en": "passwd file",
+  "topic": "linux",
+  "note_ru": "Список учётных записей"
+ },
+ {
+  "pl": "ploter",
+  "ru": "плоттер",
+  "en": "plotter",
+  "topic": "printers",
+  "note_ru": "Вывод больших чертежей; режущий плоттер режет плёнку"
+ },
+ {
+  "pl": "Plug and Play",
+  "ru": "Plug and Play",
+  "topic": "windows",
+  "note_ru": "Автоопределение устройства и выделение ресурсов"
+ },
+ {
+  "pl": "plug-in",
+  "ru": "плагин",
+  "topic": "english",
+  "note_ru": "Расширение браузера/программы"
+ },
+ {
+  "pl": "płyta główna",
+  "ru": "материнская плата",
+  "en": "motherboard",
+  "topic": "hardware",
+  "note_ru": "Основная плата, соединяет все компоненты ПК"
+ },
+ {
+  "pl": "PN-EN 50173",
+  "ru": "PN-EN 50173",
+  "en": "EN 50173",
+  "topic": "cabling",
+  "note_ru": "Норма проектирования кабельных систем"
+ },
+ {
+  "pl": "PN-EN 50174",
+  "ru": "PN-EN 50174",
+  "en": "EN 50174",
+  "topic": "cabling",
+  "note_ru": "Норма монтажа кабельных систем"
+ },
+ {
+  "pl": "Podgląd zdarzeń",
+  "ru": "Просмотр событий",
+  "en": "Event Viewer",
+  "topic": "windows",
+  "note_ru": "eventvwr.msc — журналы системы"
+ },
+ {
+  "pl": "podkręcanie",
+  "ru": "разгон",
+  "en": "overclocking",
+  "topic": "hardware",
+  "note_ru": "Работа на частоте выше номинальной"
+ },
+ {
+  "pl": "podsieć",
+  "ru": "подсеть",
+  "en": "subnet",
+  "topic": "addressing",
+  "note_ru": "Часть сети после деления"
+ },
+ {
+  "pl": "PoE",
+  "ru": "PoE",
+  "en": "Power over Ethernet",
+  "topic": "netdevices",
+  "note_ru": "Питание устройств по витой паре (802.3af)"
+ },
+ {
+  "pl": "pojemność elektryczna",
+  "ru": "электрическая ёмкость",
+  "en": "capacitance",
+  "topic": "basics",
+  "note_ru": "C = Q/U, единица — фарад"
+ },
+ {
+  "pl": "polecenie arp",
+  "ru": "команда arp",
+  "en": "arp",
+  "topic": "netdevices",
+  "note_ru": "Таблица IP ↔ MAC (arp -a)"
+ },
+ {
+  "pl": "POP3",
+  "ru": "POP3",
+  "en": "Post Office Protocol 3",
+  "topic": "protocols",
+  "note_ru": "Приём почты с загрузкой, порт 110"
+ },
+ {
+  "pl": "porażenie prądem",
+  "ru": "поражение током",
+  "en": "electric shock",
+  "topic": "law_bhp",
+  "note_ru": "Сначала отключить источник тока"
+ },
+ {
+  "pl": "port",
+  "ru": "порт",
+  "topic": "protocols",
+  "note_ru": "Номер, идентифицирующий службу (0–65535)"
+ },
+ {
+  "pl": "port równoległy LPT",
+  "ru": "параллельный порт LPT",
+  "en": "parallel port, Centronics",
+  "topic": "peripherals",
+  "note_ru": "Старый интерфейс принтеров"
+ },
+ {
+  "pl": "port trunk",
+  "ru": "транковый порт",
+  "en": "trunk port",
+  "topic": "netdevices",
+  "note_ru": "Передаёт кадры многих VLAN по одному каналу"
+ },
+ {
+  "pl": "port WSD",
+  "ru": "порт WSD",
+  "en": "Web Services on Devices",
+  "topic": "printers",
+  "note_ru": "Сетевая печать в Windows 7+"
+ },
+ {
+  "pl": "POST",
+  "ru": "самотестирование при включении",
+  "en": "Power-On Self-Test",
+  "topic": "hardware",
+  "note_ru": "Проверка оборудования при старте, сигналы и коды"
+ },
+ {
+  "pl": "postcardware",
+  "ru": "postcardware",
+  "topic": "law_bhp",
+  "note_ru": "Плата — открытка автору"
+ },
+ {
+  "pl": "PostScript",
+  "ru": "PostScript",
+  "topic": "printers",
+  "note_ru": "Язык описания страниц, независимый от устройства"
+ },
+ {
+  "pl": "powłoka",
+  "ru": "оболочка",
+  "en": "shell",
+  "topic": "linux",
+  "note_ru": "Интерпретатор команд (bash, sh)"
+ },
+ {
+  "pl": "pozycja boczna ustalona",
+  "ru": "устойчивое боковое положение",
+  "en": "recovery position",
+  "topic": "law_bhp",
+  "note_ru": "Для дышащего без сознания"
+ },
+ {
+  "pl": "półdupleks",
+  "ru": "полудуплекс",
+  "en": "half duplex",
+  "topic": "netdevices",
+  "note_ru": "Двусторонняя поочерёдная передача"
+ },
+ {
+  "pl": "PPTP",
+  "ru": "PPTP",
+  "en": "Point-to-Point Tunneling Protocol",
+  "topic": "protocols",
+  "note_ru": "Старый протокол VPN"
+ },
+ {
+  "pl": "prawa autorskie majątkowe",
+  "ru": "имущественные авторские права",
+  "en": "economic rights",
+  "topic": "law_bhp",
+  "note_ru": "Истекают через 70 лет после смерти автора"
+ },
+ {
+  "pl": "prawa De Morgana",
+  "ru": "законы де Моргана",
+  "en": "De Morgan's laws",
+  "topic": "basics",
+  "note_ru": "¬(A·B)=¬A+¬B; ¬(A+B)=¬A·¬B"
+ },
+ {
+  "pl": "prawo Ohma",
+  "ru": "закон Ома",
+  "en": "Ohm's law",
+  "topic": "basics",
+  "note_ru": "U = I·R"
+ },
+ {
+  "pl": "prefiks",
+  "ru": "префикс",
+  "en": "prefix length",
+  "topic": "addressing",
+  "note_ru": "Число единиц в маске (/24)"
+ },
+ {
+  "pl": "procesor",
+  "ru": "процессор",
+  "en": "CPU",
+  "topic": "hardware",
+  "note_ru": "Выполняет команды программ"
+ },
+ {
+  "pl": "profil mobilny",
+  "ru": "перемещаемый профиль",
+  "en": "roaming profile",
+  "topic": "windows",
+  "note_ru": "Профиль хранится на сервере"
+ },
+ {
+  "pl": "profil obowiązkowy",
+  "ru": "обязательный профиль",
+  "en": "mandatory profile",
+  "topic": "windows",
+  "note_ru": "NTUSER.MAN — изменения не сохраняются"
+ },
+ {
+  "pl": "program antywirusowy",
+  "ru": "антивирус",
+  "en": "antivirus",
+  "topic": "security",
+  "note_ru": "Обнаруживает и удаляет вредоносное ПО"
+ },
+ {
+  "pl": "protokół",
+  "ru": "протокол",
+  "en": "protocol",
+  "topic": "protocols",
+  "note_ru": "Набор правил передачи информации"
+ },
+ {
+  "pl": "przełącznik",
+  "ru": "коммутатор",
+  "en": "switch",
+  "topic": "netdevices",
+  "note_ru": "Уровень 2, пересылает кадры по MAC"
+ },
+ {
+  "pl": "przenik zbliżny",
+  "ru": "переходная помеха на ближнем конце",
+  "en": "NEXT",
+  "topic": "cabling",
+  "note_ru": "Наводка пары на соседнюю у того же конца"
+ },
+ {
+  "pl": "przerzutnik",
+  "ru": "триггер",
+  "en": "flip-flop",
+  "topic": "basics",
+  "note_ru": "Элемент памяти на 1 бит"
+ },
+ {
+  "pl": "punkt dostępu",
+  "ru": "точка доступа",
+  "en": "access point",
+  "topic": "netdevices",
+  "note_ru": "Соединяет Wi‑Fi клиентов с проводной LAN"
+ },
+ {
+  "pl": "punkt przywracania",
+  "ru": "точка восстановления",
+  "en": "restore point",
+  "topic": "windows",
+  "note_ru": "Откат системы (rstrui)"
+ },
+ {
+  "pl": "QoS",
+  "ru": "качество обслуживания",
+  "en": "Quality of Service",
+  "topic": "protocols",
+  "note_ru": "Приоритет для трафика (VoIP)"
+ },
+ {
+  "pl": "RADIUS",
+  "ru": "RADIUS",
+  "en": "Remote Authentication Dial-In User Service",
+  "topic": "protocols",
+  "note_ru": "Централизованная аутентификация"
+ },
+ {
+  "pl": "RAID 0",
+  "ru": "RAID 0 (чередование)",
+  "en": "striping",
+  "topic": "hardware",
+  "note_ru": "Скорость, нет отказоустойчивости"
+ },
+ {
+  "pl": "RAID 1",
+  "ru": "RAID 1 (зеркало)",
+  "en": "mirroring",
+  "topic": "hardware",
+  "note_ru": "Копия данных на двух дисках"
+ },
+ {
+  "pl": "RAID 5",
+  "ru": "RAID 5",
+  "en": "striping with parity",
+  "topic": "hardware",
+  "note_ru": "Чередование с распределённой чётностью, мин. 3 диска"
+ },
+ {
+  "pl": "ramka",
+  "ru": "кадр",
+  "en": "frame",
+  "topic": "protocols",
+  "note_ru": "PDU канального уровня"
+ },
+ {
+  "pl": "ransomware",
+  "ru": "программа-вымогатель",
+  "topic": "security",
+  "note_ru": "Шифрует данные и требует выкуп"
+ },
+ {
+  "pl": "RARP",
+  "ru": "RARP",
+  "en": "Reverse Address Resolution Protocol",
+  "topic": "protocols",
+  "note_ru": "MAC → IP"
+ },
+ {
+  "pl": "RDP",
+  "ru": "RDP",
+  "en": "Remote Desktop Protocol",
+  "topic": "protocols",
+  "note_ru": "Удалённый рабочий стол, порт 3389"
+ },
+ {
+  "pl": "recykling",
+  "ru": "ресайклинг",
+  "en": "recycling",
+  "topic": "law_bhp",
+  "note_ru": "Odzysk — вторичная переработка"
+ },
+ {
+  "pl": "reflektometr",
+  "ru": "рефлектометр",
+  "en": "TDR / OTDR",
+  "topic": "cabling",
+  "note_ru": "Находит место повреждения кабеля"
+ },
+ {
+  "pl": "rejestr systemu",
+  "ru": "реестр",
+  "en": "registry",
+  "topic": "windows",
+  "note_ru": "База настроек Windows (HKCU, HKLM, HKCR)"
+ },
+ {
+  "pl": "rekord A",
+  "ru": "запись A",
+  "en": "A record",
+  "topic": "protocols",
+  "note_ru": "Имя → IPv4"
+ },
+ {
+  "pl": "rekord AAAA",
+  "ru": "запись AAAA",
+  "en": "AAAA record",
+  "topic": "protocols",
+  "note_ru": "Имя → IPv6"
+ },
+ {
+  "pl": "rekord CNAME",
+  "ru": "запись CNAME",
+  "en": "CNAME record",
+  "topic": "protocols",
+  "note_ru": "Псевдоним имени"
+ },
+ {
+  "pl": "rekord MX",
+  "ru": "запись MX",
+  "en": "MX record",
+  "topic": "protocols",
+  "note_ru": "Почтовый сервер домена"
+ },
+ {
+  "pl": "rekord NS",
+  "ru": "запись NS",
+  "en": "NS record",
+  "topic": "protocols",
+  "note_ru": "Сервер имён зоны"
+ },
+ {
+  "pl": "rekord PTR",
+  "ru": "запись PTR",
+  "en": "PTR record",
+  "topic": "protocols",
+  "note_ru": "IP → имя (обратная зона)"
+ },
+ {
+  "pl": "resuscytacja krążeniowo-oddechowa",
+  "ru": "сердечно-лёгочная реанимация",
+  "en": "CPR",
+  "topic": "law_bhp",
+  "note_ru": "30 нажатий : 2 вдоха"
+ },
+ {
+  "pl": "rezystancja",
+  "ru": "сопротивление",
+  "en": "resistance",
+  "topic": "basics",
+  "note_ru": "R, единица — ом (Ω)"
+ },
+ {
+  "pl": "RG-58",
+  "ru": "RG-58",
+  "topic": "cabling",
+  "note_ru": "Тонкий коаксиал 50 Ω, 10 Mb/s"
+ },
+ {
+  "pl": "RIP",
+  "ru": "RIP",
+  "en": "Routing Information Protocol",
+  "topic": "protocols",
+  "note_ru": "Вектор расстояний, метрика — число переходов"
+ },
+ {
+  "pl": "robak",
+  "ru": "червь",
+  "en": "worm",
+  "topic": "security",
+  "note_ru": "Сам распространяется по сети"
+ },
+ {
+  "pl": "RODO",
+  "ru": "GDPR",
+  "en": "General Data Protection Regulation",
+  "topic": "law_bhp",
+  "note_ru": "Регламент ЕС о защите персональных данных"
+ },
+ {
+  "pl": "root",
+  "ru": "root",
+  "topic": "linux",
+  "note_ru": "Суперпользователь"
+ },
+ {
+  "pl": "routing",
+  "ru": "маршрутизация",
+  "topic": "protocols",
+  "note_ru": "Выбор оптимального пути для пакетов"
+ },
+ {
+  "pl": "routing i dostęp zdalny",
+  "ru": "маршрутизация и удалённый доступ",
+  "en": "RRAS",
+  "topic": "winserver",
+  "note_ru": "Роль: NAT, VPN, маршрутизация"
+ },
+ {
+  "pl": "routing statyczny",
+  "ru": "статическая маршрутизация",
+  "en": "static routing",
+  "topic": "addressing",
+  "note_ru": "Маршруты вводятся вручную"
+ },
+ {
+  "pl": "rozdzielczość",
+  "ru": "разрешение",
+  "en": "resolution",
+  "topic": "peripherals",
+  "note_ru": "Число пикселей, напр. 1920×1080"
+ },
+ {
+  "pl": "rozplot",
+  "ru": "расплетение пар",
+  "en": "untwist",
+  "topic": "cabling",
+  "note_ru": "Не более 13 mm"
+ },
+ {
+  "pl": "RSTP",
+  "ru": "RSTP",
+  "en": "Rapid Spanning Tree Protocol",
+  "topic": "netdevices",
+  "note_ru": "Быстрый STP, против broadcast storm"
+ },
+ {
+  "pl": "ruter",
+  "ru": "маршрутизатор",
+  "en": "router",
+  "topic": "netdevices",
+  "note_ru": "Уровень 3, пересылает пакеты между сетями"
+ },
+ {
+  "pl": "Samba",
+  "ru": "Samba",
+  "topic": "linux",
+  "note_ru": "Сервер файлов/принтеров для Windows в Linux"
+ },
+ {
+  "pl": "SATA",
+  "ru": "SATA",
+  "en": "Serial ATA",
+  "topic": "hardware",
+  "note_ru": "Последовательный интерфейс дисков"
+ },
+ {
+  "pl": "segment",
+  "ru": "сегмент",
+  "topic": "protocols",
+  "note_ru": "PDU транспортного уровня (TCP)"
+ },
+ {
+  "pl": "sekwencja T568A",
+  "ru": "раскладка T568A",
+  "en": "T568A",
+  "topic": "cabling",
+  "note_ru": "Пин 1 — бело-зелёный"
+ },
+ {
+  "pl": "sekwencja T568B",
+  "ru": "раскладка T568B",
+  "en": "T568B",
+  "topic": "cabling",
+  "note_ru": "Пин 1 — бело-оранжевый"
+ },
+ {
+  "pl": "serwer wydruku",
+  "ru": "принт-сервер",
+  "en": "print server",
+  "topic": "printers",
+  "note_ru": "Подключает принтер к сети (USB + RJ45)"
+ },
+ {
+  "pl": "shareware",
+  "ru": "shareware",
+  "topic": "law_bhp",
+  "note_ru": "Бесплатно для тестов перед покупкой"
+ },
+ {
+  "pl": "sieć ad-hoc",
+  "ru": "сеть ad-hoc",
+  "en": "ad-hoc network, IBSS",
+  "topic": "netdevices",
+  "note_ru": "Беспроводная сеть без точки доступа"
+ },
+ {
+  "pl": "SIP",
+  "ru": "SIP",
+  "en": "Session Initiation Protocol",
+  "topic": "protocols",
+  "note_ru": "Сигнализация VoIP"
+ },
+ {
+  "pl": "skaner płaski",
+  "ru": "планшетный сканер",
+  "en": "flatbed scanner",
+  "topic": "printers",
+  "note_ru": "Сканирование со стекла"
+ },
+ {
+  "pl": "skrętka",
+  "ru": "витая пара",
+  "en": "twisted pair",
+  "topic": "cabling",
+  "note_ru": "Кабель из 4 скрученных пар"
+ },
+ {
+  "pl": "SLI",
+  "ru": "SLI",
+  "en": "Scalable Link Interface",
+  "topic": "hardware",
+  "note_ru": "Связка двух видеокарт NVIDIA"
+ },
+ {
+  "pl": "SMB",
+  "ru": "SMB",
+  "en": "Server Message Block",
+  "topic": "protocols",
+  "note_ru": "Общий доступ к файлам и принтерам"
+ },
+ {
+  "pl": "SMTP",
+  "ru": "SMTP",
+  "en": "Simple Mail Transfer Protocol",
+  "topic": "protocols",
+  "note_ru": "Отправка почты, порт 25"
+ },
+ {
+  "pl": "sniffer",
+  "ru": "сниффер",
+  "topic": "netdevices",
+  "note_ru": "Перехват и анализ пакетов"
+ },
+ {
+  "pl": "SNMP",
+  "ru": "SNMP",
+  "en": "Simple Network Management Protocol",
+  "topic": "protocols",
+  "note_ru": "Мониторинг и управление устройствами"
+ },
+ {
+  "pl": "sonda logiczna",
+  "ru": "логический пробник",
+  "en": "logic probe",
+  "topic": "hardware",
+  "note_ru": "Проверяет состояние выхода цифровой схемы"
+ },
+ {
+  "pl": "SO-DIMM",
+  "ru": "модуль SO-DIMM",
+  "topic": "hardware",
+  "note_ru": "Малый модуль памяти для ноутбуков"
+ },
+ {
+  "pl": "spawarka światłowodowa",
+  "ru": "сварочный аппарат для оптики",
+  "en": "fusion splicer",
+  "topic": "cabling",
+  "note_ru": "Сваривает волокна дугой"
+ },
+ {
+  "pl": "spyware",
+  "ru": "шпионское ПО",
+  "topic": "security",
+  "note_ru": "Собирает данные пользователя"
+ },
+ {
+  "pl": "SSH",
+  "ru": "SSH",
+  "en": "Secure Shell",
+  "topic": "protocols",
+  "note_ru": "Шифрованный удалённый терминал, порт 22"
+ },
+ {
+  "pl": "SSID",
+  "ru": "SSID",
+  "en": "Service Set Identifier",
+  "topic": "netdevices",
+  "note_ru": "Имя беспроводной сети"
+ },
+ {
+  "pl": "sterownik drukarki",
+  "ru": "драйвер принтера",
+  "en": "printer driver",
+  "topic": "printers",
+  "note_ru": "Программа связи ОС с принтером"
+ },
+ {
+  "pl": "store and forward",
+  "ru": "с промежуточным хранением",
+  "topic": "netdevices",
+  "note_ru": "Приём всего кадра и проверка CRC перед пересылкой"
+ },
+ {
+  "pl": "STP",
+  "ru": "STP",
+  "en": "Spanning Tree Protocol",
+  "topic": "netdevices",
+  "note_ru": "Устраняет петли в сети коммутаторов"
+ },
+ {
+  "pl": "strefa wyszukiwania do przodu",
+  "ru": "зона прямого просмотра",
+  "en": "forward lookup zone",
+  "topic": "protocols",
+  "note_ru": "Имя → IP"
+ },
+ {
+  "pl": "sudo",
+  "ru": "sudo",
+  "topic": "linux",
+  "note_ru": "Однократное повышение прав"
+ },
+ {
+  "pl": "Synaptic",
+  "ru": "Synaptic",
+  "topic": "linux",
+  "note_ru": "Графический менеджер пакетов"
+ },
+ {
+  "pl": "system dwójkowy",
+  "ru": "двоичная система",
+  "en": "binary",
+  "topic": "basics",
+  "note_ru": "Основание 2"
+ },
+ {
+  "pl": "system dziesiętny",
+  "ru": "десятичная система",
+  "en": "decimal",
+  "topic": "basics",
+  "note_ru": "Основание 10"
+ },
+ {
+  "pl": "system ósemkowy",
+  "ru": "восьмеричная система",
+  "en": "octal",
+  "topic": "basics",
+  "note_ru": "Основание 8, цифра = 3 бита"
+ },
+ {
+  "pl": "system szesnastkowy",
+  "ru": "шестнадцатеричная система",
+  "en": "hexadecimal",
+  "topic": "basics",
+  "note_ru": "Основание 16, цифра = 4 бита"
+ },
+ {
+  "pl": "szyfrowanie",
+  "ru": "шифрование",
+  "en": "encryption",
+  "topic": "security",
+  "note_ru": "Защита данных ключом"
+ },
+ {
+  "pl": "szyfrowanie symetryczne",
+  "ru": "симметричное шифрование",
+  "en": "symmetric encryption",
+  "topic": "security",
+  "note_ru": "Один ключ для шифра и расшифровки (AES)"
+ },
+ {
+  "pl": "S/FTP",
+  "ru": "S/FTP",
+  "topic": "cabling",
+  "note_ru": "Фольга на парах + общая оплётка"
+ },
+ {
+  "pl": "ścieżka UNC",
+  "ru": "UNC-путь",
+  "en": "Universal Naming Convention",
+  "topic": "winserver",
+  "note_ru": "\\\\serwer\\udział"
+ },
+ {
+  "pl": "światłowód",
+  "ru": "оптоволокно",
+  "en": "optical fiber",
+  "topic": "cabling",
+  "note_ru": "Передача светом, без ЭМ-помех"
+ },
+ {
+  "pl": "światłowód jednomodowy",
+  "ru": "одномодовое волокно",
+  "en": "single-mode fiber, SMF",
+  "topic": "cabling",
+  "note_ru": "Сердцевина 9 µm, большие расстояния"
+ },
+ {
+  "pl": "światłowód wielomodowy",
+  "ru": "многомодовое волокно",
+  "en": "multimode fiber, MMF",
+  "topic": "cabling",
+  "note_ru": "Сердцевина 50/62,5 µm"
+ },
+ {
+  "pl": "tablica adresów MAC",
+  "ru": "таблица MAC-адресов",
+  "en": "MAC address table, CAM",
+  "topic": "netdevices",
+  "note_ru": "Соответствие MAC ↔ порт коммутатора"
+ },
+ {
+  "pl": "tablica prawdy",
+  "ru": "таблица истинности",
+  "en": "truth table",
+  "topic": "basics",
+  "note_ru": "Значения выхода для всех входов"
+ },
+ {
+  "pl": "tar",
+  "ru": "tar",
+  "topic": "linux",
+  "note_ru": "Архивация; -x извлечь, -c создать"
+ },
+ {
+  "pl": "taśma barwiąca",
+  "ru": "красящая лента",
+  "en": "ink ribbon",
+  "topic": "printers",
+  "note_ru": "Расходник матричного принтера"
+ },
+ {
+  "pl": "TCP",
+  "ru": "TCP",
+  "en": "Transmission Control Protocol",
+  "topic": "protocols",
+  "note_ru": "Надёжный протокол с установлением соединения"
+ },
+ {
+  "pl": "Telnet",
+  "ru": "Telnet",
+  "topic": "protocols",
+  "note_ru": "Нешифрованный удалённый терминал, порт 23"
+ },
+ {
+  "pl": "tester okablowania",
+  "ru": "тестер кабеля",
+  "en": "cable tester",
+  "topic": "cabling",
+  "note_ru": "Проверяет карту соединений"
+ },
+ {
+  "pl": "TFTP",
+  "ru": "TFTP",
+  "en": "Trivial File Transfer Protocol",
+  "topic": "protocols",
+  "note_ru": "Простая передача файлов без соединения (UDP)"
+ },
+ {
+  "pl": "throughput",
+  "ru": "пропускная способность",
+  "topic": "english",
+  "note_ru": "Фактическая скорость передачи"
+ },
+ {
+  "pl": "Thunderbolt",
+  "ru": "Thunderbolt",
+  "topic": "peripherals",
+  "note_ru": "Последовательный двунаправленный высокоскоростной интерфейс"
+ },
+ {
+  "pl": "TIA/EIA-568",
+  "ru": "TIA/EIA-568",
+  "topic": "cabling",
+  "note_ru": "Американская норма кабельных систем"
+ },
+ {
+  "pl": "tłumienie",
+  "ru": "затухание",
+  "en": "attenuation",
+  "topic": "cabling",
+  "note_ru": "Падение мощности сигнала в линии"
+ },
+ {
+  "pl": "toner",
+  "ru": "тонер",
+  "topic": "printers",
+  "note_ru": "Порошок для лазерной печати"
+ },
+ {
+  "pl": "top",
+  "ru": "top",
+  "topic": "linux",
+  "note_ru": "Процессы в реальном времени"
+ },
+ {
+  "pl": "topologia gwiazdy",
+  "ru": "звезда",
+  "en": "star topology",
+  "topic": "netdevices",
+  "note_ru": "Все к центральному устройству"
+ },
+ {
+  "pl": "topologia magistrali",
+  "ru": "шина",
+  "en": "bus topology",
+  "topic": "netdevices",
+  "note_ru": "Общий кабель с терминаторами"
+ },
+ {
+  "pl": "topologia pierścienia",
+  "ru": "кольцо",
+  "en": "ring topology",
+  "topic": "netdevices",
+  "note_ru": "Замкнутый круг, передача маркера"
+ },
+ {
+  "pl": "topologia rozszerzonej gwiazdy",
+  "ru": "расширенная звезда",
+  "en": "extended star",
+  "topic": "netdevices",
+  "note_ru": "Связанные между собой звёзды"
+ },
+ {
+  "pl": "topologia siatki",
+  "ru": "сетка",
+  "en": "mesh topology",
+  "topic": "netdevices",
+  "note_ru": "Каждый узел связан с каждым (полная)"
+ },
+ {
+  "pl": "touchpad",
+  "ru": "сенсорная панель",
+  "topic": "peripherals",
+  "note_ru": "Указывающее устройство ноутбука"
+ },
+ {
+  "pl": "tracert",
+  "ru": "tracert",
+  "en": "traceroute",
+  "topic": "netdevices",
+  "note_ru": "Трассировка маршрута пакетов"
+ },
+ {
+  "pl": "trackpoint",
+  "ru": "трекпоинт",
+  "en": "TrackPoint",
+  "topic": "peripherals",
+  "note_ru": "Реагирует на силу и направление нажатия"
+ },
+ {
+  "pl": "transformator",
+  "ru": "трансформатор",
+  "en": "transformer",
+  "topic": "basics",
+  "note_ru": "Меняет напряжение через электромагнитную индукцию"
+ },
+ {
+  "pl": "tranzystor",
+  "ru": "транзистор",
+  "en": "transistor",
+  "topic": "hardware",
+  "note_ru": "Активный полупроводниковый элемент"
+ },
+ {
+  "pl": "trap SNMP",
+  "ru": "SNMP-ловушка",
+  "en": "SNMP trap",
+  "topic": "protocols",
+  "note_ru": "Агент сам уведомляет менеджера о событии"
+ },
+ {
+  "pl": "trasa sumaryczna",
+  "ru": "суммарный маршрут",
+  "en": "summary route",
+  "topic": "addressing",
+  "note_ru": "Объединение подсетей в одну запись"
+ },
+ {
+  "pl": "trialware",
+  "ru": "trialware",
+  "topic": "law_bhp",
+  "note_ru": "Ограничено временем или числом запусков"
+ },
+ {
+  "pl": "troubleshooting",
+  "ru": "устранение неисправностей",
+  "topic": "english",
+  "note_ru": "Диагностика и решение проблем"
+ },
+ {
+  "pl": "tryb awaryjny",
+  "ru": "безопасный режим",
+  "en": "Safe Mode",
+  "topic": "windows",
+  "note_ru": "Минимальная загрузка для диагностики"
+ },
+ {
+  "pl": "TTL",
+  "ru": "время жизни пакета",
+  "en": "Time To Live",
+  "topic": "protocols",
+  "note_ru": "Уменьшается роутерами; 0 — пакет удаляется"
+ },
+ {
+  "pl": "UAC",
+  "ru": "контроль учётных записей",
+  "en": "User Account Control",
+  "topic": "windows",
+  "note_ru": "Запрос подтверждения действий администратора"
+ },
+ {
+  "pl": "UDP",
+  "ru": "UDP",
+  "en": "User Datagram Protocol",
+  "topic": "protocols",
+  "note_ru": "Протокол без соединения и гарантий"
+ },
+ {
+  "pl": "udział sieciowy",
+  "ru": "общий ресурс",
+  "en": "network share",
+  "topic": "winserver",
+  "note_ru": "Папка, доступная по сети; $ — скрытый"
+ },
+ {
+  "pl": "UEFI",
+  "ru": "UEFI",
+  "en": "Unified Extensible Firmware Interface",
+  "topic": "hardware",
+  "note_ru": "Современная замена BIOS, поддерживает GPT"
+ },
+ {
+  "pl": "upgrade",
+  "ru": "модернизация",
+  "topic": "english",
+  "note_ru": "Переход на более высокую версию"
+ },
+ {
+  "pl": "USB",
+  "ru": "USB",
+  "en": "Universal Serial Bus",
+  "topic": "peripherals",
+  "note_ru": "Универсальная последовательная шина, hot-plug"
+ },
+ {
+  "pl": "uwierzytelnianie",
+  "ru": "аутентификация",
+  "en": "authentication",
+  "topic": "security",
+  "note_ru": "Проверка личности пользователя"
+ },
+ {
+  "pl": "U/FTP",
+  "ru": "U/FTP",
+  "topic": "cabling",
+  "note_ru": "Фольга на каждой паре, без общего экрана"
+ },
+ {
+  "pl": "U/UTP",
+  "ru": "U/UTP",
+  "en": "unshielded twisted pair",
+  "topic": "cabling",
+  "note_ru": "Без экранов"
+ },
+ {
+  "pl": "VLAN",
+  "ru": "VLAN",
+  "en": "Virtual Local Area Network",
+  "topic": "netdevices",
+  "note_ru": "Логическое деление сети на коммутаторе"
+ },
+ {
+  "pl": "VLSM",
+  "ru": "маски переменной длины",
+  "en": "Variable Length Subnet Mask",
+  "topic": "addressing",
+  "note_ru": "Разные маски в одной адресной области"
+ },
+ {
+  "pl": "VoIP",
+  "ru": "VoIP",
+  "en": "Voice over IP",
+  "topic": "protocols",
+  "note_ru": "Телефония через IP-сети"
+ },
+ {
+  "pl": "VPN",
+  "ru": "VPN",
+  "en": "Virtual Private Network",
+  "topic": "protocols",
+  "note_ru": "Защищённый туннель через публичную сеть"
+ },
+ {
+  "pl": "wabbit",
+  "ru": "вабит",
+  "topic": "security",
+  "note_ru": "Самокопируется локально до исчерпания ресурсов"
+ },
+ {
+  "pl": "WAN",
+  "ru": "глобальная сеть",
+  "en": "Wide Area Network",
+  "topic": "netdevices",
+  "note_ru": "Сеть на большие расстояния"
+ },
+ {
+  "pl": "warstwa aplikacji",
+  "ru": "прикладной уровень",
+  "en": "application layer",
+  "topic": "protocols",
+  "note_ru": "Уровень 7: HTTP, FTP, DNS"
+ },
+ {
+  "pl": "warstwa fizyczna",
+  "ru": "физический уровень",
+  "en": "physical layer",
+  "topic": "protocols",
+  "note_ru": "Уровень 1: биты, сигналы, кабели"
+ },
+ {
+  "pl": "warstwa łącza danych",
+  "ru": "канальный уровень",
+  "en": "data link layer",
+  "topic": "protocols",
+  "note_ru": "Уровень 2: кадры, MAC"
+ },
+ {
+  "pl": "warstwa sieciowa",
+  "ru": "сетевой уровень",
+  "en": "network layer",
+  "topic": "protocols",
+  "note_ru": "Уровень 3: пакеты, IP"
+ },
+ {
+  "pl": "warstwa transportowa",
+  "ru": "транспортный уровень",
+  "en": "transport layer",
+  "topic": "protocols",
+  "note_ru": "Уровень 4: TCP/UDP, сегменты"
+ },
+ {
+  "pl": "watomierz",
+  "ru": "ваттметр",
+  "en": "wattmeter",
+  "topic": "basics",
+  "note_ru": "Измеряет активную мощность"
+ },
+ {
+  "pl": "WDS",
+  "ru": "службы развёртывания Windows",
+  "en": "Windows Deployment Services",
+  "topic": "winserver",
+  "note_ru": "Удалённая установка ОС по сети"
+ },
+ {
+  "pl": "WEP",
+  "ru": "WEP",
+  "en": "Wired Equivalent Privacy",
+  "topic": "netdevices",
+  "note_ru": "Устаревшее, слабое шифрование Wi‑Fi"
+ },
+ {
+  "pl": "wieża Hanoi",
+  "ru": "ханойская башня",
+  "en": "Tower of Hanoi",
+  "topic": "winserver",
+  "note_ru": "Схема ротации носителей копий"
+ },
+ {
+  "pl": "Windows Update",
+  "ru": "Центр обновления Windows",
+  "topic": "windows",
+  "note_ru": "Обновления безопасности и драйверов"
+ },
+ {
+  "pl": "wireless",
+  "ru": "беспроводной",
+  "topic": "english",
+  "note_ru": "Без проводов"
+ },
+ {
+  "pl": "Wireshark",
+  "ru": "Wireshark",
+  "topic": "netdevices",
+  "note_ru": "Анализатор сетевых пакетов"
+ },
+ {
+  "pl": "wirus",
+  "ru": "вирус",
+  "en": "virus",
+  "topic": "security",
+  "note_ru": "Заражает файлы, размножается"
+ },
+ {
+  "pl": "Wi-Fi",
+  "ru": "Wi‑Fi",
+  "en": "Wi‑Fi",
+  "topic": "netdevices",
+  "note_ru": "Торговая марка устройств IEEE 802.11"
+ },
+ {
+  "pl": "wolt",
+  "ru": "вольт",
+  "en": "volt",
+  "topic": "basics",
+  "note_ru": "Единица напряжения"
+ },
+ {
+  "pl": "woltomierz",
+  "ru": "вольтметр",
+  "en": "voltmeter",
+  "topic": "basics",
+  "note_ru": "Измеряет напряжение"
+ },
+ {
+  "pl": "WPA2",
+  "ru": "WPA2",
+  "en": "Wi‑Fi Protected Access 2",
+  "topic": "netdevices",
+  "note_ru": "Шифрование AES-CCMP"
+ },
+ {
+  "pl": "WPA3",
+  "ru": "WPA3",
+  "en": "Wi‑Fi Protected Access 3",
+  "topic": "netdevices",
+  "note_ru": "Новейший стандарт защиты Wi‑Fi (SAE)"
+ },
+ {
+  "pl": "wtyk 8P8C",
+  "ru": "вилка 8P8C (RJ45)",
+  "en": "8P8C, RJ45",
+  "topic": "cabling",
+  "note_ru": "Разъём витой пары"
+ },
+ {
+  "pl": "wyładowanie elektrostatyczne",
+  "ru": "электростатический разряд",
+  "en": "ESD",
+  "topic": "law_bhp",
+  "note_ru": "Повреждает микросхемы"
+ },
+ {
+  "pl": "wzmacniak",
+  "ru": "повторитель",
+  "en": "repeater",
+  "topic": "netdevices",
+  "note_ru": "Уровень 1, восстанавливает сигнал"
+ },
+ {
+  "pl": "YaST",
+  "ru": "YaST",
+  "topic": "linux",
+  "note_ru": "Конфигурация и установка ПО в openSUSE"
+ },
+ {
+  "pl": "zacięcie papieru",
+  "ru": "замятие бумаги",
+  "en": "paper jam",
+  "topic": "printers",
+  "note_ru": "Сначала найти место замятия"
+ },
+ {
+  "pl": "zaciskarka",
+  "ru": "обжимной инструмент",
+  "en": "crimping tool",
+  "topic": "cabling",
+  "note_ru": "Обжим вилок RJ45"
+ },
+ {
+  "pl": "zakres DHCP",
+  "ru": "область DHCP",
+  "en": "DHCP scope",
+  "topic": "addressing",
+  "note_ru": "Пул адресов для раздачи"
+ },
+ {
+  "pl": "zapora sieciowa",
+  "ru": "межсетевой экран",
+  "en": "firewall",
+  "topic": "netdevices",
+  "note_ru": "Фильтрует трафик, защищает от атак извне"
+ },
+ {
+  "pl": "zapora sieciowa systemu",
+  "ru": "брандмауэр",
+  "en": "firewall",
+  "topic": "security",
+  "note_ru": "Блокирует нежелательный трафик"
+ },
+ {
+  "pl": "zasady grupy",
+  "ru": "групповые политики",
+  "en": "Group Policy, GPO",
+  "topic": "winserver",
+  "note_ru": "Централизованные настройки пользователей и ПК"
+ },
+ {
+  "pl": "zasilacz ATX",
+  "ru": "блок питания ATX",
+  "en": "ATX power supply",
+  "topic": "hardware",
+  "note_ru": "Преобразует 230 V AC в низкие напряжения DC"
+ },
+ {
+  "pl": "zastrzeżenie adresu",
+  "ru": "резервирование адреса",
+  "en": "DHCP reservation",
+  "topic": "addressing",
+  "note_ru": "Постоянный IP по MAC"
+ },
+ {
+  "pl": "zespół utrwalający",
+  "ru": "узел термозакрепления",
+  "en": "fuser",
+  "topic": "printers",
+  "note_ru": "Горячие валы закрепляют тонер на бумаге"
+ },
+ {
+  "pl": "zielony punkt",
+  "ru": "«Зелёная точка»",
+  "en": "Green Dot",
+  "topic": "law_bhp",
+  "note_ru": "Производитель финансирует сбор упаковки"
+ },
+ {
+  "pl": "złącze BNC",
+  "ru": "разъём BNC",
+  "en": "BNC",
+  "topic": "cabling",
+  "note_ru": "Байонетный разъём коаксиала"
+ },
+ {
+  "pl": "złącze HDMI",
+  "ru": "разъём HDMI",
+  "en": "HDMI",
+  "topic": "peripherals",
+  "note_ru": "Цифровое видео + звук"
+ },
+ {
+  "pl": "złącze LSA",
+  "ru": "разъём LSA",
+  "en": "LSA (Krone)",
+  "topic": "cabling",
+  "note_ru": "Врезной контакт панелей и розеток"
+ },
+ {
+  "pl": "złącze PCI-E 6-pin",
+  "ru": "разъём питания PCIe 6-pin",
+  "en": "PCIe power connector",
+  "topic": "hardware",
+  "note_ru": "Доп. питание видеокарты: +12 V на 3 линиях"
+ },
+ {
+  "pl": "złącze SC",
+  "ru": "разъём SC",
+  "en": "Subscriber Connector",
+  "topic": "cabling",
+  "note_ru": "Квадратный оптический разъём"
+ },
+ {
+  "pl": "złośliwe oprogramowanie",
+  "ru": "вредоносное ПО",
+  "en": "malware",
+  "topic": "security",
+  "note_ru": "Программы, наносящие вред"
+ },
+ {
+  "pl": "znak CE",
+  "ru": "знак CE",
+  "en": "CE marking",
+  "topic": "law_bhp",
+  "note_ru": "Соответствие требованиям ЕС"
+ },
+ {
+  "pl": "znak-moduł",
+  "ru": "знак-модуль",
+  "en": "sign-magnitude",
+  "topic": "basics",
+  "note_ru": "Старший бит — знак, остальное — модуль"
+ },
+ {
+  "pl": "ZSEE",
+  "ru": "отходы электрооборудования",
+  "en": "WEEE",
+  "topic": "law_bhp",
+  "note_ru": "Перечёркнутый бак — селективный сбор"
+ },
+ {
+  "pl": "zwarcie",
+  "ru": "короткое замыкание",
+  "en": "short circuit",
+  "topic": "cabling",
+  "note_ru": "Соединение жил, которых быть не должно"
+ },
+ {
+  "pl": "żeton",
+  "ru": "маркер",
+  "en": "token",
+  "topic": "netdevices",
+  "note_ru": "Право передачи в Token Ring"
+ }
+]

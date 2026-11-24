@@ -1,0 +1,775 @@
+[
+ {
+  "id": "1e3016a9",
+  "stem": "Z przedstawionego zrzutu wynika, że za pomocą przeglądarki internetowej wykonano pomiar",
+  "answers": {
+   "A": "strat mocy optycznej.",
+   "B": "tłumienia kabla miedzianego.",
+   "C": "czasu odpowiedzi od wybranego serwera.",
+   "D": "liczby transmitowanych pakietów między wybranymi serwerami."
+  },
+  "correct": "C",
+  "ocr": false,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "cabling"
+  ]
+ },
+ {
+  "id": "17ff408b",
+  "stem": "Na rysunku przedstawiono fragment dokumentacji technicznej płyty głównej GA-K8NF-9-RH rev. 2.x. Wynika z niej, że maksymalna liczba możliwych do zamontowania kart rozszerzeń (pomijając interfejs USB) wynosi",
+  "answers": {
+   "A": "6",
+   "B": "5",
+   "C": "3",
+   "D": "2"
+  },
+  "correct": "A",
+  "ocr": false,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "protocols",
+   "peripherals",
+   "hardware"
+  ]
+ },
+ {
+  "id": "442a9eb4",
+  "stem": "Na rysunku przedstawiono konfigurację urządzenia, z której wynika, że",
+  "answers": {
+   "A": "utworzono dwa nowe VLAN-y: ID13, ID48",
+   "B": "do VLAN z ID48 przypisano wszystkie porty.",
+   "C": "utworzono trzy nowe VLAN-y: ID1, ID13, ID48",
+   "D": "VLAN z ID48 jest skonfigurowany jako zarządzalny."
+  },
+  "correct": "A",
+  "ocr": false,
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/ee_08_2019_01_x_33_0.webp"
+  ],
+  "topics": [
+   "netdevices"
+  ]
+ },
+ {
+  "id": "4ca854d1",
+  "stem": "Kompatybilne podzespoły oznaczono w tabeli numerami",
+  "answers": {
+   "A": "1, 3, 5",
+   "B": "1, 4, 6",
+   "C": "2, 4, 5",
+   "D": "2, 4, 6"
+  },
+  "correct": "C",
+  "ocr": false,
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/ee_08_2018_06_x_04_0.webp"
+  ],
+  "topics": [
+   "other"
+  ]
+ },
+ {
+  "id": "b3b240ea",
+  "stem": "Który adres IP należy do klasy A?",
+  "answers": {
+   "A": "239.0.255.15",
+   "B": "217.12.45.1",
+   "C": "129.10.0.17",
+   "D": "125.11.0.7"
+  },
+  "correct": "D",
+  "ocr": false,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "addressing"
+  ]
+ },
+ {
+  "id": "b9a6fe51",
+  "stem": "Za pomocą programu Acrylic Wi-Fi Home wykonano test, którego wyniki przedstawiono na zrzucie. Na ich podstawie można stwierdzić, że dostępna sieć bezprzewodowa",
+  "answers": {
+   "A": "jest nieszyfrowana.",
+   "B": "korzysta z kanałów 10 ÷ 12.",
+   "C": "ma bardzo dobrą jakość sygnału.",
+   "D": "osiąga maksymalną szybkość transferu 72 Mbps."
+  },
+  "correct": "A",
+  "ocr": false,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "netdevices",
+   "linux",
+   "security"
+  ]
+ },
+ {
+  "id": "d7c176fe",
+  "stem": "Na przedstawionej płycie głównej możliwy jest montaż procesora z obudową typu",
+  "answers": {
+   "A": "LGA",
+   "B": "PGA",
+   "C": "SECC",
+   "D": "SPGA"
+  },
+  "correct": "A",
+  "ocr": false,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "hardware"
+  ]
+ },
+ {
+  "id": "o0355840",
+  "stem": "Interfejs SATA 2 (3 Gb/s) zapewnia przepustowość",
+  "answers": {
+   "A": "150 MB/s",
+   "B": "300 MB/s",
+   "C": "375 MB/s",
+   "D": "750 MB/s"
+  },
+  "correct": "C",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "hardware"
+  ]
+ },
+ {
+  "id": "o092aca8",
+  "stem": "W systemie Linux narzędziem do monitorowania użycia procesora, pamięci, procesów oraz obciążenia systemu z poziomu powłoki jest",
+  "answers": {
+   "A": "top",
+   "B": "pwd",
+   "C": "dxdiag",
+   "D": "passwd"
+  },
+  "correct": "D",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux",
+   "peripherals",
+   "hardware"
+  ]
+ },
+ {
+  "id": "o099a055",
+  "stem": "Wskaż 24-pinowe lub 29-pinowe złącze żeńskie, które może przesyłać skompresowany cyfrowy sygnał na monitor.",
+  "answers": {
+   "A": "VGA",
+   "B": "HDMI",
+   "C": "RCA",
+   "D": "DVI"
+  },
+  "correct": "D",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "peripherals"
+  ]
+ },
+ {
+  "id": "o0c29c4e",
+  "stem": "Jakiego typu złącze należy użyć, aby podłączyć zasilanie do CD-ROM?",
+  "answers": {
+   "A": "Berg",
+   "B": "Molex",
+   "C": "Mini-Molex",
+   "D": "20-pinowe ATX"
+  },
+  "correct": "C",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "hardware"
+  ]
+ },
+ {
+  "id": "o1600197",
+  "stem": "Wyłączenie automatycznej aktualizacji systemu Windows powoduje",
+  "answers": {
+   "A": "automatyczne pobieranie aktualizacji bez jej instalacji.",
+   "B": "zablokowanie każdego sposobu pobierania aktualizacji systemu.",
+   "C": "zablokowanie samodzielnego pobierania uaktualnień przez system.",
+   "D": "automatyczne sprawdzenie, czy jest dostępna aktualizacja i powiadomienie o niej użytkownika."
+  },
+  "correct": "A",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "windows"
+  ]
+ },
+ {
+  "id": "o16c69d6",
+  "stem": "Bęben światłoczuły jest niezbędnym elementem działania drukarki",
+  "answers": {
+   "A": "igłowej.",
+   "B": "laserowej.",
+   "C": "atramentowej.",
+   "D": "sublimacyjnej."
+  },
+  "correct": "A",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "printers"
+  ]
+ },
+ {
+  "id": "o2c20f6c",
+  "stem": "Do wykonania w systemie Linux kopii zapasowej wybranych plików należy z wiersza poleceń zastosować program",
+  "answers": {
+   "A": "set",
+   "B": "tar",
+   "C": "cal",
+   "D": "gdb"
+  },
+  "correct": "A",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux",
+   "hardware",
+   "security"
+  ]
+ },
+ {
+  "id": "o33fabda",
+  "stem": "Za przydzielanie czasu procesora do określonych zadań odpowiada",
+  "answers": {
+   "A": "chipset.",
+   "B": "pamięć RAM.",
+   "C": "cache procesora.",
+   "D": "system operacyjny."
+  },
+  "correct": "B",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "hardware"
+  ]
+ },
+ {
+  "id": "o3de3077",
+  "stem": "Najczęstszą przyczyną rozmazywania się tonera na wydrukach z drukarki laserowej jest",
+  "answers": {
+   "A": "zbyt niska temperatura utrwalacza.",
+   "B": "uszkodzenie rolek.",
+   "C": "zacięcie papieru.",
+   "D": "zanieczyszczenie wnętrza drukarki."
+  },
+  "correct": "C",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "printers"
+  ]
+ },
+ {
+  "id": "o48d2616",
+  "stem": "Na stabilność obrazu w monitorach CRT znaczący wpływ ma",
+  "answers": {
+   "A": "czas reakcji.",
+   "B": "wieloczęstotliwość.",
+   "C": "odwzorowanie kolorów.",
+   "D": "częstotliwość odświeżania."
+  },
+  "correct": "B",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "peripherals"
+  ]
+ },
+ {
+  "id": "o4b0c755",
+  "stem": "W systemie Windows 7, do modyfikacji konfiguracji rozruchowej komputera za pomocą linii poleceń, należy zastosować polecenie",
+  "answers": {
+   "A": "bootcfg",
+   "B": "bootfix",
+   "C": "bcededit",
+   "D": "config"
+  },
+  "correct": "C",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "windows"
+  ]
+ },
+ {
+  "id": "o57bba5a",
+  "stem": "",
+  "answers": {
+   "A": "przekazać do punktu skupu złomu.",
+   "B": "wyrzucić do pojemników na śmieci bytowe.",
+   "C": "przekazać do punktu odbioru zużytej elektroniki.",
+   "D": "wyrzucić do pojemników oznaczonych tym znakiem."
+  },
+  "correct": "C",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2015_01_x_31_0.webp"
+  ],
+  "topics": [
+   "other"
+  ]
+ },
+ {
+  "id": "o5b47065",
+  "stem": "Program typu firewall nie chroni przed",
+  "answers": {
+   "A": "- wirusami rozprzestrzeniającymi się pocztą e-mail.",
+   "B": "atakami generującymi wzmożony ruch w sieci.",
+   "C": "uzyskaniem dostępu do komputera przez hakerów.",
+   "D": "szpiegowaniem i wykradaniem poufnych danych użytkownika."
+  },
+  "correct": "D",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "hardware",
+   "security"
+  ]
+ },
+ {
+  "id": "o650a9c2",
+  "stem": "Ile urządzeń może być podłączonych do portu IEEE1394",
+  "answers": {
+   "A": "|",
+   "B": "8",
+   "C": "55",
+   "D": "63"
+  },
+  "correct": "D",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "other"
+  ]
+ },
+ {
+  "id": "o6d909f2",
+  "stem": "",
+  "answers": {
+   "A": "błędy.",
+   "B": "informacje.",
+   "C": "ostrzeżenia.",
+   "D": "inspekcja niepowodzeń."
+  },
+  "correct": "B",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2015_01_x_37_0.webp"
+  ],
+  "topics": [
+   "other"
+  ]
+ },
+ {
+  "id": "o7949cc8",
+  "stem": "W systemie operacyjnym Linux ilość wolnego miejsca na dyskach można sprawdzić poleceniem",
+  "answers": {
+   "A": "du",
+   "B": "df",
+   "C": "fstab",
+   "D": "mkfs"
+  },
+  "correct": "A",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux",
+   "hardware"
+  ]
+ },
+ {
+  "id": "o7fb669d",
+  "stem": "Przy wyborze zasilacza komputerowego największe znaczenie",
+  "answers": {
+   "A": "matyp procesora.",
+   "B": "ma współczynnik kształtu obudowy.",
+   "C": "małączna moc wszystkich podzespołów komputera.",
+   "D": "mają parametry zainstalowanego systemu operacyjnego"
+  },
+  "correct": "B",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "hardware",
+   "basics"
+  ]
+ },
+ {
+  "id": "o94fe0f2",
+  "stem": "Nośniki danych takie jak dysk twardy przechowują informacje w porcjach zwanych sektorami, które mają rozmiar",
+  "answers": {
+   "A": "128B",
+   "B": "512B",
+   "C": "512KB",
+   "D": "1024 KB"
+  },
+  "correct": "D",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "hardware"
+  ]
+ },
+ {
+  "id": "o9a0ce63",
+  "stem": "Które polecenie w systemie Linux uruchamia sprawdzanie dysku oraz umożliwia naprawę jego błędów?",
+  "answers": {
+   "A": "fsck",
+   "B": "lIshw",
+   "C": "fdisk",
+   "D": "mksf"
+  },
+  "correct": "A",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "linux",
+   "hardware"
+  ]
+ },
+ {
+  "id": "o9a48125",
+  "stem": "",
+  "answers": {
+   "A": "HDD.",
+   "B": "plotera.",
+   "C": "drukarki igłowej.",
+   "D": "napędu CD-ROM."
+  },
+  "correct": "B",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2015_01_x_27_0.webp"
+  ],
+  "topics": [
+   "printers",
+   "hardware"
+  ]
+ },
+ {
+  "id": "oa359650",
+  "stem": "",
+  "answers": {
+   "A": "karty sieciowej. > Wysokal4)",
+   "B": "modemu. Bufor transmisje Niskil) | Wysoka16) (16)",
+   "C": "drukarki.",
+   "D": "skanera."
+  },
+  "correct": "C",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2015_01_x_32_0.webp"
+  ],
+  "topics": [
+   "printers"
+  ]
+ },
+ {
+  "id": "oa415adb",
+  "stem": "|",
+  "answers": {
+   "A": "Binarnym.",
+   "B": "Osemkowym. Podsumowanie systemu ea Zasób EA Urządzenie",
+   "C": "Dziesiętnym. DMA 0x00000020-0x00000021 Pu iry konkcier",
+   "D": "Szesnastkowym. NDZ, og yo aw rawa"
+  },
+  "correct": "B",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2015_01_x_02_0.webp"
+  ],
+  "topics": [
+   "basics"
+  ]
+ },
+ {
+  "id": "oaf2b472",
+  "stem": "",
+  "answers": {
+   "A": "monitora.",
+   "B": "drukarki.",
+   "C": "modemu.",
+   "D": "myszy."
+  },
+  "correct": "A",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2015_01_x_04_0.webp"
+  ],
+  "topics": [
+   "printers",
+   "peripherals"
+  ]
+ },
+ {
+  "id": "ob6c3d97",
+  "stem": "Oprogramowanie, przypisane do jednego komputera lub jego części, uniemożliwiające ponowną instalację na nowszym sprzęcie zakupionym przez tego samego użytkownika, to",
+  "answers": {
+   "A": "MPL",
+   "B": "CPL",
+   "C": "MOLP",
+   "D": "OEM"
+  },
+  "correct": "A",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "oc5aee96",
+  "stem": "System plików, który umożliwia w systemie Windows kompresję danych i nadawanie uprawnień do folderów 1 plików, to",
+  "answers": {
+   "A": "FAT",
+   "B": "FAT32",
+   "C": "NIFS",
+   "D": "EXT"
+  },
+  "correct": "A",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "windows"
+  ]
+ },
+ {
+  "id": "oca4de32",
+  "stem": "",
+  "answers": {
+   "A": "ISA",
+   "B": "PCI",
+   "C": "AGP",
+   "D": "PCle"
+  },
+  "correct": "B",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2015_01_x_07_0.webp"
+  ],
+  "topics": [
+   "hardware"
+  ]
+ },
+ {
+  "id": "ocb428dd",
+  "stem": "",
+  "answers": {
+   "A": "energooszczędne.",
+   "B": "o podwyższonym poborze mocy.",
+   "C": "będące zwycięzcą plebiscytu EnergyStar.",
+   "D": "wyprodukowane przez firmę EnergyStar Co."
+  },
+  "correct": "C",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [
+   "/home/user/egzamin-zawodowy/app/public/img/e_12_2015_01_x_35_0.webp"
+  ],
+  "topics": [
+   "linux",
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "od2dc29f",
+  "stem": "Podstawowe znaczenie przy budowie stacji roboczej, na której będzie działać wiele wirtualnych maszyn, ma",
+  "answers": {
+   "A": "wysokiej klasy karta sieciowa.",
+   "B": "zespół chłodzenia wodą.",
+   "C": "silna karta graficzna.",
+   "D": "liczba rdzeni procesora."
+  },
+  "correct": "B",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "netdevices",
+   "hardware"
+  ]
+ },
+ {
+  "id": "odbf7604",
+  "stem": "Które urządzenie nie powinno być naprawiane w trakcie używania urządzeń antystatycznych?",
+  "answers": {
+   "A": "Modem.",
+   "B": "Pamięć.",
+   "C": "Zasilacz.",
+   "D": "Dysk twardy."
+  },
+  "correct": "C",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "hardware",
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "odc70b3f",
+  "stem": "Który z interfejsów jest portem równoległym?",
+  "answers": {
+   "A": "USB",
+   "B": "RS232",
+   "C": "IEEE1394",
+   "D": "IEEE1294"
+  },
+  "correct": "D",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "peripherals"
+  ]
+ },
+ {
+  "id": "ode164e6",
+  "stem": "Liczba 10101110110, zapisana w systemie szesnastkowym ma postać",
+  "answers": {
+   "A": "AE6",
+   "B": "536",
+   "C": "576",
+   "D": "A76"
+  },
+  "correct": "A",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "basics"
+  ]
+ },
+ {
+  "id": "oeeacafd",
+  "stem": "Aby w systemie Windows przydzielić użytkownikowi prawo do zmiany czasu systemowego, należy użyć przystawkę",
+  "answers": {
+   "A": "secpol.msc",
+   "B": "eventvwr.msc",
+   "C": "certmgr.msc",
+   "D": "services.msc"
+  },
+  "correct": "A",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "windows",
+   "law_bhp"
+  ]
+ },
+ {
+  "id": "of668acb",
+  "stem": "Co pozwala utrzymać równomierny rozkład ciepła między procesorem a radiatorem?",
+  "answers": {
+   "A": "Mieszanka termiczna.",
+   "B": "Pasta grafitowa.",
+   "C": "Silikonowy spray.",
+   "D": "Klej."
+  },
+  "correct": "C",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "hardware"
+  ]
+ },
+ {
+  "id": "of9c8304",
+  "stem": "Po podłączeniu sprawnej klawiatury do dowolnego z portów USB nie można wybrać awaryjnego trybu uruchomienia systemu Windows. Mimo to, klawiatura po uruchomieniu systemu w normalnym trybie, działa prawidłowo. Wskazuje to na",
+  "answers": {
+   "A": "uszkodzony zasilacz.",
+   "B": "niepoprawne ustawienia BIOS-u.",
+   "C": "uszkodzone porty USB.",
+   "D": "uszkodzony kontroler klawiatury."
+  },
+  "correct": "D",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "winserver",
+   "windows",
+   "peripherals"
+  ]
+ },
+ {
+  "id": "ofa8c685",
+  "stem": "Które narzędzie należy użyć w systemie Windows do wyświetlenia informacji na temat problemów systemowych?",
+  "answers": {
+   "A": "Zasady grupy.",
+   "B": "Podgląd zdarzeń.",
+   "C": "Foldery udostępnione.",
+   "D": "Harmonogram zadań."
+  },
+  "correct": "D",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "winserver",
+   "windows",
+   "hardware"
+  ]
+ },
+ {
+  "id": "ofc72b1d",
+  "stem": "Jaka kopia w procesie archiwizacji plików pozostawia znacznik archiwizacji?",
+  "answers": {
+   "A": "Normalna.",
+   "B": "Różnicowa.",
+   "C": "Całościowa.",
+   "D": "Przyrostowa."
+  },
+  "correct": "C",
+  "ocr": true,
+  "imageAnswers": false,
+  "figures": [],
+  "topics": [
+   "other"
+  ]
+ }
+]

@@ -1,0 +1,5083 @@
+[
+ {
+  "id": "lnx-001",
+  "os": "linux",
+  "group": "files",
+  "task": {
+   "pl": "Wyświetl ścieżkę bieżącego katalogu roboczego.",
+   "ru": "Выведите путь текущего рабочего каталога."
+  },
+  "answers": [
+   "pwd"
+  ],
+  "hint": {
+   "pl": "Skrót od „print working directory”.",
+   "ru": "Сокращение от «print working directory»."
+  },
+  "expl": {
+   "pl": "pwd wypisuje pełną ścieżkę katalogu, w którym aktualnie pracujesz.",
+   "ru": "pwd выводит полный путь каталога, в котором вы сейчас находитесь."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-002",
+  "os": "linux",
+  "group": "files",
+  "task": {
+   "pl": "Wyświetl wszystkie pliki bieżącego katalogu, łącznie z ukrytymi, w formacie długim (z prawami dostępu).",
+   "ru": "Выведите все файлы текущего каталога, включая скрытые, в длинном формате (с правами доступа)."
+  },
+  "answers": [
+   "ls -la",
+   "ls -al",
+   "ls -l -a",
+   "ls -a -l"
+  ],
+  "hint": {
+   "pl": "Polecenie ls z dwiema opcjami: format długi i wszystkie pliki.",
+   "ru": "Команда ls с двумя опциями: длинный формат и все файлы."
+  },
+  "expl": {
+   "pl": "Opcja -l pokazuje szczegóły (prawa, właściciel, rozmiar, data), a -a dołącza pliki ukryte zaczynające się od kropki.",
+   "ru": "Опция -l показывает подробности (права, владелец, размер, дата), а -a добавляет скрытые файлы, начинающиеся с точки."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-003",
+  "os": "linux",
+  "group": "files",
+  "task": {
+   "pl": "Przejdź do swojego katalogu domowego.",
+   "ru": "Перейдите в свой домашний каталог."
+  },
+  "answers": [
+   "cd",
+   "cd ~",
+   "cd ~/",
+   "cd $HOME"
+  ],
+  "hint": {
+   "pl": "Polecenie zmiany katalogu – bez argumentu lub z tyldą.",
+   "ru": "Команда смены каталога — без аргумента или с тильдой."
+  },
+  "expl": {
+   "pl": "cd bez argumentu (lub z ~) przenosi do katalogu domowego bieżącego użytkownika.",
+   "ru": "cd без аргумента (или с ~) переводит в домашний каталог текущего пользователя."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-004",
+  "os": "linux",
+  "group": "files",
+  "task": {
+   "pl": "Będąc w katalogu domowym użytkownika administrator, utwórz w nim katalog ELEKTRONIKA.",
+   "ru": "Находясь в домашнем каталоге пользователя administrator, создайте в нём каталог ELEKTRONIKA."
+  },
+  "answers": [
+   "mkdir ELEKTRONIKA",
+   "mkdir ./ELEKTRONIKA",
+   "mkdir ~/ELEKTRONIKA",
+   "mkdir /home/administrator/ELEKTRONIKA"
+  ],
+  "hint": {
+   "pl": "Polecenie „make directory”.",
+   "ru": "Команда «make directory»."
+  },
+  "expl": {
+   "pl": "mkdir tworzy nowy katalog o podanej nazwie (ścieżka względna lub bezwzględna).",
+   "ru": "mkdir создаёт новый каталог с указанным именем (относительный или абсолютный путь)."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-005",
+  "os": "linux",
+  "group": "files",
+  "task": {
+   "pl": "Utwórz jednym poleceniem strukturę katalogów /dane/2024/raporty, łącznie z brakującymi katalogami nadrzędnymi.",
+   "ru": "Одной командой создайте структуру каталогов /dane/2024/raporty вместе с отсутствующими родительскими каталогами."
+  },
+  "answers": [
+   "mkdir -p /dane/2024/raporty",
+   "mkdir --parents /dane/2024/raporty",
+   "sudo mkdir -p /dane/2024/raporty",
+   "sudo mkdir --parents /dane/2024/raporty"
+  ],
+  "hint": {
+   "pl": "mkdir z opcją tworzącą katalogi nadrzędne (parents).",
+   "ru": "mkdir с опцией создания родительских каталогов (parents)."
+  },
+  "expl": {
+   "pl": "Opcja -p tworzy wszystkie brakujące katalogi po drodze i nie zgłasza błędu, gdy katalog już istnieje.",
+   "ru": "Опция -p создаёт все недостающие каталоги на пути и не выдаёт ошибку, если каталог уже существует."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-006",
+  "os": "linux",
+  "group": "files",
+  "task": {
+   "pl": "Skopiuj plik raport.txt do katalogu /tmp.",
+   "ru": "Скопируйте файл raport.txt в каталог /tmp."
+  },
+  "answers": [
+   "cp raport.txt /tmp",
+   "cp raport.txt /tmp/",
+   "cp raport.txt /tmp/raport.txt"
+  ],
+  "hint": {
+   "pl": "Polecenie copy: źródło, potem cel.",
+   "ru": "Команда copy: сначала источник, затем цель."
+  },
+  "expl": {
+   "pl": "cp kopiuje plik źródłowy do wskazanego miejsca docelowego.",
+   "ru": "cp копирует исходный файл в указанное место назначения."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-007",
+  "os": "linux",
+  "group": "files",
+  "task": {
+   "pl": "Skopiuj katalog projekty wraz z całą zawartością do katalogu /backup.",
+   "ru": "Скопируйте каталог projekty со всем содержимым в каталог /backup."
+  },
+  "answers": [
+   "cp -r projekty /backup",
+   "cp -R projekty /backup",
+   "cp -r projekty /backup/",
+   "cp -R projekty /backup/",
+   "cp -a projekty /backup",
+   "cp -a projekty /backup/",
+   "cp --recursive projekty /backup",
+   "sudo cp -r projekty /backup",
+   "sudo cp -R projekty /backup",
+   "sudo cp -r projekty /backup/",
+   "sudo cp -R projekty /backup/",
+   "sudo cp -a projekty /backup",
+   "sudo cp -a projekty /backup/",
+   "sudo cp --recursive projekty /backup"
+  ],
+  "hint": {
+   "pl": "cp z opcją kopiowania rekurencyjnego.",
+   "ru": "cp с опцией рекурсивного копирования."
+  },
+  "expl": {
+   "pl": "Opcja -r (-R) kopiuje katalog razem ze wszystkimi podkatalogami i plikami.",
+   "ru": "Опция -r (-R) копирует каталог вместе со всеми подкаталогами и файлами."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-008",
+  "os": "linux",
+  "group": "files",
+  "task": {
+   "pl": "Zmień nazwę pliku stary.txt na nowy.txt.",
+   "ru": "Переименуйте файл stary.txt в nowy.txt."
+  },
+  "answers": [
+   "mv stary.txt nowy.txt"
+  ],
+  "hint": {
+   "pl": "W Linuksie zmiana nazwy to przeniesienie (move).",
+   "ru": "В Linux переименование — это перемещение (move)."
+  },
+  "expl": {
+   "pl": "mv przenosi plik; jeśli cel jest w tym samym katalogu, działa jak zmiana nazwy.",
+   "ru": "mv перемещает файл; если цель в том же каталоге, это работает как переименование."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-009",
+  "os": "linux",
+  "group": "files",
+  "task": {
+   "pl": "Usuń katalog tymczasowy wraz z całą jego zawartością, bez pytania o potwierdzenie.",
+   "ru": "Удалите каталог tymczasowy со всем содержимым без запроса подтверждения."
+  },
+  "answers": [
+   "rm -rf tymczasowy",
+   "rm -fr tymczasowy",
+   "rm -r -f tymczasowy",
+   "rm -f -r tymczasowy",
+   "rm -Rf tymczasowy",
+   "rm -fR tymczasowy",
+   "rm -rf tymczasowy/"
+  ],
+  "hint": {
+   "pl": "rm z opcjami: rekurencyjnie + wymuś.",
+   "ru": "rm с опциями: рекурсивно + принудительно."
+  },
+  "expl": {
+   "pl": "-r usuwa katalog rekurencyjnie, a -f wymusza usuwanie bez pytań i komunikatów o błędach.",
+   "ru": "-r удаляет каталог рекурсивно, а -f принудительно удаляет без вопросов и сообщений об ошибках."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-010",
+  "os": "linux",
+  "group": "files",
+  "task": {
+   "pl": "Wyświetl z pliku /etc/passwd tylko linie zawierające ciąg student.",
+   "ru": "Выведите из файла /etc/passwd только строки, содержащие student."
+  },
+  "answers": [
+   "grep student /etc/passwd",
+   "grep \"student\" /etc/passwd",
+   "grep 'student' /etc/passwd",
+   "cat /etc/passwd | grep student"
+  ],
+  "hint": {
+   "pl": "Polecenie do wyszukiwania wzorca w tekście.",
+   "ru": "Команда поиска шаблона в тексте."
+  },
+  "expl": {
+   "pl": "grep wypisuje linie pliku pasujące do podanego wzorca.",
+   "ru": "grep выводит строки файла, соответствующие заданному шаблону."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-011",
+  "os": "linux",
+  "group": "files",
+  "task": {
+   "pl": "Przekieruj listę nazw plików i katalogów z katalogu /sbin do pliku tekstowego Letter_n (nadpisując go).",
+   "ru": "Перенаправьте список имён файлов и каталогов из /sbin в текстовый файл Letter_n (с перезаписью)."
+  },
+  "answers": [
+   "ls /sbin > Letter_n",
+   "ls /sbin >Letter_n",
+   "ls -a /sbin > Letter_n",
+   "ls -A /sbin > Letter_n"
+  ],
+  "hint": {
+   "pl": "Użyj ls i operatora przekierowania wyjścia.",
+   "ru": "Используйте ls и оператор перенаправления вывода."
+  },
+  "expl": {
+   "pl": "Operator > zapisuje standardowe wyjście polecenia do pliku, nadpisując jego poprzednią zawartość.",
+   "ru": "Оператор > записывает стандартный вывод команды в файл, перезаписывая его содержимое."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-012",
+  "os": "linux",
+  "group": "files",
+  "task": {
+   "pl": "Wyświetl 5 ostatnich linii pliku /var/log/syslog.",
+   "ru": "Выведите 5 последних строк файла /var/log/syslog."
+  },
+  "answers": [
+   "tail -n 5 /var/log/syslog",
+   "tail -5 /var/log/syslog",
+   "tail -n5 /var/log/syslog",
+   "sudo tail -n 5 /var/log/syslog",
+   "sudo tail -5 /var/log/syslog",
+   "sudo tail -n5 /var/log/syslog"
+  ],
+  "hint": {
+   "pl": "Polecenie pokazujące „ogon” pliku z liczbą linii.",
+   "ru": "Команда, показывающая «хвост» файла, с числом строк."
+  },
+  "expl": {
+   "pl": "tail wyświetla końcowe linie pliku; -n określa ich liczbę (domyślnie 10).",
+   "ru": "tail выводит последние строки файла; -n задаёт их количество (по умолчанию 10)."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-013",
+  "os": "linux",
+  "group": "files",
+  "task": {
+   "pl": "Wyszukaj w katalogu /home (i podkatalogach) pliki o nazwie raport.txt.",
+   "ru": "Найдите в каталоге /home (и подкаталогах) файлы с именем raport.txt."
+  },
+  "answers": [
+   "find /home -name raport.txt",
+   "find /home -name \"raport.txt\"",
+   "find /home -name 'raport.txt'",
+   "sudo find /home -name raport.txt",
+   "sudo find /home -name \"raport.txt\"",
+   "sudo find /home -name 'raport.txt'"
+  ],
+  "hint": {
+   "pl": "Polecenie find: miejsce startu, potem kryterium nazwy.",
+   "ru": "Команда find: стартовый каталог, затем критерий имени."
+  },
+  "expl": {
+   "pl": "find przeszukuje rekurencyjnie drzewo katalogów; -name filtruje po nazwie pliku.",
+   "ru": "find рекурсивно обходит дерево каталогов; -name фильтрует по имени файла."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-014",
+  "os": "linux",
+  "group": "files",
+  "task": {
+   "pl": "Wyświetl aktualny czas w formacie GG-MM (np. 14-05).",
+   "ru": "Выведите текущее время в формате ЧЧ-ММ (например, 14-05)."
+  },
+  "answers": [
+   "date +%H-%M",
+   "date \"+%H-%M\"",
+   "date '+%H-%M'"
+  ],
+  "hint": {
+   "pl": "Polecenie date z formatem zaczynającym się od +; godzina to %H.",
+   "ru": "Команда date с форматом, начинающимся с +; час — %H."
+  },
+  "expl": {
+   "pl": "date +FORMAT wypisuje datę według wzorca: %H – godzina (00–23), %M – minuty.",
+   "ru": "date +ФОРМАТ выводит дату по шаблону: %H — час (00–23), %M — минуты."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-015",
+  "os": "linux",
+  "group": "files",
+  "task": {
+   "pl": "Utwórz alias o nazwie godz dla polecenia wyświetlającego aktualny czas w formacie GG-MM.",
+   "ru": "Создайте алиас с именем godz для команды, выводящей текущее время в формате ЧЧ-ММ."
+  },
+  "answers": [
+   "alias godz='date +%H-%M'",
+   "alias godz=\"date +%H-%M\"",
+   "alias godz='date \"+%H-%M\"'",
+   "alias godz=\"date '+%H-%M'\"",
+   "alias godz='date +\"%H-%M\"'"
+  ],
+  "hint": {
+   "pl": "alias nazwa='polecenie' – bez spacji wokół znaku =.",
+   "ru": "alias имя='команда' — без пробелов вокруг =."
+  },
+  "expl": {
+   "pl": "alias tworzy skrót do polecenia w bieżącej powłoce; cudzysłowy są potrzebne, bo polecenie zawiera spację.",
+   "ru": "alias создаёт сокращение команды в текущей оболочке; кавычки нужны, так как в команде есть пробел."
+  },
+  "level": 3
+ },
+ {
+  "id": "lnx-016",
+  "os": "linux",
+  "group": "permissions",
+  "task": {
+   "pl": "Nadaj plikowi konta.sh prawa w notacji liczbowej: odczyt, zapis i wykonanie dla właściciela oraz jedynie wykonanie dla grupy (inni – brak praw).",
+   "ru": "Задайте файлу konta.sh права в числовой нотации: чтение, запись и выполнение для владельца и только выполнение для группы (остальные — без прав)."
+  },
+  "answers": [
+   "chmod 710 konta.sh",
+   "chmod 0710 konta.sh",
+   "sudo chmod 710 konta.sh",
+   "sudo chmod 0710 konta.sh"
+  ],
+  "hint": {
+   "pl": "r=4, w=2, x=1; zsumuj dla każdej z trzech kategorii.",
+   "ru": "r=4, w=2, x=1; сложите для каждой из трёх категорий."
+  },
+  "expl": {
+   "pl": "7 = rwx (4+2+1) dla właściciela, 1 = --x dla grupy, 0 = brak praw dla innych.",
+   "ru": "7 = rwx (4+2+1) для владельца, 1 = --x для группы, 0 = нет прав для остальных."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-017",
+  "os": "linux",
+  "group": "permissions",
+  "task": {
+   "pl": "Ustaw do katalogu ELEKTRONIKA prawa (notacja liczbowa): właściciel – pełne, grupa – odczyt, inni – wykonanie.",
+   "ru": "Установите для каталога ELEKTRONIKA права (числовая нотация): владелец — полные, группа — чтение, остальные — выполнение."
+  },
+  "answers": [
+   "chmod 741 ELEKTRONIKA",
+   "chmod 0741 ELEKTRONIKA",
+   "sudo chmod 741 ELEKTRONIKA",
+   "sudo chmod 0741 ELEKTRONIKA"
+  ],
+  "hint": {
+   "pl": "Pełne = 7, odczyt = 4, wykonanie = 1.",
+   "ru": "Полные = 7, чтение = 4, выполнение = 1."
+  },
+  "expl": {
+   "pl": "chmod 741 ustawia rwx dla właściciela, r-- dla grupy i --x dla pozostałych.",
+   "ru": "chmod 741 задаёт rwx владельцу, r-- группе и --x остальным."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-018",
+  "os": "linux",
+  "group": "permissions",
+  "task": {
+   "pl": "Nadaj plikowi skrypt.sh prawa rwxr-xr-x (notacja liczbowa).",
+   "ru": "Задайте файлу skrypt.sh права rwxr-xr-x (числовая нотация)."
+  },
+  "answers": [
+   "chmod 755 skrypt.sh",
+   "chmod 0755 skrypt.sh"
+  ],
+  "hint": {
+   "pl": "rwx = 7, r-x = 5.",
+   "ru": "rwx = 7, r-x = 5."
+  },
+  "expl": {
+   "pl": "755: właściciel może wszystko, grupa i inni mogą czytać i uruchamiać plik.",
+   "ru": "755: владелец может всё, группа и остальные — читать и запускать файл."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-019",
+  "os": "linux",
+  "group": "permissions",
+  "task": {
+   "pl": "Dodaj prawo wykonania pliku start.sh dla wszystkich użytkowników (notacja symboliczna).",
+   "ru": "Добавьте право выполнения файла start.sh для всех пользователей (символьная нотация)."
+  },
+  "answers": [
+   "chmod +x start.sh",
+   "chmod a+x start.sh",
+   "chmod ugo+x start.sh"
+  ],
+  "hint": {
+   "pl": "Plus dodaje prawo, x to wykonanie.",
+   "ru": "Плюс добавляет право, x — выполнение."
+  },
+  "expl": {
+   "pl": "chmod a+x (lub +x) dodaje bit wykonania dla właściciela, grupy i innych, nie zmieniając pozostałych praw.",
+   "ru": "chmod a+x (или +x) добавляет бит выполнения владельцу, группе и остальным, не меняя прочие права."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-020",
+  "os": "linux",
+  "group": "permissions",
+  "task": {
+   "pl": "Odbierz pozostałym użytkownikom (others) prawo odczytu i zapisu pliku raport.txt (notacja symboliczna).",
+   "ru": "Отнимите у остальных пользователей (others) право чтения и записи файла raport.txt (символьная нотация)."
+  },
+  "answers": [
+   "chmod o-rw raport.txt",
+   "chmod o-wr raport.txt"
+  ],
+  "hint": {
+   "pl": "o = others, minus odbiera prawa.",
+   "ru": "o = others, минус отнимает права."
+  },
+  "expl": {
+   "pl": "chmod o-rw usuwa prawa r i w dla kategorii „inni”, nie zmieniając praw właściciela i grupy.",
+   "ru": "chmod o-rw убирает права r и w у категории «остальные», не трогая владельца и группу."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-021",
+  "os": "linux",
+  "group": "permissions",
+  "task": {
+   "pl": "Ustaw dokładnie prawa katalogu projekt w notacji symbolicznej: właściciel rwx, grupa r-x, inni brak.",
+   "ru": "Установите точные права каталога projekt в символьной нотации: владелец rwx, группа r-x, остальные — ничего."
+  },
+  "answers": [
+   "chmod u=rwx,g=rx,o= projekt",
+   "chmod u=rwx,g=rx,o-rwx projekt"
+  ],
+  "hint": {
+   "pl": "Znak = ustawia prawa dokładnie; kategorie oddziel przecinkami bez spacji.",
+   "ru": "Знак = задаёт права точно; категории разделяйте запятыми без пробелов."
+  },
+  "expl": {
+   "pl": "Operator = nadpisuje prawa danej kategorii; o= oznacza brak praw dla innych (odpowiednik 750).",
+   "ru": "Оператор = перезаписывает права категории; o= означает отсутствие прав у остальных (аналог 750)."
+  },
+  "level": 3
+ },
+ {
+  "id": "lnx-022",
+  "os": "linux",
+  "group": "permissions",
+  "task": {
+   "pl": "Dodaj grupie prawo zapisu do katalogu /srv/wspolne oraz wszystkich plików i podkatalogów w nim.",
+   "ru": "Добавьте группе право записи в каталог /srv/wspolne и во все файлы и подкаталоги внутри."
+  },
+  "answers": [
+   "chmod -R g+w /srv/wspolne",
+   "chmod g+w -R /srv/wspolne",
+   "chmod --recursive g+w /srv/wspolne",
+   "sudo chmod -R g+w /srv/wspolne",
+   "sudo chmod g+w -R /srv/wspolne",
+   "sudo chmod --recursive g+w /srv/wspolne"
+  ],
+  "hint": {
+   "pl": "chmod z opcją rekurencyjną (wielkie R).",
+   "ru": "chmod с рекурсивной опцией (заглавная R)."
+  },
+  "expl": {
+   "pl": "-R stosuje zmianę rekurencyjnie do całego drzewa, a g+w dodaje grupie prawo zapisu.",
+   "ru": "-R применяет изменение рекурсивно ко всему дереву, а g+w добавляет группе право записи."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-023",
+  "os": "linux",
+  "group": "permissions",
+  "task": {
+   "pl": "Zmień właściciela katalogu WSPOLNY na użytkownika uczen1.",
+   "ru": "Смените владельца каталога WSPOLNY на пользователя uczen1."
+  },
+  "answers": [
+   "chown uczen1 WSPOLNY",
+   "sudo chown uczen1 WSPOLNY"
+  ],
+  "hint": {
+   "pl": "Polecenie „change owner”.",
+   "ru": "Команда «change owner»."
+  },
+  "expl": {
+   "pl": "chown zmienia właściciela pliku lub katalogu; zwykle wymaga uprawnień roota.",
+   "ru": "chown меняет владельца файла или каталога; обычно требует прав root."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-024",
+  "os": "linux",
+  "group": "permissions",
+  "task": {
+   "pl": "Ustaw jednym poleceniem właściciela jan i grupę ksiegowosc dla pliku raport.pdf.",
+   "ru": "Одной командой установите владельца jan и группу ksiegowosc для файла raport.pdf."
+  },
+  "answers": [
+   "chown jan:ksiegowosc raport.pdf",
+   "sudo chown jan:ksiegowosc raport.pdf"
+  ],
+  "hint": {
+   "pl": "chown przyjmuje zapis właściciel:grupa.",
+   "ru": "chown принимает запись владелец:группа."
+  },
+  "expl": {
+   "pl": "Zapis użytkownik:grupa w chown zmienia jednocześnie właściciela i grupę pliku.",
+   "ru": "Запись пользователь:группа в chown меняет одновременно владельца и группу файла."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-025",
+  "os": "linux",
+  "group": "permissions",
+  "task": {
+   "pl": "Zmień grupę pliku projekt.txt na uczniowie.",
+   "ru": "Смените группу файла projekt.txt на uczniowie."
+  },
+  "answers": [
+   "chgrp uczniowie projekt.txt",
+   "chown :uczniowie projekt.txt",
+   "sudo chgrp uczniowie projekt.txt",
+   "sudo chown :uczniowie projekt.txt"
+  ],
+  "hint": {
+   "pl": "Polecenie „change group”.",
+   "ru": "Команда «change group»."
+  },
+  "expl": {
+   "pl": "chgrp zmienia grupę właścicielską pliku, nie ruszając jego właściciela.",
+   "ru": "chgrp меняет группу-владельца файла, не трогая владельца."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-026",
+  "os": "linux",
+  "group": "users",
+  "task": {
+   "pl": "Utwórz konto użytkownika student wraz z katalogiem domowym.",
+   "ru": "Создайте учётную запись student вместе с домашним каталогом."
+  },
+  "answers": [
+   "useradd -m student",
+   "useradd --create-home student",
+   "adduser student",
+   "sudo useradd -m student",
+   "sudo useradd --create-home student",
+   "sudo adduser student"
+  ],
+  "hint": {
+   "pl": "useradd sam nie tworzy katalogu domowego – potrzebna opcja.",
+   "ru": "useradd сам не создаёт домашний каталог — нужна опция."
+  },
+  "expl": {
+   "pl": "useradd -m tworzy konto i katalog /home/student; adduser (Debian/Ubuntu) robi to interaktywnie.",
+   "ru": "useradd -m создаёт учётную запись и каталог /home/student; adduser (Debian/Ubuntu) делает это интерактивно."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-027",
+  "os": "linux",
+  "group": "users",
+  "task": {
+   "pl": "Utwórz użytkownika egzamin z katalogiem domowym /home/egzamin_dom (tworzonym automatycznie) i powłoką /bin/sh.",
+   "ru": "Создайте пользователя egzamin с домашним каталогом /home/egzamin_dom (создаваемым автоматически) и оболочкой /bin/sh."
+  },
+  "answers": [
+   "useradd -m -d /home/egzamin_dom -s /bin/sh egzamin",
+   "useradd -m -s /bin/sh -d /home/egzamin_dom egzamin",
+   "useradd -d /home/egzamin_dom -m -s /bin/sh egzamin",
+   "useradd -d /home/egzamin_dom -s /bin/sh -m egzamin",
+   "useradd -s /bin/sh -m -d /home/egzamin_dom egzamin",
+   "useradd -s /bin/sh -d /home/egzamin_dom -m egzamin",
+   "sudo useradd -m -d /home/egzamin_dom -s /bin/sh egzamin",
+   "sudo useradd -m -s /bin/sh -d /home/egzamin_dom egzamin",
+   "sudo useradd -d /home/egzamin_dom -m -s /bin/sh egzamin",
+   "sudo useradd -d /home/egzamin_dom -s /bin/sh -m egzamin",
+   "sudo useradd -s /bin/sh -m -d /home/egzamin_dom egzamin",
+   "sudo useradd -s /bin/sh -d /home/egzamin_dom -m egzamin"
+  ],
+  "hint": {
+   "pl": "Opcje: utwórz katalog, wskaż katalog domowy, wskaż powłokę; nazwa na końcu.",
+   "ru": "Опции: создать каталог, указать домашний каталог, указать оболочку; имя в конце."
+  },
+  "expl": {
+   "pl": "-m tworzy katalog domowy, -d wskazuje jego ścieżkę, a -s ustawia domyślną powłokę logowania.",
+   "ru": "-m создаёт домашний каталог, -d задаёт его путь, а -s — оболочку входа по умолчанию."
+  },
+  "level": 3
+ },
+ {
+  "id": "lnx-028",
+  "os": "linux",
+  "group": "users",
+  "task": {
+   "pl": "Utwórz użytkownika uczen1 z katalogiem domowym i identyfikatorem UID 5555.",
+   "ru": "Создайте пользователя uczen1 с домашним каталогом и идентификатором UID 5555."
+  },
+  "answers": [
+   "useradd -m -u 5555 uczen1",
+   "useradd -u 5555 -m uczen1",
+   "sudo useradd -m -u 5555 uczen1",
+   "sudo useradd -u 5555 -m uczen1"
+  ],
+  "hint": {
+   "pl": "UID ustawia się opcją -u.",
+   "ru": "UID задаётся опцией -u."
+  },
+  "expl": {
+   "pl": "-u nadaje kontu konkretny numer UID, a -m tworzy katalog domowy.",
+   "ru": "-u присваивает учётной записи конкретный UID, а -m создаёт домашний каталог."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-029",
+  "os": "linux",
+  "group": "users",
+  "task": {
+   "pl": "Zmień hasło użytkownika tester (hasło zostanie podane interaktywnie).",
+   "ru": "Смените пароль пользователя tester (пароль будет введён интерактивно)."
+  },
+  "answers": [
+   "passwd tester",
+   "sudo passwd tester"
+  ],
+  "hint": {
+   "pl": "Polecenie do zmiany haseł + nazwa konta.",
+   "ru": "Команда смены паролей + имя учётной записи."
+  },
+  "expl": {
+   "pl": "passwd nazwa ustawia nowe hasło wskazanego użytkownika; dla innego konta wymaga uprawnień roota.",
+   "ru": "passwd имя задаёт новый пароль указанному пользователю; для чужой учётной записи нужны права root."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-030",
+  "os": "linux",
+  "group": "users",
+  "task": {
+   "pl": "Ustaw nieinteraktywnie hasło P@ssword12!@ dla użytkownika tester, przekazując parę login:hasło do chpasswd.",
+   "ru": "Неинтерактивно установите пароль P@ssword12!@ пользователю tester, передав пару логин:пароль в chpasswd."
+  },
+  "answers": [
+   "echo 'tester:P@ssword12!@' | chpasswd",
+   "echo 'tester:P@ssword12!@' | sudo chpasswd",
+   "sudo echo 'tester:P@ssword12!@' | sudo chpasswd"
+  ],
+  "hint": {
+   "pl": "echo z apostrofami (znak ! w cudzysłowie podwójnym bywa interpretowany) i potok.",
+   "ru": "echo в апострофах (! в двойных кавычках может интерпретироваться) и конвейер."
+  },
+  "expl": {
+   "pl": "chpasswd czyta ze standardowego wejścia pary login:hasło i ustawia hasła; wygodne w skryptach.",
+   "ru": "chpasswd читает со стандартного ввода пары логин:пароль и задаёт пароли; удобно в скриптах."
+  },
+  "level": 3
+ },
+ {
+  "id": "lnx-031",
+  "os": "linux",
+  "group": "users",
+  "task": {
+   "pl": "Utwórz grupę szkola z numerem GID 1111.",
+   "ru": "Создайте группу szkola с номером GID 1111."
+  },
+  "answers": [
+   "groupadd -g 1111 szkola",
+   "groupadd --gid 1111 szkola",
+   "sudo groupadd -g 1111 szkola",
+   "sudo groupadd --gid 1111 szkola"
+  ],
+  "hint": {
+   "pl": "GID podaje się opcją -g.",
+   "ru": "GID задаётся опцией -g."
+  },
+  "expl": {
+   "pl": "groupadd -g ustawia konkretny identyfikator grupy (GID).",
+   "ru": "groupadd -g задаёт конкретный идентификатор группы (GID)."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-032",
+  "os": "linux",
+  "group": "users",
+  "task": {
+   "pl": "Dodaj istniejącego użytkownika student do grupy dodatkowej szkola, nie usuwając go z innych grup.",
+   "ru": "Добавьте существующего пользователя student в дополнительную группу szkola, не удаляя его из других групп."
+  },
+  "answers": [
+   "usermod -aG szkola student",
+   "usermod -a -G szkola student",
+   "usermod -G szkola -a student",
+   "usermod --append --groups szkola student",
+   "gpasswd -a student szkola",
+   "adduser student szkola",
+   "sudo usermod -aG szkola student",
+   "sudo usermod -a -G szkola student",
+   "sudo usermod -G szkola -a student",
+   "sudo usermod --append --groups szkola student",
+   "sudo gpasswd -a student szkola",
+   "sudo adduser student szkola"
+  ],
+  "hint": {
+   "pl": "usermod: dopisz (append) do grup (Groups).",
+   "ru": "usermod: дописать (append) в группы (Groups)."
+  },
+  "expl": {
+   "pl": "-G ustawia grupy dodatkowe, a -a sprawia, że grupa jest dopisywana, a nie zastępuje dotychczasowych.",
+   "ru": "-G задаёт дополнительные группы, а -a добавляет группу, не заменяя существующие."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-033",
+  "os": "linux",
+  "group": "users",
+  "task": {
+   "pl": "Zmień domyślną powłokę użytkownika egzamin na /bin/sh.",
+   "ru": "Смените оболочку по умолчанию пользователя egzamin на /bin/sh."
+  },
+  "answers": [
+   "usermod -s /bin/sh egzamin",
+   "usermod --shell /bin/sh egzamin",
+   "chsh -s /bin/sh egzamin",
+   "sudo usermod -s /bin/sh egzamin",
+   "sudo usermod --shell /bin/sh egzamin",
+   "sudo chsh -s /bin/sh egzamin"
+  ],
+  "hint": {
+   "pl": "usermod z opcją shell.",
+   "ru": "usermod с опцией shell."
+  },
+  "expl": {
+   "pl": "usermod -s zmienia powłokę logowania zapisaną w /etc/passwd.",
+   "ru": "usermod -s меняет оболочку входа, записанную в /etc/passwd."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-034",
+  "os": "linux",
+  "group": "users",
+  "task": {
+   "pl": "Zablokuj hasło (konto) użytkownika egzamin.",
+   "ru": "Заблокируйте пароль (учётную запись) пользователя egzamin."
+  },
+  "answers": [
+   "usermod -L egzamin",
+   "usermod --lock egzamin",
+   "passwd -l egzamin",
+   "sudo usermod -L egzamin",
+   "sudo usermod --lock egzamin",
+   "sudo passwd -l egzamin"
+  ],
+  "hint": {
+   "pl": "Lock – wielka litera L w usermod.",
+   "ru": "Lock — заглавная L в usermod."
+  },
+  "expl": {
+   "pl": "usermod -L dodaje „!” przed skrótem hasła w /etc/shadow, przez co logowanie hasłem jest niemożliwe.",
+   "ru": "usermod -L добавляет «!» перед хешем пароля в /etc/shadow, и вход по паролю становится невозможен."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-035",
+  "os": "linux",
+  "group": "users",
+  "task": {
+   "pl": "Usuń konto użytkownika student razem z jego katalogiem domowym.",
+   "ru": "Удалите учётную запись student вместе с её домашним каталогом."
+  },
+  "answers": [
+   "userdel -r student",
+   "userdel --remove student",
+   "deluser --remove-home student",
+   "sudo userdel -r student",
+   "sudo userdel --remove student",
+   "sudo deluser --remove-home student"
+  ],
+  "hint": {
+   "pl": "userdel z opcją remove.",
+   "ru": "userdel с опцией remove."
+  },
+  "expl": {
+   "pl": "userdel -r usuwa konto oraz katalog domowy i skrzynkę pocztową użytkownika.",
+   "ru": "userdel -r удаляет учётную запись, домашний каталог и почтовый ящик пользователя."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-036",
+  "os": "linux",
+  "group": "users",
+  "task": {
+   "pl": "Wyświetl grupy, do których należy użytkownik student.",
+   "ru": "Выведите группы, в которые входит пользователь student."
+  },
+  "answers": [
+   "groups student",
+   "id student",
+   "id -Gn student",
+   "id -nG student"
+  ],
+  "hint": {
+   "pl": "Polecenie o nazwie jak liczba mnoga słowa „grupa” po angielsku.",
+   "ru": "Команда с названием как «группы» по-английски."
+  },
+  "expl": {
+   "pl": "groups wypisuje grupy użytkownika; id pokazuje dodatkowo UID i GID.",
+   "ru": "groups выводит группы пользователя; id дополнительно показывает UID и GID."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-037",
+  "os": "linux",
+  "group": "users",
+  "task": {
+   "pl": "Zmień domyślny katalog bazowy dla katalogów domowych nowo tworzonych użytkowników na /users/home/new.",
+   "ru": "Измените базовый каталог для домашних каталогов новых пользователей на /users/home/new."
+  },
+  "answers": [
+   "useradd -D -b /users/home/new",
+   "useradd -b /users/home/new -D",
+   "sudo useradd -D -b /users/home/new",
+   "sudo useradd -b /users/home/new -D"
+  ],
+  "hint": {
+   "pl": "useradd w trybie wartości domyślnych (Defaults) z opcją base.",
+   "ru": "useradd в режиме значений по умолчанию (Defaults) с опцией base."
+  },
+  "expl": {
+   "pl": "useradd -D zmienia ustawienia domyślne, a -b ustawia katalog bazowy, w którym powstają katalogi domowe.",
+   "ru": "useradd -D меняет настройки по умолчанию, а -b — базовый каталог для домашних каталогов."
+  },
+  "level": 3
+ },
+ {
+  "id": "lnx-038",
+  "os": "linux",
+  "group": "users",
+  "task": {
+   "pl": "Wymuś na użytkowniku uczen1 zmianę hasła przy następnym logowaniu.",
+   "ru": "Заставьте пользователя uczen1 сменить пароль при следующем входе."
+  },
+  "answers": [
+   "passwd -e uczen1",
+   "passwd --expire uczen1",
+   "chage -d 0 uczen1",
+   "sudo passwd -e uczen1",
+   "sudo passwd --expire uczen1",
+   "sudo chage -d 0 uczen1"
+  ],
+  "hint": {
+   "pl": "passwd z opcją wygaszenia hasła (expire).",
+   "ru": "passwd с опцией истечения пароля (expire)."
+  },
+  "expl": {
+   "pl": "passwd -e oznacza hasło jako wygasłe, więc system zażąda nowego przy logowaniu.",
+   "ru": "passwd -e помечает пароль как истёкший, и система потребует новый при входе."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-039",
+  "os": "linux",
+  "group": "users",
+  "task": {
+   "pl": "Uzyskaj interaktywną powłokę roota za pomocą sudo.",
+   "ru": "Получите интерактивную оболочку root с помощью sudo."
+  },
+  "answers": [
+   "sudo -i",
+   "sudo su -",
+   "sudo su",
+   "sudo -s",
+   "sudo su root",
+   "sudo su - root"
+  ],
+  "hint": {
+   "pl": "sudo z opcją logowania (-i) lub sudo + su.",
+   "ru": "sudo с опцией входа (-i) или sudo + su."
+  },
+  "expl": {
+   "pl": "sudo -i uruchamia powłokę logowania roota po podaniu hasła bieżącego użytkownika (musi on należeć do grupy sudo).",
+   "ru": "sudo -i запускает оболочку root после ввода пароля текущего пользователя (он должен быть в группе sudo)."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-040",
+  "os": "linux",
+  "group": "users",
+  "task": {
+   "pl": "Dodaj użytkownika jan do grupy sudo, aby mógł wykonywać polecenia administracyjne.",
+   "ru": "Добавьте пользователя jan в группу sudo, чтобы он мог выполнять административные команды."
+  },
+  "answers": [
+   "usermod -aG sudo jan",
+   "usermod -a -G sudo jan",
+   "gpasswd -a jan sudo",
+   "adduser jan sudo",
+   "sudo usermod -aG sudo jan",
+   "sudo usermod -a -G sudo jan",
+   "sudo gpasswd -a jan sudo",
+   "sudo adduser jan sudo"
+  ],
+  "hint": {
+   "pl": "Tak samo jak dodawanie do każdej innej grupy dodatkowej.",
+   "ru": "Так же, как добавление в любую другую дополнительную группу."
+  },
+  "expl": {
+   "pl": "W Ubuntu członkowie grupy sudo mogą uruchamiać polecenia z uprawnieniami roota przez sudo.",
+   "ru": "В Ubuntu члены группы sudo могут выполнять команды с правами root через sudo."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-041",
+  "os": "linux",
+  "group": "network",
+  "task": {
+   "pl": "Wyświetl adresy IP wszystkich interfejsów sieciowych (pakiet iproute2).",
+   "ru": "Выведите IP-адреса всех сетевых интерфейсов (пакет iproute2)."
+  },
+  "answers": [
+   "ip a",
+   "ip addr",
+   "ip address",
+   "ip addr show",
+   "ip address show",
+   "ip a show",
+   "ip a s"
+  ],
+  "hint": {
+   "pl": "Polecenie ip z obiektem address (można skrócić do jednej litery).",
+   "ru": "Команда ip с объектом address (можно сократить до одной буквы)."
+  },
+  "expl": {
+   "pl": "ip address pokazuje interfejsy z ich adresami IPv4/IPv6, maskami i adresami MAC.",
+   "ru": "ip address показывает интерфейсы с адресами IPv4/IPv6, масками и MAC-адресами."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-042",
+  "os": "linux",
+  "group": "network",
+  "task": {
+   "pl": "Wyświetl tablicę routingu (m.in. bramę domyślną).",
+   "ru": "Выведите таблицу маршрутизации (в т.ч. шлюз по умолчанию)."
+  },
+  "answers": [
+   "ip route",
+   "ip r",
+   "ip route show",
+   "ip r show",
+   "route -n",
+   "netstat -r",
+   "netstat -rn",
+   "route"
+  ],
+  "hint": {
+   "pl": "Polecenie ip z obiektem route.",
+   "ru": "Команда ip с объектом route."
+  },
+  "expl": {
+   "pl": "ip route wypisuje trasy; linia „default via …” wskazuje bramę domyślną.",
+   "ru": "ip route выводит маршруты; строка «default via …» указывает шлюз по умолчанию."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-043",
+  "os": "linux",
+  "group": "network",
+  "task": {
+   "pl": "Sprawdź komunikację z ruterem 192.168.1.1, wysyłając dokładnie 4 pakiety ICMP.",
+   "ru": "Проверьте связь с маршрутизатором 192.168.1.1, отправив ровно 4 ICMP-пакета."
+  },
+  "answers": [
+   "ping -c 4 192.168.1.1",
+   "ping -c4 192.168.1.1",
+   "ping 192.168.1.1 -c 4"
+  ],
+  "hint": {
+   "pl": "W Linuksie ping działa bez końca – liczbę pakietów podaje się opcją count.",
+   "ru": "В Linux ping работает бесконечно — число пакетов задаётся опцией count."
+  },
+  "expl": {
+   "pl": "-c określa liczbę wysłanych żądań echo; bez niej ping trzeba przerwać Ctrl+C.",
+   "ru": "-c задаёт число эхо-запросов; без неё ping нужно прерывать Ctrl+C."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-044",
+  "os": "linux",
+  "group": "network",
+  "task": {
+   "pl": "Wyślij 5 pakietów ping do hosta 10.0.0.1 z odstępem 3 sekund między pakietami.",
+   "ru": "Отправьте 5 ping-пакетов на хост 10.0.0.1 с интервалом 3 секунды между пакетами."
+  },
+  "answers": [
+   "ping -c 5 -i 3 10.0.0.1",
+   "ping -i 3 -c 5 10.0.0.1",
+   "ping -c5 -i3 10.0.0.1",
+   "ping -i3 -c5 10.0.0.1"
+  ],
+  "hint": {
+   "pl": "Liczba pakietów: -c, odstęp (interval): …",
+   "ru": "Число пакетов: -c, интервал (interval): …"
+  },
+  "expl": {
+   "pl": "-i ustawia odstęp w sekundach między kolejnymi pakietami (domyślnie 1 s).",
+   "ru": "-i задаёт интервал в секундах между пакетами (по умолчанию 1 с)."
+  },
+  "level": 3
+ },
+ {
+  "id": "lnx-045",
+  "os": "linux",
+  "group": "network",
+  "task": {
+   "pl": "Prześledź trasę pakietów do hosta 8.8.8.8.",
+   "ru": "Отследите маршрут пакетов до хоста 8.8.8.8."
+  },
+  "answers": [
+   "traceroute 8.8.8.8",
+   "tracepath 8.8.8.8"
+  ],
+  "hint": {
+   "pl": "Linuksowy odpowiednik windowsowego tracert.",
+   "ru": "Linux-аналог виндового tracert."
+  },
+  "expl": {
+   "pl": "traceroute wyświetla kolejne rutery (przeskoki) na drodze do celu, wykorzystując malejące TTL.",
+   "ru": "traceroute показывает маршрутизаторы (хопы) на пути к цели, используя поле TTL."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-046",
+  "os": "linux",
+  "group": "network",
+  "task": {
+   "pl": "Za pomocą narzędzia ss wyświetl nasłuchujące porty TCP i UDP w postaci numerycznej.",
+   "ru": "С помощью ss выведите прослушиваемые порты TCP и UDP в числовом виде."
+  },
+  "answers": [
+   "ss -tuln",
+   "ss -tunl",
+   "ss -tlun",
+   "ss -tlnu",
+   "ss -tnul",
+   "ss -tnlu",
+   "ss -utln",
+   "ss -utnl",
+   "ss -ultn",
+   "ss -ulnt",
+   "ss -untl",
+   "ss -unlt",
+   "ss -ltun",
+   "ss -ltnu",
+   "ss -lutn",
+   "ss -lunt",
+   "ss -lntu",
+   "ss -lnut",
+   "ss -ntul",
+   "ss -ntlu",
+   "ss -nutl",
+   "ss -nult",
+   "ss -nltu",
+   "ss -nlut",
+   "ss -t -u -l -n",
+   "sudo ss -tuln",
+   "sudo ss -tunl",
+   "sudo ss -tlun",
+   "sudo ss -tlnu",
+   "sudo ss -tnul",
+   "sudo ss -tnlu",
+   "sudo ss -utln",
+   "sudo ss -utnl",
+   "sudo ss -ultn",
+   "sudo ss -ulnt",
+   "sudo ss -untl",
+   "sudo ss -unlt",
+   "sudo ss -ltun",
+   "sudo ss -ltnu",
+   "sudo ss -lutn",
+   "sudo ss -lunt",
+   "sudo ss -lntu",
+   "sudo ss -lnut",
+   "sudo ss -ntul",
+   "sudo ss -ntlu",
+   "sudo ss -nutl",
+   "sudo ss -nult",
+   "sudo ss -nltu",
+   "sudo ss -nlut",
+   "sudo ss -t -u -l -n"
+  ],
+  "hint": {
+   "pl": "Opcje: tcp, udp, listening, numeric.",
+   "ru": "Опции: tcp, udp, listening, numeric."
+  },
+  "expl": {
+   "pl": "-t i -u wybierają TCP i UDP, -l tylko gniazda nasłuchujące, -n wyłącza zamianę numerów portów na nazwy.",
+   "ru": "-t и -u выбирают TCP и UDP, -l — только слушающие сокеты, -n отключает замену номеров портов на имена."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-047",
+  "os": "linux",
+  "group": "network",
+  "task": {
+   "pl": "Za pomocą dig odpytaj DNS o rekord A domeny cke.gov.pl.",
+   "ru": "С помощью dig запросите у DNS запись A домена cke.gov.pl."
+  },
+  "answers": [
+   "dig cke.gov.pl",
+   "dig cke.gov.pl A",
+   "dig A cke.gov.pl",
+   "dig -t A cke.gov.pl",
+   "dig cke.gov.pl -t A"
+  ],
+  "hint": {
+   "pl": "dig + nazwa domeny (typ A jest domyślny).",
+   "ru": "dig + имя домена (тип A — по умолчанию)."
+  },
+  "expl": {
+   "pl": "dig wysyła zapytanie DNS i pokazuje szczegółową odpowiedź; bez typu pyta o rekord A.",
+   "ru": "dig отправляет DNS-запрос и показывает подробный ответ; без типа запрашивает запись A."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-048",
+  "os": "linux",
+  "group": "network",
+  "task": {
+   "pl": "Za pomocą dig wyświetl rekordy MX domeny cke.gov.pl.",
+   "ru": "С помощью dig выведите MX-записи домена cke.gov.pl."
+  },
+  "answers": [
+   "dig cke.gov.pl MX",
+   "dig MX cke.gov.pl",
+   "dig -t MX cke.gov.pl",
+   "dig cke.gov.pl -t MX",
+   "dig cke.gov.pl mx",
+   "dig mx cke.gov.pl",
+   "dig -t mx cke.gov.pl"
+  ],
+  "hint": {
+   "pl": "Dodaj typ rekordu do zapytania.",
+   "ru": "Добавьте тип записи к запросу."
+  },
+  "expl": {
+   "pl": "Rekord MX wskazuje serwery pocztowe obsługujące domenę.",
+   "ru": "Запись MX указывает почтовые серверы домена."
+  },
+  "level": 3
+ },
+ {
+  "id": "lnx-049",
+  "os": "linux",
+  "group": "network",
+  "task": {
+   "pl": "Zastosuj zmienioną konfigurację sieci z plików YAML w /etc/netplan (Ubuntu).",
+   "ru": "Примените изменённую сетевую конфигурацию из YAML-файлов в /etc/netplan (Ubuntu)."
+  },
+  "answers": [
+   "netplan apply",
+   "sudo netplan apply"
+  ],
+  "hint": {
+   "pl": "netplan + czasownik „zastosuj”.",
+   "ru": "netplan + глагол «применить»."
+  },
+  "expl": {
+   "pl": "netplan apply generuje konfigurację dla systemd-networkd/NetworkManager i od razu ją aktywuje.",
+   "ru": "netplan apply генерирует конфигурацию для systemd-networkd/NetworkManager и сразу её применяет."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-050",
+  "os": "linux",
+  "group": "network",
+  "task": {
+   "pl": "Zmień nazwę hosta na serwer01 (systemd).",
+   "ru": "Измените имя хоста на serwer01 (systemd)."
+  },
+  "answers": [
+   "hostnamectl set-hostname serwer01",
+   "hostnamectl hostname serwer01",
+   "sudo hostnamectl set-hostname serwer01",
+   "sudo hostnamectl hostname serwer01"
+  ],
+  "hint": {
+   "pl": "hostnamectl z poleceniem set-…",
+   "ru": "hostnamectl с подкомандой set-…"
+  },
+  "expl": {
+   "pl": "hostnamectl set-hostname trwale zmienia nazwę komputera (zapisuje /etc/hostname).",
+   "ru": "hostnamectl set-hostname постоянно меняет имя компьютера (записывает /etc/hostname)."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-051",
+  "os": "linux",
+  "group": "network",
+  "task": {
+   "pl": "Przypisz interfejsowi eth1 adres 192.168.1.200 z maską 255.255.255.0 (polecenie ip).",
+   "ru": "Назначьте интерфейсу eth1 адрес 192.168.1.200 с маской 255.255.255.0 (команда ip)."
+  },
+  "answers": [
+   "ip addr add 192.168.1.200/24 dev eth1",
+   "ip address add 192.168.1.200/24 dev eth1",
+   "ip a add 192.168.1.200/24 dev eth1",
+   "sudo ip addr add 192.168.1.200/24 dev eth1",
+   "sudo ip address add 192.168.1.200/24 dev eth1",
+   "sudo ip a add 192.168.1.200/24 dev eth1"
+  ],
+  "hint": {
+   "pl": "Maskę zapisz w notacji CIDR, interfejs po słowie dev.",
+   "ru": "Маску запишите в нотации CIDR, интерфейс — после слова dev."
+  },
+  "expl": {
+   "pl": "ip addr add dodaje adres do interfejsu (do restartu); /24 odpowiada masce 255.255.255.0.",
+   "ru": "ip addr add добавляет адрес интерфейсу (до перезагрузки); /24 соответствует маске 255.255.255.0."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-052",
+  "os": "linux",
+  "group": "network",
+  "task": {
+   "pl": "Włącz (podnieś) interfejs sieciowy eth1.",
+   "ru": "Включите (поднимите) сетевой интерфейс eth1."
+  },
+  "answers": [
+   "ip link set eth1 up",
+   "ip link set dev eth1 up",
+   "ifup eth1",
+   "ifconfig eth1 up",
+   "sudo ip link set eth1 up",
+   "sudo ip link set dev eth1 up",
+   "sudo ifup eth1",
+   "sudo ifconfig eth1 up"
+  ],
+  "hint": {
+   "pl": "ip link set … up",
+   "ru": "ip link set … up"
+  },
+  "expl": {
+   "pl": "ip link set eth1 up aktywuje interfejs; down go wyłącza.",
+   "ru": "ip link set eth1 up активирует интерфейс; down его отключает."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-053",
+  "os": "linux",
+  "group": "network",
+  "task": {
+   "pl": "Dodaj trasę domyślną przez bramę 192.168.1.1.",
+   "ru": "Добавьте маршрут по умолчанию через шлюз 192.168.1.1."
+  },
+  "answers": [
+   "ip route add default via 192.168.1.1",
+   "ip r add default via 192.168.1.1",
+   "route add default gw 192.168.1.1",
+   "sudo ip route add default via 192.168.1.1",
+   "sudo ip r add default via 192.168.1.1",
+   "sudo route add default gw 192.168.1.1"
+  ],
+  "hint": {
+   "pl": "ip route add default via …",
+   "ru": "ip route add default via …"
+  },
+  "expl": {
+   "pl": "Trasa default kieruje cały ruch do sieci nieznanych przez wskazaną bramę.",
+   "ru": "Маршрут default направляет весь трафик в неизвестные сети через указанный шлюз."
+  },
+  "level": 3
+ },
+ {
+  "id": "lnx-054",
+  "os": "linux",
+  "group": "network",
+  "task": {
+   "pl": "Wyświetl plik z adresami serwerów DNS używanych przez system.",
+   "ru": "Выведите файл с адресами DNS-серверов, используемых системой."
+  },
+  "answers": [
+   "cat /etc/resolv.conf"
+  ],
+  "hint": {
+   "pl": "Plik resolvera w katalogu /etc.",
+   "ru": "Файл резолвера в каталоге /etc."
+  },
+  "expl": {
+   "pl": "/etc/resolv.conf zawiera wpisy nameserver z adresami serwerów DNS.",
+   "ru": "/etc/resolv.conf содержит строки nameserver с адресами DNS-серверов."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-055",
+  "os": "linux",
+  "group": "services",
+  "task": {
+   "pl": "Uruchom usługę serwera WWW apache2 (systemd).",
+   "ru": "Запустите службу веб-сервера apache2 (systemd)."
+  },
+  "answers": [
+   "systemctl start apache2",
+   "systemctl start apache2.service",
+   "service apache2 start",
+   "sudo systemctl start apache2",
+   "sudo systemctl start apache2.service",
+   "sudo service apache2 start"
+  ],
+  "hint": {
+   "pl": "systemctl + czynność + nazwa usługi.",
+   "ru": "systemctl + действие + имя службы."
+  },
+  "expl": {
+   "pl": "systemctl start uruchamia usługę natychmiast, ale nie dodaje jej do autostartu.",
+   "ru": "systemctl start запускает службу сразу, но не добавляет её в автозапуск."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-056",
+  "os": "linux",
+  "group": "services",
+  "task": {
+   "pl": "Włącz automatyczne uruchamianie usługi ssh przy starcie systemu.",
+   "ru": "Включите автоматический запуск службы ssh при загрузке системы."
+  },
+  "answers": [
+   "systemctl enable ssh",
+   "systemctl enable ssh.service",
+   "sudo systemctl enable ssh",
+   "sudo systemctl enable ssh.service"
+  ],
+  "hint": {
+   "pl": "Czynność to nie start, tylko „włącz”.",
+   "ru": "Действие — не start, а «включить»."
+  },
+  "expl": {
+   "pl": "systemctl enable tworzy dowiązania, dzięki którym usługa startuje razem z systemem.",
+   "ru": "systemctl enable создаёт ссылки, благодаря которым служба стартует вместе с системой."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-057",
+  "os": "linux",
+  "group": "services",
+  "task": {
+   "pl": "Jednym poleceniem włącz autostart usługi apache2 i od razu ją uruchom.",
+   "ru": "Одной командой включите автозапуск службы apache2 и сразу запустите её."
+  },
+  "answers": [
+   "systemctl enable --now apache2",
+   "systemctl --now enable apache2",
+   "systemctl enable apache2 --now",
+   "sudo systemctl enable --now apache2",
+   "sudo systemctl --now enable apache2",
+   "sudo systemctl enable apache2 --now"
+  ],
+  "hint": {
+   "pl": "enable z dodatkową opcją „teraz”.",
+   "ru": "enable с дополнительной опцией «сейчас»."
+  },
+  "expl": {
+   "pl": "--now przy enable dodatkowo wykonuje start usługi.",
+   "ru": "--now при enable дополнительно запускает службу."
+  },
+  "level": 3
+ },
+ {
+  "id": "lnx-058",
+  "os": "linux",
+  "group": "services",
+  "task": {
+   "pl": "Sprawdź stan usługi serwera DHCP isc-dhcp-server.",
+   "ru": "Проверьте состояние службы DHCP-сервера isc-dhcp-server."
+  },
+  "answers": [
+   "systemctl status isc-dhcp-server",
+   "systemctl status isc-dhcp-server.service",
+   "service isc-dhcp-server status",
+   "sudo systemctl status isc-dhcp-server",
+   "sudo systemctl status isc-dhcp-server.service",
+   "sudo service isc-dhcp-server status"
+  ],
+  "hint": {
+   "pl": "systemctl + status + nazwa.",
+   "ru": "systemctl + status + имя."
+  },
+  "expl": {
+   "pl": "status pokazuje, czy usługa działa (active), czy jest włączona oraz ostatnie wpisy z dziennika.",
+   "ru": "status показывает, работает ли служба (active), включена ли она и последние записи журнала."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-059",
+  "os": "linux",
+  "group": "services",
+  "task": {
+   "pl": "Uruchom ponownie usługę Samba (smbd), aby wczytała nową konfigurację.",
+   "ru": "Перезапустите службу Samba (smbd), чтобы она прочитала новую конфигурацию."
+  },
+  "answers": [
+   "systemctl restart smbd",
+   "systemctl restart smbd.service",
+   "service smbd restart",
+   "sudo systemctl restart smbd",
+   "sudo systemctl restart smbd.service",
+   "sudo service smbd restart"
+  ],
+  "hint": {
+   "pl": "Czynność „uruchom ponownie”.",
+   "ru": "Действие «перезапустить»."
+  },
+  "expl": {
+   "pl": "restart zatrzymuje i ponownie uruchamia usługę, wczytując zmiany w smb.conf.",
+   "ru": "restart останавливает и снова запускает службу, применяя изменения в smb.conf."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-060",
+  "os": "linux",
+  "group": "system",
+  "task": {
+   "pl": "Odśwież listę dostępnych pakietów z repozytoriów (Ubuntu).",
+   "ru": "Обновите список доступных пакетов из репозиториев (Ubuntu)."
+  },
+  "answers": [
+   "apt update",
+   "apt-get update",
+   "sudo apt update",
+   "sudo apt-get update"
+  ],
+  "hint": {
+   "pl": "apt + czynność, która nie instaluje niczego.",
+   "ru": "apt + действие, которое ничего не устанавливает."
+  },
+  "expl": {
+   "pl": "apt update pobiera aktualne indeksy pakietów; nie aktualizuje zainstalowanego oprogramowania.",
+   "ru": "apt update загружает актуальные индексы пакетов; установленное ПО не обновляет."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-061",
+  "os": "linux",
+  "group": "system",
+  "task": {
+   "pl": "Zaktualizuj wszystkie zainstalowane pakiety do najnowszych wersji (Ubuntu).",
+   "ru": "Обновите все установленные пакеты до последних версий (Ubuntu)."
+  },
+  "answers": [
+   "apt upgrade",
+   "apt-get upgrade",
+   "apt upgrade -y",
+   "apt-get upgrade -y",
+   "apt -y upgrade",
+   "apt-get -y upgrade",
+   "sudo apt upgrade",
+   "sudo apt-get upgrade",
+   "sudo apt upgrade -y",
+   "sudo apt-get upgrade -y",
+   "sudo apt -y upgrade",
+   "sudo apt-get -y upgrade"
+  ],
+  "hint": {
+   "pl": "Po update wykonuje się …",
+   "ru": "После update выполняется …"
+  },
+  "expl": {
+   "pl": "apt upgrade instaluje nowsze wersje pakietów na podstawie pobranych wcześniej indeksów.",
+   "ru": "apt upgrade устанавливает новые версии пакетов на основе ранее загруженных индексов."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-062",
+  "os": "linux",
+  "group": "system",
+  "task": {
+   "pl": "Zainstaluj serwer DHCP – pakiet isc-dhcp-server.",
+   "ru": "Установите DHCP-сервер — пакет isc-dhcp-server."
+  },
+  "answers": [
+   "apt install isc-dhcp-server",
+   "apt-get install isc-dhcp-server",
+   "apt install -y isc-dhcp-server",
+   "apt-get install -y isc-dhcp-server",
+   "apt install isc-dhcp-server -y",
+   "apt-get install isc-dhcp-server -y",
+   "sudo apt install isc-dhcp-server",
+   "sudo apt-get install isc-dhcp-server",
+   "sudo apt install -y isc-dhcp-server",
+   "sudo apt-get install -y isc-dhcp-server",
+   "sudo apt install isc-dhcp-server -y",
+   "sudo apt-get install isc-dhcp-server -y"
+  ],
+  "hint": {
+   "pl": "Menedżer pakietów Ubuntu + install.",
+   "ru": "Менеджер пакетов Ubuntu + install."
+  },
+  "expl": {
+   "pl": "apt install pobiera i instaluje pakiet razem z zależnościami; wymaga uprawnień roota.",
+   "ru": "apt install скачивает и устанавливает пакет вместе с зависимостями; нужны права root."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-063",
+  "os": "linux",
+  "group": "system",
+  "task": {
+   "pl": "Usuń pakiet apache2 razem z jego plikami konfiguracyjnymi.",
+   "ru": "Удалите пакет apache2 вместе с его конфигурационными файлами."
+  },
+  "answers": [
+   "apt purge apache2",
+   "apt-get purge apache2",
+   "apt remove --purge apache2",
+   "apt-get remove --purge apache2",
+   "apt purge -y apache2",
+   "apt-get purge -y apache2",
+   "sudo apt purge apache2",
+   "sudo apt-get purge apache2",
+   "sudo apt remove --purge apache2",
+   "sudo apt-get remove --purge apache2",
+   "sudo apt purge -y apache2",
+   "sudo apt-get purge -y apache2"
+  ],
+  "hint": {
+   "pl": "Nie remove, tylko „wyczyść”.",
+   "ru": "Не remove, а «вычистить»."
+  },
+  "expl": {
+   "pl": "purge usuwa pakiet i jego pliki konfiguracyjne; remove zostawia konfigurację.",
+   "ru": "purge удаляет пакет и его конфигурацию; remove оставляет конфигурационные файлы."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-064",
+  "os": "linux",
+  "group": "system",
+  "task": {
+   "pl": "Zaktualizuj system do nowszego wydania wraz z obsługą zmienionych zależności (apt-get).",
+   "ru": "Обновите систему с обработкой изменившихся зависимостей (apt-get)."
+  },
+  "answers": [
+   "apt-get dist-upgrade",
+   "apt-get dist-upgrade -y",
+   "apt full-upgrade",
+   "apt full-upgrade -y",
+   "sudo apt-get dist-upgrade",
+   "sudo apt-get dist-upgrade -y",
+   "sudo apt full-upgrade",
+   "sudo apt full-upgrade -y"
+  ],
+  "hint": {
+   "pl": "Rozszerzona wersja upgrade, związana z dystrybucją.",
+   "ru": "Расширенная версия upgrade, связанная с дистрибутивом."
+  },
+  "expl": {
+   "pl": "dist-upgrade (full-upgrade) może instalować nowe i usuwać kolidujące pakiety, aby przeprowadzić pełną aktualizację.",
+   "ru": "dist-upgrade (full-upgrade) может ставить новые и удалять конфликтующие пакеты ради полного обновления."
+  },
+  "level": 3
+ },
+ {
+  "id": "lnx-065",
+  "os": "linux",
+  "group": "system",
+  "task": {
+   "pl": "Wyświetl wersję jądra systemu Linux.",
+   "ru": "Выведите версию ядра Linux."
+  },
+  "answers": [
+   "uname -r"
+  ],
+  "hint": {
+   "pl": "uname z opcją release.",
+   "ru": "uname с опцией release."
+  },
+  "expl": {
+   "pl": "uname -r wypisuje numer wersji działającego jądra; uname -a pokazuje wszystkie informacje.",
+   "ru": "uname -r выводит версию работающего ядра; uname -a — всю информацию."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-066",
+  "os": "linux",
+  "group": "system",
+  "task": {
+   "pl": "Wyświetl bieżącą godzinę, czas działania systemu, liczbę zalogowanych użytkowników i średnie obciążenie.",
+   "ru": "Выведите текущее время, время работы системы, число вошедших пользователей и среднюю нагрузку."
+  },
+  "answers": [
+   "uptime"
+  ],
+  "hint": {
+   "pl": "Nazwa polecenia oznacza „czas pracy”.",
+   "ru": "Название команды означает «время работы»."
+  },
+  "expl": {
+   "pl": "uptime pokazuje w jednej linii godzinę, czas od uruchomienia, liczbę użytkowników i load average.",
+   "ru": "uptime в одной строке показывает время, аптайм, число пользователей и load average."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-067",
+  "os": "linux",
+  "group": "system",
+  "task": {
+   "pl": "Wyświetl ilość wolnej i zajętej pamięci RAM w jednostkach czytelnych dla człowieka.",
+   "ru": "Выведите объём свободной и занятой RAM в удобочитаемых единицах."
+  },
+  "answers": [
+   "free -h",
+   "free --human"
+  ],
+  "hint": {
+   "pl": "Polecenie „wolne” + opcja human-readable.",
+   "ru": "Команда «свободно» + опция human-readable."
+  },
+  "expl": {
+   "pl": "free pokazuje użycie RAM i swap; -h dobiera jednostki (Mi, Gi).",
+   "ru": "free показывает использование RAM и swap; -h подбирает единицы (Mi, Gi)."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-068",
+  "os": "linux",
+  "group": "system",
+  "task": {
+   "pl": "Wyświetl szczegółowe informacje o procesorze (architektura, liczba rdzeni, wirtualizacja).",
+   "ru": "Выведите подробную информацию о процессоре (архитектура, число ядер, виртуализация)."
+  },
+  "answers": [
+   "lscpu",
+   "cat /proc/cpuinfo"
+  ],
+  "hint": {
+   "pl": "ls + cpu.",
+   "ru": "ls + cpu."
+  },
+  "expl": {
+   "pl": "lscpu zbiera dane z /proc/cpuinfo i prezentuje je czytelnie, m.in. model, rdzenie, VT-x/AMD-V.",
+   "ru": "lscpu собирает данные из /proc/cpuinfo и показывает их наглядно: модель, ядра, VT-x/AMD-V."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-069",
+  "os": "linux",
+  "group": "system",
+  "task": {
+   "pl": "Uruchom natychmiast ponownie komputer.",
+   "ru": "Немедленно перезагрузите компьютер."
+  },
+  "answers": [
+   "reboot",
+   "shutdown -r now",
+   "shutdown -r 0",
+   "systemctl reboot",
+   "init 6",
+   "sudo reboot",
+   "sudo shutdown -r now",
+   "sudo shutdown -r 0",
+   "sudo systemctl reboot",
+   "sudo init 6"
+  ],
+  "hint": {
+   "pl": "shutdown z opcją restartu i czasem „teraz”.",
+   "ru": "shutdown с опцией перезагрузки и временем «сейчас»."
+  },
+  "expl": {
+   "pl": "shutdown -r now (lub reboot) zamyka procesy i ponownie uruchamia system.",
+   "ru": "shutdown -r now (или reboot) завершает процессы и перезагружает систему."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-070",
+  "os": "linux",
+  "group": "system",
+  "task": {
+   "pl": "Zaplanuj wyłączenie komputera za 10 minut.",
+   "ru": "Запланируйте выключение компьютера через 10 минут."
+  },
+  "answers": [
+   "shutdown -h +10",
+   "shutdown -P +10",
+   "shutdown +10",
+   "shutdown --poweroff +10",
+   "sudo shutdown -h +10",
+   "sudo shutdown -P +10",
+   "sudo shutdown +10",
+   "sudo shutdown --poweroff +10"
+  ],
+  "hint": {
+   "pl": "Czas względny podaje się z plusem.",
+   "ru": "Относительное время указывается с плюсом."
+  },
+  "expl": {
+   "pl": "shutdown +10 wyłącza system za 10 minut i ostrzega zalogowanych; anuluje się go shutdown -c.",
+   "ru": "shutdown +10 выключит систему через 10 минут и предупредит пользователей; отмена — shutdown -c."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-071",
+  "os": "linux",
+  "group": "system",
+  "task": {
+   "pl": "Ustaw strefę czasową systemu na Oslo (Norwegia).",
+   "ru": "Установите часовой пояс системы на Осло (Норвегия)."
+  },
+  "answers": [
+   "timedatectl set-timezone Europe/Oslo",
+   "sudo timedatectl set-timezone Europe/Oslo"
+  ],
+  "hint": {
+   "pl": "timedatectl set-… Kontynent/Miasto.",
+   "ru": "timedatectl set-… Континент/Город."
+  },
+  "expl": {
+   "pl": "timedatectl set-timezone ustawia strefę czasową w formacie Region/Miasto.",
+   "ru": "timedatectl set-timezone задаёт часовой пояс в формате Регион/Город."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-072",
+  "os": "linux",
+  "group": "system",
+  "task": {
+   "pl": "Otwórz do edycji harmonogram zadań cron bieżącego użytkownika.",
+   "ru": "Откройте для редактирования расписание задач cron текущего пользователя."
+  },
+  "answers": [
+   "crontab -e"
+  ],
+  "hint": {
+   "pl": "crontab z opcją edit.",
+   "ru": "crontab с опцией edit."
+  },
+  "expl": {
+   "pl": "crontab -e otwiera edytor z tabelą zadań cron użytkownika i po zapisaniu ją instaluje.",
+   "ru": "crontab -e открывает редактор с таблицей cron пользователя и после сохранения устанавливает её."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-073",
+  "os": "linux",
+  "group": "system",
+  "task": {
+   "pl": "Wpisz linię crontab, która codziennie o 2:30 uruchomi skrypt /home/administrator/kopia.sh.",
+   "ru": "Введите строку crontab, которая ежедневно в 2:30 запускает скрипт /home/administrator/kopia.sh."
+  },
+  "answers": [
+   "30 2 * * * /home/administrator/kopia.sh",
+   "30 02 * * * /home/administrator/kopia.sh"
+  ],
+  "hint": {
+   "pl": "Kolejność pól: minuta godzina dzień miesiąc dzień_tygodnia.",
+   "ru": "Порядок полей: минута час день месяц день_недели."
+  },
+  "expl": {
+   "pl": "Pięć pól czasu (min, godz, dzień, mies., dzień tyg.) i polecenie; * oznacza „każdy”.",
+   "ru": "Пять полей времени (мин, час, день, месяц, день недели) и команда; * означает «каждый»."
+  },
+  "level": 3
+ },
+ {
+  "id": "lnx-074",
+  "os": "linux",
+  "group": "system",
+  "task": {
+   "pl": "Wpisz linię crontab, która w każdy poniedziałek o 8:00 uruchomi /root/raport.sh.",
+   "ru": "Введите строку crontab, которая каждый понедельник в 8:00 запускает /root/raport.sh."
+  },
+  "answers": [
+   "0 8 * * 1 /root/raport.sh",
+   "00 08 * * 1 /root/raport.sh",
+   "0 8 * * mon /root/raport.sh",
+   "0 8 * * Mon /root/raport.sh",
+   "0 08 * * 1 /root/raport.sh"
+  ],
+  "hint": {
+   "pl": "Poniedziałek to 1 (niedziela 0 lub 7).",
+   "ru": "Понедельник — 1 (воскресенье — 0 или 7)."
+  },
+  "expl": {
+   "pl": "Ostatnie pole czasu to dzień tygodnia; 1 oznacza poniedziałek.",
+   "ru": "Последнее поле времени — день недели; 1 означает понедельник."
+  },
+  "level": 3
+ },
+ {
+  "id": "lnx-075",
+  "os": "linux",
+  "group": "system",
+  "task": {
+   "pl": "Uruchom z bieżącego katalogu skrypt konta.sh, podając parametry: uczen oraz 3TI.",
+   "ru": "Запустите из текущего каталога скрипт konta.sh с параметрами uczen и 3TI."
+  },
+  "answers": [
+   "./konta.sh uczen 3TI",
+   "sh konta.sh uczen 3TI",
+   "bash konta.sh uczen 3TI",
+   "sh ./konta.sh uczen 3TI",
+   "bash ./konta.sh uczen 3TI",
+   "sudo ./konta.sh uczen 3TI",
+   "sudo sh konta.sh uczen 3TI",
+   "sudo bash konta.sh uczen 3TI",
+   "sudo sh ./konta.sh uczen 3TI",
+   "sudo bash ./konta.sh uczen 3TI"
+  ],
+  "hint": {
+   "pl": "Ścieżka ./ (lub interpreter) i parametry po spacji.",
+   "ru": "Путь ./ (или интерпретатор) и параметры через пробел."
+  },
+  "expl": {
+   "pl": "Parametry są dostępne w skrypcie jako $1 i $2; ./ wymaga prawa wykonania pliku.",
+   "ru": "Параметры доступны в скрипте как $1 и $2; запуск через ./ требует права выполнения."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-076",
+  "os": "linux",
+  "group": "system",
+  "task": {
+   "pl": "W skrypcie bash wyświetl wartość pierwszego parametru wywołania.",
+   "ru": "В bash-скрипте выведите значение первого параметра вызова."
+  },
+  "answers": [
+   "echo $1",
+   "echo \"$1\"",
+   "echo ${1}",
+   "echo \"${1}\""
+  ],
+  "hint": {
+   "pl": "Parametry pozycyjne to $ i numer.",
+   "ru": "Позиционные параметры — $ и номер."
+  },
+  "expl": {
+   "pl": "$1 to pierwszy argument skryptu, $2 drugi, $# ich liczba, a $0 nazwa skryptu.",
+   "ru": "$1 — первый аргумент скрипта, $2 — второй, $# — их количество, $0 — имя скрипта."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-077",
+  "os": "linux",
+  "group": "system",
+  "task": {
+   "pl": "Wpisz pierwszą linię skryptu (shebang), która wskazuje interpreter bash.",
+   "ru": "Введите первую строку скрипта (shebang), указывающую интерпретатор bash."
+  },
+  "answers": [
+   "#!/bin/bash",
+   "#!/usr/bin/env bash",
+   "#!/usr/bin/bash"
+  ],
+  "hint": {
+   "pl": "Zaczyna się od #! i ścieżki do interpretera.",
+   "ru": "Начинается с #! и пути к интерпретатору."
+  },
+  "expl": {
+   "pl": "Shebang mówi systemowi, którym programem wykonać skrypt uruchomiony przez ./skrypt.",
+   "ru": "Shebang сообщает системе, какой программой выполнять скрипт, запущенный через ./скрипт."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-078",
+  "os": "linux",
+  "group": "disks",
+  "task": {
+   "pl": "Wyświetl drzewo urządzeń blokowych (dyski i partycje).",
+   "ru": "Выведите дерево блочных устройств (диски и разделы)."
+  },
+  "answers": [
+   "lsblk"
+  ],
+  "hint": {
+   "pl": "ls + block.",
+   "ru": "ls + block."
+  },
+  "expl": {
+   "pl": "lsblk pokazuje dyski, partycje, ich rozmiary i punkty montowania.",
+   "ru": "lsblk показывает диски, разделы, их размеры и точки монтирования."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-079",
+  "os": "linux",
+  "group": "disks",
+  "task": {
+   "pl": "Wyświetl tablice partycji wszystkich dysków.",
+   "ru": "Выведите таблицы разделов всех дисков."
+  },
+  "answers": [
+   "fdisk -l",
+   "fdisk --list",
+   "sudo fdisk -l",
+   "sudo fdisk --list"
+  ],
+  "hint": {
+   "pl": "fdisk z opcją list.",
+   "ru": "fdisk с опцией list."
+  },
+  "expl": {
+   "pl": "fdisk -l wypisuje dyski z ich partycjami, typami i rozmiarami; wymaga uprawnień roota.",
+   "ru": "fdisk -l выводит диски с разделами, типами и размерами; требует прав root."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-080",
+  "os": "linux",
+  "group": "disks",
+  "task": {
+   "pl": "Utwórz system plików ext4 na partycji /dev/sdb1.",
+   "ru": "Создайте файловую систему ext4 на разделе /dev/sdb1."
+  },
+  "answers": [
+   "mkfs.ext4 /dev/sdb1",
+   "mkfs -t ext4 /dev/sdb1",
+   "sudo mkfs.ext4 /dev/sdb1",
+   "sudo mkfs -t ext4 /dev/sdb1"
+  ],
+  "hint": {
+   "pl": "mkfs.<typ> urządzenie.",
+   "ru": "mkfs.<тип> устройство."
+  },
+  "expl": {
+   "pl": "mkfs.ext4 formatuje partycję w systemie plików ext4, usuwając dotychczasowe dane.",
+   "ru": "mkfs.ext4 форматирует раздел в ext4, уничтожая прежние данные."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-081",
+  "os": "linux",
+  "group": "disks",
+  "task": {
+   "pl": "Zamontuj partycję /dev/sdb1 w katalogu /mnt/dane.",
+   "ru": "Смонтируйте раздел /dev/sdb1 в каталог /mnt/dane."
+  },
+  "answers": [
+   "mount /dev/sdb1 /mnt/dane",
+   "mount /dev/sdb1 /mnt/dane/",
+   "mount -t ext4 /dev/sdb1 /mnt/dane",
+   "sudo mount /dev/sdb1 /mnt/dane",
+   "sudo mount /dev/sdb1 /mnt/dane/",
+   "sudo mount -t ext4 /dev/sdb1 /mnt/dane"
+  ],
+  "hint": {
+   "pl": "mount urządzenie katalog.",
+   "ru": "mount устройство каталог."
+  },
+  "expl": {
+   "pl": "mount dołącza system plików z urządzenia do drzewa katalogów w podanym punkcie montowania.",
+   "ru": "mount подключает файловую систему устройства к дереву каталогов в точке монтирования."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-082",
+  "os": "linux",
+  "group": "disks",
+  "task": {
+   "pl": "Odmontuj system plików zamontowany w /mnt/dane.",
+   "ru": "Отмонтируйте файловую систему, смонтированную в /mnt/dane."
+  },
+  "answers": [
+   "umount /mnt/dane",
+   "umount /mnt/dane/",
+   "umount /dev/sdb1",
+   "sudo umount /mnt/dane",
+   "sudo umount /mnt/dane/",
+   "sudo umount /dev/sdb1"
+  ],
+  "hint": {
+   "pl": "Uwaga na pisownię – bez litery n po u.",
+   "ru": "Внимание на написание — без буквы n после u."
+  },
+  "expl": {
+   "pl": "umount odłącza system plików; nie może być on używany przez żaden proces.",
+   "ru": "umount отключает файловую систему; она не должна использоваться процессами."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-083",
+  "os": "linux",
+  "group": "disks",
+  "task": {
+   "pl": "Wyświetl zajętość i wolne miejsce na zamontowanych systemach plików w czytelnych jednostkach.",
+   "ru": "Выведите занятое и свободное место на смонтированных файловых системах в удобных единицах."
+  },
+  "answers": [
+   "df -h",
+   "df --human-readable"
+  ],
+  "hint": {
+   "pl": "„disk free” + human-readable.",
+   "ru": "«disk free» + human-readable."
+  },
+  "expl": {
+   "pl": "df pokazuje rozmiar, użycie i wolne miejsce każdego systemu plików; -h dobiera jednostki.",
+   "ru": "df показывает размер, использование и свободное место каждой ФС; -h подбирает единицы."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-084",
+  "os": "linux",
+  "group": "disks",
+  "task": {
+   "pl": "Wyświetl łączny rozmiar katalogu /home/administrator w czytelnych jednostkach (jedna linia podsumowania).",
+   "ru": "Выведите суммарный размер каталога /home/administrator в удобных единицах (одна итоговая строка)."
+  },
+  "answers": [
+   "du -sh /home/administrator",
+   "du -hs /home/administrator",
+   "du -s -h /home/administrator",
+   "du -h -s /home/administrator",
+   "du -sh /home/administrator/",
+   "sudo du -sh /home/administrator",
+   "sudo du -hs /home/administrator",
+   "sudo du -s -h /home/administrator",
+   "sudo du -h -s /home/administrator",
+   "sudo du -sh /home/administrator/"
+  ],
+  "hint": {
+   "pl": "„disk usage” + summarize + human.",
+   "ru": "«disk usage» + summarize + human."
+  },
+  "expl": {
+   "pl": "du -s podaje tylko sumę dla katalogu zamiast każdego podkatalogu, a -h czytelne jednostki.",
+   "ru": "du -s выдаёт только сумму по каталогу вместо каждого подкаталога, а -h — удобные единицы."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-085",
+  "os": "linux",
+  "group": "disks",
+  "task": {
+   "pl": "Sprawdź i napraw system plików na niezamontowanej partycji /dev/sdb1 (odpowiednik chkdsk).",
+   "ru": "Проверьте и исправьте файловую систему на несмонтированном разделе /dev/sdb1 (аналог chkdsk)."
+  },
+  "answers": [
+   "fsck /dev/sdb1",
+   "fsck.ext4 /dev/sdb1",
+   "e2fsck /dev/sdb1",
+   "fsck -y /dev/sdb1",
+   "sudo fsck /dev/sdb1",
+   "sudo fsck.ext4 /dev/sdb1",
+   "sudo e2fsck /dev/sdb1",
+   "sudo fsck -y /dev/sdb1"
+  ],
+  "hint": {
+   "pl": "File System ChecK.",
+   "ru": "File System ChecK."
+  },
+  "expl": {
+   "pl": "fsck sprawdza spójność systemu plików; partycja nie może być zamontowana podczas naprawy.",
+   "ru": "fsck проверяет целостность ФС; раздел не должен быть смонтирован во время исправления."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-086",
+  "os": "linux",
+  "group": "archives",
+  "task": {
+   "pl": "Utwórz archiwum informatyk.tar zawierające pliki inf02.txt i inf03.txt, wyświetlając nazwy archiwizowanych plików.",
+   "ru": "Создайте архив informatyk.tar с файлами inf02.txt и inf03.txt, выводя имена архивируемых файлов."
+  },
+  "answers": [
+   "tar -cvf informatyk.tar inf02.txt inf03.txt",
+   "tar cvf informatyk.tar inf02.txt inf03.txt",
+   "tar -vcf informatyk.tar inf02.txt inf03.txt",
+   "tar vcf informatyk.tar inf02.txt inf03.txt",
+   "tar -c -v -f informatyk.tar inf02.txt inf03.txt"
+  ],
+  "hint": {
+   "pl": "create + verbose + file (f na końcu, bo po nim jest nazwa archiwum).",
+   "ru": "create + verbose + file (f в конце, т.к. после неё имя архива)."
+  },
+  "expl": {
+   "pl": "-c tworzy archiwum, -v wypisuje przetwarzane pliki, -f wskazuje nazwę pliku archiwum.",
+   "ru": "-c создаёт архив, -v выводит обрабатываемые файлы, -f задаёт имя файла архива."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-087",
+  "os": "linux",
+  "group": "archives",
+  "task": {
+   "pl": "Utwórz archiwum n_sbin.tar zawierające plik Letter_n, wyświetlając nazwy archiwizowanych plików.",
+   "ru": "Создайте архив n_sbin.tar, содержащий файл Letter_n, с выводом имён архивируемых файлов."
+  },
+  "answers": [
+   "tar -cvf n_sbin.tar Letter_n",
+   "tar cvf n_sbin.tar Letter_n",
+   "tar -vcf n_sbin.tar Letter_n",
+   "tar vcf n_sbin.tar Letter_n",
+   "tar -c -v -f n_sbin.tar Letter_n"
+  ],
+  "hint": {
+   "pl": "Kolejność: tar, opcje, nazwa archiwum, pliki.",
+   "ru": "Порядок: tar, опции, имя архива, файлы."
+  },
+  "expl": {
+   "pl": "Pierwszy argument po -f to nazwa archiwum, kolejne to pliki do spakowania.",
+   "ru": "Первый аргумент после -f — имя архива, следующие — упаковываемые файлы."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-088",
+  "os": "linux",
+  "group": "archives",
+  "task": {
+   "pl": "Wypakuj zawartość archiwum dane.tar do bieżącego katalogu, wyświetlając nazwy plików.",
+   "ru": "Распакуйте архив dane.tar в текущий каталог с выводом имён файлов."
+  },
+  "answers": [
+   "tar -xvf dane.tar",
+   "tar xvf dane.tar",
+   "tar -vxf dane.tar",
+   "tar vxf dane.tar",
+   "tar -x -v -f dane.tar"
+  ],
+  "hint": {
+   "pl": "extract + verbose + file.",
+   "ru": "extract + verbose + file."
+  },
+  "expl": {
+   "pl": "-x wyodrębnia pliki z archiwum do bieżącego katalogu.",
+   "ru": "-x извлекает файлы из архива в текущий каталог."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-089",
+  "os": "linux",
+  "group": "archives",
+  "task": {
+   "pl": "Utwórz skompresowane gzipem archiwum kopia.tar.gz z katalogu dokumenty, wyświetlając nazwy plików.",
+   "ru": "Создайте сжатый gzip архив kopia.tar.gz из каталога dokumenty с выводом имён файлов."
+  },
+  "answers": [
+   "tar -czvf kopia.tar.gz dokumenty",
+   "tar czvf kopia.tar.gz dokumenty",
+   "tar -cvzf kopia.tar.gz dokumenty",
+   "tar cvzf kopia.tar.gz dokumenty",
+   "tar -zcvf kopia.tar.gz dokumenty",
+   "tar zcvf kopia.tar.gz dokumenty",
+   "tar -zvcf kopia.tar.gz dokumenty",
+   "tar zvcf kopia.tar.gz dokumenty",
+   "tar -vczf kopia.tar.gz dokumenty",
+   "tar vczf kopia.tar.gz dokumenty",
+   "tar -vzcf kopia.tar.gz dokumenty",
+   "tar vzcf kopia.tar.gz dokumenty",
+   "tar -czvf kopia.tar.gz dokumenty/",
+   "tar czvf kopia.tar.gz dokumenty/",
+   "tar -cvzf kopia.tar.gz dokumenty/",
+   "tar cvzf kopia.tar.gz dokumenty/",
+   "tar -zcvf kopia.tar.gz dokumenty/",
+   "tar zcvf kopia.tar.gz dokumenty/",
+   "tar -zvcf kopia.tar.gz dokumenty/",
+   "tar zvcf kopia.tar.gz dokumenty/",
+   "tar -vczf kopia.tar.gz dokumenty/",
+   "tar vczf kopia.tar.gz dokumenty/",
+   "tar -vzcf kopia.tar.gz dokumenty/",
+   "tar vzcf kopia.tar.gz dokumenty/"
+  ],
+  "hint": {
+   "pl": "Do create i verbose dodaj opcję kompresji gzip.",
+   "ru": "К create и verbose добавьте опцию сжатия gzip."
+  },
+  "expl": {
+   "pl": "-z przepuszcza archiwum przez gzip, dając plik .tar.gz.",
+   "ru": "-z пропускает архив через gzip, получая файл .tar.gz."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-090",
+  "os": "linux",
+  "group": "archives",
+  "task": {
+   "pl": "Wypakuj archiwum kopia.tar.gz do katalogu /tmp/odtw, wyświetlając nazwy plików.",
+   "ru": "Распакуйте архив kopia.tar.gz в каталог /tmp/odtw с выводом имён файлов."
+  },
+  "answers": [
+   "tar -xzvf kopia.tar.gz -C /tmp/odtw",
+   "tar xzvf kopia.tar.gz -C /tmp/odtw",
+   "tar -xvzf kopia.tar.gz -C /tmp/odtw",
+   "tar xvzf kopia.tar.gz -C /tmp/odtw",
+   "tar -zxvf kopia.tar.gz -C /tmp/odtw",
+   "tar zxvf kopia.tar.gz -C /tmp/odtw",
+   "tar -zvxf kopia.tar.gz -C /tmp/odtw",
+   "tar zvxf kopia.tar.gz -C /tmp/odtw",
+   "tar -vxzf kopia.tar.gz -C /tmp/odtw",
+   "tar vxzf kopia.tar.gz -C /tmp/odtw",
+   "tar -vzxf kopia.tar.gz -C /tmp/odtw",
+   "tar vzxf kopia.tar.gz -C /tmp/odtw",
+   "tar -xvf kopia.tar.gz -C /tmp/odtw",
+   "tar xvf kopia.tar.gz -C /tmp/odtw",
+   "tar -vxf kopia.tar.gz -C /tmp/odtw",
+   "tar vxf kopia.tar.gz -C /tmp/odtw"
+  ],
+  "hint": {
+   "pl": "Katalog docelowy wskazuje opcja wielkie C.",
+   "ru": "Целевой каталог задаёт опция заглавная C."
+  },
+  "expl": {
+   "pl": "-C zmienia katalog, do którego tar wypakowuje pliki; -z dekompresuje gzip.",
+   "ru": "-C меняет каталог, куда tar распаковывает файлы; -z распаковывает gzip."
+  },
+  "level": 3
+ },
+ {
+  "id": "lnx-091",
+  "os": "linux",
+  "group": "archives",
+  "task": {
+   "pl": "Wyodrębnij pliki z archiwum wazne_pliki.tar.bz2 (kompresja bzip2), wyświetlając nazwy plików.",
+   "ru": "Извлеките файлы из архива wazne_pliki.tar.bz2 (сжатие bzip2) с выводом имён файлов."
+  },
+  "answers": [
+   "tar -xvjf wazne_pliki.tar.bz2",
+   "tar xvjf wazne_pliki.tar.bz2",
+   "tar -xjvf wazne_pliki.tar.bz2",
+   "tar xjvf wazne_pliki.tar.bz2",
+   "tar -vxjf wazne_pliki.tar.bz2",
+   "tar vxjf wazne_pliki.tar.bz2",
+   "tar -vjxf wazne_pliki.tar.bz2",
+   "tar vjxf wazne_pliki.tar.bz2",
+   "tar -jxvf wazne_pliki.tar.bz2",
+   "tar jxvf wazne_pliki.tar.bz2",
+   "tar -jvxf wazne_pliki.tar.bz2",
+   "tar jvxf wazne_pliki.tar.bz2",
+   "tar -xvf wazne_pliki.tar.bz2",
+   "tar xvf wazne_pliki.tar.bz2",
+   "tar -vxf wazne_pliki.tar.bz2",
+   "tar vxf wazne_pliki.tar.bz2"
+  ],
+  "hint": {
+   "pl": "bzip2 w tar to litera j.",
+   "ru": "bzip2 в tar — буква j."
+  },
+  "expl": {
+   "pl": "-j obsługuje kompresję bzip2 (.tar.bz2), analogicznie jak -z dla gzip.",
+   "ru": "-j работает со сжатием bzip2 (.tar.bz2), аналогично -z для gzip."
+  },
+  "level": 3
+ },
+ {
+  "id": "lnx-092",
+  "os": "linux",
+  "group": "processes",
+  "task": {
+   "pl": "Wyświetl wszystkie procesy wszystkich użytkowników (z nazwą użytkownika, %CPU i %MEM).",
+   "ru": "Выведите все процессы всех пользователей (с именем пользователя, %CPU и %MEM)."
+  },
+  "answers": [
+   "ps aux",
+   "ps -aux",
+   "ps axu",
+   "ps -ef",
+   "ps -eF"
+  ],
+  "hint": {
+   "pl": "ps w stylu BSD: a, u, x.",
+   "ru": "ps в стиле BSD: a, u, x."
+  },
+  "expl": {
+   "pl": "ps aux pokazuje każdy proces wraz z właścicielem, PID, zużyciem CPU/RAM i poleceniem.",
+   "ru": "ps aux показывает каждый процесс с владельцем, PID, загрузкой CPU/RAM и командой."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-093",
+  "os": "linux",
+  "group": "processes",
+  "task": {
+   "pl": "Uruchom interaktywny monitor procesów i obciążenia systemu, odświeżany na bieżąco.",
+   "ru": "Запустите интерактивный монитор процессов и нагрузки, обновляемый в реальном времени."
+  },
+  "answers": [
+   "top",
+   "htop"
+  ],
+  "hint": {
+   "pl": "Trzyliterowe polecenie – „szczyt” listy procesów.",
+   "ru": "Трёхбуквенная команда — «верх» списка процессов."
+  },
+  "expl": {
+   "pl": "top pokazuje na żywo procesy, użycie CPU, pamięci i load average; wyjście klawiszem q.",
+   "ru": "top в реальном времени показывает процессы, загрузку CPU, памяти и load average; выход — q."
+  },
+  "level": 1
+ },
+ {
+  "id": "lnx-094",
+  "os": "linux",
+  "group": "processes",
+  "task": {
+   "pl": "Bezwarunkowo zakończ (zabij) proces o PID 1234.",
+   "ru": "Безусловно завершите (убейте) процесс с PID 1234."
+  },
+  "answers": [
+   "kill -9 1234",
+   "kill -KILL 1234",
+   "kill -SIGKILL 1234",
+   "kill -s KILL 1234",
+   "kill -s 9 1234",
+   "kill -s SIGKILL 1234",
+   "sudo kill -9 1234",
+   "sudo kill -KILL 1234",
+   "sudo kill -SIGKILL 1234",
+   "sudo kill -s KILL 1234",
+   "sudo kill -s 9 1234",
+   "sudo kill -s SIGKILL 1234"
+  ],
+  "hint": {
+   "pl": "Sygnał SIGKILL ma numer 9.",
+   "ru": "Сигнал SIGKILL имеет номер 9."
+  },
+  "expl": {
+   "pl": "Sygnał 9 (SIGKILL) natychmiast kończy proces – nie można go przechwycić ani zignorować.",
+   "ru": "Сигнал 9 (SIGKILL) немедленно завершает процесс — его нельзя перехватить или игнорировать."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-095",
+  "os": "linux",
+  "group": "processes",
+  "task": {
+   "pl": "Zakończ wszystkie procesy o nazwie firefox (po nazwie, nie po PID).",
+   "ru": "Завершите все процессы с именем firefox (по имени, а не по PID)."
+  },
+  "answers": [
+   "killall firefox",
+   "pkill firefox",
+   "pkill -x firefox",
+   "sudo killall firefox",
+   "sudo pkill firefox",
+   "sudo pkill -x firefox"
+  ],
+  "hint": {
+   "pl": "Polecenie „kill all” lub „process kill”.",
+   "ru": "Команда «kill all» или «process kill»."
+  },
+  "expl": {
+   "pl": "killall i pkill wysyłają sygnał do procesów wskazanych nazwą zamiast numeru PID.",
+   "ru": "killall и pkill посылают сигнал процессам, указанным по имени, а не по PID."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-096",
+  "os": "linux",
+  "group": "processes",
+  "task": {
+   "pl": "Wyświetl z listy wszystkich procesów tylko te dotyczące apache2 (ps + filtr).",
+   "ru": "Выведите из списка всех процессов только относящиеся к apache2 (ps + фильтр)."
+  },
+  "answers": [
+   "ps aux | grep apache2",
+   "ps -ef | grep apache2",
+   "ps -aux | grep apache2",
+   "ps aux|grep apache2"
+  ],
+  "hint": {
+   "pl": "Połącz ps i grep potokiem.",
+   "ru": "Соедините ps и grep конвейером."
+  },
+  "expl": {
+   "pl": "Potok | przekazuje wyjście ps na wejście grep, który filtruje linie z apache2.",
+   "ru": "Конвейер | передаёт вывод ps на вход grep, который фильтрует строки с apache2."
+  },
+  "level": 2
+ },
+ {
+  "id": "lnx-097",
+  "os": "linux",
+  "group": "processes",
+  "task": {
+   "pl": "Uruchom skrypt ./backup.sh w tle, aby od razu odzyskać dostęp do terminala.",
+   "ru": "Запустите скрипт ./backup.sh в фоне, чтобы сразу вернуть доступ к терминалу."
+  },
+  "answers": [
+   "./backup.sh &",
+   "./backup.sh&",
+   "bash backup.sh &",
+   "sh backup.sh &"
+  ],
+  "hint": {
+   "pl": "Na końcu polecenia dodaj jeden specjalny znak.",
+   "ru": "В конце команды добавьте один специальный символ."
+  },
+  "expl": {
+   "pl": "Znak & uruchamia polecenie jako zadanie w tle; listę zadań pokazuje jobs.",
+   "ru": "Символ & запускает команду как фоновое задание; список заданий показывает jobs."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-001",
+  "os": "windows",
+  "group": "network",
+  "task": {
+   "pl": "Wyświetl pełną konfigurację wszystkich kart sieciowych (m.in. adres MAC, DNS, DHCP).",
+   "ru": "Выведите полную конфигурацию всех сетевых адаптеров (MAC, DNS, DHCP и т.д.)."
+  },
+  "answers": [
+   "ipconfig /all",
+   "ipconfig -all"
+  ],
+  "hint": {
+   "pl": "ipconfig z przełącznikiem „wszystko”.",
+   "ru": "ipconfig с ключом «всё»."
+  },
+  "expl": {
+   "pl": "ipconfig /all pokazuje adres fizyczny, serwery DNS, dzierżawę DHCP i inne parametry każdej karty.",
+   "ru": "ipconfig /all показывает физический адрес, DNS-серверы, аренду DHCP и др. для каждого адаптера."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-002",
+  "os": "windows",
+  "group": "network",
+  "task": {
+   "pl": "Zwolnij dzierżawę adresów IP uzyskanych z serwera DHCP.",
+   "ru": "Освободите аренду IP-адресов, полученных от DHCP-сервера."
+  },
+  "answers": [
+   "ipconfig /release",
+   "ipconfig -release"
+  ],
+  "hint": {
+   "pl": "ipconfig + „zwolnij”.",
+   "ru": "ipconfig + «освободить»."
+  },
+  "expl": {
+   "pl": "ipconfig /release wysyła do serwera DHCP komunikat DHCPRELEASE i usuwa adres z karty.",
+   "ru": "ipconfig /release отправляет DHCP-серверу DHCPRELEASE и снимает адрес с адаптера."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-003",
+  "os": "windows",
+  "group": "network",
+  "task": {
+   "pl": "Odnów dzierżawę adresu IP z serwera DHCP (test poprawności pobrania adresu).",
+   "ru": "Обновите аренду IP-адреса от DHCP-сервера (проверка получения адреса)."
+  },
+  "answers": [
+   "ipconfig /renew",
+   "ipconfig -renew"
+  ],
+  "hint": {
+   "pl": "ipconfig + „odnów”.",
+   "ru": "ipconfig + «обновить»."
+  },
+  "expl": {
+   "pl": "ipconfig /renew ponownie żąda adresu od serwera DHCP – często po /release.",
+   "ru": "ipconfig /renew заново запрашивает адрес у DHCP — часто после /release."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-004",
+  "os": "windows",
+  "group": "network",
+  "task": {
+   "pl": "Wyczyść pamięć podręczną (bufor) programu rozpoznawania nazw DNS.",
+   "ru": "Очистите кэш (буфер) DNS-резолвера."
+  },
+  "answers": [
+   "ipconfig /flushdns",
+   "ipconfig -flushdns"
+  ],
+  "hint": {
+   "pl": "flush = opróżnij.",
+   "ru": "flush = очистить."
+  },
+  "expl": {
+   "pl": "/flushdns usuwa zapamiętane tłumaczenia nazw, wymuszając nowe zapytania do serwera DNS.",
+   "ru": "/flushdns удаляет кэшированные DNS-ответы, заставляя заново запрашивать сервер."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-005",
+  "os": "windows",
+  "group": "network",
+  "task": {
+   "pl": "Wyświetl zawartość pamięci podręcznej DNS (zapamiętane tłumaczenia nazw).",
+   "ru": "Выведите содержимое DNS-кэша (сохранённые разрешения имён)."
+  },
+  "answers": [
+   "ipconfig /displaydns",
+   "ipconfig -displaydns"
+  ],
+  "hint": {
+   "pl": "display = wyświetl.",
+   "ru": "display = показать."
+  },
+  "expl": {
+   "pl": "/displaydns pokazuje rekordy DNS przechowywane w lokalnym buforze resolvera.",
+   "ru": "/displaydns показывает DNS-записи в локальном кэше резолвера."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-006",
+  "os": "windows",
+  "group": "network",
+  "task": {
+   "pl": "Odśwież dzierżawy DHCP i ponownie zarejestruj nazwy komputera w DNS.",
+   "ru": "Обновите аренды DHCP и заново зарегистрируйте имена компьютера в DNS."
+  },
+  "answers": [
+   "ipconfig /registerdns",
+   "ipconfig -registerdns"
+  ],
+  "hint": {
+   "pl": "register + dns.",
+   "ru": "register + dns."
+  },
+  "expl": {
+   "pl": "/registerdns odnawia dzierżawy DHCP i rejestruje dynamicznie nazwy w serwerze DNS.",
+   "ru": "/registerdns обновляет аренды DHCP и динамически регистрирует имена в DNS."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-007",
+  "os": "windows",
+  "group": "network",
+  "task": {
+   "pl": "Pinguj ruter 192.168.1.1 bez przerwy, aż do zatrzymania klawiszami Ctrl+C.",
+   "ru": "Пингуйте маршрутизатор 192.168.1.1 непрерывно до остановки Ctrl+C."
+  },
+  "answers": [
+   "ping -t 192.168.1.1",
+   "ping 192.168.1.1 -t",
+   "ping /t 192.168.1.1",
+   "ping 192.168.1.1 /t"
+  ],
+  "hint": {
+   "pl": "W Windows ping domyślnie wysyła 4 pakiety – potrzebny przełącznik.",
+   "ru": "В Windows ping по умолчанию шлёт 4 пакета — нужен ключ."
+  },
+  "expl": {
+   "pl": "-t powoduje ciągłe wysyłanie żądań echo do momentu przerwania.",
+   "ru": "-t заставляет непрерывно слать эхо-запросы до прерывания."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-008",
+  "os": "windows",
+  "group": "network",
+  "task": {
+   "pl": "Wyślij dokładnie 10 pakietów ping do hosta 10.0.0.1.",
+   "ru": "Отправьте ровно 10 ping-пакетов на хост 10.0.0.1."
+  },
+  "answers": [
+   "ping -n 10 10.0.0.1",
+   "ping 10.0.0.1 -n 10",
+   "ping /n 10 10.0.0.1",
+   "ping 10.0.0.1 /n 10"
+  ],
+  "hint": {
+   "pl": "W Windows liczba pakietów to -n (nie -c).",
+   "ru": "В Windows число пакетов — -n (не -c)."
+  },
+  "expl": {
+   "pl": "-n określa liczbę żądań echo (domyślnie 4).",
+   "ru": "-n задаёт число эхо-запросов (по умолчанию 4)."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-009",
+  "os": "windows",
+  "group": "network",
+  "task": {
+   "pl": "Wyślij ping do 192.168.0.1 z pakietami o rozmiarze danych 1000 bajtów.",
+   "ru": "Отправьте ping на 192.168.0.1 с размером данных пакета 1000 байт."
+  },
+  "answers": [
+   "ping -l 1000 192.168.0.1",
+   "ping 192.168.0.1 -l 1000",
+   "ping /l 1000 192.168.0.1",
+   "ping 192.168.0.1 /l 1000"
+  ],
+  "hint": {
+   "pl": "length – mała litera l.",
+   "ru": "length — маленькая буква l."
+  },
+  "expl": {
+   "pl": "-l ustawia rozmiar bufora danych w żądaniu echo (domyślnie 32 bajty).",
+   "ru": "-l задаёт размер буфера данных эхо-запроса (по умолчанию 32 байта)."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-010",
+  "os": "windows",
+  "group": "network",
+  "task": {
+   "pl": "Prześledź trasę pakietów do hosta 8.8.8.8.",
+   "ru": "Отследите маршрут пакетов до хоста 8.8.8.8."
+  },
+  "answers": [
+   "tracert 8.8.8.8"
+  ],
+  "hint": {
+   "pl": "Windowsowa skrócona nazwa traceroute.",
+   "ru": "Виндовое сокращённое название traceroute."
+  },
+  "expl": {
+   "pl": "tracert wyświetla kolejne rutery pośrednie na drodze do celu i czasy odpowiedzi.",
+   "ru": "tracert показывает промежуточные маршрутизаторы на пути к цели и время отклика."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-011",
+  "os": "windows",
+  "group": "network",
+  "task": {
+   "pl": "Prześledź trasę do cke.gov.pl z pomiarem strat pakietów na każdym ruterze.",
+   "ru": "Отследите маршрут до cke.gov.pl с измерением потерь пакетов на каждом маршрутизаторе."
+  },
+  "answers": [
+   "pathping cke.gov.pl"
+  ],
+  "hint": {
+   "pl": "Połączenie ping i tracert w jednym narzędziu.",
+   "ru": "Сочетание ping и tracert в одном инструменте."
+  },
+  "expl": {
+   "pl": "pathping wyznacza trasę, a następnie przez pewien czas mierzy opóźnienia i procent strat na każdym przeskoku.",
+   "ru": "pathping определяет маршрут, а затем измеряет задержки и процент потерь на каждом хопе."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-012",
+  "os": "windows",
+  "group": "network",
+  "task": {
+   "pl": "Sprawdź, na jaki adres IP tłumaczona jest nazwa cke.gov.pl.",
+   "ru": "Проверьте, в какой IP-адрес разрешается имя cke.gov.pl."
+  },
+  "answers": [
+   "nslookup cke.gov.pl",
+   "ping cke.gov.pl",
+   "Resolve-DnsName cke.gov.pl"
+  ],
+  "hint": {
+   "pl": "Narzędzie do odpytywania serwera DNS.",
+   "ru": "Инструмент для запросов к DNS-серверу."
+  },
+  "expl": {
+   "pl": "nslookup wysyła zapytanie do skonfigurowanego serwera DNS i pokazuje uzyskane adresy.",
+   "ru": "nslookup отправляет запрос настроенному DNS-серверу и показывает полученные адреса."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-013",
+  "os": "windows",
+  "group": "network",
+  "task": {
+   "pl": "Za pomocą nslookup wyświetl rekordy MX domeny cke.gov.pl.",
+   "ru": "С помощью nslookup выведите MX-записи домена cke.gov.pl."
+  },
+  "answers": [
+   "nslookup -type=mx cke.gov.pl",
+   "nslookup -query=mx cke.gov.pl",
+   "nslookup -querytype=mx cke.gov.pl",
+   "nslookup -q=mx cke.gov.pl"
+  ],
+  "hint": {
+   "pl": "Opcja -type=…",
+   "ru": "Опция -type=…"
+  },
+  "expl": {
+   "pl": "-type=mx zmienia typ zapytania z A na MX (serwery pocztowe).",
+   "ru": "-type=mx меняет тип запроса с A на MX (почтовые серверы)."
+  },
+  "level": 3
+ },
+ {
+  "id": "win-014",
+  "os": "windows",
+  "group": "network",
+  "task": {
+   "pl": "Wyświetl wszystkie połączenia i porty nasłuchujące w postaci numerycznej.",
+   "ru": "Выведите все соединения и прослушиваемые порты в числовом виде."
+  },
+  "answers": [
+   "netstat -an",
+   "netstat -na",
+   "netstat -a -n",
+   "netstat -n -a",
+   "netstat /an",
+   "netstat /a /n"
+  ],
+  "hint": {
+   "pl": "netstat: all + numeric.",
+   "ru": "netstat: all + numeric."
+  },
+  "expl": {
+   "pl": "-a pokazuje wszystkie połączenia i porty nasłuchujące, -n wyświetla adresy i porty jako liczby.",
+   "ru": "-a показывает все соединения и слушающие порты, -n выводит адреса и порты числами."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-015",
+  "os": "windows",
+  "group": "network",
+  "task": {
+   "pl": "Wyświetl połączenia sieciowe wraz z nazwą programu (pliku .exe), który je utworzył (wymaga uprawnień administratora).",
+   "ru": "Выведите сетевые соединения вместе с именем программы (.exe), которая их создала (нужны права администратора)."
+  },
+  "answers": [
+   "netstat -b",
+   "netstat /b",
+   "netstat -ab",
+   "netstat -ba",
+   "netstat -a -b",
+   "netstat -b -a",
+   "netstat -bn",
+   "netstat -nb"
+  ],
+  "hint": {
+   "pl": "Przełącznik od „binary”.",
+   "ru": "Ключ от «binary»."
+  },
+  "expl": {
+   "pl": "netstat -b dla każdego połączenia pokazuje plik wykonywalny odpowiedzialny za jego utworzenie.",
+   "ru": "netstat -b для каждого соединения показывает исполняемый файл, который его создал."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-016",
+  "os": "windows",
+  "group": "network",
+  "task": {
+   "pl": "Wyświetl tablicę routingu komputera.",
+   "ru": "Выведите таблицу маршрутизации компьютера."
+  },
+  "answers": [
+   "route print",
+   "netstat -r",
+   "netstat -rn",
+   "netstat /r"
+  ],
+  "hint": {
+   "pl": "route + „drukuj”.",
+   "ru": "route + «печать»."
+  },
+  "expl": {
+   "pl": "route print (lub netstat -r) pokazuje listę interfejsów oraz trasy IPv4 i IPv6.",
+   "ru": "route print (или netstat -r) показывает интерфейсы и маршруты IPv4/IPv6."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-017",
+  "os": "windows",
+  "group": "network",
+  "task": {
+   "pl": "Wyświetl tablicę ARP (powiązania adresów IP z adresami MAC).",
+   "ru": "Выведите таблицу ARP (соответствие IP-адресов и MAC-адресов)."
+  },
+  "answers": [
+   "arp -a",
+   "arp /a",
+   "arp -g"
+  ],
+  "hint": {
+   "pl": "arp + all.",
+   "ru": "arp + all."
+  },
+  "expl": {
+   "pl": "arp -a pokazuje zapamiętane w buforze pary adres IP – adres fizyczny dla każdego interfejsu.",
+   "ru": "arp -a показывает кэшированные пары IP-адрес — физический адрес для каждого интерфейса."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-018",
+  "os": "windows",
+  "group": "network",
+  "task": {
+   "pl": "Wyświetl nazwę komputera.",
+   "ru": "Выведите имя компьютера."
+  },
+  "answers": [
+   "hostname",
+   "echo %computername%"
+  ],
+  "hint": {
+   "pl": "Takie samo polecenie jak w Linuksie.",
+   "ru": "Та же команда, что и в Linux."
+  },
+  "expl": {
+   "pl": "hostname wypisuje nazwę NetBIOS/DNS hosta.",
+   "ru": "hostname выводит имя хоста."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-019",
+  "os": "windows",
+  "group": "network",
+  "task": {
+   "pl": "Za pomocą netsh ustaw na karcie „Ethernet” statyczny adres 192.168.10.2, maskę 255.255.255.0 i bramę 192.168.10.1.",
+   "ru": "С помощью netsh задайте адаптеру «Ethernet» статический адрес 192.168.10.2, маску 255.255.255.0 и шлюз 192.168.10.1."
+  },
+  "answers": [
+   "netsh interface ip set address \"Ethernet\" static 192.168.10.2 255.255.255.0 192.168.10.1",
+   "netsh interface ip set address \"Ethernet\" source=static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh interface ip set address \"Ethernet\" static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh interface ip set address Ethernet static 192.168.10.2 255.255.255.0 192.168.10.1",
+   "netsh interface ip set address Ethernet source=static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh interface ip set address Ethernet static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh interface ip set address name=\"Ethernet\" static 192.168.10.2 255.255.255.0 192.168.10.1",
+   "netsh interface ip set address name=\"Ethernet\" source=static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh interface ip set address name=\"Ethernet\" static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh interface ip set address name=Ethernet static 192.168.10.2 255.255.255.0 192.168.10.1",
+   "netsh interface ip set address name=Ethernet source=static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh interface ip set address name=Ethernet static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh interface ipv4 set address \"Ethernet\" static 192.168.10.2 255.255.255.0 192.168.10.1",
+   "netsh interface ipv4 set address \"Ethernet\" source=static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh interface ipv4 set address \"Ethernet\" static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh interface ipv4 set address Ethernet static 192.168.10.2 255.255.255.0 192.168.10.1",
+   "netsh interface ipv4 set address Ethernet source=static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh interface ipv4 set address Ethernet static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh interface ipv4 set address name=\"Ethernet\" static 192.168.10.2 255.255.255.0 192.168.10.1",
+   "netsh interface ipv4 set address name=\"Ethernet\" source=static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh interface ipv4 set address name=\"Ethernet\" static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh interface ipv4 set address name=Ethernet static 192.168.10.2 255.255.255.0 192.168.10.1",
+   "netsh interface ipv4 set address name=Ethernet source=static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh interface ipv4 set address name=Ethernet static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh int ip set address \"Ethernet\" static 192.168.10.2 255.255.255.0 192.168.10.1",
+   "netsh int ip set address \"Ethernet\" source=static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh int ip set address \"Ethernet\" static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh int ip set address Ethernet static 192.168.10.2 255.255.255.0 192.168.10.1",
+   "netsh int ip set address Ethernet source=static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh int ip set address Ethernet static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh int ip set address name=\"Ethernet\" static 192.168.10.2 255.255.255.0 192.168.10.1",
+   "netsh int ip set address name=\"Ethernet\" source=static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh int ip set address name=\"Ethernet\" static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh int ip set address name=Ethernet static 192.168.10.2 255.255.255.0 192.168.10.1",
+   "netsh int ip set address name=Ethernet source=static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh int ip set address name=Ethernet static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh int ipv4 set address \"Ethernet\" static 192.168.10.2 255.255.255.0 192.168.10.1",
+   "netsh int ipv4 set address \"Ethernet\" source=static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh int ipv4 set address \"Ethernet\" static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh int ipv4 set address Ethernet static 192.168.10.2 255.255.255.0 192.168.10.1",
+   "netsh int ipv4 set address Ethernet source=static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh int ipv4 set address Ethernet static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh int ipv4 set address name=\"Ethernet\" static 192.168.10.2 255.255.255.0 192.168.10.1",
+   "netsh int ipv4 set address name=\"Ethernet\" source=static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh int ipv4 set address name=\"Ethernet\" static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh int ipv4 set address name=Ethernet static 192.168.10.2 255.255.255.0 192.168.10.1",
+   "netsh int ipv4 set address name=Ethernet source=static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1",
+   "netsh int ipv4 set address name=Ethernet static address=192.168.10.2 mask=255.255.255.0 gateway=192.168.10.1"
+  ],
+  "hint": {
+   "pl": "netsh interface ip set address \"nazwa\" static adres maska brama",
+   "ru": "netsh interface ip set address \"имя\" static адрес маска шлюз"
+  },
+  "expl": {
+   "pl": "Kontekst interface ip (ipv4) polecenia set address zmienia konfigurację IP karty; static wyłącza DHCP.",
+   "ru": "Контекст interface ip (ipv4) с set address меняет IP-конфигурацию адаптера; static отключает DHCP."
+  },
+  "level": 3
+ },
+ {
+  "id": "win-020",
+  "os": "windows",
+  "group": "network",
+  "task": {
+   "pl": "Za pomocą netsh przełącz kartę „Ethernet” na automatyczne pobieranie adresu IP (DHCP).",
+   "ru": "С помощью netsh переключите адаптер «Ethernet» на автоматическое получение IP (DHCP)."
+  },
+  "answers": [
+   "netsh interface ip set address \"Ethernet\" dhcp",
+   "netsh interface ip set address \"Ethernet\" source=dhcp",
+   "netsh interface ip set address Ethernet dhcp",
+   "netsh interface ip set address Ethernet source=dhcp",
+   "netsh interface ip set address name=\"Ethernet\" dhcp",
+   "netsh interface ip set address name=\"Ethernet\" source=dhcp",
+   "netsh interface ip set address name=Ethernet dhcp",
+   "netsh interface ip set address name=Ethernet source=dhcp",
+   "netsh interface ipv4 set address \"Ethernet\" dhcp",
+   "netsh interface ipv4 set address \"Ethernet\" source=dhcp",
+   "netsh interface ipv4 set address Ethernet dhcp",
+   "netsh interface ipv4 set address Ethernet source=dhcp",
+   "netsh interface ipv4 set address name=\"Ethernet\" dhcp",
+   "netsh interface ipv4 set address name=\"Ethernet\" source=dhcp",
+   "netsh interface ipv4 set address name=Ethernet dhcp",
+   "netsh interface ipv4 set address name=Ethernet source=dhcp",
+   "netsh int ip set address \"Ethernet\" dhcp",
+   "netsh int ip set address \"Ethernet\" source=dhcp",
+   "netsh int ip set address Ethernet dhcp",
+   "netsh int ip set address Ethernet source=dhcp",
+   "netsh int ip set address name=\"Ethernet\" dhcp",
+   "netsh int ip set address name=\"Ethernet\" source=dhcp",
+   "netsh int ip set address name=Ethernet dhcp",
+   "netsh int ip set address name=Ethernet source=dhcp",
+   "netsh int ipv4 set address \"Ethernet\" dhcp",
+   "netsh int ipv4 set address \"Ethernet\" source=dhcp",
+   "netsh int ipv4 set address Ethernet dhcp",
+   "netsh int ipv4 set address Ethernet source=dhcp",
+   "netsh int ipv4 set address name=\"Ethernet\" dhcp",
+   "netsh int ipv4 set address name=\"Ethernet\" source=dhcp",
+   "netsh int ipv4 set address name=Ethernet dhcp",
+   "netsh int ipv4 set address name=Ethernet source=dhcp"
+  ],
+  "hint": {
+   "pl": "Ta sama składnia co dla adresu statycznego, ale zamiast static…",
+   "ru": "Тот же синтаксис, что для статического адреса, но вместо static…"
+  },
+  "expl": {
+   "pl": "source=dhcp (lub samo dhcp) włącza klienta DHCP na wskazanej karcie.",
+   "ru": "source=dhcp (или просто dhcp) включает DHCP-клиент на указанном адаптере."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-021",
+  "os": "windows",
+  "group": "network",
+  "task": {
+   "pl": "Za pomocą netsh ustaw na karcie „Ethernet” statyczny serwer DNS 192.168.10.1.",
+   "ru": "С помощью netsh задайте адаптеру «Ethernet» статический DNS-сервер 192.168.10.1."
+  },
+  "answers": [
+   "netsh interface ip set dns \"Ethernet\" static 192.168.10.1",
+   "netsh interface ip set dns \"Ethernet\" static 192.168.10.1 primary",
+   "netsh interface ip set dns \"Ethernet\" source=static address=192.168.10.1",
+   "netsh interface ip set dns Ethernet static 192.168.10.1",
+   "netsh interface ip set dns Ethernet static 192.168.10.1 primary",
+   "netsh interface ip set dns Ethernet source=static address=192.168.10.1",
+   "netsh interface ip set dns name=\"Ethernet\" static 192.168.10.1",
+   "netsh interface ip set dns name=\"Ethernet\" static 192.168.10.1 primary",
+   "netsh interface ip set dns name=\"Ethernet\" source=static address=192.168.10.1",
+   "netsh interface ip set dns name=Ethernet static 192.168.10.1",
+   "netsh interface ip set dns name=Ethernet static 192.168.10.1 primary",
+   "netsh interface ip set dns name=Ethernet source=static address=192.168.10.1",
+   "netsh interface ip set dnsservers \"Ethernet\" static 192.168.10.1",
+   "netsh interface ip set dnsservers \"Ethernet\" static 192.168.10.1 primary",
+   "netsh interface ip set dnsservers \"Ethernet\" source=static address=192.168.10.1",
+   "netsh interface ip set dnsservers Ethernet static 192.168.10.1",
+   "netsh interface ip set dnsservers Ethernet static 192.168.10.1 primary",
+   "netsh interface ip set dnsservers Ethernet source=static address=192.168.10.1",
+   "netsh interface ip set dnsservers name=\"Ethernet\" static 192.168.10.1",
+   "netsh interface ip set dnsservers name=\"Ethernet\" static 192.168.10.1 primary",
+   "netsh interface ip set dnsservers name=\"Ethernet\" source=static address=192.168.10.1",
+   "netsh interface ip set dnsservers name=Ethernet static 192.168.10.1",
+   "netsh interface ip set dnsservers name=Ethernet static 192.168.10.1 primary",
+   "netsh interface ip set dnsservers name=Ethernet source=static address=192.168.10.1",
+   "netsh interface ip set dnsserver \"Ethernet\" static 192.168.10.1",
+   "netsh interface ip set dnsserver \"Ethernet\" static 192.168.10.1 primary",
+   "netsh interface ip set dnsserver \"Ethernet\" source=static address=192.168.10.1",
+   "netsh interface ip set dnsserver Ethernet static 192.168.10.1",
+   "netsh interface ip set dnsserver Ethernet static 192.168.10.1 primary",
+   "netsh interface ip set dnsserver Ethernet source=static address=192.168.10.1",
+   "netsh interface ip set dnsserver name=\"Ethernet\" static 192.168.10.1",
+   "netsh interface ip set dnsserver name=\"Ethernet\" static 192.168.10.1 primary",
+   "netsh interface ip set dnsserver name=\"Ethernet\" source=static address=192.168.10.1",
+   "netsh interface ip set dnsserver name=Ethernet static 192.168.10.1",
+   "netsh interface ip set dnsserver name=Ethernet static 192.168.10.1 primary",
+   "netsh interface ip set dnsserver name=Ethernet source=static address=192.168.10.1",
+   "netsh interface ipv4 set dns \"Ethernet\" static 192.168.10.1",
+   "netsh interface ipv4 set dns \"Ethernet\" static 192.168.10.1 primary",
+   "netsh interface ipv4 set dns \"Ethernet\" source=static address=192.168.10.1",
+   "netsh interface ipv4 set dns Ethernet static 192.168.10.1",
+   "netsh interface ipv4 set dns Ethernet static 192.168.10.1 primary",
+   "netsh interface ipv4 set dns Ethernet source=static address=192.168.10.1",
+   "netsh interface ipv4 set dns name=\"Ethernet\" static 192.168.10.1",
+   "netsh interface ipv4 set dns name=\"Ethernet\" static 192.168.10.1 primary",
+   "netsh interface ipv4 set dns name=\"Ethernet\" source=static address=192.168.10.1",
+   "netsh interface ipv4 set dns name=Ethernet static 192.168.10.1",
+   "netsh interface ipv4 set dns name=Ethernet static 192.168.10.1 primary",
+   "netsh interface ipv4 set dns name=Ethernet source=static address=192.168.10.1",
+   "netsh interface ipv4 set dnsservers \"Ethernet\" static 192.168.10.1",
+   "netsh interface ipv4 set dnsservers \"Ethernet\" static 192.168.10.1 primary",
+   "netsh interface ipv4 set dnsservers \"Ethernet\" source=static address=192.168.10.1",
+   "netsh interface ipv4 set dnsservers Ethernet static 192.168.10.1",
+   "netsh interface ipv4 set dnsservers Ethernet static 192.168.10.1 primary",
+   "netsh interface ipv4 set dnsservers Ethernet source=static address=192.168.10.1",
+   "netsh interface ipv4 set dnsservers name=\"Ethernet\" static 192.168.10.1",
+   "netsh interface ipv4 set dnsservers name=\"Ethernet\" static 192.168.10.1 primary",
+   "netsh interface ipv4 set dnsservers name=\"Ethernet\" source=static address=192.168.10.1",
+   "netsh interface ipv4 set dnsservers name=Ethernet static 192.168.10.1",
+   "netsh interface ipv4 set dnsservers name=Ethernet static 192.168.10.1 primary",
+   "netsh interface ipv4 set dnsservers name=Ethernet source=static address=192.168.10.1",
+   "netsh interface ipv4 set dnsserver \"Ethernet\" static 192.168.10.1",
+   "netsh interface ipv4 set dnsserver \"Ethernet\" static 192.168.10.1 primary",
+   "netsh interface ipv4 set dnsserver \"Ethernet\" source=static address=192.168.10.1",
+   "netsh interface ipv4 set dnsserver Ethernet static 192.168.10.1",
+   "netsh interface ipv4 set dnsserver Ethernet static 192.168.10.1 primary",
+   "netsh interface ipv4 set dnsserver Ethernet source=static address=192.168.10.1",
+   "netsh interface ipv4 set dnsserver name=\"Ethernet\" static 192.168.10.1",
+   "netsh interface ipv4 set dnsserver name=\"Ethernet\" static 192.168.10.1 primary",
+   "netsh interface ipv4 set dnsserver name=\"Ethernet\" source=static address=192.168.10.1",
+   "netsh interface ipv4 set dnsserver name=Ethernet static 192.168.10.1",
+   "netsh interface ipv4 set dnsserver name=Ethernet static 192.168.10.1 primary",
+   "netsh interface ipv4 set dnsserver name=Ethernet source=static address=192.168.10.1",
+   "netsh int ip set dns \"Ethernet\" static 192.168.10.1",
+   "netsh int ip set dns \"Ethernet\" static 192.168.10.1 primary",
+   "netsh int ip set dns \"Ethernet\" source=static address=192.168.10.1",
+   "netsh int ip set dns Ethernet static 192.168.10.1",
+   "netsh int ip set dns Ethernet static 192.168.10.1 primary",
+   "netsh int ip set dns Ethernet source=static address=192.168.10.1",
+   "netsh int ip set dns name=\"Ethernet\" static 192.168.10.1",
+   "netsh int ip set dns name=\"Ethernet\" static 192.168.10.1 primary",
+   "netsh int ip set dns name=\"Ethernet\" source=static address=192.168.10.1",
+   "netsh int ip set dns name=Ethernet static 192.168.10.1",
+   "netsh int ip set dns name=Ethernet static 192.168.10.1 primary",
+   "netsh int ip set dns name=Ethernet source=static address=192.168.10.1",
+   "netsh int ip set dnsservers \"Ethernet\" static 192.168.10.1",
+   "netsh int ip set dnsservers \"Ethernet\" static 192.168.10.1 primary",
+   "netsh int ip set dnsservers \"Ethernet\" source=static address=192.168.10.1",
+   "netsh int ip set dnsservers Ethernet static 192.168.10.1",
+   "netsh int ip set dnsservers Ethernet static 192.168.10.1 primary",
+   "netsh int ip set dnsservers Ethernet source=static address=192.168.10.1",
+   "netsh int ip set dnsservers name=\"Ethernet\" static 192.168.10.1",
+   "netsh int ip set dnsservers name=\"Ethernet\" static 192.168.10.1 primary",
+   "netsh int ip set dnsservers name=\"Ethernet\" source=static address=192.168.10.1",
+   "netsh int ip set dnsservers name=Ethernet static 192.168.10.1",
+   "netsh int ip set dnsservers name=Ethernet static 192.168.10.1 primary",
+   "netsh int ip set dnsservers name=Ethernet source=static address=192.168.10.1",
+   "netsh int ip set dnsserver \"Ethernet\" static 192.168.10.1",
+   "netsh int ip set dnsserver \"Ethernet\" static 192.168.10.1 primary",
+   "netsh int ip set dnsserver \"Ethernet\" source=static address=192.168.10.1",
+   "netsh int ip set dnsserver Ethernet static 192.168.10.1",
+   "netsh int ip set dnsserver Ethernet static 192.168.10.1 primary",
+   "netsh int ip set dnsserver Ethernet source=static address=192.168.10.1",
+   "netsh int ip set dnsserver name=\"Ethernet\" static 192.168.10.1",
+   "netsh int ip set dnsserver name=\"Ethernet\" static 192.168.10.1 primary",
+   "netsh int ip set dnsserver name=\"Ethernet\" source=static address=192.168.10.1",
+   "netsh int ip set dnsserver name=Ethernet static 192.168.10.1",
+   "netsh int ip set dnsserver name=Ethernet static 192.168.10.1 primary",
+   "netsh int ip set dnsserver name=Ethernet source=static address=192.168.10.1",
+   "netsh int ipv4 set dns \"Ethernet\" static 192.168.10.1",
+   "netsh int ipv4 set dns \"Ethernet\" static 192.168.10.1 primary",
+   "netsh int ipv4 set dns \"Ethernet\" source=static address=192.168.10.1",
+   "netsh int ipv4 set dns Ethernet static 192.168.10.1",
+   "netsh int ipv4 set dns Ethernet static 192.168.10.1 primary",
+   "netsh int ipv4 set dns Ethernet source=static address=192.168.10.1",
+   "netsh int ipv4 set dns name=\"Ethernet\" static 192.168.10.1",
+   "netsh int ipv4 set dns name=\"Ethernet\" static 192.168.10.1 primary",
+   "netsh int ipv4 set dns name=\"Ethernet\" source=static address=192.168.10.1",
+   "netsh int ipv4 set dns name=Ethernet static 192.168.10.1",
+   "netsh int ipv4 set dns name=Ethernet static 192.168.10.1 primary",
+   "netsh int ipv4 set dns name=Ethernet source=static address=192.168.10.1",
+   "netsh int ipv4 set dnsservers \"Ethernet\" static 192.168.10.1",
+   "netsh int ipv4 set dnsservers \"Ethernet\" static 192.168.10.1 primary",
+   "netsh int ipv4 set dnsservers \"Ethernet\" source=static address=192.168.10.1",
+   "netsh int ipv4 set dnsservers Ethernet static 192.168.10.1",
+   "netsh int ipv4 set dnsservers Ethernet static 192.168.10.1 primary",
+   "netsh int ipv4 set dnsservers Ethernet source=static address=192.168.10.1",
+   "netsh int ipv4 set dnsservers name=\"Ethernet\" static 192.168.10.1",
+   "netsh int ipv4 set dnsservers name=\"Ethernet\" static 192.168.10.1 primary",
+   "netsh int ipv4 set dnsservers name=\"Ethernet\" source=static address=192.168.10.1",
+   "netsh int ipv4 set dnsservers name=Ethernet static 192.168.10.1",
+   "netsh int ipv4 set dnsservers name=Ethernet static 192.168.10.1 primary",
+   "netsh int ipv4 set dnsservers name=Ethernet source=static address=192.168.10.1",
+   "netsh int ipv4 set dnsserver \"Ethernet\" static 192.168.10.1",
+   "netsh int ipv4 set dnsserver \"Ethernet\" static 192.168.10.1 primary",
+   "netsh int ipv4 set dnsserver \"Ethernet\" source=static address=192.168.10.1",
+   "netsh int ipv4 set dnsserver Ethernet static 192.168.10.1",
+   "netsh int ipv4 set dnsserver Ethernet static 192.168.10.1 primary",
+   "netsh int ipv4 set dnsserver Ethernet source=static address=192.168.10.1",
+   "netsh int ipv4 set dnsserver name=\"Ethernet\" static 192.168.10.1",
+   "netsh int ipv4 set dnsserver name=\"Ethernet\" static 192.168.10.1 primary",
+   "netsh int ipv4 set dnsserver name=\"Ethernet\" source=static address=192.168.10.1",
+   "netsh int ipv4 set dnsserver name=Ethernet static 192.168.10.1",
+   "netsh int ipv4 set dnsserver name=Ethernet static 192.168.10.1 primary",
+   "netsh int ipv4 set dnsserver name=Ethernet source=static address=192.168.10.1"
+  ],
+  "hint": {
+   "pl": "netsh interface ip set dns …",
+   "ru": "netsh interface ip set dns …"
+  },
+  "expl": {
+   "pl": "set dns (dnsservers) static ustawia preferowany serwer DNS dla podanego interfejsu.",
+   "ru": "set dns (dnsservers) static задаёт предпочитаемый DNS-сервер для интерфейса."
+  },
+  "level": 3
+ },
+ {
+  "id": "win-022",
+  "os": "windows",
+  "group": "network",
+  "task": {
+   "pl": "Za pomocą netsh dodaj w zaporze przychodzącą regułę o nazwie pingi zezwalającą na protokół ICMPv4.",
+   "ru": "С помощью netsh добавьте в брандмауэр входящее правило pingi, разрешающее протокол ICMPv4."
+  },
+  "answers": [
+   "netsh advfirewall firewall add rule name=\"pingi\" protocol=icmpv4 dir=in action=allow",
+   "netsh advfirewall firewall add rule name=\"pingi\" protocol=icmpv4 action=allow dir=in",
+   "netsh advfirewall firewall add rule name=\"pingi\" dir=in protocol=icmpv4 action=allow",
+   "netsh advfirewall firewall add rule name=\"pingi\" dir=in action=allow protocol=icmpv4",
+   "netsh advfirewall firewall add rule name=\"pingi\" action=allow protocol=icmpv4 dir=in",
+   "netsh advfirewall firewall add rule name=\"pingi\" action=allow dir=in protocol=icmpv4",
+   "netsh advfirewall firewall add rule name=pingi protocol=icmpv4 dir=in action=allow",
+   "netsh advfirewall firewall add rule name=pingi protocol=icmpv4 action=allow dir=in",
+   "netsh advfirewall firewall add rule name=pingi dir=in protocol=icmpv4 action=allow",
+   "netsh advfirewall firewall add rule name=pingi dir=in action=allow protocol=icmpv4",
+   "netsh advfirewall firewall add rule name=pingi action=allow protocol=icmpv4 dir=in",
+   "netsh advfirewall firewall add rule name=pingi action=allow dir=in protocol=icmpv4"
+  ],
+  "hint": {
+   "pl": "netsh advfirewall firewall add rule name=… protocol=… dir=… action=…",
+   "ru": "netsh advfirewall firewall add rule name=… protocol=… dir=… action=…"
+  },
+  "expl": {
+   "pl": "Reguła dir=in action=allow przepuszcza przychodzące pakiety ICMP, dzięki czemu komputer odpowiada na ping.",
+   "ru": "Правило dir=in action=allow пропускает входящие ICMP-пакеты, и компьютер отвечает на ping."
+  },
+  "level": 3
+ },
+ {
+  "id": "win-023",
+  "os": "windows",
+  "group": "users",
+  "task": {
+   "pl": "Utwórz lokalne konto egzamin z hasłem qwerty.",
+   "ru": "Создайте локальную учётную запись egzamin с паролем qwerty."
+  },
+  "answers": [
+   "net user egzamin qwerty /add",
+   "net user /add egzamin qwerty"
+  ],
+  "hint": {
+   "pl": "net user nazwa hasło + przełącznik dodawania.",
+   "ru": "net user имя пароль + ключ добавления."
+  },
+  "expl": {
+   "pl": "net user z /add tworzy nowe konto lokalne z podanym hasłem.",
+   "ru": "net user с /add создаёт новую локальную учётную запись с указанным паролем."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-024",
+  "os": "windows",
+  "group": "users",
+  "task": {
+   "pl": "Wymuś na użytkowniku test zmianę hasła przy następnym logowaniu (net user).",
+   "ru": "Заставьте пользователя test сменить пароль при следующем входе (net user)."
+  },
+  "answers": [
+   "net user test /logonpasswordchg:yes"
+  ],
+  "hint": {
+   "pl": "Przełącznik /logonpasswordchg.",
+   "ru": "Ключ /logonpasswordchg."
+  },
+  "expl": {
+   "pl": "/logonpasswordchg:yes zaznacza opcję „Użytkownik musi zmienić hasło przy następnym logowaniu”.",
+   "ru": "/logonpasswordchg:yes включает «Пользователь должен сменить пароль при следующем входе»."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-025",
+  "os": "windows",
+  "group": "users",
+  "task": {
+   "pl": "Wyświetl szczegółowe informacje o koncie Gość.",
+   "ru": "Выведите подробную информацию об учётной записи Gość (Гость)."
+  },
+  "answers": [
+   "net user Gość",
+   "net user \"Gość\""
+  ],
+  "hint": {
+   "pl": "net user + nazwa konta (w polskim Windows).",
+   "ru": "net user + имя учётной записи (в польской Windows)."
+  },
+  "expl": {
+   "pl": "net user nazwa pokazuje stan konta, daty haseł, członkostwo w grupach itd.",
+   "ru": "net user имя показывает состояние записи, даты паролей, членство в группах и т.д."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-026",
+  "os": "windows",
+  "group": "users",
+  "task": {
+   "pl": "Usuń konto użytkownika jan.",
+   "ru": "Удалите учётную запись jan."
+  },
+  "answers": [
+   "net user jan /delete",
+   "net user jan /del"
+  ],
+  "hint": {
+   "pl": "Przeciwieństwo /add.",
+   "ru": "Противоположность /add."
+  },
+  "expl": {
+   "pl": "net user nazwa /delete usuwa konto lokalne.",
+   "ru": "net user имя /delete удаляет локальную учётную запись."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-027",
+  "os": "windows",
+  "group": "users",
+  "task": {
+   "pl": "Dodaj użytkownika jan do lokalnej grupy Administratorzy (polska wersja Windows).",
+   "ru": "Добавьте пользователя jan в локальную группу Administratorzy (польская Windows)."
+  },
+  "answers": [
+   "net localgroup Administratorzy jan /add",
+   "net localgroup \"Administratorzy\" jan /add",
+   "net localgroup Administratorzy /add jan"
+  ],
+  "hint": {
+   "pl": "net localgroup grupa użytkownik /add – nazwa grupy po polsku.",
+   "ru": "net localgroup группа пользователь /add — имя группы по-польски."
+  },
+  "expl": {
+   "pl": "W polskim Windows grupa Administrators nazywa się Administratorzy; członkowie mają pełne uprawnienia.",
+   "ru": "В польской Windows группа Administrators называется Administratorzy; её члены имеют полные права."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-028",
+  "os": "windows",
+  "group": "users",
+  "task": {
+   "pl": "Wyświetl członków lokalnej grupy Użytkownicy.",
+   "ru": "Выведите членов локальной группы Użytkownicy (Пользователи)."
+  },
+  "answers": [
+   "net localgroup Użytkownicy",
+   "net localgroup \"Użytkownicy\""
+  ],
+  "hint": {
+   "pl": "net localgroup + nazwa grupy, bez przełączników.",
+   "ru": "net localgroup + имя группы, без ключей."
+  },
+  "expl": {
+   "pl": "net localgroup nazwa wypisuje konta należące do grupy (w EN: Users).",
+   "ru": "net localgroup имя выводит учётные записи группы (в EN: Users)."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-029",
+  "os": "windows",
+  "group": "users",
+  "task": {
+   "pl": "Ustaw minimalną długość hasła na 8 znaków (net).",
+   "ru": "Установите минимальную длину пароля 8 символов (net)."
+  },
+  "answers": [
+   "net accounts /minpwlen:8"
+  ],
+  "hint": {
+   "pl": "net accounts + /minpwlen.",
+   "ru": "net accounts + /minpwlen."
+  },
+  "expl": {
+   "pl": "net accounts zmienia zasady haseł i logowania dla wszystkich kont lokalnych.",
+   "ru": "net accounts меняет политику паролей и входа для всех локальных учётных записей."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-030",
+  "os": "windows",
+  "group": "users",
+  "task": {
+   "pl": "Wyświetl nazwę zalogowanego użytkownika (z nazwą domeny/komputera).",
+   "ru": "Выведите имя вошедшего пользователя (с именем домена/компьютера)."
+  },
+  "answers": [
+   "whoami"
+  ],
+  "hint": {
+   "pl": "„Kim jestem?”.",
+   "ru": "«Кто я?»."
+  },
+  "expl": {
+   "pl": "whoami wypisuje konto w formacie komputer\\użytkownik lub domena\\użytkownik.",
+   "ru": "whoami выводит учётную запись в формате компьютер\\пользователь или домен\\пользователь."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-031",
+  "os": "windows",
+  "group": "users",
+  "task": {
+   "pl": "Otwórz zaawansowane okno „Konta użytkowników” (netplwiz) z wiersza poleceń.",
+   "ru": "Откройте расширенное окно «Учётные записи пользователей» (netplwiz) из командной строки."
+  },
+  "answers": [
+   "control userpasswords2",
+   "netplwiz"
+  ],
+  "hint": {
+   "pl": "control + userpasswords…",
+   "ru": "control + userpasswords…"
+  },
+  "expl": {
+   "pl": "control userpasswords2 uruchamia narzędzie do zarządzania kontami i automatycznym logowaniem.",
+   "ru": "control userpasswords2 запускает инструмент управления учётными записями и автовходом."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-032",
+  "os": "windows",
+  "group": "cmd",
+  "task": {
+   "pl": "Udostępnij folder C:\\Dane w sieci pod nazwą Dane.",
+   "ru": "Откройте общий доступ к папке C:\\Dane под именем Dane."
+  },
+  "answers": [
+   "net share Dane=C:\\Dane",
+   "net share Dane=\"C:\\Dane\"",
+   "net share \"Dane=C:\\Dane\""
+  ],
+  "hint": {
+   "pl": "net share nazwa=ścieżka.",
+   "ru": "net share имя=путь."
+  },
+  "expl": {
+   "pl": "net share tworzy udział SMB; domyślnie grupa Wszyscy ma prawo odczytu.",
+   "ru": "net share создаёт SMB-ресурс; по умолчанию группа Wszyscy (Все) имеет чтение."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-033",
+  "os": "windows",
+  "group": "cmd",
+  "task": {
+   "pl": "Udostępnij folder C:\\Dane pod nazwą Dane z pełnym dostępem dla grupy Wszyscy.",
+   "ru": "Откройте общий доступ к C:\\Dane под именем Dane с полным доступом для группы Wszyscy (Все)."
+  },
+  "answers": [
+   "net share Dane=C:\\Dane /grant:Wszyscy,FULL",
+   "net share Dane=\"C:\\Dane\" /grant:Wszyscy,FULL",
+   "net share Dane=C:\\Dane /grant:\"Wszyscy\",FULL",
+   "net share Dane=C:\\Dane /grant:Wszyscy,F"
+  ],
+  "hint": {
+   "pl": "Dodaj przełącznik /grant:użytkownik,uprawnienie.",
+   "ru": "Добавьте ключ /grant:пользователь,право."
+  },
+  "expl": {
+   "pl": "/grant nadaje uprawnienia udziału (READ, CHANGE, FULL); Wszyscy to polska nazwa grupy Everyone.",
+   "ru": "/grant выдаёт права на ресурс (READ, CHANGE, FULL); Wszyscy — польское имя группы Everyone."
+  },
+  "level": 3
+ },
+ {
+  "id": "win-034",
+  "os": "windows",
+  "group": "cmd",
+  "task": {
+   "pl": "Zamapuj udział \\\\SERWER\\Dane jako dysk sieciowy Z:.",
+   "ru": "Подключите ресурс \\\\SERWER\\Dane как сетевой диск Z:."
+  },
+  "answers": [
+   "net use Z: \\\\SERWER\\Dane",
+   "net use Z: \\\\SERWER\\Dane /persistent:yes",
+   "net use Z: \"\\\\SERWER\\Dane\""
+  ],
+  "hint": {
+   "pl": "net use litera: ścieżka UNC.",
+   "ru": "net use буква: UNC-путь."
+  },
+  "expl": {
+   "pl": "net use przypisuje literę dysku do udziału sieciowego; /persistent:yes przywraca go po ponownym logowaniu.",
+   "ru": "net use назначает букву диска сетевому ресурсу; /persistent:yes восстанавливает его после входа."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-035",
+  "os": "windows",
+  "group": "services",
+  "task": {
+   "pl": "Zatrzymaj usługę bufora wydruku (Spooler) z wiersza poleceń.",
+   "ru": "Остановите службу диспетчера печати (Spooler) из командной строки."
+  },
+  "answers": [
+   "net stop spooler",
+   "net stop \"Bufor wydruku\"",
+   "sc stop spooler"
+  ],
+  "hint": {
+   "pl": "net + stop + nazwa usługi.",
+   "ru": "net + stop + имя службы."
+  },
+  "expl": {
+   "pl": "net stop zatrzymuje usługę po jej nazwie krótkiej lub wyświetlanej.",
+   "ru": "net stop останавливает службу по короткому или отображаемому имени."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-036",
+  "os": "windows",
+  "group": "disks",
+  "task": {
+   "pl": "Sprawdź dysk C: i napraw błędy systemu plików.",
+   "ru": "Проверьте диск C: и исправьте ошибки файловой системы."
+  },
+  "answers": [
+   "chkdsk C: /f",
+   "chkdsk /f C:",
+   "chkdsk /f"
+  ],
+  "hint": {
+   "pl": "chkdsk + litera + przełącznik „fix”.",
+   "ru": "chkdsk + буква + ключ «fix»."
+  },
+  "expl": {
+   "pl": "/f naprawia błędy; dla używanego dysku systemowego skanowanie zostanie zaplanowane na restart.",
+   "ru": "/f исправляет ошибки; для системного диска проверка будет запланирована на перезагрузку."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-037",
+  "os": "windows",
+  "group": "system",
+  "task": {
+   "pl": "Sprawdź integralność chronionych plików systemowych i napraw uszkodzone.",
+   "ru": "Проверьте целостность защищённых системных файлов и восстановите повреждённые."
+  },
+  "answers": [
+   "sfc /scannow"
+  ],
+  "hint": {
+   "pl": "System File Checker + „skanuj teraz”.",
+   "ru": "System File Checker + «сканировать сейчас»."
+  },
+  "expl": {
+   "pl": "sfc /scannow porównuje pliki systemowe z kopią wzorcową i zastępuje uszkodzone.",
+   "ru": "sfc /scannow сравнивает системные файлы с эталонной копией и заменяет повреждённые."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-038",
+  "os": "windows",
+  "group": "disks",
+  "task": {
+   "pl": "Uruchom wiersz poleceń narzędzia do zarządzania dyskami i partycjami.",
+   "ru": "Запустите консольную утилиту управления дисками и разделами."
+  },
+  "answers": [
+   "diskpart"
+  ],
+  "hint": {
+   "pl": "disk + part(ition).",
+   "ru": "disk + part(ition)."
+  },
+  "expl": {
+   "pl": "diskpart otwiera interaktywną konsolę DISKPART> do operacji na dyskach, partycjach i woluminach.",
+   "ru": "diskpart открывает интерактивную консоль DISKPART> для работы с дисками, разделами и томами."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-039",
+  "os": "windows",
+  "group": "disks",
+  "task": {
+   "pl": "W konsoli diskpart wyświetl listę dysków fizycznych.",
+   "ru": "В консоли diskpart выведите список физических дисков."
+  },
+  "answers": [
+   "list disk"
+  ],
+  "hint": {
+   "pl": "list + obiekt.",
+   "ru": "list + объект."
+  },
+  "expl": {
+   "pl": "list disk pokazuje numery dysków, rozmiar, wolne miejsce i styl partycji (gwiazdka w kolumnie GPT).",
+   "ru": "list disk показывает номера дисков, размер, свободное место и стиль разделов (звёздочка в GPT)."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-040",
+  "os": "windows",
+  "group": "disks",
+  "task": {
+   "pl": "W diskpart przekonwertuj wybrany (pusty) dysk z GPT na MBR.",
+   "ru": "В diskpart преобразуйте выбранный (пустой) диск из GPT в MBR."
+  },
+  "answers": [
+   "convert mbr"
+  ],
+  "hint": {
+   "pl": "convert + docelowy styl partycji.",
+   "ru": "convert + целевой стиль разделов."
+  },
+  "expl": {
+   "pl": "convert mbr zmienia styl partycjonowania; dysk musi być pusty (wcześniej clean).",
+   "ru": "convert mbr меняет стиль разметки; диск должен быть пустым (сначала clean)."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-041",
+  "os": "windows",
+  "group": "disks",
+  "task": {
+   "pl": "W diskpart sformatuj wybraną partycję szybko w systemie NTFS z etykietą Dane.",
+   "ru": "В diskpart быстро отформатируйте выбранный раздел в NTFS с меткой Dane."
+  },
+  "answers": [
+   "format fs=ntfs quick label=Dane",
+   "format fs=ntfs label=Dane quick",
+   "format quick fs=ntfs label=Dane",
+   "format fs=ntfs label=\"Dane\" quick",
+   "format fs=ntfs quick label=\"Dane\""
+  ],
+  "hint": {
+   "pl": "format fs=… quick label=…",
+   "ru": "format fs=… quick label=…"
+  },
+  "expl": {
+   "pl": "fs wybiera system plików, quick pomija skanowanie sektorów, label nadaje etykietę woluminu.",
+   "ru": "fs выбирает файловую систему, quick пропускает проверку секторов, label задаёт метку тома."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-042",
+  "os": "windows",
+  "group": "system",
+  "task": {
+   "pl": "Wymuś natychmiastowe odświeżenie zasad grupy (GPO) na komputerze.",
+   "ru": "Принудительно обновите групповые политики (GPO) на компьютере."
+  },
+  "answers": [
+   "gpupdate /force"
+  ],
+  "hint": {
+   "pl": "gpupdate + przełącznik wymuszenia.",
+   "ru": "gpupdate + ключ принудительности."
+  },
+  "expl": {
+   "pl": "/force ponownie stosuje wszystkie ustawienia zasad, a nie tylko zmienione.",
+   "ru": "/force заново применяет все параметры политик, а не только изменённые."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-043",
+  "os": "windows",
+  "group": "system",
+  "task": {
+   "pl": "Wyświetl wynikowy zestaw zasad (RSoP) – podsumowanie zastosowanych GPO.",
+   "ru": "Выведите результирующий набор политик (RSoP) — сводку применённых GPO."
+  },
+  "answers": [
+   "gpresult /r",
+   "gpresult /r /scope computer",
+   "gpresult /r /scope user"
+  ],
+  "hint": {
+   "pl": "gp + result, przełącznik raportu podsumowującego.",
+   "ru": "gp + result, ключ сводного отчёта."
+  },
+  "expl": {
+   "pl": "gpresult /r pokazuje, które obiekty zasad grupy zostały zastosowane dla użytkownika i komputera.",
+   "ru": "gpresult /r показывает, какие объекты групповой политики применены к пользователю и компьютеру."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-044",
+  "os": "windows",
+  "group": "system",
+  "task": {
+   "pl": "Uruchom ponownie komputer natychmiast (bez opóźnienia).",
+   "ru": "Немедленно перезагрузите компьютер (без задержки)."
+  },
+  "answers": [
+   "shutdown /r /t 0",
+   "shutdown /r /t 00",
+   "shutdown -r -t 0",
+   "shutdown -r -t 00",
+   "shutdown /t 0 /r"
+  ],
+  "hint": {
+   "pl": "shutdown: restart + czas 0.",
+   "ru": "shutdown: restart + время 0."
+  },
+  "expl": {
+   "pl": "/r oznacza ponowne uruchomienie, a /t 0 ustawia opóźnienie na zero sekund.",
+   "ru": "/r означает перезагрузку, а /t 0 задаёт задержку ноль секунд."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-045",
+  "os": "windows",
+  "group": "system",
+  "task": {
+   "pl": "Wyświetl szczegółowe informacje o systemie (wersja, poprawki, RAM, karty sieciowe).",
+   "ru": "Выведите подробную информацию о системе (версия, обновления, RAM, сетевые адаптеры)."
+  },
+  "answers": [
+   "systeminfo"
+  ],
+  "hint": {
+   "pl": "system + info, razem.",
+   "ru": "system + info, слитно."
+  },
+  "expl": {
+   "pl": "systeminfo pokazuje m.in. wersję i kompilację Windows, datę instalacji, pamięć i zainstalowane poprawki.",
+   "ru": "systeminfo показывает версию и сборку Windows, дату установки, память и установленные обновления."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-046",
+  "os": "windows",
+  "group": "system",
+  "task": {
+   "pl": "Uruchom narzędzie Konfiguracja systemu (opcje rozruchu, usługi startowe).",
+   "ru": "Запустите утилиту «Конфигурация системы» (параметры загрузки, службы)."
+  },
+  "answers": [
+   "msconfig"
+  ],
+  "hint": {
+   "pl": "ms + config.",
+   "ru": "ms + config."
+  },
+  "expl": {
+   "pl": "msconfig pozwala m.in. ustawić tryb awaryjny, opcje rozruchu i wyłączyć usługi.",
+   "ru": "msconfig позволяет включить безопасный режим, настроить загрузку и отключить службы."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-047",
+  "os": "windows",
+  "group": "processes",
+  "task": {
+   "pl": "Wyświetl listę uruchomionych procesów.",
+   "ru": "Выведите список запущенных процессов."
+  },
+  "answers": [
+   "tasklist"
+  ],
+  "hint": {
+   "pl": "task + list.",
+   "ru": "task + list."
+  },
+  "expl": {
+   "pl": "tasklist pokazuje nazwy obrazów, PID, sesję i zużycie pamięci procesów.",
+   "ru": "tasklist показывает имена образов, PID, сеанс и потребление памяти процессов."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-048",
+  "os": "windows",
+  "group": "processes",
+  "task": {
+   "pl": "Wymuś zakończenie wszystkich procesów notepad.exe (po nazwie obrazu).",
+   "ru": "Принудительно завершите все процессы notepad.exe (по имени образа)."
+  },
+  "answers": [
+   "taskkill /im notepad.exe /f",
+   "taskkill /f /im notepad.exe",
+   "taskkill -im notepad.exe -f",
+   "taskkill -f -im notepad.exe",
+   "taskkill /IM notepad.exe /F"
+  ],
+  "hint": {
+   "pl": "taskkill: /im nazwa + wymuszenie.",
+   "ru": "taskkill: /im имя + принудительно."
+  },
+  "expl": {
+   "pl": "/im wskazuje proces po nazwie pliku, /f wymusza zakończenie.",
+   "ru": "/im указывает процесс по имени файла, /f принудительно завершает."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-049",
+  "os": "windows",
+  "group": "cmd",
+  "task": {
+   "pl": "Utwórz katalog C:\\Egzamin\\Raporty (z brakującymi katalogami nadrzędnymi).",
+   "ru": "Создайте каталог C:\\Egzamin\\Raporty (вместе с отсутствующими родительскими)."
+  },
+  "answers": [
+   "mkdir C:\\Egzamin\\Raporty",
+   "md C:\\Egzamin\\Raporty",
+   "mkdir \"C:\\Egzamin\\Raporty\"",
+   "md \"C:\\Egzamin\\Raporty\""
+  ],
+  "hint": {
+   "pl": "mkdir lub skrót md.",
+   "ru": "mkdir или сокращение md."
+  },
+  "expl": {
+   "pl": "W cmd (z włączonymi rozszerzeniami) mkdir tworzy od razu wszystkie brakujące katalogi w ścieżce.",
+   "ru": "В cmd (с расширениями) mkdir сразу создаёт все недостающие каталоги пути."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-050",
+  "os": "windows",
+  "group": "cmd",
+  "task": {
+   "pl": "Skopiuj folder C:\\Dane z podfolderami (także pustymi) do D:\\Kopia.",
+   "ru": "Скопируйте папку C:\\Dane с подпапками (включая пустые) в D:\\Kopia."
+  },
+  "answers": [
+   "robocopy C:\\Dane D:\\Kopia /e",
+   "robocopy C:\\Dane D:\\Kopia /s /e",
+   "xcopy C:\\Dane D:\\Kopia /e /i",
+   "xcopy C:\\Dane D:\\Kopia /e",
+   "xcopy C:\\Dane D:\\Kopia /s /e /i",
+   "xcopy C:\\Dane D:\\Kopia /i /e"
+  ],
+  "hint": {
+   "pl": "robocopy lub xcopy z przełącznikiem /e.",
+   "ru": "robocopy или xcopy с ключом /e."
+  },
+  "expl": {
+   "pl": "/e kopiuje wszystkie podkatalogi, łącznie z pustymi; w xcopy /i traktuje cel jako katalog.",
+   "ru": "/e копирует все подкаталоги, включая пустые; в xcopy /i считает цель каталогом."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-051",
+  "os": "windows",
+  "group": "cmd",
+  "task": {
+   "pl": "W skrypcie wsadowym (.bat) wyświetl pierwszy parametr wywołania.",
+   "ru": "В пакетном скрипте (.bat) выведите первый параметр вызова."
+  },
+  "answers": [
+   "echo %1",
+   "echo %~1"
+  ],
+  "hint": {
+   "pl": "Parametry w .bat oznacza się znakiem procentu i numerem.",
+   "ru": "Параметры в .bat обозначаются знаком процента и номером."
+  },
+  "expl": {
+   "pl": "%1 to pierwszy argument skryptu wsadowego, %2 drugi, a %0 nazwa samego skryptu.",
+   "ru": "%1 — первый аргумент пакетного скрипта, %2 — второй, %0 — имя самого скрипта."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-052",
+  "os": "windows",
+  "group": "cmd",
+  "task": {
+   "pl": "W skrypcie plik2.bat skopiuj z folderu dane do folderu archiwum2 pliki o rozszerzeniu podanym jako pierwszy parametr.",
+   "ru": "В скрипте plik2.bat скопируйте из папки dane в папку archiwum2 файлы с расширением, переданным первым параметром."
+  },
+  "answers": [
+   "copy dane\\*.%1 archiwum2",
+   "copy dane\\*.%1 archiwum2\\",
+   "xcopy dane\\*.%1 archiwum2",
+   "xcopy dane\\*.%1 archiwum2\\",
+   "copy .\\dane\\*.%1 .\\archiwum2",
+   "copy dane\\*.%~1 archiwum2"
+  ],
+  "hint": {
+   "pl": "Symbol wieloznaczny * połączony z %1.",
+   "ru": "Подстановочный знак * в сочетании с %1."
+  },
+  "expl": {
+   "pl": "Wzorzec *.%1 po podstawieniu parametru (np. txt) dopasowuje wszystkie pliki *.txt.",
+   "ru": "Шаблон *.%1 после подстановки параметра (например, txt) соответствует всем файлам *.txt."
+  },
+  "level": 3
+ },
+ {
+  "id": "win-053",
+  "os": "windows",
+  "group": "cmd",
+  "task": {
+   "pl": "W skrypcie .bat zatrzymaj wykonanie, aby okno nie zamknęło się, dopóki użytkownik nie naciśnie klawisza.",
+   "ru": "В скрипте .bat приостановите выполнение, чтобы окно не закрылось, пока пользователь не нажмёт клавишу."
+  },
+  "answers": [
+   "pause"
+  ],
+  "hint": {
+   "pl": "Słowo oznaczające „pauza”.",
+   "ru": "Слово, означающее «пауза»."
+  },
+  "expl": {
+   "pl": "pause wyświetla komunikat „Naciśnij dowolny klawisz…” i czeka na reakcję.",
+   "ru": "pause выводит «Нажмите любую клавишу…» и ждёт реакции."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-054",
+  "os": "windows",
+  "group": "cmd",
+  "task": {
+   "pl": "W skrypcie .bat wyłącz wyświetlanie wykonywanych poleceń (łącznie z tą linią).",
+   "ru": "В скрипте .bat отключите отображение выполняемых команд (включая эту строку)."
+  },
+  "answers": [
+   "@echo off"
+  ],
+  "hint": {
+   "pl": "echo off poprzedzone znakiem, który ukrywa samą linię.",
+   "ru": "echo off с символом, скрывающим саму строку."
+  },
+  "expl": {
+   "pl": "echo off wyłącza echo poleceń, a @ ukrywa również tę jedną linię.",
+   "ru": "echo off отключает эхо команд, а @ скрывает и саму эту строку."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-055",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell wyświetl konfigurację adresów IP wszystkich interfejsów.",
+   "ru": "В PowerShell выведите конфигурацию IP-адресов всех интерфейсов."
+  },
+  "answers": [
+   "Get-NetIPAddress",
+   "Get-NetIPConfiguration",
+   "Get-NetIPAddress -AddressFamily IPv4"
+  ],
+  "hint": {
+   "pl": "Czasownik Get + rzeczownik NetIPAddress.",
+   "ru": "Глагол Get + существительное NetIPAddress."
+  },
+  "expl": {
+   "pl": "Get-NetIPAddress zwraca obiekty adresów IP z aliasem interfejsu, prefiksem i źródłem (Dhcp/Manual).",
+   "ru": "Get-NetIPAddress возвращает объекты IP-адресов с алиасом интерфейса, префиксом и источником (Dhcp/Manual)."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-056",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell ustaw na karcie Ethernet adres 192.168.10.2/24 z bramą domyślną 192.168.10.1.",
+   "ru": "В PowerShell задайте адаптеру Ethernet адрес 192.168.10.2/24 со шлюзом по умолчанию 192.168.10.1."
+  },
+  "answers": [
+   "New-NetIPAddress -InterfaceAlias \"Ethernet\" -IPAddress 192.168.10.2 -PrefixLength 24 -DefaultGateway 192.168.10.1",
+   "New-NetIPAddress -InterfaceAlias \"Ethernet\" -IPAddress 192.168.10.2 -DefaultGateway 192.168.10.1 -PrefixLength 24",
+   "New-NetIPAddress -InterfaceAlias \"Ethernet\" -PrefixLength 24 -IPAddress 192.168.10.2 -DefaultGateway 192.168.10.1",
+   "New-NetIPAddress -InterfaceAlias \"Ethernet\" -PrefixLength 24 -DefaultGateway 192.168.10.1 -IPAddress 192.168.10.2",
+   "New-NetIPAddress -InterfaceAlias \"Ethernet\" -DefaultGateway 192.168.10.1 -IPAddress 192.168.10.2 -PrefixLength 24",
+   "New-NetIPAddress -InterfaceAlias \"Ethernet\" -DefaultGateway 192.168.10.1 -PrefixLength 24 -IPAddress 192.168.10.2",
+   "New-NetIPAddress -IPAddress 192.168.10.2 -InterfaceAlias \"Ethernet\" -PrefixLength 24 -DefaultGateway 192.168.10.1",
+   "New-NetIPAddress -IPAddress 192.168.10.2 -InterfaceAlias \"Ethernet\" -DefaultGateway 192.168.10.1 -PrefixLength 24",
+   "New-NetIPAddress -IPAddress 192.168.10.2 -PrefixLength 24 -InterfaceAlias \"Ethernet\" -DefaultGateway 192.168.10.1",
+   "New-NetIPAddress -IPAddress 192.168.10.2 -PrefixLength 24 -DefaultGateway 192.168.10.1 -InterfaceAlias \"Ethernet\"",
+   "New-NetIPAddress -IPAddress 192.168.10.2 -DefaultGateway 192.168.10.1 -InterfaceAlias \"Ethernet\" -PrefixLength 24",
+   "New-NetIPAddress -IPAddress 192.168.10.2 -DefaultGateway 192.168.10.1 -PrefixLength 24 -InterfaceAlias \"Ethernet\"",
+   "New-NetIPAddress -PrefixLength 24 -InterfaceAlias \"Ethernet\" -IPAddress 192.168.10.2 -DefaultGateway 192.168.10.1",
+   "New-NetIPAddress -PrefixLength 24 -InterfaceAlias \"Ethernet\" -DefaultGateway 192.168.10.1 -IPAddress 192.168.10.2",
+   "New-NetIPAddress -PrefixLength 24 -IPAddress 192.168.10.2 -InterfaceAlias \"Ethernet\" -DefaultGateway 192.168.10.1",
+   "New-NetIPAddress -PrefixLength 24 -IPAddress 192.168.10.2 -DefaultGateway 192.168.10.1 -InterfaceAlias \"Ethernet\"",
+   "New-NetIPAddress -PrefixLength 24 -DefaultGateway 192.168.10.1 -InterfaceAlias \"Ethernet\" -IPAddress 192.168.10.2",
+   "New-NetIPAddress -PrefixLength 24 -DefaultGateway 192.168.10.1 -IPAddress 192.168.10.2 -InterfaceAlias \"Ethernet\"",
+   "New-NetIPAddress -DefaultGateway 192.168.10.1 -InterfaceAlias \"Ethernet\" -IPAddress 192.168.10.2 -PrefixLength 24",
+   "New-NetIPAddress -DefaultGateway 192.168.10.1 -InterfaceAlias \"Ethernet\" -PrefixLength 24 -IPAddress 192.168.10.2",
+   "New-NetIPAddress -DefaultGateway 192.168.10.1 -IPAddress 192.168.10.2 -InterfaceAlias \"Ethernet\" -PrefixLength 24",
+   "New-NetIPAddress -DefaultGateway 192.168.10.1 -IPAddress 192.168.10.2 -PrefixLength 24 -InterfaceAlias \"Ethernet\"",
+   "New-NetIPAddress -DefaultGateway 192.168.10.1 -PrefixLength 24 -InterfaceAlias \"Ethernet\" -IPAddress 192.168.10.2",
+   "New-NetIPAddress -DefaultGateway 192.168.10.1 -PrefixLength 24 -IPAddress 192.168.10.2 -InterfaceAlias \"Ethernet\"",
+   "New-NetIPAddress -InterfaceAlias Ethernet -IPAddress 192.168.10.2 -PrefixLength 24 -DefaultGateway 192.168.10.1",
+   "New-NetIPAddress -InterfaceAlias Ethernet -IPAddress 192.168.10.2 -DefaultGateway 192.168.10.1 -PrefixLength 24",
+   "New-NetIPAddress -InterfaceAlias Ethernet -PrefixLength 24 -IPAddress 192.168.10.2 -DefaultGateway 192.168.10.1",
+   "New-NetIPAddress -InterfaceAlias Ethernet -PrefixLength 24 -DefaultGateway 192.168.10.1 -IPAddress 192.168.10.2",
+   "New-NetIPAddress -InterfaceAlias Ethernet -DefaultGateway 192.168.10.1 -IPAddress 192.168.10.2 -PrefixLength 24",
+   "New-NetIPAddress -InterfaceAlias Ethernet -DefaultGateway 192.168.10.1 -PrefixLength 24 -IPAddress 192.168.10.2",
+   "New-NetIPAddress -IPAddress 192.168.10.2 -InterfaceAlias Ethernet -PrefixLength 24 -DefaultGateway 192.168.10.1",
+   "New-NetIPAddress -IPAddress 192.168.10.2 -InterfaceAlias Ethernet -DefaultGateway 192.168.10.1 -PrefixLength 24",
+   "New-NetIPAddress -IPAddress 192.168.10.2 -PrefixLength 24 -InterfaceAlias Ethernet -DefaultGateway 192.168.10.1",
+   "New-NetIPAddress -IPAddress 192.168.10.2 -PrefixLength 24 -DefaultGateway 192.168.10.1 -InterfaceAlias Ethernet",
+   "New-NetIPAddress -IPAddress 192.168.10.2 -DefaultGateway 192.168.10.1 -InterfaceAlias Ethernet -PrefixLength 24",
+   "New-NetIPAddress -IPAddress 192.168.10.2 -DefaultGateway 192.168.10.1 -PrefixLength 24 -InterfaceAlias Ethernet",
+   "New-NetIPAddress -PrefixLength 24 -InterfaceAlias Ethernet -IPAddress 192.168.10.2 -DefaultGateway 192.168.10.1",
+   "New-NetIPAddress -PrefixLength 24 -InterfaceAlias Ethernet -DefaultGateway 192.168.10.1 -IPAddress 192.168.10.2",
+   "New-NetIPAddress -PrefixLength 24 -IPAddress 192.168.10.2 -InterfaceAlias Ethernet -DefaultGateway 192.168.10.1",
+   "New-NetIPAddress -PrefixLength 24 -IPAddress 192.168.10.2 -DefaultGateway 192.168.10.1 -InterfaceAlias Ethernet",
+   "New-NetIPAddress -PrefixLength 24 -DefaultGateway 192.168.10.1 -InterfaceAlias Ethernet -IPAddress 192.168.10.2",
+   "New-NetIPAddress -PrefixLength 24 -DefaultGateway 192.168.10.1 -IPAddress 192.168.10.2 -InterfaceAlias Ethernet",
+   "New-NetIPAddress -DefaultGateway 192.168.10.1 -InterfaceAlias Ethernet -IPAddress 192.168.10.2 -PrefixLength 24",
+   "New-NetIPAddress -DefaultGateway 192.168.10.1 -InterfaceAlias Ethernet -PrefixLength 24 -IPAddress 192.168.10.2",
+   "New-NetIPAddress -DefaultGateway 192.168.10.1 -IPAddress 192.168.10.2 -InterfaceAlias Ethernet -PrefixLength 24",
+   "New-NetIPAddress -DefaultGateway 192.168.10.1 -IPAddress 192.168.10.2 -PrefixLength 24 -InterfaceAlias Ethernet",
+   "New-NetIPAddress -DefaultGateway 192.168.10.1 -PrefixLength 24 -InterfaceAlias Ethernet -IPAddress 192.168.10.2",
+   "New-NetIPAddress -DefaultGateway 192.168.10.1 -PrefixLength 24 -IPAddress 192.168.10.2 -InterfaceAlias Ethernet",
+   "New-NetIPAddress -InterfaceAlias 'Ethernet' -IPAddress 192.168.10.2 -PrefixLength 24 -DefaultGateway 192.168.10.1",
+   "New-NetIPAddress -InterfaceAlias 'Ethernet' -IPAddress 192.168.10.2 -DefaultGateway 192.168.10.1 -PrefixLength 24",
+   "New-NetIPAddress -InterfaceAlias 'Ethernet' -PrefixLength 24 -IPAddress 192.168.10.2 -DefaultGateway 192.168.10.1",
+   "New-NetIPAddress -InterfaceAlias 'Ethernet' -PrefixLength 24 -DefaultGateway 192.168.10.1 -IPAddress 192.168.10.2",
+   "New-NetIPAddress -InterfaceAlias 'Ethernet' -DefaultGateway 192.168.10.1 -IPAddress 192.168.10.2 -PrefixLength 24",
+   "New-NetIPAddress -InterfaceAlias 'Ethernet' -DefaultGateway 192.168.10.1 -PrefixLength 24 -IPAddress 192.168.10.2",
+   "New-NetIPAddress -IPAddress 192.168.10.2 -InterfaceAlias 'Ethernet' -PrefixLength 24 -DefaultGateway 192.168.10.1",
+   "New-NetIPAddress -IPAddress 192.168.10.2 -InterfaceAlias 'Ethernet' -DefaultGateway 192.168.10.1 -PrefixLength 24",
+   "New-NetIPAddress -IPAddress 192.168.10.2 -PrefixLength 24 -InterfaceAlias 'Ethernet' -DefaultGateway 192.168.10.1",
+   "New-NetIPAddress -IPAddress 192.168.10.2 -PrefixLength 24 -DefaultGateway 192.168.10.1 -InterfaceAlias 'Ethernet'",
+   "New-NetIPAddress -IPAddress 192.168.10.2 -DefaultGateway 192.168.10.1 -InterfaceAlias 'Ethernet' -PrefixLength 24",
+   "New-NetIPAddress -IPAddress 192.168.10.2 -DefaultGateway 192.168.10.1 -PrefixLength 24 -InterfaceAlias 'Ethernet'",
+   "New-NetIPAddress -PrefixLength 24 -InterfaceAlias 'Ethernet' -IPAddress 192.168.10.2 -DefaultGateway 192.168.10.1",
+   "New-NetIPAddress -PrefixLength 24 -InterfaceAlias 'Ethernet' -DefaultGateway 192.168.10.1 -IPAddress 192.168.10.2",
+   "New-NetIPAddress -PrefixLength 24 -IPAddress 192.168.10.2 -InterfaceAlias 'Ethernet' -DefaultGateway 192.168.10.1",
+   "New-NetIPAddress -PrefixLength 24 -IPAddress 192.168.10.2 -DefaultGateway 192.168.10.1 -InterfaceAlias 'Ethernet'",
+   "New-NetIPAddress -PrefixLength 24 -DefaultGateway 192.168.10.1 -InterfaceAlias 'Ethernet' -IPAddress 192.168.10.2",
+   "New-NetIPAddress -PrefixLength 24 -DefaultGateway 192.168.10.1 -IPAddress 192.168.10.2 -InterfaceAlias 'Ethernet'",
+   "New-NetIPAddress -DefaultGateway 192.168.10.1 -InterfaceAlias 'Ethernet' -IPAddress 192.168.10.2 -PrefixLength 24",
+   "New-NetIPAddress -DefaultGateway 192.168.10.1 -InterfaceAlias 'Ethernet' -PrefixLength 24 -IPAddress 192.168.10.2",
+   "New-NetIPAddress -DefaultGateway 192.168.10.1 -IPAddress 192.168.10.2 -InterfaceAlias 'Ethernet' -PrefixLength 24",
+   "New-NetIPAddress -DefaultGateway 192.168.10.1 -IPAddress 192.168.10.2 -PrefixLength 24 -InterfaceAlias 'Ethernet'",
+   "New-NetIPAddress -DefaultGateway 192.168.10.1 -PrefixLength 24 -InterfaceAlias 'Ethernet' -IPAddress 192.168.10.2",
+   "New-NetIPAddress -DefaultGateway 192.168.10.1 -PrefixLength 24 -IPAddress 192.168.10.2 -InterfaceAlias 'Ethernet'"
+  ],
+  "hint": {
+   "pl": "New-NetIPAddress z parametrami -InterfaceAlias, -IPAddress, -PrefixLength, -DefaultGateway.",
+   "ru": "New-NetIPAddress с параметрами -InterfaceAlias, -IPAddress, -PrefixLength, -DefaultGateway."
+  },
+  "expl": {
+   "pl": "New-NetIPAddress dodaje statyczny adres IP; maskę podaje się jako długość prefiksu (24 = 255.255.255.0).",
+   "ru": "New-NetIPAddress добавляет статический IP; маска задаётся длиной префикса (24 = 255.255.255.0)."
+  },
+  "level": 3
+ },
+ {
+  "id": "win-057",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell ustaw na karcie Ethernet serwer DNS 192.168.10.1.",
+   "ru": "В PowerShell задайте адаптеру Ethernet DNS-сервер 192.168.10.1."
+  },
+  "answers": [
+   "Set-DnsClientServerAddress -InterfaceAlias \"Ethernet\" -ServerAddresses 192.168.10.1",
+   "Set-DnsClientServerAddress -ServerAddresses 192.168.10.1 -InterfaceAlias \"Ethernet\"",
+   "Set-DnsClientServerAddress -InterfaceAlias \"Ethernet\" -ServerAddresses \"192.168.10.1\"",
+   "Set-DnsClientServerAddress -ServerAddresses \"192.168.10.1\" -InterfaceAlias \"Ethernet\"",
+   "Set-DnsClientServerAddress -InterfaceAlias \"Ethernet\" -ServerAddresses '192.168.10.1'",
+   "Set-DnsClientServerAddress -ServerAddresses '192.168.10.1' -InterfaceAlias \"Ethernet\"",
+   "Set-DnsClientServerAddress -InterfaceAlias \"Ethernet\" -ServerAddresses (\"192.168.10.1\")",
+   "Set-DnsClientServerAddress -ServerAddresses (\"192.168.10.1\") -InterfaceAlias \"Ethernet\"",
+   "Set-DnsClientServerAddress -InterfaceAlias Ethernet -ServerAddresses 192.168.10.1",
+   "Set-DnsClientServerAddress -ServerAddresses 192.168.10.1 -InterfaceAlias Ethernet",
+   "Set-DnsClientServerAddress -InterfaceAlias Ethernet -ServerAddresses \"192.168.10.1\"",
+   "Set-DnsClientServerAddress -ServerAddresses \"192.168.10.1\" -InterfaceAlias Ethernet",
+   "Set-DnsClientServerAddress -InterfaceAlias Ethernet -ServerAddresses '192.168.10.1'",
+   "Set-DnsClientServerAddress -ServerAddresses '192.168.10.1' -InterfaceAlias Ethernet",
+   "Set-DnsClientServerAddress -InterfaceAlias Ethernet -ServerAddresses (\"192.168.10.1\")",
+   "Set-DnsClientServerAddress -ServerAddresses (\"192.168.10.1\") -InterfaceAlias Ethernet",
+   "Set-DnsClientServerAddress -InterfaceAlias 'Ethernet' -ServerAddresses 192.168.10.1",
+   "Set-DnsClientServerAddress -ServerAddresses 192.168.10.1 -InterfaceAlias 'Ethernet'",
+   "Set-DnsClientServerAddress -InterfaceAlias 'Ethernet' -ServerAddresses \"192.168.10.1\"",
+   "Set-DnsClientServerAddress -ServerAddresses \"192.168.10.1\" -InterfaceAlias 'Ethernet'",
+   "Set-DnsClientServerAddress -InterfaceAlias 'Ethernet' -ServerAddresses '192.168.10.1'",
+   "Set-DnsClientServerAddress -ServerAddresses '192.168.10.1' -InterfaceAlias 'Ethernet'",
+   "Set-DnsClientServerAddress -InterfaceAlias 'Ethernet' -ServerAddresses (\"192.168.10.1\")",
+   "Set-DnsClientServerAddress -ServerAddresses (\"192.168.10.1\") -InterfaceAlias 'Ethernet'"
+  ],
+  "hint": {
+   "pl": "Set-DnsClientServerAddress -InterfaceAlias … -ServerAddresses …",
+   "ru": "Set-DnsClientServerAddress -InterfaceAlias … -ServerAddresses …"
+  },
+  "expl": {
+   "pl": "Cmdlet ustawia listę serwerów DNS klienta dla wskazanego interfejsu.",
+   "ru": "Командлет задаёт список DNS-серверов клиента для указанного интерфейса."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-058",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell zmień nazwę karty sieciowej Ethernet na LAN.",
+   "ru": "В PowerShell переименуйте сетевой адаптер Ethernet в LAN."
+  },
+  "answers": [
+   "Rename-NetAdapter -Name \"Ethernet\" -NewName \"LAN\"",
+   "Rename-NetAdapter -NewName \"LAN\" -Name \"Ethernet\"",
+   "Rename-NetAdapter -Name \"Ethernet\" -NewName LAN",
+   "Rename-NetAdapter -NewName LAN -Name \"Ethernet\"",
+   "Rename-NetAdapter -Name \"Ethernet\" -NewName 'LAN'",
+   "Rename-NetAdapter -NewName 'LAN' -Name \"Ethernet\"",
+   "Rename-NetAdapter -Name Ethernet -NewName \"LAN\"",
+   "Rename-NetAdapter -NewName \"LAN\" -Name Ethernet",
+   "Rename-NetAdapter -Name Ethernet -NewName LAN",
+   "Rename-NetAdapter -NewName LAN -Name Ethernet",
+   "Rename-NetAdapter -Name Ethernet -NewName 'LAN'",
+   "Rename-NetAdapter -NewName 'LAN' -Name Ethernet",
+   "Rename-NetAdapter -Name 'Ethernet' -NewName \"LAN\"",
+   "Rename-NetAdapter -NewName \"LAN\" -Name 'Ethernet'",
+   "Rename-NetAdapter -Name 'Ethernet' -NewName LAN",
+   "Rename-NetAdapter -NewName LAN -Name 'Ethernet'",
+   "Rename-NetAdapter -Name 'Ethernet' -NewName 'LAN'",
+   "Rename-NetAdapter -NewName 'LAN' -Name 'Ethernet'"
+  ],
+  "hint": {
+   "pl": "Rename-NetAdapter -Name … -NewName …",
+   "ru": "Rename-NetAdapter -Name … -NewName …"
+  },
+  "expl": {
+   "pl": "Rename-NetAdapter zmienia nazwę połączenia widoczną w systemie i w innych cmdletach.",
+   "ru": "Rename-NetAdapter меняет имя подключения, видимое в системе и других командлетах."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-059",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell sprawdź komunikację z hostem 192.168.10.1 (odpowiednik ping).",
+   "ru": "В PowerShell проверьте связь с хостом 192.168.10.1 (аналог ping)."
+  },
+  "answers": [
+   "Test-Connection 192.168.10.1",
+   "Test-Connection -ComputerName 192.168.10.1",
+   "Test-Connection -TargetName 192.168.10.1"
+  ],
+  "hint": {
+   "pl": "Test + Connection.",
+   "ru": "Test + Connection."
+  },
+  "expl": {
+   "pl": "Test-Connection wysyła żądania ICMP echo i zwraca wyniki jako obiekty.",
+   "ru": "Test-Connection отправляет ICMP эхо-запросы и возвращает результаты как объекты."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-060",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell wyświetl stan usługi Spooler.",
+   "ru": "В PowerShell выведите состояние службы Spooler."
+  },
+  "answers": [
+   "Get-Service Spooler",
+   "Get-Service -Name Spooler",
+   "Get-Service -Name \"Spooler\"",
+   "Get-Service \"Spooler\""
+  ],
+  "hint": {
+   "pl": "Get-Service + nazwa.",
+   "ru": "Get-Service + имя."
+  },
+  "expl": {
+   "pl": "Get-Service pokazuje stan (Running/Stopped) i nazwę wyświetlaną usługi.",
+   "ru": "Get-Service показывает состояние (Running/Stopped) и отображаемое имя службы."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-061",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell uruchom ponownie usługę Spooler.",
+   "ru": "В PowerShell перезапустите службу Spooler."
+  },
+  "answers": [
+   "Restart-Service Spooler",
+   "Restart-Service -Name Spooler",
+   "Restart-Service -Name \"Spooler\"",
+   "Restart-Service \"Spooler\"",
+   "Restart-Service Spooler -Force",
+   "Restart-Service -Name Spooler -Force"
+  ],
+  "hint": {
+   "pl": "Czasownik Restart.",
+   "ru": "Глагол Restart."
+  },
+  "expl": {
+   "pl": "Restart-Service zatrzymuje i uruchamia usługę; -Force pozwala zrestartować usługę z zależnościami.",
+   "ru": "Restart-Service останавливает и запускает службу; -Force — перезапуск службы с зависимостями."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-062",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell utwórz konto lokalne jkowalski z hasłem zapisanym wcześniej w zmiennej $haslo (SecureString).",
+   "ru": "В PowerShell создайте локальную учётную запись jkowalski с паролем, сохранённым в переменной $haslo (SecureString)."
+  },
+  "answers": [
+   "New-LocalUser -Name \"jkowalski\" -Password $haslo",
+   "New-LocalUser -Password $haslo -Name \"jkowalski\"",
+   "New-LocalUser \"jkowalski\" -Password $haslo",
+   "New-LocalUser -Name jkowalski -Password $haslo",
+   "New-LocalUser -Password $haslo -Name jkowalski",
+   "New-LocalUser jkowalski -Password $haslo",
+   "New-LocalUser -Name 'jkowalski' -Password $haslo",
+   "New-LocalUser -Password $haslo -Name 'jkowalski'",
+   "New-LocalUser 'jkowalski' -Password $haslo"
+  ],
+  "hint": {
+   "pl": "New-LocalUser -Name … -Password …",
+   "ru": "New-LocalUser -Name … -Password …"
+  },
+  "expl": {
+   "pl": "New-LocalUser tworzy konto lokalne; hasło musi być typu SecureString (np. z Read-Host -AsSecureString).",
+   "ru": "New-LocalUser создаёт локальную учётную запись; пароль должен быть типа SecureString (например, из Read-Host -AsSecureString)."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-063",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell dodaj użytkownika jkowalski do lokalnej grupy Administratorzy.",
+   "ru": "В PowerShell добавьте пользователя jkowalski в локальную группу Administratorzy."
+  },
+  "answers": [
+   "Add-LocalGroupMember -Group \"Administratorzy\" -Member \"jkowalski\"",
+   "Add-LocalGroupMember -Member \"jkowalski\" -Group \"Administratorzy\"",
+   "Add-LocalGroupMember -Group \"Administratorzy\" -Member jkowalski",
+   "Add-LocalGroupMember -Member jkowalski -Group \"Administratorzy\"",
+   "Add-LocalGroupMember -Group \"Administratorzy\" -Member 'jkowalski'",
+   "Add-LocalGroupMember -Member 'jkowalski' -Group \"Administratorzy\"",
+   "Add-LocalGroupMember -Group Administratorzy -Member \"jkowalski\"",
+   "Add-LocalGroupMember -Member \"jkowalski\" -Group Administratorzy",
+   "Add-LocalGroupMember -Group Administratorzy -Member jkowalski",
+   "Add-LocalGroupMember -Member jkowalski -Group Administratorzy",
+   "Add-LocalGroupMember -Group Administratorzy -Member 'jkowalski'",
+   "Add-LocalGroupMember -Member 'jkowalski' -Group Administratorzy",
+   "Add-LocalGroupMember -Group 'Administratorzy' -Member \"jkowalski\"",
+   "Add-LocalGroupMember -Member \"jkowalski\" -Group 'Administratorzy'",
+   "Add-LocalGroupMember -Group 'Administratorzy' -Member jkowalski",
+   "Add-LocalGroupMember -Member jkowalski -Group 'Administratorzy'",
+   "Add-LocalGroupMember -Group 'Administratorzy' -Member 'jkowalski'",
+   "Add-LocalGroupMember -Member 'jkowalski' -Group 'Administratorzy'"
+  ],
+  "hint": {
+   "pl": "Add-LocalGroupMember -Group … -Member …",
+   "ru": "Add-LocalGroupMember -Group … -Member …"
+  },
+  "expl": {
+   "pl": "Cmdlet dopisuje konto do grupy lokalnej; w polskim Windows grupa nazywa się Administratorzy.",
+   "ru": "Командлет добавляет учётную запись в локальную группу; в польской Windows она называется Administratorzy."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-064",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell wyświetl członków lokalnej grupy Użytkownicy.",
+   "ru": "В PowerShell выведите членов локальной группы Użytkownicy."
+  },
+  "answers": [
+   "Get-LocalGroupMember -Group \"Użytkownicy\"",
+   "Get-LocalGroupMember -Group Użytkownicy",
+   "Get-LocalGroupMember Użytkownicy",
+   "Get-LocalGroupMember \"Użytkownicy\"",
+   "Get-LocalGroupMember -Name Użytkownicy",
+   "Get-LocalGroupMember -Name \"Użytkownicy\""
+  ],
+  "hint": {
+   "pl": "Get-LocalGroupMember + grupa.",
+   "ru": "Get-LocalGroupMember + группа."
+  },
+  "expl": {
+   "pl": "Get-LocalGroupMember zwraca konta i grupy należące do wskazanej grupy lokalnej.",
+   "ru": "Get-LocalGroupMember возвращает учётные записи и группы, входящие в локальную группу."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-065",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell zainstaluj na Windows Server rolę serwera DHCP wraz z narzędziami do zarządzania.",
+   "ru": "В PowerShell установите на Windows Server роль DHCP-сервера вместе со средствами управления."
+  },
+  "answers": [
+   "Install-WindowsFeature DHCP -IncludeManagementTools",
+   "Install-WindowsFeature -IncludeManagementTools DHCP",
+   "Install-WindowsFeature -Name DHCP -IncludeManagementTools",
+   "Install-WindowsFeature -IncludeManagementTools -Name DHCP"
+  ],
+  "hint": {
+   "pl": "Install-WindowsFeature nazwa_roli + przełącznik narzędzi.",
+   "ru": "Install-WindowsFeature имя_роли + ключ средств."
+  },
+  "expl": {
+   "pl": "-IncludeManagementTools dodaje konsolę MMC i moduł PowerShell do zarządzania rolą.",
+   "ru": "-IncludeManagementTools добавляет консоль MMC и модуль PowerShell для управления ролью."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-066",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell zainstaluj rolę Usługi domenowe Active Directory wraz z narzędziami do zarządzania.",
+   "ru": "В PowerShell установите роль доменных служб Active Directory вместе со средствами управления."
+  },
+  "answers": [
+   "Install-WindowsFeature AD-Domain-Services -IncludeManagementTools",
+   "Install-WindowsFeature -IncludeManagementTools AD-Domain-Services",
+   "Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools",
+   "Install-WindowsFeature -IncludeManagementTools -Name AD-Domain-Services"
+  ],
+  "hint": {
+   "pl": "Nazwa roli: AD-Domain-Services.",
+   "ru": "Имя роли: AD-Domain-Services."
+  },
+  "expl": {
+   "pl": "Instaluje pliki roli AD DS; promocję do kontrolera domeny wykonuje się potem np. Install-ADDSForest.",
+   "ru": "Устанавливает файлы роли AD DS; повышение до контроллера домена выполняется затем, например, Install-ADDSForest."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-067",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell utwórz w domenie firma05.local jednostkę organizacyjną BIURO (w katalogu głównym domeny).",
+   "ru": "В PowerShell создайте в домене firma05.local подразделение BIURO (в корне домена)."
+  },
+  "answers": [
+   "New-ADOrganizationalUnit -Name \"BIURO\" -Path \"DC=firma05,DC=local\"",
+   "New-ADOrganizationalUnit -Path \"DC=firma05,DC=local\" -Name \"BIURO\"",
+   "New-ADOrganizationalUnit -Name \"BIURO\" -Path 'DC=firma05,DC=local'",
+   "New-ADOrganizationalUnit -Path 'DC=firma05,DC=local' -Name \"BIURO\"",
+   "New-ADOrganizationalUnit -Name \"BIURO\" -Path DC=firma05,DC=local",
+   "New-ADOrganizationalUnit -Path DC=firma05,DC=local -Name \"BIURO\"",
+   "New-ADOrganizationalUnit -Name BIURO -Path \"DC=firma05,DC=local\"",
+   "New-ADOrganizationalUnit -Path \"DC=firma05,DC=local\" -Name BIURO",
+   "New-ADOrganizationalUnit -Name BIURO -Path 'DC=firma05,DC=local'",
+   "New-ADOrganizationalUnit -Path 'DC=firma05,DC=local' -Name BIURO",
+   "New-ADOrganizationalUnit -Name BIURO -Path DC=firma05,DC=local",
+   "New-ADOrganizationalUnit -Path DC=firma05,DC=local -Name BIURO",
+   "New-ADOrganizationalUnit -Name 'BIURO' -Path \"DC=firma05,DC=local\"",
+   "New-ADOrganizationalUnit -Path \"DC=firma05,DC=local\" -Name 'BIURO'",
+   "New-ADOrganizationalUnit -Name 'BIURO' -Path 'DC=firma05,DC=local'",
+   "New-ADOrganizationalUnit -Path 'DC=firma05,DC=local' -Name 'BIURO'",
+   "New-ADOrganizationalUnit -Name 'BIURO' -Path DC=firma05,DC=local",
+   "New-ADOrganizationalUnit -Path DC=firma05,DC=local -Name 'BIURO'"
+  ],
+  "hint": {
+   "pl": "New-ADOrganizationalUnit -Name … -Path \"DC=…,DC=…\"",
+   "ru": "New-ADOrganizationalUnit -Name … -Path \"DC=…,DC=…\""
+  },
+  "expl": {
+   "pl": "-Path podaje nazwę wyróżniającą (DN) kontenera nadrzędnego – tu korzeń domeny firma05.local.",
+   "ru": "-Path задаёт различающееся имя (DN) родительского контейнера — здесь корень домена firma05.local."
+  },
+  "level": 3
+ },
+ {
+  "id": "win-068",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell utwórz w jednostce BIURO domeny firma05.local użytkownika o nazwie Jan Kowalski i loginie jkowalski.",
+   "ru": "В PowerShell создайте в подразделении BIURO домена firma05.local пользователя Jan Kowalski с логином jkowalski."
+  },
+  "answers": [
+   "New-ADUser -Name \"Jan Kowalski\" -SamAccountName \"jkowalski\" -Path \"OU=BIURO,DC=firma05,DC=local\"",
+   "New-ADUser -Name \"Jan Kowalski\" -Path \"OU=BIURO,DC=firma05,DC=local\" -SamAccountName \"jkowalski\"",
+   "New-ADUser -SamAccountName \"jkowalski\" -Name \"Jan Kowalski\" -Path \"OU=BIURO,DC=firma05,DC=local\"",
+   "New-ADUser -SamAccountName \"jkowalski\" -Path \"OU=BIURO,DC=firma05,DC=local\" -Name \"Jan Kowalski\"",
+   "New-ADUser -Path \"OU=BIURO,DC=firma05,DC=local\" -Name \"Jan Kowalski\" -SamAccountName \"jkowalski\"",
+   "New-ADUser -Path \"OU=BIURO,DC=firma05,DC=local\" -SamAccountName \"jkowalski\" -Name \"Jan Kowalski\"",
+   "New-ADUser -Name 'Jan Kowalski' -SamAccountName \"jkowalski\" -Path \"OU=BIURO,DC=firma05,DC=local\"",
+   "New-ADUser -Name 'Jan Kowalski' -Path \"OU=BIURO,DC=firma05,DC=local\" -SamAccountName \"jkowalski\"",
+   "New-ADUser -SamAccountName \"jkowalski\" -Name 'Jan Kowalski' -Path \"OU=BIURO,DC=firma05,DC=local\"",
+   "New-ADUser -SamAccountName \"jkowalski\" -Path \"OU=BIURO,DC=firma05,DC=local\" -Name 'Jan Kowalski'",
+   "New-ADUser -Path \"OU=BIURO,DC=firma05,DC=local\" -Name 'Jan Kowalski' -SamAccountName \"jkowalski\"",
+   "New-ADUser -Path \"OU=BIURO,DC=firma05,DC=local\" -SamAccountName \"jkowalski\" -Name 'Jan Kowalski'",
+   "New-ADUser -Name \"Jan Kowalski\" -SamAccountName \"jkowalski\" -Path 'OU=BIURO,DC=firma05,DC=local'",
+   "New-ADUser -Name \"Jan Kowalski\" -Path 'OU=BIURO,DC=firma05,DC=local' -SamAccountName \"jkowalski\"",
+   "New-ADUser -SamAccountName \"jkowalski\" -Name \"Jan Kowalski\" -Path 'OU=BIURO,DC=firma05,DC=local'",
+   "New-ADUser -SamAccountName \"jkowalski\" -Path 'OU=BIURO,DC=firma05,DC=local' -Name \"Jan Kowalski\"",
+   "New-ADUser -Path 'OU=BIURO,DC=firma05,DC=local' -Name \"Jan Kowalski\" -SamAccountName \"jkowalski\"",
+   "New-ADUser -Path 'OU=BIURO,DC=firma05,DC=local' -SamAccountName \"jkowalski\" -Name \"Jan Kowalski\"",
+   "New-ADUser -Name 'Jan Kowalski' -SamAccountName \"jkowalski\" -Path 'OU=BIURO,DC=firma05,DC=local'",
+   "New-ADUser -Name 'Jan Kowalski' -Path 'OU=BIURO,DC=firma05,DC=local' -SamAccountName \"jkowalski\"",
+   "New-ADUser -SamAccountName \"jkowalski\" -Name 'Jan Kowalski' -Path 'OU=BIURO,DC=firma05,DC=local'",
+   "New-ADUser -SamAccountName \"jkowalski\" -Path 'OU=BIURO,DC=firma05,DC=local' -Name 'Jan Kowalski'",
+   "New-ADUser -Path 'OU=BIURO,DC=firma05,DC=local' -Name 'Jan Kowalski' -SamAccountName \"jkowalski\"",
+   "New-ADUser -Path 'OU=BIURO,DC=firma05,DC=local' -SamAccountName \"jkowalski\" -Name 'Jan Kowalski'",
+   "New-ADUser -Name \"Jan Kowalski\" -SamAccountName \"jkowalski\" -Path OU=BIURO,DC=firma05,DC=local",
+   "New-ADUser -Name \"Jan Kowalski\" -Path OU=BIURO,DC=firma05,DC=local -SamAccountName \"jkowalski\"",
+   "New-ADUser -SamAccountName \"jkowalski\" -Name \"Jan Kowalski\" -Path OU=BIURO,DC=firma05,DC=local",
+   "New-ADUser -SamAccountName \"jkowalski\" -Path OU=BIURO,DC=firma05,DC=local -Name \"Jan Kowalski\"",
+   "New-ADUser -Path OU=BIURO,DC=firma05,DC=local -Name \"Jan Kowalski\" -SamAccountName \"jkowalski\"",
+   "New-ADUser -Path OU=BIURO,DC=firma05,DC=local -SamAccountName \"jkowalski\" -Name \"Jan Kowalski\"",
+   "New-ADUser -Name 'Jan Kowalski' -SamAccountName \"jkowalski\" -Path OU=BIURO,DC=firma05,DC=local",
+   "New-ADUser -Name 'Jan Kowalski' -Path OU=BIURO,DC=firma05,DC=local -SamAccountName \"jkowalski\"",
+   "New-ADUser -SamAccountName \"jkowalski\" -Name 'Jan Kowalski' -Path OU=BIURO,DC=firma05,DC=local",
+   "New-ADUser -SamAccountName \"jkowalski\" -Path OU=BIURO,DC=firma05,DC=local -Name 'Jan Kowalski'",
+   "New-ADUser -Path OU=BIURO,DC=firma05,DC=local -Name 'Jan Kowalski' -SamAccountName \"jkowalski\"",
+   "New-ADUser -Path OU=BIURO,DC=firma05,DC=local -SamAccountName \"jkowalski\" -Name 'Jan Kowalski'",
+   "New-ADUser -Name \"Jan Kowalski\" -SamAccountName jkowalski -Path \"OU=BIURO,DC=firma05,DC=local\"",
+   "New-ADUser -Name \"Jan Kowalski\" -Path \"OU=BIURO,DC=firma05,DC=local\" -SamAccountName jkowalski",
+   "New-ADUser -SamAccountName jkowalski -Name \"Jan Kowalski\" -Path \"OU=BIURO,DC=firma05,DC=local\"",
+   "New-ADUser -SamAccountName jkowalski -Path \"OU=BIURO,DC=firma05,DC=local\" -Name \"Jan Kowalski\"",
+   "New-ADUser -Path \"OU=BIURO,DC=firma05,DC=local\" -Name \"Jan Kowalski\" -SamAccountName jkowalski",
+   "New-ADUser -Path \"OU=BIURO,DC=firma05,DC=local\" -SamAccountName jkowalski -Name \"Jan Kowalski\"",
+   "New-ADUser -Name 'Jan Kowalski' -SamAccountName jkowalski -Path \"OU=BIURO,DC=firma05,DC=local\"",
+   "New-ADUser -Name 'Jan Kowalski' -Path \"OU=BIURO,DC=firma05,DC=local\" -SamAccountName jkowalski",
+   "New-ADUser -SamAccountName jkowalski -Name 'Jan Kowalski' -Path \"OU=BIURO,DC=firma05,DC=local\"",
+   "New-ADUser -SamAccountName jkowalski -Path \"OU=BIURO,DC=firma05,DC=local\" -Name 'Jan Kowalski'",
+   "New-ADUser -Path \"OU=BIURO,DC=firma05,DC=local\" -Name 'Jan Kowalski' -SamAccountName jkowalski",
+   "New-ADUser -Path \"OU=BIURO,DC=firma05,DC=local\" -SamAccountName jkowalski -Name 'Jan Kowalski'",
+   "New-ADUser -Name \"Jan Kowalski\" -SamAccountName jkowalski -Path 'OU=BIURO,DC=firma05,DC=local'",
+   "New-ADUser -Name \"Jan Kowalski\" -Path 'OU=BIURO,DC=firma05,DC=local' -SamAccountName jkowalski",
+   "New-ADUser -SamAccountName jkowalski -Name \"Jan Kowalski\" -Path 'OU=BIURO,DC=firma05,DC=local'",
+   "New-ADUser -SamAccountName jkowalski -Path 'OU=BIURO,DC=firma05,DC=local' -Name \"Jan Kowalski\"",
+   "New-ADUser -Path 'OU=BIURO,DC=firma05,DC=local' -Name \"Jan Kowalski\" -SamAccountName jkowalski",
+   "New-ADUser -Path 'OU=BIURO,DC=firma05,DC=local' -SamAccountName jkowalski -Name \"Jan Kowalski\"",
+   "New-ADUser -Name 'Jan Kowalski' -SamAccountName jkowalski -Path 'OU=BIURO,DC=firma05,DC=local'",
+   "New-ADUser -Name 'Jan Kowalski' -Path 'OU=BIURO,DC=firma05,DC=local' -SamAccountName jkowalski",
+   "New-ADUser -SamAccountName jkowalski -Name 'Jan Kowalski' -Path 'OU=BIURO,DC=firma05,DC=local'",
+   "New-ADUser -SamAccountName jkowalski -Path 'OU=BIURO,DC=firma05,DC=local' -Name 'Jan Kowalski'",
+   "New-ADUser -Path 'OU=BIURO,DC=firma05,DC=local' -Name 'Jan Kowalski' -SamAccountName jkowalski",
+   "New-ADUser -Path 'OU=BIURO,DC=firma05,DC=local' -SamAccountName jkowalski -Name 'Jan Kowalski'",
+   "New-ADUser -Name \"Jan Kowalski\" -SamAccountName jkowalski -Path OU=BIURO,DC=firma05,DC=local",
+   "New-ADUser -Name \"Jan Kowalski\" -Path OU=BIURO,DC=firma05,DC=local -SamAccountName jkowalski",
+   "New-ADUser -SamAccountName jkowalski -Name \"Jan Kowalski\" -Path OU=BIURO,DC=firma05,DC=local",
+   "New-ADUser -SamAccountName jkowalski -Path OU=BIURO,DC=firma05,DC=local -Name \"Jan Kowalski\"",
+   "New-ADUser -Path OU=BIURO,DC=firma05,DC=local -Name \"Jan Kowalski\" -SamAccountName jkowalski",
+   "New-ADUser -Path OU=BIURO,DC=firma05,DC=local -SamAccountName jkowalski -Name \"Jan Kowalski\"",
+   "New-ADUser -Name 'Jan Kowalski' -SamAccountName jkowalski -Path OU=BIURO,DC=firma05,DC=local",
+   "New-ADUser -Name 'Jan Kowalski' -Path OU=BIURO,DC=firma05,DC=local -SamAccountName jkowalski",
+   "New-ADUser -SamAccountName jkowalski -Name 'Jan Kowalski' -Path OU=BIURO,DC=firma05,DC=local",
+   "New-ADUser -SamAccountName jkowalski -Path OU=BIURO,DC=firma05,DC=local -Name 'Jan Kowalski'",
+   "New-ADUser -Path OU=BIURO,DC=firma05,DC=local -Name 'Jan Kowalski' -SamAccountName jkowalski",
+   "New-ADUser -Path OU=BIURO,DC=firma05,DC=local -SamAccountName jkowalski -Name 'Jan Kowalski'",
+   "New-ADUser -Name \"Jan Kowalski\" -SamAccountName 'jkowalski' -Path \"OU=BIURO,DC=firma05,DC=local\"",
+   "New-ADUser -Name \"Jan Kowalski\" -Path \"OU=BIURO,DC=firma05,DC=local\" -SamAccountName 'jkowalski'",
+   "New-ADUser -SamAccountName 'jkowalski' -Name \"Jan Kowalski\" -Path \"OU=BIURO,DC=firma05,DC=local\"",
+   "New-ADUser -SamAccountName 'jkowalski' -Path \"OU=BIURO,DC=firma05,DC=local\" -Name \"Jan Kowalski\"",
+   "New-ADUser -Path \"OU=BIURO,DC=firma05,DC=local\" -Name \"Jan Kowalski\" -SamAccountName 'jkowalski'",
+   "New-ADUser -Path \"OU=BIURO,DC=firma05,DC=local\" -SamAccountName 'jkowalski' -Name \"Jan Kowalski\"",
+   "New-ADUser -Name 'Jan Kowalski' -SamAccountName 'jkowalski' -Path \"OU=BIURO,DC=firma05,DC=local\"",
+   "New-ADUser -Name 'Jan Kowalski' -Path \"OU=BIURO,DC=firma05,DC=local\" -SamAccountName 'jkowalski'",
+   "New-ADUser -SamAccountName 'jkowalski' -Name 'Jan Kowalski' -Path \"OU=BIURO,DC=firma05,DC=local\"",
+   "New-ADUser -SamAccountName 'jkowalski' -Path \"OU=BIURO,DC=firma05,DC=local\" -Name 'Jan Kowalski'",
+   "New-ADUser -Path \"OU=BIURO,DC=firma05,DC=local\" -Name 'Jan Kowalski' -SamAccountName 'jkowalski'",
+   "New-ADUser -Path \"OU=BIURO,DC=firma05,DC=local\" -SamAccountName 'jkowalski' -Name 'Jan Kowalski'",
+   "New-ADUser -Name \"Jan Kowalski\" -SamAccountName 'jkowalski' -Path 'OU=BIURO,DC=firma05,DC=local'",
+   "New-ADUser -Name \"Jan Kowalski\" -Path 'OU=BIURO,DC=firma05,DC=local' -SamAccountName 'jkowalski'",
+   "New-ADUser -SamAccountName 'jkowalski' -Name \"Jan Kowalski\" -Path 'OU=BIURO,DC=firma05,DC=local'",
+   "New-ADUser -SamAccountName 'jkowalski' -Path 'OU=BIURO,DC=firma05,DC=local' -Name \"Jan Kowalski\"",
+   "New-ADUser -Path 'OU=BIURO,DC=firma05,DC=local' -Name \"Jan Kowalski\" -SamAccountName 'jkowalski'",
+   "New-ADUser -Path 'OU=BIURO,DC=firma05,DC=local' -SamAccountName 'jkowalski' -Name \"Jan Kowalski\"",
+   "New-ADUser -Name 'Jan Kowalski' -SamAccountName 'jkowalski' -Path 'OU=BIURO,DC=firma05,DC=local'",
+   "New-ADUser -Name 'Jan Kowalski' -Path 'OU=BIURO,DC=firma05,DC=local' -SamAccountName 'jkowalski'",
+   "New-ADUser -SamAccountName 'jkowalski' -Name 'Jan Kowalski' -Path 'OU=BIURO,DC=firma05,DC=local'",
+   "New-ADUser -SamAccountName 'jkowalski' -Path 'OU=BIURO,DC=firma05,DC=local' -Name 'Jan Kowalski'",
+   "New-ADUser -Path 'OU=BIURO,DC=firma05,DC=local' -Name 'Jan Kowalski' -SamAccountName 'jkowalski'",
+   "New-ADUser -Path 'OU=BIURO,DC=firma05,DC=local' -SamAccountName 'jkowalski' -Name 'Jan Kowalski'",
+   "New-ADUser -Name \"Jan Kowalski\" -SamAccountName 'jkowalski' -Path OU=BIURO,DC=firma05,DC=local",
+   "New-ADUser -Name \"Jan Kowalski\" -Path OU=BIURO,DC=firma05,DC=local -SamAccountName 'jkowalski'",
+   "New-ADUser -SamAccountName 'jkowalski' -Name \"Jan Kowalski\" -Path OU=BIURO,DC=firma05,DC=local",
+   "New-ADUser -SamAccountName 'jkowalski' -Path OU=BIURO,DC=firma05,DC=local -Name \"Jan Kowalski\"",
+   "New-ADUser -Path OU=BIURO,DC=firma05,DC=local -Name \"Jan Kowalski\" -SamAccountName 'jkowalski'",
+   "New-ADUser -Path OU=BIURO,DC=firma05,DC=local -SamAccountName 'jkowalski' -Name \"Jan Kowalski\"",
+   "New-ADUser -Name 'Jan Kowalski' -SamAccountName 'jkowalski' -Path OU=BIURO,DC=firma05,DC=local",
+   "New-ADUser -Name 'Jan Kowalski' -Path OU=BIURO,DC=firma05,DC=local -SamAccountName 'jkowalski'",
+   "New-ADUser -SamAccountName 'jkowalski' -Name 'Jan Kowalski' -Path OU=BIURO,DC=firma05,DC=local",
+   "New-ADUser -SamAccountName 'jkowalski' -Path OU=BIURO,DC=firma05,DC=local -Name 'Jan Kowalski'",
+   "New-ADUser -Path OU=BIURO,DC=firma05,DC=local -Name 'Jan Kowalski' -SamAccountName 'jkowalski'",
+   "New-ADUser -Path OU=BIURO,DC=firma05,DC=local -SamAccountName 'jkowalski' -Name 'Jan Kowalski'"
+  ],
+  "hint": {
+   "pl": "New-ADUser -Name … -SamAccountName … -Path \"OU=…,DC=…,DC=…\"",
+   "ru": "New-ADUser -Name … -SamAccountName … -Path \"OU=…,DC=…,DC=…\""
+  },
+  "expl": {
+   "pl": "-SamAccountName to login (pre-Windows 2000), a -Path wskazuje OU, w której powstanie konto.",
+   "ru": "-SamAccountName — логин (pre-Windows 2000), а -Path указывает OU, где будет создана учётная запись."
+  },
+  "level": 3
+ },
+ {
+  "id": "win-069",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell dodaj użytkownika domenowego jkowalski do grupy Ksiegowosc w Active Directory.",
+   "ru": "В PowerShell добавьте доменного пользователя jkowalski в группу Ksiegowosc в Active Directory."
+  },
+  "answers": [
+   "Add-ADGroupMember -Identity \"Ksiegowosc\" -Members \"jkowalski\"",
+   "Add-ADGroupMember -Members \"jkowalski\" -Identity \"Ksiegowosc\"",
+   "Add-ADGroupMember \"Ksiegowosc\" -Members \"jkowalski\"",
+   "Add-ADGroupMember \"Ksiegowosc\" \"jkowalski\"",
+   "Add-ADGroupMember -Identity \"Ksiegowosc\" -Members jkowalski",
+   "Add-ADGroupMember -Members jkowalski -Identity \"Ksiegowosc\"",
+   "Add-ADGroupMember \"Ksiegowosc\" -Members jkowalski",
+   "Add-ADGroupMember \"Ksiegowosc\" jkowalski",
+   "Add-ADGroupMember -Identity \"Ksiegowosc\" -Members 'jkowalski'",
+   "Add-ADGroupMember -Members 'jkowalski' -Identity \"Ksiegowosc\"",
+   "Add-ADGroupMember \"Ksiegowosc\" -Members 'jkowalski'",
+   "Add-ADGroupMember \"Ksiegowosc\" 'jkowalski'",
+   "Add-ADGroupMember -Identity Ksiegowosc -Members \"jkowalski\"",
+   "Add-ADGroupMember -Members \"jkowalski\" -Identity Ksiegowosc",
+   "Add-ADGroupMember Ksiegowosc -Members \"jkowalski\"",
+   "Add-ADGroupMember Ksiegowosc \"jkowalski\"",
+   "Add-ADGroupMember -Identity Ksiegowosc -Members jkowalski",
+   "Add-ADGroupMember -Members jkowalski -Identity Ksiegowosc",
+   "Add-ADGroupMember Ksiegowosc -Members jkowalski",
+   "Add-ADGroupMember Ksiegowosc jkowalski",
+   "Add-ADGroupMember -Identity Ksiegowosc -Members 'jkowalski'",
+   "Add-ADGroupMember -Members 'jkowalski' -Identity Ksiegowosc",
+   "Add-ADGroupMember Ksiegowosc -Members 'jkowalski'",
+   "Add-ADGroupMember Ksiegowosc 'jkowalski'",
+   "Add-ADGroupMember -Identity 'Ksiegowosc' -Members \"jkowalski\"",
+   "Add-ADGroupMember -Members \"jkowalski\" -Identity 'Ksiegowosc'",
+   "Add-ADGroupMember 'Ksiegowosc' -Members \"jkowalski\"",
+   "Add-ADGroupMember 'Ksiegowosc' \"jkowalski\"",
+   "Add-ADGroupMember -Identity 'Ksiegowosc' -Members jkowalski",
+   "Add-ADGroupMember -Members jkowalski -Identity 'Ksiegowosc'",
+   "Add-ADGroupMember 'Ksiegowosc' -Members jkowalski",
+   "Add-ADGroupMember 'Ksiegowosc' jkowalski",
+   "Add-ADGroupMember -Identity 'Ksiegowosc' -Members 'jkowalski'",
+   "Add-ADGroupMember -Members 'jkowalski' -Identity 'Ksiegowosc'",
+   "Add-ADGroupMember 'Ksiegowosc' -Members 'jkowalski'",
+   "Add-ADGroupMember 'Ksiegowosc' 'jkowalski'"
+  ],
+  "hint": {
+   "pl": "Add-ADGroupMember -Identity grupa -Members użytkownik.",
+   "ru": "Add-ADGroupMember -Identity группа -Members пользователь."
+  },
+  "expl": {
+   "pl": "-Identity wskazuje grupę AD, a -Members dodawane konta (można podać kilka po przecinku).",
+   "ru": "-Identity указывает группу AD, а -Members — добавляемые учётные записи (можно несколько через запятую)."
+  },
+  "level": 3
+ },
+ {
+  "id": "win-070",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell udostępnij folder C:\\Dane pod nazwą Dane.",
+   "ru": "В PowerShell откройте общий доступ к папке C:\\Dane под именем Dane."
+  },
+  "answers": [
+   "New-SmbShare -Name \"Dane\" -Path \"C:\\Dane\"",
+   "New-SmbShare -Path \"C:\\Dane\" -Name \"Dane\"",
+   "New-SmbShare -Name \"Dane\" -Path C:\\Dane",
+   "New-SmbShare -Path C:\\Dane -Name \"Dane\"",
+   "New-SmbShare -Name \"Dane\" -Path 'C:\\Dane'",
+   "New-SmbShare -Path 'C:\\Dane' -Name \"Dane\"",
+   "New-SmbShare -Name Dane -Path \"C:\\Dane\"",
+   "New-SmbShare -Path \"C:\\Dane\" -Name Dane",
+   "New-SmbShare -Name Dane -Path C:\\Dane",
+   "New-SmbShare -Path C:\\Dane -Name Dane",
+   "New-SmbShare -Name Dane -Path 'C:\\Dane'",
+   "New-SmbShare -Path 'C:\\Dane' -Name Dane",
+   "New-SmbShare -Name 'Dane' -Path \"C:\\Dane\"",
+   "New-SmbShare -Path \"C:\\Dane\" -Name 'Dane'",
+   "New-SmbShare -Name 'Dane' -Path C:\\Dane",
+   "New-SmbShare -Path C:\\Dane -Name 'Dane'",
+   "New-SmbShare -Name 'Dane' -Path 'C:\\Dane'",
+   "New-SmbShare -Path 'C:\\Dane' -Name 'Dane'"
+  ],
+  "hint": {
+   "pl": "New-SmbShare -Name … -Path …",
+   "ru": "New-SmbShare -Name … -Path …"
+  },
+  "expl": {
+   "pl": "New-SmbShare tworzy udział SMB; bez parametrów dostępu grupa Wszyscy dostaje tylko odczyt.",
+   "ru": "New-SmbShare создаёт SMB-ресурс; без параметров доступа группа Wszyscy получает только чтение."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-071",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell udostępnij folder C:\\Dane pod nazwą Dane z pełnym dostępem dla grupy Wszyscy.",
+   "ru": "В PowerShell откройте общий доступ к C:\\Dane под именем Dane с полным доступом для группы Wszyscy (Все)."
+  },
+  "answers": [
+   "New-SmbShare -Name \"Dane\" -Path \"C:\\Dane\" -FullAccess \"Wszyscy\"",
+   "New-SmbShare -Name \"Dane\" -FullAccess \"Wszyscy\" -Path \"C:\\Dane\"",
+   "New-SmbShare -Path \"C:\\Dane\" -Name \"Dane\" -FullAccess \"Wszyscy\"",
+   "New-SmbShare -Path \"C:\\Dane\" -FullAccess \"Wszyscy\" -Name \"Dane\"",
+   "New-SmbShare -FullAccess \"Wszyscy\" -Name \"Dane\" -Path \"C:\\Dane\"",
+   "New-SmbShare -FullAccess \"Wszyscy\" -Path \"C:\\Dane\" -Name \"Dane\"",
+   "New-SmbShare -Name \"Dane\" -Path \"C:\\Dane\" -FullAccess Wszyscy",
+   "New-SmbShare -Name \"Dane\" -FullAccess Wszyscy -Path \"C:\\Dane\"",
+   "New-SmbShare -Path \"C:\\Dane\" -Name \"Dane\" -FullAccess Wszyscy",
+   "New-SmbShare -Path \"C:\\Dane\" -FullAccess Wszyscy -Name \"Dane\"",
+   "New-SmbShare -FullAccess Wszyscy -Name \"Dane\" -Path \"C:\\Dane\"",
+   "New-SmbShare -FullAccess Wszyscy -Path \"C:\\Dane\" -Name \"Dane\"",
+   "New-SmbShare -Name \"Dane\" -Path \"C:\\Dane\" -FullAccess 'Wszyscy'",
+   "New-SmbShare -Name \"Dane\" -FullAccess 'Wszyscy' -Path \"C:\\Dane\"",
+   "New-SmbShare -Path \"C:\\Dane\" -Name \"Dane\" -FullAccess 'Wszyscy'",
+   "New-SmbShare -Path \"C:\\Dane\" -FullAccess 'Wszyscy' -Name \"Dane\"",
+   "New-SmbShare -FullAccess 'Wszyscy' -Name \"Dane\" -Path \"C:\\Dane\"",
+   "New-SmbShare -FullAccess 'Wszyscy' -Path \"C:\\Dane\" -Name \"Dane\"",
+   "New-SmbShare -Name \"Dane\" -Path C:\\Dane -FullAccess \"Wszyscy\"",
+   "New-SmbShare -Name \"Dane\" -FullAccess \"Wszyscy\" -Path C:\\Dane",
+   "New-SmbShare -Path C:\\Dane -Name \"Dane\" -FullAccess \"Wszyscy\"",
+   "New-SmbShare -Path C:\\Dane -FullAccess \"Wszyscy\" -Name \"Dane\"",
+   "New-SmbShare -FullAccess \"Wszyscy\" -Name \"Dane\" -Path C:\\Dane",
+   "New-SmbShare -FullAccess \"Wszyscy\" -Path C:\\Dane -Name \"Dane\"",
+   "New-SmbShare -Name \"Dane\" -Path C:\\Dane -FullAccess Wszyscy",
+   "New-SmbShare -Name \"Dane\" -FullAccess Wszyscy -Path C:\\Dane",
+   "New-SmbShare -Path C:\\Dane -Name \"Dane\" -FullAccess Wszyscy",
+   "New-SmbShare -Path C:\\Dane -FullAccess Wszyscy -Name \"Dane\"",
+   "New-SmbShare -FullAccess Wszyscy -Name \"Dane\" -Path C:\\Dane",
+   "New-SmbShare -FullAccess Wszyscy -Path C:\\Dane -Name \"Dane\"",
+   "New-SmbShare -Name \"Dane\" -Path C:\\Dane -FullAccess 'Wszyscy'",
+   "New-SmbShare -Name \"Dane\" -FullAccess 'Wszyscy' -Path C:\\Dane",
+   "New-SmbShare -Path C:\\Dane -Name \"Dane\" -FullAccess 'Wszyscy'",
+   "New-SmbShare -Path C:\\Dane -FullAccess 'Wszyscy' -Name \"Dane\"",
+   "New-SmbShare -FullAccess 'Wszyscy' -Name \"Dane\" -Path C:\\Dane",
+   "New-SmbShare -FullAccess 'Wszyscy' -Path C:\\Dane -Name \"Dane\"",
+   "New-SmbShare -Name \"Dane\" -Path 'C:\\Dane' -FullAccess \"Wszyscy\"",
+   "New-SmbShare -Name \"Dane\" -FullAccess \"Wszyscy\" -Path 'C:\\Dane'",
+   "New-SmbShare -Path 'C:\\Dane' -Name \"Dane\" -FullAccess \"Wszyscy\"",
+   "New-SmbShare -Path 'C:\\Dane' -FullAccess \"Wszyscy\" -Name \"Dane\"",
+   "New-SmbShare -FullAccess \"Wszyscy\" -Name \"Dane\" -Path 'C:\\Dane'",
+   "New-SmbShare -FullAccess \"Wszyscy\" -Path 'C:\\Dane' -Name \"Dane\"",
+   "New-SmbShare -Name \"Dane\" -Path 'C:\\Dane' -FullAccess Wszyscy",
+   "New-SmbShare -Name \"Dane\" -FullAccess Wszyscy -Path 'C:\\Dane'",
+   "New-SmbShare -Path 'C:\\Dane' -Name \"Dane\" -FullAccess Wszyscy",
+   "New-SmbShare -Path 'C:\\Dane' -FullAccess Wszyscy -Name \"Dane\"",
+   "New-SmbShare -FullAccess Wszyscy -Name \"Dane\" -Path 'C:\\Dane'",
+   "New-SmbShare -FullAccess Wszyscy -Path 'C:\\Dane' -Name \"Dane\"",
+   "New-SmbShare -Name \"Dane\" -Path 'C:\\Dane' -FullAccess 'Wszyscy'",
+   "New-SmbShare -Name \"Dane\" -FullAccess 'Wszyscy' -Path 'C:\\Dane'",
+   "New-SmbShare -Path 'C:\\Dane' -Name \"Dane\" -FullAccess 'Wszyscy'",
+   "New-SmbShare -Path 'C:\\Dane' -FullAccess 'Wszyscy' -Name \"Dane\"",
+   "New-SmbShare -FullAccess 'Wszyscy' -Name \"Dane\" -Path 'C:\\Dane'",
+   "New-SmbShare -FullAccess 'Wszyscy' -Path 'C:\\Dane' -Name \"Dane\"",
+   "New-SmbShare -Name Dane -Path \"C:\\Dane\" -FullAccess \"Wszyscy\"",
+   "New-SmbShare -Name Dane -FullAccess \"Wszyscy\" -Path \"C:\\Dane\"",
+   "New-SmbShare -Path \"C:\\Dane\" -Name Dane -FullAccess \"Wszyscy\"",
+   "New-SmbShare -Path \"C:\\Dane\" -FullAccess \"Wszyscy\" -Name Dane",
+   "New-SmbShare -FullAccess \"Wszyscy\" -Name Dane -Path \"C:\\Dane\"",
+   "New-SmbShare -FullAccess \"Wszyscy\" -Path \"C:\\Dane\" -Name Dane",
+   "New-SmbShare -Name Dane -Path \"C:\\Dane\" -FullAccess Wszyscy",
+   "New-SmbShare -Name Dane -FullAccess Wszyscy -Path \"C:\\Dane\"",
+   "New-SmbShare -Path \"C:\\Dane\" -Name Dane -FullAccess Wszyscy",
+   "New-SmbShare -Path \"C:\\Dane\" -FullAccess Wszyscy -Name Dane",
+   "New-SmbShare -FullAccess Wszyscy -Name Dane -Path \"C:\\Dane\"",
+   "New-SmbShare -FullAccess Wszyscy -Path \"C:\\Dane\" -Name Dane",
+   "New-SmbShare -Name Dane -Path \"C:\\Dane\" -FullAccess 'Wszyscy'",
+   "New-SmbShare -Name Dane -FullAccess 'Wszyscy' -Path \"C:\\Dane\"",
+   "New-SmbShare -Path \"C:\\Dane\" -Name Dane -FullAccess 'Wszyscy'",
+   "New-SmbShare -Path \"C:\\Dane\" -FullAccess 'Wszyscy' -Name Dane",
+   "New-SmbShare -FullAccess 'Wszyscy' -Name Dane -Path \"C:\\Dane\"",
+   "New-SmbShare -FullAccess 'Wszyscy' -Path \"C:\\Dane\" -Name Dane",
+   "New-SmbShare -Name Dane -Path C:\\Dane -FullAccess \"Wszyscy\"",
+   "New-SmbShare -Name Dane -FullAccess \"Wszyscy\" -Path C:\\Dane",
+   "New-SmbShare -Path C:\\Dane -Name Dane -FullAccess \"Wszyscy\"",
+   "New-SmbShare -Path C:\\Dane -FullAccess \"Wszyscy\" -Name Dane",
+   "New-SmbShare -FullAccess \"Wszyscy\" -Name Dane -Path C:\\Dane",
+   "New-SmbShare -FullAccess \"Wszyscy\" -Path C:\\Dane -Name Dane",
+   "New-SmbShare -Name Dane -Path C:\\Dane -FullAccess Wszyscy",
+   "New-SmbShare -Name Dane -FullAccess Wszyscy -Path C:\\Dane",
+   "New-SmbShare -Path C:\\Dane -Name Dane -FullAccess Wszyscy",
+   "New-SmbShare -Path C:\\Dane -FullAccess Wszyscy -Name Dane",
+   "New-SmbShare -FullAccess Wszyscy -Name Dane -Path C:\\Dane",
+   "New-SmbShare -FullAccess Wszyscy -Path C:\\Dane -Name Dane",
+   "New-SmbShare -Name Dane -Path C:\\Dane -FullAccess 'Wszyscy'",
+   "New-SmbShare -Name Dane -FullAccess 'Wszyscy' -Path C:\\Dane",
+   "New-SmbShare -Path C:\\Dane -Name Dane -FullAccess 'Wszyscy'",
+   "New-SmbShare -Path C:\\Dane -FullAccess 'Wszyscy' -Name Dane",
+   "New-SmbShare -FullAccess 'Wszyscy' -Name Dane -Path C:\\Dane",
+   "New-SmbShare -FullAccess 'Wszyscy' -Path C:\\Dane -Name Dane",
+   "New-SmbShare -Name Dane -Path 'C:\\Dane' -FullAccess \"Wszyscy\"",
+   "New-SmbShare -Name Dane -FullAccess \"Wszyscy\" -Path 'C:\\Dane'",
+   "New-SmbShare -Path 'C:\\Dane' -Name Dane -FullAccess \"Wszyscy\"",
+   "New-SmbShare -Path 'C:\\Dane' -FullAccess \"Wszyscy\" -Name Dane",
+   "New-SmbShare -FullAccess \"Wszyscy\" -Name Dane -Path 'C:\\Dane'",
+   "New-SmbShare -FullAccess \"Wszyscy\" -Path 'C:\\Dane' -Name Dane",
+   "New-SmbShare -Name Dane -Path 'C:\\Dane' -FullAccess Wszyscy",
+   "New-SmbShare -Name Dane -FullAccess Wszyscy -Path 'C:\\Dane'",
+   "New-SmbShare -Path 'C:\\Dane' -Name Dane -FullAccess Wszyscy",
+   "New-SmbShare -Path 'C:\\Dane' -FullAccess Wszyscy -Name Dane",
+   "New-SmbShare -FullAccess Wszyscy -Name Dane -Path 'C:\\Dane'",
+   "New-SmbShare -FullAccess Wszyscy -Path 'C:\\Dane' -Name Dane",
+   "New-SmbShare -Name Dane -Path 'C:\\Dane' -FullAccess 'Wszyscy'",
+   "New-SmbShare -Name Dane -FullAccess 'Wszyscy' -Path 'C:\\Dane'",
+   "New-SmbShare -Path 'C:\\Dane' -Name Dane -FullAccess 'Wszyscy'",
+   "New-SmbShare -Path 'C:\\Dane' -FullAccess 'Wszyscy' -Name Dane",
+   "New-SmbShare -FullAccess 'Wszyscy' -Name Dane -Path 'C:\\Dane'",
+   "New-SmbShare -FullAccess 'Wszyscy' -Path 'C:\\Dane' -Name Dane",
+   "New-SmbShare -Name 'Dane' -Path \"C:\\Dane\" -FullAccess \"Wszyscy\"",
+   "New-SmbShare -Name 'Dane' -FullAccess \"Wszyscy\" -Path \"C:\\Dane\"",
+   "New-SmbShare -Path \"C:\\Dane\" -Name 'Dane' -FullAccess \"Wszyscy\"",
+   "New-SmbShare -Path \"C:\\Dane\" -FullAccess \"Wszyscy\" -Name 'Dane'",
+   "New-SmbShare -FullAccess \"Wszyscy\" -Name 'Dane' -Path \"C:\\Dane\"",
+   "New-SmbShare -FullAccess \"Wszyscy\" -Path \"C:\\Dane\" -Name 'Dane'",
+   "New-SmbShare -Name 'Dane' -Path \"C:\\Dane\" -FullAccess Wszyscy",
+   "New-SmbShare -Name 'Dane' -FullAccess Wszyscy -Path \"C:\\Dane\"",
+   "New-SmbShare -Path \"C:\\Dane\" -Name 'Dane' -FullAccess Wszyscy",
+   "New-SmbShare -Path \"C:\\Dane\" -FullAccess Wszyscy -Name 'Dane'",
+   "New-SmbShare -FullAccess Wszyscy -Name 'Dane' -Path \"C:\\Dane\"",
+   "New-SmbShare -FullAccess Wszyscy -Path \"C:\\Dane\" -Name 'Dane'",
+   "New-SmbShare -Name 'Dane' -Path \"C:\\Dane\" -FullAccess 'Wszyscy'",
+   "New-SmbShare -Name 'Dane' -FullAccess 'Wszyscy' -Path \"C:\\Dane\"",
+   "New-SmbShare -Path \"C:\\Dane\" -Name 'Dane' -FullAccess 'Wszyscy'",
+   "New-SmbShare -Path \"C:\\Dane\" -FullAccess 'Wszyscy' -Name 'Dane'",
+   "New-SmbShare -FullAccess 'Wszyscy' -Name 'Dane' -Path \"C:\\Dane\"",
+   "New-SmbShare -FullAccess 'Wszyscy' -Path \"C:\\Dane\" -Name 'Dane'",
+   "New-SmbShare -Name 'Dane' -Path C:\\Dane -FullAccess \"Wszyscy\"",
+   "New-SmbShare -Name 'Dane' -FullAccess \"Wszyscy\" -Path C:\\Dane",
+   "New-SmbShare -Path C:\\Dane -Name 'Dane' -FullAccess \"Wszyscy\"",
+   "New-SmbShare -Path C:\\Dane -FullAccess \"Wszyscy\" -Name 'Dane'",
+   "New-SmbShare -FullAccess \"Wszyscy\" -Name 'Dane' -Path C:\\Dane",
+   "New-SmbShare -FullAccess \"Wszyscy\" -Path C:\\Dane -Name 'Dane'",
+   "New-SmbShare -Name 'Dane' -Path C:\\Dane -FullAccess Wszyscy",
+   "New-SmbShare -Name 'Dane' -FullAccess Wszyscy -Path C:\\Dane",
+   "New-SmbShare -Path C:\\Dane -Name 'Dane' -FullAccess Wszyscy",
+   "New-SmbShare -Path C:\\Dane -FullAccess Wszyscy -Name 'Dane'",
+   "New-SmbShare -FullAccess Wszyscy -Name 'Dane' -Path C:\\Dane",
+   "New-SmbShare -FullAccess Wszyscy -Path C:\\Dane -Name 'Dane'",
+   "New-SmbShare -Name 'Dane' -Path C:\\Dane -FullAccess 'Wszyscy'",
+   "New-SmbShare -Name 'Dane' -FullAccess 'Wszyscy' -Path C:\\Dane",
+   "New-SmbShare -Path C:\\Dane -Name 'Dane' -FullAccess 'Wszyscy'",
+   "New-SmbShare -Path C:\\Dane -FullAccess 'Wszyscy' -Name 'Dane'",
+   "New-SmbShare -FullAccess 'Wszyscy' -Name 'Dane' -Path C:\\Dane",
+   "New-SmbShare -FullAccess 'Wszyscy' -Path C:\\Dane -Name 'Dane'",
+   "New-SmbShare -Name 'Dane' -Path 'C:\\Dane' -FullAccess \"Wszyscy\"",
+   "New-SmbShare -Name 'Dane' -FullAccess \"Wszyscy\" -Path 'C:\\Dane'",
+   "New-SmbShare -Path 'C:\\Dane' -Name 'Dane' -FullAccess \"Wszyscy\"",
+   "New-SmbShare -Path 'C:\\Dane' -FullAccess \"Wszyscy\" -Name 'Dane'",
+   "New-SmbShare -FullAccess \"Wszyscy\" -Name 'Dane' -Path 'C:\\Dane'",
+   "New-SmbShare -FullAccess \"Wszyscy\" -Path 'C:\\Dane' -Name 'Dane'",
+   "New-SmbShare -Name 'Dane' -Path 'C:\\Dane' -FullAccess Wszyscy",
+   "New-SmbShare -Name 'Dane' -FullAccess Wszyscy -Path 'C:\\Dane'",
+   "New-SmbShare -Path 'C:\\Dane' -Name 'Dane' -FullAccess Wszyscy",
+   "New-SmbShare -Path 'C:\\Dane' -FullAccess Wszyscy -Name 'Dane'",
+   "New-SmbShare -FullAccess Wszyscy -Name 'Dane' -Path 'C:\\Dane'",
+   "New-SmbShare -FullAccess Wszyscy -Path 'C:\\Dane' -Name 'Dane'",
+   "New-SmbShare -Name 'Dane' -Path 'C:\\Dane' -FullAccess 'Wszyscy'",
+   "New-SmbShare -Name 'Dane' -FullAccess 'Wszyscy' -Path 'C:\\Dane'",
+   "New-SmbShare -Path 'C:\\Dane' -Name 'Dane' -FullAccess 'Wszyscy'",
+   "New-SmbShare -Path 'C:\\Dane' -FullAccess 'Wszyscy' -Name 'Dane'",
+   "New-SmbShare -FullAccess 'Wszyscy' -Name 'Dane' -Path 'C:\\Dane'",
+   "New-SmbShare -FullAccess 'Wszyscy' -Path 'C:\\Dane' -Name 'Dane'"
+  ],
+  "hint": {
+   "pl": "Dodaj parametr -FullAccess z nazwą grupy.",
+   "ru": "Добавьте параметр -FullAccess с именем группы."
+  },
+  "expl": {
+   "pl": "-FullAccess nadaje uprawnienie udziału Full; Wszyscy to polska nazwa grupy Everyone.",
+   "ru": "-FullAccess выдаёт права Full на ресурс; Wszyscy — польское имя группы Everyone."
+  },
+  "level": 3
+ },
+ {
+  "id": "win-072",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell wyświetl zawartość folderu C:\\Dane.",
+   "ru": "В PowerShell выведите содержимое папки C:\\Dane."
+  },
+  "answers": [
+   "Get-ChildItem C:\\Dane",
+   "Get-ChildItem -Path C:\\Dane",
+   "Get-ChildItem \"C:\\Dane\"",
+   "Get-ChildItem -Path \"C:\\Dane\"",
+   "gci C:\\Dane",
+   "dir C:\\Dane",
+   "ls C:\\Dane"
+  ],
+  "hint": {
+   "pl": "Get + ChildItem (aliasy: dir, ls, gci).",
+   "ru": "Get + ChildItem (алиасы: dir, ls, gci)."
+  },
+  "expl": {
+   "pl": "Get-ChildItem zwraca elementy (pliki i foldery) znajdujące się we wskazanej lokalizacji.",
+   "ru": "Get-ChildItem возвращает элементы (файлы и папки) в указанном расположении."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-073",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell wyszukaj w C:\\Dane i wszystkich podfolderach pliki z rozszerzeniem .txt.",
+   "ru": "В PowerShell найдите в C:\\Dane и всех подпапках файлы с расширением .txt."
+  },
+  "answers": [
+   "Get-ChildItem -Path C:\\Dane -Recurse -Filter *.txt",
+   "Get-ChildItem -Path C:\\Dane -Filter *.txt -Recurse",
+   "Get-ChildItem -Recurse -Path C:\\Dane -Filter *.txt",
+   "Get-ChildItem -Recurse -Filter *.txt -Path C:\\Dane",
+   "Get-ChildItem -Filter *.txt -Path C:\\Dane -Recurse",
+   "Get-ChildItem -Filter *.txt -Recurse -Path C:\\Dane",
+   "Get-ChildItem C:\\Dane -Recurse -Filter *.txt",
+   "Get-ChildItem C:\\Dane -Filter *.txt -Recurse",
+   "Get-ChildItem -Path C:\\Dane -Recurse -Filter \"*.txt\"",
+   "Get-ChildItem -Path C:\\Dane -Filter \"*.txt\" -Recurse",
+   "Get-ChildItem -Recurse -Path C:\\Dane -Filter \"*.txt\"",
+   "Get-ChildItem -Recurse -Filter \"*.txt\" -Path C:\\Dane",
+   "Get-ChildItem -Filter \"*.txt\" -Path C:\\Dane -Recurse",
+   "Get-ChildItem -Filter \"*.txt\" -Recurse -Path C:\\Dane",
+   "Get-ChildItem C:\\Dane -Recurse -Filter \"*.txt\"",
+   "Get-ChildItem C:\\Dane -Filter \"*.txt\" -Recurse",
+   "Get-ChildItem -Path C:\\Dane -Recurse -Filter '*.txt'",
+   "Get-ChildItem -Path C:\\Dane -Filter '*.txt' -Recurse",
+   "Get-ChildItem -Recurse -Path C:\\Dane -Filter '*.txt'",
+   "Get-ChildItem -Recurse -Filter '*.txt' -Path C:\\Dane",
+   "Get-ChildItem -Filter '*.txt' -Path C:\\Dane -Recurse",
+   "Get-ChildItem -Filter '*.txt' -Recurse -Path C:\\Dane",
+   "Get-ChildItem C:\\Dane -Recurse -Filter '*.txt'",
+   "Get-ChildItem C:\\Dane -Filter '*.txt' -Recurse",
+   "Get-ChildItem -Path \"C:\\Dane\" -Recurse -Filter *.txt",
+   "Get-ChildItem -Path \"C:\\Dane\" -Filter *.txt -Recurse",
+   "Get-ChildItem -Recurse -Path \"C:\\Dane\" -Filter *.txt",
+   "Get-ChildItem -Recurse -Filter *.txt -Path \"C:\\Dane\"",
+   "Get-ChildItem -Filter *.txt -Path \"C:\\Dane\" -Recurse",
+   "Get-ChildItem -Filter *.txt -Recurse -Path \"C:\\Dane\"",
+   "Get-ChildItem \"C:\\Dane\" -Recurse -Filter *.txt",
+   "Get-ChildItem \"C:\\Dane\" -Filter *.txt -Recurse",
+   "Get-ChildItem -Path \"C:\\Dane\" -Recurse -Filter \"*.txt\"",
+   "Get-ChildItem -Path \"C:\\Dane\" -Filter \"*.txt\" -Recurse",
+   "Get-ChildItem -Recurse -Path \"C:\\Dane\" -Filter \"*.txt\"",
+   "Get-ChildItem -Recurse -Filter \"*.txt\" -Path \"C:\\Dane\"",
+   "Get-ChildItem -Filter \"*.txt\" -Path \"C:\\Dane\" -Recurse",
+   "Get-ChildItem -Filter \"*.txt\" -Recurse -Path \"C:\\Dane\"",
+   "Get-ChildItem \"C:\\Dane\" -Recurse -Filter \"*.txt\"",
+   "Get-ChildItem \"C:\\Dane\" -Filter \"*.txt\" -Recurse",
+   "Get-ChildItem -Path \"C:\\Dane\" -Recurse -Filter '*.txt'",
+   "Get-ChildItem -Path \"C:\\Dane\" -Filter '*.txt' -Recurse",
+   "Get-ChildItem -Recurse -Path \"C:\\Dane\" -Filter '*.txt'",
+   "Get-ChildItem -Recurse -Filter '*.txt' -Path \"C:\\Dane\"",
+   "Get-ChildItem -Filter '*.txt' -Path \"C:\\Dane\" -Recurse",
+   "Get-ChildItem -Filter '*.txt' -Recurse -Path \"C:\\Dane\"",
+   "Get-ChildItem \"C:\\Dane\" -Recurse -Filter '*.txt'",
+   "Get-ChildItem \"C:\\Dane\" -Filter '*.txt' -Recurse"
+  ],
+  "hint": {
+   "pl": "Get-ChildItem z -Recurse i -Filter.",
+   "ru": "Get-ChildItem с -Recurse и -Filter."
+  },
+  "expl": {
+   "pl": "-Recurse przeszukuje podfoldery, a -Filter ogranicza wynik do pasujących nazw.",
+   "ru": "-Recurse обходит подпапки, а -Filter ограничивает результат подходящими именами."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-074",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell skopiuj plik C:\\Dane\\raport.txt do folderu D:\\Kopia.",
+   "ru": "В PowerShell скопируйте файл C:\\Dane\\raport.txt в папку D:\\Kopia."
+  },
+  "answers": [
+   "Copy-Item -Path C:\\Dane\\raport.txt -Destination D:\\Kopia",
+   "Copy-Item -Destination D:\\Kopia -Path C:\\Dane\\raport.txt",
+   "Copy-Item C:\\Dane\\raport.txt D:\\Kopia",
+   "Copy-Item C:\\Dane\\raport.txt D:\\Kopia\\"
+  ],
+  "hint": {
+   "pl": "Copy-Item źródło cel (-Path, -Destination).",
+   "ru": "Copy-Item источник цель (-Path, -Destination)."
+  },
+  "expl": {
+   "pl": "Copy-Item kopiuje elementy; parametry -Path i -Destination można podać pozycyjnie.",
+   "ru": "Copy-Item копирует элементы; -Path и -Destination можно указать позиционно."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-075",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell spakuj folder C:\\Dane do archiwum C:\\Kopia\\dane.zip.",
+   "ru": "В PowerShell упакуйте папку C:\\Dane в архив C:\\Kopia\\dane.zip."
+  },
+  "answers": [
+   "Compress-Archive -Path C:\\Dane -DestinationPath C:\\Kopia\\dane.zip",
+   "Compress-Archive -DestinationPath C:\\Kopia\\dane.zip -Path C:\\Dane",
+   "Compress-Archive C:\\Dane C:\\Kopia\\dane.zip",
+   "Compress-Archive -Path \"C:\\Dane\" -DestinationPath \"C:\\Kopia\\dane.zip\"",
+   "Compress-Archive -Path C:\\Dane\\* -DestinationPath C:\\Kopia\\dane.zip"
+  ],
+  "hint": {
+   "pl": "Compress-Archive -Path … -DestinationPath …",
+   "ru": "Compress-Archive -Path … -DestinationPath …"
+  },
+  "expl": {
+   "pl": "Compress-Archive tworzy plik ZIP z podanych plików lub folderów.",
+   "ru": "Compress-Archive создаёт ZIP-файл из указанных файлов или папок."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-076",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell utwórz folder C:\\Egzamin.",
+   "ru": "В PowerShell создайте папку C:\\Egzamin."
+  },
+  "answers": [
+   "New-Item -ItemType Directory -Path C:\\Egzamin",
+   "New-Item -Path C:\\Egzamin -ItemType Directory",
+   "New-Item C:\\Egzamin -ItemType Directory",
+   "mkdir C:\\Egzamin",
+   "md C:\\Egzamin",
+   "New-Item -Path C:\\ -Name Egzamin -ItemType Directory"
+  ],
+  "hint": {
+   "pl": "New-Item z typem elementu Directory.",
+   "ru": "New-Item с типом элемента Directory."
+  },
+  "expl": {
+   "pl": "New-Item -ItemType Directory tworzy folder (File – plik).",
+   "ru": "New-Item -ItemType Directory создаёт папку (File — файл)."
+  },
+  "level": 1
+ },
+ {
+  "id": "win-077",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell zakończ wszystkie procesy notepad wymuszając zamknięcie.",
+   "ru": "В PowerShell принудительно завершите все процессы notepad."
+  },
+  "answers": [
+   "Stop-Process -Name notepad -Force",
+   "Stop-Process -Force -Name notepad",
+   "Stop-Process -Name \"notepad\" -Force",
+   "Get-Process notepad | Stop-Process -Force"
+  ],
+  "hint": {
+   "pl": "Stop-Process -Name … -Force",
+   "ru": "Stop-Process -Name … -Force"
+  },
+  "expl": {
+   "pl": "Stop-Process kończy procesy wskazane nazwą (bez .exe) lub -Id.",
+   "ru": "Stop-Process завершает процессы по имени (без .exe) или по -Id."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-078",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell zmień nazwę komputera na stanowisko05 i od razu uruchom go ponownie.",
+   "ru": "В PowerShell переименуйте компьютер в stanowisko05 и сразу перезагрузите его."
+  },
+  "answers": [
+   "Rename-Computer -NewName stanowisko05 -Restart",
+   "Rename-Computer -Restart -NewName stanowisko05",
+   "Rename-Computer -NewName \"stanowisko05\" -Restart",
+   "Rename-Computer -Restart -NewName \"stanowisko05\"",
+   "Rename-Computer stanowisko05 -Restart"
+  ],
+  "hint": {
+   "pl": "Rename-Computer -NewName … + przełącznik restartu.",
+   "ru": "Rename-Computer -NewName … + ключ перезагрузки."
+  },
+  "expl": {
+   "pl": "Nowa nazwa zaczyna obowiązywać po ponownym uruchomieniu, które wymusza -Restart.",
+   "ru": "Новое имя вступает в силу после перезагрузки, которую выполняет -Restart."
+  },
+  "level": 2
+ },
+ {
+  "id": "win-079",
+  "os": "windows",
+  "group": "powershell",
+  "task": {
+   "pl": "W PowerShell przełącz kartę Ethernet na pobieranie adresu IPv4 z DHCP.",
+   "ru": "В PowerShell переключите адаптер Ethernet на получение IPv4-адреса по DHCP."
+  },
+  "answers": [
+   "Set-NetIPInterface -InterfaceAlias \"Ethernet\" -Dhcp Enabled",
+   "Set-NetIPInterface -Dhcp Enabled -InterfaceAlias \"Ethernet\"",
+   "Set-NetIPInterface -InterfaceAlias Ethernet -Dhcp Enabled",
+   "Set-NetIPInterface -Dhcp Enabled -InterfaceAlias Ethernet",
+   "Set-NetIPInterface -InterfaceAlias 'Ethernet' -Dhcp Enabled",
+   "Set-NetIPInterface -Dhcp Enabled -InterfaceAlias 'Ethernet'",
+   "Set-NetIPInterface -InterfaceAlias \"Ethernet\" -Dhcp Enabled -AddressFamily IPv4",
+   "Set-NetIPInterface -InterfaceAlias \"Ethernet\" -AddressFamily IPv4 -Dhcp Enabled",
+   "Set-NetIPInterface -Dhcp Enabled -InterfaceAlias \"Ethernet\" -AddressFamily IPv4",
+   "Set-NetIPInterface -Dhcp Enabled -AddressFamily IPv4 -InterfaceAlias \"Ethernet\"",
+   "Set-NetIPInterface -AddressFamily IPv4 -InterfaceAlias \"Ethernet\" -Dhcp Enabled",
+   "Set-NetIPInterface -AddressFamily IPv4 -Dhcp Enabled -InterfaceAlias \"Ethernet\"",
+   "Set-NetIPInterface -InterfaceAlias Ethernet -Dhcp Enabled -AddressFamily IPv4",
+   "Set-NetIPInterface -InterfaceAlias Ethernet -AddressFamily IPv4 -Dhcp Enabled",
+   "Set-NetIPInterface -Dhcp Enabled -InterfaceAlias Ethernet -AddressFamily IPv4",
+   "Set-NetIPInterface -Dhcp Enabled -AddressFamily IPv4 -InterfaceAlias Ethernet",
+   "Set-NetIPInterface -AddressFamily IPv4 -InterfaceAlias Ethernet -Dhcp Enabled",
+   "Set-NetIPInterface -AddressFamily IPv4 -Dhcp Enabled -InterfaceAlias Ethernet",
+   "Set-NetIPInterface -InterfaceAlias 'Ethernet' -Dhcp Enabled -AddressFamily IPv4",
+   "Set-NetIPInterface -InterfaceAlias 'Ethernet' -AddressFamily IPv4 -Dhcp Enabled",
+   "Set-NetIPInterface -Dhcp Enabled -InterfaceAlias 'Ethernet' -AddressFamily IPv4",
+   "Set-NetIPInterface -Dhcp Enabled -AddressFamily IPv4 -InterfaceAlias 'Ethernet'",
+   "Set-NetIPInterface -AddressFamily IPv4 -InterfaceAlias 'Ethernet' -Dhcp Enabled",
+   "Set-NetIPInterface -AddressFamily IPv4 -Dhcp Enabled -InterfaceAlias 'Ethernet'"
+  ],
+  "hint": {
+   "pl": "Set-NetIPInterface z parametrem -Dhcp.",
+   "ru": "Set-NetIPInterface с параметром -Dhcp."
+  },
+  "expl": {
+   "pl": "-Dhcp Enabled włącza klienta DHCP na interfejsie (statyczne adresy warto wcześniej usunąć Remove-NetIPAddress).",
+   "ru": "-Dhcp Enabled включает DHCP-клиент на интерфейсе (статические адреса лучше удалить Remove-NetIPAddress)."
+  },
+  "level": 3
+ }
+]

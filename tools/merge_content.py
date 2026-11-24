@@ -16,6 +16,9 @@ TOPICS = {"hardware", "peripherals", "printers", "windows", "linux", "winserver"
 def main():
     overlay_dir, bank_path = Path(sys.argv[1]), Path(sys.argv[2])
     bank = json.loads(bank_path.read_text())
+    drop_file = Path(__file__).with_name("drop_ids.json")
+    drop = set(json.loads(drop_file.read_text())) if drop_file.exists() else set()
+    bank = [q for q in bank if q["id"] not in drop]  # broken by extraction, not recoverable
     by_id = {q["id"]: q for q in bank}
     applied = fixes = topics = 0
     for f in sorted(glob.glob(str(overlay_dir / "*.json"))):

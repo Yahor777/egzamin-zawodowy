@@ -57,16 +57,30 @@ def find_pairs(root: Path):
     return sheets, keys
 
 
+CODE_RE = re.compile(r"\b(E\.1[23]|EE\.08)-([A-Z]{1,2})-(\d{2})\.(\d{2})\b")
+
+
+def sheet_code(text):
+    m = CODE_RE.search(text)
+    return m.group(0) if m else None
+
+
 def parse_key(path: Path):
-    """Answer key -> {n: 'A'..'D' or '*'} ('*' = annulled, point for everyone)."""
+    """Answer key -> (sheet code or None, {n: 'A'..'D' or '*'}). Only text after the
+    'Klucz odpowiedzi' heading counts (some files bundle a whole sheet before it)."""
     text = subprocess.run(["pdftotext", "-layout", str(path), "-"],
                           capture_output=True, text=True, check=True).stdout
+    i = text.lower().find("klucz odpowiedzi")
+    head, body = (text[:i], text[i:]) if i >= 0 else (text, text)
+    # the sheet code printed closest before the key heading identifies it
+    codes = CODE_RE.findall(head)
+    code = "-".join(codes[-1][:2]) + "-" + ".".join(codes[-1][2:]) if codes else None
     ans = {}
-    for m in re.finditer(r"(?<![\d.])(\d{1,2})\s+([A-D]|1\*)(?![\w])", text):
+    for m in re.finditer(r"(?<![\d.])(\d{1,2})\s+([A-D]|1\*)(?![\w])", body):
         n = int(m.group(1))
         if 1 <= n <= 40:
             ans.setdefault(n, "*" if m.group(2) == "1*" else m.group(2))
-    return ans
+    return code, ans
 
 
 def poppler_lines(path: Path):
@@ -358,7 +372,12 @@ def main():
         if sid not in keys:
             report.append(f"{sid}: NO KEY, skipped")
             continue
-        key = parse_key(keys[sid])
+        key_code, key = parse_key(keys[sid])
+        sheet_text = subprocess.run(["pdftotext", "-l", "2", str(path), "-"], capture_output=True, text=True).stdout
+        s_code = sheet_code(sheet_text)
+        if key_code and s_code and key_code != s_code:
+            report.append(f"{sid}: KEY MISMATCH (sheet {s_code}, key {key_code}), skipped")
+            continue
         qs = parse_sheet(path, img_dir, sid)
         m = re.match(r"(ee?)_(\d+)_(\d{4})_(\d{2})", sid)
         qual = {"e_12": "E.12", "e_13": "E.13", "ee_08": "EE.08"}[f"{m.group(1)}_{m.group(2)}"]

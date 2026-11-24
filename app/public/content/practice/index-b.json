@@ -1,0 +1,92 @@
+[
+  {
+    "slug": "inf02-2026-01-01",
+    "code": "INF.02-01-26.01-SG",
+    "session": "2026-01",
+    "title_ru": "Замена RAM, диагностика, Linux DHCP и скрипт создания пользователей",
+    "title_pl": "Wymiana pamięci RAM, diagnostyka, serwer DHCP w Linux i skrypt tworzący konta",
+    "tags": ["hardware", "diagnostics", "cabling", "router", "switch", "linux-net", "linux-dhcp", "linux-script", "linux-users", "windows-client", "quotas", "gpo"],
+    "summary_ru": "Замена модуля RAM и оценка ПК под эмулятор Android, прямой кабель T568B, статический WAN на роутере. Linux-сервер с двумя интерфейсами раздаёт адреса через isc-dhcp-server, скрипт konta.sh создаёт 5 пользователей в цикле. На Windows: WSL, квота, запрет смены обоев, индикатор курсора."
+  },
+  {
+    "slug": "inf02-2026-01-02",
+    "code": "INF.02-02-26.01-SG",
+    "session": "2026-01",
+    "title_ru": "VLAN, DHCP с резервациями, DNS + IIS на Windows Server, диск в Linux",
+    "title_pl": "VLAN, DHCP z rezerwacjami, DNS i IIS w Windows Server, dodatkowy dysk w Linux",
+    "tags": ["cabling", "router", "switch", "vlan", "winserver", "dns", "iis", "linux-net", "linux-disk", "hardware", "diagnostics"],
+    "summary_ru": "Роутер раздаёт DHCP с резервациями для сервера и станции, коммутатор — VLAN 2. Windows Server: прямая и обратная DNS-зона, сайт IIS app.egzamin.local с NTFS-правами для IUSR. Linux-станция: монтаж второго диска, раздел ext4 в /dane и сравнение скорости в «Dyski»."
+  },
+  {
+    "slug": "inf02-2026-01-03",
+    "code": "INF.02-03-26.01-SG",
+    "session": "2026-01",
+    "title_ru": "RAM, msinfo32, принтер RAW, пакетные файлы и Apache на Linux",
+    "title_pl": "Pamięć RAM, identyfikacja parametrów, drukarka RAW, pliki wsadowe i serwer HTTP w Linux",
+    "tags": ["hardware", "diagnostics", "router", "switch", "windows-client", "printing", "linux-net", "linux-web", "linux-users"],
+    "summary_ru": "Замена RAM и параметры памяти из msinfo32, статический WAN и DHCP на роутере. Windows-станция: принтер через RAW, пользователь EGZAMIN, сложность паролей, три .bat-файла (копирование, параметр %1, дописывание даты и списка C:\\). Linux: Apache с новой index.html и каталог /kopie_strony с правами 750 для www-data."
+  },
+  {
+    "slug": "inf02-2026-01-04",
+    "code": "INF.02-04-26.01-SG",
+    "session": "2026-01",
+    "title_ru": "Замена сетевой карты, CPU-Z, домен AD с GPO и пакетный файл",
+    "title_pl": "Wymiana karty sieciowej, CPU-Z, domena AD z zasadą grupy i plik wsadowy",
+    "tags": ["hardware", "diagnostics", "router", "switch", "winserver", "ad", "gpo", "linux-net", "linux-users"],
+    "summary_ru": "Установка запасной сетевой карты и параметры CPU-Z. Windows Server с двумя интерфейсами становится DC домена firmaXX.local, GPO Polityka задаёт политику паролей, OU BIURO с двумя пользователями, плюс powitanie.bat. Linux-станция: nmcli, имя хоста, MAC, каталог с правами 741, обои."
+  },
+  {
+    "slug": "inf02-2026-01-05",
+    "code": "INF.02-05-26.01-SG",
+    "session": "2026-01",
+    "title_ru": "VLAN-trunk «router on a stick», CrystalDiskInfo и FTP в IIS",
+    "title_pl": "VLAN z trunkiem i rutingiem, CrystalDiskInfo oraz serwer FTP w IIS",
+    "tags": ["cabling", "hardware", "diagnostics", "router", "switch", "vlan", "winserver", "iis", "windows-client"],
+    "summary_ru": "Три VLAN с маршрутизацией на роутере (тегированы на порту 2) и trunk-порт 4 на коммутаторе. Монтаж запасного диска и его параметры в CrystalDiskInfo. Windows Server: FTP-сайт FTP_egzamin с авторизацией (Egzamin — чтение/запись, анонимы — чтение); станция из VLAN 3 создаёт папку на FTP."
+  },
+  {
+    "slug": "inf02-2025-06-01",
+    "code": "INF.02-01-25.06-SG",
+    "session": "2025-06",
+    "title_ru": "RAM в Linux, NIC Teaming, домен AD с перемещаемым профилем",
+    "title_pl": "Pamięć RAM w Linux, NIC Teaming, domena AD z profilem mobilnym",
+    "tags": ["hardware", "diagnostics", "router", "switch", "vlan", "winserver", "ad", "shares", "windows-client"],
+    "summary_ru": "Установка RAM и её параметры через dmidecode в Linux, VLAN 2 на коммутаторе. Windows Server: команда LAN12 из двух сетевых карт, DC informatyk.local, OU Serwisanci, пользователь abackia с перемещаемым профилем в ресурсе profile$. Станция входит в домен и шифрует файл EFS; график работ в электронной таблице."
+  },
+  {
+    "slug": "inf02-2025-06-02",
+    "code": "INF.02-02-25.06-SG",
+    "session": "2025-06",
+    "title_ru": "RAM в Linux, NIC Teaming, домен AD с перемещаемым профилем (вариант 192.168.0.0/24)",
+    "title_pl": "Pamięć RAM w Linux, NIC Teaming, domena AD z profilem mobilnym",
+    "tags": ["hardware", "diagnostics", "router", "switch", "vlan", "winserver", "ad", "shares", "windows-client"],
+    "summary_ru": "Тот же сценарий, что в INF.02-01-25.06, с другой адресацией: сеть 192.168.0.0/24 и VLAN 200. RAM в Linux (dmidecode), команда сетевых карт LAN12, домен informatyk.local с перемещаемым профилем в profile$, EFS на станции и график работ с условным форматированием."
+  },
+  {
+    "slug": "inf02-2025-06-03",
+    "code": "INF.02-03-25.06-SG",
+    "session": "2025-06",
+    "title_ru": "VLAN 2/3 с маршрутизацией, DNS + IIS-сайт, политика входа Ctrl+Alt+Del",
+    "title_pl": "VLAN 2 i 3 z rutingiem, serwer DNS i witryna IIS, zasady logowania",
+    "tags": ["cabling", "router", "switch", "vlan", "winserver", "dns", "iis", "windows-client", "diagnostics"],
+    "summary_ru": "Роутер маршрутизирует VLAN 2 и 3 через trunk на порту 2, коммутатор раздаёт их на порты доступа. Windows Server: зона egzamin.local с записью www, сайт IIS egzamin с документом по умолчанию egzamin.html. Станция: Ctrl+Alt+Del, сообщение при входе, открытие www.egzamin.local, идентификация компонентов."
+  },
+  {
+    "slug": "inf02-2025-06-04",
+    "code": "INF.02-04-25.06-SG",
+    "session": "2025-06",
+    "title_ru": "Wi-Fi WPA2, домен с GPO блокировки, общий принтер и смета",
+    "title_pl": "Sieć Wi-Fi WPA2, domena z zasadą blokady konta, udostępniona drukarka i kosztorys",
+    "tags": ["cabling", "wifi", "router", "switch", "vlan", "winserver", "ad", "gpo", "printing", "shares", "windows-client", "diagnostics"],
+    "summary_ru": "Wi-Fi EGZAMIN_XX с WPA2-AES, VLAN 13 на коммутаторе. Windows Server: общий принтер RAW, DC zsXX.local, OU TECHNIKUM с глобальной группой и пользователем, перемещаемый профиль в ZSprofile$, GPO bezpieczna_szkola (длина пароля и блокировка). Станция по Wi-Fi входит в домен и печатает; смета с НДС и скидкой."
+  },
+  {
+    "slug": "inf02-2025-06-05",
+    "code": "INF.02-05-25.06-SG",
+    "session": "2025-06",
+    "title_ru": "Кроссовер, Wi-Fi WPA2, квоты Windows и права в Linux",
+    "title_pl": "Kabel skrosowany, sieć Wi-Fi WPA2, przydziały dyskowe w Windows i uprawnienia w Linux",
+    "tags": ["cabling", "router", "wifi", "diagnostics", "windows-client", "quotas", "linux-net", "linux-users"],
+    "summary_ru": "Кроссовер T568A/T568B, роутер со статическим WAN, LAN /28 и Wi-Fi WPA2-AES. Windows-станция по Wi-Fi: разблокировка пользователя uczen, группа, квота 20 % диска, имя PCuczen, Ctrl+Alt+Del. Linux: имя PCserwer, каталог 770 и файл 660 с владельцем egzamin:root, учётка со сроком действия; расчёт адресации /28."
+  }
+]

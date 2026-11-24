@@ -1,0 +1,206 @@
+[
+  {
+    "slug": "inf02-2026-06-01",
+    "code": "INF.02-01-26.06-SG",
+    "session": "2026-06",
+    "title_ru": "Запасной диск, VLAN 2/4, общий диск DRUGI и смета сервера хранения",
+    "title_pl": "Montaż dysku, VLAN 2/4, udział DRUGI i kosztorys serwera danych",
+    "tags": [
+      "hardware",
+      "diagnostics",
+      "router",
+      "switch",
+      "vlan",
+      "windows-client",
+      "shares",
+      "winserver",
+      "printing"
+    ],
+    "summary_ru": "Монтаж запасного HDD, роутер с DHCP-резервацией, коммутатор с VLAN 2 и 4. Диагностика станции в Linux под CAD, на Windows — пользователь TESTY, диск M: и ресурс DRUGI только для администраторов; сервер с LANZ/LANW, сетевым принтером и диском K:. Смета на Intel-сервер с условным рабатом."
+  },
+  {
+    "slug": "inf02-2026-06-02",
+    "code": "INF.02-02-26.06-SG",
+    "session": "2026-06",
+    "title_ru": "Патч-панель T568B, VLAN 3, FTP в IIS и Linux-станция с FileZilla",
+    "title_pl": "Okablowanie T568B, VLAN 3, serwer FTP w IIS i stacja Linux z FileZilla",
+    "tags": [
+      "cabling",
+      "diagnostics",
+      "router",
+      "switch",
+      "vlan",
+      "winserver",
+      "iis",
+      "printing",
+      "linux-net",
+      "linux-users"
+    ],
+    "summary_ru": "Линия патч-панель–Keystone по T568B, идентификация CPU/GPU в Linux для эмулятора PS3. Роутер со статическим WAN /29 и резервацией, VLAN 3 на коммутаторе. Сервер SERWERX с сайтом FTP INF_FTP (аноним — чтение, Administrator — запись), Linux-станция IP_PC, группа Technicy и подключение FileZilla."
+  },
+  {
+    "slug": "inf02-2026-06-03",
+    "code": "INF.02-03-26.06-SG",
+    "session": "2026-06",
+    "title_ru": "Патч-панель T568A, VLAN 3, FTP в IIS и Linux-станция с FileZilla",
+    "title_pl": "Okablowanie T568A, VLAN 3, serwer FTP w IIS i stacja Linux z FileZilla",
+    "tags": [
+      "cabling",
+      "diagnostics",
+      "router",
+      "switch",
+      "vlan",
+      "winserver",
+      "iis",
+      "printing",
+      "linux-net",
+      "linux-users"
+    ],
+    "summary_ru": "Вариант листа 02 с T568A и сетью 192.168.16.0/24: идентификация в Linux, роутер со статическим WAN и резервацией .50, VLAN 3. На сервере сайт FTP FTP_INF02 из C:\\EGZ_FTP, на Linux-станции пользователь Student1 в группе Technicy и подключение FileZilla."
+  },
+  {
+    "slug": "inf02-2026-06-04",
+    "code": "INF.02-04-26.06-SG",
+    "session": "2026-06",
+    "title_ru": "Замена сетевой карты, Wi-Fi, VLAN 201/202 и Samba на Linux",
+    "title_pl": "Wymiana karty sieciowej, Wi-Fi, VLAN 201/202 i Samba w Linux",
+    "tags": [
+      "cabling",
+      "hardware",
+      "diagnostics",
+      "router",
+      "wifi",
+      "switch",
+      "vlan",
+      "linux-net",
+      "linux-users",
+      "linux-samba",
+      "windows-client",
+      "shares",
+      "dns"
+    ],
+    "summary_ru": "Линия T568B, идентификация и замена сетевой карты в Windows. Роутер с DHCP (DNS 10.0.0.3, резервация для Wi-Fi) и WPA2, коммутатор с VLAN 201/202. Ubuntu-сервер с интерфейсами V201/V202 по netplan, bind9 и Samba (homes + dane), Windows-станция по Wi-Fi с дисками M: и P: для jkowalski."
+  },
+  {
+    "slug": "inf02-2026-06-05",
+    "code": "INF.02-05-26.06-SG",
+    "session": "2026-06",
+    "title_ru": "Замена видеокарты и RAM, диагностика под CAD, сайт IIS и смета с рабатом",
+    "title_pl": "Wymiana karty graficznej i RAM, diagnostyka CAD, witryna IIS i kosztorys z rabatem",
+    "tags": [
+      "hardware",
+      "diagnostics",
+      "router",
+      "switch",
+      "winserver",
+      "iis",
+      "printing",
+      "linux-net",
+      "linux-users",
+      "backup"
+    ],
+    "summary_ru": "Замена видеокарты и добавление RAM, оценка станции под CAD в Windows. Роутер со статическим WAN /30 и резервацией, IP коммутатора. Сервер с LAN_S, принтером и сайтом egzamin (strona.html), Linux-станция LAN_K по DHCP, пользователь egzamin, архив egzamin.tar; смета с рабатом 10%/5%."
+  },
+  {
+    "slug": "inf02-2026-06-06",
+    "code": "INF.02-06-26.06-SG",
+    "session": "2026-06",
+    "title_ru": "RACK, вторая сетевая карта, VLAN-trunk на роутере, домен biuro.local и AppLocker",
+    "title_pl": "Szafa RACK, druga karta sieciowa, VLAN trunk na ruterze, domena biuro.local i AppLocker",
+    "tags": [
+      "cabling",
+      "hardware",
+      "diagnostics",
+      "router",
+      "switch",
+      "vlan",
+      "dhcp",
+      "winserver",
+      "ad",
+      "gpo",
+      "windows-client"
+    ],
+    "summary_ru": "Монтаж в стойке с органайзером, вторая сетевая карта и сравнение в PCI-Z. Роутер с VLAN 10/20/30 на trunk-порту и двумя DHCP, коммутатор с trunk и access-портами. DC biuro.local, OU Pracownicy, tnowak, GPO Egzamin (запрет блокировки/выхода и MSI через AppLocker), станция с двумя интерфейсами в домене."
+  },
+  {
+    "slug": "inf02-2026-06-07",
+    "code": "INF.02-07-26.06-SG",
+    "session": "2026-06",
+    "title_ru": "Замена видеокарты и RAM, диагностика под CAD, сайт IIS и смета с рабатом (вариант 07)",
+    "title_pl": "Wymiana karty graficznej i RAM, diagnostyka CAD, witryna IIS i kosztorys z rabatem",
+    "tags": [
+      "hardware",
+      "diagnostics",
+      "router",
+      "switch",
+      "winserver",
+      "iis",
+      "printing",
+      "linux-net",
+      "linux-users",
+      "backup"
+    ],
+    "summary_ru": "Вариант листа 05: WAN 70.70.70.1/28, DHCP .10–.40, сайт egzamin из C:\\WITRYNA с witryna.html, группа sluchacze. Те же монтаж видеокарты и RAM, диагностика под CAD, Linux-интерфейс LAN_K, архив egzamin.tar и смета с условным рабатом."
+  },
+  {
+    "slug": "inf02-2026-06-08",
+    "code": "INF.02-08-26.06-SG",
+    "session": "2026-06",
+    "title_ru": "Патч-корд, CPU-Z, Wi-Fi, домен egzaminXX.local, общая папка и смета услуг",
+    "title_pl": "Kabel krosowy, CPU-Z, Wi-Fi, domena egzaminXX.local, udział i kosztorys usług",
+    "tags": [
+      "cabling",
+      "diagnostics",
+      "router",
+      "wifi",
+      "switch",
+      "vlan",
+      "winserver",
+      "ad",
+      "printing",
+      "shares",
+      "windows-client"
+    ],
+    "summary_ru": "Прямой патч-корд T568B, идентификация с CPU-Z под графическую программу. Роутер со статическим WAN /30, резервацией .150 и Wi-Fi, коммутатор с VLAN 2/3. DC egzaminXX.local с общим принтером, OU KADRY, jnowak и папкой Projekty с точными ACL; станция по Wi-Fi с аудитом входа в домене; смета только выполненных услуг."
+  },
+  {
+    "slug": "inf02-2026-06-09",
+    "code": "INF.02-09-26.06-SG",
+    "session": "2026-06",
+    "title_ru": "Подсети /26, сервер-маршрутизатор RRAS, домен и установка 7-Zip через GPO",
+    "title_pl": "Podsieci /26, serwer z routingiem RRAS, domena i instalacja 7-Zip przez GPO",
+    "tags": [
+      "cabling",
+      "hardware",
+      "diagnostics",
+      "router",
+      "switch",
+      "vlan",
+      "winserver",
+      "ad",
+      "gpo",
+      "shares",
+      "windows-client"
+    ],
+    "summary_ru": "Кабель панель–8P8C и монтаж в стойке, роутер без DHCP со статическим маршрутом в 10.0.0.64/26 через сервер, два коммутатора с trunk VLAN 2. Windows Server с RRAS (Routing LAN), DC egzamin.local, ресурс programy с 7-Zip.msi и GPO с назначенной установкой; дополнительная RAM и двухканальный режим в CPU-Z."
+  },
+  {
+    "slug": "inf02-2026-06-10",
+    "code": "INF.02-10-26.06-SG",
+    "session": "2026-06",
+    "title_ru": "Сервер-маршрутизатор, перемещаемый профиль и BitLocker на втором диске",
+    "title_pl": "Serwer z routingiem, profil mobilny i BitLocker na drugim dysku",
+    "tags": [
+      "cabling",
+      "hardware",
+      "router",
+      "switch",
+      "vlan",
+      "winserver",
+      "ad",
+      "shares",
+      "windows-client"
+    ],
+    "summary_ru": "Прямой патч-корд, роутер со статическим WAN /29 и маршрутом 192.168.1.0/24 через сервер, VLAN 101/102. Сервер serwer-x с RRAS и правилом ICMP, DC egzamin.local, C:\\Profiles и ресурс profiles$ для перемещаемого профиля anowak. На станции вход в домен, новый диск GPT с разделами P:/R: и BitLocker на R:."
+  }
+]
