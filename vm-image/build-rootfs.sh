@@ -13,8 +13,9 @@
 #     resolves and downloads every .deb; the i386 dpkg and maintainer scripts
 #     run in the chroot and need no network. mmdebstrap also puts a temporary
 #     policy-rc.d / fake start-stop-daemon there, so no daemon is started.
-#     The downloaded .debs are kept (--skip=cleanup/apt/cache): the ones of
-#     the exam packages become the offline repository.
+#     A customize hook then downloads the .deb of every exam package (the
+#     installed versions) into /var/lib/egz-repo, again with the host's apt
+#     (mmdebstrap exports its APT_CONFIG to hooks): the offline repository.
 #  2. OFFLINE: everything else runs in the chroot inside a new network
 #     namespace (unshare --net: only a down loopback), so nothing in there
 #     could reach the network even if it tried.
@@ -66,34 +67,14 @@ echo "== phase 1 (online, 64-bit apt): mmdebstrap $SUITE i386"
   --keyring="$KEYRING" \
   --include="$INCLUDE" \
   --dpkgopt="$HERE/rootfs/etc/dpkg/dpkg.cfg.d/01-egz-slim" \
-  --skip=cleanup/apt/cache \
+  --customize-hook='mkdir -p "$1/var/lib/egz-repo"' \
+  --customize-hook='cd "$1/var/lib/egz-repo" && apt-get download '"${PKGS[*]}" \
   "$SUITE" "$R" \
   "deb $MIRROR $SUITE main" \
   "deb $MIRROR $SUITE-updates main" \
   "deb $SECURITY $SUITE-security main"
 
-echo "== offline repository: .debs of the exam packages (as installed)"
-mkdir -p "$R/var/lib/egz-repo"
-missing=()
-for p in "${PKGS[@]}"; do
-  # exact installed version; the archive file name escapes ':' (epoch) as %3a
-  pv=$(dpkg-query --admindir="$R/var/lib/dpkg" -W -f '${Version} ${Architecture}' "$p")
-  v=${pv% *}; a=${pv#* }
-  deb="$R/var/cache/apt/archives/${p}_${v//:/%3a}_${a}.deb"
-  if [ -f "$deb" ]; then cp "$deb" "$R/var/lib/egz-repo/"; else missing+=("$p"); fi
-done
-if [ ${#missing[@]} -gt 0 ]; then
-  # not in mmdebstrap's cache: fetch with the host's (64-bit) apt, using the
-  # chroot's sources and package lists
-  echo "   downloading with host apt: ${missing[*]}"
-  (cd "$R/var/lib/egz-repo" && apt-get \
-     -o Dir="$R/" -o Dir::State::status="$R/var/lib/dpkg/status" \
-     -o APT::Architecture=i386 -o APT::Architectures=i386 \
-     -o Debug::NoLocking=1 -o APT::Sandbox::User=root \
-     download "${missing[@]}")
-fi
-rm -rf "$R"/var/cache/apt/archives/*.deb "$R"/var/cache/apt/archives/partial/*
-echo "   $(find "$R/var/lib/egz-repo" -name '*.deb' | wc -l) packages, $(du -sm "$R/var/lib/egz-repo" | cut -f1) MiB"
+echo "   offline repository: $(find "$R/var/lib/egz-repo" -name '*.deb' | wc -l) packages, $(du -sm "$R/var/lib/egz-repo" | cut -f1) MiB"
 
 echo "== rootfs overlay (shims, netplan, motd, sudoers, setup.sh)"
 rm -f "$R/etc/dpkg/dpkg.cfg.d/99mmdebstrap"
