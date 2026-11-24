@@ -1,25 +1,56 @@
-/* Switch simulator theme: dark navy banner and navigation (Easy Smart style). */
+/* Switch simulator theme: Easy Smart style — white header, dark grey menu
+   with a teal highlight, teal section bars and buttons. */
 .dv-theme-switch {
-  --dv-head: #1d3550;
-  --dv-head-2: #2c5379;
-  --dv-accent: #2f7fc1;
-  --dv-accent-hover: #21649d;
-  --dv-nav-bg: #263b52;
-  --dv-nav-text: #e8eef4;
-  --dv-nav-cur-bg: #3a5d80;
+  --dv-head: #ffffff;
+  --dv-head-2: #ffffff;
+  --dv-head-text: #2a3036;
+  --dv-accent: #1e8fa0;
+  --dv-accent-hover: #167381;
+  --dv-nav-bg: #3a3f44;
+  --dv-nav-text: #f1f3f5;
+  --dv-nav-sub-text: #d3d8dc;
+  --dv-nav-cur-bg: #24a6b8;
   --dv-nav-cur-text: #ffffff;
+  --dv-title-bg: #f1f6f7;
+  --dv-title-text: #1d5f69;
+}
+.dv-theme-switch .dv-banner {
+  border-bottom: 3px solid #24a6b8;
+}
+.dv-theme-switch .dv-sub {
+  color: #5b656e;
+  opacity: 1;
 }
 .dv-theme-switch .dv-nav {
-  border-right-color: #1b2c3e;
+  border-right-color: #2a2e32;
 }
-.dv-theme-switch .dv-nav button.dv-cur {
-  box-shadow: inset 3px 0 0 #7fc2ff;
+.dv-theme-switch .dv-nav > ul > li {
+  border-bottom: 1px solid #4a5056;
+}
+.dv-theme-switch .dv-nav-sub {
+  background: #30343a;
+}
+.dv-theme-switch .dv-nav-sub button::before {
+  content: '';
+}
+.dv-theme-switch .dv-nav-top.dv-in:not(.dv-cur) {
+  color: #6fd6e3;
 }
 .dv-theme-switch .dv-panel-title {
-  color: #1d3550;
+  border-left: 4px solid #24a6b8;
 }
-.dv-theme-switch .dv-vlan-ports td,
-.dv-theme-switch .dv-vlan-ports th {
-  padding-top: 7px;
-  padding-bottom: 7px;
+.dv-theme-switch .dv-login-wrap {
+  background: linear-gradient(180deg, #3a3f44 0 110px, #eef1f4 110px);
+}
+.dv-theme-switch .dv-login-head .dv-model {
+  color: #1d5f69;
+}
+.dv-theme-switch .dv-vlan-ports th,
+.dv-theme-switch .dv-vlan-ports td {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+.dv-theme-switch.dv-compact .dv-nav li,
+.dv-theme-switch.dv-compact .dv-nav-sub li {
+  border-color: #4a5056;
 }

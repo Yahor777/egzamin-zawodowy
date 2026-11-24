@@ -1,0 +1,47 @@
+# Preinstalled packages of the exam VM (one per line, '#' = comment).
+# These are the "whitelist": their .deb files are also kept in an offline
+# repository inside the image, so `apt install <pkg>` works without internet.
+# Changing this file rebuilds the disk image in CI.
+sudo
+adduser
+passwd
+bash-completion
+nano
+vim-tiny
+mc
+less
+file
+tree
+htop
+psmisc
+procps
+lsof
+man-db
+manpages
+tar
+gzip
+zip
+unzip
+acl
+quota
+cron
+parted
+fdisk
+e2fsprogs
+dosfstools
+iproute2
+iputils-ping
+net-tools
+traceroute
+dnsutils
+isc-dhcp-server
+samba
+smbclient
+cifs-utils
+nfs-kernel-server
+nfs-common
+apache2
+openssh-server
+bind9
+python3-yaml
+libnss-myhostname

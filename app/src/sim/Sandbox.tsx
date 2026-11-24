@@ -172,7 +172,7 @@ function NetSandbox() {
         {cur === 'router' && s.router && <RouterSim state={s.router} onChange={(router) => update({ router })} />}
         {cur === 'switch' && s.switch && <SwitchSim state={s.switch} onChange={(sw) => update({ switch: sw })} />}
         {cur === 'linux' && <LinuxTab s={s} st={st} update={update} />}
-        {cur === 'pc' && <PcTab pcKey="pc" s={s} st={st} update={update} view={pcView} onView={setPcView} />}
+        {cur === 'pc' && <PcTab pcKey="pc" s={s} st={st} update={update} view={pcView} onView={setPcView} memKey="sandbox" />}
       </div>
     </div>
   )

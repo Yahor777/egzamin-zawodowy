@@ -104,7 +104,7 @@
   min-height: 300px;
 }
 .edge-new {
-  min-height: 300px;
+  min-height: 180px;
   display: grid;
   place-items: center;
   padding: 24px;
@@ -278,4 +278,7 @@
   font-size: 0.82rem;
   border-top: 1px solid var(--line);
   padding-top: 8px;
+}
+.ah-me > span {
+  display: block;
 }

@@ -286,7 +286,9 @@ subnet 10.80.0.0 netmask 255.255.255.0 {
   const r5 = browse(m(), 'pc', '192.168.1.2')
   expect('different subnet explained', !r5.ok && r5.why.some((w) => w.short === 'разные подсети'), whyText(r5))
   const r6 = browse(m(), 'pc', '192.168.0.1')
-  expect('old address → no such device', !r6.ok && /нет адреса 192\.168\.0\.1/.test(whyText(r6)), whyText(r6))
+  expect('old address → only the uncabled router has it', !r6.ok && /Роутер/.test(whyText(r6)), whyText(r6))
+  const r6b = browse(m(), 'pc', '10.1.1.1')
+  expect('unknown address explained', !r6b.ok && /нет адреса 10\.1\.1\.1/.test(whyText(r6b)), whyText(r6b))
 
   // PC port in another VLAN
   s.switch!.ip = { ...s.switch!.ip, ip: '192.168.0.2' }

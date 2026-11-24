@@ -66,6 +66,9 @@ export function Practice() {
         <button className="btn" onClick={() => go('/sim/linux')}>
           Linux
         </button>
+        <button className="btn" onClick={() => go('/sim/net')} style={{ gridColumn: '1 / -1' }}>
+          {lang === 'ru' ? 'Сеть на столе: кабели, питание, браузер' : 'Sieć na stanowisku'}
+        </button>
         <a
           className="btn"
           href={`${import.meta.env.BASE_URL}vm/`}

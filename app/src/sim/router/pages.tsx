@@ -261,7 +261,7 @@ function StatusPage({ state, go }: RouterPageProps) {
       <Panel title="LAN">
         <Kv
           rows={[
-            ['MAC Address', <span className="dv-mono">{state.lan.mac}</span>],
+            ['MAC Address', <span key="k264" className="dv-mono">{state.lan.mac}</span>],
             ['IP Address', state.lan.ip],
             ['Subnet Mask', state.lan.mask],
           ]}
@@ -276,7 +276,7 @@ function StatusPage({ state, go }: RouterPageProps) {
             ['Mode', b.mode],
             ['Channel Width', widthLabel(b.width)],
             ['Channel', b.channel === 'auto' ? 'Auto (Current channel 6)' : String(b.channel)],
-            ['MAC Address', <span className="dv-mono">{state.lan.mac}</span>],
+            ['MAC Address', <span key="k279" className="dv-mono">{state.lan.mac}</span>],
             ['WDS Status', 'Disable'],
             ['Security', securityLabel(b)],
           ]}
@@ -285,7 +285,7 @@ function StatusPage({ state, go }: RouterPageProps) {
       <Panel title="WAN">
         <Kv
           rows={[
-            ['MAC Address', <span className="dv-mono">{wanMac(state.lan.mac)}</span>],
+            ['MAC Address', <span key="k288" className="dv-mono">{wanMac(state.lan.mac)}</span>],
             [
               'IP Address',
               <>
@@ -876,7 +876,7 @@ function WirelessStatsPage({ state }: RouterPageProps) {
         columns={['ID', 'MAC Address', 'Current Status', 'Received Packets', 'Sent Packets', 'SSID']}
         rows={wl.map((c, i) => ({
           key: c.mac,
-          cells: [i + 1, <span className="dv-mono">{c.mac}</span>, state.wifi24.security === 'none' ? 'AP-UP' : 'WPA2-PSK', 1520 + i * 377, 980 + i * 211, state.wifi24.ssid],
+          cells: [i + 1, <span key="k879" className="dv-mono">{c.mac}</span>, state.wifi24.security === 'none' ? 'AP-UP' : 'WPA2-PSK', 1520 + i * 377, 980 + i * 211, state.wifi24.ssid],
         }))}
         empty="No wireless stations."
       />
@@ -979,7 +979,7 @@ function DhcpClientsPage({ state }: RouterPageProps) {
     <Panel title="DHCP Clients List">
       <DataTable
         columns={['ID', 'Client Name', 'MAC Address', 'Assigned IP', 'Lease Time']}
-        rows={leases.map((l, i) => ({ key: l.mac, cells: [i + 1, l.name, <span className="dv-mono">{l.mac}</span>, l.ip, l.lease] }))}
+        rows={leases.map((l, i) => ({ key: l.mac, cells: [i + 1, l.name, <span key="k982" className="dv-mono">{l.mac}</span>, l.ip, l.lease] }))}
         empty={state.dhcp.enabled ? 'No clients.' : 'The DHCP server is disabled.'}
       />
       <Actions>
@@ -1086,10 +1086,10 @@ function ReservationPage({ state, onChange }: RouterPageProps) {
           key: `${r.mac}-${i}`,
           cells: [
             i + 1,
-            <span className="dv-mono">{r.mac}</span>,
+            <span key="k1089" className="dv-mono">{r.mac}</span>,
             r.ip,
             r.enabled ? 'Enabled' : 'Disabled',
-            <span className="dv-ops">
+            <span key="k1092" className="dv-ops">
               <button type="button" className="dv-link" onClick={() => open(i)}>
                 Modify
               </button>
@@ -1275,7 +1275,7 @@ function VirtualServersPage({ state, onChange }: RouterPageProps) {
             f.internalIp,
             f.protocol === 'ALL' ? 'All' : f.protocol,
             f.enabled ? 'Enabled' : 'Disabled',
-            <span className="dv-ops">
+            <span key="k1278" className="dv-ops">
               <button type="button" className="dv-link" onClick={() => open(i)}>
                 Modify
               </button>
@@ -1446,7 +1446,7 @@ function StaticRoutingPage({ state, onChange }: RouterPageProps) {
             r.mask,
             r.gateway,
             r.enabled ? 'Enabled' : 'Disabled',
-            <span className="dv-ops">
+            <span key="k1449" className="dv-ops">
               <button
                 type="button"
                 className="dv-link"
@@ -1534,7 +1534,7 @@ function ArpListPage({ state }: RouterPageProps) {
     <Panel title="ARP List">
       <DataTable
         columns={['ID', 'MAC Address', 'IP Address', 'Status', 'Configure']}
-        rows={leases.map((l, i) => ({ key: l.mac, cells: [i + 1, <span className="dv-mono">{l.mac}</span>, l.ip, 'Unbound', 'Load'] }))}
+        rows={leases.map((l, i) => ({ key: l.mac, cells: [i + 1, <span key="k1537" className="dv-mono">{l.mac}</span>, l.ip, 'Unbound', 'Load'] }))}
         empty="No entries."
       />
       <Actions>

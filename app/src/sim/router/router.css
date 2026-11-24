@@ -1,13 +1,34 @@
-/* Router simulator theme: classic teal/green home-router admin look. */
+/* Router simulator theme: classic home-router web UI (blue banner, light menu,
+   grey section bars, right-aligned labels). */
 .dv-theme-router {
-  --dv-head: #0d6f76;
-  --dv-head-2: #18a0a0;
-  --dv-accent: #1679b8;
-  --dv-accent-hover: #0f5f93;
-  --dv-nav-bg: #f4f7f6;
-  --dv-nav-cur-bg: #d9efee;
-  --dv-nav-cur-text: #0b5a5f;
+  --dv-head: #0f5c9e;
+  --dv-head-2: #2b86cf;
+  --dv-accent: #2a6fb0;
+  --dv-accent-hover: #1d5790;
+  --dv-nav-bg: #f2f4f6;
+  --dv-nav-text: #1e2a33;
+  --dv-nav-sub-text: #34414b;
+  --dv-nav-cur-bg: #2a6fb0;
+  --dv-nav-cur-text: #ffffff;
+  --dv-title-bg: #dfe6ec;
+  --dv-title-text: #183a58;
 }
-.dv-theme-router .dv-panel-title {
-  color: #0d6f76;
+.dv-theme-router .dv-nav-top.dv-in:not(.dv-cur) {
+  color: #0f5c9e;
+}
+.dv-theme-router .dv-nav > ul > li {
+  border-bottom: 1px solid #e1e6ea;
+}
+.dv-theme-router .dv-btn:not(.dv-btn-2):not(.dv-btn-danger) {
+  background: linear-gradient(#f9fafb, #dde3e8);
+  color: #1e2a33;
+  border-color: #8f9ca7;
+}
+.dv-theme-router .dv-btn:not(.dv-btn-2):not(.dv-btn-danger):hover {
+  background: linear-gradient(#ffffff, #cfd8df);
+}
+.dv-theme-router .dv-login .dv-btn {
+  background: #2a6fb0;
+  color: #fff;
+  border-color: #1d5790;
 }

@@ -407,7 +407,7 @@ function ResetButton({ onReset, disabled }: { onReset: () => void; disabled: boo
     t.current = window.setTimeout(() => {
       done.current = true
       setHolding(false)
-      setHint(ru ? 'Сброшено к заводским настройкам' : 'Przywrócono ustawienia fabryczne')
+      setHint(ru ? 'Сброшено' : 'Zresetowano')
       onReset()
     }, 3000)
   }
@@ -415,7 +415,7 @@ function ResetButton({ onReset, disabled }: { onReset: () => void; disabled: boo
     if (!holding) return
     window.clearTimeout(t.current)
     setHolding(false)
-    if (!done.current) setHint(ru ? 'Держи кнопку 3 секунды' : 'Przytrzymaj 3 sekundy')
+    if (!done.current) setHint(ru ? 'Держи 3 секунды' : 'Trzymaj 3 s')
   }
   return (
     <span className="bd-reset-wrap">

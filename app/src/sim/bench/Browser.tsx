@@ -19,11 +19,20 @@ export interface BrowserProps {
   printer?: { ip: string; prefix: number }
   onRouter: (r: RouterState) => void
   onSwitch: (s: SwitchState) => void
+  /** keeps the typed/opened address while the student switches tabs (e.g. the lab id) */
+  memKey?: string
 }
 
-export function Browser({ st, pcKey, pc, router, switch: sw, printer, onRouter, onSwitch }: BrowserProps) {
-  const [input, setInput] = useState('')
-  const [nav, setNav] = useState<string | null>(null)
+// the browser "remembers" its address while its tab is hidden (as a real window would)
+const memory = new Map<string, { input: string; nav: string | null }>()
+
+export function Browser({ st, pcKey, pc, router, switch: sw, printer, onRouter, onSwitch, memKey = '' }: BrowserProps) {
+  const mk = `${memKey}:${pcKey}`
+  const [input, setInput] = useState(() => memory.get(mk)?.input ?? '')
+  const [nav, setNav] = useState<string | null>(() => memory.get(mk)?.nav ?? null)
+  useEffect(() => {
+    memory.set(mk, { input, nav })
+  }, [mk, input, nav])
   const [attempt, setAttempt] = useState(0)
   const [loading, setLoading] = useState(false)
   const [shown, setShown] = useState<WebDevice | null>(null)
@@ -266,7 +275,7 @@ function AddressHelper({ st, pcKey, pc, onOpen }: { st: Station; pcKey: PcKey; p
           const c = pcAddress(a)
           return (
             <span key={a.id}>
-              {a.name} — <code>{c ? `${c.addr.ip}/${c.addr.prefix}` : 'нет адреса'}</code>
+              {a.name} — {c ? <code>{`${c.addr.ip}/${c.addr.prefix}`}</code> : 'нет адреса'}
               {a.dhcp && a.lease ? ` (DHCP от ${a.lease.server})` : c?.addr.ip.startsWith('169.254.') ? ' (APIPA — DHCP не ответил)' : a.dhcp ? '' : ' (вручную)'}{' '}
             </span>
           )
@@ -280,7 +289,7 @@ function AddressHelper({ st, pcKey, pc, onOpen }: { st: Station; pcKey: PcKey; p
               {b.ip ? <code>http://{b.ip}</code> : '—'} · {b.login}
             </span>
             <small>
-              {b.ok ? 'Доступен: ' : 'Сейчас не откроется: '}
+              {b.ok ? '' : 'Сейчас не откроется: '}
               {b.note}
             </small>
           </div>

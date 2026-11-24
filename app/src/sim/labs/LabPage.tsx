@@ -273,7 +273,7 @@ function LabRun({ lab }: { lab: Lab }) {
         {curTab === 'router' && s.router && <RouterSim state={s.router} onChange={(router) => update({ router })} />}
         {curTab === 'switch' && s.switch && <SwitchSim state={s.switch} onChange={(sw) => update({ switch: sw })} />}
         {curTab === 'linux' && s.linux && <LinuxTab s={s} st={st} update={update} />}
-        {curTab === 'pc' && pcKey && <PcTab pcKey={pcKey} s={s} st={st} update={update} printer={lab.devices.printer} view={pcView} onView={setPcView} />}
+        {curTab === 'pc' && pcKey && <PcTab pcKey={pcKey} s={s} st={st} update={update} printer={lab.devices.printer} view={pcView} onView={setPcView} memKey={lab.id} />}
       </div>
     </div>
   )
@@ -345,7 +345,9 @@ export function PcTab({
   printer,
   view,
   onView,
+  memKey,
 }: {
+  memKey?: string
   pcKey: 'pc' | 'laptop'
   s: LabSave
   st: Station
@@ -373,7 +375,7 @@ export function PcTab({
         link: (a) => linkUp(model, `${pcKey}:${a.id}`),
       }}
       browser={() => (
-        <Browser st={st} pcKey={pcKey} pc={pc} router={s.router} switch={s.switch} printer={printer} onRouter={st.setRouter} onSwitch={st.setSwitch} />
+        <Browser st={st} pcKey={pcKey} pc={pc} router={s.router} switch={s.switch} printer={printer} onRouter={st.setRouter} onSwitch={st.setSwitch} memKey={memKey} />
       )}
     />
   )

@@ -361,8 +361,8 @@ function PortSettingPage({ state, onChange }: SwitchPageProps) {
           rows={portNums(state.ports).map((p, i) => ({
             key: String(p),
             cells: [
-              <label htmlFor={`sw-port-${p}`}>Port {p}</label>,
-              <select
+              <label key="k364" htmlFor={`sw-port-${p}`}>Port {p}</label>,
+              <select key="k365"
                 id={`sw-port-${p}`}
                 className="dv-select dv-input-sm"
                 value={en[i] ? 'on' : 'off'}
@@ -802,7 +802,7 @@ function VlanPage({ state, onChange }: SwitchPageProps) {
               portList(membersOf(v.members, 'any')),
               portList(membersOf(v.members, 'tagged')),
               portList(membersOf(v.members, 'untagged')),
-              <span className="dv-ops">
+              <span key="k805" className="dv-ops">
                 <button type="button" className="dv-link" onClick={() => edit(v.id)} disabled={off}>
                   Edit
                 </button>
@@ -861,14 +861,14 @@ function PvidPage({ state, onChange }: SwitchPageProps) {
             rows={portNums(n).map((p, i) => ({
               key: String(p),
               cells: [
-                <input
+                <input key="k864"
                   type="checkbox"
                   id={`sw-pvid-sel-${p}`}
                   aria-label={`Port ${p}`}
                   checked={sel.includes(p)}
                   onChange={(e) => setSel(e.target.checked ? [...sel, p] : sel.filter((x) => x !== p))}
                 />,
-                <label htmlFor={`sw-pvid-sel-${p}`}>Port {p}</label>,
+                <label key="k871" htmlFor={`sw-pvid-sel-${p}`}>Port {p}</label>,
                 state.pvid[i] ?? 1,
                 state.vlans
                   .filter((v) => v.members[i] === 'untagged')

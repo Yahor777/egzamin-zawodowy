@@ -167,7 +167,7 @@ function pcSide(m: NetworkModel, key: PcKey, pc: PcState, booting: Set<DeviceKey
       why.push({
         short: `ПК без DHCP-адреса (${a.autoconf ?? '169.254.x.x'})`,
         text: `ПК настроен «Uzyskaj adres IP automatycznie», но DHCP-сервер не ответил, поэтому Windows сама выдала себе адрес ${a.autoconf ?? '169.254.x.x'} (APIPA, 169.254.0.0/16). С ним ни до одного устройства не достучаться.${dhcpWhy(m, key, a)}`,
-        fix: 'Задай статический адрес из подсети устройства (ниже — какой именно) или подключи ПК туда, где работает DHCP (LAN роутера с включённым DHCP).',
+        fix: 'Подключи ПК туда, где работает DHCP (порт LAN роутера с включённым DHCP), или задай статический адрес из подсети устройства.',
       })
   } else if (!pcAddress(a)) {
     why.push({ short: 'у ПК не задан IP', text: 'У сетевой карты не задан правильный статический адрес.', fix: 'Połączenia sieciowe → Właściwości → IPv4.' })
@@ -283,8 +283,19 @@ export function browse(m: NetworkModel, key: PcKey, input: string, opts: { booti
     why.push({ short: 'нет устройства с таким адресом', text: `Ни у одного устройства на столе нет адреса ${host}.${list ? ` Сейчас: ${list}.` : ''}`, fix: 'Проверь адрес по списку «Какой адрес вписать?».' })
     return { ok: false, host, error: 'timeout', why }
   }
-  const o = own.find((x) => x.web) ?? own[0]
+  // with several owners (e.g. factory router and switch), explain the one the PC is closest to
+  const dom0 = buildDomains(m)
+  const pcDom = side.adapter ? dom0.get(`${key}:${side.adapter.id}`) : undefined
+  const domAll = buildDomains({ ...m, power: {} })
+  const pcDomAll = domAll.get(`${key}:${(side.adapter ?? pc.adapters[0]).id}`)
+  const o =
+    own.find((x) => x.web && pcDom && dom0.get(x.port) === pcDom) ??
+    own.find((x) => x.web && pcDomAll && domAll.get(x.port) === pcDomAll) ??
+    own.find((x) => x.web && isOn(m, x.key)) ??
+    own.find((x) => x.web) ??
+    own[0]
   if (!isOn(m, o.key)) {
+    if (side.why.some((w) => w.short.startsWith(DEV_RU_ACC[o.key]))) return { ok: false, host, error: 'timeout', why }
     why.push({ short: booting.has(o.key) ? `${DEV_RU_ACC[o.key]} загружается` : `${DEV_RU_ACC[o.key]} выключен`, text: bootLabel(o.key, booting) })
     return { ok: false, host, error: 'timeout', why }
   }
@@ -296,9 +307,11 @@ export function browse(m: NetworkModel, key: PcKey, input: string, opts: { booti
     return { ok: false, host, error: 'timeout', why }
   }
   // physical path (ignoring addresses)
-  const dom = buildDomains(m)
+  const dom = dom0
   const pcPort = a ? `${key}:${a.id}` : ports[0]
   const sameL2 = !!dom.get(pcPort) && dom.get(pcPort) === dom.get(o.port)
+  const noLink = side.why.length > 0 && !(a && linkUp(m, pcPort))
+  if (!sameL2 && noLink) return { ok: false, host, error: 'timeout', why }
   if (!sameL2 && !(cfg?.gateway && m.router)) {
     const noVlan = buildDomains(m, { ignoreVlans: true })
     const allOn = buildDomains({ ...m, power: {} })
@@ -356,6 +369,11 @@ export function addressBook(m: NetworkModel, key: PcKey, booting?: Iterable<Devi
     if (!t.ip) return { ...t, ok: false, note: 'адрес выдаётся по DHCP — смотри список клиентов DHCP роутера', conflict: false }
     const r = browse(m, key, t.ip, { booting })
     const conflict = conf.some((c) => c.ip === t.ip && c.devices.includes(t.key))
-    return { ...t, ok: r.ok && (!r.conflict || r.conflict.includes(t.key)), note: r.ok ? (r.conflict ? r.why[0].short : 'доступен с этого компьютера') : (r.why[0]?.short ?? 'недоступен'), conflict }
+    const mine = r.ok && (r.device === t.key || !!r.conflict?.includes(t.key))
+    let note: string
+    if (mine) note = r.conflict ? r.why[0].short : 'открывается с этого компьютера'
+    else if (r.ok) note = `по адресу ${t.ip} сейчас отвечает ${DEV_RU_ACC[r.device!]}, а ${DEV_RU_ACC[t.key]} с этого ПК не виден (нет кабеля или другая сеть)`
+    else note = r.why[0]?.short ?? 'недоступен'
+    return { ...t, ok: mine, note, conflict }
   })
 }

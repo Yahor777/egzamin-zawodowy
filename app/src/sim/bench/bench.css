@@ -146,6 +146,10 @@
 .bd-compact .bd-face.face-switch {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
+.bd-face.face-router {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
 .bd-face.face-router .bd-port.wan .pl {
   color: #8fb6f0;
 }
@@ -171,8 +175,13 @@
 .bd-face:not(.face-switch) .bd-port {
   flex: 0 1 64px;
 }
-.bd-port:hover {
-  background: rgba(255, 255, 255, 0.06);
+@media (hover: hover) {
+  .bd-port:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+}
+.bd-actions .btn svg {
+  flex: none;
 }
 .bd-port .jack {
   position: relative;
@@ -254,6 +263,20 @@
 }
 .bd-actions .btn.small {
   min-height: 44px;
+}
+.bd-compact .bd-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+.bd-compact .bd-actions .btn.small {
+  padding: 6px 6px;
+  font-size: 0.84rem;
+  width: 100%;
+  gap: 4px;
+}
+.bd-compact .bd-reset-wrap {
+  min-width: 0;
 }
 .bd-reset-wrap {
   display: inline-flex;

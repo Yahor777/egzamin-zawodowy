@@ -47,7 +47,7 @@ export function Row({ id, label, children, hint }: { id?: string; label: string;
           {label}:
         </label>
       ) : (
-        <span className="dv-label">{label}:</span>
+        <span className="dv-label">{label ? `${label}:` : ''}</span>
       )}
       <div className="dv-field">
         {children}
