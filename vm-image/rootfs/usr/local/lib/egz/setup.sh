@@ -24,6 +24,13 @@ cat >> /root/.bashrc <<'EOS'
 PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@${EGZ_HOST:-\h}\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 EOS
 
+# Write every command to ~/.bash_history immediately (exam-dump reads it).
+cat >> /etc/bash.bashrc <<'EOS'
+
+# egz: save history after every command (the exam checker reads it)
+PROMPT_COMMAND="history -a${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
+EOS
+
 chown -R administrator:administrator /home/administrator
 chmod 600 /etc/netplan/*.yaml
 # sudo: read group membership from /etc/group, not from the process (the
@@ -32,11 +39,14 @@ printf '\n# egz exam VM\nSet group_source dynamic\n' >> /etc/sudo.conf
 visudo -c >/dev/null
 
 # Emulated services: all exam daemons enabled, as after `apt install` on Ubuntu.
-mkdir -p /var/lib/egz-systemd /var/lib/egz-net
+# Mount points for the host page: /data (DataDevice, host -> VM files such as
+# /data/exam/reach.json) and /mnt/exam (IDBDevice, exam-dump output).
+mkdir -p /var/lib/egz-systemd /run/exam /data/exam /mnt/exam
 for u in apache2 cron isc-dhcp-server named nfs-server nmbd smbd ssh systemd-networkd; do
   touch "/var/lib/egz-systemd/$u.enabled"
 done
-python3 /usr/local/lib/egz/netplan.py boot
+python3 /usr/local/lib/egz/egz.py netplan boot
+python3 -m compileall -q /usr/local/lib/egz
 
 # Slim down what the base image already had.
 find /usr/share/doc -mindepth 1 ! -name copyright ! -type d -delete 2>/dev/null || true

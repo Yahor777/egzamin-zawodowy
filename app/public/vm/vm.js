@@ -17,6 +17,39 @@ const IDB_PREFIX = 'egz-vm-serwer-'
 const PUBLIC_DISK_URL = 'wss://disks.webvm.io/debian_buster_large_permis_fixed_01-06-2026.ext2'
 const PUBLIC_IDB_NAME = 'egz-vm-debian-1'
 const PATH = 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+const EXAM_OUT_IDB = 'egz-vm-exam-out'
+
+// ---------- EXAM API (window.__vmExam, only with our own disk) ----------
+// Inputs the VM reads (DataDevice mounted at /data; the VM looks for
+// /data/exam/<name>.json, then /data/exam-<name>.json):
+//   nics   {"nics":[{"name":"enp0s3","mac":"08:00:27:4e:66:a1"}, ...]}
+//   leases {"enp0s3":{"address":"10.0.2.15/24","gateway":"10.0.2.2","dns":["10.0.2.3"]}}
+//   reach  {"192.168.1.10": true, "192.168.1.20": false, "10.0.0.1": {"ttl":63,"ms":1.2}}
+// Output: `exam-dump` writes one JSON object to /mnt/exam/dump.json (an
+// IDBDevice mounted there), read back with exam.out.readFileAsBlob('/dump.json').
+const exam = {
+  cx: null,
+  data: null,
+  out: null,
+  async setInput(name, obj) {
+    await exam.data.writeFile(`/exam-${name}.json`, JSON.stringify(obj))
+  },
+  async dump(paths = []) {
+    const id = String(Date.now())
+    const q = (a) => "'" + String(a).replace(/'/g, "'\\''") + "'"
+    await exam.cx.run('/bin/bash', ['-c', `/usr/local/sbin/exam-dump --quiet --id ${id} ${paths.map(q).join(' ')} </dev/null >/dev/null 2>&1`], {
+      env: ['HOME=/root', 'LANG=C.UTF-8', PATH],
+      cwd: '/',
+      uid: 0,
+      gid: 0,
+    })
+    const blob = await exam.out.readFileAsBlob('/dump.json')
+    if (!blob) throw new Error('exam-dump produced no /mnt/exam/dump.json')
+    const res = JSON.parse(await blob.text())
+    if (res.id !== id) throw new Error('stale exam-dump output')
+    return res
+  },
+}
 
 const $ = (id) => document.getElementById(id)
 const statusEl = $('status')
@@ -215,15 +248,20 @@ async function boot() {
   setStatus('Запускаю Linux…')
   let cx
   try {
-    cx = await CheerpX.Linux.create({
-      mounts: [
-        { type: 'ext2', dev: overlay, path: '/' },
-        { type: 'devs', path: '/dev' },
-        { type: 'devpts', path: '/dev/pts' },
-        { type: 'proc', path: '/proc' },
-        { type: 'sys', path: '/sys' },
-      ],
-    })
+    const mounts = [
+      { type: 'ext2', dev: overlay, path: '/' },
+      { type: 'devs', path: '/dev' },
+      { type: 'devpts', path: '/dev/pts' },
+      { type: 'proc', path: '/proc' },
+      { type: 'sys', path: '/sys' },
+    ]
+    if (disk.own) {
+      // Host <-> VM exchange for the exam labs (see EXAM API below).
+      exam.data = await CheerpX.DataDevice.create()
+      exam.out = await CheerpX.IDBDevice.create(EXAM_OUT_IDB)
+      mounts.push({ type: 'dir', dev: exam.data, path: '/data' }, { type: 'dir', dev: exam.out, path: '/mnt/exam' })
+    }
+    cx = await CheerpX.Linux.create({ mounts })
   } catch (e) {
     console.error(e)
     fail('CheerpX не смог запуститься: ' + String(e).replace(/</g, '&lt;') + '.' + FALLBACK)
@@ -249,6 +287,10 @@ async function boot() {
     term.rows,
   )
   window.__vm = cx
+  if (disk.own) {
+    exam.cx = cx
+    window.__vmExam = exam
+  }
 
   // Our disk: /usr/local/sbin/egz-login starts as root, "boots" the emulated
   // services once per page load (--boot), then logs in as administrator

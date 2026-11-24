@@ -5,7 +5,7 @@ case "$1" in
   "") cat /run/egz-hostname 2>/dev/null || cat /etc/hostname ;;
   -s|--short) cut -d. -f1 /etc/hostname ;;
   -f|--fqdn|--long|-A|--all-fqdns) cat /etc/hostname ;;
-  -I|--all-ip-addresses) exec /usr/bin/python3 /usr/local/lib/egz/netplan.py hostname-I ;;
+  -I|--all-ip-addresses) exec /usr/bin/python3 /usr/local/lib/egz/egz.py hostname-I ;;
   -i|--ip-address) echo 127.0.1.1 ;;
   -*) exec /bin/hostname "$@" ;;
   *)

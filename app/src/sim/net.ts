@@ -80,14 +80,56 @@ export interface PcAdapter {
   media?: boolean
   /** true after `ipconfig /release` until `/renew` or the next link-up */
   released?: boolean
+  /** Windows "Właściwości" component checkboxes that were changed (key → checked); missing = default */
+  components?: Record<string, boolean>
+  /** DNS suffix for this connection (Zaawansowane… → DNS) */
+  dnsSuffix?: string
+}
+
+/** A firewall rule created by the student (wf.msc wizard, netsh advfirewall, New-NetFirewallRule). */
+export interface PcFwRule {
+  name: string
+  dir: 'in' | 'out'
+  protocol: string // 'any' | 'tcp' | 'udp' | 'icmpv4' | 'icmpv6'
+  ports?: string
+  action: 'allow' | 'block'
+  enabled: boolean
+  profiles?: ('domain' | 'private' | 'public')[]
+}
+
+export interface PcUser {
+  name: string
+  admin: boolean
+  password: string
+  fullName?: string
+  description?: string
+  disabled?: boolean
+  mustChange?: boolean
+  cannotChange?: boolean
+  neverExpires?: boolean
 }
 
 export interface PcState {
   hostname: string
   adapters: PcAdapter[]
   firewallIcmp: boolean // inbound ICMPv4 echo allowed
-  users: { name: string; admin: boolean; password: string }[]
+  users: PcUser[]
   history: string[]
+  /** Windows Defender Firewall on/off per profile (missing = all on) */
+  firewall?: { domain: boolean; private: boolean; public: boolean }
+  /** state of the built-in rule "Udostępnianie plików i drukarek (Żądanie echa…)"; missing = firewallIcmp */
+  fwEchoRule?: boolean
+  /** rules added by the student */
+  fwRules?: PcFwRule[]
+  /** local groups (lusrmgr.msc); missing = built-ins derived from users[].admin */
+  groups?: { name: string; description: string; members: string[] }[]
+  /** Workgroup shown in sysdm.cpl */
+  workgroup?: string
+}
+
+/** Does Windows answer inbound ping? (echo rule enabled, or the firewall is off for the active — public — profile) */
+export function pcAnswersPing(pc: PcState): boolean {
+  return pc.firewallIcmp || pc.firewall?.public === false
 }
 
 export function defaultPcState(over: Partial<PcState> = {}): PcState {
@@ -242,7 +284,7 @@ export function endpoints(m: NetworkModel): Endpoint[] {
     if (!pc || !isOn(m, key)) continue
     for (const a of pc.adapters) {
       const cfg = pcAddress(a)
-      if (a.enabled && cfg) eps.push({ device: key, label: `${key === 'pc' ? 'PC' : 'Laptop'} ${a.name}`, port: `${key}:${a.id}`, addrs: [cfg.addr], gateway: cfg.gateway, icmp: pc.firewallIcmp })
+      if (a.enabled && cfg) eps.push({ device: key, label: `${key === 'pc' ? 'PC' : 'Laptop'} ${a.name}`, port: `${key}:${a.id}`, addrs: [cfg.addr], gateway: cfg.gateway, icmp: pcAnswersPing(pc) })
     }
   }
   if (m.printer && isOn(m, 'printer')) eps.push({ device: 'printer', label: 'Printer', port: 'printer:eth0', addrs: [{ ip: m.printer.ip, prefix: m.printer.prefix }], gateway: null, icmp: true })

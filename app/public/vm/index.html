@@ -190,9 +190,11 @@
       <code>enable/disable</code> тоже работают; после обновления страницы («перезагрузка») включённые службы стартуют заново.</li>
     <li><b>Сеть эмулируется:</b> две «сетевые карты» как в VirtualBox — <code>enp0s3</code> (NAT, DHCP) и <code>enp0s8</code> (не настроена).
       Настраивай <code>/etc/netplan/50-cloud-init.yaml</code> → <code>sudo netplan apply</code> (YAML проверяется, ошибки как в настоящем netplan),
-      смотри <code>ip a</code>, <code>ip r</code>. DHCP-сервер проверяет, что подсеть в <code>dhcpd.conf</code> совпадает с адресом интерфейса из
-      <code>INTERFACESv4</code>. Настоящих пакетов нет: <code>ping</code> наружу не пойдёт — связь между машинами тренируй в
-      <a href="../#/sim/linux">симуляторе</a>.</li>
+      смотри <code>ip a</code>, <code>ip r</code>, <code>ifconfig</code>, <code>resolvectl status</code>, <code>hostname -I</code>.
+      DHCP-сервер проверяет, что подсеть в <code>dhcpd.conf</code> совпадает с адресом интерфейса из <code>INTERFACESv4</code>.
+      Настоящих пакетов нет: <code>ping</code> отвечает только сам себе (в лабораторных — по таблице задания);
+      связь между машинами тренируй в <a href="../#/sim/linux">симуляторе</a>.</li>
+
     <li>Изменения (файлы, пользователи, права) <b>сохраняются в этом браузере</b> (IndexedDB). Кнопка «Сбросить» возвращает чистую систему.</li>
     <li>Первый запуск — до минуты: система подгружается частями с сайта. Нужен свежий браузер (Chrome, Edge, Firefox, Safari).
       Если вверху написано «Debian 10 (WebVM, запасной)» — наш диск не загрузился и работает публичный Debian без пакетов экзамена (вход root).</li>

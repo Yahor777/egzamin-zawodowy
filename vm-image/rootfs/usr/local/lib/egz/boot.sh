@@ -14,7 +14,7 @@ for u in $units; do
 done
 (
   for f in "$STATE"/*.log; do [ -e "$f" ] && echo "-- Boot $(date '+%b %d %H:%M:%S') --" >> "$f"; done
-  nice -n 10 python3 /usr/local/lib/egz/netplan.py boot >/dev/null 2>&1
+  nice -n 10 python3 /usr/local/lib/egz/egz.py netplan boot >/dev/null 2>&1
   for u in $units; do
     [ -e "$STATE/$u.masked" ] && continue
     echo inactive > "$STATE/$u.state"

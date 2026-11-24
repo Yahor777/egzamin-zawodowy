@@ -88,7 +88,7 @@ check_isc-dhcp-server() {
   # shellcheck disable=SC1091,SC2154
   ifs=$( . /etc/default/isc-dhcp-server 2>/dev/null; echo "$INTERFACESv4" )
   # shellcheck disable=SC2086
-  if ! python3 "$EGZ/netplan.py" dhcp-check "$conf" $ifs >> "$OUT" 2>&1; then
+  if ! python3 "$EGZ/egz.py" dhcp-check "$conf" $ifs >> "$OUT" 2>&1; then
     sed -i '/^If you think you have received/,/^process and the information/d' "$OUT"
     printf '%s\n' "Starting ISC DHCPv4 server: dhcpdcheck syslog for diagnostics. ... failed!" " failed!" >> "$OUT"
     return 1
@@ -116,7 +116,7 @@ check_nfs-server() {
     fi
   done < /etc/exports
 }
-check_systemd-networkd() { python3 "$EGZ/netplan.py" generate > "$OUT" 2>&1; }
+check_systemd-networkd() { python3 "$EGZ/egz.py" netplan generate > "$OUT" 2>&1; }
 
 # Post-start "running" output for the journal (what the daemon would log).
 started_lines() {
