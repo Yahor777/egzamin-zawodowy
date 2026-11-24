@@ -808,6 +808,10 @@ export const GUI_CMDS: Record<string, string> = {
   'hdwwiz.cpl': 'devmgmt',
   taskmgr: 'taskmgr',
   'taskmgr.exe': 'taskmgr',
+  servermanager: 'srvmgr',
+  'servermanager.exe': 'srvmgr',
+  'dsa.msc': 'aduc',
+  'dhcpmgmt.msc': 'dhcpmgmt',
 }
 
 // ---------- the main entry ----------

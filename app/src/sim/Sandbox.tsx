@@ -7,8 +7,9 @@ import { useStation, type BenchLab } from './bench/station'
 import type { LabSave } from './labs/ctx'
 import { clearTerminalScreen, LinuxTab, PcTab } from './labs/LabPage'
 import { createLinuxState, LinuxTerminal, type LinuxState } from './linux'
-import { defaultPcState } from './net'
-import type { PcView } from './pc/PcSim'
+import { defaultPcState, type PcState } from './net'
+import { PcSim, type PcView } from './pc/PcSim'
+import { WIN_SERVER_NAME } from './pc/server'
 import { defaultRouterState } from './router'
 import { defaultSwitchState } from './switch'
 
@@ -48,7 +49,53 @@ const sandboxLinux = () =>
 
 export function Sandbox({ kind }: { kind: string }) {
   if (kind === 'linux') return <LinuxSandbox />
+  if (kind === 'winserver') return <WinServerSandbox />
   return <NetSandbox />
+}
+
+const freshServer = () => {
+  const b = () => Math.floor(Math.random() * 256).toString(16).toUpperCase().padStart(2, '0')
+  return defaultPcState({ os: 'server2022', hostname: WIN_SERVER_NAME, server: { roles: [], features: [], pending: [] }, adapters: [{ ...defaultPcState().adapters[0], mac: `08-00-27-${b()}-${b()}-${b()}` }] })
+}
+const SERVER_NET = { renew: () => null, ping: () => ({ ok: false, reason: 'Upłynął limit czasu żądania.' }) }
+
+// Windows Server 2022: Menedżer serwera, role, AD DS, DHCP (no network behind it)
+function WinServerSandbox() {
+  const lang = useLang()
+  const ru = lang === 'ru'
+  const [pc, setPc] = useSaved<PcState>('inf02.sandbox.winserver', freshServer)
+  const [confirm, setConfirm] = useState(false)
+  return (
+    <div className="lab">
+      <div className="lab-head">
+        <button className="back-link" onClick={() => go('/practice')}>
+          <Icon name="back" size={18} /> Windows Server 2022
+        </button>
+        {!confirm ? (
+          <button className="btn small" onClick={() => setConfirm(true)}>
+            {ru ? 'Чистый сервер' : 'Od nowa'}
+          </button>
+        ) : (
+          <>
+            <button
+              className="btn small danger"
+              onClick={() => {
+                setPc(freshServer())
+                setConfirm(false)
+              }}
+            >
+              {ru ? 'Сбросить' : 'Resetuj'}
+            </button>
+            <button className="btn small" onClick={() => setConfirm(false)}>
+              {ru ? 'Отмена' : 'Anuluj'}
+            </button>
+          </>
+        )}
+      </div>
+      <p className="hint">{ru ? 'Менеджер сервера открывается после входа (Administrator, пароль подставлен). Флажок ⚑ → «Конфигурация после развёртывания».' : 'Administrator, hasło ZAQ!2wsx. Flaga ⚑ w Menedżerze serwera → konfiguracja po wdrożeniu.'}</p>
+      <PcSim key={pc.adapters[0].mac} state={pc} onChange={setPc} network={SERVER_NET} />
+    </div>
+  )
 }
 
 function LinuxSandbox() {

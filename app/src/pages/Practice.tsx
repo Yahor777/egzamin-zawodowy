@@ -105,6 +105,13 @@ export function Practice() {
           </span>
           <Icon name="chevron" size={18} />
         </button>
+        <button className="list-row" onClick={() => go('/sim/winserver')}>
+          <span className="lr-main">
+            <span className="lr-title">Windows Server 2022</span>
+            <span className="lr-sub">{ru ? 'Менеджер сервера: роли AD DS, DHCP, ADUC, область DHCP' : 'Menedżer serwera: role AD DS i DHCP, ADUC, zakres DHCP'}</span>
+          </span>
+          <Icon name="chevron" size={18} />
+        </button>
         <a className="list-row" href={`${base}vm/`}>
           <span className="lr-main">
             <span className="lr-title">{ru ? 'Настоящий Linux в браузере' : 'Prawdziwy Linux w przeglądarce'}</span>

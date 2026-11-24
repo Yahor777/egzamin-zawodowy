@@ -38,7 +38,7 @@ interface Node {
   depth: number
 }
 
-function Mmc({ nodes, cur, onNode, children, actions, title }: { nodes: Node[]; cur: string; onNode: (id: string) => void; children: ReactNode; actions: ReactNode; title: string }) {
+export function Mmc({ nodes, cur, onNode, children, actions, title }: { nodes: Node[]; cur: string; onNode: (id: string) => void; children: ReactNode; actions: ReactNode; title: string }) {
   const api = usePc()
   return (
     <div className={`mmc ${api.compact ? 'compact' : ''}`}>
@@ -73,7 +73,7 @@ function Mmc({ nodes, cur, onNode, children, actions, title }: { nodes: Node[]; 
         {!api.compact && (
           <div className="mmc-tree" role="tree">
             {nodes.map((n) => (
-              <button key={n.id} role="treeitem" aria-selected={cur === n.id} className={`mmc-node ${cur === n.id ? 'on' : ''}`} style={{ paddingLeft: 6 + n.depth * 14 }} onClick={() => onNode(n.id)}>
+              <button key={n.id} role="treeitem" aria-selected={cur === n.id} className={`mmc-node ${cur === n.id ? 'on' : ''}`} style={{ paddingLeft: 6 + n.depth * 14, ['--d' as string]: n.depth }} onClick={() => onNode(n.id)}>
                 {n.icon}
                 <span>{n.label}</span>
               </button>
@@ -93,7 +93,7 @@ function Mmc({ nodes, cur, onNode, children, actions, title }: { nodes: Node[]; 
   )
 }
 
-const Act = ({ children, onClick, disabled }: { children: ReactNode; onClick?: () => void; disabled?: boolean }) => (
+export const Act = ({ children, onClick, disabled }: { children: ReactNode; onClick?: () => void; disabled?: boolean }) => (
   <button className="mmc-act" onClick={onClick} disabled={disabled}>
     {children}
   </button>
@@ -703,9 +703,9 @@ export function Sysdm({ close }: WinProps) {
             <p className="sd-ex">Na przykład: „Komputer w kuchni” lub „Komputer Marii”.</p>
             <dl className="st-dl">
               <dt>Pełna nazwa komputera:</dt>
-              <dd id="sysdm-fullname">{st.hostname}</dd>
-              <dt>Grupa robocza:</dt>
-              <dd>{st.workgroup ?? 'WORKGROUP'}</dd>
+              <dd id="sysdm-fullname">{st.server?.domain ? `${st.hostname.toLowerCase()}.${st.server.domain.name}` : st.hostname}</dd>
+              <dt>{st.server?.domain ? 'Domena:' : 'Grupa robocza:'}</dt>
+              <dd>{st.server?.domain ? st.server.domain.name : (st.workgroup ?? 'WORKGROUP')}</dd>
             </dl>
             <div className="sd-change">
               <p>Aby zmienić nazwę tego komputera lub zmienić jego domenę lub grupę roboczą, kliknij przycisk Zmień.</p>
@@ -964,7 +964,7 @@ export function LocalUsers({ arg, full }: WinProps & { full?: boolean }) {
   )
 }
 
-function ListView({
+export function ListView({
   cols,
   rows,
   sel,

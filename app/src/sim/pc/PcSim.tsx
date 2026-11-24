@@ -35,6 +35,9 @@ import { SettingsApp } from './settings'
 import { Devmgmt, Dxdiag, Msinfo32, Taskmgr } from './apps-hw'
 import { Notepad } from './apps-notepad'
 import { GUI_CMDS } from './shell'
+import { AddRoles, DhcpPostInstall, Promote, ServerManager } from './apps-server'
+import { Aduc, DhcpConsole, MmcStub } from './apps-server-mmc'
+import { hasRole, isServer } from './server'
 import { Terminal } from './Terminal'
 import { ContextMenu, Frame, PcCtx, useLongPress, usePc, type MenuItem, type PcApi, type WinProps } from './ui'
 import './pc.css'
@@ -73,6 +76,8 @@ interface AppDef {
   single?: boolean | 'arg'
   render: (p: WinProps) => ReactNode
   help?: boolean
+  /** opens maximised (Menedżer serwera) */
+  maxOpen?: boolean
 }
 
 const adName = (st: PcState, id?: string) => st.adapters.find((a) => a.id === id)?.name ?? ''
@@ -106,6 +111,13 @@ const APPS: Record<string, AppDef> = {
   devmgmt: { title: () => 'Menedżer urządzeń', icon: () => <IcMgmt size={16} />, size: [560, 520], single: true, render: () => <Devmgmt /> },
   taskmgr: { title: () => 'Menedżer zadań', icon: () => <IcSystem size={16} />, size: [820, 540], single: true, render: () => <Taskmgr /> },
   notepad: { title: (a) => `${a ? (a.split('\\').pop() ?? a) : 'Bez tytułu'} — Notatnik`, icon: () => <IcTools size={16} />, size: [640, 460], render: (p) => <Notepad {...p} /> },
+  srvmgr: { title: () => 'Menedżer serwera', icon: () => <IcMgmt size={16} />, size: [1000, 600], single: true, maxOpen: true, render: (p) => <ServerManager {...p} /> },
+  srvroles: { title: () => 'Kreator dodawania ról i funkcji', icon: () => <IcMgmt size={16} />, size: [800, 560], dialog: true, single: true, render: (p) => <AddRoles {...p} /> },
+  srvpromote: { title: () => 'Kreator konfiguracji usług domenowych Active Directory', icon: () => <IcUsers size={16} />, size: [800, 560], dialog: true, single: true, render: (p) => <Promote {...p} /> },
+  srvdhcpcfg: { title: () => 'Kreator konfiguracji po instalacji usługi DHCP', icon: () => <IcMgmt size={16} />, size: [680, 460], dialog: true, single: true, render: (p) => <DhcpPostInstall {...p} /> },
+  aduc: { title: () => 'Użytkownicy i komputery usługi Active Directory', icon: () => <IcUsers size={16} />, size: [900, 520], single: true, render: (p) => <Aduc {...p} /> },
+  dhcpmgmt: { title: () => 'DHCP', icon: () => <IcMgmt size={16} />, size: [900, 520], single: true, render: (p) => <DhcpConsole {...p} /> },
+  mmcstub: { title: (a) => `${a ?? 'Konsola'} — [Konsola główna]`, icon: () => <IcMgmt size={16} />, size: [820, 480], single: 'arg', render: (p) => <MmcStub {...p} /> },
   run: { title: () => 'Uruchom', icon: () => <IcRun size={16} />, size: [420, 230], dialog: true, small: true, single: true, render: (p) => <RunDialog {...p} /> },
 }
 
@@ -113,12 +125,18 @@ const viewOf = (w: WinRec): PcView | null => (w.app === 'control' && w.arg === '
 
 // ---------------- Start menu content ----------------
 interface StartApp {
+  os?: 'server'
+  /** server tools: shown only with this role installed */
+  role?: string
   key: string
   label: string
   icon: ReactNode
   run: string
 }
 const START_APPS: StartApp[] = [
+  { key: 'srvmgr', os: 'server', label: 'Menedżer serwera', icon: <IcMgmt size={30} />, run: 'servermanager' },
+  { key: 'aduc', os: 'server', role: 'ADDS', label: 'Użytkownicy i komputery usługi Active Directory', icon: <IcUsers size={30} />, run: 'dsa.msc' },
+  { key: 'dhcpmgmt', os: 'server', role: 'DHCP', label: 'DHCP', icon: <IcMgmt size={30} />, run: 'dhcpmgmt.msc' },
   { key: 'edge', label: 'Microsoft Edge', icon: <IcEdge size={30} />, run: 'msedge' },
   { key: 'explorer', label: 'Eksplorator plików', icon: <IcFolder size={30} />, run: 'explorer' },
   { key: 'settings', label: 'Ustawienia', icon: <IcSettings size={30} />, run: 'ms-settings:' },
@@ -137,6 +155,7 @@ const START_APPS: StartApp[] = [
   { key: 'taskmgr', label: 'Menedżer zadań', icon: <IcSystem size={30} />, run: 'taskmgr' },
   { key: 'dxdiag', label: 'dxdiag', icon: <IcTools size={30} />, run: 'dxdiag' },
 ]
+const PINNED_SRV = ['srvmgr', 'ps', 'cmd', 'explorer', 'control', 'wf', 'compmgmt', 'run']
 const PINNED = ['edge', 'explorer', 'settings', 'control', 'cmd', 'ps', 'wf', 'tools', 'run']
 
 // ---------------- memory (survives switching the lab tabs) ----------------
@@ -155,6 +174,8 @@ interface WinRec {
 }
 type Phase = 'lock' | 'signin' | 'welcome' | 'desktop' | 'restart' | 'boot'
 interface Mem {
+  /** Menedżer serwera was auto-opened for this sign-in */
+  srvOpened?: boolean
   wins: WinRec[]
   next: number
   z: number
@@ -219,6 +240,7 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
   const setPhase = useCallback(
     (p: Phase) => {
       mem.phase = p
+      if (p === 'lock') mem.srvOpened = false
       setPhaseRaw(p)
     },
     [mem],
@@ -297,7 +319,7 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
         const big = !def.dialog && (W < 760 || def.size[0] > W - 40)
         const x = def.dialog ? Math.max(8, (W - w) / 2 + (n % 4) * 18) : Math.max(8, Math.min(W - w - 8, 36 + (n % 6) * 26))
         const y = def.dialog ? Math.max(8, Math.min(H - h - 8, (H - h) / 2 - 20 + (n % 4) * 18)) : Math.max(8, Math.min(H - h - 8, 20 + (n % 6) * 24))
-        return [...ws, { id: mem.next++, app, arg, x, y, w, h, max: big || (app === 'edge' && W < 1000), min: false, z, data: {} }]
+        return [...ws, { id: mem.next++, app, arg, x, y, w, h, max: big || def.maxOpen || (app === 'edge' && W < 1000), min: false, z, data: {} }]
       })
     },
     [mem, setWins],
@@ -342,14 +364,20 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
         dxdiag: ['dxdiag'],
         devmgmt: ['devmgmt'],
         taskmgr: ['taskmgr'],
+        srvmgr: ['srvmgr'],
+        aduc: ['aduc'],
+        dhcpmgmt: ['dhcpmgmt'],
       }
       if (key === 'restart') return restart()
+      if (['srvmgr', 'aduc', 'dhcpmgmt'].includes(key) && !isServer(stateRef.current)) return
+      if (key.startsWith('mmc:')) return open('mmcstub', key.slice(4))
       const m = map[key]
       if (m) open(m[0], m[1])
     },
     [open, restart],
   )
 
+  const srvMode = isServer(state)
   const run = useCallback(
     (raw: string): boolean => {
       const c = raw.trim()
@@ -362,12 +390,13 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
       if (low === 'notepad' || low.startsWith('notepad ')) return open('notepad', c.slice(7).trim().replace(/^"|"$/g, '') || undefined), true
       if (/^(https?:\/\/|www\.)/i.test(c) || /^\d{1,3}(\.\d{1,3}){3}(\/.*)?$/.test(c)) return open('edge'), true
       const g = GUI_CMDS[low] ?? GUI_CMDS[c.toLowerCase()] ?? (low.startsWith('control ') ? GUI_CMDS[low.slice(8).trim()] : undefined)
+      if (g && ['srvmgr', 'aduc', 'dhcpmgmt'].includes(g) && !srvMode) return false
       if (g) return launch(g), true
       if (low === 'ms-settings:network-status') return open('settings', 'net'), true
       if (low.startsWith('ms-settings:')) return open('settings', 'system'), true
       return false
     },
-    [open, launch],
+    [open, launch, srvMode],
   )
 
   const menuAt = useCallback((cx: number, cy: number, items: MenuItem[]) => {
@@ -431,6 +460,13 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [height, compact])
 
+  // Windows Server: Menedżer serwera starts by itself after sign-in
+  useEffect(() => {
+    if (!srvMode || phase !== 'desktop' || mem.srvOpened) return
+    mem.srvOpened = true
+    open('srvmgr')
+  }, [srvMode, phase, mem, open])
+
   // ---------------- screens before the desktop ----------------
   const shell = (cls: string, body: ReactNode) => (
     <div ref={setRoot} className={`pc ${cls} ${compact ? 'compact' : ''}`} style={{ height }}>
@@ -467,13 +503,14 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
       </div>,
     )
   if (phase === 'lock' || phase === 'signin' || phase === 'welcome')
-    return shell('pc-lockscr', <LockScreen phase={phase} now={now} onUnlock={() => setPhase('signin')} onSignIn={() => setPhase('welcome')} password={state.users.find((u) => u.name === 'Administrator')?.password ?? ''} />)
+    return shell('pc-lockscr', <LockScreen phase={phase} now={now} onUnlock={() => setPhase('signin')} onSignIn={() => setPhase('welcome')} password={state.users.find((u) => u.name === 'Administrator')?.password ?? ''} server={srvMode ? state.hostname : undefined} account={state.server?.domain ? `${state.server.domain.netbios}\\Administrator` : 'Administrator'} />)
 
   // ---------------- desktop ----------------
   const tray = trayState(state, network)
   const c = clock(now)
   const taskApps = (() => {
     const pinned = [
+      ...(srvMode ? [{ key: 'srvmgr', icon: <IcMgmt size={24} />, label: 'Menedżer serwera', match: (w: WinRec) => w.app === 'srvmgr', launch: () => open('srvmgr') }] : []),
       { key: 'explorer', icon: <IcFolder size={24} />, label: 'Eksplorator plików', match: (w: WinRec) => w.app === 'explorer', launch: () => open('explorer', 'thispc') },
       ...(browser ? [{ key: 'edge', icon: <IcEdge size={24} />, label: 'Microsoft Edge', match: (w: WinRec) => w.app === 'edge', launch: () => open('edge') }] : []),
       { key: 'cmd', icon: <IcCmd size={24} />, label: 'Wiersz polecenia', match: (w: WinRec) => w.app === 'cmd', launch: () => open('cmd', 'cmd') },
@@ -529,7 +566,7 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
     <PcCtx.Provider value={api}>
       <div
         ref={setRoot}
-        className={`pc pc-desk ${compact ? 'compact' : ''}`}
+        className={`pc pc-desk ${compact ? 'compact' : ''} ${srvMode ? 'srv' : ''}`}
         style={{ height }}
         onKeyDown={(e) => {
           if ((e.metaKey || e.altKey) && e.key.toLowerCase() === 'r' && e.shiftKey === false && e.metaKey) {
@@ -543,7 +580,7 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
         }}
       >
         <div className="pc-wall" aria-hidden="true" />
-        <DesktopIcons open={open} browser={!!browser} menuAt={menuAt} desktopMenu={desktopMenu} />
+        <DesktopIcons open={open} server={srvMode} browser={!!browser} menuAt={menuAt} desktopMenu={desktopMenu} />
         <div ref={layerRef} className="pc-layer">
           {wins.map((w) => {
             const def = APPS[w.app]
@@ -601,6 +638,7 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
             }
             browser={!!browser}
             compact={compact}
+            server={srvMode ? state : undefined}
           />
         )}
         {flyout === 'net' && (
@@ -652,7 +690,7 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
             {!compact && (
               <button className="tb-search" onClick={() => setStart('pinned')}>
                 <IcSearch size={15} />
-                <span>Wyszukaj</span>
+                <span>{srvMode ? 'Wpisz tutaj, aby wyszukać' : 'Wyszukaj'}</span>
               </button>
             )}
             {taskApps.pinned.map((p) => {
@@ -725,7 +763,7 @@ function StartButton({ on, onClick, onMenu }: { on: boolean; onClick: () => void
   )
 }
 
-function DesktopIcons({ open, browser, menuAt, desktopMenu }: { open: (a: string, arg?: string) => void; browser: boolean; menuAt: (x: number, y: number, items: MenuItem[]) => void; desktopMenu: MenuItem[] }) {
+function DesktopIcons({ open, server, browser, menuAt, desktopMenu }: { open: (a: string, arg?: string) => void; server?: boolean; browser: boolean; menuAt: (x: number, y: number, items: MenuItem[]) => void; desktopMenu: MenuItem[] }) {
   const [sel, setSel] = useState<string | null>(null)
   const items: { key: string; label: string; icon: ReactNode; open: () => void; menu: MenuItem[] }[] = [
     {
@@ -747,7 +785,7 @@ function DesktopIcons({ open, browser, menuAt, desktopMenu }: { open: (a: string
   const blank = useLongPress((x, y) => menuAt(x, y, desktopMenu))
   return (
     <div className="pc-icons" onClick={(e) => e.target === e.currentTarget && setSel(null)} {...blank}>
-      {items.map((it) => (
+      {items.filter((it) => !server || it.key === 'bin').map((it) => (
         <DeskIcon key={it.key} label={it.label} icon={it.icon} sel={sel === it.key} onSel={() => setSel(it.key)} onOpen={it.open} onMenu={(x, y) => (setSel(it.key), menuAt(x, y, it.menu))} />
       ))}
     </div>
@@ -788,7 +826,9 @@ function StartMenu({
   onUser,
   browser,
   compact,
+  server,
 }: {
+  server?: PcState
   mode: 'pinned' | 'all'
   setMode: (m: false | 'pinned' | 'all') => void
   q: string
@@ -799,7 +839,7 @@ function StartMenu({
   browser: boolean
   compact: boolean
 }) {
-  const apps = START_APPS.filter((a) => browser || a.key !== 'edge')
+  const apps = START_APPS.filter((a) => (browser || a.key !== 'edge') && (!a.os || (server && (!a.role || hasRole(server, a.role)))))
   const ql = q.trim().toLowerCase()
   const matches = ql ? apps.filter((a) => a.label.toLowerCase().includes(ql) || a.run.toLowerCase().startsWith(ql)) : []
   const cmdHit = ql && (GUI_CMDS[ql] || ['cmd', 'powershell', 'control'].includes(ql) || /^\d{1,3}(\.\d{1,3}){3}$/.test(ql) || /^https?:\/\//.test(ql))
@@ -862,7 +902,7 @@ function StartMenu({
                 </button>
               </div>
               <div className="st-grid">
-                {PINNED.map((k) => apps.find((a) => a.key === k))
+                {(server ? PINNED_SRV : PINNED).map((k) => apps.find((a) => a.key === k))
                   .filter((a): a is StartApp => !!a)
                   .map((a) => (
                     <button key={a.key} className="st-app" onClick={() => run(a.run)} title={a.label}>
@@ -938,7 +978,7 @@ function StartMenu({
   )
 }
 
-function LockScreen({ phase, now, onUnlock, onSignIn, password }: { phase: Phase; now: Date; onUnlock: () => void; onSignIn: () => void; password: string }) {
+function LockScreen({ phase, now, onUnlock, onSignIn, password, server, account = 'Administrator' }: { phase: Phase; now: Date; onUnlock: () => void; onSignIn: () => void; password: string; server?: string; account?: string }) {
   const c = clock(now)
   const [pw, setPw] = useState(password)
   const [err, setErr] = useState(false)
@@ -951,17 +991,18 @@ function LockScreen({ phase, now, onUnlock, onSignIn, password }: { phase: Phase
       if (!lockRef.current?.getClientRects().length) return
       const t = e.target as HTMLElement | null
       if (t && t !== lockRef.current && t.closest?.('input, textarea, select, [contenteditable]')) return
-      if (e.key === 'Enter' || e.key === ' ') onUnlock()
+      if (e.key === 'Enter' || e.key === ' ' || (e.ctrlKey && e.altKey && (e.key === 'Delete' || e.key === 'End'))) onUnlock()
     }
     window.addEventListener('keydown', k)
     return () => window.removeEventListener('keydown', k)
   }, [phase, onUnlock])
   if (phase === 'lock')
     return (
-      <button ref={lockRef} className="lock" onClick={onUnlock} aria-label="Ekran blokady — kliknij, aby się zalogować">
+      <button ref={lockRef} className={`lock ${server ? 'srv' : ''}`} onClick={onUnlock} aria-label={server ? 'Naciśnij klawisze Ctrl+Alt+Del, aby się zalogować' : 'Ekran blokady — kliknij, aby się zalogować'}>
         <span className="lock-time">{c.time}</span>
         <span className="lock-date">{longDate(now)}</span>
-        <span className="lock-hint">Kliknij lub naciśnij Enter, aby się zalogować</span>
+        {server && <span className="lock-cad">Naciśnij klawisze Ctrl+Alt+Del, aby się zalogować.</span>}
+        <span className="lock-hint">{server ? 'W symulatorze: kliknij tutaj lub naciśnij Enter zamiast Ctrl+Alt+Del' : 'Kliknij lub naciśnij Enter, aby się zalogować'}</span>
         <span className="lock-tray">
           <IcGlobe size={18} />
         </span>
@@ -973,7 +1014,7 @@ function LockScreen({ phase, now, onUnlock, onSignIn, password }: { phase: Phase
         <span className="signin-av">
           <IcUser size={64} />
         </span>
-        <strong>Administrator</strong>
+        <strong>{account}</strong>
         <Dots light />
         <span>Witamy</span>
       </div>
@@ -993,7 +1034,8 @@ function LockScreen({ phase, now, onUnlock, onSignIn, password }: { phase: Phase
       <span className="signin-av">
         <IcUser size={64} />
       </span>
-      <strong>Administrator</strong>
+      <strong>{account}</strong>
+      {server && <span className="signin-sub">Zaloguj do: {account.includes('\\') ? account.split('\\')[0] : server}</span>}
       {err ? (
         <>
           <span className="signin-err">Hasło jest niepoprawne. Spróbuj ponownie.</span>

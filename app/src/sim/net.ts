@@ -113,7 +113,60 @@ export interface PcUser {
   accountExpires?: string
 }
 
+/** Windows Server 2022 role state (Menedżer serwera). Present only when `PcState.os === 'server2022'`. */
+export interface DhcpScope {
+  name: string
+  desc: string
+  start: string
+  end: string
+  prefix: number
+  excl: { start: string; end: string }[]
+  leaseMin: number // lease duration in minutes
+  router: string
+  dnsDomain: string
+  dns: string
+  active: boolean
+  reservations: { name: string; ip: string; mac: string; desc: string }[]
+}
+export interface AdOu {
+  name: string
+  /** parent container: '' = domain root, else the parent OU/container name */
+  parent: string
+}
+export interface AdUser {
+  logon: string
+  first: string
+  last: string
+  full: string
+  ou: string // container name: 'Users' by default
+  disabled?: boolean
+  mustChange?: boolean
+  neverExpires?: boolean
+  cannotChange?: boolean
+}
+export interface AdGroup {
+  name: string
+  scope: 'local' | 'global' | 'universal'
+  type: 'security' | 'distribution'
+  ou: string
+  members: string[]
+}
+export interface ServerState {
+  /** installed role / role-service ids (ADDS, DHCP, DNS, IIS, FS-FSRM …) */
+  roles: string[]
+  /** installed feature ids */
+  features: string[]
+  /** roles waiting for post-deployment configuration (ADDS = promote, DHCP = finish config) */
+  pending: string[]
+  domain?: { name: string; netbios: string; level: string }
+  dhcp?: { authorized: boolean; scopes: DhcpScope[] }
+  ad?: { ous: AdOu[]; users: AdUser[]; groups: AdGroup[] }
+}
+
 export interface PcState {
+  /** operating system of the machine; missing = Windows 11 */
+  os?: 'win11' | 'server2022'
+  server?: ServerState
   hostname: string
   adapters: PcAdapter[]
   firewallIcmp: boolean // inbound ICMPv4 echo allowed
