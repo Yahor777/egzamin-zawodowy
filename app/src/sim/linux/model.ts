@@ -128,4 +128,30 @@ export interface LinuxState {
   nextPid: number
   loginUser: string
   apache?: ApacheRuntime
+  /** interactive shell session (cwd, su/sudo -i stack, variables) — restored when the terminal is reopened */
+  session?: ShellSession
+}
+
+/** One shell process of the login stack (plain JSON copy of the shell's Proc). */
+export interface ShellProcSnap {
+  user: string
+  cred: { uid: number; gid: number; groups: number[] }
+  cwd: string
+  vars: Record<string, string>
+  exported: string[]
+  params: string[]
+  arg0: string
+  funcs: Record<string, unknown>
+  aliases: Record<string, string>
+  status: number
+  login: boolean
+  umask: number
+  xtrace: boolean
+}
+
+export interface ShellSession {
+  /** id of this login session (changes on a fresh login); the saved terminal scrollback is tied to it */
+  id: string
+  procs: ShellProcSnap[]
+  sudoAuth: string[]
 }

@@ -911,9 +911,15 @@ function LockScreen({ phase, now, onUnlock, onSignIn, password }: { phase: Phase
   const c = clock(now)
   const [pw, setPw] = useState(password)
   const [err, setErr] = useState(false)
+  const lockRef = useRef<HTMLButtonElement>(null)
   useEffect(() => {
     if (phase !== 'lock') return
     const k = (e: KeyboardEvent) => {
+      // the PC may stay mounted in a hidden lab tab: only react while the lock screen is visible
+      // and the key is not typed into some other field (e.g. the Linux terminal)
+      if (!lockRef.current?.getClientRects().length) return
+      const t = e.target as HTMLElement | null
+      if (t && t !== lockRef.current && t.closest?.('input, textarea, select, [contenteditable]')) return
       if (e.key === 'Enter' || e.key === ' ') onUnlock()
     }
     window.addEventListener('keydown', k)
@@ -921,7 +927,7 @@ function LockScreen({ phase, now, onUnlock, onSignIn, password }: { phase: Phase
   }, [phase, onUnlock])
   if (phase === 'lock')
     return (
-      <button className="lock" onClick={onUnlock} aria-label="Ekran blokady — kliknij, aby się zalogować">
+      <button ref={lockRef} className="lock" onClick={onUnlock} aria-label="Ekran blokady — kliknij, aby się zalogować">
         <span className="lock-time">{c.time}</span>
         <span className="lock-date">{longDate(now)}</span>
         <span className="lock-hint">Kliknij lub naciśnij Enter, aby się zalogować</span>

@@ -5,7 +5,7 @@ import { go } from '../router'
 import { Bench } from './bench/Bench'
 import { useStation, type BenchLab } from './bench/station'
 import type { LabSave } from './labs/ctx'
-import { LinuxTab, PcTab } from './labs/LabPage'
+import { clearTerminalScreen, LinuxTab, PcTab } from './labs/LabPage'
 import { createLinuxState, LinuxTerminal, type LinuxState } from './linux'
 import { defaultPcState } from './net'
 import type { PcView } from './pc/PcSim'
@@ -64,6 +64,7 @@ function LinuxSandbox() {
         <button
           className="btn small"
           onClick={() => {
+            clearTerminalScreen('sandbox.linux')
             setLinux(sandboxLinux())
             setK((x) => x + 1)
           }}
@@ -72,7 +73,7 @@ function LinuxSandbox() {
         </button>
       </div>
       <p className="hint">{lang === 'ru' ? 'Свободная практика. Логин administrator, пароль для sudo: ZAQ!2wsx. help — список команд.' : 'Hasło sudo: ZAQ!2wsx.'}</p>
-      <LinuxTerminal key={k} state={linux} onChange={setLinux} />
+      <LinuxTerminal key={k} state={linux} onChange={setLinux} persistKey="sandbox.linux" />
     </div>
   )
 }
@@ -102,6 +103,9 @@ function NetSandbox() {
   const [tab, setTab] = useState<NetTab>('bench')
   const [pcView, setPcView] = useState<PcView>('adapters')
   const [confirm, setConfirm] = useState(false)
+  // panes stay mounted once opened (a tab switch must not reset the terminal / PC); `gen` remounts on reset
+  const [opened, setOpened] = useState<ReadonlySet<NetTab>>(() => new Set())
+  const [gen, setGen] = useState(0)
   const update = useCallback((p: Partial<LabSave>) => setS((x) => ({ ...x, ...p })), [setS])
   const st = useStation(NET_LAB, s, update)
   const tabs: [NetTab, string][] = [
@@ -110,6 +114,7 @@ function NetSandbox() {
     ['pc', 'Windows'],
   ]
   const cur = tabs.some(([t]) => t === tab) ? tab : 'bench'
+  if (!opened.has(cur)) setOpened(new Set(opened).add(cur))
   return (
     <div className="lab">
       <div className="lab-head">
@@ -125,7 +130,9 @@ function NetSandbox() {
             <button
               className="btn small danger"
               onClick={() => {
+                clearTerminalScreen('sandbox.net')
                 setS(freshNet())
+                setGen((g) => g + 1)
                 setConfirm(false)
               }}
             >
@@ -144,22 +151,32 @@ function NetSandbox() {
           </button>
         ))}
       </div>
-      <div className="lab-body">
-        {cur === 'bench' && (
-          <Bench
-            lab={NET_LAB}
-            s={s}
-            st={st}
-            hintKey="sandbox"
-            onLinks={(links) => update({ links })}
-            onOpenPc={() => {
-              setTab('pc')
-              setPcView('browser')
-            }}
-          />
+      <div className="lab-body" key={gen}>
+        {opened.has('bench') && (
+          <div className="lab-pane" hidden={cur !== 'bench'}>
+            <Bench
+              lab={NET_LAB}
+              s={s}
+              st={st}
+              hintKey="sandbox"
+              onLinks={(links) => update({ links })}
+              onOpenPc={() => {
+                setTab('pc')
+                setPcView('browser')
+              }}
+            />
+          </div>
         )}
-        {cur === 'linux' && <LinuxTab s={s} st={st} update={update} />}
-        {cur === 'pc' && <PcTab pcKey="pc" s={s} st={st} update={update} view={pcView} onView={setPcView} memKey="sandbox" />}
+        {opened.has('linux') && (
+          <div className="lab-pane" hidden={cur !== 'linux'}>
+            <LinuxTab s={s} st={st} update={update} active={cur === 'linux'} persistKey="sandbox.net" />
+          </div>
+        )}
+        {opened.has('pc') && (
+          <div className="lab-pane" hidden={cur !== 'pc'}>
+            <PcTab pcKey="pc" s={s} st={st} update={update} view={pcView} onView={setPcView} memKey="sandbox" />
+          </div>
+        )}
       </div>
     </div>
   )

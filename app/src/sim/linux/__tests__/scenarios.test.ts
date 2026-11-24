@@ -411,5 +411,25 @@ console.log('\n# scenario 5: apache2 / aging / hardware')
   check('smartctl to file', o.trim() === '1', o)
 }
 
+// ---------------------------------------------------------------- session resume
+console.log('Session resume (cwd, su stack, variables)')
+{
+  const r = harness(setup())
+  await r.run('cd /etc; export ZMIENNA=42; alias ll2="ls -l"')
+  await r.run('sudo -i', 'zaq1@WSX')
+  await r.run('cd /var/log')
+  check('session saved in state', r.state.session?.procs.length === 2 && r.state.session.procs[1].cwd === '/var/log', JSON.stringify(r.state.session?.procs.map((p) => p.cwd)))
+  // a new shell over the saved state continues where the old one stopped
+  const io2: TermIO = { write: () => {}, readLine: async () => null, edit: async () => {}, sleep: async () => {}, aborted: () => false, clear: () => {} }
+  const sh2 = createShell(JSON.parse(JSON.stringify(r.state)), io2, () => {}, undefined, undefined, true)
+  check('resumed as root in /var/log', sh2.cur.user === 'root' && sh2.cur.cwd === '/var/log', `${sh2.cur.user} ${sh2.cur.cwd}`)
+  check('resumed session id', sh2.sessionId === r.state.session?.id)
+  check('outer shell kept cwd + vars', sh2.sessions[0].cwd === '/etc' && sh2.sessions[0].vars.ZMIENNA === '42' && sh2.sessions[0].exported.has('ZMIENNA') && sh2.sessions[0].aliases.ll2 === 'ls -l')
+  const sh3 = createShell(JSON.parse(JSON.stringify(r.state)), io2, () => {}, undefined, undefined, false)
+  check('no resume → fresh login', sh3.sessions.length === 1 && sh3.cur.user === 'administrator' && sh3.cur.cwd === '/home/administrator' && sh3.sessionId !== r.state.session?.id)
+  const sh4 = createShell(JSON.parse(JSON.stringify(r.state)), io2, () => {}, undefined, 'uczen', true)
+  check('other login user → fresh login', sh4.sessions.length === 1 && sh4.cur.user === 'uczen')
+}
+
 console.log(failures ? `\n${failures} FAILED` : '\nALL PASSED')
 if (failures) throw new Error(`${failures} checks failed`)

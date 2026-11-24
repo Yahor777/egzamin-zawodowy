@@ -8,9 +8,34 @@ export interface LinuxTerminalProps {
   onChange: (s: LinuxState) => void
   network?: LinuxNetwork
   loginUser?: string
+  /** false while the terminal sits in a hidden tab (it stays mounted); refocuses when shown again */
+  active?: boolean
+  /** continue the shell session saved in state.session (cwd, su stack…) — default true */
+  resume?: boolean
+  /** localStorage key suffix: the last lines of the screen are kept there and shown again after a reload */
+  persistKey?: string
 }
 
 const MAX_LINES = 3000
+const SAVED_LINES = 500
+/** localStorage key of a saved screen (LabPage removes it on reset) */
+const scrollKey = (k: string) => `inf02.term.${k}`
+
+interface SavedScreen {
+  id: string
+  lines: string[]
+}
+function loadScreen(k: string | undefined, id: string): string[] | null {
+  if (!k) return null
+  try {
+    const raw = localStorage.getItem(scrollKey(k))
+    if (!raw) return null
+    const v = JSON.parse(raw) as SavedScreen
+    return v && v.id === id && Array.isArray(v.lines) ? v.lines.filter((l) => typeof l === 'string') : null
+  } catch {
+    return null
+  }
+}
 
 // ---------------------------------------------------------------- ANSI rendering
 interface Style {
@@ -248,7 +273,7 @@ function Editor({ ed, setEd }: { ed: EditorState; setEd: (e: EditorState | null)
 // ---------------------------------------------------------------- terminal
 type Mode = { kind: 'prompt' } | { kind: 'busy' } | { kind: 'read'; hidden: boolean; resolve: (v: string | null) => void; reject: (e: unknown) => void }
 
-export function LinuxTerminal({ state, onChange, network, loginUser }: LinuxTerminalProps) {
+export function LinuxTerminal({ state, onChange, network, loginUser, active = true, resume = true, persistKey }: LinuxTerminalProps) {
   const linesRef = useRef<string[]>([])
   const partialRef = useRef('')
   const [version, setVersion] = useState(0)
@@ -268,6 +293,7 @@ export function LinuxTerminal({ state, onChange, network, loginUser }: LinuxTerm
   const [full, setFull] = useState(false)
   const abortRef = useRef(false)
   const inputRef = useRef<HTMLInputElement>(null)
+  const rootRef = useRef<HTMLDivElement>(null)
   const screenRef = useRef<HTMLDivElement>(null)
   const histIdx = useRef<number | null>(null)
   const draft = useRef('')
@@ -278,6 +304,29 @@ export function LinuxTerminal({ state, onChange, network, loginUser }: LinuxTerm
   onChangeRef.current = onChange
   const shellRef = useRef<Shell | null>(null)
   const started = useRef(false)
+  const restored = useRef(false)
+  const persistRef = useRef(persistKey)
+  persistRef.current = persistKey
+  const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const saveScreen = useCallback(() => {
+    if (saveTimer.current) {
+      clearTimeout(saveTimer.current)
+      saveTimer.current = null
+    }
+    const k = persistRef.current
+    const sh = shellRef.current
+    if (!k || !sh) return
+    try {
+      const v: SavedScreen = { id: sh.sessionId, lines: linesRef.current.slice(-SAVED_LINES) }
+      localStorage.setItem(scrollKey(k), JSON.stringify(v))
+    } catch {
+      /* ignore */
+    }
+  }, [])
+  const scheduleSave = useCallback(() => {
+    if (!persistRef.current || saveTimer.current) return
+    saveTimer.current = setTimeout(saveScreen, 1000)
+  }, [saveScreen])
 
   const setMode = (m: Mode) => {
     modeRef.current = m
@@ -306,7 +355,8 @@ export function LinuxTerminal({ state, onChange, network, loginUser }: LinuxTerm
     }
     if (lines.length > MAX_LINES) lines.splice(0, lines.length - MAX_LINES)
     bump()
-  }, [])
+    scheduleSave()
+  }, [scheduleSave])
 
   // stable IO object for the shell
   const ioRef = useRef<TermIO | null>(null)
@@ -329,6 +379,7 @@ export function LinuxTerminal({ state, onChange, network, loginUser }: LinuxTerm
         linesRef.current = []
         partialRef.current = ''
         bump()
+        scheduleSave()
       },
     }
   }
@@ -343,7 +394,17 @@ export function LinuxTerminal({ state, onChange, network, loginUser }: LinuxTerm
       },
       network,
       loginUser,
+      resume,
     )
+    // a resumed session gets its screen back (the lines saved for this very session)
+    const sh = shellRef.current
+    if (resume && state.session && state.session.id === sh.sessionId) {
+      const lines = loadScreen(persistKey, sh.sessionId)
+      if (lines) {
+        linesRef.current = lines
+        restored.current = true
+      }
+    }
   }
   const sh = shellRef.current
   sh.network = network
@@ -381,9 +442,23 @@ export function LinuxTerminal({ state, onChange, network, loginUser }: LinuxTerm
   useEffect(() => {
     if (started.current) return
     started.current = true
-    write(sh.motd(sh.cur.user))
+    if (!restored.current) write(sh.motd(sh.cur.user))
     showPrompt()
   }, [sh, write, showPrompt])
+
+  // keep the screen across reloads: throttled saves + a final one when the page is hidden/closed
+  useEffect(() => {
+    if (!persistKey) return
+    const flush = () => saveScreen()
+    const vis = () => document.visibilityState === 'hidden' && flush()
+    window.addEventListener('pagehide', flush)
+    document.addEventListener('visibilitychange', vis)
+    return () => {
+      window.removeEventListener('pagehide', flush)
+      document.removeEventListener('visibilitychange', vis)
+      flush()
+    }
+  }, [persistKey, saveScreen])
 
   // external state replacement (e.g. lab reset)
   useEffect(() => {
@@ -391,7 +466,6 @@ export function LinuxTerminal({ state, onChange, network, loginUser }: LinuxTerm
     lastEmitted.current = state
     sh.st = JSON.parse(JSON.stringify(state)) as LinuxState
     sh.pending = ''
-    sh.sudoAuth.clear()
     sh.login(loginUser || sh.st.loginUser)
     if (modeRef.current.kind === 'prompt') {
       linesRef.current = []
@@ -408,8 +482,19 @@ export function LinuxTerminal({ state, onChange, network, loginUser }: LinuxTerm
   }, [version, mode, editor])
 
   useEffect(() => {
-    if (!editor && mode.kind !== 'busy') inputRef.current?.focus({ preventScroll: true })
-  }, [mode, editor])
+    if (active && !editor && mode.kind !== 'busy') inputRef.current?.focus({ preventScroll: true })
+  }, [mode, editor, active])
+
+  // shown again (tab switch): it was display:none, so re-scroll to the bottom and take the focus back
+  useLayoutEffect(() => {
+    if (!active) return
+    const el = screenRef.current
+    if (el) el.scrollTop = el.scrollHeight
+    const root = rootRef.current
+    const ed = root?.querySelector<HTMLTextAreaElement>('.lt-ed-text')
+    if (ed) ed.focus({ preventScroll: true })
+    else if (modeRef.current.kind !== 'busy') inputRef.current?.focus({ preventScroll: true })
+  }, [active])
 
   const history = () => sh.st.history
 
@@ -592,7 +677,7 @@ export function LinuxTerminal({ state, onChange, network, loginUser }: LinuxTerm
   const busy = mode.kind === 'busy'
 
   return (
-    <div className={'lt-root' + (full ? ' lt-full' : '')}>
+    <div ref={rootRef} className={'lt-root' + (full ? ' lt-full' : '')}>
       <div className="lt-top">
         <span className="lt-dots" aria-hidden>
           <i />

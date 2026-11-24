@@ -206,3 +206,226 @@ html.phone .lab-tabs button {
   flex: 1 0 auto;
   padding: 10px 8px;
 }
+
+/* ---------- device panes stay mounted; the inactive ones are display:none ---------- */
+.lab-pane[hidden] {
+  display: none !important;
+}
+.lab-tabs .lab-tabs-docs {
+  margin-left: auto;
+}
+.lab-task-btn.on {
+  background: var(--pen-soft);
+  border-color: var(--pen);
+  color: var(--pen);
+}
+
+/* ---------- task / docs panel: side column (wide desktop) ---------- */
+.lab.lab-wide,
+html:not(.phone) .main > .lab.lab-wide {
+  max-width: 1480px;
+}
+.lab-work.with-side {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 14px;
+  align-items: start;
+}
+.lab-side {
+  position: sticky;
+  top: 12px;
+  height: calc(100vh - 24px);
+  max-height: 900px;
+  min-height: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.lab-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+.lp-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 8px 8px 12px;
+  border-bottom: 1px solid var(--line);
+  flex: none;
+}
+.lp-title {
+  font-size: 1rem;
+}
+.lp-close {
+  margin-left: auto;
+  width: 36px;
+  height: 36px;
+}
+.lp-seg {
+  display: inline-flex;
+  background: var(--sunken);
+  border-radius: 10px;
+  padding: 3px;
+  gap: 2px;
+}
+.lp-seg button {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--ink-2);
+}
+.lp-seg button.on {
+  background: var(--surface);
+  color: var(--pen);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.12);
+}
+.lp-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.lp-foot {
+  flex: none;
+  padding: 10px 12px;
+  border-top: 1px solid var(--line);
+  display: flex;
+}
+.lp-foot .btn {
+  flex: 1;
+}
+.lab-score.small {
+  padding: 8px 12px;
+  gap: 8px;
+  font-size: 0.88rem;
+}
+.lab-score.small strong {
+  font-size: 1.3rem;
+}
+.lp-tasks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.lp-task {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+}
+.lp-task.open {
+  border-color: var(--pen);
+}
+.lp-task-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 10px 10px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.93rem;
+  color: var(--ink);
+}
+.lp-task-title {
+  flex: 1;
+  min-width: 0;
+}
+.lp-task-head svg:last-child {
+  flex: none;
+  color: var(--ink-3);
+  transition: transform 0.15s;
+}
+.lp-task.open .lp-task-head svg:last-child {
+  transform: rotate(90deg);
+}
+.lp-task.ok .lp-task-head svg:nth-last-child(2) {
+  color: var(--ok);
+  flex: none;
+}
+.lp-task.bad .lp-task-head svg:nth-last-child(2) {
+  color: var(--bad);
+  flex: none;
+}
+.lp-task-body {
+  padding: 0 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.lp-task-body .lt-text {
+  font-size: 0.92rem;
+}
+.lab-panel .docs-tab {
+  gap: 10px;
+}
+.lab-panel .md {
+  padding: 4px 2px;
+  border: 0;
+  background: transparent;
+  font-size: 0.93rem;
+}
+
+/* ---------- bottom sheet (phone / narrow) ---------- */
+.lab-fab {
+  position: fixed;
+  right: max(12px, env(safe-area-inset-right, 0px));
+  bottom: calc(78px + env(safe-area-inset-bottom, 0px));
+  z-index: 1001;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 99px;
+  background: var(--pen);
+  color: var(--pen-ink);
+  font-weight: 700;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 0.25);
+}
+/* typing in the terminal (keyboard up): keep the button out of the way */
+.lab:has(.lab-pane input:focus, .lab-pane textarea:focus) .lab-fab {
+  display: none;
+}
+.lab-drawer-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 1002;
+  background: rgb(0 0 0 / 0.38);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.lab-drawer {
+  width: 100%;
+  max-width: 720px;
+  height: 82%;
+  background: var(--surface);
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -6px 24px rgb(0 0 0 / 0.2);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  overflow: hidden;
+  animation: lab-drawer-in 0.18s ease-out;
+}
+@keyframes lab-drawer-in {
+  from {
+    transform: translateY(40px);
+    opacity: 0.4;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lab-drawer {
+    animation: none;
+  }
+}

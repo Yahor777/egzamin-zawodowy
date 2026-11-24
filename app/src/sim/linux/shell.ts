@@ -1,5 +1,5 @@
 // Bash-like interpreter: expansion, execution, builtins, command dispatch.
-import type { LinuxState } from './model.ts'
+import type { LinuxState, ShellProcSnap, ShellSession } from './model.ts'
 import { parse, SyntaxError2, type Node, type Redir } from './parser.ts'
 import { evalArith, ArithError } from './arith.ts'
 import {
@@ -411,6 +411,8 @@ class FB {
 }
 
 // ---------------------------------------------------------------- the shell
+const newSessionId = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36)
+
 export class Shell {
   st: LinuxState
   io: TermIO
@@ -423,6 +425,8 @@ export class Shell {
   interruptedRead = false
   lastTabLine = ''
   editorDefault = false
+  /** id of the current login session (see ShellSession.id) */
+  sessionId = newSessionId()
 
   constructor(st: LinuxState, io: TermIO, onCommit: (st: LinuxState) => void) {
     this.st = st
@@ -431,7 +435,65 @@ export class Shell {
   }
 
   commit() {
+    this.st.session = this.saveSession()
     this.onCommit(this.st)
+  }
+
+  /** plain-JSON snapshot of the interactive session (login stack, cwd, variables, sudo cache) */
+  saveSession(): ShellSession {
+    const procs: ShellProcSnap[] = this.sessions.map((p) => ({
+      user: p.user,
+      cred: { uid: p.cred.uid, gid: p.cred.gid, groups: [...p.cred.groups] },
+      cwd: p.cwd,
+      vars: { ...p.vars },
+      exported: [...p.exported],
+      params: [...p.params],
+      arg0: p.arg0,
+      funcs: JSON.parse(JSON.stringify(p.funcs)) as Record<string, unknown>,
+      aliases: { ...p.aliases },
+      status: p.status,
+      login: p.login,
+      umask: p.umask,
+      xtrace: p.xtrace,
+    }))
+    return { id: this.sessionId, procs, sudoAuth: [...this.sudoAuth] }
+  }
+
+  /** bring back a saved session; false if it does not fit this system (then log in afresh) */
+  restoreSession(snap: ShellSession | undefined): boolean {
+    if (!snap || !Array.isArray(snap.procs) || !snap.procs.length) return false
+    const procs: Proc[] = []
+    for (const q of snap.procs) {
+      if (!q || typeof q.user !== 'string' || typeof q.cwd !== 'string' || !userByName(this.st, q.user)) return false
+      const p = new Proc()
+      p.user = q.user
+      p.cred = q.cred && typeof q.cred.uid === 'number' && Array.isArray(q.cred.groups) ? { uid: q.cred.uid, gid: q.cred.gid, groups: [...q.cred.groups] } : credFor(this.st, q.user)
+      p.cwd = q.cwd
+      p.vars = { ...q.vars }
+      p.exported = new Set(q.exported)
+      p.params = [...(q.params ?? [])]
+      p.arg0 = q.arg0 || 'bash'
+      p.funcs = (q.funcs ?? {}) as Record<string, Node>
+      p.aliases = { ...q.aliases }
+      p.status = q.status | 0
+      p.interactive = true
+      p.login = !!q.login
+      p.umask = q.umask ?? 0o022
+      p.xtrace = !!q.xtrace
+      procs.push(p)
+    }
+    this.sessions = procs
+    this.sudoAuth = new Set(snap.sudoAuth ?? [])
+    this.sessionId = typeof snap.id === 'string' && snap.id ? snap.id : newSessionId()
+    this.pending = ''
+    return true
+  }
+
+  /** log in as user, or resume the session saved in the state when it belongs to that user */
+  resumeOrLogin(user: string) {
+    const snap = this.st.session
+    if (snap && snap.procs?.[0]?.user === user && this.restoreSession(snap)) return
+    this.login(user)
   }
 
   get cur(): Proc {
@@ -475,6 +537,9 @@ export class Shell {
 
   login(user: string) {
     this.sessions = [this.makeLogin(user)]
+    this.sudoAuth.clear()
+    this.sessionId = newSessionId()
+    this.st.session = undefined
   }
 
   prompt(): string {

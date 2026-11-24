@@ -19,9 +19,11 @@ export interface LinuxNetwork {
   ping(fromIfaces: LinuxIface[], gateway: string | null, target: string): { ok: boolean; reason?: string }
 }
 
-export function createShell(st: LinuxState, io: TermIO, onCommit: (st: LinuxState) => void, network?: LinuxNetwork, user?: string): Shell {
+/** `resume`: continue the session saved in `st.session` (cwd, su stack…) instead of a fresh login. */
+export function createShell(st: LinuxState, io: TermIO, onCommit: (st: LinuxState) => void, network?: LinuxNetwork, user?: string, resume = false): Shell {
   const sh = new Shell(st, io, onCommit)
   sh.network = network
-  sh.login(user || st.loginUser)
+  if (resume) sh.resumeOrLogin(user || st.loginUser)
+  else sh.login(user || st.loginUser)
   return sh
 }
