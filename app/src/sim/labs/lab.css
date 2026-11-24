@@ -234,8 +234,9 @@ html:not(.phone) .main > .lab.lab-wide {
 .lab-side {
   position: sticky;
   top: 12px;
-  height: calc(100vh - 24px);
-  max-height: 900px;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 24px);
   min-height: 0;
   background: var(--surface);
   border: 1px solid var(--line);
@@ -245,8 +246,12 @@ html:not(.phone) .main > .lab.lab-wide {
 .lab-panel {
   display: flex;
   flex-direction: column;
+  flex: 1;
   height: 100%;
   min-height: 0;
+}
+.lab-side .lab-panel {
+  height: auto;
 }
 .lp-head {
   display: flex;
