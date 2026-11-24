@@ -27,6 +27,11 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,json}'],
+        // /vm/ is a separate page (real Linux via CheerpX) with its own
+        // cross-origin-isolation service worker: never precache it and never
+        // answer its navigations with the SPA shell.
+        globIgnores: ['vm/**'],
+        navigateFallbackDenylist: [/\/vm(\/|$)/],
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
         runtimeCaching: [
           {

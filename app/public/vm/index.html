@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" />
+<meta name="theme-color" content="#f3f4f1" />
+<title>Настоящий Linux</title>
+<link rel="icon" type="image/svg+xml" href="../icon.svg" />
+<link rel="stylesheet" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/css/xterm.css" />
+<style>
+  @font-face { font-family: 'Golos Text'; font-weight: 400; font-display: swap; src: url(fonts/golos-text-cyrillic-400-normal.woff2) format('woff2'); unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
+  @font-face { font-family: 'Golos Text'; font-weight: 600; font-display: swap; src: url(fonts/golos-text-cyrillic-600-normal.woff2) format('woff2'); unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
+  @font-face { font-family: 'Golos Text'; font-weight: 400; font-display: swap; src: url(fonts/golos-text-latin-400-normal.woff2) format('woff2'); unicode-range: U+0000-00FF,U+2000-206F,U+2190-2193,U+2212; }
+  @font-face { font-family: 'Golos Text'; font-weight: 600 700; font-display: swap; src: url(fonts/golos-text-latin-600-normal.woff2) format('woff2'); unicode-range: U+0000-00FF,U+2000-206F,U+2190-2193,U+2212; }
+  :root {
+    --paper: #f3f4f1;
+    --surface: #ffffff;
+    --sunken: #ebeee8;
+    --ink: #1d2421;
+    --ink-2: #57625d;
+    --line: #dde1db;
+    --pen: #24479b;
+    --pen-soft: #e6ebf6;
+    --bad: #b3322f;
+    --term: #15181b;
+    --font: 'Golos Text', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Consolas, monospace;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #17191b;
+      --surface: #202326;
+      --sunken: #1b1e20;
+      --ink: #e8eae7;
+      --ink-2: #a9b0ab;
+      --line: #2f3437;
+      --pen: #9db1e3;
+      --pen-soft: #263049;
+      --bad: #e08a86;
+      --term: #0f1113;
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font: 15px/1.45 var(--font);
+    display: flex;
+    flex-direction: column;
+    height: var(--app-h, 100dvh);
+    overflow: hidden;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);
+  }
+  a { color: var(--pen); }
+  header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--line);
+    flex: none;
+  }
+  .back {
+    text-decoration: none;
+    font-weight: 600;
+    padding: 6px 10px 6px 4px;
+    white-space: nowrap;
+  }
+  h1 { font-size: 16px; margin: 0; font-weight: 650; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  h1 small { font-weight: 400; color: var(--ink-2); font-size: 13px; margin-left: 6px; }
+  button { font: inherit; color: inherit; }
+  .hbtn {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: 34px;
+  }
+  .hbtn[aria-expanded="true"] { background: var(--pen-soft); border-color: var(--pen); }
+  main { flex: 1; min-height: 0; position: relative; }
+  #info {
+    position: absolute; top: 0; left: 0; right: 0; z-index: 2;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+    max-height: 70%;
+    overflow: auto;
+    padding: 10px 16px 12px;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+    font-size: 14px;
+  }
+  #info[hidden] { display: none; }
+  #info p { margin: 0 0 6px; max-width: 70ch; }
+  #info ul { margin: 0 0 6px; padding-left: 18px; max-width: 70ch; }
+  #info li { margin-bottom: 3px; }
+  #info code { font-family: var(--mono); font-size: 13px; background: var(--sunken); padding: 0 4px; border-radius: 4px; }
+  #status {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 1;
+    background: var(--paper);
+    border-top: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 16px;
+    font-size: 13.5px;
+    color: var(--ink-2);
+  }
+  #status[hidden] { display: none; }
+  #status.err { color: var(--bad); }
+  .spin {
+    width: 14px; height: 14px; flex: none;
+    border: 2px solid var(--line); border-top-color: var(--pen);
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+  }
+  #status.err .spin { display: none; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #termwrap {
+    position: absolute; inset: 0;
+    background: var(--term);
+    padding: 6px 4px 4px 8px;
+  }
+  #term { width: 100%; height: 100%; }
+  #keys {
+    flex: none;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+    background: var(--sunken);
+    border-top: 1px solid var(--line);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  #keys::-webkit-scrollbar { display: none; }
+  #keys button {
+    flex: none;
+    min-width: 42px;
+    height: 38px;
+    padding: 0 10px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: var(--surface);
+    font-family: var(--mono);
+    font-size: 15px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #keys button.on { background: var(--pen); border-color: var(--pen); color: #fff; }
+  /* On a desktop with a real keyboard the extra keys are just noise */
+  @media (hover: hover) and (pointer: fine) and (min-width: 900px) {
+    #keys { display: none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="../#/practice">← Назад</a>
+  <h1>Настоящий Linux <small>Debian в браузере</small></h1>
+  <button class="hbtn" id="infoBtn" aria-expanded="false" aria-controls="info">Что это?</button>
+  <button class="hbtn" id="resetBtn" title="Вернуть систему в исходное состояние">Сбросить</button>
+</header>
+
+<main>
+<section id="info" hidden>
+  <p><b>Это настоящий Debian Linux</b> (32-bit, Debian 10), а не наш симулятор: обычные <code>bash</code>,
+    <code>useradd</code>, <code>groupadd</code>, <code>passwd</code>, <code>chmod</code>, <code>chown</code>,
+    <code>tar</code>, <code>nano</code>, <code>vim</code>, <code>find</code>, <code>grep</code>, <code>ps</code> и т.д.
+    Он работает прямо в браузере через WebAssembly (движок CheerpX); ничего устанавливать не надо.</p>
+  <ul>
+    <li>Ты вошёл как <code>root</code>. Есть обычный пользователь <code>user</code> (пароль <code>password</code>): <code>su - user</code>, выход — <code>exit</code>.</li>
+    <li>Изменения (файлы, пользователи, права) <b>сохраняются в этом браузере</b> (IndexedDB). Кнопка «Сбросить» возвращает чистую систему.</li>
+    <li><b>Интернета внутри нет</b>: <code>apt install</code>, <code>ping</code>, <code>curl</code> не сработают.</li>
+    <li>Сеть и службы (<code>netplan</code>, <code>ip addr</code>, <code>isc-dhcp-server</code>, <code>systemctl</code>) здесь не работают как на сервере —
+      их тренируй в <a href="../#/sim/linux">симуляторе Linux-сервера</a> на сайте.</li>
+    <li>Первый запуск — до минуты: система подгружается частями с сервера. Нужен свежий браузер (Chrome, Edge, Firefox, Safari).
+      Если не запускается — открой <a href="https://webvm.io" target="_blank" rel="noopener">webvm.io</a> (тот же Debian).</li>
+  </ul>
+  <p style="color:var(--ink-2);font-size:13px"><button class="hbtn" id="infoClose" style="float:right;margin-left:8px">Понятно</button>На телефоне: снизу есть клавиши Tab, Ctrl, Esc, стрелки. Ctrl нажимается, потом буква (Ctrl → c = прервать команду).</p>
+</section>
+
+<div id="status" role="status"><span class="spin"></span><span id="statusText">Подготовка…</span></div>
+
+<div id="termwrap"><div id="term"></div></div>
+</main>
+
+<div id="keys" aria-label="Дополнительные клавиши">
+  <button data-k="tab">Tab</button>
+  <button data-k="ctrl" id="ctrlKey">Ctrl</button>
+  <button data-k="esc">Esc</button>
+  <button data-k="left" aria-label="Влево">←</button>
+  <button data-k="up" aria-label="Вверх">↑</button>
+  <button data-k="down" aria-label="Вниз">↓</button>
+  <button data-k="right" aria-label="Вправо">→</button>
+  <button data-s="|">|</button>
+  <button data-s="/">/</button>
+  <button data-s="-">-</button>
+  <button data-s="~">~</button>
+  <button data-s="&gt;">&gt;</button>
+  <button data-s="*">*</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/lib/xterm.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@xterm/addon-fit@0.10.0/lib/addon-fit.js" crossorigin="anonymous"></script>
+<script type="module" src="./vm.js"></script>
+</body>
+</html>

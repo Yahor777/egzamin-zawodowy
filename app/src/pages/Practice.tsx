@@ -66,6 +66,13 @@ export function Practice() {
         <button className="btn" onClick={() => go('/sim/linux')}>
           Linux
         </button>
+        <a
+          className="btn"
+          href={`${import.meta.env.BASE_URL}vm/`}
+          style={{ gridColumn: '1 / -1', color: 'inherit', textDecoration: 'none' }}
+        >
+          {lang === 'ru' ? 'Настоящий Linux' : 'Prawdziwy Linux'}
+        </a>
       </div>
 
       <h2 className="sec">{t('cheatSheets')}</h2>
