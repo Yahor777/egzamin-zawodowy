@@ -109,6 +109,8 @@ export interface PcUser {
   mustChange?: boolean
   cannotChange?: boolean
   neverExpires?: boolean
+  /** account expiry date (net user /expires:dd.mm.rrrr), as typed; missing = Nigdy */
+  accountExpires?: string
 }
 
 export interface PcState {

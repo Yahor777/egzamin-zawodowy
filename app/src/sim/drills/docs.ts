@@ -21,6 +21,12 @@ export const HOWTO: DocRef[] = [
   h('linux-ssh', 'Linux: SSH', 'Linux: SSH'),
   h('linux-files', 'Linux: файлы, архивы, перенаправление', 'Linux: pliki, archiwa, przekierowania'),
   h('linux-services', 'Linux: службы и cron', 'Linux: usługi i cron'),
+  h('windows-users', 'Windows: локальные пользователи и группы', 'Windows: konta i grupy lokalne'),
+  h('windows-bat', 'Windows: пакетные файлы .bat', 'Windows: pliki wsadowe .bat'),
+  h('linux-nmcli', 'Linux Desktop: NetworkManager (nmcli)', 'Linux Desktop: NetworkManager (nmcli)'),
+  h('hardware-ident', 'Идентификация параметров: где что смотреть', 'Identyfikacja parametrów'),
+  h('kosztorys', 'Смета (kosztorys) в Excel/Calc', 'Kosztorys w arkuszu kalkulacyjnym'),
+  h('winserver-roles', 'Роли Windows Server: порядок шагов', 'Role Windows Server: kolejność kroków'),
 ]
 const by = (slug: string) => HOWTO.find((x) => x.to === `doc/${slug}`)!
 
@@ -42,6 +48,9 @@ export const D = {
   linuxSsh: by('linux-ssh'),
   linuxFiles: by('linux-files'),
   linuxServices: by('linux-services'),
+  windowsUsers: by('windows-users'),
+  windowsBat: by('windows-bat'),
+  linuxNmcli: by('linux-nmcli'),
   cheatLinux: { to: 'practice/cheat-linux-server', ru: 'Шпаргалка: Linux-сервер', pl: 'Ściąga: serwer Linux' },
   cheatRouter: { to: 'practice/cheat-router-switch', ru: 'Шпаргалка: роутер и свитч', pl: 'Ściąga: ruter i przełącznik' },
   cheatWindows: { to: 'practice/cheat-windows-client', ru: 'Шпаргалка: Windows', pl: 'Ściąga: Windows' },

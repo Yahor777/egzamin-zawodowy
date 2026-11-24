@@ -2,10 +2,11 @@ import type { Lab } from '../labs/labs'
 import { rng, TOPICS, type DrillDef, type DrillLab, type DrillTopic } from './kit'
 import { LINUX_DRILLS } from './linux'
 import { NET_DRILLS } from './net'
+import { EXTRA_DRILLS } from './extra'
 
 export { TOPICS, type DrillDef, type DrillLab, type DrillTopic }
 
-export const DRILLS: DrillDef[] = [...LINUX_DRILLS, ...NET_DRILLS]
+export const DRILLS: DrillDef[] = [...LINUX_DRILLS, ...NET_DRILLS, ...EXTRA_DRILLS]
 
 export const drillById = (id: string) => DRILLS.find((d) => d.id === id)
 

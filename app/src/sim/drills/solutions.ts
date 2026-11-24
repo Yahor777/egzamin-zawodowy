@@ -6,6 +6,7 @@ import type { LabSave } from '../labs/ctx'
 import type { Lab } from '../labs/labs'
 import type { PcAdapter } from '../net'
 import { ethYaml, netplanYaml, ip4, ipn, maskOf } from './kit'
+import { EXTRA_SOLVE } from './solutions-extra'
 
 const PASS = 'ZAQ!2wsx'
 
@@ -292,4 +293,6 @@ export const SOLVE: Record<string, (p: P, h: H) => Promise<void> | void> = {
     cmd(`ping 192.168.${p.X}.10`)
     await t.run(`ping -c 2 192.168.${p.X}.20`)
   },
+  // drills of extra.ts (win-users, win-bat, lx-nmcli)
+  ...EXTRA_SOLVE,
 }

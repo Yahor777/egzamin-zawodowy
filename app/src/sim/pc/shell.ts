@@ -27,6 +27,7 @@ import {
   type PcNetwork,
 } from './model'
 import { cim, systeminfo, wlan, wmic } from './hwcmd'
+import { cmdFiles, cwdOf, expandVars, type BatchRun } from './batch'
 
 export type ShellKind = 'cmd' | 'ps'
 export interface Line {
@@ -48,6 +49,12 @@ export interface ExecResult {
   job?: Job
   /** a GUI command (ncpa.cpl, wf.msc, msedge …) to open */
   open?: string
+  /** new current directory (cd) */
+  cwd?: string
+  /** session variables after `set` */
+  env?: Record<string, string>
+  /** a batch file to run (the terminal drives it: output, set /p, pause) */
+  batch?: BatchRun
 }
 
 export interface ShellCtx {
@@ -56,6 +63,10 @@ export interface ShellCtx {
   kind: ShellKind
   /** hosts that answered (ARP cache), mutated */
   arp: Set<string>
+  /** current directory; missing = C:\\Users\\Administrator */
+  cwd?: string
+  /** session variables (set) */
+  env?: Record<string, string>
 }
 
 const L = (...t: string[]): Line[] => t.map((x) => ({ t: x }))
@@ -672,7 +683,22 @@ function net(ctx: ShellCtx, t: string[]): ExecResult {
     if (flag('add')) {
       if (u) return ok(st, 'Konto już istnieje.', '', 'Aby uzyskać dodatkową pomoc, wpisz NET HELPMSG 2224.', '')
       if (!validUserName(name)) return ok(st, 'Nazwa użytkownika jest niepoprawna.', '')
-      return ok(addUser(st, { name, admin: false, password: pass && pass !== '*' ? pass : '', fullName: flagVal('fullname'), description: flagVal('comment'), disabled: /no/i.test(flagVal('active') ?? '') }), OK, '')
+      const exp = flagVal('expires')
+      return ok(
+        addUser(st, {
+          name,
+          admin: false,
+          password: pass && pass !== '*' ? pass : '',
+          fullName: flagVal('fullname'),
+          description: flagVal('comment'),
+          disabled: /no/i.test(flagVal('active') ?? ''),
+          ...(flagVal('passwordchg') !== undefined ? { cannotChange: /no/i.test(flagVal('passwordchg')!) } : {}),
+          ...(flagVal('logonpasswordchg') !== undefined ? { mustChange: /yes/i.test(flagVal('logonpasswordchg')!) } : {}),
+          ...(exp !== undefined && !/never|nigdy/i.test(exp) ? { accountExpires: exp } : {}),
+        }),
+        OK,
+        '',
+      )
     }
     if (!u) return ok(st, 'Nie można odnaleźć nazwy użytkownika.', '', 'Aby uzyskać dodatkową pomoc, wpisz NET HELPMSG 2221.', '')
     if (flag('del')) {
@@ -687,7 +713,7 @@ function net(ctx: ShellCtx, t: string[]): ExecResult {
         ...(flagVal('active') !== undefined ? { disabled: /no/i.test(flagVal('active')!) } : {}),
         ...(flagVal('passwordchg') !== undefined ? { cannotChange: /no/i.test(flagVal('passwordchg')!) } : {}),
         ...(flagVal('logonpasswordchg') !== undefined ? { mustChange: /yes/i.test(flagVal('logonpasswordchg')!) } : {}),
-        ...(flagVal('expires') !== undefined ? { neverExpires: /never/i.test(flagVal('expires')!) } : {}),
+        ...(flagVal('expires') !== undefined ? { accountExpires: /never|nigdy/i.test(flagVal('expires')!) ? undefined : flagVal('expires') } : {}),
       }
       return ok({ ...st, users: st.users.map((x) => (x === u ? { ...x, ...patch } : x)) }, OK, '')
     }
@@ -700,10 +726,10 @@ function net(ctx: ShellCtx, t: string[]): ExecResult {
       'Komentarz użytkownika',
       'Kod kraju/regionu                       000 (Domyślne ustawienia systemu)',
       `Konto jest aktywne                      ${u.disabled ? 'Nie' : 'Tak'}`,
-      'Konto wygasa                            Nigdy',
+      `Konto wygasa                            ${u.accountExpires ?? 'Nigdy'}`,
       '',
       `Hasło ostatnio ustawiono                ${new Date().toLocaleDateString('pl-PL')}`,
-      `Hasło wygasa                            ${u.neverExpires ? 'Nigdy' : 'Nigdy'}`,
+      `Hasło wygasa                            ${u.neverExpires ? 'Nigdy' : new Date(Date.now() + 42 * 864e5).toLocaleDateString('pl-PL')}`,
       `Hasło może być zmieniane                ${new Date().toLocaleDateString('pl-PL')}`,
       'Wymagane hasło                          Tak',
       `Użytkownik może zmieniać hasło          ${u.cannotChange ? 'Nie' : 'Tak'}`,
@@ -786,9 +812,12 @@ export const GUI_CMDS: Record<string, string> = {
 
 // ---------- the main entry ----------
 export function exec(ctx: ShellCtx, raw: string): ExecResult {
-  const line = raw.trim()
+  const line = (raw.includes('%') && ctx.kind === 'cmd' ? expandVars(ctx, raw) : raw).trim()
   const st = ctx.state
   if (!line) return { out: [], state: st }
+  // files, folders, variables, redirection, running .bat
+  const fr = cmdFiles(ctx, line, exec)
+  if (fr) return fr
   const t = tokenize(line)
   const c0 = t[0].toLowerCase()
   const c = c0.replace(/\.exe$/, '')
@@ -897,7 +926,7 @@ export function exec(ctx: ShellCtx, raw: string): ExecResult {
     case 'chdir':
     case 'pwd':
     case 'get-location':
-      return ok(ps ? L('', 'Path', '----', 'C:\\Users\\Administrator', '') : L('C:\\Users\\Administrator'))
+      return ok(ps ? L('', 'Path', '----', cwdOf(ctx), '') : L(cwdOf(ctx)))
     case 'dir':
     case 'ls':
     case 'get-childitem':
@@ -1280,8 +1309,30 @@ function powershell(ctx: ShellCtx, t: string[]): ExecResult | null {
       if (!name) return ok(E('New-LocalUser : Brak argumentu parametru „Name”.'))
       if (findUser(st, name)) return ok(psErr(cmd, `Użytkownik ${name} już istnieje.`, line, 'ResourceExists', 'UserExists,Microsoft.PowerShell.Commands.NewLocalUserCommand'))
       const pw = /ConvertTo-SecureString\s+(?:-String\s+)?["']([^"']*)["']/i.exec(line)?.[1] ?? ''
-      const next = addUser(st, { name, admin: false, password: pw, fullName: p.fullname, description: p.description, neverExpires: !!p.passwordneverexpires })
+      const next = addUser(st, { name, admin: false, password: pw, fullName: p.fullname, description: p.description, neverExpires: !!p.passwordneverexpires, cannotChange: !!p.usermaynotchangepassword, ...(p.accountexpires ? { accountExpires: p.accountexpires.replace(/^\(?get-date\s+/i, '').replace(/^["']|["')]+$/g, '') } : {}), disabled: !!p.disabled })
       return ok(L(...table([['Name', 18], ['Enabled', 7], ['Description', 40]], [[name, 'True', p.description ?? '']])), next)
+    }
+    case 'set-localuser': {
+      const name = p.name ?? pos[0]
+      const u = name ? findUser(st, name) : undefined
+      if (!u) return ok(psErr(cmd, `Nie znaleziono użytkownika ${name ?? ''}.`, line, 'ObjectNotFound', 'UserNotFound'))
+      const yes = (v: string | undefined) => v !== undefined && !/false|0/i.test(v)
+      const patch = {
+        ...(p.fullname !== undefined ? { fullName: p.fullname } : {}),
+        ...(p.description !== undefined ? { description: p.description } : {}),
+        ...(p.passwordneverexpires !== undefined ? { neverExpires: yes(p.passwordneverexpires) } : {}),
+        ...(p.usermaychangepassword !== undefined ? { cannotChange: !yes(p.usermaychangepassword) } : {}),
+        ...(p.accountexpires !== undefined ? { accountExpires: p.accountexpires.replace(/^\(?get-date\s+/i, '').replace(/^["']|["')]+$/g, '') } : {}),
+        ...(p.accountneverexpires !== undefined ? { accountExpires: undefined } : {}),
+      }
+      return ok([], { ...st, users: st.users.map((x) => (x === u ? { ...x, ...patch } : x)) })
+    }
+    case 'disable-localuser':
+    case 'enable-localuser': {
+      const name = p.name ?? pos[0]
+      const u = name ? findUser(st, name) : undefined
+      if (!u) return ok(psErr(cmd, `Nie znaleziono użytkownika ${name ?? ''}.`, line, 'ObjectNotFound', 'UserNotFound'))
+      return ok([], { ...st, users: st.users.map((x) => (x === u ? { ...x, disabled: c === 'disable-localuser' } : x)) })
     }
     case 'remove-localuser': {
       const name = p.name ?? pos[0]

@@ -1,0 +1,149 @@
+/* mini spreadsheet of the kosztorys drill */
+.ks-app {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+}
+.ks-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.ks-tb {
+  font: inherit;
+  font-size: 0.88rem;
+  color: var(--ink);
+  background: var(--sunken);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 10px;
+  min-height: 36px;
+  cursor: pointer;
+}
+.ks-tb.on {
+  background: var(--pen-soft);
+  border-color: var(--pen);
+}
+.ks-tb:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.ks-hint {
+  font-size: 0.8rem;
+  color: var(--ink-3);
+}
+.ks-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 4px 6px;
+  background: var(--surface);
+}
+.ks-name {
+  flex: none;
+  min-width: 3.2em;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--ink-2);
+}
+.ks-fx {
+  flex: none;
+  font-style: italic;
+  color: var(--ink-3);
+}
+.ks-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--mono);
+  font-size: 16px;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  outline: none;
+  padding: 4px 2px;
+}
+.ks-grid-wrap {
+  overflow: auto;
+  max-height: 460px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.ks-grid {
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  background: var(--surface);
+}
+.ks-grid th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--sunken);
+  color: var(--ink-2);
+  font-weight: 500;
+  border: 1px solid var(--line);
+  padding: 2px 4px;
+  min-width: 28px;
+}
+.ks-grid tbody th {
+  position: sticky;
+  left: 0;
+  top: auto;
+}
+.ks-grid .ks-corner {
+  left: 0;
+  z-index: 2;
+}
+.ks-grid td {
+  border: 1px solid var(--line);
+  padding: 3px 5px;
+  min-width: 82px;
+  max-width: 190px;
+  height: 26px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: cell;
+}
+.ks-grid td:nth-child(3) {
+  min-width: 170px;
+}
+.ks-grid td.ks-num {
+  text-align: right;
+}
+.ks-grid td.ks-err {
+  color: var(--bad);
+}
+.ks-grid td.ks-bold {
+  font-weight: 700;
+}
+.ks-grid td.ks-in {
+  background: var(--pen-soft);
+}
+.ks-grid td.ks-cur {
+  outline: 2px solid var(--pen);
+  outline-offset: -2px;
+  background: var(--pen-soft);
+}
+.ks-checks {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ks-checks li.ok {
+  color: var(--ok);
+}
+.ks-checks li.bad {
+  color: var(--bad);
+}
+.ks-sol td {
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+.ks-grid td { user-select: none; -webkit-user-select: none; }

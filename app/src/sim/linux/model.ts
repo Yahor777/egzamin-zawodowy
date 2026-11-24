@@ -131,6 +131,8 @@ export interface LinuxState {
   apache?: ApacheRuntime
   /** interactive shell session (cwd, su/sudo -i stack, variables) — restored when the terminal is reopened */
   session?: ShellSession
+  /** NetworkManager profiles (Ubuntu Desktop); missing = created on first nmcli use */
+  nm?: { conns: NmConn[] }
   /** simulated hardware (identification drill); missing = the default VirtualBox VM */
   hardware?: Hardware
 }
@@ -157,4 +159,17 @@ export interface ShellSession {
   id: string
   procs: ShellProcSnap[]
   sudoAuth: string[]
+}
+
+/** a NetworkManager connection profile */
+export interface NmConn {
+  id: string
+  uuid: string
+  iface: string
+  method: 'auto' | 'manual' | 'disabled' | 'link-local' | 'shared'
+  addresses: string[]
+  gateway: string
+  dns: string[]
+  autoconnect: boolean
+  active: boolean
 }

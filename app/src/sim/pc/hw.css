@@ -295,3 +295,50 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Notatnik */
+.np {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: #fff;
+  color: #000;
+}
+.np-text {
+  flex: 1 1 auto;
+  min-height: 120px;
+  resize: none;
+  border: 0;
+  border-top: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 6px 8px;
+  font-family: Consolas, 'Cascadia Mono', ui-monospace, monospace;
+  font-size: 15px;
+  line-height: 1.4;
+  color: #000;
+  background: #fff;
+  outline: none;
+}
+.np-save {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  align-items: flex-end;
+  padding: 6px 8px;
+  background: #f0f0f0;
+  font-size: 12px;
+}
+.np-save label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1 1 180px;
+  min-width: 0;
+}
+.np-save input,
+.np-save select {
+  width: 100%;
+  font-size: 16px;
+}

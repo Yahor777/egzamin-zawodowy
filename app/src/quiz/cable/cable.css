@@ -1,0 +1,99 @@
+/* T568 drill: plug pins and coloured wires */
+.cb-plug {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 4px;
+  padding: 10px 8px 6px;
+  border: 2px solid var(--line);
+  border-radius: 12px 12px 4px 4px;
+  background: var(--sunken);
+  max-width: 440px;
+  margin: 10px 0;
+}
+.cb-slot,
+.cb-pin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 0;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: none;
+  color: var(--ink-2);
+  font: inherit;
+  cursor: pointer;
+  min-width: 0;
+}
+.cb-slot.ok {
+  border-color: var(--ok);
+  background: var(--ok-soft);
+}
+.cb-slot.bad {
+  border-color: var(--bad);
+  background: var(--bad-soft);
+}
+.cb-wire {
+  display: block;
+  width: 100%;
+  max-width: 34px;
+  height: 64px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+.cb-pins.small .cb-wire {
+  height: 34px;
+}
+.cb-pins {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 4px;
+  max-width: 320px;
+}
+.cb-wire.empty {
+  background: repeating-linear-gradient(45deg, transparent 0 5px, var(--line) 5px 6px);
+}
+.w-o { background: #f07f13; }
+.w-g { background: #2c9a45; }
+.w-b { background: #2a62c9; }
+.w-br { background: #7b4a24; }
+.w-wo { background: repeating-linear-gradient(0deg, #fff 0 7px, #f07f13 7px 12px); }
+.w-wg { background: repeating-linear-gradient(0deg, #fff 0 7px, #2c9a45 7px 12px); }
+.w-wb { background: repeating-linear-gradient(0deg, #fff 0 7px, #2a62c9 7px 12px); }
+.w-wbr { background: repeating-linear-gradient(0deg, #fff 0 7px, #7b4a24 7px 12px); }
+.cb-palette {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 6px;
+  margin: 8px 0 12px;
+}
+.cb-pick {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+}
+.cb-pick .cb-wire {
+  width: 14px;
+  height: 28px;
+  flex: none;
+}
+.cb-pick.on {
+  border-color: var(--pen);
+  background: var(--pen-soft);
+}
+.cb-pick:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.cb-ref {
+  margin: 8px 0;
+}

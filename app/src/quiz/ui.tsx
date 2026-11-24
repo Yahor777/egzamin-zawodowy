@@ -141,12 +141,4 @@ export function newSeed(key: string): number {
   return s
 }
 
-/** shuffle with a seeded generator */
-export function shuffle<T>(a: readonly T[], next: () => number): T[] {
-  const c = [...a]
-  for (let i = c.length - 1; i > 0; i--) {
-    const j = Math.floor(next() * (i + 1))
-    ;[c[i], c[j]] = [c[j], c[i]]
-  }
-  return c
-}
+export { shuffle } from './util'

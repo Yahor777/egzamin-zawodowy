@@ -33,6 +33,7 @@ import {
 import { clock, longDate, trayState, type PcNetwork } from './model'
 import { SettingsApp } from './settings'
 import { Devmgmt, Dxdiag, Msinfo32, Taskmgr } from './apps-hw'
+import { Notepad } from './apps-notepad'
 import { GUI_CMDS } from './shell'
 import { Terminal } from './Terminal'
 import { ContextMenu, Frame, PcCtx, useLongPress, usePc, type MenuItem, type PcApi, type WinProps } from './ui'
@@ -104,6 +105,7 @@ const APPS: Record<string, AppDef> = {
   dxdiag: { title: () => 'Narzędzie diagnostyczne DirectX', icon: () => <IcTools size={16} />, size: [640, 540], dialog: true, single: true, render: (p) => <Dxdiag {...p} /> },
   devmgmt: { title: () => 'Menedżer urządzeń', icon: () => <IcMgmt size={16} />, size: [560, 520], single: true, render: () => <Devmgmt /> },
   taskmgr: { title: () => 'Menedżer zadań', icon: () => <IcSystem size={16} />, size: [820, 540], single: true, render: () => <Taskmgr /> },
+  notepad: { title: (a) => `${a ? (a.split('\\').pop() ?? a) : 'Bez tytułu'} — Notatnik`, icon: () => <IcTools size={16} />, size: [640, 460], render: (p) => <Notepad {...p} /> },
   run: { title: () => 'Uruchom', icon: () => <IcRun size={16} />, size: [420, 230], dialog: true, small: true, single: true, render: (p) => <RunDialog {...p} /> },
 }
 
@@ -129,6 +131,7 @@ const START_APPS: StartApp[] = [
   { key: 'compmgmt', label: 'Zarządzanie komputerem', icon: <IcMgmt size={30} />, run: 'compmgmt.msc' },
   { key: 'ncpa', label: 'Połączenia sieciowe', icon: <IcEthernet size={30} />, run: 'ncpa.cpl' },
   { key: 'lusrmgr', label: 'Użytkownicy i grupy lokalne', icon: <IcUsers size={30} />, run: 'lusrmgr.msc' },
+  { key: 'notepad', label: 'Notatnik', icon: <IcTools size={30} />, run: 'notepad' },
   { key: 'msinfo32', label: 'Informacje o systemie', icon: <IcSystem size={30} />, run: 'msinfo32' },
   { key: 'devmgmt', label: 'Menedżer urządzeń', icon: <IcMgmt size={30} />, run: 'devmgmt.msc' },
   { key: 'taskmgr', label: 'Menedżer zadań', icon: <IcSystem size={30} />, run: 'taskmgr' },
@@ -321,6 +324,7 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
   const launch = useCallback(
     (key: string) => {
       if (key.startsWith('edge')) return open('edge')
+      if (key.startsWith('notepad')) return open('notepad', key.slice(8) || undefined)
       const map: Record<string, [string, string?]> = {
         ncpa: ['control', 'ncpa'],
         control: ['control', 'home'],
@@ -355,6 +359,7 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
       if (low === 'powershell' || low === 'pwsh') return open('cmd', 'ps'), true
       if (low === 'tools') return open('explorer', 'tools'), true
       if (low === 'run') return open('run'), true
+      if (low === 'notepad' || low.startsWith('notepad ')) return open('notepad', c.slice(7).trim().replace(/^"|"$/g, '') || undefined), true
       if (/^(https?:\/\/|www\.)/i.test(c) || /^\d{1,3}(\.\d{1,3}){3}(\/.*)?$/.test(c)) return open('edge'), true
       const g = GUI_CMDS[low] ?? GUI_CMDS[c.toLowerCase()] ?? (low.startsWith('control ') ? GUI_CMDS[low.slice(8).trim()] : undefined)
       if (g) return launch(g), true

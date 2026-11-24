@@ -1,7 +1,7 @@
 // Hardware identification tools of the Windows workstation: Informacje o systemie (msinfo32),
 // Narzędzie diagnostyczne DirectX (dxdiag), Menedżer urządzeń (devmgmt.msc), Menedżer zadań (taskmgr → Wydajność).
 import { useState, type ReactNode } from 'react'
-import { cFreeGiB, cSizeGiB, gib, plInt, plNum, ramTotalGB, type Hardware } from '../hw'
+import { cSizeGiB, gib, plInt, plNum, ramTotalGB, type Hardware } from '../hw'
 import { hwOf } from './hwcmd'
 import { IcChevron, IcDrive, IcEthernet, IcPc, IcSystem } from './icons'
 import { isWifi, nicDesc } from './model'
@@ -479,10 +479,4 @@ export function Taskmgr() {
       </div>
     </div>
   )
-}
-
-/** Explorer "Ten komputer": C: drive with the hardware's sizes */
-export function driveText(st: Parameters<typeof hwOf>[0]) {
-  const h = hwOf(st)
-  return { free: cFreeGiB(h), size: cSizeGiB(h) }
 }

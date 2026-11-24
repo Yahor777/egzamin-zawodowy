@@ -4,6 +4,12 @@ import { createShell, Interrupt, type TermIO, type LinuxState } from '../../sim/
 import { exec } from '../../sim/pc/shell'
 import type { PcState } from '../../sim/net'
 import { identLinuxState, identPcState, makeIdentTask, scoreIdent, shotFacts, SOLUTION_TOOL, TEMPLATES, type Fact, type IdentTask } from '../ident/ident'
+import { evalSheet } from '../sheet/formula'
+import { checkKosztorys, makeKTask, shiftFormula, solveKosztorys } from '../sheet/kosztorys'
+import { PROTOS, portCards } from '../ports/ports'
+import { T568 } from '../cable/t568'
+import { settingsCards, SETTING_CARDS } from '../winserver/settings'
+import { orderScore, WS_SCENARIOS } from '../winserver/data'
 
 let failures = 0
 const check = (name: string, ok: boolean, extra = '') => {
@@ -120,7 +126,8 @@ for (const tpl of Object.keys(TEMPLATES)) {
     check(`${tpl}#${seed} solved = 100`, solved.pct === 100, JSON.stringify(solved.fields.filter((f) => !f.ok)))
     const noShots = scoreIdent(t, { values, verdict, shots: [] })
     check(`${tpl}#${seed} without screenshots < 75`, noShots.pct < 75, String(noShots.pct))
-    if (t.req) (t.req.ok ? pass++ : fail++)
+    if (t.req?.ok) pass++
+    else if (t.req) fail++
   }
   if (TEMPLATES[tpl] && pass + fail > 0) check(`${tpl}: both verdicts occur`, pass > 0 && fail > 0, `${pass} pass / ${fail} fail`)
 }
@@ -132,4 +139,69 @@ for (const tpl of Object.keys(TEMPLATES)) {
 }
 console.log(`ident: ${identRuns} variants checked`)
 
-export { check, failures }
+
+// ---------------------------------------------------------------- formula engine + kosztorys
+{
+  const v = evalSheet({ A1: '10', A2: '20,5', A3: '=SUMA(A1:A2)', A4: '=JEŻELI(A3>30;A3*10%;0)', A5: '=ZAOKR(A2*23%;2)', A6: '=SUM(A1,A2)', A7: '=A1+', A8: '=A8+1', B1: '=ŚREDNIA(A1:A2)', B2: '=IF(A1>5,"tak","nie")', B3: '=MAX(A1:A2)-MIN(A1:A2)', B4: '=$A$1*2' })
+  check('sum', v.A3 === 30.5, String(v.A3))
+  check('if pl', Math.abs((v.A4 as number) - 3.05) < 1e-9, String(v.A4))
+  check('round', v.A5 === 4.72, String(v.A5))
+  check('sum en', v.A6 === 30.5)
+  check('syntax error', typeof v.A7 === 'object')
+  check('cycle', typeof v.A8 === 'object')
+  check('avg', v.B1 === 15.25)
+  check('if en string', v.B2 === 'tak')
+  check('min/max', v.B3 === 10.5)
+  check('abs ref', v.B4 === 20)
+  check('shift', shiftFormula('=C3*F$3+$A$1+SUMA(G3:G7)', 2) === '=C5*F$3+$A$1+SUMA(G5:G9)', shiftFormula('=C3*F$3+$A$1+SUMA(G3:G7)', 2))
+}
+let kRuns = 0
+for (const kind of ['uslugi', 'uslugi-rabat', 'podzespoly'] as const)
+  for (const seed of [1, 5, 9, 42, 777, 2024]) {
+    kRuns++
+    const t = makeKTask(seed, kind)
+    const empty = checkKosztorys(t, { cells: {}, fmt: {} })
+    check(`kosztorys ${kind}#${seed} empty < 75`, empty.pct < 75)
+    const sol = solveKosztorys(t)
+    const r = checkKosztorys(t, sol)
+    check(`kosztorys ${kind}#${seed} solved = 100`, r.pct === 100, JSON.stringify(r.checks.filter((c) => !c.ok)))
+    // constants instead of formulas must fail the formula checks
+    const ev = evalSheet(sol.cells)
+    const consts = { ...sol, cells: Object.fromEntries(Object.entries(sol.cells).map(([a, raw]) => [a, raw.startsWith('=') ? String(ev[a]) : raw])) }
+    const rc = checkKosztorys(t, consts)
+    check(`kosztorys ${kind}#${seed} constants < 75`, rc.pct < 75, String(rc.pct))
+    const nofmt = checkKosztorys(t, { ...sol, fmt: {} })
+    check(`kosztorys ${kind}#${seed} no currency format fails fmt`, !nofmt.checks.find((c) => c.id === 'fmt')!.ok)
+  }
+console.log(`kosztorys: ${kRuns} variants checked`)
+
+// ---------------------------------------------------------------- ports, T568, settings, Windows Server
+{
+  check('ports: ≥30 pairs with a port', PROTOS.filter((p) => p.port).length >= 25 && PROTOS.length >= 30)
+  for (const seed of [1, 2, 3, 99, 12345]) {
+    const cards = portCards(seed, 20)
+    check(`ports#${seed}: 20 cards`, cards.length === 20, String(cards.length))
+    for (const c of cards) {
+      check(`ports ${c.id}: 4 distinct options`, new Set(c.options).size === c.options.length && c.options.length === 4, c.options.join('|'))
+      check(`ports ${c.id}: correct in range`, c.correct >= 0 && c.correct < c.options.length)
+      // unambiguous: no other option is also right
+      if (c.id.startsWith('p2n:')) {
+        const port = /Порт (\S+)/.exec(c.q)![1]
+        check(`ports ${c.id}: one protocol per port`, c.options.filter((o) => PROTOS.find((p) => p.name === o)?.port === port).length === 1)
+      }
+    }
+  }
+  const swap = (a: string[]) => a.map((w) => ({ wo: 'wg', o: 'g', wg: 'wo', g: 'o' })[w] ?? w)
+  check('T568A = T568B with green/orange swapped', JSON.stringify(swap(T568.B)) === JSON.stringify(T568.A))
+  check('settings: ≥30 cards', SETTING_CARDS.length >= 30, String(SETTING_CARDS.length))
+  for (const seed of [1, 7, 42]) for (const c of settingsCards(seed)) check(`settings ${c.id}: 4 distinct options`, new Set(c.options).size === 4 && c.correct >= 0)
+  check('winserver: ≥13 scenarios', WS_SCENARIOS.length >= 13, String(WS_SCENARIOS.length))
+  for (const s of WS_SCENARIOS) {
+    check(`ws ${s.id}: 5–8 steps`, s.steps.length >= 5 && s.steps.length <= 8, String(s.steps.length))
+    check(`ws ${s.id}: questions valid`, s.questions.length > 0 && s.questions.every((q) => q.correct >= 0 && q.correct < q.options.length))
+  }
+  check('orderScore', orderScore([0, 1, 2, 3]) === 1 && orderScore([3, 2, 1, 0]) === 0.25 && orderScore([1, 0, 2, 3]) === 0.75)
+}
+
+console.log(failures ? `\n${failures} FAILED` : '\nQUIZ CONTENT OK')
+if (failures) throw new Error(`${failures} quiz checks failed`)

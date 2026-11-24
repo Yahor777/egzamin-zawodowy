@@ -1,15 +1,20 @@
 // Command Prompt / Windows PowerShell window.
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { CMD_BANNER, exec, PS_BANNER, type Job, type Line, type ShellKind } from './shell'
+import type { BatchRun, BatchStep } from './batch'
+import { HOME } from './fs'
 import { usePc, type WinProps } from './ui'
 
 interface TermData {
   lines: Line[]
   stack: ShellKind[]
+  /** current directory (missing in older saves = home) */
+  cwd?: string
+  env?: Record<string, string>
 }
 
 const arpCache = new Map<string, Set<string>>()
-const PROMPT: Record<ShellKind, string> = { cmd: 'C:\\Users\\Administrator>', ps: 'PS C:\\Users\\Administrator> ' }
+const promptOf = (k: ShellKind, cwd = HOME) => (k === 'ps' ? `PS ${cwd}> ` : `${cwd}>`)
 
 export function Terminal({ arg, close, setArg, data }: WinProps) {
   const api = usePc()
@@ -25,6 +30,16 @@ export function Terminal({ arg, close, setArg, data }: WinProps) {
   const [hist, setHist] = useState(0)
   const [job, setJob] = useState<Job | null>(null)
   const kind = td.stack[td.stack.length - 1]
+  const prompt = promptOf(kind, td.cwd)
+  // a running .bat waiting for input (set /p, pause); kept with the window data
+  const [batch, setBatch] = useState<BatchRun | null>(() => (data.batch as BatchRun | undefined) ?? null)
+  useEffect(() => {
+    data.batch = batch ?? undefined
+  }, [batch, data])
+  const showStep = (s: BatchStep, before: Line[] = []) => {
+    api.update((cur) => ({ ...s.state, history: cur.history }))
+    setTd((d) => ({ ...d, cwd: s.cwd, env: s.env, lines: s.clear ? [...s.out] : [...d.lines, ...before, ...s.out].slice(-800) }))
+  }
   const inputRef = useRef<HTMLInputElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
   const apiRef = useRef(api)
@@ -79,16 +94,33 @@ export function Terminal({ arg, close, setArg, data }: WinProps) {
       setJob(null)
       setTd((d) => ({ ...d, lines: [...d.lines, ...out, ...(kind === 'cmd' ? [{ t: '' }] : [])] }))
     } else {
-      setTd((d) => ({ ...d, lines: [...d.lines, { t: PROMPT[kind] + input + '^C' }] }))
+      if (batch) {
+        setBatch(null)
+        setTd((d) => ({ ...d, lines: [...d.lines, { t: '^C' }, { t: 'Czy przerwać zadanie wsadowe (T/N)? T' }, { t: '' }] }))
+        return
+      }
+      setTd((d) => ({ ...d, lines: [...d.lines, { t: prompt + input + '^C' }] }))
       setInput('')
     }
   }
 
   const submit = (raw: string) => {
+    if (batch) {
+      // answer to set /p or pause: goes after the prompt line of the script
+      setInput('')
+      setTd((d) => ({ ...d, lines: d.lines.length ? [...d.lines.slice(0, -1), { ...d.lines[d.lines.length - 1], t: d.lines[d.lines.length - 1].t + raw }] : d.lines }))
+      const s = batch.feed(raw)
+      showStep(s)
+      if (!s.waiting) {
+        setBatch(null)
+        if (kind === 'cmd') setTd((d) => ({ ...d, lines: [...d.lines, { t: '' }] }))
+      }
+      return
+    }
     const cmd = raw.trim()
-    const echo: Line = { t: PROMPT[kind] + raw }
+    const echo: Line = { t: prompt + raw }
     const st = apiRef.current.state
-    const r = exec({ state: st, network: api.network, kind, arp }, raw)
+    const r = exec({ state: st, network: api.network, kind, arp, cwd: td.cwd ?? HOME, env: td.env }, raw)
     const next = cmd ? { ...r.state, history: [...r.state.history, cmd].slice(-200) } : r.state
     if (next !== st) api.update(() => next)
     setHist(0)
@@ -101,6 +133,15 @@ export function Terminal({ arg, close, setArg, data }: WinProps) {
     }
     if (r.clear) {
       setTd((d) => ({ ...d, lines: [] }))
+      return
+    }
+    if (r.cwd || r.env) setTd((d) => ({ ...d, cwd: r.cwd ?? d.cwd, env: r.env ?? d.env }))
+    if (r.batch) {
+      const b = r.batch
+      const s = b.run()
+      showStep(s, [echo])
+      if (s.waiting) setBatch(b)
+      else if (kind === 'cmd') setTd((d) => ({ ...d, lines: [...d.lines, { t: '' }] }))
       return
     }
     if (r.push) {
@@ -143,7 +184,7 @@ export function Terminal({ arg, close, setArg, data }: WinProps) {
               submit(input)
             }}
           >
-            <span className="term-prompt">{PROMPT[kind]}</span>
+            <span className="term-prompt">{batch ? '' : prompt}</span>
             <input
               ref={inputRef}
               id="pc-cmd"
