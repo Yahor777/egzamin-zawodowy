@@ -66,14 +66,16 @@ export function QuestionView({ q, selected, onSelect, reveal, shuffleAnswers = t
             </span>
           )}
           <span className="spacer" />
-          {lang === 'ru' && q.ru && (
-            <button className="text-btn" onClick={() => setShowRu((v) => !v)}>
-              {showRu ? t('showPl') : t('showRu')}
+          <span className="q-tools">
+            {lang === 'ru' && q.ru && (
+              <button className="text-btn" onClick={() => setShowRu((v) => !v)}>
+                {showRu ? 'PL' : 'RU'}
+              </button>
+            )}
+            <button className={`icon-btn star ${isStarred ? 'on' : ''}`} onClick={() => toggleStar(q.id)} aria-label={t('star')} aria-pressed={isStarred}>
+              <Icon name="star" filled={isStarred} size={18} />
             </button>
-          )}
-          <button className={`icon-btn star ${isStarred ? 'on' : ''}`} onClick={() => toggleStar(q.id)} aria-label={t('star')} aria-pressed={isStarred}>
-            <Icon name="star" filled={isStarred} size={18} />
-          </button>
+          </span>
         </div>
       )}
       <p className="stem">

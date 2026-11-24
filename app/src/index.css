@@ -1433,3 +1433,15 @@ a.btn {
   display: inline;
   padding: 0;
 }
+.q-tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+}
+.q-tools .text-btn {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 0.85rem;
+}

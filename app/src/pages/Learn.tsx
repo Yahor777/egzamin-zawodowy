@@ -29,7 +29,7 @@ export function Learn({ mode, topic }: { mode: 'learn' | 'mistakes' | 'starred';
   if (!bank || !batch) return <div className="page">{t('loading')}</div>
 
   const title =
-    mode === 'mistakes' ? t('mistakes') : mode === 'starred' ? t('starred') : topic ? `${TOPIC_NAMES[topic]?.icon} ${TOPIC_NAMES[topic]?.[lang]}` : t('learn')
+    mode === 'mistakes' ? t('mistakes') : mode === 'starred' ? t('starred') : topic ? `${TOPIC_NAMES[topic]?.[lang]}` : t('learn')
 
   if (batch.length === 0)
     return (

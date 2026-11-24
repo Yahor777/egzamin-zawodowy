@@ -50,6 +50,12 @@ def main():
                 q["doubt"] = str(o["doubt"])[:300]
             if o.get("outdated"):
                 q["outdated"] = True
+    # answers that are only pictures (labels A-D drawn in the figure)
+    for q in bank:
+        if not q.get("imageAnswers") and q.get("figures") and all(not a.strip() for a in q["answers"]):
+            q["imageAnswers"] = True
+            if q.get("ru"):
+                q["ru"]["answers"] = ["", "", "", ""]
     bank_path.write_text(json.dumps(bank, ensure_ascii=False, separators=(",", ":")))
     have = sum(1 for q in bank if q.get("expl"))
     print(f"applied {applied}, text fixes {fixes}, topic changes {topics}; with explanation {have}/{len(bank)}", file=sys.stderr)

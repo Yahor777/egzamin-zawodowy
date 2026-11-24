@@ -74,7 +74,7 @@ export function Commands() {
         <div className="q-card">
           <div className="q-meta">
             <span className="q-topic">
-              {item.os === 'linux' ? 'Linux' : 'Windows'} · {item.group}
+              {item.os === 'linux' ? 'Linux' : 'Windows'}
             </span>
           </div>
           <p className="stem">{item.task[lang] ?? item.task.pl}</p>
