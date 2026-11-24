@@ -19,6 +19,10 @@
 #     namespace (unshare --net: only a down loopback), so nothing in there
 #     could reach the network even if it tried.
 #
+# Both phases run under net32-jail (net32-jail.c, seccomp): every 32-bit
+# socket syscall fails with EAFNOSUPPORT, here exactly as on the runner (where
+# it would otherwise be ENOSYS, which makes shadow's groupadd/useradd abort).
+#
 # Result (same as the earlier Dockerfile): exam packages from packages.txt
 # (--no-install-recommends), docs/foreign locales dropped (01-egz-slim),
 # policy-rc.d "exit 101", offline apt repo /var/lib/egz-repo + its apt lists
@@ -33,7 +37,7 @@ SECURITY=${SECURITY:-http://deb.debian.org/debian-security}
 HERE=$(cd "$(dirname "$0")" && pwd)
 
 [ "$(id -u)" = 0 ] || { echo "build-rootfs.sh: run as root (mmdebstrap root mode, chroot)" >&2; exit 1; }
-for t in mmdebstrap unshare chroot; do
+for t in mmdebstrap unshare chroot cc; do
   command -v "$t" >/dev/null || { echo "build-rootfs.sh: $t not found (apt-get install mmdebstrap)" >&2; exit 1; }
 done
 # Ubuntu's mmdebstrap does not trust Debian's archive keys by itself
@@ -43,6 +47,11 @@ if [ -e "$R" ] && [ -n "$(ls -A "$R")" ]; then
   echo "build-rootfs.sh: $R exists and is not empty" >&2; exit 1
 fi
 
+TMP=$(mktemp -d)
+trap 'rm -rf "$TMP"' EXIT
+cc -O2 -Wall -o "$TMP/net32-jail" "$HERE/net32-jail.c"
+JAIL="$TMP/net32-jail"
+
 mapfile -t PKGS < <(grep -v '^[[:space:]]*#' "$HERE/packages.txt" | tr -s ' \t' '\n' | sed '/^$/d')
 # apt-utils: apt-ftparchive builds the offline repository's index (phase 2).
 INCLUDE=$(printf '%s\n' "${PKGS[@]}" apt-utils | paste -sd, -)
@@ -50,7 +59,7 @@ INCLUDE=$(printf '%s\n' "${PKGS[@]}" apt-utils | paste -sd, -)
 echo "== phase 1 (online, 64-bit apt): mmdebstrap $SUITE i386"
 # --dpkgopt=FILE: the slim rules are active while packages are unpacked
 # (mmdebstrap stores them as dpkg.cfg.d/99mmdebstrap; replaced below).
-mmdebstrap \
+"$JAIL" mmdebstrap \
   --mode=root \
   --architectures=i386 \
   --variant=minbase \
@@ -130,7 +139,7 @@ CHROOT
 # New network namespace (only a down loopback: nothing can be reached) and
 # mount namespace (the /proc mount disappears with it).
 # shellcheck disable=SC2016 # expanded by the inner shell
-unshare --net --mount --fork -- /bin/bash -euo pipefail -c '
+"$JAIL" unshare --net --mount --fork -- /bin/bash -euo pipefail -c '
   R=$1
   mount --make-rprivate /
   mount -t proc proc "$R/proc"
