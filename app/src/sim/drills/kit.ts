@@ -23,6 +23,8 @@ export interface DocRef {
   to: string
   ru: string
   pl: string
+  /** heading inside the page to scroll to (learning-path refs) */
+  section?: string
 }
 
 export interface DrillBody {

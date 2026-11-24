@@ -1,5 +1,6 @@
 #!/bin/bash
-# Build-time setup of the exam VM image (run once by the Dockerfile).
+# Build-time setup of the exam VM image (run once, offline, in the i386 chroot
+# by vm-image/build-rootfs.sh).
 set -euo pipefail
 chmod 755 /usr/local/bin/* /usr/local/sbin/* /usr/local/lib/egz/*
 
@@ -17,6 +18,7 @@ EGZ_HOST=
 EOS
 cat /tmp/egz-host.sh /etc/bash.bashrc > /tmp/bash.bashrc && cat /tmp/bash.bashrc > /etc/bash.bashrc && rm -f /tmp/egz-host.sh /tmp/bash.bashrc
 for f in /etc/bash.bashrc /etc/skel/.bashrc /home/administrator/.bashrc /root/.bashrc; do
+  # shellcheck disable=SC2016 # literal ${EGZ_HOST} goes into the bashrc
   [ -f "$f" ] && sed -i 's/@\\h/@${EGZ_HOST:-\\h}/g' "$f"
 done
 # root gets the coloured Debian prompt too (red user name)

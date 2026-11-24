@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react'
 import { Icon } from '../../components/Icon'
 import { Markdown } from '../../components/Markdown'
-import { Hint } from '../../components/Hint'
 import { useContent } from '../../lib/content'
 import { useLang } from '../../lib/store'
 import { go } from '../../router'
@@ -16,7 +15,10 @@ import { defaultRouterState } from '../router'
 import { defaultSwitchState } from '../switch'
 import type { DocRef } from '../drills/kit'
 import { D } from '../drills/docs'
-import { lKey, markStarted, recordCheck, statusOf, SHEETS, usePractice } from '../drills/progress'
+import { lKey, markSolution, markStarted, recordCheck, statusOf, SHEETS, usePractice } from '../drills/progress'
+import { drillSolution, linesForTask, type SolLine } from '../drills/solutionText'
+import type { DrillLab } from '../drills/kit'
+import { HintLadder, SolutionView } from '../../path/HintLadder'
 import { LABS, labScore, type Lab } from './labs'
 import { buildCtx, buildDhcpServers, serviceLaptop, type LabSave } from './ctx'
 import '../bench/bench.css'
@@ -113,8 +115,19 @@ export function LabList() {
 export function LabPage({ id }: { id: string }) {
   const lab = LABS.find((l) => l.id === id)
   if (!lab) return <div className="page">Nie znaleziono.</div>
-  const docs = [...new Set(lab.tasks.flatMap((t) => SHEET_DOCS[t.device] ?? []))]
-  return <LabRun lab={lab} progressKey={lKey(lab.id)} back="/lab" timer docs={docs} />
+  return <LabRun lab={lab} progressKey={lKey(lab.id)} back="/lab" timer docs={labDocs(lab)} />
+}
+
+/** our docs that fit the tasks of a full exam sheet */
+export const labDocs = (lab: Lab) => [...new Set(lab.tasks.flatMap((t) => SHEET_DOCS[t.device] ?? []))]
+
+const DEVICE_DOC: Record<string, RegExp> = {
+  linux: /linux/,
+  router: /router|bench/,
+  switch: /switch|router-switch|bench/,
+  pc: /windows/,
+  cabling: /bench|cabling/,
+  tests: /bench|windows-net|linux/,
 }
 
 const SHEET_DOCS: Record<string, DocRef[]> = {
@@ -140,6 +153,14 @@ export interface LabRunProps {
   /** extra controls under the tasks (e.g. "new variant") */
   footer?: ReactNode
   subtitle?: string
+  /** timer length in minutes (default 150) */
+  minutes?: number
+  /** the "Справка" tab (off for checkpoints / exam simulation: the docs stay reachable through the hint ladder) */
+  docsTab?: boolean
+  /** three-level hints under each task (default on) */
+  hints?: boolean
+  /** shown above the tasks (e.g. "back to the step") */
+  banner?: ReactNode
 }
 
 // per-viewer UI memory (not part of the lab save)
@@ -205,7 +226,7 @@ function useOnScreen(ref: RefObject<HTMLElement | null>): boolean {
   return on
 }
 
-export function LabRun({ lab, progressKey, back, timer, docs, intro_pl, footer, subtitle }: LabRunProps) {
+export function LabRun({ lab, progressKey, back, timer, docs, intro_pl, footer, subtitle, minutes = 150, docsTab = true, hints = true, banner }: LabRunProps) {
   const lang = useLang()
   const ru = lang === 'ru'
   const [s, setS] = useState<LabSave>(() => load(lab))
@@ -213,7 +234,20 @@ export function LabRun({ lab, progressKey, back, timer, docs, intro_pl, footer, 
   const [pcView, setPcView] = useState<PcView>('adapters')
   const [now, setNow] = useState(Date.now())
   const [confirmReset, setConfirmReset] = useState(false)
-  const [doc, setDoc] = useState(docs?.[0]?.to ?? '')
+  const [doc, setDoc] = useState<{ to: string; section?: string }>({ to: docs?.[0]?.to ?? '', section: docs?.[0]?.section })
+  // full solution of a drill, derived from its reference solution (hint level 3)
+  const [sol, setSol] = useState<SolLine[] | null | undefined>(undefined)
+  const isDrill = 'drill' in lab
+  useEffect(() => {
+    if (!isDrill || !hints) return
+    let alive = true
+    drillSolution(lab as DrillLab, freshState(lab))
+      .then((x) => alive && setSol(x))
+      .catch(() => alive && setSol(null))
+    return () => {
+      alive = false
+    }
+  }, [lab, isDrill, hints])
   // task / docs panel: side column on a wide screen, bottom sheet on a phone
   const [view, setView] = useState<PanelView>('tasks')
   const [sideOpen, setSideOpenState] = useState(readSide)
@@ -281,7 +315,11 @@ export function LabRun({ lab, progressKey, back, timer, docs, intro_pl, footer, 
   ]
   const curTab = tabs.some(([t]) => t === tab) ? tab : 'tasks'
   if (!opened.has(curTab)) setOpened(new Set(opened).add(curTab))
-  const hasDocs = !!docs?.length
+  const hasDocs = !!docs?.length && docsTab
+  // docs shown in the panel: the given ones plus whatever the hint ladder opened
+  const guideRef = lab.guide ? { to: `practice/${lab.guide}`, ru: 'Разбор этого листа (решение)', pl: 'Rozwiązanie arkusza' } : null
+  const panelDocs = [...(docs ?? [])]
+  if (doc.to && !panelDocs.some((d) => d.to === doc.to)) panelDocs.push(guideRef && guideRef.to === doc.to ? guideRef : { to: doc.to, ru: doc.to, pl: doc.to })
 
   const taskTab = (d: string): Tab => {
     if (d === 'cabling') return 'bench'
@@ -307,10 +345,40 @@ export function LabRun({ lab, progressKey, back, timer, docs, intro_pl, footer, 
   }
   const closePanel = () => (wide ? setSideOpen(false) : setSheet(false))
   const togglePanel = (v: PanelView) => (panelOpen && view === v ? closePanel() : showPanel(v))
-  const openDoc = (to: string) => {
-    setDoc(to)
+  const openDoc = (d: DocRef) => {
+    setDoc({ to: d.to, section: d.section })
     showPanel('docs')
   }
+  const taskDocs = (t: Lab['tasks'][number]) => {
+    const re = DEVICE_DOC[t.device]
+    const all = docs ?? []
+    const fit = re ? all.filter((d) => re.test(d.to) || !!d.section) : all
+    return fit.length ? fit : all
+  }
+  const ladder = (t: Lab['tasks'][number]) =>
+    hints ? (
+      <HintLadder
+        labId={lab.id}
+        taskId={t.id}
+        docs={taskDocs(t)}
+        onDoc={openDoc}
+        hint={t.hint_ru}
+        solution={
+          isDrill ? (
+            sol === undefined ? (
+              <p className="hint">…</p>
+            ) : sol ? (
+              <SolutionView lines={linesForTask(sol, t)} />
+            ) : undefined
+          ) : guideRef ? (
+            <button className="doc-link" onClick={() => openDoc(guideRef)}>
+              {ru ? 'Открыть разбор листа: решение по шагам' : 'Rozwiązanie krok po kroku'}
+            </button>
+          ) : undefined
+        }
+        onSolution={() => markSolution(progressKey)}
+      />
+    ) : null
 
   const doCheck = () => {
     const r = labScore(lab, ctx)
@@ -322,7 +390,7 @@ export function LabRun({ lab, progressKey, back, timer, docs, intro_pl, footer, 
   }
 
   const elapsed = s.startedAt ? Math.max(0, Math.floor((now - s.startedAt) / 1000)) : 0
-  const left = Math.max(0, 150 * 60 - elapsed)
+  const left = Math.max(0, minutes * 60 - elapsed)
 
   // the task to show expanded in the panel: the one picked, else the first unfinished one of this device
   const doneTask = (t: Lab['tasks'][number]) => !!s.checked && t.checks.every((ch) => s.checked![`${t.id}.${ch.id}`])
@@ -336,10 +404,11 @@ export function LabRun({ lab, progressKey, back, timer, docs, intro_pl, footer, 
       score={score}
       view={view}
       onView={setView}
-      hasDocs={hasDocs}
-      docs={docs}
-      doc={doc || docs?.[0]?.to || ''}
-      onDoc={setDoc}
+      hasDocs={hasDocs || (view === 'docs' && !!doc.to)}
+      docs={panelDocs}
+      doc={doc}
+      onDoc={(to) => setDoc({ to })}
+      ladder={ladder}
       curTask={curTaskId}
       onTask={(id) => setFocusTask(id === curTaskId ? '' : id)}
       curTab={curTab}
@@ -362,7 +431,7 @@ export function LabRun({ lab, progressKey, back, timer, docs, intro_pl, footer, 
         </button>
         {timer && (
           <span className={`lab-timer ${left < 600 ? 'warn' : ''}`} title={ru ? 'Время экзамена' : 'Czas egzaminu'}>
-            <Icon name="exam" size={16} /> {s.startedAt ? `${Math.floor(left / 60)}:${String(left % 60).padStart(2, '0')}` : '150:00'}
+            <Icon name="exam" size={16} /> {s.startedAt ? `${Math.floor(left / 60)}:${String(left % 60).padStart(2, '0')}` : `${minutes}:00`}
           </span>
         )}
         {curTab !== 'tasks' && (
@@ -396,6 +465,7 @@ export function LabRun({ lab, progressKey, back, timer, docs, intro_pl, footer, 
                 <p className="lab-sub">{subtitle ?? lab.code}</p>
               </div>
               {score && <ScoreBox score={score} />}
+              {banner}
               <section className="lab-sheet">
                 <ul className="sheet-intro">
                   {(intro_pl ?? []).map((x) => (
@@ -429,16 +499,16 @@ export function LabRun({ lab, progressKey, back, timer, docs, intro_pl, footer, 
                       </button>
                     ) : null}
                   </div>
-                  <TaskBody lab={lab} t={t} s={s} />
+                  <TaskBody t={t} s={s} ladder={ladder(t)} />
                 </section>
               ))}
-              {docs && docs.length > 0 && (
+              {hasDocs && docs && (
                 <section className="lab-docs">
                   <h3>{ru ? 'Не знаешь, как сделать? Наша документация:' : 'Dokumentacja:'}</h3>
                   <div className="doc-links">
                     {docs.map((d) => (
-                      <button key={d.to} className="doc-link" onClick={() => openDoc(d.to)}>
-                        {ru ? d.ru : d.pl}
+                      <button key={d.to + (d.section ?? '')} className="doc-link" onClick={() => openDoc(d)}>
+                        {d.section ?? (ru ? d.ru : d.pl)}
                       </button>
                     ))}
                   </div>
@@ -526,8 +596,8 @@ function ScoreBox({ score, small }: { score: Score; small?: boolean }) {
   )
 }
 
-/** task text + hint + check results (shared by the "Задание" tab and the side panel / sheet) */
-function TaskBody({ lab, t, s }: { lab: Lab; t: Lab['tasks'][number]; s: LabSave }) {
+/** task text + hint ladder + check results (shared by the "Задание" tab and the side panel / sheet) */
+function TaskBody({ t, s, ladder }: { t: Lab['tasks'][number]; s: LabSave; ladder: ReactNode }) {
   const ru = useLang() === 'ru'
   return (
     <>
@@ -536,11 +606,6 @@ function TaskBody({ lab, t, s }: { lab: Lab; t: Lab['tasks'][number]; s: LabSave
           <li key={k}>{x}</li>
         ))}
       </ul>
-      {t.hint_ru && (
-        <Hint id={`${lab.id}.${t.id}`} label={ru ? 'Подсказка' : 'Podpowiedź'} className="lt-hint">
-          <p>{t.hint_ru}</p>
-        </Hint>
-      )}
       {s.checked && (
         <ul className="lt-checks">
           {t.checks.map((ch) => {
@@ -554,6 +619,7 @@ function TaskBody({ lab, t, s }: { lab: Lab; t: Lab['tasks'][number]; s: LabSave
           })}
         </ul>
       )}
+      {ladder}
     </>
   )
 }
@@ -566,8 +632,9 @@ interface TaskPanelProps {
   onView: (v: PanelView) => void
   hasDocs: boolean
   docs?: DocRef[]
-  doc: string
+  doc: { to: string; section?: string }
   onDoc: (to: string) => void
+  ladder: (t: Lab['tasks'][number]) => ReactNode
   curTask: string | null
   onTask: (id: string) => void
   curTab: Tab
@@ -603,7 +670,7 @@ function TaskPanel(p: TaskPanelProps) {
       </div>
       {p.view === 'docs' && p.docs?.length ? (
         <div className="lp-body">
-          <DocsView docs={p.docs} cur={p.doc} onCur={p.onDoc} />
+          <DocsView docs={p.docs} cur={p.doc.to} section={p.doc.section} onCur={p.onDoc} />
         </div>
       ) : (
         <>
@@ -624,7 +691,7 @@ function TaskPanel(p: TaskPanelProps) {
                     </button>
                     {open && (
                       <div className="lp-task-body">
-                        <TaskBody lab={lab} t={t} s={s} />
+                        <TaskBody t={t} s={s} ladder={p.ladder(t)} />
                         {!there && (t.device !== 'tests' || s.linux || s.pc || s.laptop) && (
                           <button className="text-btn" onClick={() => p.onOpenDevice(t.device)}>
                             {p.openLabel(t.device)} →
@@ -653,20 +720,32 @@ export const docPath = (to: string) => {
   return kind === 'doc' ? `content/howto/${slug}.md` : `content/${kind}/${slug}.md`
 }
 
-function DocsView({ docs, cur, onCur: setCur }: { docs: DocRef[]; cur: string; onCur: (to: string) => void }) {
+export function DocsView({ docs, cur, section, onCur: setCur }: { docs: DocRef[]; cur: string; section?: string; onCur: (to: string) => void }) {
   const lang = useLang()
   const ru = lang === 'ru'
   const [text, err] = useContent<string>(docPath(cur), 'text')
+  const box = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (!text || !section || !box.current) return
+    const want = section.replace(/[`*_]/g, '').trim().toLowerCase()
+    const hs = [...box.current.querySelectorAll('h1,h2,h3,h4,h5,h6')]
+    const h = hs.find((x) => (x.textContent ?? '').trim().toLowerCase() === want) ?? hs.find((x) => (x.textContent ?? '').trim().toLowerCase().startsWith(want))
+    box.current.querySelectorAll('.md-target').forEach((x) => x.classList.remove('md-target'))
+    if (h) {
+      h.classList.add('md-target')
+      h.scrollIntoView({ block: 'start' })
+    }
+  }, [text, section])
   return (
     <div className="docs-tab">
       <div className="chips" role="tablist">
         {docs.map((d) => (
-          <button key={d.to} className={`chip-btn ${cur === d.to ? 'on' : ''}`} onClick={() => setCur(d.to)}>
-            {ru ? d.ru : d.pl}
+          <button key={d.to + (d.section ?? '')} className={`chip-btn ${cur === d.to ? 'on' : ''}`} onClick={() => setCur(d.to)}>
+            {d.section ?? (ru ? d.ru : d.pl)}
           </button>
         ))}
       </div>
-      <div className="reading">
+      <div className="reading" ref={box}>
         {err && <p className="hint">{ru ? 'Не удалось загрузить.' : 'Błąd wczytywania.'}</p>}
         {!text && !err && <p className="hint">{ru ? 'Загрузка…' : 'Ładowanie…'}</p>}
         {text && <Markdown text={text} />}

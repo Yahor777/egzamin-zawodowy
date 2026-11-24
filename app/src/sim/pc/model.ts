@@ -12,7 +12,7 @@ export const NIC_DESC = 'Intel(R) PRO/1000 MT Desktop Adapter'
 export const WIFI_DESC = 'Intel(R) Wi-Fi 6 AX201 160MHz'
 
 export const isWifi = (a: PcAdapter) => /^wlan|wi-?fi/i.test(a.id) || /wi-?fi/i.test(a.name)
-export const nicDesc = (a: PcAdapter) => (isWifi(a) ? WIFI_DESC : NIC_DESC)
+export const nicDesc = (a: PcAdapter) => a.desc ?? (isWifi(a) ? WIFI_DESC : NIC_DESC)
 export const linked = (a: PcAdapter, n: PcNetwork) => a.enabled && (!n.link || n.link(a))
 
 /** interface index as Windows shows it (Ethernet = 5, next ones 6, 7 …) */

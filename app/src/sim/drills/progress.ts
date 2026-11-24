@@ -1,11 +1,8 @@
 // Practical progress (drills + full exam sheets) and the day-by-day plan until the practical exam.
 import { useSyncExternalStore } from 'react'
 import { LABS } from '../labs/labs'
-import { DRILLS, drillById, type DrillTopic } from './index'
+import { drillById } from './index'
 
-export const PRACTICAL_DATE = '2027-01-15'
-export const WRITTEN_FROM = '2027-01-07'
-export const WRITTEN_TO = '2027-01-13'
 
 export interface ItemProgress {
   seed?: number
@@ -15,6 +12,12 @@ export interface ItemProgress {
   last: number
   tries: number
   started?: number
+  /** days with a passing check (self = without opening the full solution) */
+  passes?: { d: string; self: boolean }[]
+  /** time of the last passing check */
+  passAt?: number
+  /** time the full solution was last opened */
+  sol?: number
 }
 
 export interface PracticeState {
@@ -22,7 +25,6 @@ export interface PracticeState {
   items: Record<string, ItemProgress>
   /** YYYY-MM-DD → number of checks that day */
   days: Record<string, number>
-  today?: { date: string; items: string[] }
 }
 
 /** item keys: "d:<drillId>" for drills, "l:<labId>" for full exam sheets */
@@ -36,7 +38,8 @@ function load(): PracticeState {
   try {
     const raw = localStorage.getItem(KEY)
     if (raw) {
-      const p = JSON.parse(raw) as PracticeState
+      // the old separate drill plan pinned "today" here; the learning path replaced it
+      const { today: _pinned, ...p } = JSON.parse(raw) as PracticeState & { today?: unknown }
       if (p?.v === 1) return { ...empty(), ...p }
     }
   } catch {
@@ -94,9 +97,19 @@ const item = (k: string): ItemProgress => state.items[k] ?? { best: 0, lastPct: 
 export function recordCheck(k: string, pct: number) {
   const it = item(k)
   const today = dayStr(new Date())
+  let passes = it.passes
+  if (pct >= 75) {
+    const prev = passes?.[passes.length - 1]
+    const self = !(it.sol && it.sol > (it.passAt ?? 0))
+    // one pass per day counts; a later self-made pass the same day does not upgrade a solution-assisted one
+    if (!prev || prev.d !== today) passes = [...(passes ?? []), { d: today, self }].slice(-10)
+  }
   save({
     ...state,
-    items: { ...state.items, [k]: { ...it, best: Math.max(it.best, pct), lastPct: pct, last: Date.now(), tries: it.tries + 1, started: it.started ?? Date.now() } },
+    items: {
+      ...state.items,
+      [k]: { ...it, best: Math.max(it.best, pct), lastPct: pct, last: Date.now(), tries: it.tries + 1, started: it.started ?? Date.now(), passes, passAt: pct >= 75 ? Date.now() : it.passAt },
+    },
     days: { ...state.days, [today]: (state.days[today] ?? 0) + 1 },
   })
 }
@@ -129,92 +142,36 @@ export function statusOf(p: PracticeState, k: string): { status: Status; best: n
   return { status: it.best >= 75 ? 'passed' : 'failed', best: it.best }
 }
 
-// ------------------------------------------------------------------ plan
-export interface PlanDay {
-  date: string
-  kind: 'drills' | 'sheet' | 'written'
-  items: string[]
+// ------------------------------------------------------------------ spaced repetition
+// The day-by-day plan lives in the learning path (src/path/plan.ts); here only the
+// per-drill review schedule: a pass without the full solution → again in 3, then 7,
+// then 14 days (new seed); a fail or a pass after opening the solution → tomorrow.
+
+const INTERVALS = [3, 7, 14]
+
+/** The student opened the full solution (hint level 3) of this item. */
+export function markSolution(k: string) {
+  const it = item(k)
+  save({ ...state, items: { ...state.items, [k]: { ...it, sol: Date.now() } } })
 }
 
-const TOPIC_ORDER: DrillTopic[] = ['linux', 'router', 'linux', 'switch', 'windows', 'linux', 'net']
+/** Day (YYYY-MM-DD) when the item should be repeated, or null if it was never checked. */
+export function reviewDue(it: ItemProgress | undefined): string | null {
+  if (!it || !it.tries) return null
+  const lastDay = dayStr(new Date(it.last))
+  if ((it.lastPct ?? 0) < 75) return addDays(lastDay, 1)
+  const passes = it.passes ?? [{ d: lastDay, self: true }]
+  const lastPass = passes[passes.length - 1]
+  if (!lastPass.self) return addDays(lastPass.d, 1)
+  const n = passes.filter((x) => x.self).length
+  return addDays(lastPass.d, INTERVALS[Math.min(n, INTERVALS.length) - 1])
+}
 
 // newest session first: code "INF.02-01-26.01-SG" → "2601"
 const sessionKey = (code: string) => code.match(/(\d\d)\.(\d\d)-S/)?.slice(1).join('') ?? ''
 export const SHEETS = [...LABS].sort((a, b) => sessionKey(b.code).localeCompare(sessionKey(a.code)) || a.code.localeCompare(b.code))
 
-/**
- * Plan from `today` until the day before the practical exam: 2 drills a day (1 during the
- * written-exam week), a full exam sheet under the 150-minute timer every 5th day. Never-done
- * and failed items first, topics rotate, an item is not repeated before the others had a turn.
- */
-export function buildPlan(p: PracticeState, today: string): PlanDay[] {
-  const end = addDays(PRACTICAL_DATE, -1)
-  const rank = (k: string) => {
-    const s = statusOf(p, k).status
-    return s === 'new' ? 0 : s === 'started' || s === 'failed' ? 1 : 2
-  }
-  const last = (k: string) => p.items[k]?.last ?? 0
-  // virtual clock: planned items move to the back of the queue
-  const planned = new Map<string, number>()
-  const score = (k: string) => (planned.has(k) ? [3, planned.get(k)!] : [rank(k), last(k)])
-  const better = (a: string, b: string) => {
-    const [ra, la] = score(a)
-    const [rb, lb] = score(b)
-    return ra !== rb ? ra < rb : la < lb
-  }
-  const drills = DRILLS.map((d) => dKey(d.id))
-  const sheets = SHEETS.map((l) => lKey(l.id))
-  let topicIdx = 0
-  let tick = 1
-  const pickDrill = (avoid: DrillTopic | null): string => {
-    for (let n = 0; n < TOPIC_ORDER.length; n++) {
-      const topic = TOPIC_ORDER[(topicIdx + n) % TOPIC_ORDER.length]
-      if (topic === avoid) continue
-      const cands = drills.filter((k) => drillById(k.slice(2))!.topic === topic)
-      if (!cands.length) continue
-      topicIdx = (topicIdx + n + 1) % TOPIC_ORDER.length
-      return cands.reduce((a, b) => (better(b, a) ? b : a))
-    }
-    return drills.reduce((a, b) => (better(b, a) ? b : a))
-  }
-  const out: PlanDay[] = []
-  let i = 0
-  for (let d = today; d <= end; d = addDays(d, 1), i++) {
-    let day: PlanDay
-    if (d >= WRITTEN_FROM && d <= WRITTEN_TO) {
-      day = { date: d, kind: 'written', items: [pickDrill(null)] }
-    } else if (i % 5 === 4 || d === end) {
-      day = { date: d, kind: 'sheet', items: [sheets.reduce((a, b) => (better(b, a) ? b : a))] }
-    } else {
-      const a = pickDrill(null)
-      planned.set(a, tick++)
-      const b = pickDrill(drillById(a.slice(2))!.topic)
-      day = { date: d, kind: 'drills', items: [a, b] }
-    }
-    for (const k of day.items) planned.set(k, tick++)
-    out.push(day)
-  }
-  return out
-}
-
-/** Today's assignment stays fixed for the whole day (so finishing a task doesn't reshuffle it). */
-export function todayPlan(p: PracticeState, today = dayStr(new Date())): PlanDay[] {
-  const plan = buildPlan(p, today)
-  if (p.today?.date === today && p.today.items.length) {
-    const fixed = p.today.items
-    if (plan[0]) plan[0] = { ...plan[0], items: fixed, kind: fixed.some((k) => k.startsWith('l:')) ? 'sheet' : plan[0].kind }
-    // the rest of the plan must not repeat today's items
-    const rest = buildPlan({ ...p, items: Object.fromEntries([...Object.entries(p.items), ...fixed.map((k) => [k, { ...(p.items[k] ?? { best: 0, lastPct: null, tries: 0 }), last: Date.now(), best: 100, tries: 1 }])]) }, addDays(today, 1))
-    return [plan[0], ...rest].filter(Boolean)
-  }
-  return plan
-}
-
-/** Remember today's assignment (call from an effect). */
-export function pinToday(items: string[], today = dayStr(new Date())) {
-  if (state.today?.date === today) return
-  save({ ...state, today: { date: today, items } })
-}
+export const addDay = addDays
 
 export function doneToday(p: PracticeState, k: string, today = dayStr(new Date())) {
   const it = p.items[k]

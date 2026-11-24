@@ -24,6 +24,9 @@ import {
 } from './icons'
 import { addToGroup, addUser, deleteUser, ECHO_RULE, echoRuleOn, findGroup, findUser, fwProfiles, groupsOf, protoLabel, removeFromGroup, userGroups, validUserName, withFw, withGroups } from './model'
 import { hostnameError } from './settings'
+import { Devmgmt } from './apps-hw'
+import { cDrive } from './hwcmd'
+import { plNum } from '../hw'
 import { Buttons, Group, Tabs, useLongPress, useMsg, usePc, type MenuItem, type WinProps } from './ui'
 
 // ---------------- MMC shell ----------------
@@ -719,7 +722,7 @@ export function Sysdm({ close }: WinProps) {
         {tab === 1 && (
           <Group title="Menedżer urządzeń">
             <p>Menedżer urządzeń wyświetla listę wszystkich urządzeń sprzętowych zainstalowanych w komputerze. Za pomocą Menedżera urządzeń można zmienić właściwości dowolnego urządzenia.</p>
-            <button className="w-btn" onClick={() => api.open('compmgmt')}>
+            <button className="w-btn" onClick={() => api.open('devmgmt')}>
               Menedżer urządzeń
             </button>
           </Group>
@@ -953,7 +956,8 @@ export function LocalUsers({ arg, full }: WinProps & { full?: boolean }) {
         />
       )}
       {(node === 'root' || node === 'tools') && <p className="mmc-empty">Wybierz element w drzewie konsoli: Narzędzia systemowe › Użytkownicy i grupy lokalne.</p>}
-      {(node === 'devmgmt' || node === 'disk' || node === 'svc') && <p className="mmc-empty">Ten przystawka nie jest dostępna w symulatorze.</p>}
+      {node === 'devmgmt' && <Devmgmt />}
+      {(node === 'disk' || node === 'svc') && <p className="mmc-empty">Ta przystawka nie jest dostępna w symulatorze.</p>}
       {msg}
     </Mmc>
   )
@@ -1452,12 +1456,17 @@ const TOOLS: [string, string, ReactNode][] = [
   ['compmgmt.msc', 'Zarządzanie komputerem', <IcMgmt key="k5" size={32} />],
   ['wf.msc', 'Zapora Windows Defender z zabezpieczeniami zaawansowanymi', <IcFirewall key="k6" size={32} />],
   ['explorer', 'Eksplorator plików', <IcFolder key="k7" size={32} />],
+  ['msinfo32', 'Informacje o systemie', <IcSystem key="k8" size={32} />],
+  ['devmgmt.msc', 'Menedżer urządzeń', <IcMgmt key="k9" size={32} />],
+  ['taskmgr', 'Menedżer zadań', <IcSystem key="k10" size={32} />],
+  ['dxdiag', 'dxdiag', <IcTools key="k11" size={32} />],
 ]
 
 export const EXPLORER_TITLES: Record<string, string> = { thispc: 'Ten komputer', tools: 'Narzędzia systemu Windows', recycle: 'Kosz', home: 'Narzędzia główne', net: 'Sieć' }
 
 export function Explorer({ arg = 'thispc', setArg }: WinProps) {
   const api = usePc()
+  const drive = cDrive(api.state)
   const page = EXPLORER_TITLES[arg] ? arg : 'thispc'
   const item = (k: string, label: string, icon: ReactNode, open: () => void, sub?: string) => (
     <button key={k} className="ex-item" onDoubleClick={() => !api.compact && open()} onClick={() => api.compact && open()} title={label}>
@@ -1519,9 +1528,11 @@ export function Explorer({ arg = 'thispc', setArg }: WinProps) {
                   <span>
                     Dysk lokalny (C:)
                     <span className="ex-bar">
-                      <span style={{ width: '67%' }} />
+                      <span style={{ width: `${Math.round(100 - (100 * drive.free) / drive.size)}%` }} />
                     </span>
-                    <small>41,8 GB wolnych z 126 GB</small>
+                    <small>
+                      {plNum(drive.free, 1)} GB wolnych z {drive.size} GB
+                    </small>
                   </span>
                 </div>
               </div>

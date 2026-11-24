@@ -26,6 +26,7 @@ import {
   withGroups,
   type PcNetwork,
 } from './model'
+import { cim, systeminfo, wlan, wmic } from './hwcmd'
 
 export type ShellKind = 'cmd' | 'ps'
 export interface Line {
@@ -773,6 +774,14 @@ export const GUI_CMDS: Record<string, string> = {
   'netplwiz': 'lusrmgr',
   'control.exe ncpa.cpl': 'ncpa',
   'mmc': 'compmgmt',
+  msinfo32: 'msinfo32',
+  'msinfo32.exe': 'msinfo32',
+  dxdiag: 'dxdiag',
+  'dxdiag.exe': 'dxdiag',
+  'devmgmt.msc': 'devmgmt',
+  'hdwwiz.cpl': 'devmgmt',
+  taskmgr: 'taskmgr',
+  'taskmgr.exe': 'taskmgr',
 }
 
 // ---------- the main entry ----------
@@ -792,6 +801,12 @@ export function exec(ctx: ShellCtx, raw: string): ExecResult {
   if (gui) return { out: [], state: st, open: gui }
   if ((c === 'start' || c === 'msedge') && args[0] && /^(https?:\/\/|\d)/i.test(args[args.length - 1])) return { out: [], state: st, open: 'edge:' + args[args.length - 1] }
   if (c === 'control' && args[0]) return { out: [], state: st, open: GUI_CMDS[args[0].toLowerCase()] ?? 'control' }
+
+  // hardware identification
+  if (c === 'wmic') return ok(L(...wmic(st, args)))
+  if (c === 'netsh' && /^wlan$/i.test(args[0] ?? '')) return ok(L(...wlan(st, args)))
+  const cimOut = /^(get-ciminstance|gcim|get-wmiobject|gwmi)$/.test(c) ? cim(st, line) : null
+  if (cimOut) return ok(L(...cimOut))
 
   switch (c) {
     case 'ipconfig': {
@@ -902,7 +917,7 @@ export function exec(ctx: ShellCtx, raw: string): ExecResult {
     case 'cmd':
       return { out: L(...CMD_BANNER), state: st, push: 'cmd' }
     case 'systeminfo':
-      return ok(L('', `Nazwa hosta:                               ${st.hostname}`, 'Nazwa systemu operacyjnego:                Microsoft Windows 11 Pro', 'Wersja systemu operacyjnego:               10.0.22631 Nie dotyczy kompilacja 22631', `Grupa robocza:                             ${st.workgroup ?? 'WORKGROUP'}`, `Karty sieciowe:                            Zainstalowano kart sieciowych: ${st.adapters.length}.`, ''))
+      return ok(L(...systeminfo(st)))
     case 'shutdown':
       return { out: [], state: st, open: /\/r/i.test(args.join(' ')) ? 'restart' : 'restart' }
     case 'help':
@@ -963,7 +978,12 @@ const CMD_HELP = [
   'ROUTE          route print — tablica routingu.',
   'TRACERT        Śledzi trasę do hosta.',
   'WHOAMI         Wyświetla bieżącego użytkownika.',
-  'Programy: ncpa.cpl, control, wf.msc, firewall.cpl, sysdm.cpl, lusrmgr.msc, compmgmt.msc, msedge',
+  'SYSTEMINFO     Wyświetla informacje o systemie i sprzęcie.',
+  'WMIC           wmic cpu get name,numberofcores,maxclockspeed | wmic memorychip get capacity,speed,manufacturer',
+  '               wmic diskdrive get model,size | wmic baseboard get manufacturer,product | wmic bios get smbiosbiosversion',
+  '               wmic path win32_videocontroller get name,adapterram | wmic nic get name,macaddress',
+  'Programy: ncpa.cpl, control, wf.msc, firewall.cpl, sysdm.cpl, lusrmgr.msc, compmgmt.msc, msedge,',
+  '          msinfo32, dxdiag, devmgmt.msc, taskmgr',
 ]
 
 const PS_HELP = [
@@ -979,6 +999,9 @@ const PS_HELP = [
   '  Set-NetFirewallProfile -Profile Domain,Private,Public -Enabled False',
   '  Enable-NetFirewallRule -Name FPS-ICMP4-ERQ-In, New-NetFirewallRule -DisplayName "ICMP" -Protocol ICMPv4 -IcmpType 8 -Action Allow',
   '  Rename-Computer -NewName NAZWA, Clear-Host, exit',
+  '  Get-CimInstance Win32_Processor | Select-Object Name,NumberOfCores,MaxClockSpeed',
+  '  Get-CimInstance Win32_PhysicalMemory | Format-List Manufacturer,Capacity,Speed,PartNumber',
+  '  Get-CimInstance Win32_DiskDrive / Win32_BaseBoard / Win32_BIOS / Win32_VideoController / Win32_LogicalDisk',
   '',
 ]
 

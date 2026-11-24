@@ -32,6 +32,7 @@ import {
 } from './icons'
 import { clock, longDate, trayState, type PcNetwork } from './model'
 import { SettingsApp } from './settings'
+import { Devmgmt, Dxdiag, Msinfo32, Taskmgr } from './apps-hw'
 import { GUI_CMDS } from './shell'
 import { Terminal } from './Terminal'
 import { ContextMenu, Frame, PcCtx, useLongPress, usePc, type MenuItem, type PcApi, type WinProps } from './ui'
@@ -54,6 +55,8 @@ export interface PcSimProps {
   /** controlled current app (optional) */
   view?: PcView
   onView?: (v: PcView) => void
+  /** called with the windows on screen (not minimised), top first — e.g. to take a "screenshot" */
+  onWindows?: (wins: { app: string; arg?: string }[]) => void
 }
 
 // ---------------- app registry ----------------
@@ -97,6 +100,10 @@ const APPS: Record<string, AppDef> = {
   newgroup: { title: () => 'Nowa grupa', icon: () => <IcUsers size={16} />, size: [430, 470], dialog: true, single: true, render: (p) => <GroupProps {...p} create /> },
   setpass: { title: (a) => `Ustawianie hasła dla ${a}`, icon: () => <IcUser size={16} />, size: [400, 280], dialog: true, single: 'arg', render: (p) => <SetPassword {...p} /> },
   explorer: { title: (a) => EXPLORER_TITLES[a ?? 'thispc'] ?? 'Eksplorator plików', icon: (a) => (a === 'recycle' ? <IcBin size={16} /> : a === 'tools' ? <IcTools size={16} /> : <IcFolder size={16} />), size: [780, 480], render: (p) => <Explorer {...p} /> },
+  msinfo32: { title: () => 'Informacje o systemie', icon: () => <IcSystem size={16} />, size: [860, 520], single: true, render: () => <Msinfo32 /> },
+  dxdiag: { title: () => 'Narzędzie diagnostyczne DirectX', icon: () => <IcTools size={16} />, size: [640, 540], dialog: true, single: true, render: (p) => <Dxdiag {...p} /> },
+  devmgmt: { title: () => 'Menedżer urządzeń', icon: () => <IcMgmt size={16} />, size: [560, 520], single: true, render: () => <Devmgmt /> },
+  taskmgr: { title: () => 'Menedżer zadań', icon: () => <IcSystem size={16} />, size: [820, 540], single: true, render: () => <Taskmgr /> },
   run: { title: () => 'Uruchom', icon: () => <IcRun size={16} />, size: [420, 230], dialog: true, small: true, single: true, render: (p) => <RunDialog {...p} /> },
 }
 
@@ -122,6 +129,10 @@ const START_APPS: StartApp[] = [
   { key: 'compmgmt', label: 'Zarządzanie komputerem', icon: <IcMgmt size={30} />, run: 'compmgmt.msc' },
   { key: 'ncpa', label: 'Połączenia sieciowe', icon: <IcEthernet size={30} />, run: 'ncpa.cpl' },
   { key: 'lusrmgr', label: 'Użytkownicy i grupy lokalne', icon: <IcUsers size={30} />, run: 'lusrmgr.msc' },
+  { key: 'msinfo32', label: 'Informacje o systemie', icon: <IcSystem size={30} />, run: 'msinfo32' },
+  { key: 'devmgmt', label: 'Menedżer urządzeń', icon: <IcMgmt size={30} />, run: 'devmgmt.msc' },
+  { key: 'taskmgr', label: 'Menedżer zadań', icon: <IcSystem size={30} />, run: 'taskmgr' },
+  { key: 'dxdiag', label: 'dxdiag', icon: <IcTools size={30} />, run: 'dxdiag' },
 ]
 const PINNED = ['edge', 'explorer', 'settings', 'control', 'cmd', 'ps', 'wf', 'tools', 'run']
 
@@ -167,7 +178,7 @@ function useScreenHeight(compact: boolean) {
 }
 
 // ---------------- the component ----------------
-export function PcSim({ state, onChange, network, browser, powered = true, booting = false, onPowerOn, view, onView }: PcSimProps) {
+export function PcSim({ state, onChange, network, browser, powered = true, booting = false, onPowerOn, view, onView, onWindows }: PcSimProps) {
   const rootRef = useRef<HTMLDivElement | null>(null)
   const layerRef = useRef<HTMLDivElement>(null)
   // compact (phone) layout: decided in JS (media queries are unreliable under CSS zoom);
@@ -323,6 +334,10 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
         'settings-net': ['settings', 'net'],
         'settings-eth': ['settings', 'eth'],
         'settings-about': ['settings', 'about'],
+        msinfo32: ['msinfo32'],
+        dxdiag: ['dxdiag'],
+        devmgmt: ['devmgmt'],
+        taskmgr: ['taskmgr'],
       }
       if (key === 'restart') return restart()
       const m = map[key]
@@ -360,6 +375,17 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
 
   const pending = useMemo(() => new Map(), [])
   const api: PcApi = { state, update, network, compact, open, closeApp, menuAt, pending, restart, run, launch, browser }
+
+  // report the visible windows (top first) to the host
+  const winSig = wins
+    .filter((w) => !w.min)
+    .sort((a, b) => b.z - a.z)
+    .map((w) => `${w.app}:${w.arg ?? ''}`)
+    .join('|')
+  useEffect(() => {
+    if (!onWindows) return
+    onWindows(phase === 'desktop' && winSig ? winSig.split('|').map((x) => ({ app: x.slice(0, x.indexOf(':')), arg: x.slice(x.indexOf(':') + 1) || undefined })) : [])
+  }, [winSig, phase, onWindows])
 
   // ---- controlled view (bench "open the browser", LabPage tab memory) ----
   const active = wins.filter((w) => !w.min).sort((a, b) => b.z - a.z)[0]

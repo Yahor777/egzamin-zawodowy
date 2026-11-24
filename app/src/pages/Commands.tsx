@@ -8,7 +8,7 @@ import { go } from '../router'
 
 const norm = (s: string) => s.trim().replace(/\s+/g, ' ')
 
-function matches(item: CommandItem, input: string) {
+export function matches(item: CommandItem, input: string) {
   const a = norm(input)
   return item.answers.some((ans) => (item.os === 'windows' ? norm(ans).toLowerCase() === a.toLowerCase() : norm(ans) === a))
 }

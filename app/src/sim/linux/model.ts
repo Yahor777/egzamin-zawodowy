@@ -1,5 +1,6 @@
 // Serialisable state of the simulated Ubuntu server. Everything here must be
 // plain JSON (it is persisted to localStorage by the host app).
+import type { Hardware } from '../hw.ts'
 
 export type NodeType = 'f' | 'd' | 'l' | 'b' | 'c'
 
@@ -130,6 +131,8 @@ export interface LinuxState {
   apache?: ApacheRuntime
   /** interactive shell session (cwd, su/sudo -i stack, variables) — restored when the terminal is reopened */
   session?: ShellSession
+  /** simulated hardware (identification drill); missing = the default VirtualBox VM */
+  hardware?: Hardware
 }
 
 /** One shell process of the login stack (plain JSON copy of the shell's Proc). */

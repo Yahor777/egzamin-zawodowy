@@ -84,6 +84,8 @@ export interface PcAdapter {
   components?: Record<string, boolean>
   /** DNS suffix for this connection (Zaawansowane… → DNS) */
   dnsSuffix?: string
+  /** adapter description (model) shown by ipconfig /all etc.; missing = the default Intel PRO/1000 */
+  desc?: string
 }
 
 /** A firewall rule created by the student (wf.msc wizard, netsh advfirewall, New-NetFirewallRule). */
@@ -125,6 +127,12 @@ export interface PcState {
   groups?: { name: string; description: string; members: string[] }[]
   /** Workgroup shown in sysdm.cpl */
   workgroup?: string
+  /** simulated hardware (identification drill); missing = the default virtual machine */
+  hardware?: import('./hw').Hardware
+  /** files created by the student (Notatnik, echo > plik, .bat), path → content; missing = none */
+  files?: Record<string, string>
+  /** folders created by the student (mkdir), lower-case-insensitive full paths */
+  dirs?: string[]
 }
 
 /** Does Windows answer inbound ping? (echo rule enabled, or the firewall is off for the active — public — profile) */

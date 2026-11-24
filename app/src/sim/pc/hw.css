@@ -1,0 +1,297 @@
+/* Hardware tools of the Windows workstation (msinfo32, dxdiag, devmgmt, taskmgr). Win32 look, like pc.css. */
+.hw-app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: #fff;
+  color: #000;
+  font-size: 12px;
+}
+.hw-split {
+  flex: 1 1 auto;
+  display: flex;
+  min-height: 0;
+  border-top: 1px solid #e5e5e5;
+}
+.hw-tree {
+  flex: none;
+  width: 190px;
+  overflow: auto;
+  border-right: 1px solid #e5e5e5;
+  padding: 4px 0;
+}
+.hw-node {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 2px 6px !important;
+  background: none !important;
+  border: 0 !important;
+  color: #000 !important;
+  white-space: nowrap;
+}
+.hw-node:hover {
+  background: #e5f3ff !important;
+}
+.hw-node.on {
+  background: #cce8ff !important;
+}
+.hw-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: auto;
+}
+.hw-kv {
+  width: 100%;
+  border-collapse: collapse;
+}
+.hw-kv th {
+  position: sticky;
+  top: 0;
+  text-align: left;
+  font-weight: normal;
+  background: #fff;
+  border-bottom: 1px solid #e5e5e5;
+  border-right: 1px solid #e5e5e5;
+  padding: 2px 6px;
+}
+.hw-kv td {
+  padding: 1px 6px;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+.hw-kv td:first-child {
+  width: 42%;
+  white-space: nowrap;
+}
+.hw-find {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-top: 1px solid #e5e5e5;
+  background: #f0f0f0;
+}
+.hw-input {
+  flex: 1 1 auto;
+  height: 21px;
+  border: 1px solid #adadad;
+  background: #fff;
+}
+.hw-dl {
+  margin: 0;
+}
+.hw-dl > div {
+  display: flex;
+  gap: 8px;
+  padding: 1px 0;
+}
+.hw-dl dt {
+  flex: none;
+  width: 46%;
+  text-align: right;
+  color: #333;
+}
+.hw-dl dd {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.hw-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.dxdiag .dlg-page {
+  font-size: 12px;
+}
+
+/* device manager */
+.hw-devs {
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: 4px 6px;
+  border-top: 1px solid #e5e5e5;
+}
+.hw-dev-root {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 0;
+}
+.hw-cat-h,
+.hw-dev {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  text-align: left;
+  background: none !important;
+  border: 0 !important;
+  color: #000 !important;
+  padding: 1px 4px 1px 14px !important;
+  white-space: nowrap;
+}
+.hw-dev {
+  padding-left: 46px !important;
+}
+.hw-cat-h:hover,
+.hw-dev:hover {
+  background: #e5f3ff !important;
+}
+.hw-dev.on {
+  background: #cce8ff !important;
+}
+.hw-props {
+  flex: none;
+  border-top: 2px solid #0078d7;
+  background: #f0f0f0;
+  padding: 6px 8px 8px;
+  max-height: 50%;
+  overflow: auto;
+}
+.hw-props-h {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.hw-props-h strong {
+  font-weight: 600;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* task manager */
+.tm-tabs {
+  flex: none;
+  display: flex;
+  gap: 14px;
+  padding: 6px 10px 0;
+  border-bottom: 1px solid #e5e5e5;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tm-tabs span {
+  padding-bottom: 5px;
+  white-space: nowrap;
+  color: #555;
+}
+.tm-tabs span.on {
+  color: #000;
+  border-bottom: 2px solid #0078d7;
+}
+.tm-body {
+  flex: 1 1 auto;
+  display: flex;
+  min-height: 0;
+}
+.tm-list {
+  flex: none;
+  width: 190px;
+  overflow: auto;
+  border-right: 1px solid #e5e5e5;
+}
+.tm-list button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  text-align: left;
+  padding: 6px 10px !important;
+  background: none !important;
+  border: 0 !important;
+  border-left: 3px solid transparent !important;
+  color: #000 !important;
+}
+.tm-list button.on {
+  background: #e5f3ff !important;
+  border-left-color: #0078d7 !important;
+}
+.tm-list small {
+  color: #555;
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  white-space: nowrap;
+}
+.tm-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: auto;
+  padding: 8px 12px;
+}
+.tm-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.tm-head h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 400;
+}
+.tm-head span {
+  font-size: 13px;
+}
+.tm-graph {
+  height: 90px;
+  margin: 8px 0;
+  border: 1px solid #b9d7f0;
+  background: repeating-linear-gradient(90deg, transparent 0 24px, #e8f1f9 24px 25px), repeating-linear-gradient(0deg, transparent 0 17px, #e8f1f9 17px 18px), linear-gradient(180deg, #fff 55%, #d9ebf9 100%);
+}
+.tm-dl dt {
+  text-align: left;
+  width: 50%;
+  color: #555;
+}
+
+/* phone */
+.hw-app.compact .hw-split,
+.hw-app.compact .tm-body {
+  flex-direction: column;
+}
+.hw-app.compact .hw-tree,
+.hw-app.compact .tm-list {
+  width: auto;
+  border-right: 0;
+}
+.hw-app.compact .tm-list {
+  display: flex;
+  overflow-x: auto;
+  border-bottom: 1px solid #e5e5e5;
+  flex: none;
+}
+.hw-app.compact .tm-list button {
+  width: auto;
+  flex: none;
+  border-left: 0 !important;
+  border-bottom: 3px solid transparent !important;
+}
+.hw-app.compact .tm-list button.on {
+  border-bottom-color: #0078d7 !important;
+}
+.hw-app.compact .hw-kv td:first-child {
+  white-space: normal;
+}
+.hw-app.compact .hw-dl > div,
+.dxdiag .hw-dl > div {
+  flex-wrap: wrap;
+}
+.hw-app.compact .hw-dl dt {
+  width: auto;
+  text-align: left;
+}
+@media (max-width: 640px) {
+  .hw-cols {
+    grid-template-columns: 1fr;
+  }
+}

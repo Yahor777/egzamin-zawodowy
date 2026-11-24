@@ -2,8 +2,12 @@ name: Deploy app to GitHub Pages
 # Runs on every push that changes app/ or vm-image/ (or manually: Actions → this workflow → Run workflow)
 #
 # Besides the app it publishes the disk of the in-browser Linux (app/public/vm/):
-# vm-image/Dockerfile (Debian 12 i386, exam packages) -> ext2 -> 128 KiB chunks in
-# dist/vm/disk/ (same format as leaningtech/webvm, read by CheerpX.GitHubDevice).
+# vm-image/build-rootfs.sh (Debian 12 i386 + exam packages; mmdebstrap with the
+# runner's 64-bit apt, then offline i386 chroot steps) -> vm-image/build-ext2.sh
+# -> ext2 -> 128 KiB chunks in dist/vm/disk/ (same format as leaningtech/webvm,
+# read by CheerpX.GitHubDevice). Nothing 32-bit touches the network: the
+# runner's kernel has no 32-bit socket syscalls (i386 docker builds can't
+# download anything there).
 # The disk is cached by the hash of vm-image/**, so it is rebuilt only when that
 # folder changes. If building it fails, the site is still deployed and the VM page
 # falls back to WebVM's public Debian disk.
@@ -46,27 +50,32 @@ jobs:
         with:
           path: vm-disk
           key: vm-disk-v1-${{ hashFiles('vm-image/**') }}
-      - name: VM disk - build image (docker, linux/386) and split into chunks
+      - name: VM disk - build image (mmdebstrap i386 + offline chroot) and split into chunks
         if: steps.vmcache.outputs.cache-hit != 'true'
         continue-on-error: true
         timeout-minutes: 45
         env:
           VM_VERSION: ${{ hashFiles('vm-image/**') }}
+          ROOTFS: ${{ runner.temp }}/vm-rootfs
         run: |
-          # DNS inside 32-bit build containers fails on the runner: resolve on the host
-          # and pin the Debian mirror via --add-host (deb.debian.org also serves debian-security).
-          echo "--- dns debug"; cat /etc/resolv.conf || true
-          docker run --rm --platform linux/386 i386/debian:bookworm getent hosts deb.debian.org || echo "i386 container: no dns"
-          docker run --rm debian:bookworm getent hosts deb.debian.org || echo "amd64 container: no dns"
-          MIRROR_IP=$(getent ahostsv4 deb.debian.org | awk 'NR==1{print $1}')
-          echo "deb.debian.org -> $MIRROR_IP"
+          fail() {
+            echo "::error title=VM disk build failed::$1 - the site is deployed without our disk; /vm/ falls back to WebVM's public disk."
+            exit 1
+          }
+          sudo apt-get update -qq || fail "apt-get update on the runner failed"
+          sudo apt-get install -y -qq mmdebstrap debian-archive-keyring \
+            || fail "could not install mmdebstrap"
+          mmdebstrap --version
           ok=0
           for i in 1 2 3; do
-            if docker buildx build --add-host "deb.debian.org:$MIRROR_IP" --platform linux/386 --load -t egz-vm vm-image; then ok=1; break; fi
-            echo "::warning::docker build attempt $i failed, retrying"; sleep 10
+            sudo rm -rf "$ROOTFS"
+            if sudo bash vm-image/build-rootfs.sh "$ROOTFS"; then ok=1; break; fi
+            echo "::warning::VM rootfs build attempt $i failed, retrying"
+            sleep 15
           done
-          [ "$ok" = 1 ] || { echo "::error::VM image build failed"; exit 1; }
-          bash vm-image/build-ext2.sh egz-vm vm-disk "$VM_VERSION"
+          [ "$ok" = 1 ] || fail "vm-image/build-rootfs.sh failed 3 times (see the log above)"
+          bash vm-image/build-ext2.sh "$ROOTFS" vm-disk "$VM_VERSION" || fail "vm-image/build-ext2.sh failed"
+          sudo rm -rf "$ROOTFS"
       - name: VM disk - add to site
         continue-on-error: true
         run: |
@@ -77,7 +86,7 @@ jobs:
           mkdir -p app/dist/vm/disk
           cp vm-disk/* app/dist/vm/disk/
           site_mb=$(du -sm app/dist | cut -f1)
-          echo "VM disk: $(cat vm-disk/manifest.json | tr -d '\n ')"
+          echo "VM disk: $(tr -d '\n ' < vm-disk/manifest.json)"
           echo "Site size with VM disk: ${site_mb} MiB"
           if [ "$site_mb" -gt 980 ]; then
             echo "::warning title=Site too big::${site_mb} MiB > GitHub Pages 1 GB limit; publishing without the VM disk."

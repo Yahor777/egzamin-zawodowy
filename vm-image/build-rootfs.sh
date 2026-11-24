@@ -15,7 +15,8 @@
 #     policy-rc.d / fake start-stop-daemon there, so no daemon is started.
 #     A customize hook then downloads the .deb of every exam package (the
 #     installed versions) into /var/lib/egz-repo, again with the host's apt
-#     (mmdebstrap exports its APT_CONFIG to hooks): the offline repository.
+#     (mmdebstrap passes its apt config to hooks as MMDEBSTRAP_APT_CONFIG):
+#     the offline repository.
 #  2. OFFLINE: everything else runs in the chroot inside a new network
 #     namespace (unshare --net: only a down loopback), so nothing in there
 #     could reach the network even if it tried.
@@ -58,17 +59,21 @@ mapfile -t PKGS < <(grep -v '^[[:space:]]*#' "$HERE/packages.txt" | tr -s ' \t' 
 INCLUDE=$(printf '%s\n' "${PKGS[@]}" apt-utils | paste -sd, -)
 
 echo "== phase 1 (online, 64-bit apt): mmdebstrap $SUITE i386"
+# merged-usr hook: merged /usr + usr-is-merged, like Debian's docker image
+# (without it apt pulls in the usrmerge converter and its perl libraries).
 # --dpkgopt=FILE: the slim rules are active while packages are unpacked
 # (mmdebstrap stores them as dpkg.cfg.d/99mmdebstrap; replaced below).
+# shellcheck disable=SC2016 # hooks: $1 and $MMDEBSTRAP_APT_CONFIG are expanded by mmdebstrap's sh
 "$JAIL" mmdebstrap \
   --mode=root \
   --architectures=i386 \
   --variant=minbase \
   --keyring="$KEYRING" \
+  --hook-dir=/usr/share/mmdebstrap/hooks/merged-usr \
   --include="$INCLUDE" \
   --dpkgopt="$HERE/rootfs/etc/dpkg/dpkg.cfg.d/01-egz-slim" \
   --customize-hook='mkdir -p "$1/var/lib/egz-repo"' \
-  --customize-hook='cd "$1/var/lib/egz-repo" && apt-get download '"${PKGS[*]}" \
+  --customize-hook='cd "$1/var/lib/egz-repo" && APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" apt-get download '"${PKGS[*]}" \
   "$SUITE" "$R" \
   "deb $MIRROR $SUITE main" \
   "deb $MIRROR $SUITE-updates main" \
@@ -97,22 +102,28 @@ chmod 755 /usr/sbin/policy-rc.d
 
 # Offline "repository": the .deb of every exam package, so that
 # `apt purge samba && apt install samba` works without internet.
+# (/usr/bin/apt-get: the rootfs overlay's /usr/local/bin/apt-get wrapper
+# only pretends to update.)
 cd /var/lib/egz-repo
 chown -R root:root .
-apt-ftparchive packages . > Packages
+/usr/bin/apt-ftparchive packages . > Packages
 echo 'deb [trusted=yes] file:/var/lib/egz-repo ./' > /etc/apt/sources.list.d/egz-offline.list
 # read ONLY the file: source (the deb.debian.org ones would need the network)
-apt-get update \
+/usr/bin/apt-get update \
   -o Dir::Etc::sourcelist=/etc/apt/sources.list.d/egz-offline.list \
   -o Dir::Etc::sourceparts=- -o APT::Get::List-Cleanup=0
-apt-get clean
+/usr/bin/apt-get clean
 rm -f /var/lib/apt/lists/deb.debian.org_*
+ls /var/lib/apt/lists/*egz-repo*Packages
 cd /
 
 # Exam accounts: administrator / ZAQ!2wsx (sudo), root has the same password.
 useradd -m -s /bin/bash -c 'Administrator' -G sudo,adm administrator
 echo 'administrator:ZAQ!2wsx' | chpasswd
 echo 'root:ZAQ!2wsx' | chpasswd
+
+# (Docker used to provide this one; quota & co. read it)
+[ -e /etc/mtab ] || ln -s ../proc/self/mounts /etc/mtab
 
 # PATH, prompt, history, sudo.conf, emulated services, slimming
 /usr/local/lib/egz/setup.sh

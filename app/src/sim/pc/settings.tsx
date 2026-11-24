@@ -4,6 +4,8 @@ import { ipToInt, type PcAdapter } from '../net'
 import { IcChevron, IcEthernet, IcGlobe, IcPc, IcSearch, IcSettings, IcUser, IcUsers } from './icons'
 import { adapterState, curIp, linked, linkLocal6, networkName, nicDesc, setDhcp, setStatic, trayState, validateStatic } from './model'
 import { Toggle, usePc, type WinProps } from './ui'
+import { gib, plNum, ramTotalGB } from '../hw'
+import { hwOf } from './hwcmd'
 
 const NAV: [string, string, ReactNode][] = [
   ['system', 'System', <IcPc key="k1" size={18} />],
@@ -120,7 +122,7 @@ function SysPage({ go }: { go: (a: string) => void }) {
         <IcPc size={56} />
         <div>
           <strong>{api.state.hostname}</strong>
-          <span>Virtual Machine</span>
+          <span>{st.hardware ? hw.board.sysModel : 'Virtual Machine'}</span>
           <button className="set-link" onClick={() => setRen(true)}>
             Zmień nazwę
           </button>
@@ -139,6 +141,7 @@ function AboutPage() {
   const api = usePc()
   const [ren, setRen] = useState(false)
   const st = api.state
+  const hw = hwOf(st)
   return (
     <>
       <h1 className="set-h">System › Informacje</h1>
@@ -158,9 +161,19 @@ function AboutPage() {
           <dt>Nazwa urządzenia</dt>
           <dd>{st.hostname}</dd>
           <dt>Procesor</dt>
-          <dd>Intel(R) Core(TM) i5-10400 CPU @ 2.90GHz 2.90 GHz</dd>
+          <dd>
+            {hw.cpu.name} {(hw.cpu.baseMHz / 1000).toFixed(2)} GHz
+          </dd>
           <dt>Zainstalowana pamięć RAM</dt>
-          <dd>8,00 GB</dd>
+          <dd>{plNum(ramTotalGB(hw))} GB</dd>
+          <dt>Karta graficzna</dt>
+          <dd>
+            {hw.gpu.name} ({hw.gpu.vramMB >= 1024 ? `${hw.gpu.vramMB / 1024} GB` : `${hw.gpu.vramMB} MB`})
+          </dd>
+          <dt>Magazyn</dt>
+          <dd>
+            {Math.round(gib(hw.disk.bytes))} GB {hw.disk.ssd ? 'SSD' : 'HDD'} {hw.disk.model}
+          </dd>
           <dt>Identyfikator urządzenia</dt>
           <dd>3F2A9C1E-6B7D-4E21-9A0C-5D8E7F6A1B2C</dd>
           <dt>Typ systemu</dt>
