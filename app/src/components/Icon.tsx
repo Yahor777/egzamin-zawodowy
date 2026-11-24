@@ -11,6 +11,7 @@ const PATHS: Record<string, string> = {
   calc: 'M6 2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zM8 6h8v3H8zM8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01M16 17h.01',
   wrench: 'M14.7 6.3a4 4 0 0 0 5 5L22 13.6 13.6 22l-2.3-2.3a4 4 0 0 0-5-5L2 10.4 10.4 2z',
   arrow: 'M5 12h14M13 6l6 6-6 6',
+  chevron: 'M9 6l6 6-6 6',
   back: 'M19 12H5M11 18l-6-6 6-6',
   check: 'M20 6 9 17l-5-5',
   x: 'M18 6 6 18M6 6l12 12',

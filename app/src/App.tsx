@@ -84,19 +84,9 @@ export default function App() {
         <button className="brand" onClick={() => go('/')}>
           <span className="brand-name">INF.02</span>
         </button>
-        <div className="mobile-actions">
-          <div className="lang-switch" role="group" aria-label={t('language')}>
-            <button className={lang === 'ru' ? 'on' : ''} onClick={() => setLang('ru')}>
-              RU
-            </button>
-            <button className={lang === 'pl' ? 'on' : ''} onClick={() => setLang('pl')}>
-              PL
-            </button>
-          </div>
-          <button className="icon-btn" onClick={() => go('/settings')} aria-label={t('settings')}>
-            <Icon name="settings" />
-          </button>
-        </div>
+        <button className="icon-btn" onClick={() => go('/settings')} aria-label={t('settings')}>
+          <Icon name="settings" size={22} />
+        </button>
       </header>
 
       <main className="main">

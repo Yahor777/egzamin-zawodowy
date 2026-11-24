@@ -21,7 +21,7 @@ export function Tools() {
               <small className="muted">{GENERATORS[id].sample}</small>
             </span>
             <span className="t-meta">∞</span>
-            <Icon name="arrow" size={16} />
+            <Icon name="chevron" size={18} />
           </button>
         ))}
         <div className="topic-row disabled">
@@ -75,7 +75,7 @@ export function Generator({ id }: { id: GenId }) {
                 setSel(null)
               }}
             >
-              {t('next')} <Icon name="arrow" size={18} />
+              {t('next')}
             </button>
           </div>
         )}

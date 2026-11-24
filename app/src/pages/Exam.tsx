@@ -184,11 +184,11 @@ export function Exam() {
         />
         <div className="row between">
           <button className="btn" disabled={idx === 0} onClick={() => setIdx(idx - 1)}>
-            <Icon name="back" size={18} /> {t('prev')}
+            {t('prev')}
           </button>
           {idx < qs.length - 1 ? (
             <button className="btn primary" onClick={() => setIdx(idx + 1)}>
-              {t('next')} <Icon name="arrow" size={18} />
+              {t('next')}
             </button>
           ) : (
             <button

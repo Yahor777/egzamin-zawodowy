@@ -1,23 +1,27 @@
 import { Icon } from '../components/Icon'
 import { stats, useBank } from '../lib/bank'
-import { plural, useT } from '../lib/i18n'
+import { TOPIC_NAMES, plural, useT } from '../lib/i18n'
 import { useLang, useProgress } from '../lib/store'
 import type { ExamRecord } from '../lib/types'
 import { go } from '../router'
 
-const EXAM_DATE = new Date('2027-01-07T09:00:00+01:00')
 const DAY_FORMS = { pl: ['dzień', 'dni', 'dni'] as [string, string, string], ru: ['день', 'дня', 'дней'] as [string, string, string] }
+
+export const EXAM_DATE = new Date('2027-01-07T09:00:00+01:00')
+
+export function daysLeft() {
+  return Math.max(0, Math.ceil((EXAM_DATE.getTime() - Date.now()) / 86400_000))
+}
 
 export function Home() {
   const t = useT()
   const lang = useLang()
   const bank = useBank()
   const p = useProgress()
-  const days = Math.max(0, Math.ceil((EXAM_DATE.getTime() - Date.now()) / 86400_000))
+  const days = daysLeft()
   const s = bank ? stats(bank, p) : null
   const mistakes = bank ? bank.filter((q) => p.cards[q.id]?.lastWrong).length : 0
 
-  // daily plan: spread unseen questions over remaining days, plus everything due
   const startOfDay = new Date()
   startOfDay.setHours(0, 0, 0, 0)
   const cards = Object.values(p.cards)
@@ -25,104 +29,135 @@ export function Home() {
   const newToday = cards.filter((c) => c.last >= startOfDay.getTime() && c.right + c.wrong === 1).length
   const perDay = s && days > 0 ? Math.ceil((s.fresh + newToday) / days) : 0
   const newLeft = Math.max(0, perDay - newToday)
-  const goal = perDay + (s?.due ?? 0) + answeredToday - newToday
-  const done = s ? newLeft === 0 && s.due === 0 : false
-  const lastExam = p.exams[p.exams.length - 1]
+  const due = s?.due ?? 0
+  const goal = answeredToday + newLeft + due
+  const done = s ? newLeft === 0 && due === 0 : false
+
+  // topics: weakest by accuracy once there is data, otherwise the biggest ones
+  const topicStats = bank
+    ? Object.keys(TOPIC_NAMES)
+        .map((id) => ({ id, s: stats(bank, p, id) }))
+        .filter((x) => x.s.total > 0 && x.id !== 'other')
+    : []
+  const withData = topicStats.filter((x) => x.s.accuracy !== null && x.s.mastered + x.s.learning >= 5)
+  const weak = withData.length >= 3
+  const topicList = weak
+    ? [...withData].sort((a, b) => (a.s.accuracy ?? 0) - (b.s.accuracy ?? 0)).slice(0, 4)
+    : [...topicStats].sort((a, b) => b.s.total - a.s.total).slice(0, 4)
 
   return (
-    <div className="page home">
-      <header className="home-head">
-        <p className="muted">{t('examIn')}</p>
-        <h1 className="days">
-          {days} {plural(lang, days, DAY_FORMS)}
-        </h1>
-        <p className="muted">{t('examDateNote')}</p>
-      </header>
-
-      <section className="today">
-        <h2>{done ? t('todayDone') : t('todayPlan')}</h2>
-        {s && (
-          <>
-            <ul className="today-list">
-              <li>
-                <strong>{newLeft}</strong> {t('todayNew')}
-              </li>
-              <li>
-                <strong>{s.due}</strong> {t('todayRepeat')}
-              </li>
-            </ul>
-            <div className="today-bar" role="img" aria-label={`${answeredToday}/${goal}`}>
-              <span style={{ width: `${goal ? Math.min(100, (answeredToday / goal) * 100) : 0}%` }} />
+    <div className="home">
+      <div className="home-main">
+        <section className="today card">
+          <div className="today-head">
+            <h1>{done ? t('todayDone') : t('today')}</h1>
+            <span className="days-chip">
+              <strong>{days}</strong> {plural(lang, days, DAY_FORMS)} {t('daysToExam')}
+            </span>
+          </div>
+          {s && (
+            <div className="today-nums">
+              <div>
+                <strong>{newLeft}</strong>
+                <span>{t('newQ')}</span>
+              </div>
+              <div>
+                <strong>{due}</strong>
+                <span>{t('repeatQ')}</span>
+              </div>
+              <div>
+                <strong>{answeredToday}</strong>
+                <span>{t('answeredToday')}</span>
+              </div>
             </div>
-            <p className="muted small">
-              {answeredToday} {t('answeredToday')}
-            </p>
-          </>
-        )}
-        <button className="btn primary btn-wide" onClick={() => go('/learn')}>
-          {done ? t('keepGoing') : t('start')}
-          <Icon name="arrow" size={20} />
-        </button>
-      </section>
+          )}
+          <div className="bar" role="img" aria-label={`${answeredToday}/${goal}`}>
+            <span style={{ width: `${goal ? Math.min(100, (answeredToday / goal) * 100) : 0}%` }} />
+          </div>
+          <button className="btn primary btn-wide" onClick={() => go('/learn')}>
+            {done ? t('keepGoing') : t('learnNow')}
+          </button>
+        </section>
 
-      <div className="tiles">
-        <Tile icon="exam" title={t('exam')} hint={t('examHint')} onClick={() => go('/exam')} />
-        <Tile
-          icon="repeat"
-          title={t('mistakes')}
-          hint={mistakes > 0 ? `${mistakes} ${t('mistakesHint')}` : t('noMistakes')}
-          onClick={() => go('/mistakes')}
-          alert={mistakes > 0}
-        />
-        <Tile icon="topics" title={t('topics')} hint={t('topicsHint')} onClick={() => go('/topics')} />
-        <Tile icon="calc" title={t('tools')} hint={t('toolsHint')} onClick={() => go('/tools')} />
+        <section className="card">
+          <h2>{weak ? t('weakTopics') : t('bigTopics')}</h2>
+          <div className="list">
+            {topicList.map(({ id, s: ts }) => (
+              <button key={id} className="list-row" onClick={() => go(`/learn/${id}`)}>
+                <span className="lr-main">
+                  <span className="lr-title">{TOPIC_NAMES[id][lang]}</span>
+                  <MasteryBar mastered={ts.mastered} learning={ts.learning} total={ts.total} />
+                </span>
+                <span className="lr-side">
+                  {weak && ts.accuracy !== null ? `${Math.round(ts.accuracy * 100)}%` : ts.total}
+                </span>
+                <Icon name="chevron" size={18} />
+              </button>
+            ))}
+          </div>
+          {!weak && <p className="hint">{t('weakEmpty')}</p>}
+          <button className="text-btn" onClick={() => go('/topics')}>
+            {t('allTopics')}
+          </button>
+        </section>
       </div>
 
-      {s && (
-        <section className="block">
-          <div className="block-head">
-            <h2>{t('learnedOf')}</h2>
-            <span className="figure">
-              {s.mastered} / {s.total}
-            </span>
-          </div>
-          <MasteryBar mastered={s.mastered} learning={s.learning} total={s.total} />
-          <div className="legend">
-            <span>
-              <i className="sw sw-m" /> {t('mastered')}: {s.mastered}
-            </span>
-            <span>
-              <i className="sw sw-l" /> {t('learning')}: {s.learning}
-            </span>
-            <span>
-              <i className="sw sw-n" /> {t('notSeen')}: {s.fresh}
-            </span>
-          </div>
-        </section>
-      )}
+      <div className="home-side">
+        <div className="list card flush">
+          <button className="list-row" onClick={() => go('/mistakes')}>
+            <Icon name="repeat" size={22} />
+            <span className="lr-title">{t('mistakes')}</span>
+            <span className={`lr-side ${mistakes ? 'alert' : ''}`}>{mistakes}</span>
+            <Icon name="chevron" size={18} />
+          </button>
+          <button className="list-row" onClick={() => go('/starred')}>
+            <Icon name="star" size={22} />
+            <span className="lr-title">{t('starred')}</span>
+            <span className="lr-side">{p.starred.length}</span>
+            <Icon name="chevron" size={18} />
+          </button>
+        </div>
 
-      {lastExam && (
-        <section className="block">
-          <div className="block-head">
-            <h2>{t('lastExam')}</h2>
-            <span className={`figure ${lastExam.score / lastExam.total >= 0.5 ? 'ok' : 'bad'}`}>
-              {Math.round((lastExam.score / lastExam.total) * 100)}%
-            </span>
+        {s && (
+          <section className="card">
+            <div className="card-head">
+              <h2>{t('overall')}</h2>
+              <span className="num">
+                {s.mastered} / {s.total}
+              </span>
+            </div>
+            <MasteryBar mastered={s.mastered} learning={s.learning} total={s.total} />
+            <div className="legend">
+              <span>
+                <i className="sw sw-m" /> {t('mastered')} {s.mastered}
+              </span>
+              <span>
+                <i className="sw sw-l" /> {t('learning')} {s.learning}
+              </span>
+              <span>
+                <i className="sw sw-n" /> {t('notSeen')} {s.fresh}
+              </span>
+            </div>
+          </section>
+        )}
+
+        <section className="card">
+          <div className="card-head">
+            <h2>{t('examsTitle')}</h2>
+            {p.exams.length > 0 && (
+              <span className={`num ${p.exams[p.exams.length - 1].score >= 20 ? 'ok' : 'bad'}`}>
+                {Math.round((p.exams[p.exams.length - 1].score / p.exams[p.exams.length - 1].total) * 100)}%
+              </span>
+            )}
           </div>
           {p.exams.length > 1 && <ExamChart exams={p.exams.slice(-10)} lang={lang} threshold={t('threshold')} />}
+          {p.exams.length === 0 && <p className="hint">{t('examsEmpty')}</p>}
+          <button className="btn" onClick={() => go('/exam')}>
+            {t('startExamShort')}
+          </button>
         </section>
-      )}
+      </div>
     </div>
-  )
-}
-
-function Tile({ icon, title, hint, onClick, alert }: { icon: string; title: string; hint: string; onClick: () => void; alert?: boolean }) {
-  return (
-    <button className={`tile ${alert ? 'alert' : ''}`} onClick={onClick}>
-      <Icon name={icon} size={26} />
-      <span className="tile-title">{title}</span>
-      <span className="tile-hint">{hint}</span>
-    </button>
   )
 }
 

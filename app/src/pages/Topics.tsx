@@ -22,7 +22,7 @@ export function Topics() {
         <button className="topic-row all" onClick={() => go('/learn')}>
           <span className="t-name">{t('allTopics')}</span>
           <span className="t-meta">{bank.length}</span>
-          <Icon name="arrow" size={16} />
+          <Icon name="chevron" size={18} />
         </button>
         {topics.map(({ id, s }) => (
           <button key={id} className="topic-row" onClick={() => go(`/learn/${id}`)}>
@@ -34,7 +34,7 @@ export function Topics() {
               {s.total}
               {s.accuracy !== null && <small>{Math.round(s.accuracy * 100)}%</small>}
             </span>
-            <Icon name="arrow" size={16} />
+            <Icon name="chevron" size={18} />
           </button>
         ))}
       </div>

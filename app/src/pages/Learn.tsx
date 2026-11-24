@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { QuestionView } from '../components/QuestionView'
-import { Icon, Score } from '../components/Icon'
+import { Score } from '../components/Icon'
 import { pickLearn, useBank } from '../lib/bank'
 import { TOPIC_NAMES, useT } from '../lib/i18n'
 import { getProgress, recordAnswer, useLang } from '../lib/store'
@@ -96,7 +96,7 @@ export function Learn({ mode, topic }: { mode: 'learn' | 'mistakes' | 'starred';
           <div className="feedback">
             <span className={selected === q.correct ? 'ok' : 'bad'}>{selected === q.correct ? t('correct') : t('wrong')}</span>
             <button className="btn primary" onClick={next} autoFocus>
-              {t('next')} <Icon name="arrow" size={18} />
+              {t('next')}
             </button>
           </div>
         )}

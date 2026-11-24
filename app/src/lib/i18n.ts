@@ -100,6 +100,19 @@ const dict = {
   toolsHint: { pl: 'Podsieci, systemy liczbowe, chmod', ru: 'Подсети, системы счисления, chmod' },
   lastExam: { pl: 'Ostatni egzamin próbny', ru: 'Последний пробный экзамен' },
   examIn: { pl: 'Do egzaminu', ru: 'До экзамена' },
+  today: { pl: 'Dziś', ru: 'Сегодня' },
+  todaySentence: { pl: 'nowych pytań i powtórek do zrobienia', ru: 'новых вопросов и повторений на сегодня' },
+  learnNow: { pl: 'Ucz się', ru: 'Учиться' },
+  weakTopics: { pl: 'Słabe działy', ru: 'Слабые темы' },
+  bigTopics: { pl: 'Najczęstsze działy na egzaminie', ru: 'Самые частые темы на экзамене' },
+  weakEmpty: { pl: 'Po kilku seriach pokażemy tu działy z największą liczbą błędów.', ru: 'После нескольких серий здесь появятся темы, где больше всего ошибок.' },
+  daysToExam: { pl: 'do egzaminu', ru: 'до экзамена' },
+  overall: { pl: 'Cała baza', ru: 'Вся база' },
+  examsTitle: { pl: 'Egzaminy próbne', ru: 'Пробные экзамены' },
+  examsEmpty: { pl: 'Zrób pierwszy egzamin próbny, aby zobaczyć wynik tutaj.', ru: 'Пройди первый пробный экзамен, и результат появится здесь.' },
+  startExamShort: { pl: 'Rozpocznij egzamin', ru: 'Начать экзамен' },
+  newQ: { pl: 'nowych', ru: 'новых' },
+  repeatQ: { pl: 'powtórek', ru: 'повторений' },
 } as const
 
 export function plural(lang: string, n: number, forms: { pl: [string, string, string]; ru: [string, string, string] }) {
