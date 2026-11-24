@@ -108,6 +108,8 @@ wrap('hostnamectl', (c, h) =>
   ),
 )
 
+wrap('dmesg', (c, h) => rewrite(c, 'dmesg', (s) => s.split(DEFAULT_KERNEL).join(h.os.kernel).replace('VBOX HARDDISK', h.disk.model)))
+
 // ------------------------------------------------------------------ lspci
 function lspciLines(h: Hardware): string[] {
   const vga = h.gpu.vendor === 'NVIDIA' ? 'NVIDIA Corporation' : 'Advanced Micro Devices, Inc. [AMD/ATI]'

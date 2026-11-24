@@ -625,7 +625,7 @@ export class Shell {
 
   motd(user: string): string {
     const d = new Date()
-    return `Welcome to Ubuntu 24.04.1 LTS (GNU/Linux 6.8.0-49-generic x86_64)
+    return `Welcome to Ubuntu 24.04.1 LTS (GNU/Linux ${this.st.hardware?.os.kernel ?? '6.8.0-49-generic'} x86_64)
 
  * Documentation:  https://help.ubuntu.com
  * Management:     https://landscape.canonical.com

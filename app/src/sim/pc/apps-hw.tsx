@@ -50,7 +50,7 @@ function Tree({ nodes, cur, onCur, label }: { nodes: [string, string, number][];
   return (
     <div className="hw-tree" role="tree" aria-label={label}>
       {nodes.map(([k, l, d]) => (
-        <button key={k} role="treeitem" aria-selected={cur === k} className={`hw-node${cur === k ? ' on' : ''}`} style={{ paddingLeft: 6 + d * 14 }} onClick={() => onCur(k)}>
+        <button key={k} role="treeitem" aria-selected={cur === k} className={`hw-node${cur === k ? ' on' : ''}`} style={{ ['--d' as string]: d }} onClick={() => onCur(k)}>
           {l}
         </button>
       ))}

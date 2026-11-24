@@ -253,7 +253,7 @@ function smartFor(r: R, ssd: boolean): SmartAttr[] {
 }
 
 /** A random but consistent PC (CPU fits the board, RAM type fits the board …). */
-export function genHardware(r: R, opts: { wifi?: boolean } = {}): Hardware {
+export function genHardware(r: R, opts: { wifi?: boolean; sata?: boolean } = {}): Hardware {
   const c = r.pick(CPUS)
   const cpu: HwCpu = { ...c, name: cpuName(c) }
   delete (cpu as Partial<CpuDef>).gen
@@ -268,7 +268,7 @@ export function genHardware(r: R, opts: { wifi?: boolean } = {}): Hardware {
   const ram: HwRamModule[] = slotOrder.slice(0, count).map((slot) => ({ slot, bank: `BANK ${Number(slot.slice(4)) - 1}`, sizeGB: gb, type, speed, manufacturer: mf, partNumber: pn(gb, speed), serial: hex(r, 8) }))
   const g = r.pick(GPUS)
   const gpu: HwGpu = { ...g, directx: '12', driver: g.vendor === 'NVIDIA' ? '32.0.15.6094' : '31.0.21921.1000' }
-  const d = r.pick(DISKS)
+  const d = r.pick(opts.sata ? DISKS.filter((x) => x.bus === 'SATA') : DISKS)
   const disk: HwDisk = { ...d, serial: d.vendor === 'Western Digital' ? `WD-WCC${hex(r, 9)}` : d.vendor === 'Seagate' ? `ZFL${hex(r, 5)}` : `S${hex(r, 3)}NX0${hex(r, 8)}`, freeGB: Math.round((d.nominalGB * 0.93 - r.int(40, Math.min(220, d.nominalGB * 0.6))) * 10) / 10, smart: smartFor(r, d.ssd) }
   const wired = r.pick(NICS_WIRED)
   const mac = (vendor: string) => `${r.pick(MAC_OUI[vendor] ?? MAC_OUI.Intel)}-${hex(r, 2)}-${hex(r, 2)}-${hex(r, 2)}`

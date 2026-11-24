@@ -1,0 +1,357 @@
+/* Interactive quizzes / drills of src/quiz (ident, kosztorys, T568, ports, Windows Server steps).
+   Uses the app tokens from index.css (--surface, --line, --pen, --ok, --bad …). */
+.qz {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+.qz-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 16px 18px;
+  min-width: 0;
+}
+.qz-card h2,
+.qz-card h3 {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+}
+.qz-sheet {
+  font-size: 0.95rem;
+}
+.qz-sheet ul {
+  margin: 0;
+  padding-left: 1.1em;
+}
+.qz-sheet li + li {
+  margin-top: 4px;
+}
+.qz-meta {
+  color: var(--ink-2);
+  font-size: 0.85rem;
+}
+.qz-score {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  flex-wrap: wrap;
+}
+.qz-score strong {
+  font-size: 1.8rem;
+}
+.qz-score.pass {
+  background: var(--ok-soft);
+  color: var(--ok);
+}
+.qz-score.fail {
+  background: var(--bad-soft);
+  color: var(--bad);
+}
+.qz-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.qz-help {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.qz-help-l {
+  border-left: 3px solid var(--learn);
+  padding-left: 12px;
+}
+.qz-help-l h3 {
+  margin: 0 0 6px;
+  font-size: 0.95rem;
+  color: var(--learn);
+}
+.qz-help-btn {
+  align-self: flex-start;
+}
+.qz-doc {
+  max-height: 420px;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 4px 12px;
+  margin-top: 8px;
+  background: var(--sunken);
+}
+.qz-sol {
+  margin: 0;
+  padding-left: 1.2em;
+}
+.qz-sol code,
+.qz-mono {
+  font-family: var(--mono);
+  font-size: 0.88em;
+}
+
+/* answer table */
+.qz-table-wrap {
+  overflow-x: auto;
+}
+.qz-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.93rem;
+}
+.qz-table th,
+.qz-table td {
+  border: 1px solid var(--line);
+  padding: 6px 8px;
+  text-align: left;
+  vertical-align: middle;
+}
+.qz-table th {
+  background: var(--sunken);
+  font-weight: 600;
+}
+.qz-table input,
+.qz-table select,
+.qz-input {
+  width: 100%;
+  min-width: 0;
+  font: inherit;
+  font-size: 16px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+.qz-table input:focus,
+.qz-table select:focus,
+.qz-input:focus {
+  outline: 2px solid var(--pen);
+  outline-offset: -1px;
+}
+.qz-table tr.ok td:last-child {
+  background: var(--ok-soft);
+}
+.qz-table tr.bad td:last-child {
+  background: var(--bad-soft);
+}
+.qz-why {
+  display: block;
+  font-size: 0.8rem;
+  margin-top: 3px;
+}
+.qz-why.bad {
+  color: var(--bad);
+}
+.qz-why.ok {
+  color: var(--ok);
+}
+/* phone: the table becomes stacked cards */
+@media (max-width: 560px) {
+  .qz-table.stack thead {
+    display: none;
+  }
+  .qz-table.stack,
+  .qz-table.stack tbody,
+  .qz-table.stack tr,
+  .qz-table.stack td {
+    display: block;
+    width: 100%;
+  }
+  .qz-table.stack tr {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+  .qz-table.stack td {
+    border: 0;
+    padding: 4px 10px;
+  }
+  .qz-table.stack td:first-child {
+    padding-top: 8px;
+    color: var(--ink-2);
+    font-size: 0.82rem;
+  }
+  .qz-table.stack td:last-child {
+    padding-bottom: 10px;
+  }
+}
+
+/* device (sim) area */
+.qz-device {
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  overflow: hidden;
+  background: var(--surface);
+  min-width: 0;
+}
+.qz-device-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+  background: var(--sunken);
+}
+.qz-shots {
+  font-size: 0.85rem;
+  color: var(--ink-2);
+}
+.qz-flash {
+  animation: qz-flash 0.5s ease-out;
+}
+@keyframes qz-flash {
+  from {
+    box-shadow: inset 0 0 0 999px rgba(255, 255, 255, 0.7);
+  }
+  to {
+    box-shadow: inset 0 0 0 999px rgba(255, 255, 255, 0);
+  }
+}
+.qz-two {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+}
+@media (min-width: 1100px) {
+  .qz-two {
+    grid-template-columns: minmax(0, 1.5fr) minmax(340px, 1fr);
+    align-items: start;
+  }
+  .qz-two > .qz-side {
+    position: sticky;
+    top: 12px;
+    max-height: calc(100vh - 24px);
+    overflow: auto;
+  }
+}
+
+/* ordering / choice quizzes */
+.qz-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.qz-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px 8px 8px 12px;
+}
+.qz-step.ok {
+  border-color: var(--ok);
+  background: var(--ok-soft);
+}
+.qz-step.bad {
+  border-color: var(--bad);
+  background: var(--bad-soft);
+}
+.qz-step-n {
+  flex: none;
+  width: 1.6em;
+  font-weight: 700;
+  color: var(--pen);
+}
+.qz-step-t {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.qz-step-btns {
+  flex: none;
+  display: flex;
+  gap: 4px;
+}
+.qz-step-btns button {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--sunken);
+  color: var(--ink);
+  font-size: 1rem;
+  cursor: pointer;
+}
+.qz-step-btns button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.qz-opts {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.qz-opt {
+  text-align: left;
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+.qz-opt:hover:not(:disabled) {
+  border-color: var(--pen);
+}
+.qz-opt.on {
+  border-color: var(--pen);
+  background: var(--pen-soft);
+}
+.qz-opt.ok {
+  border-color: var(--ok);
+  background: var(--ok-soft);
+}
+.qz-opt.bad {
+  border-color: var(--bad);
+  background: var(--bad-soft);
+}
+.qz-expl {
+  border-left: 3px solid var(--pen);
+  padding: 4px 0 4px 12px;
+  color: var(--ink-2);
+}
+.qz-progress {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--sunken);
+  overflow: hidden;
+}
+.qz-progress > span {
+  display: block;
+  height: 100%;
+  background: var(--pen);
+}
+.qz-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.qz-pick {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+.qz-pick small {
+  color: var(--ink-2);
+}

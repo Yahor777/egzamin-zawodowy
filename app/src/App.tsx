@@ -16,12 +16,17 @@ import { Commands } from './pages/Commands'
 import { LabList, LabPage } from './sim/labs/LabPage'
 import { Sandbox } from './sim/Sandbox'
 import { go, useRoute } from './router'
+import { ModulePage, PathMap, StepActivity, StepPage } from './path/PathPages'
 
 function Page({ route }: { route: string }) {
-  const [, a, b] = route.split('/')
+  const [, a, b, c] = route.split('/')
   switch (a) {
     case '':
       return <Home />
+    case 'path':
+      return b ? c !== undefined ? <StepActivity key={route} stepId={b} idx={Number(c)} /> : <StepPage key={b} id={b} /> : <PathMap />
+    case 'module':
+      return <ModulePage key={b} id={b} />
     case 'learn':
       return <Learn key={route} mode="learn" topic={b} />
     case 'mistakes':
@@ -67,7 +72,7 @@ export default function App() {
   const t = useT()
   const lang = useLang()
   const nav: [string, string, string][] = [
-    ['/', 'home', t('home')],
+    ['/', 'home', lang === 'ru' ? 'Путь' : 'Ścieżka'],
     ['/topics', 'learn', t('theory')],
     ['/test', 'exam', lang === 'ru' ? 'Тест' : 'Test'],
     ['/practice', 'wrench', t('practice')],
@@ -78,7 +83,7 @@ export default function App() {
     '/test': ['/test', '/exam', '/learn', '/mistakes', '/starred'],
   }
   const active = (p: string) =>
-    p === '/' ? route === '/' : p === '/practice' && route === '/practice' ? true : (group[p] ?? [p]).some((g) => route.startsWith(g))
+    p === '/' ? route === '/' || route.startsWith('/path') || route.startsWith('/module') : p === '/practice' && route === '/practice' ? true : (group[p] ?? [p]).some((g) => route.startsWith(g))
   return (
     <div className="shell">
       <aside className="side">

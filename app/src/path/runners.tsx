@@ -23,8 +23,8 @@ export function QuizRun({ questions, pass, onFinish, onClose }: { questions: Que
   if (idx >= total) {
     const pct = Math.round((score.ok / total) * 100)
     return (
-      <div className="run-done">
-        <div className={`run-result ${pct >= pass ? 'pass' : 'fail'}`}>
+      <div className="qrun-done">
+        <div className={`qrun-result ${pct >= pass ? 'pass' : 'fail'}`}>
           <strong>{pct}%</strong>
           <span>
             {score.ok} / {total} {ru ? 'верно' : 'dobrze'}
@@ -52,8 +52,8 @@ export function QuizRun({ questions, pass, onFinish, onClose }: { questions: Que
   }
   const q = questions[idx]
   return (
-    <div className="run" ref={top}>
-      <div className="run-head">
+    <div className="qrun" ref={top}>
+      <div className="qrun-head">
         <span className="counter">
           {idx + 1} / {total}
         </span>
@@ -101,14 +101,16 @@ export function CmdRun({ groups, n = 10, pass, onFinish, onClose }: { groups: st
   const ru = lang === 'ru'
   const [items, err] = useContent<CommandItem[]>('content/commands.json')
   const [round, setRound] = useState(0)
+  const gkey = groups.join(',')
   const list = useMemo(() => {
+    const gs = gkey.split(',')
     if (!items) return []
-    const pool = items.filter((i) => groups.includes(`${i.os}/${i.group}`))
+    const pool = items.filter((i) => gs.includes(`${i.os}/${i.group}`))
     // a fair share from each group
-    const per = Math.max(2, Math.ceil(n / groups.length))
-    return shuffle(groups.flatMap((g) => shuffle(pool.filter((i) => `${i.os}/${i.group}` === g)).slice(0, per))).slice(0, Math.max(n, groups.length * 2))
+    const per = Math.max(2, Math.ceil(n / gs.length))
+    return shuffle(gs.flatMap((g) => shuffle(pool.filter((i) => `${i.os}/${i.group}` === g)).slice(0, per))).slice(0, Math.max(n, gs.length * 2))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [items, groups.join(','), n, round])
+  }, [items, gkey, n, round])
   const [idx, setIdx] = useState(0)
   const [input, setInput] = useState('')
   const [state, setState] = useState<'ask' | 'ok' | 'bad' | 'shown'>('ask')
@@ -120,8 +122,8 @@ export function CmdRun({ groups, n = 10, pass, onFinish, onClose }: { groups: st
   if (idx >= total) {
     const pct = total ? Math.round((score.ok / total) * 100) : 0
     return (
-      <div className="run-done">
-        <div className={`run-result ${pct >= pass ? 'pass' : 'fail'}`}>
+      <div className="qrun-done">
+        <div className={`qrun-result ${pct >= pass ? 'pass' : 'fail'}`}>
           <strong>{pct}%</strong>
           <span>
             {score.ok} / {total} {ru ? 'с первой попытки' : 'za pierwszym razem'} · {ru ? `порог ${pass}%` : `próg ${pass}%`}
@@ -164,8 +166,8 @@ export function CmdRun({ groups, n = 10, pass, onFinish, onClose }: { groups: st
     setCounted(false)
   }
   return (
-    <div className="run">
-      <div className="run-head">
+    <div className="qrun">
+      <div className="qrun-head">
         <span className="counter">
           {idx + 1} / {total}
         </span>

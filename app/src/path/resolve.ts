@@ -32,6 +32,8 @@ export type Activity =
   | { kind: 'link'; key: string; id: string; title: string; href: string; external: boolean }
   | { kind: 'missing'; key: string; ref: Ref }
   | { kind: 'ack'; key: string }
+  /** paper run of a sheet the simulator does not cover: the student enters the % from self-assessment */
+  | { kind: 'self'; key: string }
 
 export const isGen = (id: string): id is keyof typeof GENERATORS => id in GENERATORS
 
@@ -140,6 +142,7 @@ export function activities(step: Step): Activity[] {
     if (ts.length && !topics.length) out.push({ kind: 'check', key: 'check', topics: ts, count: 4 })
     if (!out.length) out.push({ kind: 'ack', key: 'ack' })
   }
+  if (step.kind === 'full-sheet' && !out.some((a) => a.kind === 'lab')) out.push({ kind: 'self', key: 'self' })
   if (step.kind === 'demo' && !out.length) out.push({ kind: 'ack', key: 'ack' })
   if (!out.length) out.push({ kind: 'ack', key: 'ack' })
   return out

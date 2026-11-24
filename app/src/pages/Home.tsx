@@ -4,7 +4,7 @@ import { plural, useT } from '../lib/i18n'
 import { useLang, useProgress } from '../lib/store'
 import type { ExamRecord } from '../lib/types'
 import { go } from '../router'
-import { TodayPractice } from '../sim/drills/DrillPages'
+import { PathModules, PathToday } from '../path/PathPages'
 
 const DAY_FORMS = { pl: ['dzień', 'dni', 'dni'] as [string, string, string], ru: ['день', 'дня', 'дней'] as [string, string, string] }
 
@@ -41,9 +41,10 @@ export function Home() {
       </div>
       <div className="home-grid">
         <div className="home-main">
-          <TodayPractice />
+          <PathToday />
         </div>
         <div className="home-side">
+          <PathModules compact />
           <TestToday />
           <ExamCard />
           <button className="card link-card" onClick={() => go('/topics')}>

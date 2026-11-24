@@ -2,7 +2,7 @@ import { useState, type ReactNode } from 'react'
 import { useLang } from '../lib/store'
 import type { DocRef } from '../sim/drills/kit'
 import type { SolLine } from '../sim/drills/solutionText'
-import { getPath, noteHint, usePath } from './store'
+import { noteHint, usePath } from './store'
 
 /**
  * Three-step help for one task, each level opened only on request and remembered:
@@ -132,11 +132,4 @@ export function SolutionView({ lines }: { lines: SolLine[] }) {
       )}
     </div>
   )
-}
-
-/** highest hint level of a lab since a moment (for results) */
-export const labHintLevel = (labId: string, since: number) => {
-  let m = 0
-  for (const [k, v] of Object.entries(getPath().hints)) if (k.startsWith(labId + '.') && v.at >= since) m = Math.max(m, v.l)
-  return m
 }

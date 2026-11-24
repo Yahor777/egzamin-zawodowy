@@ -226,7 +226,9 @@ function useOnScreen(ref: RefObject<HTMLElement | null>): boolean {
   return on
 }
 
-export function LabRun({ lab, progressKey, back, timer, docs, intro_pl, footer, subtitle, minutes = 150, docsTab = true, hints = true, banner }: LabRunProps) {
+export function LabRun({ lab, progressKey, back, timer, docs: docsIn, intro_pl, footer, subtitle, minutes = 150, docsTab = true, hints = true, banner }: LabRunProps) {
+  // the same page may come from the step and from the drill: keep the first (it may carry a section)
+  const docs = docsIn?.filter((d, i, a) => a.findIndex((x) => x.to === d.to && (x.section === d.section || !d.section)) === i)
   const lang = useLang()
   const ru = lang === 'ru'
   const [s, setS] = useState<LabSave>(() => load(lab))
@@ -516,7 +518,7 @@ export function LabRun({ lab, progressKey, back, timer, docs, intro_pl, footer, 
               )}
               {footer}
               <div className="row lab-foot">
-                {lab.guide && (
+                {lab.guide && docsTab && (
                   <button className="btn" onClick={() => go(`/practice/${lab.guide}`)}>
                     {ru ? 'Разбор этого листа' : 'Rozwiązanie arkusza'}
                   </button>

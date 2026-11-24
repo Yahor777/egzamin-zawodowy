@@ -1,0 +1,802 @@
+/* Learning path: "Сегодня", module map, step page. Same quiet paper look as the rest;
+   status is carried by the check box and small tags, not by colour blocks. */
+
+/* ---------- today ---------- */
+.today-path {
+  gap: 12px;
+}
+.today-path.skeleton {
+  min-height: 260px;
+  background: linear-gradient(90deg, var(--surface), var(--sunken), var(--surface));
+  background-size: 200% 100%;
+  animation: path-shimmer 1.2s linear infinite;
+}
+@keyframes path-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .today-path.skeleton {
+    animation: none;
+  }
+}
+.tp-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 12px;
+  flex-wrap: wrap;
+}
+.tp-head h1 {
+  font-size: 1.45rem;
+}
+.tp-date {
+  color: var(--ink-2);
+  font-size: 0.95rem;
+}
+.tp-behind,
+.tp-cut {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--sunken);
+  border-left: 3px solid var(--learn);
+  font-size: 0.95rem;
+}
+.tp-cut {
+  border-left-color: var(--pen);
+}
+.tp-cut ul {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tp-cut li small {
+  display: block;
+  color: var(--ink-2);
+  font-size: 0.86rem;
+}
+.tp-cut-note {
+  margin-top: -4px;
+}
+.link-inline {
+  display: inline;
+  text-align: left;
+  color: var(--pen);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-size: inherit;
+}
+.tp-empty {
+  color: var(--ink-2);
+  padding: 8px 0;
+}
+.tp-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.step-row {
+  width: 100%;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  padding: 11px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--paper);
+}
+.step-row:hover {
+  border-color: var(--pen);
+}
+.tt-check.round {
+  border-radius: 50%;
+  border-width: 1.5px;
+  color: var(--ink-3);
+}
+.sr-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sr-title {
+  font-weight: 600;
+  line-height: 1.3;
+}
+.done .sr-title {
+  color: var(--ink-2);
+}
+.sr-meta {
+  font-size: 0.88rem;
+  color: var(--ink-2);
+  line-height: 1.35;
+}
+.sr-late {
+  font-style: normal;
+  color: var(--learn);
+  font-weight: 600;
+}
+.sr-written {
+  background: none;
+  border-style: dashed;
+}
+.tp-ahead {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tp-ahead p {
+  color: var(--ok);
+  font-weight: 600;
+}
+.tp-ahead .btn small {
+  font-weight: 400;
+  color: var(--ink-2);
+}
+.btn-wide {
+  text-align: center;
+  line-height: 1.3;
+}
+.tp-reviews,
+.tp-next {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.tp-reviews h2,
+.tp-next h2 {
+  font-size: 1rem;
+}
+.status-tag.st-cut {
+  background: none;
+  text-decoration: line-through;
+}
+
+/* ---------- module progress ---------- */
+.path-mods {
+  gap: 10px;
+}
+.mod-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.mod-row {
+  width: 100%;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  text-align: left;
+  border-top: 1px solid var(--line);
+}
+.mod-list li:first-child .mod-row {
+  border-top: 0;
+}
+.mod-row:hover .mod-title {
+  color: var(--pen);
+}
+.mod-n {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ink-3);
+  border: 1.5px solid var(--line);
+  font-variant-numeric: tabular-nums;
+}
+.cur .mod-n {
+  border-color: var(--pen);
+  color: var(--pen);
+}
+.full .mod-n {
+  background: var(--ok);
+  border-color: var(--ok);
+  color: #fff;
+}
+.mod-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.mod-title {
+  font-weight: 500;
+  font-size: 0.95rem;
+  line-height: 1.3;
+}
+.cur .mod-title {
+  font-weight: 700;
+}
+.mod-bar {
+  height: 4px;
+  border-radius: 99px;
+  background: var(--sunken);
+  overflow: hidden;
+}
+.mod-bar span {
+  display: block;
+  height: 100%;
+  background: var(--ok);
+  border-radius: 99px;
+}
+.mod-side {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.mod-count {
+  font-size: 0.85rem;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+  min-width: 3.2em;
+  text-align: right;
+}
+.badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+.badge.ok {
+  border-color: transparent;
+  background: var(--ok-soft);
+  color: var(--ok);
+}
+.badge.bad {
+  border-color: transparent;
+  background: var(--bad-soft);
+  color: var(--bad);
+}
+.mod-steps {
+  padding: 12px;
+}
+
+/* ---------- step page ---------- */
+.step-page {
+  gap: 18px;
+}
+.step-head {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.step-crumb {
+  font-size: 0.9rem;
+  color: var(--ink-2);
+}
+.step-crumb .link-inline {
+  text-decoration: none;
+  font-weight: 500;
+  text-align: left;
+}
+.step-meta {
+  color: var(--ink-2);
+  font-size: 0.92rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 4px;
+}
+.step-goal {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+}
+.step-goal h2,
+.step-sec > h2,
+.step-offline h2,
+.step-missing h2 {
+  font-size: 1.05rem;
+}
+.step-why {
+  color: var(--ink-2);
+  font-size: 0.93rem;
+}
+.step-prereq {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--sunken);
+  border-left: 3px solid var(--learn);
+  font-size: 0.95rem;
+}
+.step-prereq.soft {
+  border-left-color: var(--line);
+  color: var(--ink-2);
+}
+.step-prereq ul {
+  margin: 0;
+  padding-left: 18px;
+}
+.step-prereq .btn {
+  align-self: flex-start;
+}
+.step-sec {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.reading-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.reading-block > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 12px 16px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.reading-block > summary::-webkit-details-marker {
+  display: none;
+}
+.reading-block > summary::after {
+  content: '';
+  margin-left: auto;
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--ink-3);
+  border-bottom: 2px solid var(--ink-3);
+  transform: rotate(45deg);
+  transition: transform 0.15s ease;
+}
+.reading-block[open] > summary::after {
+  transform: rotate(-135deg);
+}
+.reading-block[open] > summary {
+  border-bottom: 1px solid var(--line);
+}
+.rb-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 12px;
+}
+.rb-body .md {
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+.rb-body > .text-btn,
+.rb-body > .hint {
+  margin: 0 16px;
+}
+.rb-clip {
+  max-height: 60vh;
+  overflow: auto;
+}
+.step-offline,
+.step-missing {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px;
+  border-radius: var(--r);
+  border: 1px dashed var(--ink-3);
+}
+.step-missing .spec summary {
+  cursor: pointer;
+  color: var(--pen);
+  font-weight: 600;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+.step-missing .spec p {
+  font-size: 0.93rem;
+  margin-top: 6px;
+}
+.acts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.act {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+}
+.act.ok .tt-check {
+  background: var(--ok);
+  border-color: var(--ok);
+  color: #fff;
+}
+.act-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.act-head .tt-check {
+  margin-top: 1px;
+}
+.act-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.act-title {
+  font-weight: 600;
+  line-height: 1.3;
+}
+.act-sub {
+  font-size: 0.88rem;
+  color: var(--ink-2);
+  line-height: 1.4;
+}
+.act-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-left: 34px;
+}
+.act-actions .btn.small {
+  min-height: 44px;
+  min-width: 120px;
+}
+.step-do.locked .act-actions {
+  opacity: 0.55;
+}
+.act-run {
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+.qrun,
+.qrun-done {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.qrun-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.qrun-result {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.qrun-result strong {
+  font-size: 1.8rem;
+  font-variant-numeric: tabular-nums;
+}
+.qrun-result.pass strong {
+  color: var(--ok);
+}
+.qrun-result.fail strong {
+  color: var(--bad);
+}
+.qrun-result span {
+  color: var(--ink-2);
+}
+.reading-list > summary {
+  cursor: pointer;
+  color: var(--pen);
+  font-weight: 600;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+.reading-list .doc-links {
+  margin-top: 6px;
+}
+
+/* hint ladder (step page and task panel) */
+.stuck {
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.stuck-t {
+  font-size: 0.9rem;
+  color: var(--ink-2);
+}
+.ladder {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+.ladder-step {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.ladder-n {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: var(--pen-soft);
+  color: var(--pen);
+  margin-top: 2px;
+}
+.ladder-step.sol .ladder-n {
+  background: var(--sunken);
+  color: var(--ink-2);
+}
+.ladder-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.95rem;
+  white-space: pre-line;
+}
+.ladder-t {
+  color: var(--ink-2);
+  font-size: 0.9rem;
+}
+.ladder-docs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  white-space: normal;
+}
+.ladder-docs .doc-link {
+  min-height: 44px;
+}
+.ladder-more {
+  min-height: 44px;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+}
+.ladder-cost {
+  margin-left: 6px;
+  font-weight: 400;
+  color: var(--ink-3);
+  font-size: 0.85rem;
+}
+.ladder-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--sunken);
+  border-radius: 10px;
+}
+.sol-view {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  white-space: normal;
+}
+.sol-sets,
+.sol-cmds {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.sol-cmds code {
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  background: var(--sunken);
+  padding: 2px 6px;
+  border-radius: 6px;
+  word-break: break-word;
+}
+.sol-ans {
+  display: block;
+  color: var(--ink-2);
+  font-size: 0.85rem;
+  margin-top: 2px;
+}
+.sol-file {
+  margin: 6px 0 0;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  background: var(--sunken);
+  padding: 8px 10px;
+  border-radius: 8px;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* result */
+.step-result {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.step-result.done {
+  padding: 16px;
+  border: 1px solid color-mix(in srgb, var(--ok) 35%, var(--line));
+  background: var(--ok-soft);
+  border-radius: var(--r);
+}
+.sr-big {
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+.step-result .text-btn {
+  align-self: center;
+  min-height: 44px;
+  display: inline-flex;
+  justify-content: center;
+}
+
+/* docs sheet */
+.doc-sheet-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 1002;
+  background: rgb(0 0 0 / 0.38);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.doc-sheet {
+  width: 100%;
+  max-width: 760px;
+  height: 86%;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -6px 24px rgb(0 0 0 / 0.2);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  overflow: hidden;
+}
+.ds-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px 6px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.ds-body {
+  flex: 1;
+  overflow: auto;
+  padding: 12px 16px 24px;
+  -webkit-overflow-scrolling: touch;
+}
+@media (min-width: 900px) {
+  html:not(.phone) .doc-sheet-bg {
+    justify-content: flex-end;
+    align-items: stretch;
+  }
+  html:not(.phone) .doc-sheet {
+    height: 100%;
+    max-width: 560px;
+    border-radius: 0;
+  }
+}
+.md .md-target,
+.md-target {
+  scroll-margin-top: 8px;
+  background: var(--pen-soft);
+  border-radius: 6px;
+  padding-inline: 4px;
+}
+
+/* banner inside a drill / lab opened from a step */
+.act-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--ok-soft);
+  color: var(--ok);
+  font-weight: 600;
+}
+
+/* phone: tighter, nothing wasted */
+html.phone .step-page {
+  gap: 14px;
+}
+html.phone .act {
+  padding: 12px 14px;
+}
+html.phone .act-actions {
+  padding-left: 0;
+}
+html.phone .act-actions .btn.small {
+  flex: 1;
+}
+html.phone .step-goal {
+  padding: 12px 14px;
+}
+html.phone .reading-block > summary {
+  padding: 10px 14px;
+}
+html.phone .rb-body .md {
+  padding: 4px 14px;
+}
+html.phone .rb-clip {
+  max-height: none;
+}
+html.phone .cmd-input,
+.act-run input {
+  font-size: 16px;
+}
+
+.self-score {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.self-score label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.9rem;
+  color: var(--ink-2);
+}
+.self-score input {
+  width: 120px;
+  min-height: 44px;
+  font-size: 16px;
+  font: inherit;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+}

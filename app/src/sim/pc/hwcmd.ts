@@ -195,7 +195,8 @@ export function cim(st: PcState, line: string): string[] | null {
 
 // ---------------------------------------------------------------- netsh wlan show drivers / interfaces
 export function wlan(st: PcState, args: string[]): string[] {
-  const what = (args[1] ?? '').toLowerCase()
+  // args: ['wlan', 'show', 'drivers']
+  const what = (args[2] ?? '').toLowerCase()
   const hw = hwOf(st)
   const w = st.adapters.find(isWifi)
   const n = w ? hw.nics.find((x) => x.mac.toUpperCase() === w.mac.toUpperCase()) : undefined

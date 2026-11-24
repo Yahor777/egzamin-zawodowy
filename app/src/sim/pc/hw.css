@@ -25,7 +25,7 @@
   display: block;
   width: 100%;
   text-align: left;
-  padding: 2px 6px !important;
+  padding: 2px 6px 2px calc(6px + var(--d, 0) * 14px) !important;
   background: none !important;
   border: 0 !important;
   color: #000 !important;
