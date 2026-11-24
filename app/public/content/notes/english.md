@@ -94,6 +94,38 @@
 | unlocked multiplier | odblokowany mnożnik | разблокированный множитель |
 | update / upgrade | aktualizacja / uaktualnienie | обновление / модернизация |
 | wireless | bezprzewodowy | беспроводной |
+| authentication | uwierzytelnianie | аутентификация |
+| encryption | szyfrowanie | шифрование |
+| permission | uprawnienie | право доступа |
+| share | udział, udostępniać | общий ресурс, делиться |
+| shortcut | skrót | ярлык |
+| settings | ustawienia | настройки |
+| restore point | punkt przywracania | точка восстановления |
+| safe mode | tryb awaryjny | безопасный режим |
+| power supply | zasilacz | блок питания |
+| motherboard | płyta główna | материнская плата |
+| heatsink / fan | radiator / wentylator | радиатор / вентилятор |
+| hard drive | dysk twardy | жёсткий диск |
+| ink cartridge | pojemnik z tuszem | картридж с чернилами |
+| toner | toner | тонер |
+| drum | bęben | барабан |
+| fuser | zespół utrwalający | узел термозакрепления |
+| feed / tray | podajnik / zasobnik | подача / лоток |
+| outlet / socket | gniazdo | розетка / гнездо |
+| cable tester | tester okablowania | кабельный тестер |
+| fiber optic | światłowód | оптоволокно |
+| crossover cable | kabel skrosowany | перекрёстный кабель |
+| straight-through cable | kabel prosty | прямой кабель |
+| loopback | pętla zwrotna | петля |
+| lease time | czas dzierżawy | время аренды |
+| forward lookup zone | strefa wyszukiwania do przodu | зона прямого просмотра |
+| domain controller | kontroler domeny | контроллер домена |
+| group policy | zasady grupy | групповая политика |
+| user account | konto użytkownika | учётная запись |
+| disk partition | partycja dysku | раздел диска |
+| file system | system plików | файловая система |
+| warranty | gwarancja | гарантия |
+| license agreement | umowa licencyjna | лицензионное соглашение |
 
 ## 10 примеров предложений
 1. **The router forwards packets between different networks.** — Ruter przekazuje pakiety między różnymi sieciami. — Маршрутизатор пересылает пакеты между разными сетями.
