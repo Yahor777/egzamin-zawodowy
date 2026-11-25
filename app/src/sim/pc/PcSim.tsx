@@ -37,7 +37,10 @@ import { Notepad } from './apps-notepad'
 import { GUI_CMDS } from './shell'
 import { AddRoles, DhcpPostInstall, Promote, ServerManager } from './apps-server'
 import { Aduc, DhcpConsole, MmcStub } from './apps-server-mmc'
-import { hasRole, isServer } from './server'
+import { DnsManager } from './apps-server-dns'
+import { GpEditor, Gpmc } from './apps-server-gpo'
+import { IisManager } from './apps-server-iis'
+import { hasRole, isServer, srv } from './server'
 import { Terminal } from './Terminal'
 import { ContextMenu, Frame, PcCtx, useLongPress, usePc, type MenuItem, type PcApi, type WinProps } from './ui'
 import './pc.css'
@@ -117,10 +120,15 @@ const APPS: Record<string, AppDef> = {
   srvdhcpcfg: { title: () => 'Kreator konfiguracji po instalacji usługi DHCP', icon: () => <IcMgmt size={16} />, size: [680, 460], dialog: true, single: true, render: (p) => <DhcpPostInstall {...p} /> },
   aduc: { title: () => 'Użytkownicy i komputery usługi Active Directory', icon: () => <IcUsers size={16} />, size: [900, 520], single: true, render: (p) => <Aduc {...p} /> },
   dhcpmgmt: { title: () => 'DHCP', icon: () => <IcMgmt size={16} />, size: [900, 520], single: true, render: (p) => <DhcpConsole {...p} /> },
+  dnsmgmt: { title: () => 'Menedżer DNS', icon: () => <IcMgmt size={16} />, size: [900, 520], single: true, render: (p) => <DnsManager {...p} /> },
+  gpmc: { title: () => 'Zarządzanie zasadami grupy', icon: () => <IcMgmt size={16} />, size: [940, 540], single: true, render: (p) => <Gpmc {...p} /> },
+  gpedit: { title: () => 'Edytor zarządzania zasadami grupy', icon: () => <IcMgmt size={16} />, size: [900, 540], single: 'arg', render: (p) => <GpEditor {...p} /> },
+  inetmgr: { title: () => 'Menedżer internetowych usług informacyjnych (IIS)', icon: () => <IcMgmt size={16} />, size: [940, 540], single: true, render: (p) => <IisManager {...p} /> },
   mmcstub: { title: (a) => `${a ?? 'Konsola'} — [Konsola główna]`, icon: () => <IcMgmt size={16} />, size: [820, 480], single: 'arg', render: (p) => <MmcStub {...p} /> },
   run: { title: () => 'Uruchom', icon: () => <IcRun size={16} />, size: [420, 230], dialog: true, small: true, single: true, render: (p) => <RunDialog {...p} /> },
 }
 
+const SERVER_KEYS = ['srvmgr', 'aduc', 'dhcpmgmt', 'dnsmgmt', 'gpmc', 'inetmgr']
 const viewOf = (w: WinRec): PcView | null => (w.app === 'control' && w.arg === 'ncpa' ? 'adapters' : w.app === 'edge' ? 'browser' : w.app === 'wf' ? 'firewall' : w.app === 'cmd' ? 'cmd' : null)
 
 // ---------------- Start menu content ----------------
@@ -137,6 +145,9 @@ const START_APPS: StartApp[] = [
   { key: 'srvmgr', os: 'server', label: 'Menedżer serwera', icon: <IcMgmt size={30} />, run: 'servermanager' },
   { key: 'aduc', os: 'server', role: 'ADDS', label: 'Użytkownicy i komputery usługi Active Directory', icon: <IcUsers size={30} />, run: 'dsa.msc' },
   { key: 'dhcpmgmt', os: 'server', role: 'DHCP', label: 'DHCP', icon: <IcMgmt size={30} />, run: 'dhcpmgmt.msc' },
+  { key: 'dnsmgmt', os: 'server', role: 'DNS', label: 'DNS', icon: <IcMgmt size={30} />, run: 'dnsmgmt.msc' },
+  { key: 'gpmc', os: 'server', role: 'GPMC', label: 'Zarządzanie zasadami grupy', icon: <IcMgmt size={30} />, run: 'gpmc.msc' },
+  { key: 'inetmgr', os: 'server', role: 'IIS', label: 'Menedżer internetowych usług informacyjnych (IIS)', icon: <IcMgmt size={30} />, run: 'inetmgr' },
   { key: 'edge', label: 'Microsoft Edge', icon: <IcEdge size={30} />, run: 'msedge' },
   { key: 'explorer', label: 'Eksplorator plików', icon: <IcFolder size={30} />, run: 'explorer' },
   { key: 'settings', label: 'Ustawienia', icon: <IcSettings size={30} />, run: 'ms-settings:' },
@@ -367,9 +378,12 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
         srvmgr: ['srvmgr'],
         aduc: ['aduc'],
         dhcpmgmt: ['dhcpmgmt'],
+        dnsmgmt: ['dnsmgmt'],
+        gpmc: ['gpmc'],
+        inetmgr: ['inetmgr'],
       }
       if (key === 'restart') return restart()
-      if (['srvmgr', 'aduc', 'dhcpmgmt'].includes(key) && !isServer(stateRef.current)) return
+      if (SERVER_KEYS.includes(key) && !isServer(stateRef.current)) return
       if (key.startsWith('mmc:')) return open('mmcstub', key.slice(4))
       const m = map[key]
       if (m) open(m[0], m[1])
@@ -390,7 +404,7 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
       if (low === 'notepad' || low.startsWith('notepad ')) return open('notepad', c.slice(7).trim().replace(/^"|"$/g, '') || undefined), true
       if (/^(https?:\/\/|www\.)/i.test(c) || /^\d{1,3}(\.\d{1,3}){3}(\/.*)?$/.test(c)) return open('edge'), true
       const g = GUI_CMDS[low] ?? GUI_CMDS[c.toLowerCase()] ?? (low.startsWith('control ') ? GUI_CMDS[low.slice(8).trim()] : undefined)
-      if (g && ['srvmgr', 'aduc', 'dhcpmgmt'].includes(g) && !srvMode) return false
+      if (g && SERVER_KEYS.includes(g) && !srvMode) return false
       if (g) return launch(g), true
       if (low === 'ms-settings:network-status') return open('settings', 'net'), true
       if (low.startsWith('ms-settings:')) return open('settings', 'system'), true
@@ -839,7 +853,7 @@ function StartMenu({
   browser: boolean
   compact: boolean
 }) {
-  const apps = START_APPS.filter((a) => (browser || a.key !== 'edge') && (!a.os || (server && (!a.role || hasRole(server, a.role)))))
+  const apps = START_APPS.filter((a) => (browser || a.key !== 'edge') && (!a.os || (server && (!a.role || (hasRole(server, a.role) || srv(server).features.includes(a.role))))))
   const ql = q.trim().toLowerCase()
   const matches = ql ? apps.filter((a) => a.label.toLowerCase().includes(ql) || a.run.toLowerCase().startsWith(ql)) : []
   const cmdHit = ql && (GUI_CMDS[ql] || ['cmd', 'powershell', 'control'].includes(ql) || /^\d{1,3}(\.\d{1,3}){3}$/.test(ql) || /^https?:\/\//.test(ql))

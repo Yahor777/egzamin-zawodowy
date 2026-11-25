@@ -7,20 +7,20 @@ import { IcCheck, IcFolder, IcGroup, IcMgmt, IcUser, IcUsers, IcWarn } from './i
 import { adOf, BUILTIN_CONTAINERS, dhcpOf, fmtLease, initialAd, passwordError, scopeError, scopeId, srv, withSrv } from './server'
 import { IpInput, useMsg, usePc, type MenuItem, type WinProps } from './ui'
 
-type Node = { id: string; label: string; icon?: ReactNode; depth: number }
+export type Node = { id: string; label: string; icon?: ReactNode; depth: number }
 
-const Btn = ({ children, onClick, disabled, primary }: { children: ReactNode; onClick?: () => void; disabled?: boolean; primary?: boolean }) => (
+export const Btn = ({ children, onClick, disabled, primary }: { children: ReactNode; onClick?: () => void; disabled?: boolean; primary?: boolean }) => (
   <button className={`w-btn ${primary ? 'primary' : ''}`} onClick={onClick} disabled={disabled}>
     {children}
   </button>
 )
-const Field = ({ label, children }: { label: string; children: ReactNode }) => (
+export const Field = ({ label, children }: { label: string; children: ReactNode }) => (
   <label className="w-field row sv-f">
     {label}
     {children}
   </label>
 )
-const Chk = ({ on, onChange, children }: { on: boolean; onChange: (v: boolean) => void; children: ReactNode }) => (
+export const Chk = ({ on, onChange, children }: { on: boolean; onChange: (v: boolean) => void; children: ReactNode }) => (
   <label className="w-check">
     <input type="checkbox" checked={on} onChange={(e) => onChange(e.target.checked)} />
     <span>{children}</span>

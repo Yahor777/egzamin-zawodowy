@@ -161,6 +161,109 @@ export interface ServerState {
   domain?: { name: string; netbios: string; level: string }
   dhcp?: { authorized: boolean; scopes: DhcpScope[] }
   ad?: { ous: AdOu[]; users: AdUser[]; groups: AdGroup[] }
+  /** DNS server (dnsmgmt.msc); missing = defaults derived from the domain */
+  dns?: DnsState
+  /** Group Policy (gpmc.msc); missing = Default Domain Policy + Default Domain Controllers Policy */
+  gpo?: GpoState
+  /** IIS (inetmgr); missing = Default Web Site + default pools */
+  iis?: IisState
+}
+
+export interface DnsRecord {
+  /** relative owner name; '@' = same as the zone */
+  name: string
+  type: 'A' | 'AAAA' | 'CNAME' | 'MX' | 'PTR' | 'NS' | 'SOA' | 'SRV' | 'TXT'
+  data: string
+  pref?: number
+  /** missing = static; otherwise a dynamic-update timestamp */
+  ts?: string
+}
+export interface DnsZone {
+  name: string
+  reverse?: boolean
+  /** stored in AD (Active Directory-integrated) */
+  ad: boolean
+  scope?: string
+  dynamic: 'none' | 'secure' | 'nonsecure'
+  records: DnsRecord[]
+}
+export interface DnsState {
+  zones: DnsZone[]
+  forwarders: string[]
+}
+
+export interface GpoVal {
+  state: 'enabled' | 'disabled'
+  v?: Record<string, string>
+}
+export interface GpoDrive {
+  action: 'C' | 'R' | 'U' | 'D'
+  path: string
+  label: string
+  letter: string
+  reconnect: boolean
+}
+export interface GpoScript {
+  name: string
+  params: string
+}
+export interface Gpo {
+  id: string
+  name: string
+  /** policy id → value; missing = Nie skonfigurowano */
+  settings: Record<string, GpoVal>
+  drives: GpoDrive[]
+  /** startup | shutdown | logon | logoff */
+  scripts: Record<string, GpoScript[]>
+  /** security filtering */
+  filter: string[]
+  /** GPO status text: enabled / disabled sides */
+  created: string
+}
+export interface GpoLink {
+  gpo: string
+  /** 'domain' or 'ou:<name>' */
+  target: string
+  enabled: boolean
+  enforced: boolean
+}
+export interface GpoState {
+  gpos: Gpo[]
+  links: GpoLink[]
+  next: number
+}
+
+export interface IisBinding {
+  type: 'http' | 'https' | 'ftp'
+  ip: string
+  port: number
+  host: string
+}
+export interface IisPool {
+  name: string
+  clr: string
+  pipeline: 'Zintegrowany' | 'Klasyczny'
+  running: boolean
+}
+export interface IisSite {
+  id: number
+  name: string
+  kind: 'http' | 'ftp'
+  pool: string
+  path: string
+  bindings: IisBinding[]
+  running: boolean
+  docs: string[]
+  dirBrowse: boolean
+  auth: { anonymous: boolean; basic: boolean; windows: boolean }
+  /** FTP authorization rules */
+  rules?: { who: string; perm: string }[]
+  ssl?: string
+}
+export interface IisState {
+  pools: IisPool[]
+  sites: IisSite[]
+  next: number
 }
 
 export interface PcState {

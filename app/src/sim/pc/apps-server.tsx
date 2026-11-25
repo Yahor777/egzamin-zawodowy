@@ -457,13 +457,18 @@ export function AddRoles({ close }: WinProps) {
   }, [started, pct])
 
   const rows = ROLES.flatMap((r) => {
-    if (r.id !== 'FS') return [{ id: r.id, name: r.name, desc: r.desc, indent: 0 }]
+    if (r.id !== 'FS') return [{ id: r.id, name: r.name, desc: r.desc, indent: 0 }, ...(r.sub ?? []).map((s) => ({ id: s.id, name: s.name, desc: s.desc, indent: s.indent }))]
     const cnt = 2 + (r.sub ?? []).filter((s) => !s.def && installed(s.id)).length
     return [{ id: r.id, name: `${r.name} (zainstalowano ${cnt} z 12)`, desc: r.desc, indent: 0 }, ...(r.sub ?? []).map((s) => ({ id: s.id, name: s.name, desc: s.desc, indent: s.indent }))]
   })
   const toggleRole = (id: string) => {
     if (installed(id) || id === 'FS-FileServer-grp') return
     if (selRoles.includes(id)) return setSelRoles(selRoles.filter((x) => x !== id))
+    if (id.startsWith('Web-Ftp')) {
+      // FTP is a service of the IIS role: pull in the role (and its management console) with it
+      if (!installed('IIS') && !selRoles.includes('IIS')) setSelFeat(uniq([...selFeat, 'Web-Mgmt-Console']))
+      return setSelRoles(uniq([...selRoles, ...(installed('IIS') ? [] : ['IIS']), ...(id === 'Web-Ftp-Service' ? ['Web-Ftp-Server'] : []), id]))
+    }
     const r = roleOf(id)
     if (r?.req && !r.req.every((q) => v.features.includes(q.id))) return setAsk(r)
     setSelRoles([...selRoles, id])

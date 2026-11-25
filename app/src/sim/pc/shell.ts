@@ -28,6 +28,7 @@ import {
 } from './model'
 import { cim, systeminfo, wlan, wmic } from './hwcmd'
 import { cmdFiles, cwdOf, expandVars, type BatchRun } from './batch'
+import { serverCmd } from './shell-srv'
 
 export type ShellKind = 'cmd' | 'ps'
 export interface Line {
@@ -812,6 +813,10 @@ export const GUI_CMDS: Record<string, string> = {
   'servermanager.exe': 'srvmgr',
   'dsa.msc': 'aduc',
   'dhcpmgmt.msc': 'dhcpmgmt',
+  'dnsmgmt.msc': 'dnsmgmt',
+  'gpmc.msc': 'gpmc',
+  inetmgr: 'inetmgr',
+  'inetmgr.exe': 'inetmgr',
 }
 
 // ---------- the main entry ----------
@@ -828,6 +833,8 @@ export function exec(ctx: ShellCtx, raw: string): ExecResult {
   const args = t.slice(1)
   const ps = ctx.kind === 'ps'
   const ok = (out: Line[], state = st): ExecResult => ({ out, state })
+  const sr = serverCmd(ctx, t, ps)
+  if (sr) return sr
 
   // GUI tools
   const gui = GUI_CMDS[c0] ?? GUI_CMDS[c] ?? (c === 'start' && args[0] ? GUI_CMDS[args[0].toLowerCase()] : undefined)
@@ -1055,12 +1062,12 @@ function psErr(cmd: string, msg: string, line: string, cat = 'ObjectNotFound', i
   return E(`${cmd} : ${msg}`, 'W wierszu:1 znak:1', `+ ${line}`, `+ ${'~'.repeat(Math.min(line.length, 60))}`, `    + CategoryInfo          : ${cat}: (:) [${cmd}], CimJobException`, `    + FullyQualifiedErrorId : ${id},${cmd}`, '')
 }
 
-function psParams(t: string[]): { pos: string[]; p: Record<string, string> } {
+export function psParams(t: string[]): { pos: string[]; p: Record<string, string> } {
   const pos: string[] = []
   const p: Record<string, string> = {}
   for (let i = 1; i < t.length; i++) {
     const x = t[i]
-    const m = /^-([a-z]+)(?::(.*))?$/i.exec(x)
+    const m = /^-([a-z][a-z0-9]*)(?::(.*))?$/i.exec(x)
     if (m) {
       const key = m[1].toLowerCase()
       if (m[2] !== undefined) p[key] = m[2]
@@ -1075,14 +1082,14 @@ function psParams(t: string[]): { pos: string[]; p: Record<string, string> } {
   return { pos, p }
 }
 
-const psList = (v: string) =>
+export const psList = (v: string) =>
   v
     .replace(/^\(|\)$/g, '')
     .split(',')
     .map((x) => x.trim().replace(/^["']|["']$/g, ''))
     .filter(Boolean)
 
-function table(cols: [string, number][], rows: string[][]): string[] {
+export function table(cols: [string, number][], rows: string[][]): string[] {
   const head = cols.map(([h, w]) => pad(h, w)).join(' ').trimEnd()
   const dash = cols.map(([h, w]) => pad('-'.repeat(h.length), w)).join(' ').trimEnd()
   return ['', head, dash, ...rows.map((r) => r.map((c, i) => pad(c, cols[i][1])).join(' ').trimEnd()), '']

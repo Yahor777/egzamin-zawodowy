@@ -3656,3 +3656,138 @@ textarea.w-input {
   display: block;
   height: auto;
 }
+
+/* ---- Windows Server: DNS / GPO / IIS consoles ---- */
+.sv-lb {
+  border: 1px solid #7a7a7a;
+  background: #fff;
+  overflow: auto;
+  min-height: 40px;
+}
+.sv-lb > div {
+  padding: 2px 6px;
+  cursor: default;
+  white-space: nowrap;
+}
+.sv-lb > div.on {
+  background: var(--w-sel);
+}
+.sv-tabpage {
+  border: 1px solid #d9d9d9;
+  border-top: 0;
+  padding: 8px 10px;
+  min-height: 150px;
+}
+.sv-fillrow {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.sv-fillrow .w-input {
+  flex: 1;
+  min-width: 0;
+}
+.sv-btncol {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.sv-2col {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+.mm-tabs {
+  border-bottom: 1px solid #d9d9d9;
+}
+.mm-pane {
+  padding: 8px 12px;
+  overflow: auto;
+  min-height: 0;
+  flex: 1;
+}
+.mm-pane h3 {
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.mm-desc {
+  border-top: 1px solid #d9d9d9;
+  padding: 6px 10px;
+  font-size: 12px;
+  max-height: 90px;
+  overflow: auto;
+  background: #fafafa;
+  white-space: pre-wrap;
+}
+.mm-col {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+.iis-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px;
+  overflow: auto;
+}
+.iis-tile {
+  width: 104px;
+  min-height: 74px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 4px;
+  text-align: center;
+  background: transparent;
+  border: 1px solid transparent;
+  font-size: 12px;
+  line-height: 1.15;
+}
+.iis-tile:hover {
+  background: var(--w-hover);
+  border-color: #cfe3f7;
+}
+.iis-tile b {
+  font-weight: 400;
+}
+.iis-tile-ic {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+}
+.iis-sec {
+  font-weight: 600;
+  background: #e6eef7;
+  padding: 2px 8px;
+  margin: 4px 0 0;
+  width: 100%;
+}
+.gp-pol {
+  display: grid;
+  gap: 4px;
+}
+.gp-nav {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.gp-radios {
+  min-width: 150px;
+}
+.gp-help {
+  white-space: pre-wrap;
+  max-height: 150px;
+  overflow: auto;
+  border: 1px solid #d0d0d0;
+  padding: 4px 6px;
+  font-size: 12px;
+}
