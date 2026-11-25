@@ -178,7 +178,10 @@ function NetSandbox({ domain = false }: { domain?: boolean }) {
   // panes stay mounted once opened (a tab switch must not reset the terminal / PC); `gen` remounts on reset
   const [opened, setOpened] = useState<ReadonlySet<NetTab>>(() => new Set())
   const [gen, setGen] = useState(0)
-  const update = useCallback((p: Partial<LabSave>) => setS((x) => ({ ...x, ...p })), [setS])
+  const update = useCallback(
+    (p: Partial<LabSave> | ((x: LabSave) => Partial<LabSave>)) => setS((x) => ({ ...x, ...(typeof p === 'function' ? p(x) : p) })),
+    [setS],
+  )
   const st = useStation(NET, s, update)
   const tabs: [NetTab, string][] = [
     ['bench', ru ? 'Стол' : 'Stanowisko'],

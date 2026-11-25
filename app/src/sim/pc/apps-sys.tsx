@@ -1,5 +1,5 @@
 // wf.msc (firewall with advanced security), sysdm.cpl, lusrmgr.msc / compmgmt.msc, Explorer, Run dialog.
-import { useState, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { joinDomain, preJoin } from '../domain'
 import { isServer, srv, withSrv } from './server'
 import type { PcFwRule, PcUser } from '../net'
@@ -1538,6 +1538,7 @@ export function Explorer({ arg = 'thispc', setArg }: WinProps) {
   const api = usePc()
   const [addr, setAddr] = useState('')
   const [msg, show] = useMsg()
+  useEffect(() => setAddr(''), [arg])
   if (isPathArg(arg)) return <FsBrowser arg={arg} setArg={setArg} />
   const goAddr = () => {
     const t = addr.trim()

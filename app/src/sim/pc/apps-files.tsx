@@ -207,7 +207,7 @@ export function ThisPcDrives({ setArg }: { setArg: (a: string) => void }) {
           const on = driveOnline(api.network.bench, st, l)
           const m = maps[l]
           const label = `${parseUnc(m.unc)?.share ?? m.unc} (${l}:)`
-          return tile(l, <span className={`ex-netdrive ${on ? '' : 'off'}`}><IcDrive size={40} />{!on && <i className="ex-x" aria-label="Rozłączono">✕</i>}</span>, label, on ? m.unc : `${m.unc} — rozłączony`, null, () => setArg(`${l}:\\`), !on, [
+          return tile(l, <div className={`ex-netdrive ${on ? '' : 'off'}`}><IcDrive size={40} />{!on && <i className="ex-x" aria-label="Rozłączono">✕</i>}</div>, label, on ? m.unc : `${m.unc} — rozłączony`, null, () => setArg(`${l}:\\`), !on, [
             ...((st.mapped ?? {})[l] ? [{ label: 'Odłącz', onClick: () => api.update((s) => ({ ...s, mapped: Object.fromEntries(Object.entries(s.mapped ?? {}).filter(([k]) => k !== l)) })) }] : []),
           ])
         })}

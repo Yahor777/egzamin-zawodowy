@@ -317,7 +317,11 @@ export function LabRun({ lab, progressKey, back, timer, docs: docsIn, intro_pl, 
     return () => window.removeEventListener('keydown', k)
   }, [sheet])
 
-  const update = useCallback((p: Partial<LabSave>) => setS((x) => ({ ...x, ...p, startedAt: x.startedAt ?? Date.now() })), [])
+  const update = useCallback(
+    (p: Partial<LabSave> | ((x: LabSave) => Partial<LabSave>)) =>
+      setS((x) => ({ ...x, ...(typeof p === 'function' ? p(x) : p), startedAt: x.startedAt ?? Date.now() })),
+    [],
+  )
   const applyAuto = useCallback((p: Partial<LabSave>) => setS((x) => ({ ...x, ...p })), [])
   const hasLaptop = !!s.laptop
   const benchLab = useMemo<BenchLab>(() => ({ ...lab, ports: { ...lab.ports, ...(hasLaptop ? { laptop: ['eth0'] } : {}) } }), [lab, hasLaptop])
@@ -857,7 +861,7 @@ export function PcTab({
   pcKey: 'pc' | 'laptop' | 'server'
   s: LabSave
   st: Station
-  update: (p: Partial<LabSave>) => void
+  update: (p: Partial<LabSave> | ((x: LabSave) => Partial<LabSave>)) => void
   printer?: { ip: string; prefix: number }
   view?: PcView
   onView?: (v: PcView) => void
@@ -880,7 +884,7 @@ export function PcTab({
         ping: (a, ip) => canPing(model, `${pcKey}:${a.id}`, ip),
         link: (a) => linkUp(model, `${pcKey}:${a.id}`),
         wifi: { scan: () => wifiScan(model), connect: (ssid, password) => wifiCheck(model, ssid, password) },
-        bench: { model, key: pcKey, setServer: (f) => update({ server: f(s.server!) }) },
+        bench: { model, key: pcKey, setServer: (f) => update((x) => ({ server: f(x.server!) })) },
       }}
       browser={() => (
         <Browser st={st} pcKey={pcKey} pc={pc} router={s.router} switch={s.switch} printer={printer} onRouter={st.setRouter} onSwitch={st.setSwitch} memKey={memKey} />

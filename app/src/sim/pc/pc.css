@@ -3814,6 +3814,7 @@ textarea.w-input {
   color: #666;
 }
 .ex-netdrive {
+  flex: none;
   position: relative;
   display: inline-flex !important;
   width: 40px !important;

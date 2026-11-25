@@ -112,7 +112,7 @@ export function remoteFileCmd(ctx: ShellCtx, c: string, args: string[], rest: st
       if (!ls.ok) return ok(L(ls.code === 3 ? 'Nie można odnaleźć pliku' : ls.msg))
       const items = ls.items.filter((x) => !pat || pat.test(x.name))
       if (args.some((a) => /^\/b$/i.test(a))) return ok(L(...items.map((x) => x.name)))
-      return ok(dirOut(dirLoc.path.replace(/\\$/, '') || dirLoc.path, items))
+      return ok(dirOut(dirLoc.path.length > 3 ? dirLoc.path.replace(/\\$/, '') : dirLoc.path, items))
     }
     case 'type':
     case 'cat':
