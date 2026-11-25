@@ -276,6 +276,7 @@ async function boot() {
         firstOutput = false
         const ms = Math.round(performance.now() - t0)
         window.__vmBootMs = ms
+        markBooting(false)
         console.log(`[vm] shell ready after ${ms} ms`)
         clearInterval(timer)
         statusEl.hidden = true
@@ -365,15 +366,58 @@ async function dropOldOverlays(current) {
   }
 }
 
+// Phones: iOS Safari gives one tab too little memory for the VM and kills the page
+// ("повторно возникла проблема"). Don't auto-boot there, and never crash-loop.
+const BOOT_FLAG = 'egz-vm-booting'
+function isPhone() {
+  const ua = navigator.userAgent
+  const ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+  const small = 'ontouchstart' in window && Math.min(screen.width, screen.height) < 700
+  return ios || small
+}
+function phoneNotice(crashed) {
+  const why = crashed
+    ? 'Прошлый запуск не завершился: браузер закрыл страницу, скорее всего из‑за нехватки памяти.'
+    : 'На iPhone Safari даёт одной вкладке слишком мало памяти для виртуальной машины и закрывает страницу.'
+  fail(
+    why +
+      ' Linux на телефоне — в нашем <a href="../#/sim/linux">симуляторе Ubuntu</a> (те же команды, netplan, DHCP, sudo).' +
+      ' Настоящий Debian открывай на компьютере (Chrome, Edge, Firefox).' +
+      ' <a href="?force=1">Всё равно попробовать</a>'
+  )
+}
+function markBooting(on) {
+  try {
+    if (on) localStorage.setItem(BOOT_FLAG, String(Date.now()))
+    else localStorage.removeItem(BOOT_FLAG)
+  } catch {
+    /* ignore */
+  }
+}
+
 async function main() {
   timer = setInterval(render, 1000)
+  const force = new URLSearchParams(location.search).has('force')
+  let crashed = false
+  try {
+    crashed = !!localStorage.getItem(BOOT_FLAG)
+  } catch {
+    /* ignore */
+  }
+  if (!force && (isPhone() || crashed)) {
+    markBooting(false)
+    phoneNotice(crashed)
+    return
+  }
   if (!(await ensureIsolated())) return
   if (!initTerminal()) return
   markIntroSeen()
+  markBooting(true)
   try {
     await boot()
   } catch (e) {
     console.error(e)
+    markBooting(false)
     fail('Ошибка: ' + String(e).replace(/</g, '&lt;') + '.' + FALLBACK)
   }
 }

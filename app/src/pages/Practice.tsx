@@ -115,7 +115,7 @@ export function Practice() {
         <a className="list-row" href={`${base}vm/`}>
           <span className="lr-main">
             <span className="lr-title">{ru ? 'Настоящий Linux в браузере' : 'Prawdziwy Linux w przeglądarce'}</span>
-            <span className="lr-sub">{ru ? 'Виртуальная машина: настоящие команды и файлы (грузится дольше)' : 'Maszyna wirtualna'}</span>
+            <span className="lr-sub">{ru ? 'Настоящий Debian — только на компьютере (на iPhone не хватает памяти Safari)' : 'Maszyna wirtualna — tylko na komputerze'}</span>
           </span>
           <Icon name="chevron" size={18} />
         </a>
