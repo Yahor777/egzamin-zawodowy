@@ -13,6 +13,7 @@ import {
 import { vcopy, vdelete, vjoin, vlist, vmkdir, vwrite, type FsEnv, type VErr } from './smb-vfs'
 import { baseName, fileKey, fileSize, isDir, parentOf, resolvePath } from './fs'
 import { cDrive } from './hwcmd'
+import { plNum } from '../hw'
 import { IcChevron, IcDrive, IcFolder, IcGroup, IcPc, IcSearch, IcUser } from './icons'
 import { Act, ListView, Mmc } from './apps-sys'
 import { isServer, srv } from './server'
@@ -20,7 +21,6 @@ import { Btn, Chk, OkCancel, Radio, Sel, SvModal, type Node } from './sv-common'
 import { Buttons, Tabs, useLongPress, useMsg, usePc, type MenuItem, type WinProps } from './ui'
 
 const low = (s: string) => s.toLowerCase()
-const plNum = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
 
 // ================================================================== path helpers
 /** Explorer location → normalised path ('C:\' · 'Z:\dir' · '\\host\share\dir' · '\\host') */
@@ -198,7 +198,7 @@ export function ThisPcDrives({ setArg }: { setArg: (a: string) => void }) {
     <>
       <h3 className="ex-h">Urządzenia i dyski</h3>
       <div className="ex-grid">
-        {tile('C', <IcDrive size={40} />, 'Dysk lokalny (C:)', `${plNum(drive.free * 10 / 10)} GB wolnych z ${drive.size} GB`.replace(/\./, ','), Math.round(100 - (100 * drive.free) / drive.size), () => setArg('C:\\'))}
+        {tile('C', <IcDrive size={40} />, 'Dysk lokalny (C:)', `${plNum(drive.free, 1)} GB wolnych z ${drive.size} GB`, Math.round(100 - (100 * drive.free) / drive.size), () => setArg('C:\\'))}
         {d && tile('D', <IcDrive size={40} />, 'Dysk lokalny (D:)', '19,6 GB wolnych z 20,0 GB', 2, () => setArg('D:\\'))}
       </div>
       <h3 className="ex-h">Lokalizacje sieciowe</h3>

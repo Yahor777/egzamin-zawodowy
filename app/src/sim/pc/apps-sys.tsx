@@ -28,11 +28,9 @@ import {
 import { addToGroup, addUser, deleteUser, ECHO_RULE, echoRuleOn, findGroup, findUser, fwProfiles, groupsOf, protoLabel, removeFromGroup, userGroups, validUserName, withFw, withGroups } from './model'
 import { hostnameError } from './settings'
 import { Devmgmt } from './apps-hw'
-import { cDrive } from './hwcmd'
 import { FsBrowser, isPathArg, normPath, ThisPcDrives, thisPcCount } from './apps-files'
 import { HOME } from './fs'
 import { fpsOn } from './smb'
-import { plNum } from '../hw'
 import { Buttons, Group, Tabs, useLongPress, useMsg, usePc, type MenuItem, type WinProps } from './ui'
 
 // ---------------- MMC shell ----------------
@@ -137,6 +135,7 @@ const BUILTIN_OUT: [string, string, string, boolean, string, string?][] = [
   ['Udostępnianie plików i drukarek (SMB — ruch wychodzący)', 'Udostępnianie plików i drukarek', 'Wszystkie', false, 'tcp', '445'],
 ]
 
+const SMB_IN = 'Udostępnianie plików i drukarek (SMB — ruch przychodzący)'
 // toggles of the decorative built-in rules (not needed by the labs) survive while the page is open
 const localToggles = new Map<string, boolean>()
 
@@ -144,7 +143,7 @@ function useRules(dir: 'in' | 'out') {
   const api = usePc()
   const [, force] = useState(0)
   const st = api.state
-  const built = (dir === 'in' ? BUILTIN_IN : BUILTIN_OUT).map(([name, group, profile, en, protocol, ports]) => ({ name, group, profile, enabled: localToggles.get(name) ?? en, action: 'allow' as const, protocol, ports }))
+  const built = (dir === 'in' ? BUILTIN_IN : BUILTIN_OUT).map(([name, group, profile, en, protocol, ports]) => ({ name, group, profile, enabled: name === SMB_IN && isServer(st) ? fpsOn(st) : (localToggles.get(name) ?? en), action: 'allow' as const, protocol, ports }))
   const rules: Rule[] = ([
     ...(dir === 'in' ? [{ name: ECHO_RULE, group: 'Udostępnianie plików i drukarek', profile: 'Wszystkie', enabled: echoRuleOn(st), action: 'allow' as const, protocol: 'icmpv4', echo: true }] : []),
     ...built,
@@ -154,6 +153,7 @@ function useRules(dir: 'in' | 'out') {
   ] as Rule[]).sort((a, b) => (!!a.custom === !!b.custom ? a.name.localeCompare(b.name, 'pl') : a.custom ? -1 : 1))
   const setEnabled = (r: Rule, on: boolean) => {
     if (r.echo) api.update((s) => withFw(s, { fwEchoRule: on }))
+    else if (r.name === SMB_IN && isServer(st)) api.update((s) => withSrv(s, (x) => ({ ...x, fps: on })))
     else if (r.custom) api.update((s) => withFw(s, { fwRules: (s.fwRules ?? []).map((x) => (x.name === r.name && x.dir === dir ? { ...x, enabled: on } : x)) }))
     else {
       localToggles.set(r.name, on)
