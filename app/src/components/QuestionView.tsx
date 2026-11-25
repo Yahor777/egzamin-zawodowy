@@ -6,6 +6,7 @@ import { shuffle } from '../lib/bank'
 import { Icon } from './Icon'
 import { RichText } from './RichText'
 import { AiPanel } from './AiPanel'
+import { ReportButton } from './ReportIssue'
 
 const LETTERS = ['A', 'B', 'C', 'D']
 
@@ -117,6 +118,9 @@ export function QuestionView({ q, selected, onSelect, reveal, shuffleAnswers = t
       )}
       {reveal && q.doubt && <p className="hint">{lang === 'ru' ? 'Возможная неточность в ключе CKE: ' : 'Możliwa nieścisłość w kluczu CKE: '}{q.doubt}</p>}
       {reveal && showMeta && <AiPanel q={q} selected={selected} />}
+      <div className="q-report">
+        <ReportButton info={{ kind: 'question', item: q.id }} />
+      </div>
     </div>
   )
 }

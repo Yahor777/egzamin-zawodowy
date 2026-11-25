@@ -103,7 +103,7 @@ export function buildPlan(d: PathData, p: PathState, practice: PracticeState, to
   const cut = new Set(p.cut)
   const ord = (s: Step) => d.order.get(s.id) ?? 0
   const optional = (s: Step) => !!s.optional || !s.scheduled_date
-  const pool = d.steps.filter((s) => d.moduleOf.get(s.id)?.id !== 'sr-reviews' || true).sort((a, b) => ord(a) - ord(b))
+  const pool = [...d.steps].sort((a, b) => ord(a) - ord(b))
   const remaining = pool.filter((s) => !isDone(p, s.id) && !cut.has(s.id))
   const doneToday = d.steps
     .filter((s) => isDone(p, s.id) && p.steps[s.id]?.done && dayStr(new Date(p.steps[s.id].done!)) === today)
@@ -212,7 +212,7 @@ export function buildPlan(d: PathData, p: PathState, practice: PracticeState, to
   }
 
   // ---- foundations + extras, packed into what the pinned days leave
-  const queue = remaining.filter((s) => !isSimStep(s) && !(optional(s) && !isExtra(s) && !s.optional)) // core first
+  const queue = remaining.filter((s) => !isSimStep(s))
   const core = queue.filter((s) => !isExtra(s))
   const extras = queue.filter(isExtra)
   const q = [...core, ...extras]

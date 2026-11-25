@@ -10,7 +10,6 @@ const dict = {
   tools: { pl: 'Trenażery', ru: 'Тренажёры' },
   settings: { pl: 'Ustawienia', ru: 'Настройки' },
   daysLeft: { pl: 'dni do egzaminu pisemnego', ru: 'дней до письменного экзамена' },
-  examDateNote: { pl: 'Sesja ZIMA 2027: część pisemna 7–13 stycznia', ru: 'Сессия ZIMA 2027: письменная часть 7–13 января' },
   mastered: { pl: 'opanowane', ru: 'выучено' },
   learning: { pl: 'w trakcie', ru: 'в процессе' },
   notSeen: { pl: 'nowe', ru: 'новые' },

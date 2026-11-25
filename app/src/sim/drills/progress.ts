@@ -81,6 +81,25 @@ export function usePractice(): PracticeState {
 }
 export const getPractice = () => state
 
+/** Merge practice scores of another device: per item the later check wins, the best score is the higher one. */
+export function mergePractice(inc: PracticeState): boolean {
+  if (!inc || inc.v !== 1 || typeof inc.items !== 'object' || inc.items === null) return false
+  const items = { ...state.items }
+  for (const [k, it] of Object.entries(inc.items)) {
+    if (!it || typeof it !== 'object' || typeof it.best !== 'number') continue
+    const cur = items[k]
+    if (!cur) items[k] = it
+    else {
+      const win = (it.last ?? 0) > (cur.last ?? 0) ? it : cur
+      items[k] = { ...win, best: Math.max(cur.best, it.best), tries: Math.max(cur.tries ?? 0, it.tries ?? 0), seed: win.seed ?? cur.seed }
+    }
+  }
+  const days = { ...state.days }
+  for (const [d, n] of Object.entries(inc.days ?? {})) if (typeof n === 'number') days[d] = Math.max(days[d] ?? 0, n)
+  save({ ...state, items, days })
+  return true
+}
+
 export const dayStr = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 export const parseDay = (s: string) => {
   const [y, m, d] = s.split('-').map(Number)

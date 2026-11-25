@@ -1969,3 +1969,156 @@ html.phone .gloss-row {
 html.phone body {
   font-size: 17px;
 }
+
+/* report an error */
+.report-btn {
+  min-height: 40px;
+  padding: 8px 0;
+  color: var(--ink-2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-size: 0.95rem;
+}
+.report-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgb(0 0 0 / 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.report-modal {
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 18px;
+  width: 100%;
+  max-width: 520px;
+  max-height: 100%;
+  overflow: auto;
+  display: grid;
+  gap: 12px;
+}
+.report-modal h2 {
+  margin: 0;
+}
+.report-modal textarea {
+  width: 100%;
+}
+.report-modal .report-meta {
+  word-break: break-all;
+}
+a.btn.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* settings: exam dates */
+.exam-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+.check-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: 44px;
+  padding: 6px 0;
+}
+.check-row input {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  margin-top: 2px;
+}
+.warn-text {
+  color: var(--bad);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* ---------- phone floor: tap targets >= 40px, text >= 14px (audit: docs/AUDIT.md) ----------
+   html.phone is set in index.html (touch device with a small screen). Diagram labels,
+   the Linux terminal and simulated device screens keep their own scale on purpose. */
+html.phone .brand,
+html.phone .back-link,
+html.phone .text-btn,
+html.phone .hint-box > summary,
+html.phone .bd-note summary,
+html.phone .bd-panel > summary {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+html.phone .text-btn {
+  padding-inline: 2px;
+}
+html.phone .link-inline {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+}
+html.phone .btn.small,
+html.phone .chip-btn,
+html.phone .lang-switch button,
+html.phone .cmd-input {
+  min-height: 40px;
+}
+html.phone .icon-btn {
+  width: 44px;
+  height: 44px;
+}
+html.phone .grid-nav {
+  grid-template-columns: repeat(8, 1fr);
+}
+html.phone .grid-nav .cell {
+  min-height: 40px;
+  font-size: 0.875rem;
+}
+html.phone .lt-fullbtn {
+  width: 40px;
+  height: 40px;
+}
+html.phone .lt-keys button {
+  min-width: 40px;
+  height: 40px;
+}
+html.phone small,
+html.phone .mod-n,
+html.phone .badge,
+html.phone .status-tag,
+html.phone .status-tag.st-new,
+html.phone .tabbar button,
+html.phone .bd-state,
+html.phone .lock-hint,
+html.phone .bd-cable-name small {
+  font-size: 0.875rem;
+}
+html.phone :not(pre) > code {
+  font-size: 0.875rem;
+}
+html.phone .bl-tags span,
+html.phone .bd-swatch,
+html.phone .bd-port .pl,
+html.phone .plug {
+  font-size: 0.875rem;
+}
+html.phone .q-tools .text-btn,
+html.phone .lang-switch button {
+  min-width: 44px;
+  justify-content: center;
+}
+/* countdown cards: the number above the label, so "до практического" fits at 390px */
+html.phone .countdown > div {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+html.phone .countdown span {
+  font-size: 0.875rem;
+  overflow-wrap: anywhere;
+}

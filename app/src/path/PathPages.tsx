@@ -2,6 +2,7 @@
 // drill / lab runner of a step.
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { Icon } from '../components/Icon'
+import { ReportButton } from '../components/ReportIssue'
 import { Markdown } from '../components/Markdown'
 import { pickLearn, shuffle, stats, useBank } from '../lib/bank'
 import { useContent } from '../lib/content'
@@ -18,7 +19,8 @@ import { clearLabState, DocsView, freshState, LabRun, labDocs } from '../sim/lab
 import type { Lab } from '../sim/labs/labs'
 import { usePathData, type PathData } from './data'
 import { HintLadder, SolutionView } from './HintLadder'
-import { addDay, buildPlan, isDone, proposeCut, todayStr, type PlanInfo } from './plan'
+import { daysUntil, useExam } from '../lib/settings'
+import { addDay, buildPlan, isDone, proposeCut, todayStr, type DayKind, type PlanInfo } from './plan'
 import { actResultKey, actStatus, activities, checkTopics, readings, type Activity, type ActStatus, type Reading } from './resolve'
 import { extractSection, relatedQuestions, stripTitle } from './sections'
 import {
@@ -36,6 +38,23 @@ const KIND: Record<StepKind, { ru: string; pl: string }> = {
   quiz: { ru: 'Тест', pl: 'Test' },
   checkpoint: { ru: 'Контрольная', pl: 'Sprawdzian' },
   'full-sheet': { ru: 'Полный лист', pl: 'Pełny arkusz' },
+}
+
+const PHASE: Record<DayKind, { ru: string; pl: string }> = {
+  learn: { ru: 'Основы', pl: 'Podstawy' },
+  cycle: { ru: 'Повторение', pl: 'Powtórka' },
+  sim: { ru: 'Экзамен-тренировка', pl: 'Trening egzaminacyjny' },
+  light: { ru: 'Лёгкий день', pl: 'Lekki dzień' },
+  written: { ru: 'Письменный экзамен', pl: 'Egzamin pisemny' },
+  off: { ru: 'Выходной', pl: 'Wolne' },
+}
+const PHASE_HINT: Record<DayKind, { ru: string; pl: string }> = {
+  learn: { ru: 'идём по модулям по порядку', pl: 'moduły po kolei' },
+  cycle: { ru: 'новый материал закончился: циклы повторения заданий', pl: 'powtórki zadań' },
+  sim: { ru: 'полные листы под таймером и пробные письменные', pl: 'pełne arkusze na czas' },
+  light: { ru: 'без нового: короткое повторение, отдых', pl: 'bez nowego, odpoczynek' },
+  written: { ru: '', pl: '' },
+  off: { ru: '', pl: '' },
 }
 
 export const fmtDay = (d: string, lang: Lang, weekday = true) =>
@@ -86,9 +105,10 @@ function usePlan(): [PathData | null, PlanInfo | null, boolean] {
   const [d, err] = usePathData()
   const p = usePath()
   const pr = usePractice()
+  const exam = useExam()
   const today = todayStr()
   useMigration(d)
-  const plan = useMemo(() => (d ? buildPlan(d, p, pr, today) : null), [d, p, pr, today])
+  const plan = useMemo(() => (d ? buildPlan(d, p, pr, today, exam) : null), [d, p, pr, today, exam])
   return [d, plan, err]
 }
 
@@ -141,12 +161,11 @@ export function PathToday() {
   const first = pending[0]?.step
   const allDone = plan.todaySteps.length > 0 && pending.length === 0
   const started = first && p.steps[first.id]
-  const behind = plan.overdue.length > 0
-  const need = Math.max(plan.overflowMinutes, behind ? plan.overdueMinutes : 0)
+  const behind = plan.overflow.length > 0
+  const need = plan.overflowMinutes
   const proposal = need > 0 || p.cut.length ? proposeCut(d, p, need) : null
   const doneMin = plan.todaySteps.filter((x) => x.doneToday || isDone(p, x.step.id)).reduce((a, x) => a + x.step.est_minutes, 0)
   const offDay = plan.todayBudget === 0
-  const end = d.cur.calendar.end
 
   return (
     <section className="card today-path">
@@ -154,22 +173,20 @@ export function PathToday() {
         <h1>{ru ? 'Сегодня' : 'Dziś'}</h1>
         <span className="tp-date">{fmtDay(plan.today, lang)}</span>
       </div>
-      {plan.today < d.cur.calendar.start && <p className="hint">{ru ? `План начинается ${fmtDay(d.cur.calendar.start, lang)}. Можно начать раньше.` : 'Plan zaczyna się później.'}</p>}
-      {plan.today > end && <p className="hint">{ru ? 'Календарь закончился. Оставшиеся шаги — по желанию.' : 'Kalendarz się skończył.'}</p>}
+      {plan.over ? (
+        <p className="hint">{ru ? 'Практический экзамен уже начался. Удачи! Даты можно поменять в настройках.' : 'Egzamin praktyczny już trwa. Daty zmienisz w ustawieniach.'}</p>
+      ) : (
+        <p className="tp-phase">
+          <span className={`phase-tag ph-${plan.todayKind}`}>{PHASE[plan.todayKind][ru ? 'ru' : 'pl']}</span> <small>{PHASE_HINT[plan.todayKind][ru ? 'ru' : 'pl']}</small>
+        </p>
+      )}
 
       {behind && (
         <div className="tp-behind">
           <p>
-            <strong>{ru ? 'Есть долги с прошлых дней' : 'Zaległości'}</strong>: {plan.overdue.length} {ru ? 'шаг.' : 'kroków'}, ≈ {mins(plan.overdueMinutes, ru)}.{' '}
-            {ru ? 'Они стоят первыми, остальное сдвигается вперёд; дни полных листов не двигаются.' : 'Są pierwsze w planie.'}
+            <strong>{ru ? 'До экзамена не всё помещается' : 'Nie wszystko się mieści'}</strong>: {plan.overflow.length} {ru ? 'шаг.' : 'kroków'}, ≈ {mins(plan.overflowMinutes, ru)}.{' '}
+            {ru ? 'Можно добавить время в настройках (минуты в день) или сжать план.' : 'Zwiększ czas dzienny w ustawieniach lub skróć plan.'}
           </p>
-          {plan.overflow.length > 0 && (
-            <p className="hint">
-              {ru
-                ? `Если так и останется, до ${fmtDay(end, lang, false)} не поместится ${plan.overflow.length} шаг. (≈ ${mins(plan.overflowMinutes, ru)}).`
-                : `Nie zmieści się ${plan.overflow.length} kroków.`}
-            </p>
-          )}
           {proposal && proposal.ids.length > 0 && !cutOpen && (
             <button className="text-btn" onClick={() => setCutOpen(true)}>
               {ru ? 'Показать сжатый план' : 'Plan skrócony'}
@@ -215,17 +232,19 @@ export function PathToday() {
       )}
 
       {offDay && !plan.todaySteps.length ? (
-        <p className="tp-empty">{ru ? 'Сегодня по плану выходной.' : 'Dziś wolne.'}</p>
+        <p className="tp-empty">{plan.today === plan.written ? (ru ? 'Сегодня письменный экзамен. Удачи!' : 'Dziś egzamin pisemny. Powodzenia!') : ru ? 'Сегодня по плану выходной.' : 'Dziś wolne.'}</p>
+      ) : !plan.todaySteps.length && plan.reviews.length ? (
+        <p className="tp-empty">{ru ? 'Новых шагов на сегодня нет: повторяем то, что уже делал, в новых вариантах.' : 'Dziś bez nowych kroków: powtórka.'}</p>
       ) : (
         <ol className="tp-steps">
-          {plan.todaySteps.map(({ step, overdue }) => (
+          {plan.todaySteps.map(({ step }) => (
             <StepRow
               key={step.id}
               step={step}
               p={p}
-              meta={overdue && step.scheduled_date ? <em className="sr-late"> · {ru ? `долг с ${fmtDay(step.scheduled_date, lang, false)}` : `z ${fmtDay(step.scheduled_date, lang, false)}`}</em> : null}
             />
           ))}
+          {plan.srMinutes > 0 && (
           <li>
             <button className="step-row sr-written" onClick={() => go('/learn')}>
               <span className="tt-check round" aria-hidden="true" />
@@ -236,9 +255,9 @@ export function PathToday() {
               <Icon name="chevron" size={18} />
             </button>
           </li>
+          )}
         </ol>
       )}
-      {plan.buffer_ru && <p className="hint">{plan.buffer_ru}</p>}
 
       {first ? (
         <button
@@ -263,8 +282,12 @@ export function PathToday() {
 
       {plan.reviews.length > 0 && (
         <div className="tp-reviews">
-          <h2>{ru ? 'Повторить' : 'Powtórka'}</h2>
-          <p className="hint">{ru ? 'Задания, которые пора сделать снова — в новом варианте.' : 'Nowy wariant zadań do powtórki.'}</p>
+          <h2>{plan.weekly ? (ru ? 'Недельная контрольная: повторить' : 'Tygodniowy sprawdzian') : ru ? 'Повторить' : 'Powtórka'}</h2>
+          <p className="hint">
+            {plan.weekly
+              ? ru ? 'Воскресенье: задания последних недель в новом варианте, без подсказок. Начни с самых слабых.' : 'Niedziela: nowe warianty zadań z ostatnich tygodni.'
+              : ru ? 'Задания, которые пора сделать снова — в новом варианте.' : 'Nowy wariant zadań do powtórki.'}
+          </p>
           <ul className="tp-steps">
             {plan.reviews.map((id) => {
               const def = drillById(id)!
@@ -291,23 +314,26 @@ export function PathToday() {
         </div>
       )}
 
-      {plan.upcoming.some((x) => x.steps.length) && (
+      {!plan.over && plan.upcoming.length > 0 && (
         <div className="tp-next">
           <h2>{ru ? 'Дальше' : 'Dalej'}</h2>
           <ul className="plan-list">
-            {plan.upcoming
-              .filter((x) => x.steps.length || x.budget === 0)
-              .slice(0, allDays ? 7 : 3)
-              .map((day) => (
-                <li key={day.date} className={day.steps.some((s) => s.kind === 'full-sheet') ? 'sheet' : ''}>
-                  <span className="pl-date">{fmtDay(day.date, lang)}</span>
-                  <span className="pl-items">{day.steps.length ? day.steps.slice(0, 3).map((s) => title(s, lang)).join(' · ') + (day.steps.length > 3 ? (ru ? ` · и ещё ${day.steps.length - 3}` : ` · +${day.steps.length - 3}`) : '') : <em>{ru ? 'выходной' : 'wolne'}</em>}</span>
-                </li>
-              ))}
+            {plan.upcoming.slice(0, allDays ? 14 : 3).map((day) => (
+              <li key={day.date} className={day.steps.some((s) => s.kind === 'full-sheet') ? 'sheet' : ''}>
+                <span className="pl-date">{fmtDay(day.date, lang)}</span>
+                <span className="pl-items">
+                  {day.steps.length ? (
+                    day.steps.slice(0, 3).map((s) => title(s, lang)).join(' · ') + (day.steps.length > 3 ? (ru ? ` · и ещё ${day.steps.length - 3}` : ` · +${day.steps.length - 3}`) : '')
+                  ) : (
+                    <em>{day.kind === 'off' || day.kind === 'written' ? (day.kind === 'written' ? (ru ? 'письменный экзамен' : 'egzamin pisemny') : ru ? 'выходной' : 'wolne') : PHASE[day.kind][ru ? 'ru' : 'pl']}</em>
+                  )}
+                </span>
+              </li>
+            ))}
           </ul>
           <div className="row between">
             <button className="text-btn" onClick={() => setAllDays(!allDays)}>
-              {allDays ? (ru ? 'Меньше' : 'Mniej') : ru ? 'Неделя вперёд' : 'Tydzień'}
+              {allDays ? (ru ? 'Меньше' : 'Mniej') : ru ? 'Две недели вперёд' : 'Dwa tygodnie'}
             </button>
             <button className="text-btn" onClick={() => go('/path')}>
               {ru ? 'Весь путь' : 'Cała ścieżka'}
@@ -403,6 +429,49 @@ export function PathModules({ compact }: { compact?: boolean }) {
   )
 }
 
+function Timeline() {
+  const lang = useLang()
+  const ru = lang === 'ru'
+  const [d, plan] = usePlan()
+  const exam = useExam()
+  if (!d || !plan) return null
+  const KEYS = { foundation: 'learn', cycle: 'cycle', sim: 'sim', light: 'light' } as const
+  return (
+    <section className="card timeline">
+      <div className="card-head">
+        <h2>{ru ? 'План до экзаменов' : 'Plan do egzaminów'}</h2>
+        <button className="text-btn" onClick={() => go('/settings')}>
+          {ru ? 'Даты и время' : 'Daty i czas'}
+        </button>
+      </div>
+      <ul className="tl-list">
+        {plan.phases.map((ph) => (
+          <li key={ph.key}>
+            <span className="tl-date">
+              {fmtDay(ph.from, lang, false)} – {fmtDay(ph.to, lang, false)}
+            </span>
+            <span className="tl-what">
+              <strong>{PHASE[KEYS[ph.key]][ru ? 'ru' : 'pl']}</strong> <small>{PHASE_HINT[KEYS[ph.key]][ru ? 'ru' : 'pl']}</small>
+            </span>
+          </li>
+        ))}
+        <li className="tl-exam">
+          <span className="tl-date">{fmtDay(exam.written, lang, false)}</span>
+          <span className="tl-what">
+            <strong>{ru ? 'Письменный экзамен' : 'Egzamin pisemny'}</strong> <small>{ru ? `через ${daysUntil(exam.written)} дн.` : `za ${daysUntil(exam.written)} dni`}</small>
+          </span>
+        </li>
+        <li className="tl-exam">
+          <span className="tl-date">{fmtDay(exam.practical, lang, false)}</span>
+          <span className="tl-what">
+            <strong>{ru ? 'Практический экзамен' : 'Egzamin praktyczny'}</strong> <small>{ru ? `через ${daysUntil(exam.practical)} дн.` : `za ${daysUntil(exam.practical)} dni`}</small>
+          </span>
+        </li>
+      </ul>
+    </section>
+  )
+}
+
 export function PathMap() {
   const ru = useLang() === 'ru'
   const p = usePath()
@@ -417,6 +486,7 @@ export function PathMap() {
           ? '14 модулей от устройства экзамена до полных листов под таймером. Каждый шаг: цель, коротко теория, пример, сделай сам, проверка. «К» — контрольная модуля.'
           : '14 modułów: od budowy egzaminu do pełnych arkuszy.'}
       </p>
+      <Timeline />
       <PathModules />
       {p.cut.length > 0 && (
         <p className="hint">
@@ -454,7 +524,7 @@ export function ModulePage({ id }: { id: string }) {
       {ru && <p className="lead">{m.why_ru}</p>}
       <ol className="tp-steps card mod-steps">
         {steps.map((s) => {
-          const when = plan.when.get(s.id) ?? s.scheduled_date
+          const when = plan.when.get(s.id)
           return (
             <StepRow
               key={s.id}
@@ -666,7 +736,7 @@ export function StepPage({ id }: { id: string }) {
     if (todayNext) return todayNext
     const ord = d.order.get(step.id) ?? 0
     return d.steps
-      .filter((s) => s.scheduled_date && !isDone(p, s.id) && s.id !== step.id && !p.cut.includes(s.id))
+      .filter((s) => plan.when.has(s.id) && !isDone(p, s.id) && s.id !== step.id)
       .sort((a, b) => (d.order.get(a.id) ?? 0) - (d.order.get(b.id) ?? 0))
       .find((s) => (d.order.get(s.id) ?? 0) > ord) ?? plan.next
   })()
@@ -708,7 +778,7 @@ export function StepPage({ id }: { id: string }) {
         <h1>{title(step, lang)}</h1>
         <p className="step-meta">
           {KIND[step.kind][lang]} · {mins(step.est_minutes, ru)}
-          {step.scheduled_date && ` · ${ru ? 'по плану' : 'w planie'} ${fmtDay(plan.when.get(step.id) ?? step.scheduled_date, lang, false)}`}
+          {plan.when.get(step.id) && !done && ` · ${ru ? 'по плану' : 'w planie'} ${fmtDay(plan.when.get(step.id)!, lang, false)}`}
           {done && (
             <>
               {' · '}
@@ -716,6 +786,7 @@ export function StepPage({ id }: { id: string }) {
             </>
           )}
         </p>
+        <ReportButton info={{ kind: 'step', item: step.id }} />
       </header>
 
       <section className="step-goal">

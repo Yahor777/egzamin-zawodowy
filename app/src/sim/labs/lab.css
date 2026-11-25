@@ -304,6 +304,8 @@ html:not(.phone) .main > .lab.lab-wide {
   padding: 10px 12px;
   border-top: 1px solid var(--line);
   display: flex;
+  align-items: center;
+  gap: 12px;
 }
 .lp-foot .btn {
   flex: 1;

@@ -81,32 +81,20 @@ export function resetProgress() {
   save()
 }
 
-/** Compact export code so progress can move between phone and PC. */
-export function exportCode(): string {
-  const json = JSON.stringify(state)
-  return btoa(unescape(encodeURIComponent(json)))
-}
-
-export function importCode(code: string): boolean {
-  try {
-    const json = decodeURIComponent(escape(atob(code.trim())))
-    const p = JSON.parse(json) as Progress
-    if (!p || p.v !== 1 || typeof p.cards !== 'object') return false
-    // merge: keep the newer card state per question
-    const cards = { ...state.cards }
-    for (const [id, c] of Object.entries(p.cards)) {
-      if (!cards[id] || cards[id].last < c.last) cards[id] = c
-    }
-    const exams = [...state.exams, ...p.exams]
-      .filter((e, i, a) => a.findIndex((x) => x.at === e.at) === i)
-      .sort((a, b) => a.at - b.at)
-      .slice(-50)
-    state = { v: 1, cards, exams, starred: [...new Set([...state.starred, ...p.starred])] }
-    save()
-    return true
-  } catch {
-    return false
+/** Merge question progress from another device: the newer state of each card wins. */
+export function mergeProgress(p: Progress): boolean {
+  if (!p || p.v !== 1 || typeof p.cards !== 'object' || p.cards === null) return false
+  const cards = { ...state.cards }
+  for (const [id, c] of Object.entries(p.cards)) {
+    if (c && typeof c === 'object' && (!cards[id] || cards[id].last < c.last)) cards[id] = c
   }
+  const exams = [...state.exams, ...(Array.isArray(p.exams) ? p.exams : [])]
+    .filter((e, i, a) => a.findIndex((x) => x.at === e.at) === i)
+    .sort((a, b) => a.at - b.at)
+    .slice(-50)
+  state = { v: 1, cards, exams, starred: [...new Set([...state.starred, ...(Array.isArray(p.starred) ? p.starred : [])])] }
+  save()
+  return true
 }
 
 export type Lang = 'pl' | 'ru'

@@ -21,6 +21,7 @@ import type { DrillLab } from '../drills/kit'
 import { HintLadder, SolutionView } from '../../path/HintLadder'
 import { LABS, labScore, type Lab } from './labs'
 import { buildCtx, buildDhcpServers, defaultServerState, serviceLaptop, type LabSave } from './ctx'
+import { ReportButton } from '../../components/ReportIssue'
 import '../bench/bench.css'
 import './lab.css'
 
@@ -427,6 +428,7 @@ export function LabRun({ lab, progressKey, back, timer, docs: docsIn, intro_pl, 
       }}
       onCheck={doCheck}
       onClose={closePanel}
+      report={<ReportButton info={() => ({ kind: 'task', item: curTaskId ? `${lab.id}#${curTaskId}` : lab.id, tab: curTab })} />}
     />
   )
 
@@ -552,6 +554,7 @@ export function LabRun({ lab, progressKey, back, timer, docs: docsIn, intro_pl, 
                     </button>
                   </>
                 )}
+                <ReportButton info={() => ({ kind: 'task', item: lab.id, tab: curTab })} />
               </div>
             </div>
           </div>
@@ -656,6 +659,7 @@ interface TaskPanelProps {
   onOpenDevice: (d: string) => void
   onCheck: () => void
   onClose: () => void
+  report: ReactNode
 }
 
 /** The task list (current task expanded) or the docs, next to the device that is being worked on. */
@@ -721,6 +725,7 @@ function TaskPanel(p: TaskPanelProps) {
             <button className="btn primary" onClick={p.onCheck}>
               {ru ? 'Проверить' : 'Sprawdź'}
             </button>
+            {p.report}
           </div>
         </>
       )}

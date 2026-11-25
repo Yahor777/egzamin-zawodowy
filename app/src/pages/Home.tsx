@@ -4,38 +4,39 @@ import { plural, useT } from '../lib/i18n'
 import { useLang, useProgress } from '../lib/store'
 import type { ExamRecord } from '../lib/types'
 import { go } from '../router'
+import { daysUntil, getExam, useExam } from '../lib/settings'
+import { parseDay } from '../sim/drills/progress'
 import { PathModules, PathToday } from '../path/PathPages'
 
 const DAY_FORMS = { pl: ['dzień', 'dni', 'dni'] as [string, string, string], ru: ['день', 'дня', 'дней'] as [string, string, string] }
 
-export const EXAM_DATE = new Date('2027-01-07T09:00:00+01:00')
-
+/** days to the written exam (the date is set in Settings) */
 export function daysLeft() {
-  return Math.max(0, Math.ceil((EXAM_DATE.getTime() - Date.now()) / 86400_000))
+  return daysUntil(getExam().written)
 }
 
-export const PRACTICAL_EXAM = new Date('2027-01-15T09:00:00+01:00')
-const until = (d: Date) => Math.max(0, Math.ceil((d.getTime() - Date.now()) / 86400_000))
+const fmt = (day: string, lang: string) => parseDay(day).toLocaleDateString(lang === 'ru' ? 'ru-RU' : 'pl-PL', { day: 'numeric', month: 'short' })
 
 export function Home() {
   const t = useT()
   const lang = useLang()
   const ru = lang === 'ru'
-  const written = daysLeft()
-  const practical = until(PRACTICAL_EXAM)
+  const exam = useExam()
+  const written = daysUntil(exam.written)
+  const practical = daysUntil(exam.practical)
   return (
     <div className="home">
       <div className="countdown" role="group" aria-label={ru ? 'До экзаменов' : 'Do egzaminów'}>
         <div>
           <strong>{written}</strong>
           <span>
-            {plural(lang, written, DAY_FORMS)} {ru ? 'до письменного' : 'do pisemnego'} <small>{ru ? '7–13 янв.' : '7–13 sty'}</small>
+            {plural(lang, written, DAY_FORMS)} {ru ? 'до письменного' : 'do pisemnego'} <small>{fmt(exam.written, lang)}</small>
           </span>
         </div>
         <div>
           <strong>{practical}</strong>
           <span>
-            {plural(lang, practical, DAY_FORMS)} {ru ? 'до практического' : 'do praktycznego'} <small>{ru ? '15–19 янв.' : '15–19 sty'}</small>
+            {plural(lang, practical, DAY_FORMS)} {ru ? 'до практического' : 'do praktycznego'} <small>{fmt(exam.practical, lang)}</small>
           </span>
         </div>
       </div>
@@ -65,6 +66,7 @@ export function TestToday() {
   const ru = lang === 'ru'
   const bank = useBank()
   const p = useProgress()
+  useExam()
   const days = daysLeft()
   const s = bank ? stats(bank, p) : null
   const mistakes = bank ? bank.filter((q) => p.cards[q.id]?.lastWrong).length : 0

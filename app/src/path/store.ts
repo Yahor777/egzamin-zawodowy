@@ -36,17 +36,25 @@ export interface PathState {
   /** result of a step without automatic check (written mock exam, paper run): step id → % */
   self: Record<string, number>
   migratedPractice?: boolean
+  /** 2: the plan is computed at runtime from the exam dates (the old fixed Nov–Jan calendar is gone) */
+  planV?: number
 }
 
 const KEY = 'inf02.path.v1'
-const empty = (): PathState => ({ v: 1, steps: {}, hints: {}, cut: [], extra: {}, self: {} })
+const empty = (): PathState => ({ v: 1, steps: {}, hints: {}, cut: [], extra: {}, self: {}, planV: 2 })
+
+/** Old store (fixed calendar, plan compressed for January): progress stays, the compression is dropped. */
+export function migrate(p: PathState): PathState {
+  if ((p.planV ?? 1) >= 2) return p
+  return { ...p, cut: [], planV: 2 }
+}
 
 function load(): PathState {
   try {
     const raw = localStorage.getItem(KEY)
     if (raw) {
       const p = JSON.parse(raw) as PathState
-      if (p?.v === 1) return { ...empty(), ...p }
+      if (p?.v === 1) return migrate({ ...empty(), ...p, planV: p.planV })
     }
   } catch {
     /* ignore */
@@ -148,4 +156,26 @@ export function migrateOnce(fn: (s: PathState) => PathState) {
 
 export function resetPath() {
   save(empty())
+}
+
+const rank = (r: StepRec) => (r.s === 'started' ? 0 : 1)
+const when = (r: StepRec) => r.done ?? r.at
+
+/** Merge the path progress of another device: a finished step stays finished, the later result wins. */
+export function mergePath(inc: PathState): boolean {
+  if (!inc || inc.v !== 1 || typeof inc.steps !== 'object' || inc.steps === null) return false
+  const steps = { ...state.steps }
+  for (const [id, r] of Object.entries(inc.steps)) {
+    if (!r || typeof r !== 'object' || !['started', 'done', 'skipped'].includes(r.s)) continue
+    const cur = steps[id]
+    if (!cur || rank(r) > rank(cur) || (rank(r) === rank(cur) && when(r) > when(cur))) steps[id] = r
+  }
+  const hints = { ...state.hints }
+  for (const [k, h] of Object.entries(inc.hints ?? {})) if (h && (!hints[k] || hints[k].at < h.at)) hints[k] = h
+  const extra = { ...state.extra }
+  for (const [day, ids] of Object.entries(inc.extra ?? {})) if (Array.isArray(ids)) extra[day] = [...new Set([...(extra[day] ?? []), ...ids])]
+  const self = { ...state.self }
+  for (const [k, v] of Object.entries(inc.self ?? {})) if (typeof v === 'number') self[k] = Math.max(self[k] ?? 0, v)
+  save({ ...state, steps, hints, extra, self, cut: [...new Set([...state.cut, ...(Array.isArray(inc.cut) ? inc.cut : [])])], planV: 2 })
+  return true
 }

@@ -800,3 +800,14 @@ html.phone .cmd-input,
   background: var(--surface);
   color: var(--ink);
 }
+
+/* plan phases and timeline */
+.tp-phase { margin: 0 0 10px; font-size: 14px; color: var(--ink-2); }
+.phase-tag { display: inline-block; padding: 2px 10px; border-radius: 999px; font-weight: 600; font-size: 14px; background: var(--sunken); color: var(--ink); }
+.phase-tag.ph-sim { background: var(--pen-soft); color: var(--pen); }
+.phase-tag.ph-light { background: var(--ok-soft); color: var(--ok); }
+.timeline .tl-list { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 8px; }
+.timeline .tl-list li { display: grid; grid-template-columns: minmax(96px, 150px) 1fr; gap: 10px; font-size: 15px; }
+.timeline .tl-date { color: var(--ink-2); }
+.timeline .tl-what small { color: var(--ink-2); font-size: 14px; display: block; }
+.timeline .tl-exam .tl-what strong { color: var(--pen); }

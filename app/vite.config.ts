@@ -5,6 +5,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 // Relative base so the build works on GitHub Pages (/repo/) and any static host.
 export default defineConfig({
   base: './',
+  define: { __BUILD_TIME__: JSON.stringify(new Date().toISOString()) },
   plugins: [
     react(),
     VitePWA({

@@ -17,7 +17,7 @@ export interface PathData {
 let cache: PathData | null = null
 let pending: Promise<PathData> | null = null
 
-function index(cur: Curriculum): PathData {
+export function index(cur: Curriculum): PathData {
   const steps = cur.modules.flatMap((m) => m.steps)
   const byId = new Map(steps.map((s) => [s.id, s]))
   const moduleOf = new Map<string, Module>()
