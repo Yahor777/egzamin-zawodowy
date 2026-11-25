@@ -3,7 +3,8 @@
 // generators). Content added later plugs in without changes here.
 import { DRILLS, drillById, type DrillDef } from '../sim/drills'
 import { HOWTO } from '../sim/drills/docs'
-import { dKey, lKey, type PracticeState } from '../sim/drills/progress'
+import { dKey, lKey, type ItemProgress, type PracticeState } from '../sim/drills/progress'
+import { sheetIdOfGuide, sKey } from '../sheets/store'
 import { LABS, type Lab } from '../sim/labs/labs'
 import { GENERATORS } from '../lib/generators'
 import { CHEATS } from '../lib/content'
@@ -33,7 +34,7 @@ export type Activity =
   | { kind: 'missing'; key: string; ref: Ref }
   | { kind: 'ack'; key: string }
   /** paper run of a sheet the simulator does not cover: the student enters the % from self-assessment */
-  | { kind: 'self'; key: string }
+  | { kind: 'self'; key: string; /** id of the sheet page with the self-grading checklist (public/content/sheets) */ sheet?: string }
 
 export const isGen = (id: string): id is keyof typeof GENERATORS => id in GENERATORS
 
@@ -142,7 +143,10 @@ export function activities(step: Step): Activity[] {
     if (ts.length && !topics.length) out.push({ kind: 'check', key: 'check', topics: ts, count: 4 })
     if (!out.length) out.push({ kind: 'ack', key: 'ack' })
   }
-  if (step.kind === 'full-sheet' && !out.some((a) => a.kind === 'lab')) out.push({ kind: 'self', key: 'self' })
+  if (step.kind === 'full-sheet' && !out.some((a) => a.kind === 'lab')) {
+    const guide = step.refs.find((r) => r.type === 'practice')
+    out.push({ kind: 'self', key: 'self', sheet: (guide && sheetIdOfGuide(guide.id)) || undefined })
+  }
   if (step.kind === 'demo' && !out.length) out.push({ kind: 'ack', key: 'ack' })
   if (!out.length) out.push({ kind: 'ack', key: 'ack' })
   return out
@@ -204,13 +208,21 @@ export function actStatus(a: Activity, step: Step, rec: StepRec | undefined, pra
   const since = rec?.at ?? Infinity
   const pass = step.review?.pass_threshold_pct ?? step.pass_threshold_pct ?? 75
   if (a.kind === 'drill' || a.kind === 'lab') {
-    const it = practice.items[a.key]
-    if (!it || !it.tries) return { ok: false, tried: false, pct: null }
+    // a lab sheet also counts the combined result of its self-assessment page (simulator + criteria ticked by hand)
+    const its = [practice.items[a.key], a.kind === 'lab' ? practice.items[sKey(a.lab.id)] : undefined].filter((x): x is ItemProgress => !!x && x.tries > 0)
+    if (!its.length) return { ok: false, tried: false, pct: null }
     if (a.fresh) {
-      if (it.last < since) return { ok: false, tried: false, pct: null }
-      return { ok: (it.lastPct ?? 0) >= pass || (it.passAt ?? 0) >= since, tried: true, pct: it.lastPct }
+      const cur = its.filter((it) => it.last >= since)
+      if (!cur.length) return { ok: false, tried: false, pct: null }
+      return { ok: cur.some((it) => (it.lastPct ?? 0) >= pass || (it.passAt ?? 0) >= since), tried: true, pct: Math.max(...cur.map((it) => it.lastPct ?? 0)) }
     }
-    return { ok: it.best >= 75, tried: true, pct: it.best }
+    const best = Math.max(...its.map((it) => it.best))
+    return { ok: best >= 75, tried: true, pct: best }
+  }
+  if (a.kind === 'self' && a.sheet) {
+    // paper run on the sheet page: its saved result counts, if made since the step was started
+    const it = practice.items[sKey(a.sheet)]
+    if (it && it.tries > 0 && it.last >= since) return { ok: (it.lastPct ?? 0) >= pass, tried: true, pct: it.lastPct }
   }
   if (a.kind === 'exam') {
     const e = [...prog.exams].reverse().find((x) => x.at >= since)

@@ -18,6 +18,8 @@ export const ROUTER_MENU: MenuItem[] = [
     children: [
       { id: 'wan', label: 'WAN' },
       { id: 'lan', label: 'LAN' },
+      { id: 'vlan', label: '802.1Q VLAN' },
+      { id: 'vlan-if', label: 'VLAN Interfaces' },
       { id: 'iptv', label: 'IPTV' },
       { id: 'macclone', label: 'MAC Clone' },
     ],

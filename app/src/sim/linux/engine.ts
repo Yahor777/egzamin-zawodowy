@@ -19,6 +19,8 @@ export { Shell, Interrupt, type TermIO, type EditRequest } from './shell.ts'
 /** Supplied by the integrator: decides whether a ping leaves the server and gets an answer. */
 export interface LinuxNetwork {
   ping(fromIfaces: LinuxIface[], gateway: string | null, target: string): { ok: boolean; reason?: string }
+  /** DHCP client: the lease the DHCP server on the interface's cable offers, or null (no server, no address). Absent = standalone NAT-like sandbox. */
+  dhcp?(iface: { name: string; mac: string }): { ip: string; mask: string; gateway: string; dns: string[]; server: string; domain?: string } | null
 }
 
 /** `resume`: continue the session saved in `st.session` (cwd, su stack…) instead of a fresh login. */

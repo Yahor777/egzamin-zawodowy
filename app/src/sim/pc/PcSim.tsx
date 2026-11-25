@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import type { PcState } from '../net'
 import { isPhone } from '../bench/useCompact'
+import { WifiFlyout } from './WifiFlyout'
+import './wifi.css'
 import { AdapterProps, AdapterStatus, ControlPanel, CP_TITLES, Ipv4Advanced, Ipv4Props, NetDetails } from './apps-net'
 import { Explorer, EXPLORER_TITLES, FirewallMmc, FwProfilesDlg, FwRuleProps, FwWizard, GroupProps, LocalUsers, NewUser, RunDialog, SetPassword, Sysdm, SysName, UserProps } from './apps-sys'
 import {
@@ -717,6 +719,7 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
                   <IcEthernet size={16} /> {a.name}
                 </div>
               ))}
+              <WifiFlyout state={state} network={network} onChange={onChange} />
               <button className="fly-link" onClick={() => open('settings', 'net')}>
                 Ustawienia sieci i Internetu
               </button>

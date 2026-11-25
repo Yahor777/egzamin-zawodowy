@@ -2,7 +2,7 @@
 import { register, type Ctx, Interrupt } from './shell.ts'
 import type { NetIface, Route, LinuxState } from './model.ts'
 import { parseCidr, intToIp, isIp, inSubnet, macToLinkLocal, prefixToMask } from './netutil.ts'
-import { loadNetplan, applyNetplan, netplanFiles } from './netplan.ts'
+import { loadNetplan, applyNetplan, netplanFiles, leaseFnOf, takeLease } from './netplan.ts'
 import { checkConf, DHCPD_CONF, DHCPD_HEADER } from './dhcpd.ts'
 import { toApiIfaces, defaultRoute } from './api.ts'
 import { journal } from './services.ts'
@@ -741,13 +741,13 @@ register(
         }
         if (sub === 'generate') return 0
         if (sub === 'apply') {
-          const log = applyNetplan(st, res)
+          const log = applyNetplan(st, res, leaseFnOf(c.sh.network))
           journal(st, 'systemd-networkd', 'systemd-networkd[512]', log.length ? log : st.ifaces.filter((i) => i.up).map((i) => `${i.name}: Configured`))
           return 0
         }
         // try
         const backup = JSON.parse(JSON.stringify({ ifaces: st.ifaces, routes: st.routes }))
-        applyNetplan(st, res)
+        applyNetplan(st, res, leaseFnOf(c.sh.network))
         c.outln('Do you want to keep these settings?\n\n')
         let ans: string | null = null
         try {
@@ -907,3 +907,50 @@ register('wget', async (c) => {
   c.err(`HTTP request sent, awaiting response... 200 OK\nLength: ${r.body.length} [text/html]\nSaving to: ‘${name}’\n\n${name}            100%[===================>]  ${r.body.length}  --.-KB/s    in 0s      \n\n‘${name}’ saved [${r.body.length}/${r.body.length}]\n\n`)
   return 0
 })
+
+// ------------------------------------------------------------------ dhclient (ISC DHCP client)
+register(
+  'dhclient',
+  async (c) => {
+    const a = c.args.filter((x) => !x.startsWith('-'))
+    const verbose = c.args.includes('-v')
+    const release = c.args.includes('-r')
+    if (!c.root) {
+      c.err('dhclient: Can\'t create /var/lib/dhcp/dhclient.leases: Permission denied\n')
+      return 1
+    }
+    const targets = a.length ? a : c.st.ifaces.map((i) => i.name)
+    for (const name of targets) {
+      const ifc = c.st.ifaces.find((i) => i.name === name)
+      if (!ifc) {
+        c.err(`Cannot find device "${name}"\n`)
+        return 1
+      }
+      if (release) {
+        ifc.addrs = ifc.addrs.filter((x) => !x.dynamic)
+        c.st.routes = c.st.routes.filter((r) => !(r.dev === name && r.proto === 'dhcp'))
+        c.err(`${verbose ? 'Internet Systems Consortium DHCP Client 4.4.1\n' : ''}DHCPRELEASE of on ${name} to port 67 (xid=0x1d2b0b5a)\n`)
+        continue
+      }
+      const head = `Internet Systems Consortium DHCP Client 4.4.1\nCopyright 2004-2018 Internet Systems Consortium.\nAll rights reserved.\nFor info, please visit https://www.isc.org/software/dhcp/\n\nListening on LPF/${name}/${ifc.mac}\nSending on   LPF/${name}/${ifc.mac}\nSending on   Socket/fallback\n`
+      if (verbose) c.err(head)
+      const lease = c.sh.network?.dhcp?.({ name, mac: ifc.mac })
+      if (c.sh.network?.dhcp && !lease) {
+        ifc.up = true
+        c.err(`${verbose ? 'DHCPDISCOVER on ' + name + ' to 255.255.255.255 port 67 interval 3 (xid=0x5f1c88a1)\nDHCPDISCOVER on ' + name + ' to 255.255.255.255 port 67 interval 5 (xid=0x5f1c88a1)\nDHCPDISCOVER on ' + name + ' to 255.255.255.255 port 67 interval 11 (xid=0x5f1c88a1)\n' : ''}No DHCPOFFERS received.\nNo working leases in persistent database - sleeping.\n`)
+        continue
+      }
+      if (!lease) {
+        c.err(`${verbose ? '' : ''}DHCPDISCOVER on ${name} to 255.255.255.255 port 67 interval 3\nNo DHCPOFFERS received.\n`)
+        continue
+      }
+      ifc.up = true
+      takeLease(c.st, ifc, lease)
+      if (verbose)
+        c.err(`DHCPDISCOVER on ${name} to 255.255.255.255 port 67 interval 3 (xid=0x5f1c88a1)\nDHCPOFFER of ${lease.ip} from ${lease.server}\nDHCPREQUEST for ${lease.ip} on ${name} to 255.255.255.255 port 67 (xid=0x5f1c88a1)\nDHCPACK of ${lease.ip} from ${lease.server} (xid=0x5f1c88a1)\nbound to ${lease.ip} -- renewal in 1738 seconds.\n`)
+    }
+    return 0
+  },
+  '/sbin',
+  'isc-dhcp-client',
+)

@@ -1,0 +1,91 @@
+.fly-wifi {
+  background: #fff;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: #1a1a1a;
+}
+.fly-wifi-h {
+  font-weight: 600;
+  font-size: 12px;
+  padding: 4px 6px;
+}
+.fly-wifi-note {
+  padding: 4px 6px 8px;
+  color: #5f5f5f;
+}
+.fly-wifi-row {
+  width: 100%;
+  min-height: 44px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+  padding: 4px 8px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.fly-wifi-row:hover,
+.fly-wifi-net.open .fly-wifi-row {
+  background: #eef2f8;
+}
+.fly-wifi-ssid {
+  font-weight: 600;
+}
+.fly-wifi-sub {
+  font-size: 12px;
+  color: #5f5f5f;
+}
+.fly-wifi-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 6px 8px 10px;
+  background: #eef2f8;
+  border-radius: 0 0 4px 4px;
+}
+.fly-wifi-form input {
+  min-height: 36px;
+  padding: 0 8px;
+  border: 1px solid #8a8a8a;
+  border-radius: 4px;
+  font: inherit;
+  font-size: 16px;
+  background: #fff;
+  color: #1a1a1a;
+}
+.fly-wifi-err {
+  color: #c42b1c;
+  font-size: 12px;
+}
+.fly-wifi-act {
+  display: flex;
+  gap: 8px;
+}
+.fly-wifi-btn {
+  min-height: 36px;
+  padding: 0 16px;
+  border-radius: 4px;
+  border: 1px solid #b5b5b5;
+  background: #fff;
+  color: #1a1a1a;
+  font: inherit;
+  cursor: pointer;
+}
+.fly-wifi-btn.primary {
+  background: var(--w-accent);
+  border-color: var(--w-accent);
+  color: #fff;
+}
+.fly-wifi-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

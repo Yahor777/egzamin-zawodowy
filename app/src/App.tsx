@@ -14,6 +14,7 @@ import { Practice, Guide } from './pages/Practice'
 import { Glossary } from './pages/Glossary'
 import { Commands } from './pages/Commands'
 import { LabList, LabPage } from './sim/labs/LabPage'
+import { SheetPage } from './sheets/SheetPage'
 import { Sandbox } from './sim/Sandbox'
 import { go, useRoute } from './router'
 import { ModulePage, PathMap, StepActivity, StepPage } from './path/PathPages'
@@ -56,6 +57,8 @@ function Page({ route }: { route: string }) {
       return <Commands />
     case 'lab':
       return b ? <LabPage key={b} id={b} /> : <LabList />
+    case 'sheet':
+      return b ? <SheetPage key={b} id={b} /> : <LabList />
     case 'sim':
       return <Sandbox key={b} kind={b} />
     case 'gen':
@@ -79,7 +82,7 @@ export default function App() {
   ]
   const group: Record<string, string[]> = {
     '/topics': ['/topics', '/notes', '/gen', '/glossary', '/tools', '/commands', '/doc', '/practice/cheat-'],
-    '/practice': ['/practice/inf02', '/lab', '/sim', '/drill'],
+    '/practice': ['/practice/inf02', '/lab', '/sheet', '/sim', '/drill'],
     '/test': ['/test', '/exam', '/learn', '/mistakes', '/starred'],
   }
   const active = (p: string) =>

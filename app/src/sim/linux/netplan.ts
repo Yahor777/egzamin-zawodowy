@@ -318,10 +318,33 @@ function targetIface(st: LinuxState, cfg: NpIface) {
   return st.ifaces.find((i) => i.name === cfg.id)
 }
 
+/** A DHCP answer for a Linux interface (supplied by the bench: router pool, isc-dhcp on another host, Windows scope). */
+export interface DhcpLeaseLite {
+  ip: string
+  mask: string
+  gateway: string
+  dns: string[]
+  server: string
+  domain?: string
+}
+export type LeaseFn = (iface: { name: string; mac: string }) => DhcpLeaseLite | null
+export function leaseFnOf(net?: { dhcp?: LeaseFn }): LeaseFn | undefined {
+  return net?.dhcp ? (i) => net.dhcp!(i) : undefined
+}
+const prefixOfMask = (mask: string) => mask.split('.').reduce((n, o) => n + (Number(o) >>> 0).toString(2).replace(/0/g, '').length, 0)
+/** Take the lease an interface got: address (dynamic), default route and DNS. */
+export function takeLease(st: LinuxState, ifc: LinuxState['ifaces'][number], l: DhcpLeaseLite) {
+  ifc.addrs = ifc.addrs.filter((a) => !a.dynamic)
+  ifc.addrs.push({ cidr: `${l.ip}/${prefixOfMask(l.mask)}`, dynamic: true })
+  st.routes = st.routes.filter((r) => !(r.dev === ifc.name && r.proto === 'dhcp'))
+  if (l.gateway) st.routes.push({ to: 'default', via: l.gateway, dev: ifc.name, proto: 'dhcp', metric: 100 })
+  if (!ifc.dns.length) ifc.dns = [...l.dns]
+}
+
 export const NAT_DHCP = { addr: '10.0.2.15/24', gw: '10.0.2.2', dns: '10.0.2.3' }
 
 /** Apply a validated config to the state (what systemd-networkd would do). */
-export function applyNetplan(st: LinuxState, res: NpResult): string[] {
+export function applyNetplan(st: LinuxState, res: NpResult, leases?: LeaseFn): string[] {
   const log: string[] = []
   st.routes = []
   const configured = new Set<string>()
@@ -333,7 +356,11 @@ export function applyNetplan(st: LinuxState, res: NpResult): string[] {
     ifc.addrs = cfg.addresses.filter((a) => !a.includes(':')).map((cidr) => ({ cidr }))
     ifc.dns = [...cfg.dns]
     ifc.search = [...cfg.search]
-    if (cfg.dhcp4 && st.ifaces.indexOf(ifc) === 0) {
+    if (cfg.dhcp4 && leases) {
+      // a real DHCP exchange with whatever server is on the cable; no answer = no address (Linux has no APIPA)
+      const l = leases({ name: ifc.name, mac: ifc.mac })
+      if (l) takeLease(st, ifc, l)
+    } else if (cfg.dhcp4 && st.ifaces.indexOf(ifc) === 0) {
       ifc.addrs.push({ cidr: NAT_DHCP.addr, dynamic: true })
       if (!ifc.dns.length) ifc.dns.push(NAT_DHCP.dns)
       st.routes.push({ to: 'default', via: NAT_DHCP.gw, dev: ifc.name, proto: 'dhcp', metric: 100 })

@@ -5,6 +5,8 @@
 import type { PcState } from '../net'
 import { baseName, children, fileKey, HOME, isDir, mkdirs, parentOf, readFile, resolvePath, wild, writeFile } from './fs'
 import type { ExecResult, Line, ShellCtx } from './shell'
+import { remoteFileCmd, remoteRedirect } from './smb-cmd'
+import { toUnc } from './smb'
 
 export type Exec = (ctx: ShellCtx, raw: string) => ExecResult
 const L = (...t: string[]): Line[] => t.map((x) => ({ t: x }))
@@ -76,7 +78,8 @@ export function cmdFiles(ctx: ShellCtx, raw: string, exec: Exec): ExecResult | n
   const rd = redirect(line0)
   if (rd.file && rd.cmd) {
     const target = resolvePath(cwd, rd.file)
-    if (!isDir(st, parentOf(target))) return ok(L(NOT_FOUND))
+    const onNet = rd.file.startsWith('\\\\') || !!toUnc(st, target)
+    if (!onNet && !isDir(st, parentOf(target))) return ok(L(NOT_FOUND))
     const r = /^echo\s/i.test(rd.cmd) || /^echo\.$/i.test(rd.cmd) ? { out: L(rd.cmd.replace(/^echo[\s.]/i, '')), state: st } : exec(ctx, rd.cmd)
     let out = r.out
     if (r.job) {
@@ -84,6 +87,7 @@ export function cmdFiles(ctx: ShellCtx, raw: string, exec: Exec): ExecResult | n
       for (let i = 0, s = r.job.next(r.state, ctx.network); s && i < 500; i++, s = r.job.next(r.state, ctx.network)) out.push(...s.lines)
     }
     const text = out.map((l) => l.t).join('\r\n') + '\r\n'
+    if (onNet) return { ...(remoteRedirect({ ...ctx, state: r.state }, cwd, rd.file, text, !!rd.append) ?? ok([])), cwd: r.cwd }
     return ok([], writeFile(r.state, target, text, rd.append), { cwd: r.cwd })
   }
   const m = /^(\S+)\s*(.*)$/s.exec(line0)
@@ -94,6 +98,8 @@ export function cmdFiles(ctx: ShellCtx, raw: string, exec: Exec): ExecResult | n
   // "cd.." / "cd\"
   if (/^cd(\.\.|\\)$/.test(c)) return ok([], st, { cwd: resolvePath(cwd, c.slice(2)) })
   if (c === 'echo.') return ok(L(''))
+  const rf = remoteFileCmd(ctx, c, args, rest, cwd)
+  if (rf) return rf
   switch (c) {
     case 'cd':
     case 'chdir': {

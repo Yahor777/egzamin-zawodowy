@@ -34,6 +34,7 @@ import {
 import { defaultRouterState } from './defaults'
 import { GenericForm, GenericList, type Values } from './generic'
 import { ROUTER_FORMS, ROUTER_LISTS } from './specs'
+import { VlanIfacePage, VlanPage, routerLanNets } from './vlan'
 
 export interface RouterPageProps {
   page: string
@@ -47,6 +48,10 @@ export interface RouterPageProps {
 export function RouterPage(props: RouterPageProps) {
   const { page, state, onChange } = props
   switch (page) {
+    case 'vlan':
+      return <VlanPage state={state} onChange={onChange} go={props.go} />
+    case 'vlan-if':
+      return <VlanIfacePage state={state} onChange={onChange} go={props.go} />
     case 'status':
       return <StatusPage {...props} />
     case 'quick':
@@ -1021,7 +1026,7 @@ function ReservationPage({ state, onChange }: RouterPageProps) {
     if (!mac) return setMsg({ kind: 'err', text: 'Invalid MAC address. Use the format XX-XX-XX-XX-XX-XX (or XX:XX:XX:XX:XX:XX).' })
     const ip = d.ip.trim()
     if (!isIp(ip)) return setMsg({ kind: 'err', text: ipErr('reserved IP address') })
-    if (!sameSubnet(ip, state.lan.ip, state.lan.mask) || !isHostIn(ip, state.lan.mask))
+    if (!routerLanNets(state).some((n) => sameSubnet(ip, n.ip, n.mask) && isHostIn(ip, n.mask)))
       return setMsg({ kind: 'err', text: `The reserved IP address must be in the LAN subnet (${state.lan.ip} / ${state.lan.mask}).` })
     if (ip === state.lan.ip) return setMsg({ kind: 'err', text: 'The reserved IP address cannot be the LAN IP address of the router.' })
     const others = list.filter((_, i) => i !== editing)
@@ -1390,7 +1395,7 @@ function StaticRoutingPage({ state, onChange }: RouterPageProps) {
       })
     if (!isIp(gw) || isUnset(gw)) return setMsg({ kind: 'err', text: ipErr('default gateway') })
     const w = wanRuntime(state)
-    const onLan = sameSubnet(gw, state.lan.ip, state.lan.mask)
+    const onLan = routerLanNets(state).some((n) => sameSubnet(gw, n.ip, n.mask))
     const onWan = w.mask !== '0.0.0.0' && sameSubnet(gw, w.ip, w.mask)
     if (!onLan && !onWan)
       return setMsg({ kind: 'err', text: 'The default gateway must be in the same subnet as the LAN or WAN IP address of the router.' })
@@ -1507,8 +1512,10 @@ function RoutingTablePage({ state }: RouterPageProps) {
   rows.push([lanNet, state.lan.mask, '0.0.0.0', 'LAN & WLAN'])
   if (w.connected && w.mask !== '255.255.255.255')
     rows.push([ipToStr(networkOf(parseIp(w.ip) ?? 0, parseIp(w.mask) ?? 0)), w.mask, '0.0.0.0', 'WAN'])
+  if (state.vlan?.enabled)
+    for (const f of state.vlan.ifaces) rows.push([ipToStr(networkOf(parseIp(f.ip) ?? 0, parseIp(f.mask) ?? 0)), f.mask, '0.0.0.0', `VLAN${f.id}`])
   for (const r of state.staticRoutes ?? [])
-    if (r.enabled) rows.push([r.dest, r.mask, r.gateway, sameSubnet(r.gateway, state.lan.ip, state.lan.mask) ? 'LAN & WLAN' : 'WAN'])
+    if (r.enabled) rows.push([r.dest, r.mask, r.gateway, routerLanNets(state).some((n) => sameSubnet(r.gateway, n.ip, n.mask)) ? 'LAN & WLAN' : 'WAN'])
   return (
     <Panel title="System Routing Table">
       <DataTable

@@ -3,7 +3,7 @@
 // /etc/NetworkManager/system-connections/<name>.nmconnection.
 import { register, type Ctx } from './shell.ts'
 import type { LinuxState, NmConn } from './model.ts'
-import { NAT_DHCP, writeResolv } from './netplan.ts'
+import { NAT_DHCP, writeResolv, takeLease, leaseFnOf, type LeaseFn } from './netplan.ts'
 import { parseCidr, inSubnet } from './netutil.ts'
 
 const DIR = '/etc/NetworkManager/system-connections'
@@ -40,7 +40,7 @@ function writeProfile(st: LinuxState, c: NmConn, oldId?: string) {
 }
 
 /** bring a profile up: addresses, default route and DNS of its interface */
-function activate(st: LinuxState, c: NmConn): string | null {
+function activate(st: LinuxState, c: NmConn, leases?: LeaseFn): string | null {
   const ifc = st.ifaces.find((i) => i.name === c.iface)
   if (!ifc) return `Error: Connection activation failed: No suitable device found for this connection (device ${c.iface} not available because profile is not compatible with device).`
   for (const o of st.nm!.conns) if (o !== c && o.iface === c.iface) o.active = false
@@ -55,6 +55,11 @@ function activate(st: LinuxState, c: NmConn): string | null {
     }))
       st.routes.push({ to: 'default', via: c.gateway, dev: ifc.name, proto: 'static', metric: 100 })
     ifc.dns = [...c.dns]
+  } else if (c.method === 'auto' && leases) {
+    ifc.addrs = []
+    ifc.dns = [...c.dns]
+    const l = leases({ name: ifc.name, mac: ifc.mac })
+    if (l) takeLease(st, ifc, l)
   } else if (c.method === 'auto') {
     ifc.addrs = st.ifaces.indexOf(ifc) === 0 ? [{ cidr: NAT_DHCP.addr, dynamic: true }] : []
     if (ifc.addrs.length) st.routes.push({ to: 'default', via: NAT_DHCP.gw, dev: ifc.name, proto: 'dhcp', metric: 100 })
@@ -255,7 +260,7 @@ register('nmcli', (c) => {
       c.err(`Error: unknown connection '${name(args[0])}'.\n`)
       return 10
     }
-    const err = activate(st, k)
+    const err = activate(st, k, leaseFnOf(c.sh.network))
     if (err) {
       c.err(err + '\n')
       return 4

@@ -4,12 +4,13 @@
 import { joinDomain, clientGpo, signIn, changePassword, type NetKey } from '../domain'
 import { buildModel, type LabSave } from '../labs/ctx'
 import type { Lab } from '../labs/labs'
-import type { AdUser, DhcpScope, Gpo, GpoDrive, GpoLink, GpoVal, IisSite, PcFwRule, PcState } from '../net'
+import type { AdGroup, AdUser, DhcpScope, Gpo, GpoDrive, GpoLink, GpoVal, IisSite, PcFwRule, PcState, SmbShare } from '../net'
 import { iisOf, IIS_START_HTM } from '../pc/iis'
 import { gpoOf, newGpo } from '../pc/gpo'
 import { mkdirs, writeFile } from '../pc/fs'
 import { initialAd, netbiosOf, srv, withSrv } from '../pc/server'
 import { withFw } from '../pc/model'
+import { addAutoQuota, addQuota, addScreen, createShare, disableInheritance, setExplicitRows } from '../pc/smb'
 
 const uniq = <T,>(a: T[]) => [...new Set(a)]
 
@@ -118,3 +119,24 @@ export function gpupdateClient(b: Bench, key: NetKey): void {
   const ap = clientGpo(model(b), key, pc)
   if (ap) b.s[key] = { ...pc, applied: ap, history: [...pc.history, 'gpupdate /force'] }
 }
+
+// ---------------------------------------------------------------- file sharing (Udostępnianie, NTFS, FSRM)
+/** dsa.msc: Nowy → Grupa (+ members: logins or group names) */
+export function addAdGroup(pc: PcState, name: string, members: string[] = [], o: { ou?: string; scope?: AdGroup['scope'] } = {}): PcState {
+  return withSrv(pc, (x) => {
+    const ad = x.ad ?? initialAd(pc.hostname)
+    return { ...x, ad: { ...ad, groups: [...ad.groups, { name, scope: o.scope ?? 'global', type: 'security', ou: o.ou ?? 'Users', members }] } }
+  })
+}
+/** Eksplorator: Nowy folder */
+export const makeFolder = (pc: PcState, path: string): PcState => mkdirs(pc, path)
+/** Właściwości → Udostępnianie → Udostępnianie zaawansowane: Udostępnij ten folder, nazwa, Uprawnienia */
+export const shareFolder = (pc: PcState, sh: SmbShare): PcState => createShare(pc, sh)
+/**
+ * Właściwości → Zabezpieczenia → Zaawansowane → Wyłącz dziedziczenie → Usuń…, then Edytuj: exactly these entries
+ * (`bits`: allow mask of NTFS, see smb.ts: FULL, MODIFY, RX, WR …)
+ */
+export function setNtfsOnly(pc: PcState, path: string, rows: { who: string; bits: number }[]): PcState {
+  return setExplicitRows(disableInheritance(pc, path, false), path, rows.map((r) => ({ who: r.who, allow: r.bits, deny: 0 })))
+}
+export { addAutoQuota, addQuota, addScreen }

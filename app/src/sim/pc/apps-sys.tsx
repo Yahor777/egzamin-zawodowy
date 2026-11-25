@@ -29,6 +29,9 @@ import { addToGroup, addUser, deleteUser, ECHO_RULE, echoRuleOn, findGroup, find
 import { hostnameError } from './settings'
 import { Devmgmt } from './apps-hw'
 import { cDrive } from './hwcmd'
+import { FsBrowser, isPathArg, normPath, ThisPcDrives, thisPcCount } from './apps-files'
+import { HOME } from './fs'
+import { fpsOn } from './smb'
 import { plNum } from '../hw'
 import { Buttons, Group, Tabs, useLongPress, useMsg, usePc, type MenuItem, type WinProps } from './ui'
 
@@ -1533,7 +1536,15 @@ export const EXPLORER_TITLES: Record<string, string> = { thispc: 'Ten komputer',
 
 export function Explorer({ arg = 'thispc', setArg }: WinProps) {
   const api = usePc()
-  const drive = cDrive(api.state)
+  const [addr, setAddr] = useState('')
+  const [msg, show] = useMsg()
+  if (isPathArg(arg)) return <FsBrowser arg={arg} setArg={setArg} />
+  const goAddr = () => {
+    const t = addr.trim()
+    if (!t) return
+    if (isPathArg(t)) return setArg(normPath(t))
+    void show('Eksplorator plików', `System Windows nie może odnaleźć „${t}”. Sprawdź pisownię i spróbuj ponownie.`, 'error')
+  }
   const page = EXPLORER_TITLES[arg] ? arg : 'thispc'
   const item = (k: string, label: string, icon: ReactNode, open: () => void, sub?: string) => (
     <button key={k} className="ex-item" onDoubleClick={() => !api.compact && open()} onClick={() => api.compact && open()} title={label}>
@@ -1557,9 +1568,7 @@ export function Explorer({ arg = 'thispc', setArg }: WinProps) {
           <IcChevron dir="left" size={14} />
         </span>
         <div className="xp-crumbs">
-          <span className="xp-crumb">
-            <button className="cur">{EXPLORER_TITLES[page]}</button>
-          </span>
+          <input className="w-input xp-addr-in" id="ex-addr" aria-label="Pasek adresu" placeholder={EXPLORER_TITLES[page]} value={addr} spellCheck={false} autoCapitalize="off" autoCorrect="off" onChange={(e) => setAddr(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && goAddr()} />
         </div>
         <div className="xp-search">
           <IcSearch size={13} />
@@ -1586,39 +1595,11 @@ export function Explorer({ arg = 'thispc', setArg }: WinProps) {
             <>
               <h3 className="ex-h">Foldery</h3>
               <div className="ex-grid">
-                {['Pulpit', 'Dokumenty', 'Pobrane', 'Muzyka', 'Obrazy', 'Wideo'].map((n) => item(n, n, <IcFolder size={40} />, () => {}))}
+                {(
+                  [['Pulpit', 'Desktop'], ['Dokumenty', 'Documents'], ['Pobrane', 'Downloads'], ['Muzyka', 'Music'], ['Obrazy', 'Pictures'], ['Wideo', 'Videos']] as const
+                ).map(([n, d]) => item(n, n, <IcFolder size={40} />, () => setArg(`${HOME}\\${d}`)))}
               </div>
-              <h3 className="ex-h">Urządzenia i dyski</h3>
-              <div className="ex-grid">
-                <div className="ex-drive">
-                  <IcDrive size={40} />
-                  <span>
-                    Dysk lokalny (C:)
-                    <span className="ex-bar">
-                      <span style={{ width: `${Math.round(100 - (100 * drive.free) / drive.size)}%` }} />
-                    </span>
-                    <small>
-                      {plNum(drive.free, 1)} GB wolnych z {drive.size} GB
-                    </small>
-                  </span>
-                </div>
-              </div>
-              {!!api.state.applied?.drives.length && (
-                <>
-                  <h3 className="ex-h">Lokalizacje sieciowe</h3>
-                  <div className="ex-grid">
-                    {api.state.applied.drives.map((d) => (
-                      <div key={d.letter} className="ex-drive" data-letter={d.letter}>
-                        <IcDrive size={40} />
-                        <span>
-                          {d.label || d.path.split('\\').pop()} ({d.letter.toUpperCase()}:)
-                          <small>{d.path}</small>
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
+              <ThisPcDrives setArg={setArg} />
             </>
           )}
           {page === 'home' && (
@@ -1634,7 +1615,8 @@ export function Explorer({ arg = 'thispc', setArg }: WinProps) {
           {page === 'net' && <div className="ex-info">Odnajdowanie sieci jest wyłączone. Komputery i urządzenia sieciowe nie są widoczne. Kliknij, aby zmienić…</div>}
         </div>
       </div>
-      <div className="xp-status">{page === 'tools' ? `Elementy: ${TOOLS.length}` : page === 'thispc' ? `Elementy: ${7 + (api.state.applied?.drives.length ?? 0)}` : 'Elementy: 0'}</div>
+      <div className="xp-status">{page === 'tools' ? `Elementy: ${TOOLS.length}` : page === 'thispc' ? `Elementy: ${thisPcCount(api)}` : 'Elementy: 0'}</div>
+      {msg}
     </div>
   )
 }

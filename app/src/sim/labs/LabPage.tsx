@@ -9,7 +9,7 @@ import { Browser } from '../bench/Browser'
 import { useStation, type BenchLab, type Station } from '../bench/station'
 import { isPhone } from '../bench/useCompact'
 import { createLinuxState, LinuxTerminal } from '../linux'
-import { canPing, defaultPcState, leaseFor, linkUp, type DeviceKey } from '../net'
+import { canPing, defaultPcState, leaseFor, linkUp, wifiCheck, wifiScan, type DeviceKey } from '../net'
 import { PcSim, type PcView } from '../pc/PcSim'
 import { defaultRouterState } from '../router'
 import { defaultSwitchState } from '../switch'
@@ -20,8 +20,10 @@ import { drillSolution, linesForTask, type SolLine } from '../drills/solutionTex
 import type { DrillLab } from '../drills/kit'
 import { HintLadder, SolutionView } from '../../path/HintLadder'
 import { LABS, labScore, type Lab } from './labs'
+import { labSolutions, type TaskSolutions } from './labSolutionText'
 import { buildCtx, buildDhcpServers, defaultServerState, serviceLaptop, type LabSave } from './ctx'
 import { ReportButton } from '../../components/ReportIssue'
+import { PaperSheets, SheetBanner, SheetBest } from '../../sheets/SheetPage'
 import '../bench/bench.css'
 import './lab.css'
 
@@ -106,10 +108,12 @@ export function LabList() {
               <span className="lr-sub">{l.code}</span>
             </span>
             <StatusTag k={lKey(l.id)} />
+            <SheetBest id={l.id} />
             <Icon name="chevron" size={18} />
           </button>
         ))}
       </div>
+      <PaperSheets />
     </div>
   )
 }
@@ -117,7 +121,7 @@ export function LabList() {
 export function LabPage({ id }: { id: string }) {
   const lab = LABS.find((l) => l.id === id)
   if (!lab) return <div className="page">Nie znaleziono.</div>
-  return <LabRun lab={lab} progressKey={lKey(lab.id)} back="/lab" timer docs={labDocs(lab)} />
+  return <LabRun lab={lab} progressKey={lKey(lab.id)} back="/lab" timer docs={labDocs(lab)} banner={<SheetBanner id={lab.id} />} />
 }
 
 /** our docs that fit the tasks of a full exam sheet */
@@ -255,6 +259,18 @@ export function LabRun({ lab, progressKey, back, timer, docs: docsIn, intro_pl, 
       alive = false
     }
   }, [lab, isDrill, hints])
+  // per-task solutions of a full exam sheet (hint level 3); null = none, the guide is offered instead
+  const [taskSol, setTaskSol] = useState<TaskSolutions | null | undefined>(undefined)
+  useEffect(() => {
+    if (isDrill || !hints) return
+    let alive = true
+    labSolutions(lab, freshState(lab))
+      .then((x) => alive && setTaskSol(x))
+      .catch(() => alive && setTaskSol(null))
+    return () => {
+      alive = false
+    }
+  }, [lab, isDrill, hints])
   // task / docs panel: side column on a wide screen, bottom sheet on a phone
   const [view, setView] = useState<PanelView>('tasks')
   const [sideOpen, setSideOpenState] = useState(readSide)
@@ -378,6 +394,8 @@ export function LabRun({ lab, progressKey, back, timer, docs: docsIn, intro_pl, 
             ) : sol ? (
               <SolutionView lines={linesForTask(sol, t)} />
             ) : undefined
+          ) : taskSol?.[t.id] ? (
+            <SolutionView lines={taskSol[t.id]} />
           ) : guideRef ? (
             <button className="doc-link" onClick={() => openDoc(guideRef)}>
               {ru ? 'Открыть разбор листа: решение по шагам' : 'Rozwiązanie krok po kroku'}
@@ -805,6 +823,7 @@ export function LinuxTab({
       persistKey={persistKey}
       network={{
         ping: (from, gw, target) => canPing({ ...model, linuxIfaces: from, linuxGateway: gw }, from.map((i) => `linux:${i.name}`), target),
+        dhcp: (i) => leaseFor(model, `linux:${i.name}`, i.mac, buildDhcpServers(s)) ?? null,
       }}
     />
   )
@@ -860,6 +879,7 @@ export function PcTab({
         renew: (a) => leaseFor(model, `${pcKey}:${a.id}`, a.mac, servers),
         ping: (a, ip) => canPing(model, `${pcKey}:${a.id}`, ip),
         link: (a) => linkUp(model, `${pcKey}:${a.id}`),
+        wifi: { scan: () => wifiScan(model), connect: (ssid, password) => wifiCheck(model, ssid, password) },
         bench: { model, key: pcKey, setServer: (f) => update({ server: f(s.server!) }) },
       }}
       browser={() => (

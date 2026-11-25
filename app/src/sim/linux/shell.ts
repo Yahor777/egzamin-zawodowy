@@ -39,6 +39,7 @@ export interface TermIO {
 
 export interface LinuxNetworkLike {
   ping(fromIfaces: { name: string; mac: string; addresses: string[]; up: boolean; gateway?: string; dns: string[] }[], gateway: string | null, target: string): { ok: boolean; reason?: string }
+  dhcp?(iface: { name: string; mac: string }): { ip: string; mask: string; gateway: string; dns: string[]; server: string; domain?: string } | null
 }
 
 export interface StdinBuf {

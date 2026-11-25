@@ -58,11 +58,20 @@ export const readFile = (st: PcState, p: string): string | null => {
   const k = fileKey(st, p)
   return k === undefined ? null : (st.files ?? {})[k]
 }
-export function writeFile(st: PcState, p: string, content: string, append = false): PcState {
+/** size in bytes: the real length of the content, or the logical size of a file made with fsutil */
+export function fileSize(st: PcState, key: string): number {
+  const o = st.sizes?.[key]
+  if (o !== undefined) return o
+  return new TextEncoder().encode((st.files ?? {})[key] ?? '').length
+}
+export function writeFile(st: PcState, p: string, content: string, append = false, size?: number): PcState {
   const k = fileKey(st, p) ?? p
   const files = { ...(st.files ?? {}) }
   files[k] = append ? (files[k] ?? '') + content : content
-  return { ...st, files }
+  const sizes = { ...(st.sizes ?? {}) }
+  if (size !== undefined) sizes[k] = size
+  else delete sizes[k]
+  return { ...st, files, ...(st.sizes || size !== undefined ? { sizes } : {}) }
 }
 export function mkdirs(st: PcState, p: string): PcState {
   const dirs = [...(st.dirs ?? [])]
@@ -82,9 +91,9 @@ export function children(st: PcState, dir: string): { name: string; dir: boolean
     const ld = low(d)
     if (ld.startsWith(l) && ld !== low(dir) && !ld.slice(l.length).includes('\\')) out.push({ name: d.slice(l.length), dir: true, size: 0 })
   }
-  for (const [k, v] of Object.entries(st.files ?? {})) {
+  for (const k of Object.keys(st.files ?? {})) {
     const lk = low(k)
-    if (lk.startsWith(l) && !lk.slice(l.length).includes('\\')) out.push({ name: k.slice(l.length), dir: false, size: new TextEncoder().encode(v).length })
+    if (lk.startsWith(l) && !lk.slice(l.length).includes('\\')) out.push({ name: k.slice(l.length), dir: false, size: fileSize(st, k) })
   }
   return out.sort((a, b) => a.name.localeCompare(b.name, 'pl'))
 }

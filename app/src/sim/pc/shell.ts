@@ -29,6 +29,7 @@ import {
 import { cim, systeminfo, wlan, wmic } from './hwcmd'
 import { cmdFiles, cwdOf, expandVars, type BatchRun } from './batch'
 import { serverCmd, clientCmd } from './shell-srv'
+import { smbCmd } from './smb-cmd'
 import { addAdUser, dnsLookup, dnsReverse, domainPasswordPolicy, policyOn, pwViolation } from '../domain'
 import { isServer, srv } from './server'
 
@@ -849,7 +850,7 @@ export function exec(ctx: ShellCtx, raw: string): ExecResult {
   const args = t.slice(1)
   const ps = ctx.kind === 'ps'
   const ok = (out: Line[], state = st): ExecResult => ({ out, state })
-  const sr = serverCmd(ctx, t, ps) ?? clientCmd(ctx, t, ps, exec)
+  const sr = smbCmd(ctx, t, cwdOf(ctx)) ?? serverCmd(ctx, t, ps) ?? clientCmd(ctx, t, ps, exec)
   if (sr) return sr
 
   // GUI tools

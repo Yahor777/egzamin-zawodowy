@@ -199,7 +199,7 @@ const lab_26_06_05: Lab = {
   code: 'INF.02-05-26.06-SG',
   title_ru: 'WAN /30, резерв для Linux-станции, группа, пользователь и tar',
   title_pl: 'WAN /30, rezerwacja dla stacji Linux, grupa, konto i archiwum tar',
-  summary_ru: 'Лист июня 2026. Роутер (WAN /30, LAN .5, DHCP с резервом .12), свитч, Linux-станция по DHCP с группой uczniowie и пользователем egzamin, Windows Server со статическим LAN_S. Часть с IIS (witryna egzamin), принтером и сметой — см. разбор листа. Получение адреса Linux от роутера в симуляторе не моделируется — проверяется настройка dhcp4.',
+  summary_ru: 'Лист июня 2026. Роутер (WAN /30, LAN .5, DHCP с резервом .12), свитч, Linux-станция по DHCP с группой uczniowie и пользователем egzamin, Windows Server со статическим LAN_S. Часть с IIS (witryna egzamin), принтером и сметой — см. разбор листа. Linux-станция получает адрес от DHCP роутера по-настоящему (резерв .12) — после `sudo netplan apply` смотри `ip a`.',
   station: 5,
   guide: 'inf02-2026-06-05',
   devices: {
@@ -254,6 +254,7 @@ const lab_26_06_05: Lab = {
         ck('psw', 'Ping свитча 192.168.0.6', 'ping przełącznika', (c) => pping(c, '192.168.0.6')),
         ck('prt', 'Ping роутера 192.168.0.5', 'ping rutera', (c) => pping(c, '192.168.0.5')),
         ck('ppr', 'Ping принтера 192.168.0.200', 'ping drukarki', (c) => pping(c, '192.168.0.200')),
+        ck('pls', 'Ping Linux-станции 192.168.0.12', 'ping stacji Linux', (c) => pping(c, '192.168.0.12')),
       ],
     },
     {
@@ -270,6 +271,7 @@ const lab_26_06_05: Lab = {
       hint_ru: 'В netplan для enp0s3: dhcp4: true (убери addresses) → sudo netplan apply. sudo groupadd uczniowie; sudo useradd -m egzamin; sudo passwd egzamin; sudo usermod -aG uczniowie egzamin. cd ~; tar -cvf egzamin.tar *.png',
       checks: [
         ck('dhcp', 'enp0s3: dhcp4 в netplan, применено', 'adres automatyczny', (c) => netplanDhcp(c, 'enp0s3') && !/enp0s3:[\s\S]*?addresses:\s*\[?\s*10\.10\.10\.10/.test(netplanText(c))),
+        ck('lease', 'enp0s3 получил от роутера зарезервированный 192.168.0.12', 'adres 192.168.0.12 z DHCP', (c) => !!lif(c, 'enp0s3')?.addresses.some((x) => x.startsWith('192.168.0.12/'))),
         ck('group', 'Группа uczniowie создана командой', 'grupa uczniowie', (c) => !!group(c, 'uczniowie') && hist(c, /(groupadd|addgroup)\b.*uczniowie/)),
         ck('user', 'egzamin: домашний каталог и пароль Egz-inf02!', 'konto egzamin', (c) => { const u = user(c, 'egzamin'); return !!u && isDir(c, u.home) && pwIs(c, 'egzamin', 'Egz-inf02!') }),
         ck('member', 'egzamin в группе uczniowie', 'egzamin w grupie', (c) => inGroup(c, 'egzamin', 'uczniowie')),
@@ -608,7 +610,7 @@ const lab_25_06_05: Lab = {
   code: 'INF.02-05-25.06-SG',
   title_ru: 'LAN /28 и Wi-Fi; Linux: hostname, права 770/660, срок действия учётки',
   title_pl: 'LAN /28 i Wi-Fi; Linux: nazwa, prawa 770/660, data ważności konta',
-  summary_ru: 'Лист июня 2025. Роутер с LAN /28 и Wi-Fi Egzamin_05, Linux-сервер: статика, hostname PCserwer, каталог /home/zadanie, права 770/660, пользователь с датой истечения 15.02.2029, chown egzamin:root. На станции Windows — только настройки беспроводного адаптера; учётка uczen, квоты и Ctrl+Alt+Del — см. разбор листа. Связь по Wi-Fi в симуляторе не моделируется.',
+  summary_ru: 'Лист июня 2025. Роутер с LAN /28 и Wi-Fi Egzamin_05, Linux-сервер: статика, hostname PCserwer, каталог /home/zadanie, права 770/660, пользователь с датой истечения 15.02.2029, chown egzamin:root. На станции Windows — только настройки беспроводного адаптера; учётка uczen, квоты и Ctrl+Alt+Del — см. разбор листа. Станция подключается к Wi-Fi по-настоящему: значок сети в трее → Egzamin_05 → пароль.',
   station: 5,
   guide: 'inf02-2025-06-05',
   devices: {
@@ -646,6 +648,8 @@ const lab_25_06_05: Lab = {
       checks: [
         ck('wlan', 'W-LAN = 192.168.1.2/28', 'W-LAN adres', (c) => pcStatic(pcA(c, 'W-LAN'), '192.168.1.2', 28, '192.168.1.1')),
         ck('dns', 'Шлюз 192.168.1.1, DNS 4.4.4.4', 'brama i DNS', (c) => pcA(c, 'W-LAN')?.gateway === '192.168.1.1' && pcA(c, 'W-LAN')?.dns1 === '4.4.4.4'),
+        ck('join', 'Станция подключена к Wi-Fi Egzamin_05 с верным паролем', 'połączenie z Egzamin_05', (c) => { const w = pcA(c, 'W-LAN')?.wifi; return !!w && w.ssid === c.router?.wifi24.ssid && w.password === c.router.wifi24.password && w.ssid === 'Egzamin_05' }),
+        ck('ping', 'Ping сервера 192.168.1.3 по Wi-Fi', 'ping serwera przez Wi-Fi', (c) => pping(c, '192.168.1.3')),
       ],
     },
     {
@@ -824,6 +828,8 @@ const lab_24_06_06: Lab = {
         ck('wlan', 'Беспроводной адаптер EGZAMIN-5, адрес автоматически', 'EGZAMIN-5 DHCP', (c) => { const a = pcA(c, 'EGZAMIN-5'); return !!a && a.id === 'wlan0' && a.dhcp && a.enabled }),
         ck('eth', 'Проводной адаптер выключен', 'przewodowy wyłączony', (c) => c.pc?.adapters.find((a) => a.id === 'eth0')?.enabled === false),
         ck('icmp', 'Правило ICMPv4 в брандмауэре', 'reguła ICMP', (c) => !!c.pc?.firewallIcmp),
+        ck('join', 'Подключение к Wi-Fi EGZAMIN_5 (пароль Egzamin_zawodowy!)', 'połączenie z EGZAMIN_5', (c) => { const w = pcA(c, 'EGZAMIN-5')?.wifi; return !!w && w.ssid === 'EGZAMIN_5' && w.ssid === c.router?.wifi24.ssid && w.password === c.router.wifi24.password }),
+        ck('lease', 'Wi-Fi-карта получила зарезервированный 192.168.0.51', 'adres .51 z DHCP', (c) => pcA(c, 'EGZAMIN-5')?.lease?.ip === '192.168.0.51'),
       ],
     },
     {
@@ -857,6 +863,7 @@ const lab_24_06_06: Lab = {
       checks: [
         ck('rt', 'Ping роутера 192.168.0.1', 'ping rutera', (c) => lping(c, '192.168.0.1')),
         ck('sw', 'Ping свитча 192.168.0.2', 'ping przełącznika', (c) => lping(c, '192.168.0.2')),
+        ck('st', 'Ping станции по Wi-Fi 192.168.0.51', 'ping stacji', (c) => lping(c, '192.168.0.51')),
       ],
     },
   ],
@@ -1206,7 +1213,7 @@ const lab_23_01_01: Lab = {
   code: 'INF.02-01-23.01-SG',
   title_ru: 'Linux-станция: DHCP + свой DNS, группа, ссылка на /dev, права 711',
   title_pl: 'Stacja Linux: DHCP i własny DNS, grupa, dowiązanie do /dev, prawa 711',
-  summary_ru: 'Лист января 2023. Роутер с DHCP и резервом для Linux-станции, свитч. Linux: адрес по DHCP, DNS — адрес сервера, группа Kierownictwo, пользователь Kierownik, символическая ссылка на /dev и каталог test с правами 711. Сервер Windows — сеть и проверка связи; AD inf02.local, принтер Drukarka-5 — см. разбор листа. Получение адреса Linux от роутера в симуляторе не моделируется.',
+  summary_ru: 'Лист января 2023. Роутер с DHCP и резервом для Linux-станции, свитч. Linux: адрес по DHCP, DNS — адрес сервера, группа Kierownictwo, пользователь Kierownik, символическая ссылка на /dev и каталог test с правами 711. Сервер Windows — сеть и проверка связи; AD inf02.local, принтер Drukarka-5 — см. разбор листа. Linux-станция получает адрес .81 от DHCP роутера по-настоящему.',
   station: 5,
   devices: {
     router: {},
@@ -1252,6 +1259,7 @@ const lab_23_01_01: Lab = {
       hint_ru: 'netplan: dhcp4: true + nameservers: addresses: [192.168.0.15] → sudo netplan apply. sudo groupadd Kierownictwo; sudo useradd -m Kierownik; sudo passwd Kierownik; sudo usermod -aG Kierownictwo Kierownik. ln -s /dev ~/dowiazanie_dev. mkdir ~/test; chmod 711 ~/test.',
       checks: [
         ck('dhcp', 'enp0s3: dhcp4, DNS 192.168.0.15', 'DHCP i DNS serwera', (c) => netplanDhcp(c, 'enp0s3') && dnsHas(c, 'enp0s3', '192.168.0.15')),
+        ck('lease', 'enp0s3 получил зарезервированный 192.168.0.81', 'adres .81 z DHCP', (c) => !!lif(c, 'enp0s3')?.addresses.some((x) => x.startsWith('192.168.0.81/'))),
         ck('group', 'Группа Kierownictwo', 'grupa Kierownictwo', (c) => !!group(c, 'Kierownictwo')),
         ck('user', 'Kierownik с паролем Kier0wnik1', 'konto Kierownik', (c) => pwIs(c, 'Kierownik', 'Kier0wnik1')),
         ck('member', 'Kierownik в группе Kierownictwo', 'Kierownik w grupie', (c) => inGroup(c, 'Kierownik', 'Kierownictwo')),
@@ -1270,6 +1278,7 @@ const lab_23_01_01: Lab = {
         ck('pr', 'Ping роутера 192.168.0.1', 'ping rutera', (c) => pping(c, '192.168.0.1')),
         ck('ps', 'Ping свитча 192.168.0.3', 'ping przełącznika', (c) => pping(c, '192.168.0.3')),
         ck('pp', 'Ping принтера 192.168.0.200', 'ping drukarki', (c) => pping(c, '192.168.0.200')),
+        ck('pl', 'Ping Linux-станции 192.168.0.81', 'ping stacji Linux', (c) => pping(c, '192.168.0.81')),
       ],
     },
   ],

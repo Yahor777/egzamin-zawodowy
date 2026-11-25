@@ -59,6 +59,24 @@ export interface RouterState {
   staticRoutes?: RouterStaticRoute[]
   /** Values of the "secondary" pages (Guest Network, DDNS, …) keyed by page id; not used by checkers. */
   extra?: Record<string, unknown>
+  /** 802.1Q VLAN support (Network → 802.1Q VLAN / VLAN Interfaces); missing = off, the LAN is one segment */
+  vlan?: RouterVlanState
+}
+
+/** Router VLANs: VLAN 1 is the LAN itself (RouterState.lan / .dhcp); membership[i] = LAN port i+1 (lan1…lan4). */
+export interface RouterVlanState {
+  enabled: boolean
+  vlans: { id: number; name: string; ports: PortMembership[] }[]
+  /** IP interfaces of VLANs other than 1 (VLAN 1 uses RouterState.lan) */
+  ifaces: RouterVlanIface[]
+  /** routing between the VLAN interfaces */
+  routing: boolean
+}
+export interface RouterVlanIface {
+  id: number
+  ip: string
+  mask: string
+  dhcp?: { enabled: boolean; start: string; end: string; leaseMinutes: number; gateway: string; dns1: string; dns2: string }
 }
 
 export interface RouterStaticRoute {

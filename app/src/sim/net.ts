@@ -86,7 +86,13 @@ export interface PcAdapter {
   dnsSuffix?: string
   /** adapter description (model) shown by ipconfig /all etc.; missing = the default Intel PRO/1000 */
   desc?: string
+  /** 'wifi' = wireless adapter (also any id starting with "wlan") */
+  kind?: 'wifi'
+  /** Wi-Fi network this adapter is connected to (SSID + the key that was typed); missing = not connected */
+  wifi?: { ssid: string; password: string } | null
 }
+
+export const isWifiAdapter = (a: Pick<PcAdapter, 'id' | 'kind'>) => a.kind === 'wifi' || /^wlan/i.test(a.id)
 
 /** A firewall rule created by the student (wf.msc wizard, netsh advfirewall, New-NetFirewallRule). */
 export interface PcFwRule {
@@ -176,6 +182,63 @@ export interface ServerState {
   gpo?: GpoState
   /** IIS (inetmgr); missing = Default Web Site + default pools */
   iis?: IisState
+  /** SMB shares (Udostępnianie; missing = only the hidden administrative shares) */
+  shares?: SmbShare[]
+  /** NTFS permissions per folder (lower-case path → explicit entries + inheritance); missing = inherited from the drive root */
+  acl?: Record<string, NtAcl>
+  /** File Server Resource Manager (fsrm.msc) */
+  fsrm?: FsrmState
+  /** built-in rule "Udostępnianie plików i drukarek (SMB — ruch przychodzący)" enabled; set when the first share is created */
+  fps?: boolean
+}
+
+/** NTFS access mask bits: read data (RD), write/create (WR), list folder (LS), delete (DEL), change permissions (ACL) */
+export interface NtAce {
+  /** canonical principal: 'Wszyscy', 'SYSTEM', 'BUILTIN\\Administratorzy', 'FIRMA\\Księgowi', 'SERWER\\jan' … */
+  who: string
+  type: 'allow' | 'deny'
+  bits: number
+  /** inherited from the parent (computed, never stored) */
+  inh?: boolean
+}
+export interface NtAcl {
+  inherit: boolean
+  aces: NtAce[]
+  owner?: string
+}
+export interface SmbShare {
+  name: string
+  path: string
+  desc?: string
+  /** maximum number of simultaneous users; missing = the maximum allowed */
+  limit?: number
+  perms: { who: string; type: 'allow' | 'deny'; level: 'full' | 'change' | 'read' }[]
+}
+export interface FsrmQuotaTpl {
+  name: string
+  limit: number
+  hard: boolean
+}
+export interface FsrmQuota {
+  path: string
+  /** bytes */
+  limit: number
+  hard: boolean
+  template?: string
+}
+export interface FsrmScreen {
+  path: string
+  groups: string[]
+  /** active screening blocks the files, passive only reports */
+  active: boolean
+  template?: string
+}
+export interface FsrmState {
+  templates: FsrmQuotaTpl[]
+  quotas: FsrmQuota[]
+  /** "Automatycznie zastosuj szablon…": every subfolder of `path` gets the template's quota */
+  auto: { path: string; template: string }[]
+  screens: FsrmScreen[]
 }
 
 export interface DnsRecord {
@@ -306,6 +369,12 @@ export interface PcState {
   signedIn?: string
   /** result of the last gpupdate / sign-in (Group Policy applied to this computer and user) */
   applied?: AppliedGpo
+  /** network drives mapped by hand (net use X: \\\\serwer\\udział, Eksplorator → Mapuj dysk sieciowy); letter (upper-case) → connection */
+  mapped?: Record<string, { unc: string; user?: string; pw?: string; persistent: boolean }>
+  /** credentials remembered for a server (credential prompt "Zapamiętaj", net use /user:); key = server IP */
+  smbCreds?: Record<string, { user: string; pw: string }>
+  /** logical size in bytes of files created with fsutil (the content stays empty); path → size */
+  sizes?: Record<string, number>
 }
 
 /** What Group Policy did to a domain client (computed by domain.applyGpo, cached on the client like a real one). */
@@ -384,6 +453,8 @@ export interface NetworkModel {
   links: Link[]
   /** power state per device; missing = on. A booting device counts as off. */
   power?: Partial<Record<DeviceKey, boolean>>
+  /** hosts that route between their interfaces (Linux ip_forward, Windows Remote Access role); the router always does */
+  forwarders?: Partial<Record<DeviceKey, boolean>>
 }
 
 export const devOf = (p: PortId) => p.split(':')[0] as DeviceKey
@@ -402,6 +473,55 @@ export function peerOf(m: NetworkModel, port: PortId): PortId | null {
   return null
 }
 
+function adapterOf(m: NetworkModel, port: PortId): PcAdapter | undefined {
+  const [dev, id] = port.split(':')
+  const pc = dev === 'pc' ? m.pc : dev === 'laptop' ? m.laptop : dev === 'server' ? m.server : undefined
+  return pc?.adapters.find((a) => a.id === id)
+}
+
+// ---------------- Wi-Fi ----------------
+const WIFI_BANDS = ['wifi24', 'wifi5'] as const
+export interface WifiNet {
+  ssid: string
+  secured: boolean
+  security: string
+}
+
+/** Networks the router broadcasts (visible in the Windows network list). */
+export function wifiScan(m: NetworkModel): WifiNet[] {
+  const r = m.router
+  if (!r || !isOn(m, 'router')) return []
+  const out: WifiNet[] = []
+  for (const b of WIFI_BANDS) {
+    const band = r[b]
+    if (band.enabled && band.broadcastSsid && band.ssid && !out.some((x) => x.ssid === band.ssid))
+      out.push({ ssid: band.ssid, secured: band.security !== 'none', security: band.security === 'none' ? 'Otwarta' : band.security === 'wpa3-sae' ? 'WPA3' : band.security === 'wpa-wpa2-psk' ? 'WPA/WPA2' : 'WPA2' })
+  }
+  return out
+}
+
+/** The band of the router a Wi-Fi adapter is associated with (right SSID and key), or null. */
+export function wifiBand(m: NetworkModel, a: PcAdapter): RouterWifiBandRef | null {
+  const r = m.router
+  if (!r || !isOn(m, 'router') || !a.enabled || !a.wifi) return null
+  for (const b of WIFI_BANDS) {
+    const band = r[b]
+    if (band.enabled && band.ssid === a.wifi.ssid && (band.security === 'none' || band.password === a.wifi.password)) return band
+  }
+  return null
+}
+type RouterWifiBandRef = NonNullable<NetworkModel['router']>['wifi24']
+
+/** Try to join `ssid` with `password` (hidden networks can be joined by typing the name). */
+export function wifiCheck(m: NetworkModel, ssid: string, password: string): { ok: boolean; message?: string } {
+  const r = m.router
+  if (!r || !isOn(m, 'router')) return { ok: false, message: 'Nie można połączyć się z tą siecią.' }
+  const band = WIFI_BANDS.map((b) => r[b]).find((b) => b.enabled && b.ssid === ssid)
+  if (!band) return { ok: false, message: 'Nie można połączyć się z tą siecią.' }
+  if (band.security !== 'none' && band.password !== password) return { ok: false, message: 'Nieprawidłowy klucz zabezpieczeń sieci. Spróbuj ponownie.' }
+  return { ok: true }
+}
+
 function switchPortEnabled(m: NetworkModel, port: PortId): boolean {
   if (devOf(port) !== 'switch') return true
   const n = Number(port.split(':')[1])
@@ -410,12 +530,17 @@ function switchPortEnabled(m: NetworkModel, port: PortId): boolean {
 
 /** Physical link state of a port: cable plugged and both ends powered (and switch port enabled). */
 export function linkUp(m: NetworkModel, port: PortId): boolean {
+  const wa = adapterOf(m, port)
+  if (wa && isWifiAdapter(wa)) return isOn(m, devOf(port)) && !!wifiBand(m, wa)
   const peer = peerOf(m, port)
   if (!peer) return false
   return isOn(m, devOf(port)) && isOn(m, devOf(peer)) && switchPortEnabled(m, port) && switchPortEnabled(m, peer)
 }
 
 const ROUTER_LAN_PORTS = ['router:lan1', 'router:lan2', 'router:lan3', 'router:lan4']
+
+/** Router VLAN bridge node: VLAN 1 is the LAN interface itself. */
+const routerBridge = (id: number) => (id === 1 ? 'router:lan-if' : `router:vlan${id}`)
 
 /** Which L2 domain does a port belong to? Returns a stable key; ports with the same key can talk. */
 export function buildDomains(m: NetworkModel, opts: { ignoreVlans?: boolean } = {}): Map<PortId, string> {
@@ -431,17 +556,45 @@ export function buildDomains(m: NetworkModel, opts: { ignoreVlans?: boolean } = 
   }
   const union = (a: string, b: string) => parent.set(find(a), find(b))
 
+  const sw = m.switch && isOn(m, 'switch') ? m.switch : undefined
+  const rv = !opts.ignoreVlans && m.router && isOn(m, 'router') && m.router.vlan?.enabled ? m.router.vlan : null
+  // VLANs a cable carries tagged: port -> vlan id -> bridge node of the device behind the port
+  const tagged = (port: PortId): Map<number, string> => {
+    const t = new Map<number, string>()
+    if (devOf(port) === 'switch' && sw && sw.dot1q && !opts.ignoreVlans) {
+      const i = Number(port.split(':')[1]) - 1
+      if (sw.portEnabled[i]) for (const v of sw.vlans) if (v.members[i] === 'tagged') t.set(v.id, `switch:vlan${v.id}`)
+    }
+    if (rv && ROUTER_LAN_PORTS.includes(port)) {
+      const i = ROUTER_LAN_PORTS.indexOf(port)
+      for (const v of rv.vlans) if (v.ports[i] === 'tagged') t.set(v.id, routerBridge(v.id))
+    }
+    return t
+  }
   // cables (a link is up only when both ends are powered)
   for (const [a, b] of m.links) {
     find(a)
     find(b)
-    if (isOn(m, devOf(a)) && isOn(m, devOf(b))) union(a, b)
+    if (isOn(m, devOf(a)) && isOn(m, devOf(b))) {
+      union(a, b)
+      const ta = tagged(a)
+      const tb = tagged(b)
+      for (const [id, na] of ta) if (tb.has(id)) union(na, tb.get(id)!)
+    }
   }
-  // router built-in LAN switch: all LAN ports + the router LAN interface
-  if (m.router && isOn(m, 'router')) for (const p of ROUTER_LAN_PORTS) union(p, 'router:lan-if')
+  // router built-in LAN switch
+  if (m.router && isOn(m, 'router')) {
+    if (rv) {
+      // 802.1Q: every LAN port puts untagged frames into the VLAN where it is an untagged member
+      ROUTER_LAN_PORTS.forEach((p, i) => {
+        const v = rv.vlans.find((x) => x.ports[i] === 'untagged')
+        find(p)
+        if (v) union(p, routerBridge(v.id))
+      })
+    } else for (const p of ROUTER_LAN_PORTS) union(p, 'router:lan-if')
+  }
   // managed switch: ports in the same VLAN (by PVID, with membership) are bridged
-  const sw = m.switch
-  if (sw && isOn(m, 'switch')) {
+  if (sw) {
     for (let i = 0; i < sw.ports; i++) {
       if (!sw.portEnabled[i]) continue
       const vlan = sw.dot1q && !opts.ignoreVlans ? sw.pvid[i] : 1
@@ -452,6 +605,12 @@ export function buildDomains(m: NetworkModel, opts: { ignoreVlans?: boolean } = 
     // management interface lives in VLAN 1
     union('switch:mgmt', 'switch:vlan1')
   }
+  // Wi-Fi stations that joined the router's network sit in its LAN (VLAN 1)
+  if (m.router && isOn(m, 'router'))
+    for (const [key, pc] of [['pc', m.pc], ['laptop', m.laptop], ['server', m.server]] as const)
+      if (pc && isOn(m, key))
+        for (const a of pc.adapters)
+          if (isWifiAdapter(a) && wifiBand(m, a)) union(`${key}:${a.id}`, 'router:lan-if')
   const out = new Map<PortId, string>()
   for (const k of parent.keys()) out.set(k, find(k))
   return out
@@ -463,6 +622,11 @@ export function endpoints(m: NetworkModel): Endpoint[] {
   if (r) {
     const lp = maskToPrefix(r.lan.mask)
     if (lp !== null) eps.push({ device: 'router', label: 'Router LAN', port: 'router:lan-if', addrs: [{ ip: r.lan.ip, prefix: lp }], gateway: null, icmp: true })
+    if (r.vlan?.enabled)
+      for (const f of r.vlan.ifaces) {
+        const vp = maskToPrefix(f.mask)
+        if (f.id !== 1 && vp !== null && ipToInt(f.ip) !== null) eps.push({ device: 'router', label: `Router VLAN${f.id}`, port: routerBridge(f.id), addrs: [{ ip: f.ip, prefix: vp }], gateway: null, icmp: true })
+      }
     if (r.wan.type === 'static') {
       const wp = maskToPrefix(r.wan.mask)
       if (wp !== null) eps.push({ device: 'router', label: 'Router WAN', port: 'router:wan', addrs: [{ ip: r.wan.ip, prefix: wp }], gateway: r.wan.gateway || null, icmp: true })
@@ -508,47 +672,121 @@ function l2(domains: Map<PortId, string>, a: PortId, b: PortId) {
 
 /** Can `from` reach `target` IP (and get a reply)? */
 export function canPing(m: NetworkModel, fromPort: PortId | PortId[], target: string): { ok: boolean; reason?: string } {
-  const domains = buildDomains(m)
   const eps = endpoints(m)
   const froms = (Array.isArray(fromPort) ? fromPort : [fromPort]).map((p) => eps.find((e) => e.port === p)).filter((e): e is Endpoint => !!e)
   if (!froms.length) return { ok: false, reason: 'no address' }
   if (froms.some((f) => f.addrs.some((a) => a.ip === target)) || target.startsWith('127.')) return { ok: true }
-  const dsts = eps.filter((e) => e.addrs.some((a) => a.ip === target))
-  if (!dsts.length) return { ok: false, reason: 'host unreachable' }
-  for (const dst of dsts) {
-    if (reaches(m, domains, eps, froms, dst, target)) return dst.icmp ? { ok: true } : { ok: false, reason: 'timeout' }
-  }
-  return { ok: false, reason: 'timeout' }
+  if (!eps.some((e) => e.addrs.some((a) => a.ip === target))) return { ok: false, reason: 'host unreachable' }
+  const got = reachable(m, eps, froms, target)
+  return got.some((d) => d.icmp) ? { ok: true } : { ok: false, reason: 'timeout' }
 }
 
-/** Endpoints owning `target` that a packet from `fromPort(s)` can reach (L2 or via the router), ignoring firewalls. */
-export function reachableEndpoints(m: NetworkModel, fromPort: PortId | PortId[], target: string): Endpoint[] {
+/** Every owner of `target` the sender can reach (two owners = an address conflict). */
+function reachable(m: NetworkModel, eps: Endpoint[], froms: Endpoint[], target: string): Endpoint[] {
   const domains = buildDomains(m)
+  const owns = (e: Endpoint) => e.addrs.some((a) => a.ip === target)
+  const out: Endpoint[] = []
+  for (const d of eps.filter(owns)) {
+    const got = roundTrip(m, domains, eps.filter((e) => e === d || !owns(e)), froms, target)
+    if (got) out.push(got)
+  }
+  return out
+}
+
+/** Endpoints owning `target` that a packet from `fromPort(s)` can reach (L2 or routed), ignoring firewalls. */
+export function reachableEndpoints(m: NetworkModel, fromPort: PortId | PortId[], target: string): Endpoint[] {
   const eps = endpoints(m)
   const froms = (Array.isArray(fromPort) ? fromPort : [fromPort]).map((p) => eps.find((e) => e.port === p)).filter((e): e is Endpoint => !!e)
-  return eps.filter((e) => e.addrs.some((a) => a.ip === target) && reaches(m, domains, eps, froms, e, target))
+  return reachable(m, eps, froms, target)
 }
 
-function reaches(m: NetworkModel, domains: Map<PortId, string>, eps: Endpoint[], froms: Endpoint[], dst: Endpoint, target: string): boolean {
-  const direct = (a: Endpoint, b: Endpoint, ipB: string) =>
-    l2(domains, a.port, b.port) && a.addrs.some((x) => sameSubnet(x.ip, ipB, x.prefix)) && b.addrs.some((y) => a.addrs.some((x) => sameSubnet(y.ip, x.ip, y.prefix)))
+interface Net {
+  m: NetworkModel
+  domains: Map<PortId, string>
+  eps: Endpoint[]
+}
 
-  for (const src of froms) {
-    // 1) same L2 segment + subnet
-    if (direct(src, dst, target)) return true
-    // 2) via router (src gateway is a router interface it can reach, router can reach dst, dst routes back)
-    if (!m.router || !isOn(m, 'router') || !src.gateway) continue
-    const rIfs = eps.filter((e) => e.device === 'router')
-    const gwIf = rIfs.find((e) => e.addrs.some((a) => a.ip === src.gateway) && direct(src, e, src.gateway!))
-    if (!gwIf) continue
-    if (dst.device === 'router') return true // router answers on any of its addresses
-    const outIf = rIfs.find((e) => direct(e, dst, target))
-    if (!outIf) continue
-    const srcIp = src.addrs[0].ip
-    const back = direct(dst, outIf, outIf.addrs[0].ip) && (dst.gateway === outIf.addrs[0].ip || dst.addrs.some((a) => sameSubnet(a.ip, srcIp, a.prefix)))
-    if (back) return true
+const direct = (n: Net, a: Endpoint, b: Endpoint, ipB: string) =>
+  l2(n.domains, a.port, b.port) && a.addrs.some((x) => sameSubnet(x.ip, ipB, x.prefix)) && b.addrs.some((y) => a.addrs.some((x) => sameSubnet(y.ip, x.ip, y.prefix)))
+
+const isVlanIf = (e: Endpoint) => e.port === 'router:lan-if' || e.port.startsWith('router:vlan')
+
+/** May a packet that came in on `inIf` leave on `outIf` of this device? (router: inter-VLAN routing switch) */
+function mayForward(n: Net, dev: DeviceKey, inIf: Endpoint | null, outIf: Endpoint): boolean {
+  if (!inIf) return true // generated by the device itself
+  if (dev === 'router') {
+    const v = n.m.router?.vlan
+    return !(v?.enabled && isVlanIf(inIf) && isVlanIf(outIf) && inIf.port !== outIf.port && !v.routing)
   }
-  return false
+  return !!n.m.forwarders?.[dev]
+}
+
+/** Longest-prefix static route of the router for `target` (enabled routes only). */
+function staticNextHop(n: Net, target: string): string | null {
+  let best: { gw: string; prefix: number } | null = null
+  for (const r of n.m.router?.staticRoutes ?? []) {
+    const p = maskToPrefix(r.mask)
+    if (!r.enabled || p === null || ipToInt(r.dest) === null || !sameSubnet(r.dest, target, p)) continue
+    if (!best || p > best.prefix) best = { gw: r.gateway, prefix: p }
+  }
+  return best?.gw ?? null
+}
+
+/** One-way delivery from the sending device to the endpoint owning `target`; returns that endpoint and the sender's endpoint used. */
+function walk(n: Net, origin: Endpoint[], target: string): { dst: Endpoint; src: Endpoint } | null {
+  let dev = origin[0].device
+  let ifs = origin
+  let arrived: Endpoint | null = null
+  let src: Endpoint | null = null
+  const seen = new Set<string>()
+  for (let hop = 0; hop < 12; hop++) {
+    // the packet reached a device that owns the address
+    if (arrived) {
+      const own = ifs.find((e) => e.addrs.some((a) => a.ip === target))
+      if (own) return { dst: own, src: src! }
+    }
+    // 1) on-link delivery
+    for (const i of ifs)
+      for (const e of n.eps)
+        if (e.device !== dev && e.addrs.some((a) => a.ip === target) && direct(n, i, e, target) && mayForward(n, dev, arrived, i)) return { dst: e, src: src ?? i }
+    // 2) next hop: static route (router), else default gateway
+    const cand: { via: Endpoint; ip: string }[] = []
+    const hopIps: { ip: string; from: Endpoint[] }[] = []
+    if (dev === 'router') {
+      const gw = staticNextHop(n, target)
+      if (gw) hopIps.push({ ip: gw, from: ifs })
+    }
+    for (const i of ifs) if (i.gateway && !(dev === 'router' && i.port !== 'router:wan')) hopIps.push({ ip: i.gateway, from: [i] })
+    for (const h of hopIps)
+      for (const i of h.from)
+        for (const e of n.eps)
+          if (e.device !== dev && e.addrs.some((a) => a.ip === h.ip) && direct(n, i, e, h.ip) && mayForward(n, dev, arrived, i)) cand.push({ via: e, ip: h.ip })
+    const next = cand[0]
+    if (!next) return null
+    const key = `${next.via.device}|${next.ip}`
+    if (seen.has(key)) return null
+    seen.add(key)
+    if (!src) src = origin.find((i) => i.addrs.some((a) => sameSubnet(a.ip, next.ip, a.prefix))) ?? origin[0]
+    arrived = next.via
+    dev = next.via.device
+    ifs = n.eps.filter((e) => e.device === dev)
+    if (!ifs.length) return null
+    // a host that is not a router only answers for its own addresses
+    if (!ifs.some((e) => e.addrs.some((a) => a.ip === target)) && !(dev === 'router' || n.m.forwarders?.[dev])) return null
+  }
+  return null
+}
+
+/** Request and reply both get through (the destination routes back to the sender). */
+function roundTrip(m: NetworkModel, domains: Map<PortId, string>, eps: Endpoint[], froms: Endpoint[], target: string): Endpoint | null {
+  if (!froms.length) return null
+  const n: Net = { m, domains, eps }
+  const out = walk(n, froms, target)
+  if (!out) return null
+  const srcIp = out.src.addrs.find((a) => a.ip !== target)?.ip ?? out.src.addrs[0].ip
+  const dev = out.dst.device
+  const back = walk(n, eps.filter((e) => e.device === dev && e.port !== out.src.port), srcIp)
+  return back && back.dst.device === out.src.device ? out.dst : null
 }
 
 /** Two powered devices with the same IP in one L2 segment. */
@@ -592,8 +830,9 @@ export function leaseFor(m: NetworkModel, clientPort: PortId, mac: string, serve
   const normMac = (x: string) => x.replace(/[-:.]/g, '').toUpperCase()
   if (!isOn(m, devOf(clientPort))) return null
   for (const s of servers) {
-    if (!isOn(m, devOf(s.port)) || !l2(domains, clientPort, s.port)) continue
-    const res = s.reservations.find((r) => normMac(r.mac) === normMac(mac))
+    if (devOf(s.port) === devOf(clientPort) || !isOn(m, devOf(s.port)) || !l2(domains, clientPort, s.port)) continue
+    const sp = maskToPrefix(s.mask)
+    const res = s.reservations.find((r) => normMac(r.mac) === normMac(mac) && (sp === null || sameSubnet(r.ip, s.start, sp)))
     const ip = res ? res.ip : freeAddress(m, s, clientPort, mac)
     if (!ip) continue // pool exhausted
     return { ip, mask: s.mask, gateway: s.gateway, dns: s.dns, server: s.serverIp, ...(s.domain ? { domain: s.domain } : {}) }

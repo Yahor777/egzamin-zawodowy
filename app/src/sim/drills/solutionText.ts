@@ -188,18 +188,13 @@ function linkLines(a: Link[], b: Link[]): SolLine[] {
   return b.filter((l) => !had.has(key(l))).map(([x, y]) => ({ device: 'cabling', kind: 'set', text: `Кабель: ${portName(x)} ↔ ${portName(y)}` }) as SolLine)
 }
 
-/** Replays the drill's reference solution. null = no reference solution for this drill. */
-export async function drillSolution(lab: DrillLab, fresh: LabSave): Promise<SolLine[] | null> {
-  const { SOLVE } = await import('./solutions')
-  const solve = SOLVE[lab.drill.id]
-  if (!solve) return null
-  const s = clone(fresh)
-  const lx: SolLine[] = []
+/** What the recorder of Linux sessions writes into `lx` (shared by drills and exam-sheet labs). */
+export function linuxRecorder(lx: SolLine[]): T {
   const answers = (cmd: string, inp: string[]) => {
     const rest = /^sudo\b/.test(cmd) && inp[0] === PASS ? inp.slice(1) : inp
     return rest.length ? rest.map((x) => (x === '' ? '↵ (Enter)' : x)).join(', ') : undefined
   }
-  const t: T = {
+  return {
     async run(cmd, ...inp) {
       lx.push({ device: 'linux', kind: 'cmd', text: cmd, body: answers(cmd, inp) })
       return ''
@@ -217,6 +212,23 @@ export async function drillSolution(lab: DrillLab, fresh: LabSave): Promise<SolL
       return ''
     },
   }
+}
+
+/** The difference between two bench states as lines: cables, router, switch, server, Windows PC (Linux comes from the recorder). */
+export function stateLines(fresh: LabSave, s: LabSave, renewed: string[] = []): SolLine[] {
+  const pc = pcLines(fresh.pc, s.pc)
+  if (renewed.length && !pc.some((l) => /ipconfig \/renew/i.test(l.text))) pc.push({ device: 'pc', kind: 'cmd', text: 'ipconfig /renew' })
+  return [...linkLines(fresh.links, s.links), ...routerLines(fresh.router, s.router), ...switchLines(fresh.switch, s.switch), ...serverLines(fresh.server, s.server), ...pc]
+}
+
+/** Replays the drill's reference solution. null = no reference solution for this drill. */
+export async function drillSolution(lab: DrillLab, fresh: LabSave): Promise<SolLine[] | null> {
+  const { SOLVE } = await import('./solutions')
+  const solve = SOLVE[lab.drill.id]
+  if (!solve) return null
+  const s = clone(fresh)
+  const lx: SolLine[] = []
+  const t = linuxRecorder(lx)
   const renewed: string[] = []
   try {
     await solve(lab.params as P, {
@@ -230,9 +242,7 @@ export async function drillSolution(lab: DrillLab, fresh: LabSave): Promise<SolL
   } catch {
     return null
   }
-  const pc = pcLines(fresh.pc, s.pc)
-  if (renewed.length && !pc.some((l) => /ipconfig \/renew/i.test(l.text))) pc.push({ device: 'pc', kind: 'cmd', text: 'ipconfig /renew' })
-  return [...linkLines(fresh.links, s.links), ...routerLines(fresh.router, s.router), ...switchLines(fresh.switch, s.switch), ...serverLines(fresh.server, s.server), ...pc, ...lx]
+  return [...stateLines(fresh, s, renewed), ...lx]
 }
 
 /** The lines that belong to a task (by device); everything if nothing matches. */

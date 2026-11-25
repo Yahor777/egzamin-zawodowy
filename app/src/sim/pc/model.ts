@@ -6,6 +6,8 @@ export interface PcNetwork {
   ping(fromAdapter: PcAdapter, ip: string): { ok: boolean; reason?: string }
   /** physical link (cable plugged, other end powered); default: always up */
   link?(adapter: PcAdapter): boolean
+  /** Wi-Fi of the bench: networks in range and the join check (right SSID + key); absent = no wireless networks */
+  wifi?: { scan(): { ssid: string; secured: boolean; security: string }[]; connect(ssid: string, password: string): { ok: boolean; message?: string } }
   /** the rest of the bench (other Windows machines: DNS, domain, IIS …); absent in the standalone sandbox */
   bench?: import('../domain').BenchLink
 }

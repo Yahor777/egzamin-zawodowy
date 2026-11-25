@@ -45,6 +45,16 @@ export function buildModel(lab: Pick<Lab, 'devices'>, s: LabSave, booting?: Part
     server: s.server,
     links: s.links,
     power: effectivePower(s, booting),
+    forwarders: forwardersOf(s, api),
+  }
+}
+
+/** Hosts that route: Linux with net.ipv4.ip_forward=1 in sysctl.conf, Windows Server with the Remote Access role. */
+function forwardersOf(s: LabSave, api: ReturnType<typeof linuxApi> | null): NetworkModel['forwarders'] {
+  const conf = [api?.file('/etc/sysctl.conf')?.content ?? '', ...(api?.listDir('/etc/sysctl.d') ?? []).map((f) => api?.file(`/etc/sysctl.d/${f}`)?.content ?? '')].join('\n')
+  return {
+    linux: /^\s*net\.ipv4\.ip_forward\s*=\s*1\s*$/m.test(conf),
+    server: !!s.server?.server?.roles.includes('RAS'),
   }
 }
 
@@ -63,6 +73,22 @@ export function buildDhcpServers(s: LabSave): DhcpServer[] {
       reservations: r.reservations.filter((x) => x.enabled),
     })
   }
+  const v = r?.vlan
+  if (r && v?.enabled)
+    for (const f of v.ifaces) {
+      const d = f.dhcp
+      if (!d?.enabled) continue
+      out.push({
+        port: `router:vlan${f.id}`,
+        serverIp: f.ip,
+        start: d.start,
+        end: d.end,
+        mask: f.mask,
+        gateway: d.gateway || f.ip,
+        dns: [d.dns1, d.dns2].filter(Boolean),
+        reservations: r.reservations.filter((x) => x.enabled),
+      })
+    }
   out.push(...windowsDhcpServers(s.server))
   if (s.linux) {
     const api = linuxApi(s.linux)

@@ -894,10 +894,17 @@ export function StepPage({ id }: { id: string }) {
                         )}
                       </>
                     ) : a.kind === 'self' ? (
-                      <SelfScore onSave={(v) => {
-                        begin()
-                        saveResult(a, v)
-                      }} />
+                      <>
+                        {a.sheet && (
+                          <button className="btn small primary" onClick={() => go(`/sheet/${a.sheet}`)}>
+                            {ru ? 'Открыть бумажный прогон' : 'Otwórz przebieg'}
+                          </button>
+                        )}
+                        <SelfScore onSave={(v) => {
+                          begin()
+                          saveResult(a, v)
+                        }} />
+                      </>
                     ) : a.kind === 'ack' ? (
                       !st.ok && (
                         <button

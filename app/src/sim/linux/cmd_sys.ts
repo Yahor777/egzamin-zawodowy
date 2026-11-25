@@ -18,7 +18,7 @@ import {
   putFile,
   type SvcDef,
 } from './services.ts'
-import { loadNetplan, applyNetplan } from './netplan.ts'
+import { loadNetplan, applyNetplan, leaseFnOf } from './netplan.ts'
 import { mountAll } from './cmd_disk.ts'
 import { openEditor } from './cmd_files.ts'
 import { apacheDefaultLinks } from './apache.ts'
@@ -964,7 +964,7 @@ export async function bootSequence(c: Ctx) {
     i.up = false
   }
   const np = loadNetplan(st)
-  if (!np.errors.length) applyNetplan(st, np)
+  if (!np.errors.length) applyNetplan(st, np, leaseFnOf(c.sh.network))
   // mounts
   st.mounts = st.mounts.filter((m) => m.system)
   const mres = mountAll(c, true)
