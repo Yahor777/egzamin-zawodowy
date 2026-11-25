@@ -1,6 +1,7 @@
 // Windows Server 2022: Menedżer serwera, Kreator dodawania ról i funkcji, Kreator konfiguracji AD DS, DHCP post-install.
 import { useEffect, useState, type ReactNode } from 'react'
 import { IcCheck, IcChevron, IcFolder, IcGroup, IcInfo, IcMgmt, IcShield, IcSystem, IcUsers, IcWarn } from './icons'
+import { NewShareWizard, SharesList } from './apps-files'
 import { DOMAIN_LEVELS, dnsNameError, FEATURES, featureName, hasDynamicIp, initialAd, netbiosOf, OS_NAME, passwordError, ROLES, roleOf, serverTools, srv, STATIC_IP_WARN, withSrv, type RoleDef } from './server'
 import { hasRole } from './server'
 import { mkdirs, readFile } from './fs'
@@ -90,6 +91,7 @@ export function ServerManager({ arg, setArg }: WinProps) {
   const [notif, setNotif] = useState(false)
   const [ie, setIe] = useState(false)
   const [ieAsk, setIeAsk] = useState(false)
+  const [newShare, setNewShare] = useState(false)
   const page = arg || 'dash'
   const host = st.hostname
   const roles = ROLES.filter((r) => v.roles.includes(r.id) && r.id !== 'FS')
@@ -378,12 +380,21 @@ export function ServerManager({ arg, setArg }: WinProps) {
                 <span>Wszystkie serwery | 1 łącznie</span>
               </div>
               {tbl}
-              {page === 'FS' && <p className="sv-none">Usługi plików i magazynowania: Serwery, Woluminy, Dyski, Pule magazynów, Udziały — przeglądarki dostępne w pełnym systemie.</p>}
+              {page === 'FS' && (
+                <>
+                  <div className="sv-sec big">
+                    <b>UDZIAŁY</b>
+                    <span>Udziały SMB</span>
+                  </div>
+                  <SharesList onNew={() => setNewShare(true)} />
+                </>
+              )}
               {ev}
             </div>
           )}
         </main>
       </div>
+      {newShare && <NewShareWizard onClose={() => setNewShare(false)} />}
       {ieAsk && (
         <SvModal
           title="Konfiguracja zwiększonych zabezpieczeń programu Internet Explorer"

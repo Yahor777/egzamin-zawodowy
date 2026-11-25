@@ -9,6 +9,7 @@ import type { LabSave } from '../labs/ctx'
 import type { LabCtx } from '../labs/labs'
 import { maskToPrefix } from '../net'
 import { readFile } from '../pc/fs'
+import { driveOnline, userShares } from '../pc/smb'
 import { adOf, hasRole, srv } from '../pc/server'
 import { iisOf } from '../pc/iis'
 import { gpoOf } from '../pc/gpo'
@@ -164,19 +165,21 @@ export const WS_DRILLS: DrillDef[] = [
         prepare: (s) =>
           domainBench(s, { X: p.X, domain: dom, ou: String(p.ou), login, first: String(p.first), last: String(p.last), pw: String(p.pw) }),
         tasks: [
-          task('gpo', 'server', 'Obiekt zasad grupy', [`w konsoli Zarządzanie zasadami grupy utwórz obiekt GPO o nazwie ${gname} i połącz go z jednostką organizacyjną ${p.ou}`, `Konfiguracja użytkownika: tapeta pulpitu — nazwa tapety ${wall}`, `Konfiguracja użytkownika → Preferencje → Mapowania dysków: litera ${p.letter}:, lokalizacja ${drive}`, 'Konfiguracja użytkownika: zabroń dostępu do Panelu sterowania i ustawień komputera'], [
+          task('gpo', 'server', 'Obiekt zasad grupy', [`w konsoli Zarządzanie zasadami grupy utwórz obiekt GPO o nazwie ${gname} i połącz go z jednostką organizacyjną ${p.ou}`, `Konfiguracja użytkownika: tapeta pulpitu — nazwa tapety ${wall}`, `Konfiguracja użytkownika → Preferencje → Mapowania dysków: litera ${p.letter}:, lokalizacja ${drive}`, 'Konfiguracja użytkownika: zabroń dostępu do Panelu sterowania i ustawień komputera', `na serwerze utwórz folder C:\\${p.share}${p.X} i udostępnij go jako ${p.share}${p.X} (Wszyscy – Zmiana), aby zmapowany dysk się połączył`], [
             ck('gpo', `GPO ${gname} создан`, 'obiekt GPO', (c) => !!gpo(c)),
             ck('link', `GPO связан с OU ${p.ou} (включён)`, 'połączenie z OU', (c) => !!gpo(c) && !!c.server && gpoOf(c.server).links.some((l) => l.gpo === gpo(c)!.id && l.target === `ou:${p.ou}` && l.enabled)),
             ck('wall', `Обои: ${wall}`, 'tapeta', (c) => gpo(c)?.settings.wallpaper?.state === 'enabled' && gpo(c)?.settings.wallpaper?.v?.path === wall),
             ck('drive', `Диск ${p.letter}: ${drive}`, 'mapowanie dysku', (c) => !!gpo(c)?.drives.some((d) => d.letter.toUpperCase() === p.letter && d.path.toLowerCase() === drive.toLowerCase() && d.action !== 'D')),
             ck('nocp', 'Запрет доступа к Панели управления', 'zakaz Panelu sterowania', (c) => gpo(c)?.settings.nocp?.state === 'enabled'),
-          ], 'gpmc.msc → Las → Domeny → домен → ПКМ на OU → «Utwórz obiekt GPO w tej domenie i połącz go tutaj…» → ПКМ на GPO → Edytuj. Обои: Konfiguracja użytkownika → Zasady → Szablony administracyjne → Pulpit → Pulpit → Tapeta pulpitu (Włączone + путь). Диск: Preferencje → Ustawienia systemu Windows → Mapowania dysków → Nowy (Utwórz). Панель: Szablony administracyjne → Panel sterowania → Zabroń dostępu…'),
+            ck('share', `Папка C:\\${p.share}${p.X} расшарена как ${p.share}${p.X} (диск должен куда-то подключаться)`, 'udział dla dysku', (c) => !!c.server && userShares(c.server).some((x) => x.name.toLowerCase() === `${p.share}${p.X}`.toLowerCase() && x.path.toLowerCase() === `c:\\${p.share}${p.X}`.toLowerCase())),
+          ], 'gpmc.msc → Las → Domeny → домен → ПКМ на OU → «Utwórz obiekt GPO w tej domenie i połącz go tutaj…» → ПКМ на GPO → Edytuj. Обои: Konfiguracja użytkownika → Zasady → Szablony administracyjne → Pulpit → Pulpit → Tapeta pulpitu (Włączone + путь). Диск: Preferencje → Ustawienia systemu Windows → Mapowania dysków → Nowy (Utwórz). Папку и udział создай заранее (Eksplorator → Właściwości → Udostępnianie), иначе диск на клиенте будет с красным крестиком. Панель: Szablony administracyjne → Panel sterowania → Zabroń dostępu…'),
           task('client', 'pc', 'Stacja: sprawdzenie zasad', [`na stacji zaloguj się jako ${nb}\\${login} (Inny użytkownik), wykonaj gpupdate /force i gpresult /r`, 'sprawdź na pulpicie: tapeta, w Eksploratorze: dysk sieciowy, a próba otwarcia Panelu sterowania ma zostać zablokowana'], [
             ck('user', `Вход как ${nb}\\${login}`, 'logowanie', (c) => c.pc?.signedIn?.toLowerCase() === `${nb}\\${login}`.toLowerCase()),
             ck('gp', 'GPO применён к пользователю (gpupdate)', 'zasady zastosowane', (c) => !!c.pc?.applied?.userGpos.includes(gname)),
             ck('wall', 'Обои заданы политикой', 'tapeta', (c) => c.pc?.applied?.policies.wallpaper?.path === wall),
             ck('drive', `Диск ${p.letter}: подключён`, 'dysk sieciowy', (c) => !!c.pc?.applied?.drives.some((d) => d.letter.toUpperCase() === p.letter)),
             ck('nocp', 'Панель управления заблокирована', 'Panel sterowania', (c) => !!c.pc?.applied && 'nocp' in c.pc.applied.policies),
+            ck('online', `Диск ${p.letter}: действительно открывается (не красный крестик)`, 'dysk działa', (c) => !!c.server && !!c.pc && driveOnline({ model: { links: c.links, pc: c.pc, server: c.server, switch: c.switch, router: c.router }, key: 'pc' }, c.pc, String(p.letter))),
             ck('gpresult', 'Выполнен gpresult /r', 'gpresult', (c) => pcHist(c, /^gpresult\s+\/r/i)),
           ], 'Экран входа → «Inny użytkownik» → ИМЯ\\логин + пароль. Потом cmd → gpupdate /force → gpresult /r (в разделе «USTAWIENIA UŻYTKOWNIKA» должен быть твой GPO). Если GPO не применился: проверь связь с правильным OU и «Filtrowanie zabezpieczeń» (по умолчанию «Użytkownicy uwierzytelnieni»).'),
         ],

@@ -125,6 +125,9 @@ export function allPrincipals(st: PcState): Principal[] {
 export function resolvePrincipal(st: PcState, text: string): Principal | null {
   let t = norm(text).replace(/^"|"$/g, '')
   if (!t) return null
+  // a name the picker already resolved: "Księgowi (FIRMA\\Księgowi)", "Jan Kowalski (jkowalski@firma.local)"
+  const lab = /^(.*\S)\s*\(([^()]+)\)$/.exec(t)
+  if (lab) return resolvePrincipal(st, lab[2]) ?? resolvePrincipal(st, lab[1])
   const d = srv(st).domain
   const stripped = (() => {
     if (t.includes('\\')) {

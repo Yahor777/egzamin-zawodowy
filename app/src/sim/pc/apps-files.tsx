@@ -44,7 +44,7 @@ function upOf(p: string): string {
   return /^[a-z]:\\$/i.test(p) ? 'thispc' : parentOf(p)
 }
 const errPane = (e: VErr, path: string): { title: string; text: string } => {
-  if (e.kind === 'denied' || e.code === 5) return { title: path, text: `Nie można uzyskać dostępu do ${path}\n\nNie masz uprawnień dostępu do ${path}. Skontaktuj się z administratorem tego serwera, aby sprawdzić, czy masz uprawnienia dostępu.` }
+  if (e.kind === 'denied' || e.kind === 'login' || e.code === 5) return { title: path, text: `Nie można uzyskać dostępu do ${path}\n\nNie masz uprawnień dostępu do ${path}. Skontaktuj się z administratorem tego serwera, aby sprawdzić, czy masz uprawnienia dostępu.` }
   if (e.kind === 'share' || e.code === 67) return { title: 'Błąd sieci', text: `System Windows nie może uzyskać dostępu do ${path}\n\nSprawdź pisownię nazwy. W przeciwnym razie mógł wystąpić problem z siecią.\n\nKod błędu: 0x80070043\nNie można odnaleźć nazwy sieciowej.` }
   if (e.kind === 'net' || e.kind === 'name' || e.code === 53) return { title: 'Błąd sieci', text: `System Windows nie może uzyskać dostępu do ${path}\n\nSprawdź pisownię nazwy. W przeciwnym razie mógł wystąpić problem z siecią. Aby spróbować zidentyfikować problem i rozwiązać go, kliknij przycisk Diagnozuj.\n\nKod błędu: 0x80070035\nNie znaleziono ścieżki sieciowej.` }
   return { title: 'Eksplorator plików', text: `Nie można odnaleźć „${path}”.\n\n${e.msg}` }

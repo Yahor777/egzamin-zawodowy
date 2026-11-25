@@ -951,6 +951,5 @@ register(
     }
     return 0
   },
-  '/sbin',
-  'isc-dhcp-client',
+  '/usr/sbin',
 )

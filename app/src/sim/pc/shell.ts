@@ -834,6 +834,7 @@ export const GUI_CMDS: Record<string, string> = {
   'gpmc.msc': 'gpmc',
   inetmgr: 'inetmgr',
   'inetmgr.exe': 'inetmgr',
+  'fsrm.msc': 'fsrm',
 }
 
 // ---------- the main entry ----------
@@ -853,6 +854,7 @@ export function exec(ctx: ShellCtx, raw: string): ExecResult {
   const sr = smbCmd(ctx, t, cwdOf(ctx)) ?? serverCmd(ctx, t, ps) ?? clientCmd(ctx, t, ps, exec)
   if (sr) return sr
 
+  if ((c === 'explorer' || c === 'start') && args[0] && /^"?(\\\\|[a-z]:)/i.test(args[c === 'start' ? args.length - 1 : 0]) && !/\.(exe|bat|cmd|msc)$/i.test(args[args.length - 1])) return { out: [], state: st, open: 'explorer:' + args[c === 'start' ? args.length - 1 : 0] }
   // GUI tools
   const gui = GUI_CMDS[c0] ?? GUI_CMDS[c] ?? (c === 'start' && args[0] ? GUI_CMDS[args[0].toLowerCase()] : undefined)
   if (gui) return { out: [], state: st, open: gui }

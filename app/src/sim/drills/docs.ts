@@ -30,6 +30,7 @@ export const HOWTO: DocRef[] = [
   h('winserver-dhcp', 'Windows Server: DHCP — установка, авторизация, область', 'Windows Server: DHCP — rola, autoryzacja, zakres'),
   h('winserver-domain', 'Windows Server: домен — DC, DNS, присоединение клиента', 'Windows Server: domena — kontroler, DNS, dołączanie klienta'),
   h('winserver-gpo', 'Windows Server: GPO — обои, диски, ограничения', 'Windows Server: GPO — tapeta, dyski, ograniczenia'),
+  h('winserver-shares', 'Windows Server: общие папки — udział, NTFS, net use, FSRM', 'Windows Server: udziały, uprawnienia NTFS, net use, FSRM'),
   h('winserver-iis', 'Windows Server: IIS — сайт, порт, привязка, брандмауэр', 'Windows Server: IIS — witryna, port, powiązanie, zapora'),
 ]
 const by = (slug: string) => HOWTO.find((x) => x.to === `doc/${slug}`)!
@@ -59,6 +60,7 @@ export const D = {
   winserverDomain: by('winserver-domain'),
   winserverGpo: by('winserver-gpo'),
   winserverIis: by('winserver-iis'),
+  winserverShares: by('winserver-shares'),
   linuxNmcli: by('linux-nmcli'),
   cheatLinux: { to: 'practice/cheat-linux-server', ru: 'Шпаргалка: Linux-сервер', pl: 'Ściąga: serwer Linux' },
   cheatRouter: { to: 'practice/cheat-router-switch', ru: 'Шпаргалка: роутер и свитч', pl: 'Ściąga: ruter i przełącznik' },

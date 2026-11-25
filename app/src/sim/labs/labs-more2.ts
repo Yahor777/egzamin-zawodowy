@@ -340,6 +340,7 @@ function lab_25_06_0x(v: { n: '03' | '07'; vlan2: string; stationIp: string; gw2
         checks: [
           ck('lan', `LAN_SR = ${v.stationIp}/24, шлюз ${v.gw2}, DNS ${srvIp}`, 'LAN_SR', (c) => staticOk(pcA(c, 'LAN_SR'), v.stationIp, 24, v.gw2, [srvIp])),
           ck('icmp', 'Станция отвечает на ping', 'reguła ICMP', (c) => !!c.pc && pcAnswersPing(c.pc)),
+          ck('web', 'В браузере станции открывается http://www.egzamin.local', 'strona www.egzamin.local', (c) => !!c.web?.('pc', 'http://www.egzamin.local')),
         ],
       },
       {
@@ -432,12 +433,13 @@ const lab_24_06_01: Lab = {
       id: 'server',
       device: 'server',
       title_ru: 'Windows Server: сеть и DNS',
-      text_pl: ['interfejs: nazwa LAN_serwer, 192.168.0.2/24, brama 192.168.0.1, DNS localhost', 'usługa DNS; strefa egzamin.local; host pracownia = 172.16.0.2; alias INF02 → pracownia'],
+      text_pl: ['interfejs: nazwa LAN_serwer, 192.168.0.2/24, brama 192.168.0.1, DNS localhost', 'usługa DNS; strefa egzamin.local; host pracownia = 172.16.0.2; alias INF02 → pracownia', 'zapora: dopuść ping, aby stacja mogła przetestować łączność z serwerem'],
       checks: [
         ck('lan', 'LAN_serwer = 192.168.0.2/24, шлюз .1, DNS localhost', 'LAN_serwer', (c) => staticOk(srvA(c, 'LAN_serwer'), '192.168.0.2', 24, '192.168.0.1') && ['127.0.0.1', '::1'].includes(srvA(c, 'LAN_serwer')!.dns1)),
         ck('role', 'Роль DNS установлена', 'usługa DNS', (c) => hasRoles(c, 'DNS')),
         ck('host', 'Зона egzamin.local, запись pracownia = 172.16.0.2', 'rekord pracownia', (c) => dnsRec(c, 'egzamin.local', 'pracownia', 'A', /^172\.16\.0\.2$/)),
         ck('cname', 'Алиас INF02 → pracownia', 'alias INF02', (c) => dnsRec(c, 'egzamin.local', 'inf02', 'CNAME', /^pracownia(\.egzamin\.local)?\.?$/i)),
+        ck('icmp', 'Сервер отвечает на ping (брандмауэр)', 'reguła ICMP', (c) => !!c.server && pcAnswersPing(c.server)),
       ],
     },
     {

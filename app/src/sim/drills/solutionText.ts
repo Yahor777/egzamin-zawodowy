@@ -7,6 +7,7 @@ import type { LabTask } from '../labs/labs'
 import type { Link, PcState } from '../net'
 import { gpoOf, polOf } from '../pc/gpo'
 import { iisOf } from '../pc/iis'
+import { bitsText, fmtSize, levelLabel, shortWho } from '../pc/smb'
 import { srv } from '../pc/server'
 import type { DrillLab } from './kit'
 import type { P, T } from './solutions'
@@ -138,7 +139,7 @@ function pcLines(a: LabSave['pc'], b: LabSave['pc']): SolLine[] {
 }
 
 /** Windows Server: what the wizards and consoles did, in the order of the exam sheet */
-function serverLines(a: PcState | undefined, b: PcState | undefined): SolLine[] {
+function serverLines(a: PcState | undefined, b: PcState | undefined, clientCmds: string[] = []): SolLine[] {
   if (!a || !b) return []
   const out: SolLine[] = []
   const set = (text: string) => out.push({ device: 'server', kind: 'set', text })
@@ -166,11 +167,28 @@ function serverLines(a: PcState | undefined, b: PcState | undefined): SolLine[] 
     for (const [id, v] of Object.entries(g.settings)) set(`Edytuj ${g.name} → ${polOf(id)?.name ?? id}: ${v.state === 'enabled' ? 'Włączone' : 'Wyłączone'}${v.v?.path ? ` — ${v.v.path}` : ''}`)
     for (const d of g.drives) set(`Edytuj ${g.name} → Konfiguracja użytkownika → Preferencje → Mapowania dysków → Nowy: litera ${d.letter}:, lokalizacja ${d.path}, akcja Utwórz`)
   }
+  const d0 = (a.dirs ?? []).map((x) => x.toLowerCase())
+  for (const d of (b.dirs ?? []).filter((x) => !d0.includes(x.toLowerCase()) && !/^c:\\inetpub/i.test(x))) set(`Eksplorator plików → ПКМ → Nowy → Folder: ${d}`)
+  for (const sh of (B.shares ?? []).filter((x) => !(A.shares ?? []).some((y) => y.name === x.name)))
+    set(`Eksplorator → ${sh.path} → Właściwości → Udostępnianie → Udostępnianie zaawansowane… → «Udostępnij ten folder», nazwa udziału «${sh.name}» → Uprawnienia: ${sh.perms.map((p) => `${shortWho(p.who)} — ${p.type === 'deny' ? 'Odmów ' : ''}${levelLabel(p.level)}`).join(', ')}`)
+  for (const [path, acl] of Object.entries(B.acl ?? {}).filter(([k, v]) => JSON.stringify(v) !== JSON.stringify((A.acl ?? {})[k]))) {
+    const orig = b.dirs?.find((x) => x.toLowerCase() === path) ?? path
+    if (!acl.inherit) set(`Eksplorator → ${orig} → Właściwości → Zabezpieczenia → Zaawansowane → «Wyłącz dziedziczenie» → «Usuń wszystkie odziedziczone uprawnienia z tego obiektu» (albo «Konwertuj…» i usuń zbędne wpisy ręcznie)`)
+    for (const e of acl.aces) set(`Zabezpieczenia → Edytuj… / Zaawansowane → Dodaj: ${shortWho(e.who)} — ${e.type === 'deny' ? 'Odmów' : 'Zezwalaj'}: ${bitsText(e.bits)}`)
+  }
+  const f0 = A.fsrm ?? { quotas: [], auto: [], screens: [], templates: [] }
+  for (const q of (B.fsrm?.quotas ?? []).filter((x) => !f0.quotas.some((y) => y.path === x.path && y.limit === x.limit && y.hard === x.hard)))
+    set(`fsrm.msc → Zarządzanie przydziałami → Przydziały → Utwórz przydział…: ${q.path}, ${q.template ? `szablon «${q.template}»` : `niestandardowe: limit ${fmtSize(q.limit)}, ${q.hard ? 'Limit twardy' : 'Limit miękki'}`}`)
+  for (const q of (B.fsrm?.auto ?? []).filter((x) => !f0.auto.some((y) => y.path === x.path)))
+    set(`fsrm.msc → Przydziały → Utwórz przydział…: ${q.path}, «Automatycznie zastosuj szablon i utwórz przydziały…», szablon «${q.template}»`)
+  for (const q of (B.fsrm?.screens ?? []).filter((x) => !f0.screens.some((y) => y.path === x.path && y.active === x.active && y.groups.join() === x.groups.join())))
+    set(`fsrm.msc → Zarządzanie osłanianiem plików → Osłony plików → Utwórz osłonę pliku…: ${q.path}, ${q.template ? `szablon «${q.template}»` : `niestandardowe: ${q.active ? 'Osłanianie aktywne' : 'Osłanianie pasywne'}, grupy: ${q.groups.join(', ')}`}`)
+  if (B.fps && !A.fps) set('(zapora: reguła «Udostępnianie plików i drukarek (SMB — ruch przychodzący)» włącza się sama przy pierwszym udziale)')
   const i0 = iisOf(a).sites.length
   for (const st of iisOf(b).sites.slice(i0)) set(`inetmgr → Witryny → Dodaj witrynę sieci Web: «${st.name}», ścieżka fizyczna ${st.path}, ${st.bindings.map((x) => `${x.type} ${x.ip === '*' ? 'wszystkie IP' : x.ip}:${x.port}${x.host ? ` ${x.host}` : ''}`).join(', ')}`)
   for (const r of (b.fwRules ?? []).slice(a.fwRules?.length ?? 0)) set(`wf.msc → Reguły przychodzące → Nowa reguła → Port: ${r.protocol.toUpperCase()} ${r.ports ?? ''} → Zezwalaj na połączenie (nazwa «${r.name}»)`)
   if (b.firewallIcmp && !a.firewallIcmp) set('wf.msc → Reguły przychodzące: włącz «Udostępnianie plików i drukarek (Żądanie echa — ICMPv4)»')
-  for (const [path, text] of Object.entries(b.files ?? {})) if (!a.files?.[path] && !/iisstart\.htm$/i.test(path)) out.push({ device: 'server', kind: 'file', text: `Notatnik → Plik → Zapisz jako → «Wszystkie pliki» → ${path}`, body: text.replace(/\r\n/g, '\n') })
+  for (const [path, text] of Object.entries(b.files ?? {})) if (!a.files?.[path] && !/iisstart\.htm$/i.test(path) && !clientCmds.some((c) => c.toLowerCase().includes(path.slice(path.lastIndexOf('\\') + 1).toLowerCase()))) out.push({ device: 'server', kind: 'file', text: `Notatnik → Plik → Zapisz jako → «Wszystkie pliki» → ${path}`, body: text.replace(/\r\n/g, '\n') })
   for (const c of b.history.slice(a.history.length)) out.push({ device: 'server', kind: 'cmd', text: c })
   return out
 }
@@ -218,7 +236,7 @@ export function linuxRecorder(lx: SolLine[]): T {
 export function stateLines(fresh: LabSave, s: LabSave, renewed: string[] = []): SolLine[] {
   const pc = pcLines(fresh.pc, s.pc)
   if (renewed.length && !pc.some((l) => /ipconfig \/renew/i.test(l.text))) pc.push({ device: 'pc', kind: 'cmd', text: 'ipconfig /renew' })
-  return [...linkLines(fresh.links, s.links), ...routerLines(fresh.router, s.router), ...switchLines(fresh.switch, s.switch), ...serverLines(fresh.server, s.server), ...pc]
+  return [...linkLines(fresh.links, s.links), ...routerLines(fresh.router, s.router), ...switchLines(fresh.switch, s.switch), ...serverLines(fresh.server, s.server, s.pc?.history.slice(fresh.pc?.history.length ?? 0) ?? []), ...pc]
 }
 
 /** Replays the drill's reference solution. null = no reference solution for this drill. */

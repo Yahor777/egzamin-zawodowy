@@ -17,6 +17,7 @@
 import type { LabSave } from './ctx'
 import type { Lab } from './labs'
 import type { T } from '../drills/solutions'
+import { SOLVE_MORE2 } from './solutions-more2'
 
 export const PASS = 'ZAQ!2wsx'
 
@@ -71,6 +72,7 @@ const L = (steps: LabSteps) => steps
 
 // ---------------- the solutions ----------------
 export const LAB_SOLVE: Record<string, LabSteps> = {
+  ...SOLVE_MORE2,
   'inf02-26-01-01': L({
     cabling: cable,
     router: ({ s }) => {

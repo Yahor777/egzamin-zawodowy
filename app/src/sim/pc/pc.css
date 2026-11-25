@@ -3793,3 +3793,91 @@ textarea.w-input {
   padding: 4px 6px;
   font-size: 12px;
 }
+
+/* ---- files & sharing (apps-files.tsx) ---- */
+.xp-addr-in {
+  flex: 1;
+  min-width: 0;
+  height: 26px;
+  font-size: 12.5px;
+}
+.ex-tile {
+  background: transparent;
+  border: 1px solid transparent;
+  text-align: left;
+  border-radius: 4px;
+}
+.ex-tile:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+.ex-tile.off span {
+  color: #666;
+}
+.ex-netdrive {
+  position: relative;
+  display: inline-flex !important;
+  width: 40px !important;
+  flex: none;
+}
+.ex-netdrive.off svg {
+  opacity: 0.55;
+}
+.ex-x {
+  position: absolute;
+  right: -4px;
+  bottom: -2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #d13438;
+  color: #fff;
+  font-style: normal;
+  font-size: 10px;
+  line-height: 16px;
+  text-align: center;
+}
+.fs-item.on {
+  background: var(--w-sel, #cce8ff);
+}
+.fs-item small {
+  display: block;
+  color: #666;
+  font-size: 11px;
+}
+.fs-err {
+  background: #fff;
+  border-color: #e5e5e5;
+  max-width: 560px;
+}
+.fs-err b {
+  font-size: 15px;
+}
+.perm-table th,
+.perm-table td {
+  text-align: center;
+}
+.perm-table td:first-child,
+.perm-table th:first-child {
+  text-align: left;
+}
+.adv-table td,
+.adv-table th {
+  font-size: 12px;
+}
+.inh-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.inh-b {
+  text-align: left;
+  white-space: normal;
+  height: auto;
+  padding: 8px 10px;
+}
+.fsprops .sd-top {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 8px;
+}

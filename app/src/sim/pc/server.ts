@@ -252,7 +252,7 @@ const TOOLS: ToolDef[] = [
   { label: 'Inicjator iSCSI' },
   { label: 'Konfiguracja systemu' },
   { label: 'Menedżer internetowych usług informacyjnych (IIS)', req: 'IIS', app: 'inetmgr' },
-  { label: 'Menedżer zasobów serwera plików', req: 'FS-Resource-Manager' },
+  { label: 'Menedżer zasobów serwera plików', req: 'FS-Resource-Manager', app: 'fsrm' },
   { label: 'Monitor wydajności' },
   { label: 'Podgląd zdarzeń' },
   { label: 'Usługi' },

@@ -10,6 +10,7 @@ import { gpoOf, newGpo } from '../pc/gpo'
 import { mkdirs, writeFile } from '../pc/fs'
 import { initialAd, netbiosOf, srv, withSrv } from '../pc/server'
 import { withFw } from '../pc/model'
+import { exec } from '../pc/shell'
 import { addAutoQuota, addQuota, addScreen, createShare, disableInheritance, setExplicitRows } from '../pc/smb'
 
 const uniq = <T,>(a: T[]) => [...new Set(a)]
@@ -140,3 +141,14 @@ export function setNtfsOnly(pc: PcState, path: string, rows: { who: string; bits
   return setExplicitRows(disableInheritance(pc, path, false), path, rows.map((r) => ({ who: r.who, allow: r.bits, deny: 0 })))
 }
 export { addAutoQuota, addQuota, addScreen }
+
+/** a command typed on the client (cmd), through the same shell the GUI terminal uses; returns its output and records the history line */
+export function clientRun(b: Bench, key: NetKey, line: string, kind: 'cmd' | 'ps' = 'cmd'): string {
+  const pc = b.s[key]!
+  const r = exec(
+    { state: pc, network: { renew: () => null, ping: () => ({ ok: false }), bench: { model: model(b), key, setServer: (f) => (b.s.server = f(b.s.server!)) } }, kind, arp: new Set() },
+    line,
+  )
+  b.s[key] = { ...r.state, history: [...r.state.history, line] }
+  return r.out.map((x) => x.t).join('\n')
+}

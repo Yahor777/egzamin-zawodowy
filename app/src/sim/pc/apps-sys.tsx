@@ -1,7 +1,7 @@
 // wf.msc (firewall with advanced security), sysdm.cpl, lusrmgr.msc / compmgmt.msc, Explorer, Run dialog.
 import { useState, type ReactNode } from 'react'
 import { joinDomain, preJoin } from '../domain'
-import { srv } from './server'
+import { isServer, srv, withSrv } from './server'
 import type { PcFwRule, PcUser } from '../net'
 import {
   IcBin,

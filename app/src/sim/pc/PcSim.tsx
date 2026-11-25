@@ -6,6 +6,7 @@ import { isPhone } from '../bench/useCompact'
 import { WifiFlyout } from './WifiFlyout'
 import './wifi.css'
 import { AdapterProps, AdapterStatus, ControlPanel, CP_TITLES, Ipv4Advanced, Ipv4Props, NetDetails } from './apps-net'
+import { FsProps, Fsrm, folderTitle, isPathArg, normPath } from './apps-files'
 import { Explorer, EXPLORER_TITLES, FirewallMmc, FwProfilesDlg, FwRuleProps, FwWizard, GroupProps, LocalUsers, NewUser, RunDialog, SetPassword, Sysdm, SysName, UserProps } from './apps-sys'
 import {
   IcBin,
@@ -112,7 +113,7 @@ const APPS: Record<string, AppDef> = {
   groupprops: { title: (a) => `Właściwości: ${a}`, icon: () => <IcUsers size={16} />, size: [430, 470], dialog: true, single: 'arg', render: (p) => <GroupProps {...p} /> },
   newgroup: { title: () => 'Nowa grupa', icon: () => <IcUsers size={16} />, size: [430, 470], dialog: true, single: true, render: (p) => <GroupProps {...p} create /> },
   setpass: { title: (a) => `Ustawianie hasła dla ${a}`, icon: () => <IcUser size={16} />, size: [400, 280], dialog: true, single: 'arg', render: (p) => <SetPassword {...p} /> },
-  explorer: { title: (a) => EXPLORER_TITLES[a ?? 'thispc'] ?? 'Eksplorator plików', icon: (a) => (a === 'recycle' ? <IcBin size={16} /> : a === 'tools' ? <IcTools size={16} /> : <IcFolder size={16} />), size: [780, 480], render: (p) => <Explorer {...p} /> },
+  explorer: { title: (a) => EXPLORER_TITLES[a ?? 'thispc'] ?? (a && isPathArg(a) ? folderTitle(a) : 'Eksplorator plików'), icon: (a) => (a === 'recycle' ? <IcBin size={16} /> : a === 'tools' ? <IcTools size={16} /> : <IcFolder size={16} />), size: [780, 480], render: (p) => <Explorer {...p} /> },
   msinfo32: { title: () => 'Informacje o systemie', icon: () => <IcSystem size={16} />, size: [860, 520], single: true, render: () => <Msinfo32 /> },
   dxdiag: { title: () => 'Narzędzie diagnostyczne DirectX', icon: () => <IcTools size={16} />, size: [640, 540], dialog: true, single: true, render: (p) => <Dxdiag {...p} /> },
   devmgmt: { title: () => 'Menedżer urządzeń', icon: () => <IcMgmt size={16} />, size: [560, 520], single: true, render: () => <Devmgmt /> },
@@ -125,6 +126,8 @@ const APPS: Record<string, AppDef> = {
   aduc: { title: () => 'Użytkownicy i komputery usługi Active Directory', icon: () => <IcUsers size={16} />, size: [900, 520], single: true, render: (p) => <Aduc {...p} /> },
   dhcpmgmt: { title: () => 'DHCP', icon: () => <IcMgmt size={16} />, size: [900, 520], single: true, render: (p) => <DhcpConsole {...p} /> },
   dnsmgmt: { title: () => 'Menedżer DNS', icon: () => <IcMgmt size={16} />, size: [900, 520], single: true, render: (p) => <DnsManager {...p} /> },
+  fsprops: { title: (a) => `Właściwości: ${folderTitle(a ?? '')}`, icon: () => <IcFolder size={16} />, size: [430, 580], dialog: true, single: 'arg', render: (p) => <FsProps {...p} /> },
+  fsrm: { title: () => 'Menedżer zasobów serwera plików', icon: () => <IcMgmt size={16} />, size: [940, 540], single: true, render: (p) => <Fsrm {...p} /> },
   gpmc: { title: () => 'Zarządzanie zasadami grupy', icon: () => <IcMgmt size={16} />, size: [940, 540], single: true, render: (p) => <Gpmc {...p} /> },
   gpedit: { title: () => 'Edytor zarządzania zasadami grupy', icon: () => <IcMgmt size={16} />, size: [900, 540], single: 'arg', render: (p) => <GpEditor {...p} /> },
   inetmgr: { title: () => 'Menedżer internetowych usług informacyjnych (IIS)', icon: () => <IcMgmt size={16} />, size: [940, 540], single: true, render: (p) => <IisManager {...p} /> },
@@ -133,7 +136,7 @@ const APPS: Record<string, AppDef> = {
   run: { title: () => 'Uruchom', icon: () => <IcRun size={16} />, size: [420, 230], dialog: true, small: true, single: true, render: (p) => <RunDialog {...p} /> },
 }
 
-const SERVER_KEYS = ['srvmgr', 'aduc', 'dhcpmgmt', 'dnsmgmt', 'gpmc', 'inetmgr']
+const SERVER_KEYS = ['srvmgr', 'aduc', 'dhcpmgmt', 'dnsmgmt', 'gpmc', 'inetmgr', 'fsrm']
 const viewOf = (w: WinRec): PcView | null => (w.app === 'control' && w.arg === 'ncpa' ? 'adapters' : w.app === 'edge' ? 'browser' : w.app === 'wf' ? 'firewall' : w.app === 'cmd' ? 'cmd' : null)
 
 // ---------------- Start menu content ----------------
@@ -152,6 +155,7 @@ const START_APPS: StartApp[] = [
   { key: 'dhcpmgmt', os: 'server', role: 'DHCP', label: 'DHCP', icon: <IcMgmt size={30} />, run: 'dhcpmgmt.msc' },
   { key: 'dnsmgmt', os: 'server', role: 'DNS', label: 'DNS', icon: <IcMgmt size={30} />, run: 'dnsmgmt.msc' },
   { key: 'gpmc', os: 'server', role: 'GPMC', label: 'Zarządzanie zasadami grupy', icon: <IcMgmt size={30} />, run: 'gpmc.msc' },
+  { key: 'fsrm', os: 'server', role: 'FS-Resource-Manager', label: 'Menedżer zasobów serwera plików', icon: <IcMgmt size={30} />, run: 'fsrm.msc' },
   { key: 'inetmgr', os: 'server', role: 'IIS', label: 'Menedżer internetowych usług informacyjnych (IIS)', icon: <IcMgmt size={30} />, run: 'inetmgr' },
   { key: 'edge', label: 'Microsoft Edge', icon: <IcEdge size={30} />, run: 'msedge' },
   { key: 'explorer', label: 'Eksplorator plików', icon: <IcFolder size={30} />, run: 'explorer' },
@@ -375,6 +379,7 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
     (key: string) => {
       if (key.startsWith('edge')) return open('edge')
       if (key.startsWith('notepad')) return open('notepad', key.slice(8) || undefined)
+      if (key.startsWith('explorer:')) return open('explorer', key.slice(9))
       const map: Record<string, [string, string?]> = {
         ncpa: ['control', 'ncpa'],
         control: ['control', 'home'],
@@ -398,6 +403,7 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
         dnsmgmt: ['dnsmgmt'],
         gpmc: ['gpmc'],
         inetmgr: ['inetmgr'],
+        fsrm: ['fsrm'],
       }
       if (key === 'restart') return restart()
       if (SERVER_KEYS.includes(key) && !isServer(stateRef.current)) return
@@ -417,6 +423,7 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
       if (low === 'cmd' || low === 'wt' || low === 'terminal') return open('cmd', 'cmd'), true
       if (low === 'powershell' || low === 'pwsh') return open('cmd', 'ps'), true
       if (low === 'tools') return open('explorer', 'tools'), true
+      if (isPathArg(c.replace(/^"|"$/g, '')) && !/\.(exe|bat|cmd|msc|cpl)$/i.test(c)) return open('explorer', normPath(c)), true
       if (low === 'run') return open('run'), true
       if (low === 'notepad' || low.startsWith('notepad ')) return open('notepad', c.slice(7).trim().replace(/^"|"$/g, '') || undefined), true
       if (/^(https?:\/\/|www\.)/i.test(c) || /^\d{1,3}(\.\d{1,3}){3}(\/.*)?$/.test(c)) return open('edge'), true

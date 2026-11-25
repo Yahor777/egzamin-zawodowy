@@ -3,7 +3,8 @@
 // simulator make — and the client side through the same domain functions the GUI calls.
 import type { H, P } from './solutions'
 import { mkdirs, writeFile } from '../pc/fs'
-import { addAdUser, addGpo, addOu, addRoles, addScope, addSite, allowPort, finishDhcp, gpupdateClient, joinClient, promote, setStaticIp, signInClient } from './srvkit'
+import { EVERYONE } from '../pc/smb'
+import { addAdUser, addGpo, addOu, addRoles, addScope, addSite, allowPort, finishDhcp, gpupdateClient, joinClient, promote, setStaticIp, shareFolder, signInClient } from './srvkit'
 
 const NB = (p: P) => `${p.dom}${p.X}`.toUpperCase()
 
@@ -50,6 +51,7 @@ export const SRV_SOLVE: Record<string, (p: P, h: H) => Promise<void> | void> = {
     const { s } = h
     const name = `Pulpit-${p.X}`
     const host = 'WIN-7QK2L9M4P0D'
+    s.server = shareFolder(mkdirs(s.server!, `C:\\${p.share}${p.X}`), { name: `${p.share}${p.X}`, path: `C:\\${p.share}${p.X}`, perms: [{ who: EVERYONE, type: 'allow', level: 'change' }] })
     s.server = addGpo(s.server!, name, {
       link: `ou:${p.ou}`,
       settings: { wallpaper: { state: 'enabled', v: { path: `\\\\${host}\\tapety$\\${p.wall}${p.X}.jpg`, style: 'Wypełnione' } }, nocp: { state: 'enabled' } },
