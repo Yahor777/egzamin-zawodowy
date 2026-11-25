@@ -3,10 +3,11 @@ import { rng, TOPICS, type DrillDef, type DrillLab, type DrillTopic } from './ki
 import { LINUX_DRILLS } from './linux'
 import { NET_DRILLS } from './net'
 import { EXTRA_DRILLS } from './extra'
+import { WS_DRILLS } from './winserver'
 
 export { TOPICS, type DrillDef, type DrillLab, type DrillTopic }
 
-export const DRILLS: DrillDef[] = [...LINUX_DRILLS, ...NET_DRILLS, ...EXTRA_DRILLS]
+export const DRILLS: DrillDef[] = [...LINUX_DRILLS, ...NET_DRILLS, ...EXTRA_DRILLS, ...WS_DRILLS]
 
 export const drillById = (id: string) => DRILLS.find((d) => d.id === id)
 
@@ -16,6 +17,7 @@ export function makeDrillLab(def: DrillDef, seed: number): DrillLab {
   const b = def.build(p)
   const ports: Lab['ports'] = { ...b.ports }
   if (b.devices.linux && !ports.linux) ports.linux = b.devices.linux.interfaces.map((i) => i.name)
+  if (b.devices.server && !ports.server) ports.server = b.devices.server.adapters?.map((a) => a.id) ?? ['eth0']
   if (b.devices.pc && !ports.pc) ports.pc = b.devices.pc.adapters?.map((a) => a.id) ?? ['eth0']
   return {
     id: `drill-${def.id}`,

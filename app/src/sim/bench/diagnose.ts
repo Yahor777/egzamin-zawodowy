@@ -21,9 +21,10 @@ import {
   type PcState,
   type PortId,
 } from '../net'
+import { dnsLookup, parseUrl, serveHttp, type HttpOutcome } from '../domain'
 
 export type WebDevice = 'router' | 'switch' | 'printer'
-export type PcKey = 'pc' | 'laptop'
+export type PcKey = 'pc' | 'laptop' | 'server'
 
 export const DEV_RU: Record<DeviceKey, string> = {
   router: 'Роутер',
@@ -31,6 +32,7 @@ export const DEV_RU: Record<DeviceKey, string> = {
   linux: 'Сервер Linux',
   pc: 'ПК',
   laptop: 'Ноутбук',
+  server: 'Windows Server',
   printer: 'Принтер',
 }
 export const DEV_PL: Record<DeviceKey, string> = {
@@ -39,6 +41,7 @@ export const DEV_PL: Record<DeviceKey, string> = {
   linux: 'Serwer Linux',
   pc: 'Stacja Windows',
   laptop: 'Laptop serwisowy',
+  server: 'Serwer Windows',
   printer: 'Drukarka',
 }
 /** Russian names in the genitive/locative-free form used inside sentences. */
@@ -48,6 +51,7 @@ const DEV_RU_ACC: Record<DeviceKey, string> = {
   linux: 'сервер Linux',
   pc: 'ПК',
   laptop: 'ноутбук',
+  server: 'Windows Server',
   printer: 'принтер',
 }
 
@@ -99,6 +103,10 @@ function owners(m: NetworkModel, ip: string): { key: DeviceKey; prefix: number |
       const [a, p] = c.split('/')
       if (a === ip) out.push({ key: 'linux', prefix: Number(p), port: `linux:${i.name}`, web: false })
     }
+  for (const a of m.server?.adapters ?? []) {
+    const cfg = pcAddress(a)
+    if (cfg && cfg.addr.ip === ip) out.push({ key: 'server', prefix: cfg.addr.prefix, port: `server:${a.id}`, web: true })
+  }
   return out
 }
 
@@ -209,6 +217,8 @@ export interface BrowseResult {
   error?: 'badurl' | 'nxdomain' | 'timeout' | 'refused' | 'self'
   /** several devices answered on this address */
   conflict?: DeviceKey[]
+  /** an IIS site answered (a page, a directory listing or an IIS error page) */
+  site?: HttpOutcome
   why: Why[]
 }
 
@@ -224,7 +234,27 @@ export function browse(m: NetworkModel, key: PcKey, input: string, opts: { booti
   if (!pc) return { ok: false, host, error: 'timeout', why: [] }
   const ports = pc.adapters.map((a) => `${key}:${a.id}`)
 
-  if (ipToInt(host) === null) {
+  const url = parseUrl(input)
+  let typed = ''
+  if (ipToInt(host) === null && host === 'localhost' && key === 'server') host = '127.0.0.1'
+  // a name: the DNS server of a Windows Server on the bench answers (zones, A / CNAME records)
+  const ans = ipToInt(host) === null ? dnsLookup(m, key, host) : null
+  if (ans?.ok) {
+    typed = host
+    host = ans.ips![0]
+  } else if (ans) {
+    return {
+      ok: false,
+      host,
+      error: 'nxdomain',
+      why: [
+        ans.reason === 'timeout'
+          ? { short: 'DNS не отвечает', text: `Сервер DNS ${ans.server}, указанный в настройках карты, не отвечает (выключен, нет кабеля, не установлена роль DNS или адрес неверный). Имя ${host} не удалось превратить в IP.`, fix: 'Проверь DNS в ncpa.cpl и службу DNS на сервере; для проверки впиши IP-адрес.' }
+          : { short: 'имени нет в DNS', text: `Сервер DNS ${ans.server} ответил, что имени ${host} не существует: нет записи A/CNAME в зоне.`, fix: 'На сервере: dnsmgmt.msc → зона → Nowy host (A). Проверь и написание имени.' },
+      ],
+    }
+  }
+  if (!typed && ipToInt(host) === null) {
     if (/^(tplinkwifi|tplinklogin)\.net$/.test(host) && m.router) {
       const fromRouter = pc.adapters.some((a) => a.lease && a.lease.server === m.router!.lan.ip && (a.dnsAuto ? a.lease.dns : [a.dns1]).includes(m.router!.lan.ip))
       if (fromRouter) host = m.router.lan.ip
@@ -245,6 +275,12 @@ export function browse(m: NetworkModel, key: PcKey, input: string, opts: { booti
   }
 
   const mine = pc.adapters.map(pcAddress).find((c) => c?.addr.ip === host)
+  const asSite = (o: HttpOutcome): BrowseResult => {
+    if (o.kind === 'refused') return { ok: false, host, error: 'refused', why: [{ short: `порт ${url.port} закрыт`, text: `Сервер отвечает, но на порту ${url.port} никто не слушает: роль IIS не установлена, сайт остановлен или сайт работает на другом порту.`, fix: 'inetmgr → Witryny → проверь Powiązania (порт) и что сайт Uruchomiony.' }] }
+    if (o.kind === 'timeout') return { ok: false, host, error: 'timeout', why: [{ short: `брандмауэр блокирует порт ${url.port}`, text: `Брандмауэр Windows Server пропускает только порты, открытые ролями (для IIS — 80 и 443). Порт ${url.port} закрыт: пакеты молча отбрасываются.`, fix: `wf.msc → Reguły przychodzące → Nowa reguła → Port → TCP ${url.port} → Zezwalaj na połączenie.` }] }
+    return { ok: true, host, site: o, why: [] }
+  }
+  if (key === 'server' && m.server && (host.startsWith('127.') || mine)) return asSite(serveHttp(m.server, { ip: host, port: url.port, host: typed || host, path: url.path, https: url.scheme === 'https', local: true }))
   if (mine) return { ok: false, host, error: 'self', why: [{ short: 'это адрес самого ПК', text: `${host} — это адрес самого компьютера, на нём нет панели управления.` }] }
 
   const reach = reachableEndpoints(m, ports, host)
@@ -261,6 +297,8 @@ export function browse(m: NetworkModel, key: PcKey, input: string, opts: { booti
       })
     return { ok: true, host, device, conflict: devs.length > 1 ? devs : undefined, why }
   }
+  const srvEp = reach.find((e) => e.device === 'server')
+  if (srvEp && m.server) return asSite(serveHttp(m.server, { ip: host, port: url.port, host: typed || host, path: url.path, https: url.scheme === 'https', local: false }))
   if (reach.length) {
     return {
       ok: false,

@@ -65,7 +65,8 @@ export function SettingsApp({ arg = 'system', setArg }: WinProps) {
           {page === 'eth' && <EthPage go={setArg} id={sub} />}
           {page === 'adv' && <AdvPage go={setArg} />}
           {page === 'accounts' && <AccountsPage />}
-          {!['system', 'about', 'net', 'eth', 'adv', 'accounts'].includes(page) && (
+          {page === 'person' && <PersonPage />}
+          {!['system', 'about', 'net', 'eth', 'adv', 'accounts', 'person'].includes(page) && (
             <>
               <h1 className="set-h">{NAV.find((n) => n[0] === page)?.[1] ?? 'Ustawienia'}</h1>
               <p className="set-muted">Ta sekcja nie jest potrzebna na egzaminie i nie jest dostępna w symulatorze.</p>
@@ -74,6 +75,30 @@ export function SettingsApp({ arg = 'system', setArg }: WinProps) {
         </main>
       )}
     </div>
+  )
+}
+
+function PersonPage() {
+  const api = usePc()
+  const ap = api.state.applied
+  const wall = ap?.policies.wallpaper
+  const locked = !!ap && 'nochgbg' in ap.policies
+  return (
+    <>
+      <h1 className="set-h">Personalizacja</h1>
+      {(wall || locked) && (
+        <p className="set-muted" role="status">
+          Niektóre ustawienia są zarządzane przez Twoją organizację.
+        </p>
+      )}
+      <h2 className="set-sub">Tło</h2>
+      <p className="set-muted" id="person-wallpaper">
+        {wall?.path ? `Tło pulpitu ustawiono zasadami grupy: ${wall.path}${wall.style ? ` (styl: ${wall.style})` : ''}` : 'Obraz — Windows (domyślny motyw)'}
+      </p>
+      <button className="w-btn" disabled={!!wall || locked}>
+        Przeglądaj zdjęcia
+      </button>
+    </>
   )
 }
 

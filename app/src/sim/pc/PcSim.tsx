@@ -34,6 +34,8 @@ import { clock, longDate, trayState, type PcNetwork } from './model'
 import { SettingsApp } from './settings'
 import { Devmgmt, Dxdiag, Msinfo32, Taskmgr } from './apps-hw'
 import { Notepad } from './apps-notepad'
+import { DomainSignIn, RestrictedDlg } from './apps-domain'
+import { changePassword, clientGpo, policyOn, signIn } from '../domain'
 import { GUI_CMDS } from './shell'
 import { AddRoles, DhcpPostInstall, Promote, ServerManager } from './apps-server'
 import { Aduc, DhcpConsole, MmcStub } from './apps-server-mmc'
@@ -93,7 +95,7 @@ const APPS: Record<string, AppDef> = {
   ipv4: { title: () => 'Właściwości: Protokół internetowy w wersji 4 (TCP/IPv4)', icon: () => <IcEthernet size={16} />, size: [430, 560], dialog: true, single: 'arg', help: true, render: (p) => <Ipv4Props {...p} /> },
   ipv4adv: { title: () => 'Zaawansowane ustawienia TCP/IP', icon: () => <IcEthernet size={16} />, size: [430, 470], dialog: true, single: 'arg', render: (p) => <Ipv4Advanced {...p} /> },
   settings: { title: () => 'Ustawienia', icon: () => <IcSettings size={16} />, size: [860, 580], single: true, render: (p) => <SettingsApp {...p} /> },
-  cmd: { title: (a) => (a === 'ps' ? 'Administrator: Windows PowerShell' : 'Administrator: Wiersz polecenia'), icon: (a) => (a === 'ps' ? <IcPs size={16} /> : <IcCmd size={16} />), size: [700, 430], render: (p) => <Terminal {...p} /> },
+  cmd: { title: (a, st) => `${st.signedIn ? '' : 'Administrator: '}${a === 'ps' ? 'Windows PowerShell' : 'Wiersz polecenia'}`, icon: (a) => (a === 'ps' ? <IcPs size={16} /> : <IcCmd size={16} />), size: [700, 430], render: (p) => <Terminal {...p} /> },
   edge: { title: () => 'Microsoft Edge', icon: () => <IcEdge size={16} />, size: [940, 620], bare: true, single: true, render: () => <EdgeHost /> },
   wf: { title: () => 'Zapora Windows Defender z zabezpieczeniami zaawansowanymi', icon: () => <IcFirewall size={16} />, size: [940, 540], single: true, render: (p) => <FirewallMmc {...p} /> },
   fwrule: { title: (a) => `Właściwości: ${(a ?? '').split('|')[1] ?? ''}`, icon: () => <IcFirewall size={16} />, size: [450, 520], dialog: true, single: 'arg', render: (p) => <FwRuleProps {...p} /> },
@@ -125,6 +127,7 @@ const APPS: Record<string, AppDef> = {
   gpedit: { title: () => 'Edytor zarządzania zasadami grupy', icon: () => <IcMgmt size={16} />, size: [900, 540], single: 'arg', render: (p) => <GpEditor {...p} /> },
   inetmgr: { title: () => 'Menedżer internetowych usług informacyjnych (IIS)', icon: () => <IcMgmt size={16} />, size: [940, 540], single: true, render: (p) => <IisManager {...p} /> },
   mmcstub: { title: (a) => `${a ?? 'Konsola'} — [Konsola główna]`, icon: () => <IcMgmt size={16} />, size: [820, 480], single: 'arg', render: (p) => <MmcStub {...p} /> },
+  restricted: { title: () => 'Ograniczenia', icon: () => <IcSystem size={16} />, size: [400, 170], dialog: true, small: true, single: true, render: (p) => <RestrictedDlg {...p} /> },
   run: { title: () => 'Uruchom', icon: () => <IcRun size={16} />, size: [420, 230], dialog: true, small: true, single: true, render: (p) => <RunDialog {...p} /> },
 }
 
@@ -308,13 +311,25 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
     [onChange],
   )
 
+  // a restart (or power cycle) ends the session and activates a pending domain membership
+  useEffect(() => {
+    const cur = stateRef.current
+    if ((phase === 'boot' || booting || !powered) && (cur.signedIn || (cur.member && !cur.member.active)))
+      update((s) => ({ ...s, signedIn: undefined, member: s.member ? { ...s.member, active: true } : s.member }))
+  }, [phase, booting, powered, update])
+
   const layerSize = () => {
     const el = layerRef.current
     return { W: el?.offsetWidth ?? 900, H: el?.offsetHeight ?? 560 }
   }
 
   const open = useCallback(
-    (app: string, arg?: string) => {
+    (app0: string, arg0?: string) => {
+      // Group Policy: "Zabroń dostępu do Panelu sterowania i ustawień komputera" / "Usuń polecenie Uruchom"
+      const ap = stateRef.current.applied
+      const denied = !!ap && (('nocp' in ap.policies && ['control', 'settings', 'sysdm', 'sysname'].includes(app0)) || ('norun' in ap.policies && app0 === 'run'))
+      const app = denied ? 'restricted' : app0
+      const arg = denied ? undefined : arg0
       const def = APPS[app]
       if (!def) return
       setStart(false)
@@ -516,8 +531,36 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
         <span className="pc-boot-t">Ponowne uruchamianie</span>
       </div>,
     )
-  if (phase === 'lock' || phase === 'signin' || phase === 'welcome')
-    return shell('pc-lockscr', <LockScreen phase={phase} now={now} onUnlock={() => setPhase('signin')} onSignIn={() => setPhase('welcome')} password={state.users.find((u) => u.name === 'Administrator')?.password ?? ''} server={srvMode ? state.hostname : undefined} account={state.server?.domain ? `${state.server.domain.netbios}\\Administrator` : 'Administrator'} />)
+  if (phase === 'lock' || phase === 'signin' || phase === 'welcome') {
+    const mem = state.member
+    const bench = network.bench
+    // Group Policy is (re)applied at sign-in; without a reachable domain controller the cached result stays
+    const signed = (signedIn: string | undefined) => {
+      const next = { ...state, signedIn }
+      const ap = clientGpo(bench!.model, bench!.key, next)
+      update((s) => ({ ...s, signedIn, applied: ap ?? s.applied, member: s.member && signedIn ? { ...s.member, cached: [...new Set([...(s.member.cached ?? []), signedIn.split('\\')[1]])] } : s.member }))
+      setPhase('welcome')
+    }
+    const domainScreen =
+      phase === 'signin' && mem?.active && bench ? (
+        <DomainSignIn
+          netbios={mem.netbios}
+          host={state.hostname}
+          localPassword={state.users.find((u) => u.name === 'Administrator')?.password ?? ''}
+          onDomain={(u, pw) => signIn(bench.model, bench.key, state, u, pw)}
+          onChange={(logon, o, n) => {
+            const r = changePassword(bench.model, bench.key, state, logon, o, n)
+            if (r.ok) bench.setServer?.(r.apply)
+            return r.ok ? { ok: true } : r
+          }}
+          onIn={(who) => signed(who.local ? undefined : `${mem.netbios}\\${who.logon}`)}
+        />
+      ) : null
+    return shell(
+      'pc-lockscr',
+      <LockScreen phase={phase} now={now} onUnlock={() => setPhase('signin')} onSignIn={() => setPhase('welcome')} password={state.users.find((u) => u.name === 'Administrator')?.password ?? ''} server={srvMode ? state.hostname : undefined} account={state.signedIn ?? (state.server?.domain ? `${state.server.domain.netbios}\\Administrator` : 'Administrator')} custom={domainScreen} />,
+    )
+  }
 
   // ---------------- desktop ----------------
   const tray = trayState(state, network)
@@ -593,8 +636,8 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
           }
         }}
       >
-        <div className="pc-wall" aria-hidden="true" />
-        <DesktopIcons open={open} server={srvMode} browser={!!browser} menuAt={menuAt} desktopMenu={desktopMenu} />
+        <div className="pc-wall" aria-hidden="true" style={wallStyle(state)} data-wallpaper={state.applied?.policies.wallpaper?.path || undefined} />
+        <DesktopIcons open={open} server={srvMode} browser={!!browser} menuAt={menuAt} desktopMenu={desktopMenu} noRecycle={policyOn(state, 'norecycle')} noItems={policyOn(state, 'nodeskitems')} />
         <div ref={layerRef} className="pc-layer">
           {wins.map((w) => {
             const def = APPS[w.app]
@@ -647,12 +690,13 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
               menuAt(x, y, [
                 { label: 'Zmień ustawienia konta', onClick: () => open('settings', 'accounts') },
                 { label: 'Zablokuj', onClick: () => (setStart(false), setPhase('lock')) },
-                { label: 'Wyloguj się', onClick: () => (setStart(false), setWins(() => []), setPhase('lock')) },
+                { label: 'Wyloguj się', onClick: () => (setStart(false), setWins(() => []), update((s) => ({ ...s, signedIn: undefined })), setPhase('lock')) },
               ])
             }
             browser={!!browser}
             compact={compact}
             server={srvMode ? state : undefined}
+            user={state.signedIn ? state.signedIn.split('\\')[1] : 'Administrator'}
           />
         )}
         {flyout === 'net' && (
@@ -777,7 +821,16 @@ function StartButton({ on, onClick, onMenu }: { on: boolean; onClick: () => void
   )
 }
 
-function DesktopIcons({ open, server, browser, menuAt, desktopMenu }: { open: (a: string, arg?: string) => void; server?: boolean; browser: boolean; menuAt: (x: number, y: number, items: MenuItem[]) => void; desktopMenu: MenuItem[] }) {
+/** the picture that Group Policy "Tapeta pulpitu" sets: a gradient derived from the file name (no real image files here) */
+function wallStyle(st: PcState): React.CSSProperties | undefined {
+  const path = st.applied?.policies.wallpaper?.path
+  if (!path) return undefined
+  let h = 0
+  for (const ch of path.toLowerCase()) h = (h * 31 + ch.charCodeAt(0)) % 360
+  return { background: `radial-gradient(ellipse 50% 40% at 30% 70%, hsl(${(h + 60) % 360} 70% 62% / .9), transparent 70%), linear-gradient(150deg, hsl(${h} 55% 22%), hsl(${(h + 40) % 360} 60% 42%))` }
+}
+
+function DesktopIcons({ open, server, browser, menuAt, desktopMenu, noRecycle, noItems }: { open: (a: string, arg?: string) => void; server?: boolean; noRecycle?: boolean; noItems?: boolean; browser: boolean; menuAt: (x: number, y: number, items: MenuItem[]) => void; desktopMenu: MenuItem[] }) {
   const [sel, setSel] = useState<string | null>(null)
   const items: { key: string; label: string; icon: ReactNode; open: () => void; menu: MenuItem[] }[] = [
     {
@@ -799,7 +852,7 @@ function DesktopIcons({ open, server, browser, menuAt, desktopMenu }: { open: (a
   const blank = useLongPress((x, y) => menuAt(x, y, desktopMenu))
   return (
     <div className="pc-icons" onClick={(e) => e.target === e.currentTarget && setSel(null)} {...blank}>
-      {items.filter((it) => !server || it.key === 'bin').map((it) => (
+      {items.filter((it) => !noItems && !(noRecycle && it.key === 'bin') && (!server || it.key === 'bin')).map((it) => (
         <DeskIcon key={it.key} label={it.label} icon={it.icon} sel={sel === it.key} onSel={() => setSel(it.key)} onOpen={it.open} onMenu={(x, y) => (setSel(it.key), menuAt(x, y, it.menu))} />
       ))}
     </div>
@@ -841,8 +894,10 @@ function StartMenu({
   browser,
   compact,
   server,
+  user = 'Administrator',
 }: {
   server?: PcState
+  user?: string
   mode: 'pinned' | 'all'
   setMode: (m: false | 'pinned' | 'all') => void
   q: string
@@ -981,7 +1036,7 @@ function StartMenu({
             <span className="st-avatar">
               <IcUser size={20} />
             </span>
-            Administrator
+            {user}
           </button>
           <button className="st-pow" aria-label="Zasilanie" onClick={(e) => onPower(e.clientX, e.clientY)}>
             <IcPower />
@@ -992,7 +1047,7 @@ function StartMenu({
   )
 }
 
-function LockScreen({ phase, now, onUnlock, onSignIn, password, server, account = 'Administrator' }: { phase: Phase; now: Date; onUnlock: () => void; onSignIn: () => void; password: string; server?: string; account?: string }) {
+function LockScreen({ phase, now, onUnlock, onSignIn, password, server, account = 'Administrator', custom }: { phase: Phase; now: Date; onUnlock: () => void; onSignIn: () => void; password: string; server?: string; account?: string; custom?: ReactNode }) {
   const c = clock(now)
   const [pw, setPw] = useState(password)
   const [err, setErr] = useState(false)
@@ -1022,6 +1077,7 @@ function LockScreen({ phase, now, onUnlock, onSignIn, password, server, account 
         </span>
       </button>
     )
+  if (custom) return <>{custom}</>
   if (phase === 'welcome')
     return (
       <div className="signin">

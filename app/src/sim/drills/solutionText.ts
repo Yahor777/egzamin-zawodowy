@@ -4,11 +4,14 @@
 // settings are shown as the difference between the solved and the fresh state.
 import type { LabSave } from '../labs/ctx'
 import type { LabTask } from '../labs/labs'
-import type { Link } from '../net'
+import type { Link, PcState } from '../net'
+import { gpoOf, polOf } from '../pc/gpo'
+import { iisOf } from '../pc/iis'
+import { srv } from '../pc/server'
 import type { DrillLab } from './kit'
 import type { P, T } from './solutions'
 
-export type SolDevice = 'linux' | 'pc' | 'router' | 'switch' | 'cabling'
+export type SolDevice = 'linux' | 'pc' | 'server' | 'router' | 'switch' | 'cabling'
 export interface SolLine {
   device: SolDevice
   /** cmd: a command to type; file: an editor session with its content; set: a field to set in a dialog / web page */
@@ -128,11 +131,51 @@ function pcLines(a: LabSave['pc'], b: LabSave['pc']): SolLine[] {
   }
   if (a.firewallIcmp !== b.firewallIcmp && b.firewallIcmp)
     out.push({ device: 'pc', kind: 'set', text: 'Брандмауэр (wf.msc) → Reguły przychodzące: включить «Udostępnianie plików i drukarek (Żądanie echa — ICMPv4 — ruch przychodzący)»' })
+  if (b.member && !a.member) out.push({ device: 'pc', kind: 'set', text: `sysdm.cpl → Nazwa komputera → Zmień… → Członek: Domeny: ${b.member.name} → OK → konto Administrator / ZAQ!2wsx → «Witamy w domenie» → Uruchom ponownie` })
+  if (b.signedIn && !a.signedIn) out.push({ device: 'pc', kind: 'set', text: `Ekran logowania → Inny użytkownik → ${b.signedIn} (przy pierwszym logowaniu: nowe hasło dwa razy)` })
   for (const c of b.history.slice(a.history.length)) out.push({ device: 'pc', kind: 'cmd', text: c })
   return out
 }
 
-const DEV_RU: Record<string, string> = { pc: 'ПК', laptop: 'ноутбук', linux: 'сервер', router: 'роутер', switch: 'свитч', printer: 'принтер' }
+/** Windows Server: what the wizards and consoles did, in the order of the exam sheet */
+function serverLines(a: PcState | undefined, b: PcState | undefined): SolLine[] {
+  if (!a || !b) return []
+  const out: SolLine[] = []
+  const set = (text: string) => out.push({ device: 'server', kind: 'set', text })
+  for (const ad of b.adapters) {
+    const old = a.adapters.find((x) => x.id === ad.id)
+    if (old && !ad.dhcp && (old.dhcp || old.ip !== ad.ip || old.mask !== ad.mask || old.dns1 !== ad.dns1 || old.gateway !== ad.gateway))
+      set(`ncpa.cpl → адаптер «${ad.name}» → IPv4: адрес ${ad.ip}, маска ${ad.mask}${ad.gateway ? `, шлюз ${ad.gateway}` : ', шлюз пусто'}${ad.dns1 ? `, DNS ${ad.dns1}` : ''}`)
+  }
+  const A = srv(a)
+  const B = srv(b)
+  const roles = B.roles.filter((r) => !A.roles.includes(r))
+  if (roles.length) set(`Menedżer serwera → Zarządzaj → Dodaj role i funkcje: ${roles.join(', ')} → Zainstaluj`)
+  if (B.dhcp?.authorized && !A.dhcp?.authorized) set('⚑ → «Ukończ konfigurację DHCP» → Zatwierdź (авторизация сервера)')
+  for (const sc of (B.dhcp?.scopes ?? []).slice(A.dhcp?.scopes.length ?? 0))
+    set(`dhcpmgmt.msc → IPv4 → Nowy zakres: «${sc.name}», ${sc.start} – ${sc.end} (/${sc.prefix})${sc.excl.length ? `, исключение ${sc.excl.map((e) => `${e.start} – ${e.end}`).join(', ')}` : ''}, аренда ${Math.round(sc.leaseMin / 1440)} дн., router ${sc.router || '—'}, DNS ${sc.dns || '—'}, активировать`)
+  if (B.domain && !A.domain) set(`⚑ → «Podnieś poziom tego serwera do rangi kontrolera domeny» → Dodaj nowy las: ${B.domain.name} (NetBIOS ${B.domain.netbios}), пароль DSRM, Zainstaluj`)
+  const ad0 = A.ad ?? { ous: [], users: [], groups: [] }
+  for (const o of (B.ad?.ous ?? []).filter((o) => !ad0.ous.some((x) => x.name === o.name))) set(`dsa.msc → Nowy → Jednostka organizacyjna: ${o.name}`)
+  for (const u of (B.ad?.users ?? []).filter((u) => !ad0.users.some((x) => x.logon === u.logon) && !['Administrator', 'Gość', 'krbtgt'].includes(u.logon))) set(`dsa.msc → ${u.ou} → Nowy → Użytkownik: ${u.full}, логин ${u.logon}, пароль — из листа (флажок «musi zmienić hasło» оставь включённым)`)
+  const g0 = gpoOf(a)
+  const g1 = gpoOf(b)
+  for (const g of g1.gpos.filter((g) => !g0.gpos.some((x) => x.id === g.id))) {
+    set(`gpmc.msc → Obiekty zasad grupy → Nowy: ${g.name}`)
+    for (const l of g1.links.filter((l) => l.gpo === g.id)) set(`gpmc.msc → ПКМ на ${l.target === 'domain' ? 'домене' : `OU ${l.target.slice(3)}`} → Połącz istniejący obiekt GPO → ${g.name}`)
+    for (const [id, v] of Object.entries(g.settings)) set(`Edytuj ${g.name} → ${polOf(id)?.name ?? id}: ${v.state === 'enabled' ? 'Włączone' : 'Wyłączone'}${v.v?.path ? ` — ${v.v.path}` : ''}`)
+    for (const d of g.drives) set(`Edytuj ${g.name} → Konfiguracja użytkownika → Preferencje → Mapowania dysków → Nowy: litera ${d.letter}:, lokalizacja ${d.path}, akcja Utwórz`)
+  }
+  const i0 = iisOf(a).sites.length
+  for (const st of iisOf(b).sites.slice(i0)) set(`inetmgr → Witryny → Dodaj witrynę sieci Web: «${st.name}», ścieżka fizyczna ${st.path}, ${st.bindings.map((x) => `${x.type} ${x.ip === '*' ? 'wszystkie IP' : x.ip}:${x.port}${x.host ? ` ${x.host}` : ''}`).join(', ')}`)
+  for (const r of (b.fwRules ?? []).slice(a.fwRules?.length ?? 0)) set(`wf.msc → Reguły przychodzące → Nowa reguła → Port: ${r.protocol.toUpperCase()} ${r.ports ?? ''} → Zezwalaj na połączenie (nazwa «${r.name}»)`)
+  if (b.firewallIcmp && !a.firewallIcmp) set('wf.msc → Reguły przychodzące: włącz «Udostępnianie plików i drukarek (Żądanie echa — ICMPv4)»')
+  for (const [path, text] of Object.entries(b.files ?? {})) if (!a.files?.[path] && !/iisstart\.htm$/i.test(path)) out.push({ device: 'server', kind: 'file', text: `Notatnik → Plik → Zapisz jako → «Wszystkie pliki» → ${path}`, body: text.replace(/\r\n/g, '\n') })
+  for (const c of b.history.slice(a.history.length)) out.push({ device: 'server', kind: 'cmd', text: c })
+  return out
+}
+
+const DEV_RU: Record<string, string> = { pc: 'ПК', laptop: 'ноутбук', server: 'Windows Server', linux: 'сервер', router: 'роутер', switch: 'свитч', printer: 'принтер' }
 const portName = (p: string) => {
   const [d, port] = p.split(':')
   if (d === 'switch') return `свитч, порт ${port}`
@@ -189,7 +232,7 @@ export async function drillSolution(lab: DrillLab, fresh: LabSave): Promise<SolL
   }
   const pc = pcLines(fresh.pc, s.pc)
   if (renewed.length && !pc.some((l) => /ipconfig \/renew/i.test(l.text))) pc.push({ device: 'pc', kind: 'cmd', text: 'ipconfig /renew' })
-  return [...linkLines(fresh.links, s.links), ...routerLines(fresh.router, s.router), ...switchLines(fresh.switch, s.switch), ...pc, ...lx]
+  return [...linkLines(fresh.links, s.links), ...routerLines(fresh.router, s.router), ...switchLines(fresh.switch, s.switch), ...serverLines(fresh.server, s.server), ...pc, ...lx]
 }
 
 /** The lines that belong to a task (by device); everything if nothing matches. */

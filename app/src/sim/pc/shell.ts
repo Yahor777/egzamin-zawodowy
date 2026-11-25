@@ -28,7 +28,9 @@ import {
 } from './model'
 import { cim, systeminfo, wlan, wmic } from './hwcmd'
 import { cmdFiles, cwdOf, expandVars, type BatchRun } from './batch'
-import { serverCmd } from './shell-srv'
+import { serverCmd, clientCmd } from './shell-srv'
+import { addAdUser, dnsLookup, dnsReverse, domainPasswordPolicy, policyOn, pwViolation } from '../domain'
+import { isServer, srv } from './server'
 
 export type ShellKind = 'cmd' | 'ps'
 export interface Line {
@@ -136,7 +138,7 @@ export function ipconfig(st: PcState, n: PcNetwork, all: boolean, only?: PcAdapt
   if (all)
     out.push(
       kv('Nazwa hosta', st.hostname),
-      kv('Sufiks podstawowej domeny DNS', ''),
+      kv('Sufiks podstawowej domeny DNS', st.member?.active ? st.member.name : (srv(st).domain?.name ?? '')),
       kv('Typ węzła', 'Hybrydowy'),
       kv('Routing IP włączony', 'Nie'),
       kv('Serwer WINS Proxy włączony', 'Nie'),
@@ -152,7 +154,7 @@ export function ipconfig(st: PcState, n: PcNetwork, all: boolean, only?: PcAdapt
       out.push('')
       continue
     }
-    out.push(kv('Sufiks DNS konkretnego połączenia', a.dnsSuffix ?? ''))
+    out.push(kv('Sufiks DNS konkretnego połączenia', a.dnsSuffix ?? a.lease?.domain ?? ''))
     if (all) out.push(kv('Opis', nicDesc(a)), kv('Adres fizyczny', a.mac), kv('DHCP włączone', a.dhcp ? 'Tak' : 'Nie'), kv('Autokonfiguracja włączona', 'Tak'))
     out.push(kv('Adres IPv6 połączenia lokalnego', `${linkLocal6(a)}%${ifIndex(st, a)}${all ? '(Preferowane)' : ''}`))
     if (c) {
@@ -209,6 +211,9 @@ function resolveName(st: PcState, n: PcNetwork, name: string): string | null {
     const a = st.adapters.find((x) => linked(x, n) && pcAddress(x))
     return a ? pcAddress(a)!.addr.ip : '127.0.0.1'
   }
+  // DNS of a Windows Server on the bench
+  const ans = n.bench ? dnsLookup(n.bench.model, n.bench.key, name) : null
+  if (ans?.ok) return ans.ips![0]
   return null
 }
 
@@ -424,6 +429,15 @@ function nslookup(ctx: ShellCtx, args: string[]): Line[] {
   const name = pos[0]
   const server = pos[1] ?? dns
   if (!server) return L('*** Domyślne serwery nie są dostępne', 'Serwer:  UnKnown', 'Address:  127.0.0.1', '', ...(name ? [`*** UnKnown nie może odnaleźć ${name}: No response from server`] : []))
+  if (n.bench && name) {
+    const ans = ipToInt(name) !== null ? dnsReverse(n.bench.model, n.bench.key, name, pos[1]) : dnsLookup(n.bench.model, n.bench.key, name, pos[1])
+    if (ans?.ok) {
+      const head = [`Serwer:  ${ans.serverPtr ?? 'UnKnown'}`, `Address:  ${ans.server}`, '']
+      if (ipToInt(name) !== null) return L(...head, `Nazwa:    ${ans.name}`, `Address:  ${name}`, '')
+      return L(...head, `Nazwa:    ${ans.name}`, ...(ans.ips!.length > 1 ? [`Addresses:  ${ans.ips!.join(', ')}`] : [`Address:  ${ans.ips![0]}`]), ...(ans.aliases?.length ? [`Aliases:  ${ans.aliases.join(', ')}`] : []), '')
+    }
+    if (ans?.reason === 'nxdomain') return L(`Serwer:  ${ans.serverPtr ?? 'UnKnown'}`, `Address:  ${ans.server}`, '', `*** ${ans.serverPtr ?? 'UnKnown'} nie może odnaleźć ${name}: Non-existent domain`)
+  }
   const reach = a && pingOnce(st, n, server).kind === 'reply'
   if (!reach)
     return L('DNS request timed out.', '    timeout was 2 seconds.', 'Serwer:  UnKnown', `Address:  ${server}`, '', ...(name ? ['DNS request timed out.', '    timeout was 2 seconds.', `*** Upłynął limit czasu żądania do UnKnown.`] : []))
@@ -685,8 +699,12 @@ function net(ctx: ShellCtx, t: string[]): ExecResult {
       if (u) return ok(st, 'Konto już istnieje.', '', 'Aby uzyskać dodatkową pomoc, wpisz NET HELPMSG 2224.', '')
       if (!validUserName(name)) return ok(st, 'Nazwa użytkownika jest niepoprawna.', '')
       const exp = flagVal('expires')
-      return ok(
-        addUser(st, {
+      const dc = isServer(st) && !!srv(st).domain
+      if (dc) {
+        const v = pwViolation(domainPasswordPolicy(st), pass && pass !== '*' ? pass : '', name)
+        if (v) return ok(st, 'Hasło nie spełnia wymagań zasad haseł. Sprawdź minimalną długość hasła, złożoność hasła i wymagania dotyczące historii haseł.', '', 'Więcej informacji można uzyskać, wpisując NET HELPMSG 2245.', '')
+      }
+      const created = addUser(st, {
           name,
           admin: false,
           password: pass && pass !== '*' ? pass : '',
@@ -696,10 +714,8 @@ function net(ctx: ShellCtx, t: string[]): ExecResult {
           ...(flagVal('passwordchg') !== undefined ? { cannotChange: /no/i.test(flagVal('passwordchg')!) } : {}),
           ...(flagVal('logonpasswordchg') !== undefined ? { mustChange: /yes/i.test(flagVal('logonpasswordchg')!) } : {}),
           ...(exp !== undefined && !/never|nigdy/i.test(exp) ? { accountExpires: exp } : {}),
-        }),
-        OK,
-        '',
-      )
+        })
+      return ok(dc ? addAdUser(created, { logon: name, full: flagVal('fullname'), password: pass && pass !== '*' ? pass : '', mustChange: /yes/i.test(flagVal('logonpasswordchg') ?? ''), disabled: /no/i.test(flagVal('active') ?? '') }) : created, OK, '')
     }
     if (!u) return ok(st, 'Nie można odnaleźć nazwy użytkownika.', '', 'Aby uzyskać dodatkową pomoc, wpisz NET HELPMSG 2221.', '')
     if (flag('del')) {
@@ -833,7 +849,7 @@ export function exec(ctx: ShellCtx, raw: string): ExecResult {
   const args = t.slice(1)
   const ps = ctx.kind === 'ps'
   const ok = (out: Line[], state = st): ExecResult => ({ out, state })
-  const sr = serverCmd(ctx, t, ps)
+  const sr = serverCmd(ctx, t, ps) ?? clientCmd(ctx, t, ps, exec)
   if (sr) return sr
 
   // GUI tools
@@ -903,7 +919,7 @@ export function exec(ctx: ShellCtx, raw: string): ExecResult {
     case 'hostname':
       return ok(L(st.hostname))
     case 'whoami':
-      return ok(L(`${st.hostname.toLowerCase()}\\administrator`))
+      return ok(L(st.signedIn ? st.signedIn.toLowerCase() : `${st.hostname.toLowerCase()}\\administrator`))
     case 'getmac':
       return ok(getmac(st, ctx.network))
     case 'nslookup':
@@ -955,6 +971,7 @@ export function exec(ctx: ShellCtx, raw: string): ExecResult {
       if (ps) return { out: L(...PS_BANNER), state: st, push: 'ps' }
       return { out: L(...PS_BANNER), state: st, push: 'ps' }
     case 'cmd':
+      if (policyOn(st, 'nocmd')) return ok(L('Wiersz polecenia został wyłączony przez administratora.', ''))
       return { out: L(...CMD_BANNER), state: st, push: 'cmd' }
     case 'systeminfo':
       return ok(L(...systeminfo(st)))

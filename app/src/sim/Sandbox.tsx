@@ -4,7 +4,7 @@ import { useLang } from '../lib/store'
 import { go } from '../router'
 import { Bench } from './bench/Bench'
 import { useStation, type BenchLab } from './bench/station'
-import type { LabSave } from './labs/ctx'
+import { defaultServerState, type LabSave } from './labs/ctx'
 import { clearTerminalScreen, LinuxTab, PcTab } from './labs/LabPage'
 import { createLinuxState, LinuxTerminal, type LinuxState } from './linux'
 import { defaultPcState, type PcState } from './net'
@@ -50,6 +50,7 @@ const sandboxLinux = () =>
 export function Sandbox({ kind }: { kind: string }) {
   if (kind === 'linux') return <LinuxSandbox />
   if (kind === 'winserver') return <WinServerSandbox />
+  if (kind === 'domain') return <NetSandbox domain />
   return <NetSandbox />
 }
 
@@ -141,12 +142,36 @@ const freshNet = (): LabSave => ({
   checked: null,
 })
 
-type NetTab = 'bench' | 'linux' | 'pc'
+// ---------- "Домен": switch + Windows Server + Windows 11 + Linux, cabled to the switch ----------
+const DOMAIN_LAB: BenchLab = {
+  devices: { switch: {}, pc: {}, server: {} },
+  ports: { switch: ['1', '2', '3', '4', '5', '6', '7', '8'], linux: ['enp0s3'], pc: ['eth0'], server: ['eth0'] },
+}
+const freshDomain = (): LabSave => ({
+  v: 1,
+  switch: defaultSwitchState(),
+  linux: sandboxLinux(),
+  pc: defaultPcState(),
+  server: defaultServerState(),
+  links: [
+    ['server:eth0', 'switch:1'],
+    ['pc:eth0', 'switch:2'],
+    ['linux:enp0s3', 'switch:3'],
+  ],
+  startedAt: null,
+  checked: null,
+})
 
-function NetSandbox() {
+type NetTab = 'bench' | 'linux' | 'pc' | 'server'
+
+function NetSandbox({ domain = false }: { domain?: boolean }) {
   const lang = useLang()
   const ru = lang === 'ru'
-  const [s, setS] = useSaved<LabSave>('inf02.sandbox.net', freshNet)
+  const NET = domain ? DOMAIN_LAB : NET_LAB
+  const fresh = domain ? freshDomain : freshNet
+  const sid = domain ? 'sandbox.domain' : 'sandbox.net'
+  const [s, setS] = useSaved<LabSave>(`inf02.${sid}`, fresh)
+  const [srvView, setSrvView] = useState<PcView>('adapters')
   const [tab, setTab] = useState<NetTab>('bench')
   const [pcView, setPcView] = useState<PcView>('adapters')
   const [confirm, setConfirm] = useState(false)
@@ -154,11 +179,11 @@ function NetSandbox() {
   const [opened, setOpened] = useState<ReadonlySet<NetTab>>(() => new Set())
   const [gen, setGen] = useState(0)
   const update = useCallback((p: Partial<LabSave>) => setS((x) => ({ ...x, ...p })), [setS])
-  const st = useStation(NET_LAB, s, update)
+  const st = useStation(NET, s, update)
   const tabs: [NetTab, string][] = [
     ['bench', ru ? 'Стол' : 'Stanowisko'],
-    ['linux', 'Linux'],
-    ['pc', 'Windows'],
+    ...(domain ? ([['server', 'Serwer Windows']] as [NetTab, string][]) : []),
+    ...((domain ? [['pc', 'Windows 11'], ['linux', 'Linux']] : [['linux', 'Linux'], ['pc', 'Windows']]) as [NetTab, string][]),
   ]
   const cur = tabs.some(([t]) => t === tab) ? tab : 'bench'
   if (!opened.has(cur)) setOpened(new Set(opened).add(cur))
@@ -166,7 +191,7 @@ function NetSandbox() {
     <div className="lab">
       <div className="lab-head">
         <button className="back-link" onClick={() => go('/practice')}>
-          <Icon name="back" size={18} /> {ru ? 'Сеть на столе' : 'Sieć na stanowisku'}
+          <Icon name="back" size={18} /> {domain ? (ru ? 'Домен: Windows Server + клиент' : 'Domena: Windows Server i klient') : ru ? 'Сеть на столе' : 'Sieć na stanowisku'}
         </button>
         {!confirm ? (
           <button className="btn small" onClick={() => setConfirm(true)}>
@@ -177,8 +202,8 @@ function NetSandbox() {
             <button
               className="btn small danger"
               onClick={() => {
-                clearTerminalScreen('sandbox.net')
-                setS(freshNet())
+                clearTerminalScreen(sid)
+                setS(fresh())
                 setGen((g) => g + 1)
                 setConfirm(false)
               }}
@@ -198,14 +223,21 @@ function NetSandbox() {
           </button>
         ))}
       </div>
+      {domain && (
+        <p className="hint">
+          {ru
+            ? 'Все три машины уже подключены к свитчу. Сервер: Administrator / ZAQ!2wsx. Дай серверу статический IP (например 192.168.10.1/24, DNS 127.0.0.1), поставь роли (AD DS, DHCP, IIS), потом присоединяй Windows 11 к домену. Брандмауэр сервера по умолчанию не отвечает на ping.'
+            : 'Serwer: Administrator / ZAQ!2wsx. Nadaj mu statyczny IP, zainstaluj role (AD DS, DHCP, IIS) i dołącz klienta Windows 11 do domeny.'}
+        </p>
+      )}
       <div className="lab-body" key={gen}>
         {opened.has('bench') && (
           <div className="lab-pane" hidden={cur !== 'bench'}>
             <Bench
-              lab={NET_LAB}
+              lab={NET}
               s={s}
               st={st}
-              hintKey="sandbox"
+              hintKey={domain ? 'sandbox.domain' : 'sandbox'}
               onLinks={(links) => update({ links })}
               onOpenPc={() => {
                 setTab('pc')
@@ -216,12 +248,17 @@ function NetSandbox() {
         )}
         {opened.has('linux') && (
           <div className="lab-pane" hidden={cur !== 'linux'}>
-            <LinuxTab s={s} st={st} update={update} active={cur === 'linux'} persistKey="sandbox.net" />
+            <LinuxTab s={s} st={st} update={update} active={cur === 'linux'} persistKey={sid} />
           </div>
         )}
         {opened.has('pc') && (
           <div className="lab-pane" hidden={cur !== 'pc'}>
-            <PcTab pcKey="pc" s={s} st={st} update={update} view={pcView} onView={setPcView} memKey="sandbox" />
+            <PcTab pcKey="pc" s={s} st={st} update={update} view={pcView} onView={setPcView} memKey={domain ? 'sandbox.domain' : 'sandbox'} />
+          </div>
+        )}
+        {domain && s.server && opened.has('server') && (
+          <div className="lab-pane" hidden={cur !== 'server'}>
+            <PcTab pcKey="server" s={s} st={st} update={update} view={srvView} onView={setSrvView} memKey="sandbox.domain" />
           </div>
         )}
       </div>

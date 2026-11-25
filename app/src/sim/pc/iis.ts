@@ -34,3 +34,25 @@ export function bindingConflict(sites: IisSite[], self: number | null, b: IisBin
 }
 export const conflictMsg = (name: string) => `Nie można uruchomić witryny „${name}”. Inna witryna może używać tego samego powiązania (adres IP, port lub nazwa hosta).\n\nProces nie może uzyskać dostępu do pliku, ponieważ jest on używany przez inny proces. (0x80070020)`
 export const DUP_BINDING_MSG = 'Skonfigurowane powiązanie jest już używane przez inną witrynę. Czy chcesz kontynuować?'
+
+/** C:\inetpub\wwwroot\iisstart.htm — the welcome page that IIS installs */
+export const IIS_START_HTM = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>IIS Windows Server</title>
+<style type="text/css">
+body { color:#000; background-color:#0072C6; margin:0; font-family:Segoe UI,Arial,sans-serif }
+#container { margin-left:auto; margin-right:auto; text-align:center }
+a img { border:none }
+</style>
+</head>
+<body>
+<div id="container">
+<div style="padding:70px 0 10px;font-size:46px;color:#fff;font-weight:300">Internet Information Services</div>
+<p style="color:#cde;font-size:18px">Serwer sieci Web (IIS) działa. Witamy! / Welcome / Добро пожаловать</p>
+</div>
+</body>
+</html>
+`
+export const IIS_DIRS = ['C:\\inetpub', 'C:\\inetpub\\wwwroot', 'C:\\inetpub\\logs']

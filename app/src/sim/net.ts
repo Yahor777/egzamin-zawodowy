@@ -73,7 +73,7 @@ export interface PcAdapter {
   dns2: string
   enabled: boolean
   /** lease obtained from a DHCP server (set by the network model) */
-  lease?: { ip: string; mask: string; gateway: string; dns: string[]; server: string } | null
+  lease?: { ip: string; mask: string; gateway: string; dns: string[]; server: string; /** DHCP option 015 */ domain?: string } | null
   /** APIPA address (169.254.x.x) Windows picks when DHCP gets no answer */
   autoconf?: string | null
   /** last known link (media) state — used to renew DHCP when the cable/peer comes up */
@@ -143,6 +143,15 @@ export interface AdUser {
   mustChange?: boolean
   neverExpires?: boolean
   cannotChange?: boolean
+  /** password set in ADUC / at the first logon (missing = unknown, any password is rejected) */
+  password?: string
+}
+/** computer account created by "Zmień → Członek domeny" on a client */
+export interface AdComputer {
+  name: string
+  /** container: 'Computers' by default */
+  ou: string
+  created: string
 }
 export interface AdGroup {
   name: string
@@ -160,7 +169,7 @@ export interface ServerState {
   pending: string[]
   domain?: { name: string; netbios: string; level: string }
   dhcp?: { authorized: boolean; scopes: DhcpScope[] }
-  ad?: { ous: AdOu[]; users: AdUser[]; groups: AdGroup[] }
+  ad?: { ous: AdOu[]; users: AdUser[]; groups: AdGroup[]; computers?: AdComputer[] }
   /** DNS server (dnsmgmt.msc); missing = defaults derived from the domain */
   dns?: DnsState
   /** Group Policy (gpmc.msc); missing = Default Domain Policy + Default Domain Controllers Policy */
@@ -291,6 +300,27 @@ export interface PcState {
   files?: Record<string, string>
   /** folders created by the student (mkdir), lower-case-insensitive full paths */
   dirs?: string[]
+  /** domain membership of a client (sysdm.cpl → Członek domeny); `active` after the restart */
+  member?: { name: string; netbios: string; active: boolean; /** logons that signed in before (cached credentials) */ cached?: string[] }
+  /** signed-in domain user ("NETBIOS\\login"); missing = local Administrator */
+  signedIn?: string
+  /** result of the last gpupdate / sign-in (Group Policy applied to this computer and user) */
+  applied?: AppliedGpo
+}
+
+/** What Group Policy did to a domain client (computed by domain.applyGpo, cached on the client like a real one). */
+export interface AppliedGpo {
+  at: string
+  user?: string
+  /** names of applied GPOs, computer and user part */
+  computerGpos: string[]
+  userGpos: string[]
+  /** effective, enabled policy id → options */
+  policies: Record<string, Record<string, string>>
+  drives: GpoDrive[]
+  logon: GpoScript[]
+  /** GPOs that were skipped (security filtering) */
+  filtered?: string[]
 }
 
 /** Does Windows answer inbound ping? (echo rule enabled, or the firewall is off for the active — public — profile) */
@@ -329,7 +359,7 @@ export function defaultPcState(over: Partial<PcState> = {}): PcState {
 export type PortId = string
 export type Link = [PortId, PortId]
 
-export type DeviceKey = 'router' | 'switch' | 'linux' | 'pc' | 'laptop' | 'printer'
+export type DeviceKey = 'router' | 'switch' | 'linux' | 'pc' | 'laptop' | 'server' | 'printer'
 
 export interface Endpoint {
   device: DeviceKey
@@ -349,6 +379,8 @@ export interface NetworkModel {
   printer?: { ip: string; prefix: number }
   /** service laptop on the bench (Windows, port prefix "laptop:") */
   laptop?: PcState
+  /** Windows Server 2022 on the bench (port prefix "server:") */
+  server?: PcState
   links: Link[]
   /** power state per device; missing = on. A booting device counts as off. */
   power?: Partial<Record<DeviceKey, boolean>>
@@ -446,11 +478,11 @@ export function endpoints(m: NetworkModel): Endpoint[] {
     const addrs = i.addresses.map(parseCidr).filter((x): x is Addr => !!x)
     if (addrs.length) eps.push({ device: 'linux', label: `Linux ${i.name}`, port: `linux:${i.name}`, addrs, gateway: m.linuxGateway ?? null, icmp: true })
   }
-  for (const [key, pc] of [['pc', m.pc], ['laptop', m.laptop]] as const) {
+  for (const [key, pc] of [['pc', m.pc], ['laptop', m.laptop], ['server', m.server]] as const) {
     if (!pc || !isOn(m, key)) continue
     for (const a of pc.adapters) {
       const cfg = pcAddress(a)
-      if (a.enabled && cfg) eps.push({ device: key, label: `${key === 'pc' ? 'PC' : 'Laptop'} ${a.name}`, port: `${key}:${a.id}`, addrs: [cfg.addr], gateway: cfg.gateway, icmp: pcAnswersPing(pc) })
+      if (a.enabled && cfg) eps.push({ device: key, label: `${key === 'pc' ? 'PC' : key === 'laptop' ? 'Laptop' : 'Serwer'} ${a.name}`, port: `${key}:${a.id}`, addrs: [cfg.addr], gateway: cfg.gateway, icmp: pcAnswersPing(pc) })
     }
   }
   if (m.printer && isOn(m, 'printer')) eps.push({ device: 'printer', label: 'Printer', port: 'printer:eth0', addrs: [{ ip: m.printer.ip, prefix: m.printer.prefix }], gateway: null, icmp: true })
@@ -549,6 +581,10 @@ export interface DhcpServer {
   gateway: string
   dns: string[]
   reservations: { mac: string; ip: string }[]
+  /** excluded ranges (Windows DHCP) */
+  excl?: { start: string; end: string }[]
+  /** DHCP option 015 */
+  domain?: string
 }
 
 export function leaseFor(m: NetworkModel, clientPort: PortId, mac: string, servers: DhcpServer[]): PcAdapter['lease'] {
@@ -558,12 +594,38 @@ export function leaseFor(m: NetworkModel, clientPort: PortId, mac: string, serve
   for (const s of servers) {
     if (!isOn(m, devOf(s.port)) || !l2(domains, clientPort, s.port)) continue
     const res = s.reservations.find((r) => normMac(r.mac) === normMac(mac))
-    const ip = res ? res.ip : s.start
-    return { ip, mask: s.mask, gateway: s.gateway, dns: s.dns, server: s.serverIp }
+    const ip = res ? res.ip : freeAddress(m, s, clientPort, mac)
+    if (!ip) continue // pool exhausted
+    return { ip, mask: s.mask, gateway: s.gateway, dns: s.dns, server: s.serverIp, ...(s.domain ? { domain: s.domain } : {}) }
   }
   return null
 }
 
+/** The address the DHCP server hands out: the client's current lease if still valid, else the first free one in the pool. */
+function freeAddress(m: NetworkModel, s: DhcpServer, clientPort: PortId, mac: string): string | null {
+  const lo = ipToInt(s.start)
+  const hi = ipToInt(s.end ?? s.start)
+  if (lo === null || hi === null) return s.start
+  const normMac = (x: string) => x.replace(/[-:.]/g, '').toUpperCase()
+  const taken = new Set<string>()
+  let mine: string | null = null
+  for (const [key, pc] of [['pc', m.pc], ['laptop', m.laptop], ['server', m.server]] as const)
+    for (const a of pc?.adapters ?? []) {
+      const port = `${key}:${a.id}`
+      if (port === clientPort) {
+        if (a.lease && a.lease.server === s.serverIp) mine = a.lease.ip
+        continue
+      }
+      if (a.lease && a.lease.server === s.serverIp && a.media !== false) taken.add(a.lease.ip)
+    }
+  for (const e of endpoints(m)) if (e.port !== clientPort) for (const a of e.addrs) taken.add(a.ip)
+  for (const r of s.reservations) if (normMac(r.mac) !== normMac(mac)) taken.add(r.ip)
+  const excluded = (n: number) => (s.excl ?? []).some((x) => n >= (ipToInt(x.start) ?? 1) && n <= (ipToInt(x.end) ?? 0))
+  const ok = (ipn: number) => ipn >= lo && ipn <= hi && !excluded(ipn) && !taken.has(intToIp(ipn))
+  if (mine && ipToInt(mine) !== null && ok(ipToInt(mine)!)) return mine
+  for (let n = lo; n <= hi && n - lo < 65536; n++) if (ok(n)) return intToIp(n)
+  return null
+}
 
 /** Deterministic APIPA address for a MAC (Windows picks a random one in 169.254.0.0/16). */
 export function apipaFor(mac: string): string {
@@ -578,7 +640,7 @@ export function apipaFor(mac: string): string {
  * (and falls back to APIPA), when the link goes down it drops the address, and while it sits
  * on APIPA it keeps retrying. Returns a new PcState or null when nothing changed.
  */
-export function syncPcDhcp(m: NetworkModel, servers: DhcpServer[], pc: PcState, prefix: 'pc' | 'laptop' = 'pc'): PcState | null {
+export function syncPcDhcp(m: NetworkModel, servers: DhcpServer[], pc: PcState, prefix: 'pc' | 'laptop' | 'server' = 'pc'): PcState | null {
   let changed = false
   const adapters = pc.adapters.map((a) => {
     const port = `${prefix}:${a.id}`

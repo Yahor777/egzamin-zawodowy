@@ -156,8 +156,32 @@
 .bd-face.face-pc,
 .bd-face.face-laptop,
 .bd-face.face-linux,
+.bd-face.face-server,
 .bd-face.face-printer {
   background: linear-gradient(#4a5257, #3a4146);
+}
+/* tower server: drive bays + blue power LED strip on the left of the NIC ports */
+.bd-face.face-server {
+  background: repeating-linear-gradient(90deg, #2b3237 0 3px, #353d43 3px 6px) left / 54px 100% no-repeat, linear-gradient(#444d53, #323a40);
+  padding-left: 66px;
+  position: relative;
+  min-height: 74px;
+  align-items: center;
+}
+.bd-face.face-server::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4aa3ff;
+  box-shadow: 0 0 6px #4aa3ff;
+}
+.st-off .bd-face.face-server::before {
+  background: #394047;
+  box-shadow: none;
 }
 .bd-port {
   min-width: 48px;

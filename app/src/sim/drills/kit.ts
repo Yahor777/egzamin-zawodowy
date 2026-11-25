@@ -7,13 +7,14 @@ import type { Link, PcAdapter } from '../net'
 import { maskToPrefix } from '../net'
 import { checkPassword } from '../linux/users'
 
-export type DrillTopic = 'linux' | 'router' | 'switch' | 'windows' | 'net'
+export type DrillTopic = 'linux' | 'router' | 'switch' | 'windows' | 'winserver' | 'net'
 
 export const TOPICS: { id: DrillTopic; ru: string; pl: string }[] = [
   { id: 'linux', ru: 'Linux', pl: 'Linux' },
   { id: 'router', ru: 'Роутер', pl: 'Ruter' },
   { id: 'switch', ru: 'Свитч', pl: 'Przełącznik' },
   { id: 'windows', ru: 'Windows', pl: 'Windows' },
+  { id: 'winserver', ru: 'Windows Server', pl: 'Windows Server' },
   { id: 'net', ru: 'Сеть и адресация', pl: 'Sieć i adresacja' },
 ]
 

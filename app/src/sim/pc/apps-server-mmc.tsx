@@ -1,11 +1,14 @@
 // Windows Server 2022 consoles: Użytkownicy i komputery usługi Active Directory, DHCP, pustą przystawkę MMC.
 import { useState, type ReactNode } from 'react'
-import { ipToInt, maskToPrefix, networkOf, prefixToMask, type AdGroup, type AdUser, type DhcpScope } from '../net'
+import { ipToInt, maskToPrefix, networkOf, pcAddress, prefixToMask, sameSubnet, type AdGroup, type AdUser, type DhcpScope } from '../net'
+import { domainPasswordPolicy, leasesOf, pwViolation, type PwPolicy } from '../domain'
 import { Act, ListView, Mmc } from './apps-sys'
 import { SvModal } from './apps-server'
 import { IcCheck, IcFolder, IcGroup, IcMgmt, IcUser, IcUsers, IcWarn } from './icons'
-import { adOf, BUILTIN_CONTAINERS, dhcpOf, fmtLease, initialAd, passwordError, scopeError, scopeId, srv, withSrv } from './server'
+import { adOf, BUILTIN_CONTAINERS, dhcpOf, fmtLease, initialAd, scopeError, scopeId, srv, withSrv } from './server'
 import { IpInput, useMsg, usePc, type MenuItem, type WinProps } from './ui'
+
+const srvIps = (st: { adapters: Parameters<typeof pcAddress>[0][] }) => st.adapters.map((a) => pcAddress(a)?.addr.ip).filter((x): x is string => !!x)
 
 export type Node = { id: string; label: string; icon?: ReactNode; depth: number }
 
@@ -108,6 +111,7 @@ export function Aduc(_p: WinProps) {
     ad.ous.filter((o) => o.parent === cont).forEach((o) => r.push({ key: `o:${o.name}`, icon: <IcFolder size={16} />, cells: [o.name, 'Jednostka organizacyjna', ''], menu: [{ label: 'Usuń', onClick: () => delOu(o.name) }] }))
     ad.users.filter((u) => u.ou === cont && !inRoot).forEach((u) => r.push({ key: `u:${u.logon}`, icon: <IcUser size={16} />, cells: [u.full, 'Użytkownik', u.logon === 'Administrator' ? 'Wbudowane konto do administrowania komputerem/domeną' : ''], off: u.disabled, menu: userMenu(u) }))
     ad.groups.filter((g) => g.ou === cont && !inRoot).forEach((g) => r.push({ key: `g:${g.name}`, icon: <IcGroup size={16} />, cells: [g.name, grpType(g), ''], menu: groupMenu(g) }))
+    if (cont === 'Computers') (ad.computers ?? []).filter((c) => c.ou === 'Computers').forEach((c) => r.push({ key: `k:${c.name}`, icon: <IcMgmt size={16} />, cells: [c.name, 'Komputer', ''], menu: [] }))
     if (cont === 'Domain Controllers') r.push({ key: 'k:dc', icon: <IcMgmt size={16} />, cells: [st.hostname, 'Komputer', 'DC, wykaz globalny'], menu: [] })
     return r
   })()
@@ -159,7 +163,7 @@ export function Aduc(_p: WinProps) {
         <p className="mmc-empty">Wybierz domenę w drzewie konsoli.</p>
       )}
       {dlg?.k === 'ou' && <NewOu parent={cont} existing={ad.ous.map((o) => o.name)} onClose={() => setDlg(null)} onOk={(name) => setAd((a) => ({ ...a, ous: [...a.ous, { name, parent: cont }] }))} where={node === 'domain' ? domain : cont} />}
-      {dlg?.k === 'user' && <NewUser domain={domain} netbios={v.domain?.netbios ?? ''} where={node === 'domain' ? domain : cont} users={ad.users} onClose={() => setDlg(null)} onOk={(u) => setAd((a) => ({ ...a, users: [...a.users, { ...u, ou: cont || 'Users' }], groups: a.groups.map((g) => (g.name === 'Użytkownicy domeny' ? { ...g, members: [...g.members, u.logon] } : g)) }))} show={show} />}
+      {dlg?.k === 'user' && <NewUser policy={domainPasswordPolicy(st)} domain={domain} netbios={v.domain?.netbios ?? ''} where={node === 'domain' ? domain : cont} users={ad.users} onClose={() => setDlg(null)} onOk={(u) => setAd((a) => ({ ...a, users: [...a.users, { ...u, ou: cont || 'Users' }], groups: a.groups.map((g) => (g.name === 'Użytkownicy domeny' ? { ...g, members: [...g.members, u.logon] } : g)) }))} show={show} />}
       {dlg?.k === 'group' && <NewGroup where={node === 'domain' ? domain : cont} existing={ad.groups.map((g) => g.name)} onClose={() => setDlg(null)} onOk={(g) => setAd((a) => ({ ...a, groups: [...a.groups, { ...g, ou: cont || 'Users', members: [] }] }))} />}
       {dlg?.k === 'gprops' && (
         <GroupProps
@@ -218,7 +222,7 @@ function NewOu({ where, existing, onClose, onOk }: { parent: string; where: stri
   )
 }
 
-function NewUser({ domain, netbios, where, users, onClose, onOk, show }: { domain: string; netbios: string; where: string; users: AdUser[]; onClose: () => void; onOk: (u: AdUser) => void; show: ReturnType<typeof useMsg>[1] }) {
+function NewUser({ policy, domain, netbios, where, users, onClose, onOk, show }: { policy: PwPolicy; domain: string; netbios: string; where: string; users: AdUser[]; onClose: () => void; onOk: (u: AdUser) => void; show: ReturnType<typeof useMsg>[1] }) {
   const [step, setStep] = useState(0)
   const [first, setFirst] = useState('')
   const [last, setLast] = useState('')
@@ -248,12 +252,13 @@ function NewUser({ domain, netbios, where, users, onClose, onOk, show }: { domai
       if (must && never) return void show(T, 'Nie można jednocześnie zaznaczyć opcji „Użytkownik musi zmienić hasło przy następnym logowaniu” i „Hasło nigdy nie wygasa”.', 'error')
       return setStep(2)
     }
-    const pe = passwordError(pw, logon.trim())
+    const specific = pwViolation(policy, pw, logon.trim())
+    const pe = specific ? `Hasło nie spełnia wymagań dotyczących długości, złożoności lub historii domeny.\n\n${specific}` : null
     if (pe) {
       setStep(1)
       return void show(T, `Nie można utworzyć następującego obiektu:\n\n${fullName}\n\nWindows nie może ustawić hasła dla użytkownika „${logon.trim()}”. ${pe}`, 'error')
     }
-    onOk({ logon: logon.trim(), first: first.trim(), last: last.trim(), full: fullName, ou: '', disabled: dis, mustChange: must, neverExpires: never, cannotChange: cannot })
+    onOk({ password: pw, logon: logon.trim(), first: first.trim(), last: last.trim(), full: fullName, ou: '', disabled: dis, mustChange: must, neverExpires: never, cannotChange: cannot })
     onClose()
   }
   return (
@@ -557,6 +562,8 @@ export function DhcpConsole(_p: WinProps) {
   ]
   const [, sid, sub] = node.startsWith('sc:') ? node.split(':') : [0, '', '']
   const scope = dhcp.scopes.find((s) => scopeId(s) === sid)
+  // leases handed out to the clients on the bench (the console reads them from the network)
+  const leases = api.network.bench ? srvIps(st).flatMap((ip) => leasesOf(api.network.bench!.model, ip)) : []
   const patchScope = (id: string, f: (s: DhcpScope) => DhcpScope) => setD((d) => ({ ...d, scopes: d.scopes.map((s) => (scopeId(s) === id ? f(s) : s)) }))
   const del = async (s: DhcpScope) => {
     if ((await show('DHCP', `Czy na pewno chcesz usunąć zakres ${scopeId(s)}?\n\nZostaną usunięte wszystkie dzierżawy i rezerwacje.`, 'warn', ['Tak', 'Nie'])) === 'Tak') {
@@ -669,7 +676,18 @@ export function DhcpConsole(_p: WinProps) {
           onBlankMenu={[]}
         />
       )}
-      {scope && sub === 'lease' && <ListView cols={['Adres IP klienta', 'Nazwa', 'Wygaśnięcie dzierżawy', 'Typ']} rows={[]} sel={sel} onSel={setSel} onOpen={() => {}} onBlankMenu={[]} />}
+      {scope && sub === 'lease' && (
+        <ListView
+          cols={['Adres IP klienta', 'Nazwa', 'Wygaśnięcie dzierżawy', 'Typ', 'Identyfikator klienta']}
+          rows={leases
+            .filter((l) => sameSubnet(l.ip, scope.start, scope.prefix))
+            .map((l) => ({ key: l.ip, icon: <IcUser size={16} />, cells: [l.ip, l.name, new Date(Date.now() + scope.leaseMin * 60000).toLocaleString('pl-PL'), 'DHCP', l.mac], menu: [] }))}
+          sel={sel}
+          onSel={setSel}
+          onOpen={() => {}}
+          onBlankMenu={[]}
+        />
+      )}
       {scope && sub === 'res' && (
         <ListView
           cols={['Rezerwacja', 'Identyfikator klienta', 'Opis']}

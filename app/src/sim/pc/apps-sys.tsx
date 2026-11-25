@@ -1,5 +1,7 @@
 // wf.msc (firewall with advanced security), sysdm.cpl, lusrmgr.msc / compmgmt.msc, Explorer, Run dialog.
 import { useState, type ReactNode } from 'react'
+import { joinDomain, preJoin } from '../domain'
+import { srv } from './server'
 import type { PcFwRule, PcUser } from '../net'
 import {
   IcBin,
@@ -680,8 +682,10 @@ export function Sysdm({ close }: WinProps) {
   const [desc, setDesc] = useState('')
   const [msg, show] = useMsg()
   const st = api.state
-  const [init] = useState(() => `${st.hostname}|${st.workgroup ?? ''}`)
-  const changed = init !== `${st.hostname}|${st.workgroup ?? ''}`
+  const domName = st.server?.domain?.name ?? st.member?.name
+  const sig = `${st.hostname}|${st.workgroup ?? ''}|${st.member?.name ?? ''}`
+  const [init] = useState(() => sig)
+  const changed = init !== sig
   const done = async () => {
     if (changed && (await show('Microsoft Windows', 'Aby zastosować te zmiany, musisz ponownie uruchomić komputer.\n\nPrzed ponownym uruchomieniem zapisz wszystkie otwarte pliki i zamknij wszystkie programy.', 'info', ['Uruchom ponownie teraz', 'Uruchom ponownie później'])) === 'Uruchom ponownie teraz') api.restart()
     else close()
@@ -703,9 +707,9 @@ export function Sysdm({ close }: WinProps) {
             <p className="sd-ex">Na przykład: „Komputer w kuchni” lub „Komputer Marii”.</p>
             <dl className="st-dl">
               <dt>Pełna nazwa komputera:</dt>
-              <dd id="sysdm-fullname">{st.server?.domain ? `${st.hostname.toLowerCase()}.${st.server.domain.name}` : st.hostname}</dd>
-              <dt>{st.server?.domain ? 'Domena:' : 'Grupa robocza:'}</dt>
-              <dd>{st.server?.domain ? st.server.domain.name : (st.workgroup ?? 'WORKGROUP')}</dd>
+              <dd id="sysdm-fullname">{domName ? `${st.hostname.toLowerCase()}.${domName}` : st.hostname}</dd>
+              <dt>{domName ? 'Domena:' : 'Grupa robocza:'}</dt>
+              <dd>{domName ?? st.workgroup ?? 'WORKGROUP'}</dd>
             </dl>
             <div className="sd-change">
               <p>Aby zmienić nazwę tego komputera lub zmienić jego domenę lub grupę roboczą, kliknij przycisk Zmień.</p>
@@ -783,23 +787,85 @@ export function SysName({ close }: WinProps) {
   const api = usePc()
   const st = api.state
   const [name, setName] = useState(st.hostname)
-  const [mode, setMode] = useState<'wg' | 'domain'>('wg')
+  const [mode, setMode] = useState<'wg' | 'domain'>(st.member ? 'domain' : 'wg')
   const [wg, setWg] = useState(st.workgroup ?? 'WORKGROUP')
-  const [dom, setDom] = useState('')
+  const [dom, setDom] = useState(st.member?.name ?? '')
+  const [cred, setCred] = useState<{ user: string; pw: string } | null>(null)
   const [msg, show] = useMsg()
+  const T = 'Zmiany nazwy/domeny komputera'
   const ok = async () => {
     const n = name.trim()
     const e = hostnameError(n)
-    if (e) return void show('Zmiany nazwy/domeny komputera', `Nowa nazwa komputera „${n}” jest nieprawidłowa. ${e}`, 'error')
-    if (mode === 'domain') return void show('Zmiany nazwy/domeny komputera', `Nie można skontaktować się z kontrolerem domeny Active Directory (AD DC) dla domeny „${dom || '?'}”.\n\nUpewnij się, że nazwa domeny jest wpisana poprawnie.`, 'error')
+    if (e) return void show(T, `Nowa nazwa komputera „${n}” jest nieprawidłowa. ${e}`, 'error')
+    if (mode === 'domain') {
+      const d = dom.trim()
+      if (!d) return void show(T, 'Wprowadź nazwę domeny.', 'error')
+      if (st.member && d.toLowerCase() === st.member.name.toLowerCase()) return n === st.hostname ? close() : void show(T, 'Zmiana nazwy komputera członkowskiego wymaga poświadczeń domeny. Opuść domenę i dołącz ponownie.', 'error')
+      const b = api.network.bench
+      if (!b) return void show(T, `Nie można skontaktować się z kontrolerem domeny Active Directory (AD DC) dla domeny „${d}”.\n\nUpewnij się, że nazwa domeny jest wpisana poprawnie.`, 'error')
+      const pre = preJoin(b.model, b.key, d)
+      if (!pre.ok) {
+        if ((await show(T, pre.msg, 'error', ['OK', 'Szczegóły'])) === 'Szczegóły') await show(`Szczegóły: ${T}`, pre.details, 'info')
+        return
+      }
+      return setCred({ user: '', pw: '' })
+    }
     const nameChanged = n !== st.hostname
-    const wgChanged = wg.trim().toUpperCase() !== (st.workgroup ?? 'WORKGROUP')
+    const wgChanged = wg.trim().toUpperCase() !== (st.workgroup ?? 'WORKGROUP') || !!st.member
     if (!nameChanged && !wgChanged) return close()
-    if (wgChanged) await show('Zmiany nazwy/domeny komputera', `Witamy w grupie roboczej ${wg.trim().toUpperCase()}.`, 'info')
-    await show('Zmiany nazwy/domeny komputera', 'Aby zastosować te zmiany, musisz ponownie uruchomić komputer.', 'info')
-    api.update((s) => ({ ...s, hostname: n, workgroup: wg.trim().toUpperCase() === 'WORKGROUP' && !s.workgroup ? undefined : wg.trim().toUpperCase() }))
+    if (st.member && (await show(T, `Opuszczenie domeny „${st.member.name}” spowoduje utratę dostępu do zasobów domeny. Czy chcesz kontynuować?`, 'warn', ['Tak', 'Nie'])) !== 'Tak') return
+    if (wgChanged) await show(T, `Witamy w grupie roboczej ${wg.trim().toUpperCase()}.`, 'info')
+    await show(T, 'Aby zastosować te zmiany, musisz ponownie uruchomić komputer.', 'info')
+    api.update((s) => ({ ...s, hostname: n, member: undefined, applied: undefined, signedIn: undefined, workgroup: wg.trim().toUpperCase() === 'WORKGROUP' && !s.workgroup ? undefined : wg.trim().toUpperCase() }))
     close()
   }
+  const join = async () => {
+    const b = api.network.bench!
+    const n = name.trim()
+    const j = joinDomain(b.model, b.key, dom.trim(), n, cred!.user, cred!.pw)
+    if (!j.ok) {
+      await show(T, j.kind === 'cred' ? `Zmiana nazwy lub domeny komputera nie powiodła się: ${j.msg}` : j.msg, 'error')
+      if (j.kind === 'dc') setCred(null)
+      else setCred({ user: cred!.user, pw: '' })
+      return
+    }
+    const d = srv(j.dc).domain!
+    b.setServer?.(j.apply)
+    api.update((s) => ({ ...s, hostname: n, workgroup: undefined, member: { name: d.name, netbios: d.netbios, active: false }, applied: undefined, signedIn: undefined }))
+    await show(T, `Witamy w domenie ${d.name}.`, 'info')
+    await show(T, 'Aby zastosować te zmiany, musisz ponownie uruchomić komputer.', 'info')
+    close()
+  }
+  if (cred)
+    return (
+      <div className="dlg">
+        <div className="dlg-page">
+          <p className="dlg-lead">
+            <strong>Zabezpieczenia systemu Windows</strong>
+            <br />
+            Zmiany nazwy/domeny komputera
+          </p>
+          <p className="dlg-lead">Wprowadź nazwę i hasło konta uprawnionego do przyłączenia do domeny „{dom.trim()}”.</p>
+          <label className="w-field">
+            Nazwa użytkownika:
+            <input className="w-input" id="join-user" aria-label="Nazwa użytkownika" autoFocus value={cred.user} onChange={(e) => setCred({ ...cred, user: e.target.value })} autoCapitalize="off" autoCorrect="off" spellCheck={false} />
+          </label>
+          <label className="w-field">
+            Hasło:
+            <input className="w-input" id="join-pw" aria-label="Hasło" type="password" value={cred.pw} onChange={(e) => setCred({ ...cred, pw: e.target.value })} onKeyDown={(e) => e.key === 'Enter' && void join()} />
+          </label>
+        </div>
+        <Buttons>
+          <button className="w-btn primary" onClick={() => void join()}>
+            OK
+          </button>
+          <button className="w-btn" onClick={() => setCred(null)}>
+            Anuluj
+          </button>
+        </Buttons>
+        {msg}
+      </div>
+    )
   return (
     <div className="dlg">
       <div className="dlg-page">
@@ -1537,6 +1603,22 @@ export function Explorer({ arg = 'thispc', setArg }: WinProps) {
                   </span>
                 </div>
               </div>
+              {!!api.state.applied?.drives.length && (
+                <>
+                  <h3 className="ex-h">Lokalizacje sieciowe</h3>
+                  <div className="ex-grid">
+                    {api.state.applied.drives.map((d) => (
+                      <div key={d.letter} className="ex-drive" data-letter={d.letter}>
+                        <IcDrive size={40} />
+                        <span>
+                          {d.label || d.path.split('\\').pop()} ({d.letter.toUpperCase()}:)
+                          <small>{d.path}</small>
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
             </>
           )}
           {page === 'home' && (
@@ -1552,7 +1634,7 @@ export function Explorer({ arg = 'thispc', setArg }: WinProps) {
           {page === 'net' && <div className="ex-info">Odnajdowanie sieci jest wyłączone. Komputery i urządzenia sieciowe nie są widoczne. Kliknij, aby zmienić…</div>}
         </div>
       </div>
-      <div className="xp-status">{page === 'tools' ? `Elementy: ${TOOLS.length}` : page === 'thispc' ? 'Elementy: 7' : 'Elementy: 0'}</div>
+      <div className="xp-status">{page === 'tools' ? `Elementy: ${TOOLS.length}` : page === 'thispc' ? `Elementy: ${7 + (api.state.applied?.drives.length ?? 0)}` : 'Elementy: 0'}</div>
     </div>
   )
 }

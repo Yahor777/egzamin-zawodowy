@@ -2,6 +2,9 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { IcCheck, IcChevron, IcFolder, IcGroup, IcInfo, IcMgmt, IcShield, IcSystem, IcUsers, IcWarn } from './icons'
 import { DOMAIN_LEVELS, dnsNameError, FEATURES, featureName, hasDynamicIp, initialAd, netbiosOf, OS_NAME, passwordError, ROLES, roleOf, serverTools, srv, STATIC_IP_WARN, withSrv, type RoleDef } from './server'
+import { hasRole } from './server'
+import { mkdirs, readFile } from './fs'
+import { IIS_START_HTM } from './iis'
 import { Group, useMsg, usePc, type MenuItem, type WinProps } from './ui'
 
 const uniq = <T,>(a: T[]) => [...new Set(a)]
@@ -475,14 +478,16 @@ export function AddRoles({ close }: WinProps) {
   }
   const install = () => {
     const toInstall = selRoles
-    api.update((s) =>
-      withSrv(s, (x) => ({
+    api.update((s0) => {
+      // IIS creates C:\inetpub\wwwroot with the welcome page
+      const s = toInstall.includes('IIS') && !hasRole(s0, 'IIS') ? { ...mkdirs(s0, 'C:\\inetpub\\wwwroot'), files: { ...(s0.files ?? {}), ...(readFile(s0, 'C:\\inetpub\\wwwroot\\iisstart.htm') === null ? { 'C:\\inetpub\\wwwroot\\iisstart.htm': IIS_START_HTM } : {}) } } : s0
+      return withSrv(s, (x) => ({
         ...x,
         roles: uniq([...x.roles, ...toInstall]),
         features: uniq([...x.features, ...selFeat]),
         pending: uniq([...x.pending, ...(toInstall.includes('ADDS') && !x.domain ? ['ADDS'] : []), ...(toInstall.includes('DHCP') && !x.dhcp?.authorized ? ['DHCP'] : [])]),
-      })),
-    )
+      }))
+    })
     setDone([...allSelRoleNames, ...selFeat.map(featureName).map((n) => n.split('\\').pop() as string)])
     setStarted(true)
     setStep('results')

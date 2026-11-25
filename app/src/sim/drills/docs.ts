@@ -27,6 +27,10 @@ export const HOWTO: DocRef[] = [
   h('hardware-ident', 'Идентификация параметров: где что смотреть', 'Identyfikacja parametrów'),
   h('kosztorys', 'Смета (kosztorys) в Excel/Calc', 'Kosztorys w arkuszu kalkulacyjnym'),
   h('winserver-roles', 'Роли Windows Server: порядок шагов', 'Role Windows Server: kolejność kroków'),
+  h('winserver-dhcp', 'Windows Server: DHCP — установка, авторизация, область', 'Windows Server: DHCP — rola, autoryzacja, zakres'),
+  h('winserver-domain', 'Windows Server: домен — DC, DNS, присоединение клиента', 'Windows Server: domena — kontroler, DNS, dołączanie klienta'),
+  h('winserver-gpo', 'Windows Server: GPO — обои, диски, ограничения', 'Windows Server: GPO — tapeta, dyski, ograniczenia'),
+  h('winserver-iis', 'Windows Server: IIS — сайт, порт, привязка, брандмауэр', 'Windows Server: IIS — witryna, port, powiązanie, zapora'),
 ]
 const by = (slug: string) => HOWTO.find((x) => x.to === `doc/${slug}`)!
 
@@ -50,6 +54,11 @@ export const D = {
   linuxServices: by('linux-services'),
   windowsUsers: by('windows-users'),
   windowsBat: by('windows-bat'),
+  winserverRoles: by('winserver-roles'),
+  winserverDhcp: by('winserver-dhcp'),
+  winserverDomain: by('winserver-domain'),
+  winserverGpo: by('winserver-gpo'),
+  winserverIis: by('winserver-iis'),
   linuxNmcli: by('linux-nmcli'),
   cheatLinux: { to: 'practice/cheat-linux-server', ru: 'Шпаргалка: Linux-сервер', pl: 'Ściąga: serwer Linux' },
   cheatRouter: { to: 'practice/cheat-router-switch', ru: 'Шпаргалка: роутер и свитч', pl: 'Ściąga: ruter i przełącznik' },

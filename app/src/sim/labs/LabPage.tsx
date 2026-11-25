@@ -20,7 +20,7 @@ import { drillSolution, linesForTask, type SolLine } from '../drills/solutionTex
 import type { DrillLab } from '../drills/kit'
 import { HintLadder, SolutionView } from '../../path/HintLadder'
 import { LABS, labScore, type Lab } from './labs'
-import { buildCtx, buildDhcpServers, serviceLaptop, type LabSave } from './ctx'
+import { buildCtx, buildDhcpServers, defaultServerState, serviceLaptop, type LabSave } from './ctx'
 import '../bench/bench.css'
 import './lab.css'
 
@@ -34,6 +34,7 @@ export function freshState(lab: Lab): LabSave {
     switch: d.switch ? defaultSwitchState(d.switch) : undefined,
     linux: d.linux ? createLinuxState(d.linux) : undefined,
     pc: d.pc ? defaultPcState(d.pc) : undefined,
+    server: d.server ? defaultServerState(d.server) : undefined,
     laptop: d.pc || !(d.router || d.switch) ? undefined : serviceLaptop(),
     links: [],
     startedAt: null,
@@ -126,6 +127,7 @@ const DEVICE_DOC: Record<string, RegExp> = {
   router: /router|bench/,
   switch: /switch|router-switch|bench/,
   pc: /windows/,
+  server: /winserver|server/,
   cabling: /bench|cabling/,
   tests: /bench|windows-net|linux/,
 }
@@ -136,10 +138,11 @@ const SHEET_DOCS: Record<string, DocRef[]> = {
   switch: [D.switch],
   linux: [D.cheatLinux, D.linuxNetplan, D.linuxUsers],
   pc: [D.windowsNet],
+  server: [D.winserverRoles],
   tests: [D.bench],
 }
 
-type Tab = 'tasks' | 'bench' | 'linux' | 'pc'
+type Tab = 'tasks' | 'bench' | 'linux' | 'pc' | 'server'
 type PanelView = 'tasks' | 'docs'
 
 export interface LabRunProps {
@@ -169,7 +172,7 @@ const SIDE_KEY = 'inf02.labpanel'
 function readTab(id: string): Tab {
   try {
     const t = sessionStorage.getItem(tabKey(id))
-    if (t === 'bench' || t === 'linux' || t === 'pc' || t === 'tasks') return t
+    if (t === 'bench' || t === 'linux' || t === 'pc' || t === 'server' || t === 'tasks') return t
   } catch {
     /* ignore */
   }
@@ -234,6 +237,7 @@ export function LabRun({ lab, progressKey, back, timer, docs: docsIn, intro_pl, 
   const [s, setS] = useState<LabSave>(() => load(lab))
   const [tab, setTabState] = useState<Tab>(() => readTab(lab.id))
   const [pcView, setPcView] = useState<PcView>('adapters')
+  const [srvView, setSrvView] = useState<PcView>('adapters')
   const [now, setNow] = useState(Date.now())
   const [confirmReset, setConfirmReset] = useState(false)
   const [doc, setDoc] = useState<{ to: string; section?: string }>({ to: docs?.[0]?.to ?? '', section: docs?.[0]?.section })
@@ -307,13 +311,14 @@ export function LabRun({ lab, progressKey, back, timer, docs: docsIn, intro_pl, 
   const score = s.checked ? labScore(lab, ctx) : null
 
   const pcKey = s.pc ? 'pc' : s.laptop ? 'laptop' : null
-  const devCount = [s.router, s.switch, s.linux, s.pc, s.laptop, lab.devices.printer].filter(Boolean).length
+  const devCount = [s.router, s.switch, s.linux, s.pc, s.laptop, s.server, lab.devices.printer].filter(Boolean).length
   const showBench = devCount > 1 || !!s.router || !!s.switch
   const tabs: [Tab, string][] = [
     ['tasks', ru ? 'Задание' : 'Zadanie'],
     ...(showBench ? ([['bench', ru ? 'Стол' : 'Stanowisko']] as [Tab, string][]) : []),
     ...(s.linux ? ([['linux', 'Linux']] as [Tab, string][]) : []),
     ...(pcKey ? ([['pc', pcKey === 'pc' ? 'Windows' : ru ? 'Ноутбук' : 'Laptop']] as [Tab, string][]) : []),
+    ...(s.server ? ([['server', 'Serwer Windows']] as [Tab, string][]) : []),
   ]
   const curTab = tabs.some(([t]) => t === tab) ? tab : 'tasks'
   if (!opened.has(curTab)) setOpened(new Set(opened).add(curTab))
@@ -475,7 +480,8 @@ export function LabRun({ lab, progressKey, back, timer, docs: docsIn, intro_pl, 
                   ))}
                   {lab.devices.linux && <li>Serwer Linux: konto administrator, hasło ZAQ!2wsx.</li>}
                   {lab.devices.pc && <li>Stacja Windows: konto Administrator, hasło ZAQ!2wsx.</li>}
-                  {(lab.devices.router || lab.devices.switch) && <li>Ruter i przełącznik konfigurujesz przez przeglądarkę na stacji roboczej.</li>}
+                  {lab.devices.server && <li>Serwer Windows Server 2022: konto Administrator, hasło ZAQ!2wsx.</li>}
+                  {(lab.devices.router || (lab.devices.switch && !lab.devices.server)) && <li>Ruter i przełącznik konfigurujesz przez przeglądarkę na stacji roboczej.</li>}
                   <li>Numer stanowiska X = {lab.station}.</li>
                 </ul>
                 {lab.schema_ru.length > 0 && (
@@ -495,7 +501,7 @@ export function LabRun({ lab, progressKey, back, timer, docs: docsIn, intro_pl, 
                     <h2>
                       <span className="lt-num">{i + 1}.</span> {t.title_ru}
                     </h2>
-                    {t.device !== 'tests' || s.linux || pcKey ? (
+                    {t.device !== 'tests' || s.linux || pcKey || s.server ? (
                       <button className="text-btn" onClick={() => openTask(t.device)}>
                         {openLabel(t.device)}
                       </button>
@@ -562,6 +568,11 @@ export function LabRun({ lab, progressKey, back, timer, docs: docsIn, intro_pl, 
           {pcKey && opened.has('pc') && (
             <div className="lab-pane" hidden={curTab !== 'pc'}>
               <PcTab pcKey={pcKey} s={s} st={st} update={update} printer={lab.devices.printer} view={pcView} onView={setPcView} memKey={lab.id} />
+            </div>
+          )}
+          {s.server && opened.has('server') && (
+            <div className="lab-pane" hidden={curTab !== 'server'}>
+              <PcTab pcKey="server" s={s} st={st} update={update} view={srvView} onView={setSrvView} memKey={lab.id} />
             </div>
           )}
         </div>
@@ -819,7 +830,7 @@ export function PcTab({
   memKey,
 }: {
   memKey?: string
-  pcKey: 'pc' | 'laptop'
+  pcKey: 'pc' | 'laptop' | 'server'
   s: LabSave
   st: Station
   update: (p: Partial<LabSave>) => void
@@ -844,6 +855,7 @@ export function PcTab({
         renew: (a) => leaseFor(model, `${pcKey}:${a.id}`, a.mac, servers),
         ping: (a, ip) => canPing(model, `${pcKey}:${a.id}`, ip),
         link: (a) => linkUp(model, `${pcKey}:${a.id}`),
+        bench: { model, key: pcKey, setServer: (f) => update({ server: f(s.server!) }) },
       }}
       browser={() => (
         <Browser st={st} pcKey={pcKey} pc={pc} router={s.router} switch={s.switch} printer={printer} onRouter={st.setRouter} onSwitch={st.setSwitch} memKey={memKey} />

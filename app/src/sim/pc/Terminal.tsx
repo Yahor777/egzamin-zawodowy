@@ -4,6 +4,8 @@ import { CMD_BANNER, exec, PS_BANNER, type Job, type Line, type ShellKind } from
 import type { BatchRun, BatchStep } from './batch'
 import { HOME } from './fs'
 import { usePc, type WinProps } from './ui'
+import { BlockedCmd } from './apps-domain'
+import { policyOn } from '../domain'
 
 interface TermData {
   lines: Line[]
@@ -16,7 +18,14 @@ interface TermData {
 const arpCache = new Map<string, Set<string>>()
 const promptOf = (k: ShellKind, cwd = HOME) => (k === 'ps' ? `PS ${cwd}> ` : `${cwd}>`)
 
-export function Terminal({ arg, close, setArg, data }: WinProps) {
+/** Group Policy "Zapobiegaj dostępowi do wiersza polecenia" turns cmd.exe off (PowerShell stays) */
+export function Terminal(p: WinProps) {
+  const api = usePc()
+  if (p.arg !== 'ps' && policyOn(api.state, 'nocmd')) return <BlockedCmd {...p} />
+  return <TerminalInner {...p} />
+}
+
+function TerminalInner({ arg, close, setArg, data }: WinProps) {
   const api = usePc()
   const init = (): TermData => {
     const k: ShellKind = arg === 'ps' ? 'ps' : 'cmd'

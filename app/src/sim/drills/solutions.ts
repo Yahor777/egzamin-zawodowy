@@ -7,6 +7,7 @@ import type { Lab } from '../labs/labs'
 import type { PcAdapter } from '../net'
 import { ethYaml, netplanYaml, ip4, ipn, maskOf } from './kit'
 import { EXTRA_SOLVE } from './solutions-extra'
+import { SRV_SOLVE } from './solutions-srv'
 
 const PASS = 'ZAQ!2wsx'
 
@@ -295,4 +296,5 @@ export const SOLVE: Record<string, (p: P, h: H) => Promise<void> | void> = {
   },
   // drills of extra.ts (win-users, win-bat, lx-nmcli)
   ...EXTRA_SOLVE,
+  ...SRV_SOLVE,
 }

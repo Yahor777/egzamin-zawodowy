@@ -112,6 +112,13 @@ export function Practice() {
           </span>
           <Icon name="chevron" size={18} />
         </button>
+        <button className="list-row" onClick={() => go('/sim/domain')}>
+          <span className="lr-main">
+            <span className="lr-title">{ru ? 'Домен: Windows Server + клиент' : 'Domena: Windows Server i klient'}</span>
+            <span className="lr-sub">{ru ? 'Свитч, Windows Server 2022, Windows 11 и Linux на одном столе: DHCP, DNS, домен, GPO, IIS — как в жизни' : 'Przełącznik, Windows Server 2022, Windows 11 i Linux: DHCP, DNS, domena, GPO, IIS'}</span>
+          </span>
+          <Icon name="chevron" size={18} />
+        </button>
         <a className="list-row" href={`${base}vm/`}>
           <span className="lr-main">
             <span className="lr-title">{ru ? 'Настоящий Linux в браузере' : 'Prawdziwy Linux w przeglądarce'}</span>

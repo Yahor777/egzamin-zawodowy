@@ -16,7 +16,7 @@ export interface BootInfo {
 }
 
 /** How long each device takes to start (ms) — shortened from real life (a router needs ~40 s). */
-export const BOOT_MS: Record<DeviceKey, number> = { router: 6000, switch: 4500, linux: 8000, pc: 6000, laptop: 6000, printer: 4000 }
+export const BOOT_MS: Record<DeviceKey, number> = { router: 6000, switch: 4500, linux: 8000, pc: 6000, laptop: 6000, server: 9000, printer: 4000 }
 
 export interface BenchLab {
   devices: Lab['devices']
@@ -61,7 +61,7 @@ export function useStation(lab: BenchLab, s: LabSave, apply: (p: Partial<LabSave
   // Windows: DHCP on link-up, drop the address on link-down, APIPA when nobody answers.
   useEffect(() => {
     const patch: Partial<LabSave> = {}
-    for (const k of ['pc', 'laptop'] as const) {
+    for (const k of ['pc', 'laptop', 'server'] as const) {
       const pc = s[k]
       if (!pc) continue
       const next = syncPcDhcp(model, servers, pc, k)

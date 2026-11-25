@@ -5,7 +5,7 @@ import { canPing, defaultPcState, leaseFor, type NetworkModel } from '../../net'
 import { defaultRouterState } from '../../router/defaults'
 import { defaultSwitchState } from '../../switch/defaults'
 import { labScore, type Lab } from '../../labs/labs'
-import { buildCtx, buildDhcpServers, buildModel, type LabSave } from '../../labs/ctx'
+import { buildCtx, buildDhcpServers, buildModel, defaultServerState, type LabSave } from '../../labs/ctx'
 import { DRILLS, makeDrillLab } from '../index'
 import { SOLVE, type H, type P, type T } from '../solutions'
 
@@ -20,6 +20,7 @@ function fresh(lab: Lab): LabSave {
     switch: d.switch ? defaultSwitchState(d.switch) : undefined,
     linux: d.linux ? createLinuxState(d.linux) : undefined,
     pc: d.pc ? defaultPcState(d.pc) : undefined,
+    server: d.server ? defaultServerState(d.server) : undefined,
     links: [],
     startedAt: null,
     checked: null,

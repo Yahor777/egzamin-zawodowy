@@ -1,5 +1,7 @@
 // Windows Server commands of the shell: nslookup against the local DNS zones, gpupdate/gpresult, DNS cmdlets. Pure.
 import { ipToInt, type PcState } from '../net'
+import { clientGpo, joinDomain, type NetKey } from '../domain'
+import { BatchRun } from './batch'
 import { addPtr, dnsOf, dotted, newZone, recData, resolveIp, resolveName, reverseZoneName, serverIp } from './dns'
 import { gpoLinks, gpoOf } from './gpo'
 import { hasRole, isServer, srv, withSrv } from './server'
@@ -123,4 +125,119 @@ export function serverCmd(ctx: ShellCtx, t: string[], ps: boolean): ExecResult |
       return ok(L('', `UseRootHint        : True`, `Timeout            : 3`, `EnableReordering   : True`, `IPAddress          : {${dnsOf(st).forwarders.join(', ')}}`, `ReorderedIPAddress : {${dnsOf(st).forwarders.join(', ')}}`, ''))
   }
   return null
+}
+
+const GP_FAIL = 'Przetwarzanie zasad grupy nie powiodło się z powodu braku łączności sieciowej z kontrolerem domeny. Może to być stan przejściowy. Komunikat o powodzeniu zostanie wygenerowany po nawiązaniu połączenia z kontrolerem domeny i pomyślnym przetworzeniu zasad grupy. Jeśli komunikat o powodzeniu nie pojawi się w ciągu kilku godzin, skontaktuj się z administratorem.'
+
+/** gpresult /r of a domain member (or a plain workstation) */
+function gpresultClient(ctx: ShellCtx): Line[] {
+  const st = ctx.state
+  const mem = st.member
+  const ap = st.applied
+  const dom = mem?.active ? mem.name : 'WORKGROUP'
+  const lst = (a: string[]) => (a.length ? a.map((x) => `        ${x}`) : ['        N/D'])
+  const dn = `CN=${st.hostname.toUpperCase()},CN=Computers,${(mem?.name ?? '').split('.').map((x) => `DC=${x}`).join(',')}`
+  const out = [
+    '',
+    'Narzędzie wyników zestawu zasad systemu operacyjnego Microsoft (R) Windows (R) v2.0',
+    '© Microsoft Corporation. Wszelkie prawa zastrzeżone.',
+    '',
+    `Utworzono w ${new Date().toLocaleDateString('pl-PL')} o ${new Date().toLocaleTimeString('pl-PL')}`,
+    '',
+    'DANE WYNIKÓW ZASAD GRUPY (Z ZASTOSOWANIEM)',
+    '------------------------------------------',
+    '',
+    `Nazwa hosta         : ${st.hostname.toUpperCase()}`,
+    `Domena              : ${dom}`,
+    `Typ domeny          : ${mem?.active ? 'Windows 2008 lub nowszy' : 'N/D'}`,
+    'Witryna             : Default-First-Site-Name',
+    ...(ap?.user ? [`Użytkownik          : ${ap.user}`] : []),
+    '',
+    'USTAWIENIA KOMPUTERA',
+    '--------------------',
+    ...(mem?.active ? [`    Nazwa wyróżniająca  : ${dn}`, `    Ostatni czas stosowania zasad grupy: ${new Date().toLocaleString('pl-PL')}`] : []),
+    '',
+    '    Zastosowane obiekty zasad grupy',
+    '    -------------------------------',
+    ...lst(ap?.computerGpos ?? []),
+    '',
+  ]
+  if (ap?.filtered?.length) out.push('    Następujące obiekty zasad grupy nie zostały zastosowane, ponieważ zostały odfiltrowane', '    ------------------------------------------------------------------------------------', ...ap.filtered.map((x) => `        ${x}`), '        Przyczyna odmowy: Filtrowanie zabezpieczeń', '')
+  out.push('USTAWIENIA UŻYTKOWNIKA', '----------------------', '', '    Zastosowane obiekty zasad grupy', '    -------------------------------', ...lst(ap?.userGpos ?? []), '')
+  if (ap?.logon.length) out.push('    Skrypty logowania', '    -----------------', ...ap.logon.map((x) => `        ${x.name}${x.params ? ` ${x.params}` : ''}`), '')
+  if (ap?.drives.length) out.push('    Mapowania dysków (Preferencje)', '    ------------------------------', ...ap.drives.map((d) => `        ${d.letter.toUpperCase()}: ${d.path}`), '')
+  return L(...out)
+}
+
+/** commands of a domain member / workstation that need the rest of the bench: gpupdate, gpresult, netdom, Add-Computer */
+export function clientCmd(ctx: ShellCtx, t: string[], _ps: boolean, run: (ctx: ShellCtx, line: string) => ExecResult): ExecResult | null {
+  const st = ctx.state
+  if (isServer(st)) return t[0].toLowerCase().replace(/\.exe$/, '') === 'netdom' || /^add-computer$/i.test(t[0]) ? domainJoinCmd(ctx, t, run) : null
+  const c = t[0].toLowerCase().replace(/\.exe$/, '')
+  const args = t.slice(1)
+  if (c === 'gpupdate') {
+    const target = args.find((a) => /^[/-]target:/i.test(a))?.split(':')[1]?.toLowerCase()
+    const b = ctx.network.bench
+    let state = st
+    if (st.member?.active) {
+      const ap = b ? clientGpo(b.model, b.key, st) : null
+      if (!ap) return { out: [...L('Aktualizowanie zasad...', ''), ...E('Aktualizowanie zasad komputera nie powiodło się z następującym błędem:', '', GP_FAIL, '', 'Aktualizowanie zasad użytkownika nie powiodło się z następującym błędem:', '', GP_FAIL)], state: st }
+      state = { ...st, applied: ap }
+    }
+    return { out: L('Aktualizowanie zasad...', '', ...(target === 'user' ? [] : ['Aktualizowanie zasad komputera zakończyło się pomyślnie.']), ...(target === 'computer' ? [] : ['Aktualizowanie zasad użytkownika zakończyło się pomyślnie.']), ''), state }
+  }
+  if (c === 'gpresult') return { out: gpresultClient(ctx), state: st }
+  if (c === 'netdom' || c === 'add-computer') return domainJoinCmd(ctx, t, run)
+  return null
+}
+
+/** netdom join … / Add-Computer -DomainName … -Credential … */
+function domainJoinCmd(ctx: ShellCtx, t: string[], run: (ctx: ShellCtx, line: string) => ExecResult): ExecResult | null {
+  const st = ctx.state
+  const c = t[0].toLowerCase().replace(/\.exe$/, '')
+  const b = ctx.network.bench
+  const opt = (names: string[]) => {
+    for (const a of t.slice(1)) {
+      const m = /^[/-]([a-z]+)[:=](.*)$/i.exec(a)
+      if (m && names.includes(m[1].toLowerCase())) return m[2].replace(/^"|"$/g, '')
+    }
+    return undefined
+  }
+  const psOpt = (name: string) => {
+    const i = t.findIndex((x) => x.toLowerCase() === `-${name}`)
+    return i >= 0 ? t[i + 1]?.replace(/^"|"$/g, '') : undefined
+  }
+  if (c === 'netdom') {
+    if (!/^join$/i.test(t[1] ?? '')) return { out: L('Składnia: NETDOM JOIN komputer /domain:domena /userd:użytkownik /passwordd:hasło'), state: st }
+    const dom = opt(['domain', 'd'])
+    const user = opt(['userd', 'ud'])
+    const pw = opt(['passwordd', 'pd'])
+    if (!dom || !user) return { out: L('Podaj wymagane parametry: /domain i /userd.', '', 'Polecenie nie zostało wykonane pomyślnie.'), state: st }
+    const r = tryJoin(ctx, b, dom, st.hostname, user, pw ?? '')
+    if ('msg' in r) return { out: E(r.msg, '', 'Polecenie nie zostało wykonane pomyślnie.'), state: st }
+    return { out: L(`Komputer „${st.hostname.toUpperCase()}” został pomyślnie przyłączony do domeny „${r.domain}”.`, '', 'Aby zmiany zaczęły obowiązywać, należy ponownie uruchomić ten komputer.', '', 'Polecenie zostało wykonane pomyślnie.'), state: r.state }
+  }
+  // Add-Computer
+  const dom = psOpt('domainname')
+  const cred = psOpt('credential')
+  const plain = psOpt('passwordplain')
+  if (!dom) return { out: E('Add-Computer : Nie można przetworzyć zestawu parametrów, ponieważ brakuje parametru -DomainName lub -WorkgroupName.'), state: st }
+  if (!cred) return { out: E('Add-Computer : Brakuje parametru -Credential: podaj konto uprawnione do przyłączania do domeny, np. -Credential FIRMA\\Administrator.'), state: st }
+  if (plain === undefined) {
+    // the password prompt (a real PowerShell opens a credential window)
+    const text = `set /p pw=Poświadczenia — hasło dla ${cred}: \r\n${t.map((x) => (/\s/.test(x) ? `"${x}"` : x)).join(' ')} -PasswordPlain %pw%\r\n`
+    return { out: [], state: st, batch: new BatchRun({ ...ctx, kind: 'cmd' }, 'Add-Computer', text, [], run) }
+  }
+  const r = tryJoin(ctx, b, dom, st.hostname, cred, plain)
+  if ('msg' in r) return { out: E(`Add-Computer : ${r.msg}`, '    + CategoryInfo          : OperationStopped: (DESKTOP:String) [Add-Computer], InvalidOperationException', '    + FullyQualifiedErrorId : FailToJoinDomainFromWorkgroup,Microsoft.PowerShell.Commands.AddComputerCommand', ''), state: st }
+  return { out: L(`OSTRZEŻENIE: Zmiany zostaną wprowadzone po ponownym uruchomieniu komputera ${st.hostname.toUpperCase()}.`), state: r.state }
+}
+
+function tryJoin(ctx: ShellCtx, b: ShellCtx['network']['bench'], dom: string, host: string, user: string, pw: string): { msg: string } | { state: PcState; domain: string } {
+  if (!b) return { msg: `Nie można skontaktować się z kontrolerem domeny Active Directory (AD DC) dla domeny „${dom}”.` }
+  const j = joinDomain(b.model, b.key as NetKey, dom, host, user, pw)
+  if (!j.ok) return { msg: j.kind === 'cred' ? `Logowanie nie powiodło się: ${j.msg}` : `Nie można skontaktować się z kontrolerem domeny Active Directory (AD DC) dla domeny „${dom}”.` }
+  b.setServer?.(j.apply)
+  const d = srv(j.dc).domain!
+  return { state: { ...ctx.state, workgroup: undefined, member: { name: d.name, netbios: d.netbios, active: false }, applied: undefined, signedIn: undefined }, domain: d.name }
 }

@@ -7,6 +7,7 @@ import { ipToInt, linkUp, pcAddress, sameSubnet, type NetworkModel, type PcState
 import { RouterSim } from '../router'
 import { SwitchSim } from '../switch'
 import type { RouterState, SwitchState } from '../types'
+import { SitePage, titleOf } from './SitePage'
 import { addressBook, browse, DEV_RU, type BrowseResult, type PcKey, type WebDevice } from './diagnose'
 import type { Station } from './station'
 import { useCompact } from './useCompact'
@@ -82,7 +83,8 @@ export function Browser({ st, pcKey, pc, router, switch: sw, printer, onRouter, 
 
   // the device restarts because of a change made in its own page: keep that page (it shows its restart screen)
   const keepUi = shown && st.uiRestart(shown) ? shown : null
-  const device: WebDevice | null = keepUi ?? (r?.ok ? r.device! : null)
+  const device: WebDevice | null = keepUi ?? (r?.ok && r.device ? r.device : null)
+  const site = r?.ok && r.site && !loading ? r.site : null
   // remember which device page is on screen (adjusting state during render, React-style)
   if (!loading && device !== shown) setShown(device)
 
@@ -91,6 +93,7 @@ export function Browser({ st, pcKey, pc, router, switch: sw, printer, onRouter, 
   else if (device === 'router') title = router?.model ?? 'Router'
   else if (device === 'switch') title = sw?.model ?? 'Switch'
   else if (device === 'printer') title = 'Drukarka — stan'
+  else if (site) title = titleOf(site, r?.host ?? '')
   else if (r) title = r.host
 
   const ep = (d: WebDevice) => `${d}-${st.epoch[d] ?? 0}-${attempt}`
@@ -224,6 +227,8 @@ export function Browser({ st, pcKey, pc, router, switch: sw, printer, onRouter, 
           </>
         ) : device === 'printer' && printer ? (
           <PrinterPage ip={printer.ip} prefix={printer.prefix} />
+        ) : site ? (
+          <SitePage o={site} local={pcKey === 'server'} host={nav ? nav.replace(/^[a-z]+:\/\//i, '').split('/')[0] : ''} />
         ) : r && kind ? (
           <ErrorPage r={r} kind={kind} onRetry={() => show(nav)} />
         ) : null}

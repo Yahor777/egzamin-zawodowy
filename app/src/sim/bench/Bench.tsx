@@ -239,7 +239,7 @@ function DeviceCard({ d, lab, s, st, pick, sel, onPort, hintKey }: { d: DeviceKe
   const state = !on ? 'off' : boot ? 'boot' : 'on'
   const links = s.links
   const name = (ru ? DEV_RU : DEV_PL)[d]
-  const model = d === 'router' ? s.router?.model : d === 'switch' ? s.switch?.model : d === 'linux' ? 'Ubuntu Server 24.04' : d === 'printer' ? 'LaserJet M404 (symulator)' : d === 'laptop' ? 'Windows 11 — nie jest częścią zadania' : 'Windows 11'
+  const model = d === 'router' ? s.router?.model : d === 'switch' ? s.switch?.model : d === 'linux' ? 'Ubuntu Server 24.04' : d === 'printer' ? 'LaserJet M404 (symulator)' : d === 'laptop' ? 'Windows 11 — nie jest częścią zadania' : d === 'server' ? 'Windows Server 2022 Standard' : 'Windows 11'
   const ports = portsOf(lab, d)
 
   return (
@@ -335,7 +335,7 @@ function DeviceInfo({ d, s, st, lab }: { d: DeviceKey; s: LabSave; st: Station; 
       )),
     )
   }
-  if ((d === 'pc' || d === 'laptop') && s[d]) {
+  if ((d === 'pc' || d === 'laptop' || d === 'server') && s[d]) {
     const pc = s[d] as PcState
     rows.push(
       ...pc.adapters.map((a) => {
@@ -379,6 +379,8 @@ function Why({ d }: { d: DeviceKey }) {
     pc: 'Windows сама просит адрес по DHCP, когда появляется линк (вставили кабель, включили устройство на другом конце). Нет ответа — адрес 169.254.x.x (APIPA). Статические настройки не меняются.',
     laptop:
       'Служебный ноутбук: на этом листе нет Windows-станции, а роутер настраивают из браузера. Подключи его к LAN роутера или к свитчу, настрой устройство, затем отключи. В проверку не входит.',
+    server:
+      'Windows Server — полноценный участник сети: раздаёт адреса по DHCP (если роль настроена и область активна), отвечает на DNS, держит домен и сайты IIS. Выключишь его — клиенты теряют DHCP, DNS и вход в домен. Брандмауэр сервера по умолчанию не отвечает на ping и не пускает на порты, кроме открытых ролями.',
     printer: 'У принтера фиксированный адрес; его страницу состояния можно открыть в браузере ПК из той же подсети.',
   }
   return <p className="bd-why-text">{text[d]}</p>

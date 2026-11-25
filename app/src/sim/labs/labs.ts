@@ -21,9 +21,13 @@ export interface LabCtx {
   switch?: SwitchState
   linux?: LinuxApi
   pc?: PcState
+  /** Windows Server 2022 of the bench (domain drills) */
+  server?: PcState
   links: Link[]
+  /** open a URL in Edge of the device (what the page shows); null = nothing opened */
+  web?: (from: 'pc' | 'server', url: string) => import('../domain').HttpOutcome | null
   /** ping from a device to an IP using the current network state */
-  ping: (from: 'linux' | 'pc', ip: string) => boolean
+  ping: (from: 'linux' | 'pc' | 'server', ip: string) => boolean
 }
 
 export interface LabCheck {
@@ -36,7 +40,7 @@ export interface LabCheck {
 
 export interface LabTask {
   id: string
-  device: 'router' | 'switch' | 'linux' | 'pc' | 'cabling' | 'tests'
+  device: 'router' | 'switch' | 'linux' | 'pc' | 'server' | 'cabling' | 'tests'
   title_ru: string
   text_pl: string[]
   hint_ru?: string
@@ -56,10 +60,12 @@ export interface Lab {
     switch?: Partial<SwitchState>
     linux?: LinuxSetupLite
     pc?: Partial<PcState>
+    /** Windows Server 2022 next to the Win11 PC (ports eth0 / eth1) */
+    server?: Partial<PcState>
     printer?: { ip: string; prefix: number }
   }
   /** ports offered in the cabling view per device */
-  ports: Partial<Record<'router' | 'switch' | 'linux' | 'pc' | 'printer', string[]>>
+  ports: Partial<Record<'router' | 'switch' | 'linux' | 'pc' | 'server' | 'printer', string[]>>
   requiredLinks: Link[]
   schema_ru: string[]
   tasks: LabTask[]

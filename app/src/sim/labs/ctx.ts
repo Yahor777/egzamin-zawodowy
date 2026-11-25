@@ -1,8 +1,9 @@
 // Pure helpers shared by LabPage and the headless lab tests.
 import { linuxApi } from '../linux/api'
 import type { LinuxState } from '../linux/model'
-import { canPing, defaultPcState, networkOf, prefixToMask, type DeviceKey, type DhcpServer, type Link, type NetworkModel, type PcState } from '../net'
+import { canPing, defaultPcState, ipToInt, networkOf, prefixToMask, sameSubnet, pcAddress, type DeviceKey, type DhcpServer, type Link, type NetworkModel, type PcState } from '../net'
 import type { RouterState, SwitchState } from '../types'
+import { browse } from '../bench/diagnose'
 import type { Lab, LabCtx } from './labs'
 
 export interface LabSave {
@@ -13,6 +14,8 @@ export interface LabSave {
   pc?: PcState
   /** service laptop put on the bench when the lab has no Windows PC (not graded) */
   laptop?: PcState
+  /** Windows Server 2022 on the bench (optional; old saves have none) */
+  server?: PcState
   links: Link[]
   /** power switches on the bench; missing = on */
   power?: Partial<Record<DeviceKey, boolean>>
@@ -39,6 +42,7 @@ export function buildModel(lab: Pick<Lab, 'devices'>, s: LabSave, booting?: Part
     pc: s.pc,
     printer: lab.devices.printer,
     laptop: s.laptop,
+    server: s.server,
     links: s.links,
     power: effectivePower(s, booting),
   }
@@ -59,6 +63,7 @@ export function buildDhcpServers(s: LabSave): DhcpServer[] {
       reservations: r.reservations.filter((x) => x.enabled),
     })
   }
+  out.push(...windowsDhcpServers(s.server))
   if (s.linux) {
     const api = linuxApi(s.linux)
     const subnets = api.dhcpSubnets()
@@ -86,18 +91,62 @@ export function buildDhcpServers(s: LabSave): DhcpServer[] {
   return out
 }
 
+/**
+ * DHCP of Windows Server: the role is installed, the server is authorized (post-install wizard) and a scope
+ * is active. Like the real one it answers only on the adapter whose static address lies in the scope's subnet.
+ */
+export function windowsDhcpServers(srvPc: PcState | undefined): DhcpServer[] {
+  const d = srvPc?.server?.dhcp
+  if (!srvPc || srvPc.os !== 'server2022' || !d?.authorized || !srvPc.server!.roles.includes('DHCP')) return []
+  const out: DhcpServer[] = []
+  for (const a of srvPc.adapters) {
+    const cfg = a.enabled && !a.dhcp ? pcAddress(a) : null
+    if (!cfg) continue
+    for (const sc of d.scopes) {
+      if (!sc.active || !sameSubnet(cfg.addr.ip, sc.start, sc.prefix) || ipToInt(sc.start) === null) continue
+      out.push({
+        port: `server:${a.id}`,
+        serverIp: cfg.addr.ip,
+        start: sc.start,
+        end: sc.end,
+        mask: prefixToMask(sc.prefix),
+        gateway: sc.router,
+        dns: sc.dns ? [sc.dns] : [],
+        reservations: sc.reservations.filter((r) => ipToInt(r.ip) !== null),
+        excl: sc.excl,
+        ...(sc.dnsDomain ? { domain: sc.dnsDomain } : {}),
+      })
+      break
+    }
+  }
+  return out
+}
+
+/** A Windows Server 2022 for a lab / sandbox (a fresh, unconfigured one unless `over` says otherwise). */
+export function defaultServerState(over: Partial<PcState> = {}): PcState {
+  const base = defaultPcState({ os: 'server2022', hostname: 'WIN-7QK2L9M4P0D', server: { roles: [], features: [], pending: [] } })
+  const adapters = (over.adapters ?? base.adapters).map((a, i) => ({ ...a, mac: i === 0 ? '08-00-27-A1-5C-2E' : `08-00-27-A1-5C-3${i}` }))
+  return { ...base, ...over, os: 'server2022', adapters: over.adapters ? over.adapters : adapters, server: over.server ?? base.server }
+}
+
 export function buildCtx(s: LabSave, model: NetworkModel): LabCtx {
   return {
     router: s.router,
     switch: s.switch,
     linux: s.linux ? linuxApi(s.linux) : undefined,
     pc: s.pc,
+    server: s.server,
     links: s.links,
+    web: (from, url) => {
+      const r = browse(model, from, url)
+      return r.ok && r.site ? r.site : null
+    },
     ping: (from, ip) => {
       if (from === 'linux') {
         const api = s.linux ? linuxApi(s.linux) : null
         return !!api && canPing(model, api.interfaces().map((i) => `linux:${i.name}`), ip).ok
       }
+      if (from === 'server') return !!s.server && canPing(model, s.server.adapters.map((a) => `server:${a.id}`), ip).ok
       return !!s.pc && canPing(model, s.pc.adapters.map((a) => `pc:${a.id}`), ip).ok
     },
   }
