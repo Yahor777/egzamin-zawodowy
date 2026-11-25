@@ -127,7 +127,7 @@ export const WS_SCENARIOS: WsScenario[] = [
       { pl: 'Pomiń wykluczenia → Czas trwania dzierżawy: 2 dni', ru: 'Время аренды тоже критерий.' },
       { pl: '„Tak, chcę teraz skonfigurować te opcje” → Router (brama domyślna) → Serwery DNS', ru: 'Опции области: шлюз (003) и DNS (006).' },
       { pl: '„Tak, chcę teraz aktywować ten zakres” → Zakończ', ru: 'Неактивная область не раздаёт адреса.' },
-      { pl: 'Zakres → Rezerwacje → Nowa rezerwacja… → nazwa, 192.168.0.50, adres MAC', ru: 'Резервирование по MAC клиента.' },
+      { pl: 'Zakres → Zastrzeżenia → Nowe zastrzeżenie… → nazwa, 192.168.0.50, adres MAC', ru: 'Резервирование по MAC клиента.' },
       { pl: 'Na stacji: ipconfig /renew i ipconfig /all', ru: 'Проверка, что адрес получен — скриншот.' },
     ],
     questions: [

@@ -1,0 +1,946 @@
+===== StatusRpm | Status
+Status
+Firmware Version: 
+3.16.9 Build 150310 Rel.55295n
+Hardware Version: 
+WR841N v10 00000000
+LAN
+MAC Address: 
+00-0A-EB-13-09-19
+IP Address: 
+192.168.0.1
+Subnet Mask: 
+255.255.255.0
+Wireless
+Wireless Radio: Enable
+Remote AP: TP-LINK_0919
+Mode: 11bgn mixed
+Channel Width: Automatic
+Channel: Auto (Current channel 10)
+MAC Address: 00-0A-EB-13-09-19
+WDS Status: Disable
+WAN
+MAC Address: 00-0A-EB-13-09-1A
+IP Address: 0.0.0.0 Dynamic IP
+Subnet Mask: 0.0.0.0  
+Default Gateway: 0.0.0.0 WAN port is unplugged!
+DNS Server: 0.0.0.0 , 0.0.0.0
+Traffic Statistics
+ Received Sent
+Bytes: 0 0
+Packets: 0 0
+System Up Time: 
+0 days 00:38:37
+ 
+  BTN Refresh
+===== WzdStartRpm | Quick Setup
+Quick Setup
+Run the Quick Setup to manually configure your internet connection and wireless settings.
+To continue, please click the Next button.
+To exit, please click the Exit  button.
+       
+  BTN Exit
+  BTN Next
+===== WpsCfgRpm | WPS
+WPS (Wi-Fi Protected Setup)
+WPS Status: Enabled    
+Current PIN: 95699172       
+  Disable PIN of this device
+Add a new device: 
+ 
+  BTN Enable WPS
+  BTN Disable WPS
+  BTN Restore PIN
+  BTN Gen New PIN
+  BTN Add Device
+===== WanCfgRpm | - WAN
+WAN
+WAN Connection Type: 
+Dynamic IP
+Static IP
+PPPoE/Russia PPPoE
+BigPond Cable
+L2TP/Russia L2TP
+PPTP/Russia PPTP
+IP Address: 
+192.168.202.138
+Subnet Mask: 
+255.255.255.0
+Default Gateway: 
+192.168.202.254
+MTU Size (in bytes):  (The default is 1500, do not change unless necessary.)
+   Use These DNS Servers
+Primary DNS: 
+Secondary DNS:  (Optional)
+Host Name: 
+   Get IP with Unicast DHCP (It is usually not required.)
+ 
+  SELECT wan ['WAN1']
+  SELECT wantype ['Dynamic IP', 'Static IP', 'PPPoE/Russia PPPoE', 'BigPond Cable', 'L2TP/Russia L2TP', 'PPTP/Russia PPTP']
+  BTN Detect
+  BTN Renew
+  BTN Release
+  BTN Save
+===== MacCloneCfgRpm | - MAC Clone
+MAC Clone
+WAN MAC Address:  
+Your PC's MAC Address: 
+
+  BTN Restore Factory MAC
+  BTN Clone MAC Address To
+  SELECT wan ['WAN1']
+  BTN Save
+===== NetworkCfgRpm | - LAN
+LAN
+MAC Address: 
+00-0A-EB-13-09-19
+IP Address: 
+Subnet Mask: 
+255.0.0.0
+255.255.0.0
+255.255.255.0
+Other Mask
+IGMP Proxy: 
+Disable
+Enable
+ Note:IGMP(Internet Group Management Protocol) works for IPTV multicast stream.The device supports both IGMP proxy with enabled/disabled option and IGMP snooping.
+ 
+  SELECT lantype ['Static IP', 'Dynamic IP(DHCP)']
+  SELECT lanmask ['255.0.0.0', '255.255.0.0', '255.255.255.0', 'Other Mask']
+  SELECT igmpEn ['Disable', 'Enable']
+  BTN Save
+===== WlanNetworkRpm | - Wireless Settings
+Wireless Settings
+Wireless Network Name:  (Also called the SSID)
+Region: 
+Albania
+Algeria
+Argentina
+Armenia
+Australia
+Austria
+Azerbaijan
+Bahrain
+Belarus
+Belgium
+Belize
+Bolivia
+Brazil
+Brunei Darussalam
+Bulgaria
+Canada
+Chile
+China
+Colombia
+Costa Rica
+Croatia
+Cyprus
+Czech Republic
+Denmark
+Dominican Republic
+Ecuador
+Egypt
+El Salvador
+Estonia
+Finland
+France
+Georgia
+Germany
+Greece
+Guatemala
+Honduras
+Hong Kong
+Hungary
+Iceland
+India
+Indonesia
+Iran
+Ireland
+Israel
+Italy
+Japan
+Japan1
+Japan2
+Japan3
+Japan4
+Japan5
+Japan6
+Jordan
+Kazakhstan
+North Korea
+Korea Republic
+Korea Republic3
+Kuwait
+Latvia
+Lebanon
+Liechtenstein
+Lithuania
+Luxembourg
+Macau
+Macedonia
+Malaysia
+Malta
+Mexico
+Monaco
+Morocco
+Netherlands
+New Zealand
+Norway
+Oman
+Pakistan
+Panama
+Peru
+Philippines
+Poland
+Portugal
+Puerto Rico
+Qatar
+Romania
+Russia
+Saudi Arabia
+Singapore
+Slovak Republic
+Slovenia
+South Africa
+Spain
+Sweden
+Switzerland
+Syria
+Taiwan
+Thailand
+Trinidad & Tobago
+Tunisia
+Turkey
+Ukraine
+United Arab Emirates
+United Kingdom
+United States
+Uruguay
+Uzbekistan
+Venezuela
+Viet Nam
+Yemen
+Zimbabwe
+Warning:
+ Ensure you select a correct country to conform local law.
+Incorrect settings may cause interference.
+Mode: 
+11bg mixed
+11bgn mixed
+Channel Width: 
+Auto
+20MHz
+40MHz
+Channel: 
+Auto
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+  Enable Wireless Router Radio
+  Enable SSID Broadcast
+  Enable WDS Bridging
+ 
+  SELECT region ['Albania', 'Algeria', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahrain', 'Belarus', 'Belgium', 'Belize', 'Bolivia', 'Brazil', 'Brunei Darussalam', 'Bulgaria', 'Canada', 'Chile', 'China', 'Colombia', 'Costa Rica', 'Croatia', 'Cyprus', 'Czech Republic', 'Denmark', 'Dominican Republic', 'Ecuador', 'Egypt', 'El Salvador', 'Estonia', 'Finland', 'France', 'Georgia', 'Germany', 'Greece', 'Guatemala', 'Honduras', 'Hong Kong', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Ireland', 'Israel', 'Italy', 'Japan', 'Japan1', 'Japan2', 'Japan3', 'Japan4', 'Japan5', 'Japan6', 'Jordan', 'Kazakhstan', 'North Korea', 'Korea Republic', 'Korea Republic3', 'Kuwait', 'Latvia', 'Lebanon', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macau', 'Macedonia', 'Malaysia', 'Malta', 'Mexico', 'Monaco', 'Morocco', 'Netherlands', 'New Zealand', 'Norway', 'Oman', 'Pakistan', 'Panama', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Puerto Rico', 'Qatar', 'Romania', 'Russia', 'Saudi Arabia', 'Singapore', 'Slovak Republic', 'Slovenia', 'South Africa', 'Spain', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Thailand', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Venezuela', 'Viet Nam', 'Yemen', 'Zimbabwe']
+  SELECT band ['2.4G', '5G']
+  SELECT mode ['11bg mixed', '11bgn mixed']
+  SELECT chanWidth ['Auto', '20MHz', '40MHz']
+  SELECT channel ['Auto', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']
+  BTN Survey
+  SELECT addrType ['Auto', 'WDS1', 'WDS2']
+  SELECT keytype ['None', 'WEP (ASCII)', 'WEP (HEX)', 'WPA-PSK/WPA2-PSK']
+  SELECT wepindex ['1', '2', '3', '4']
+  SELECT authtype ['open', 'shared']
+  BTN Save
+===== WlanSecurityRpm | - Wireless Security
+Wireless Security
+   Disable Security
+  WPA/WPA2 - Personal(Recommended)
+Version: 
+Automatic
+WPA-PSK
+WPA2-PSK
+Encryption: 
+Automatic
+TKIP
+AES
+Wireless Password: 
+  (You can enter ASCII characters between 8 and 63 or Hexadecimal characters between 8 and 64.)
+Group Key Update Period:  Seconds
+  (Keep it default if you are not sure, minimum is 30, 0 means no update)
+  WPA/WPA2 - Enterprise
+Version: 
+Automatic
+WPA
+WPA2
+Encryption: 
+Automatic
+TKIP
+AES
+Radius Server IP: 
+Radius Port: (1-65535, 0 stands for default port 1812)
+Radius Password: 
+Group Key Update Period:  Seconds
+  WEP
+Type: 
+Automatic
+Open System
+Shared Key
+WEP Key Format: 
+Hexadecimal
+ASCII
+Key Selected WEP Key Key Type
+Key 1:  
+Disabled
+64bit
+128bit
+152bit
+Key 2:  
+Disabled
+64bit
+128bit
+152bit
+Key 3:  
+Disabled
+64bit
+128bit
+152bit
+Key 4:  
+Disabled
+64bit
+128bit
+152bit
+  
+  SELECT pskSecOpt ['Automatic', 'WPA-PSK', 'WPA2-PSK']
+  SELECT pskCipher ['Automatic', 'TKIP', 'AES']
+  SELECT wpaSecOpt ['Automatic', 'WPA', 'WPA2']
+  SELECT wpaCipher ['Automatic', 'TKIP', 'AES']
+  SELECT wepSecOpt ['Automatic', 'Open System', 'Shared Key']
+  SELECT keytype ['Hexadecimal', 'ASCII']
+  SELECT length1 ['Disabled', '64bit', '128bit', '152bit']
+  SELECT length2 ['Disabled', '64bit', '128bit', '152bit']
+  SELECT length3 ['Disabled', '64bit', '128bit', '152bit']
+  SELECT length4 ['Disabled', '64bit', '128bit', '152bit']
+  BTN Save
+===== WlanMacFilterRpm | - Wireless MAC Filtering
+Wireless MAC Filtering
+Wireless MAC Filtering: Disabled    
+Filtering Rules
+              Deny the stations specified by any enabled entries in the list to access.
+              Allow the stations specified by any enabled entries in the list to access.
+ID MAC Address Status Description Modify
+1 EC-17-2F-F0-32-14 Enabled Tom's Modify Delete
+   
+  BTN Enable
+  BTN Disable
+  BTN Add New...
+  BTN Enable All
+  BTN Disable All
+  BTN Delete All
+  BTN Previous
+  BTN Next
+===== WlanAdvRpm | - Wireless Advanced
+Wireless Advanced
+Operation Mode: 
+High
+Middle
+Low
+Beacon Interval :   (40-1000)
+RTS Threshold:   (256-2346)
+Fragmentation Threshold:   (256-2346)
+DTIM Interval:   (1-255)
+   Enable WMM
+   Enable Short GI
+   Enable AP Isolation
+  
+  SELECT txPower ['High', 'Middle', 'Low']
+  BTN Save
+===== WlanStationRpm | - Wireless Statistics
+Wireless Statistics
+Current Connected Wireless Stations numbers: 0    
+   
+  BTN Refresh
+  BTN Previous
+  BTN Next
+===== LanDhcpServerRpm | - DHCP Settings
+DHCP Settings
+DHCP Server: Disable Enable
+Start IP Address: 
+End IP Address: 
+Address Lease Time:  minutes (1~2880 minutes, the default value is 120)
+Default Gateway: 
+Default Domain: 
+Primary DNS: 
+Secondary DNS: 
+ 
+  BTN Save
+===== AssignedIpAddrListRpm | - DHCP Client List
+DHCP Client List
+No attached client currently.
+
+  BTN Refresh
+===== FixMapCfgRpm | - Address Reservation
+Address Reservation
+ID MAC Address Reserved IP Address Status Modify
+   
+  BTN Add New...
+  BTN Enable All
+  BTN Disable All
+  BTN Delete All
+  BTN Previous
+  BTN Next
+===== VirtualServerRpm | - Virtual Servers
+Virtual Servers
+ID Service Port Internal Port IP Address Protocol Status Modify
+   
+  BTN Add New...
+  BTN Enable All
+  BTN Disable All
+  BTN Delete All
+  BTN Previous
+  BTN Next
+===== SpecialAppRpm | - Port Triggering
+Port Triggering
+ID Trigger Port Trigger Protocol Incoming Ports Incoming Protocol Status Modify
+   
+  BTN Add New...
+  BTN Enable All
+  BTN Disable All
+  BTN Delete All
+  BTN Previous
+  BTN Next
+===== DMZRpm | - DMZ
+DMZ
+Current DMZ Status: Enable Disable
+DMZ Host IP Address: 
+
+  BTN Save
+===== UpnpCfgRpm | - UPnP
+UPnP
+Current UPnP Status: 
+Enabled
+Current UPnP Settings List
+ID App Description External Port Protocol Internal Port IP Address Status
+
+  BTN Disable
+  BTN Enable
+  BTN Refresh
+===== BasicSecurityRpm | - Basic Security
+Basic Security
+Firewall
+SPI Firewall: Enable Disable
+VPN
+PPTP Passthrough: Enable Disable
+L2TP Passthrough: Enable Disable
+IPSec Passthrough: Enable Disable
+ALG
+FTP ALG: Enable Disable
+TFTP ALG: Enable Disable
+H323 ALG: Enable Disable
+RTSP ALG: Enable Disable
+SIP ALG: Enable Disable
+ 
+  BTN Save
+===== AdvScrRpm | - Advanced Security
+Advanced Security
+Packets Statistics Interval (5 ~ 60): 
+5
+10
+15
+20
+25
+30
+35
+40
+45
+50
+55
+60
+ Seconds
+DoS Protection: Disable  Enable
+ Enable ICMP-FLOOD Attack Filtering
+ICMP-FLOOD Packets Threshold (5 ~ 3600):  Packets/Secs
+ Enable UDP-FLOOD Filtering
+UDP-FLOOD Packets Threshold (5 ~ 3600): Packets/Secs
+ Enable TCP-SYN-FLOOD Attack Filtering
+TCP-SYN-FLOOD Packets Threshold (5 ~ 3600): Packets/Secs
+ Ignore Ping Packet from WAN Port to Router
+ Forbid Ping Packet from LAN Port to Router
+   
+  SELECT interval ['5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '60']
+  BTN Save
+  BTN Blocked DoS Host List
+===== LocalManageControlRpm | - Local Management
+Local Management
+Management Rules
+              All the PCs on the LAN are allowed to access the Router's Web-Based Utility
+              Only the PCs listed can browse the built-in web pages to perform Administrator tasks
+MAC 1: 
+MAC 2: 
+MAC 3: 
+MAC 4: 
+Your PC's MAC Address: 
+
+  BTN Add
+  BTN Save
+===== ManageControlRpm | - Remote Management
+Remote Management
+Web Management Port: 
+Remote Management IP Address: (Enter 255.255.255.255 for all)
+ 
+  BTN Save
+===== ParentCtrlRpm | Parental Control
+Parental Control Settings
+Non-Parental PCs not listed will not be able to access the Internet.
+Parental Control: Disable   Enable
+MAC Address of Parental PC: 
+MAC Address of Your PC: 
+ID MAC address Website Description Schedule Status Modify
+1 6C-62-6D-F7-32-0C google Permanent Edit Delete
+     Current No. 
+1
+ Page
+  BTN Copy To Above
+  BTN Save
+  BTN Add New...
+  BTN Enable All
+  BTN Disable All
+  BTN Delete All
+  BTN Previous
+  BTN Next
+  SELECT selPage ['1']
+===== AccessCtrlAccessRulesRpm | - Rule
+Access Control Rule Management
+ Enable Internet Access Control
+   Default Filter Policy
+ Allow the packets specified by any enabled access control policy to pass through the Router
+ Deny the packets specified by any enabled access control policy to pass through the Router
+ID Rule Name Host Target Schedule Status Modify
+1 tplink tplink Access tplink Edit Delete
+  ID   To ID  
+     Current No. 
+1
+ Page
+  BTN Save
+  BTN Setup Wizard
+  BTN Add New...
+  BTN Enable All
+  BTN Disable All
+  BTN Delete All
+  BTN Move
+  BTN Previous
+  BTN Next
+  SELECT selPage ['1']
+===== AccessCtrlHostsListsRpm | - Host
+Host Settings
+ID Host Description Information Modify
+1 tplink IP: 192.168.0.115 - 192.168.0.155  Edit Delete
+     Current No. 
+1
+ Page
+  BTN Add New...
+  BTN Delete All
+  BTN Previous
+  BTN Next
+  SELECT selPage ['1']
+===== AccessCtrlAccessTargetsRpm | - Target
+Target Settings
+ID Target Description Information Modify
+1 Access www.google.com  Edit Delete
+     Current No. 
+1
+ Page
+  BTN Add New...
+  BTN Delete All
+  BTN Previous
+  BTN Next
+  SELECT selPage ['1']
+===== AccessCtrlTimeSchedRpm | - Schedule
+Schedule Settings
+ID Schedule Description Day Time Modify
+1 tplink  Wed Thu Fri  00:00 - 24:00 Edit Delete
+     Current No. 
+1
+ Page
+  BTN Add New...
+  BTN Delete All
+  BTN Previous
+  BTN Next
+  SELECT selPage ['1']
+===== StaticRouteTableRpm | - Static Routing List
+Static Routing
+ID Destination Network Subnet Mask Default Gateway Status Modify
+   
+  BTN Add New...
+  BTN Enable All
+  BTN Disable All
+  BTN Delete All
+  BTN Previous
+  BTN Next
+===== SysRouteTableRpm | - System Routing Table
+System Routing Table
+ID Destination Network Subnet Mask Gateway Interface
+1 192.168.0.0 255.255.255.0 0.0.0.0 LAN & WLAN
+2 239.0.0.0 255.0.0.0 0.0.0.0 LAN & WLAN
+
+  BTN Refresh
+===== QoSCfgRpm | - Control Settings
+Bandwidth Control Settings
+Enable Bandwidth Control: 
+Line Type:   ADSL        Other
+Egress Bandwidth:   Kbps
+Ingress Bandwidth:   Kbps
+   
+  BTN Save
+===== QoSRuleListRpm | - Rule List
+Bandwidth Control Rule List
+ID Description Egress Bandwidth(Kbps) Ingress Bandwidth(Kbps) Enable Modify
+Min Max Min Max
+The current list is empty.
+     Current No. 
+1
+ Page
+  BTN Add New...
+  BTN Delete All
+  BTN Previous
+  BTN Next
+  SELECT Page ['1']
+===== LanArpBindingRpm | - Binding Settings
+Binding Settings
+ARP Binding: Disable Enable
+ID MAC Address IP Address Bind Modify  
+The list is empty
+     Current No. 
+1
+   Page
+  BTN Save
+  BTN Add New...
+  BTN Enable All
+  BTN Disable All
+  BTN Delete All
+  BTN Find Item
+  BTN Previous
+  BTN Next
+  SELECT selPage ['1']
+===== LanArpBindingListRpm | - ARP List
+ARP List
+ID MAC Address IP Address Status Configure  
+1 38-83-45-F2-4A-E9 192.168.0.100 Unbound Load Delete
+      
+  BTN Bind All
+  BTN Load All
+  BTN Refresh
+===== DdnsAddRpm | Dynamic DNS
+DDNS
+Service Provider: 
+Comexe ( www.comexe.cn )
+Dyndns ( dyn.com/dns )
+No-IP ( www.noip.com )
+  Go to register...
+User Name: 
+Password: 
+Domain Name: 
+  Enable DDNS
+Connection Status: 
+DDNS not launching!
+
+  SELECT provider ['Comexe ( www.comexe.cn )', 'Dyndns ( dyn.com/dns )', 'No-IP ( www.noip.com )']
+  BTN Login
+  BTN Logout
+  BTN Save
+===== DateTimeCfgRpm | - Time Settings
+Time Settings
+Time zone: 
+(GMT-12:00) Eniwetok,Kwajalein
+(GMT-11:00) Midway Island,Samoa
+(GMT-10:00) Hawaii
+(GMT-09:00) Alaska
+(GMT-08:00) Pacific Time
+(GMT-07:00) Mountain Time (US Canada)
+(GMT-06:00) Central Time (US Canada)
+(GMT-05:00) Eastern Time (US Canada)
+(GMT-04:30) Caracas
+(GMT-04:00) Atlantic Time (Canada)
+(GMT-03:30) Newfoundland
+(GMT-03:00) Brasilia, Buenos Aires
+(GMT-02:00) Mid-Atlantic
+(GMT-01:00) Azores, Cape Verde Is
+(GMT) Greenwich Mean Time, Dublin, London
+(GMT+01:00) Berlin, Stockholm, Rome, Bern, Brussels
+(GMT+02:00) Athens, Helsinki, Eastern Europe, Israel
+(GMT+03:00) Baghdad, Kuwait, Nairobi, Riyadh, Moscow
+(GMT+03:30) Teheran
+(GMT+04:00) Abu Dhabi, Muscat, Kazan, Volgograd
+(GMT+04:30) Kabul
+(GMT+05:00) Islamabad, Karachi, Ekaterinburg
+(GMT+05:30) Madras, Calcutta, Bombay, New Delhi
+(GMT+05:45) Katmandu
+(GMT+06:00) Alma-Ata, Dhaka
+(GMT+06:30) Rangoon
+(GMT+07:00) Bangkok, Jakarta, Hanoi
+(GMT+08:00) Beijing, Hong Kong, Perth, Singapore
+(GMT+09:00) Tokyo, Osaka, Sapporo, Seoul, Yakutsk
+(GMT+09:30) Adelaide
+(GMT+10:00) Brisbane, Canberra, Melbourne, Sydney
+(GMT+11:00) Magadan, Solomon Is., New Caledonia
+(GMT+12:00) Fiji, Kamchatka, Auckland
+(GMT+13:00) Nuku'alofa
+Date:          (MM/DD/YY)
+Time:           (HH/MM/SS)
+NTP Server 1:  (Optional)
+NTP Server 2:  (Optional)
+Enable DaylightSaving
+Start: 2015  
+Jan
+Feb
+Mar
+Apr
+May
+Jun
+Jul
+Aug
+Sep
+Oct
+Nov
+Dec
+First
+2nd
+3rd
+4th
+Last
+Mon
+Tue
+Wed
+Thu
+Fri
+Sat
+Sun
+0am
+1am
+2am
+3am
+4am
+5am
+6am
+7am
+8am
+9am
+10am
+11am
+12pm
+1pm
+2pm
+3pm
+4pm
+5pm
+6pm
+7pm
+8pm
+9pm
+10pm
+11pm
+End: 2015  
+Jan
+Feb
+Mar
+Apr
+May
+Jun
+Jul
+Aug
+Sep
+Oct
+Nov
+Dec
+First
+2nd
+3rd
+4th
+Last
+Mon
+Tue
+Wed
+Thu
+Fri
+Sat
+Sun
+0am
+1am
+2am
+3am
+4am
+5am
+6am
+7am
+8am
+9am
+10am
+11am
+12pm
+1pm
+2pm
+3pm
+4pm
+5pm
+6pm
+7pm
+8pm
+9pm
+10pm
+11pm
+Daylight Saving Status: 
+ Note: Click the "GET
+  SELECT timezone ['(GMT-12:00) Eniwetok,Kwajalein', '(GMT-11:00) Midway Island,Samoa', '(GMT-10:00) Hawaii', '(GMT-09:00) Alaska', '(GMT-08:00) Pacific Time', '(GMT-07:00) Mountain Time (US Canada)', '(GMT-06:00) Central Time (US Canada)', '(GMT-05:00) Eastern Time (US Canada)', '(GMT-04:30) Caracas', '(GMT-04:00) Atlantic Time (Canada)', '(GMT-03:30) Newfoundland', '(GMT-03:00) Brasilia, Buenos Aires', '(GMT-02:00) Mid-Atlantic', '(GMT-01:00) Azores, Cape Verde Is', '(GMT) Greenwich Mean Time, Dublin, London', '(GMT+01:00) Berlin, Stockholm, Rome, Bern, Brussels', '(GMT+02:00) Athens, Helsinki, Eastern Europe, Israel', '(GMT+03:00) Baghdad, Kuwait, Nairobi, Riyadh, Moscow', '(GMT+03:30) Teheran', '(GMT+04:00) Abu Dhabi, Muscat, Kazan, Volgograd', '(GMT+04:30) Kabul', '(GMT+05:00) Islamabad, Karachi, Ekaterinburg', '(GMT+05:30) Madras, Calcutta, Bombay, New Delhi', '(GMT+05:45) Katmandu', '(GMT+06:00) Alma-Ata, Dhaka', '(GMT+06:30) Rangoon', '(GMT+07:00) Bangkok, Jakarta, Hanoi', '(GMT+08:00) Beijing, Hong Kong, Perth, Singapore', '(GMT+09:00) Tokyo, Osaka, Sapporo, Seoul, Yakutsk', '(GMT+09:30) Adelaide', '(GMT+10:00) Brisbane, Canberra, Melbourne, Sydney', '(GMT+11:00) Magadan, Solomon Is., New Caledonia', '(GMT+12:00) Fiji, Kamchatka, Auckland', "(GMT+13:00) Nuku'alofa"]
+  BTN Get GMT
+  SELECT start_month ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  SELECT start_count ['First', '2nd', '3rd', '4th', 'Last']
+  SELECT start_week ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+  SELECT start_hour ['0am', '1am', '2am', '3am', '4am', '5am', '6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm', '9pm', '10pm', '11pm']
+  SELECT end_month ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  SELECT end_count ['First', '2nd', '3rd', '4th', 'Last']
+  SELECT end_week ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+  SELECT end_hour ['0am', '1am', '2am', '3am', '4am', '5am', '6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm', '9pm', '10pm', '11pm']
+  BTN Save
+===== DiagnosticRpm | - Diagnostic
+Diagnostic Tools
+Diagnostic Parameters
+Diagnostic Tool: Ping   Traceroute
+IP Address/ Domain Name: 
+Ping Count: (1-50)
+Ping Packet Size: (4-1472 Bytes)
+Ping Timeout: (100-2000 Milliseconds)
+Traceroute Max TTL: (1-30)
+Diagnostic Results
+ 
+  BTN Start
+===== SoftwareUpgradeRpm | - Firmware Upgrade
+Firmware Upgrade
+File: 
+Firmware Version: 
+3.16.9 Build 150310 Rel.55295n
+Hardware Version: 
+WR841N v10 00000000
+ 
+  BTN Upgrade
+===== RestoreDefaultCfgRpm | - Factory Defaults
+Factory Defaults
+Click the following button to reset all configuration settings to their default values.
+
+  BTN Restore
+===== BakNRestoreRpm | - Backup & Restore
+Backup & Restore
+Configuration Backup: 
+Configuration File:     
+
+  BTN Backup
+  BTN Restore
+===== SysRebootRpm | - Reboot
+Reboot
+Click this button to reboot this device.
+
+  BTN Reboot
+===== ChangeLoginPwdRpm | - Password
+Password
+Username and password can contain between 1 - 15 characters and may not include spaces.
+Old User Name: 
+Old Password: 
+New User Name: 
+New Password: 
+Confirm New Password: 
+     
+  BTN Save
+===== SystemLogRpm | - System Log
+System Log
+  Auto Mail Feature: 
+Disabled
+  Log Type:  
+ALL
+PPP
+DHCP
+VPN
+WIRELESS
+DDNS
+SECURITY
+FILTER
+OTHER
+   Log Level:  
+ERROR
+WARNING
+NOTICE
+INFO
+ALL
+Index Time Type Level Log Content
+1 1st day 00:53:13 '+content+' INFO User clear system log.
+Time = 2015-01-01 0:53:12 3193s
+H-Ver = WR940N v3/WR941ND v6 00000000 : S-Ver = 3.16.9 Build 150312 Rel.59597n
+L = 192.168.0.1 : M = 255.255.255.0
+W1 = DHCP : W = 192.168.202.138 : M = 255.255.255.0 : G = 192.168.202.254
+     Current No. 
+1
+   Page
+  BTN Mail Settings
+  SELECT logType ['ALL', 'PPP', 'DHCP', 'VPN', 'WIRELESS', 'DDNS', 'SECURITY', 'FILTER', 'OTHER']
+  SELECT logLevel ['ERROR', 'WARNING', 'NOTICE', 'INFO', 'ALL']
+  BTN Refresh
+  BTN Save Log
+  BTN Mail Log
+  BTN Clear Log
+  BTN Previous
+  BTN Next
+  SELECT selPage ['1']
+===== SystemStatisticRpm | - Statistics
+Statistics
+Current Statistics Status: 
+Disabled
+Packets Statistics Interval(5~60): 
+5
+10
+15
+20
+25
+30
+35
+40
+45
+50
+55
+60
+  Seconds 
+  Auto-refresh 
+Sorted Rules: 
+Sorted by IP Address
+Sorted by Total Packets
+Sorted by Total Bytes
+Sorted by Current Packets
+Sorted by Current Bytes
+  Total Current Modify
+IP Address/
+MAC Address Packets Bytes Packets Bytes ICMP Tx UDP Tx SYN Tx
+The current list is empty.
+5
+10
+20
+50
+100
+ entries per page.   Current No. 
+1
+ Page 
+     
+  BTN Enable
+  BTN Disable
+  SELECT interval ['5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '60']
+  BTN Refresh
+  SELECT sortType ['Sorted by IP Address', 'Sorted by Total Packets', 'Sorted by Total Bytes', 'Sorted by Current Packets', 'Sorted by Current Bytes']
+  BTN Reset All
+  BTN Delete All
+  SELECT Num_per_page ['5', '10', '20', '50', '100']
+  SELECT Goto_page ['1']
+  BTN Previous
+  BTN Next

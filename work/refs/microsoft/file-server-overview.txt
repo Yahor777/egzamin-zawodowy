@@ -1,0 +1,107 @@
+https://learn.microsoft.com/pl-pl/windows-server/storage/file-server/file-server-smb-overview
+
+
+				 Spis treści 
+				Wyjdź z trybu edytora
+			Zapytaj platformę Learn
+			Zapytaj platformę Learn
+			Tryb odczytu
+			Spis treści
+			Przeczytaj w języku angielskim
+			Dodaj
+			Dodaj do planów
+					Kopiuj znaczniki Markdown
+					Drukuj
+						Notatka
+						Dostęp do tej strony wymaga autoryzacji. Może spróbować zalogować się lub zmienić katalogi.
+						Dostęp do tej strony wymaga autoryzacji. Możesz spróbować zmienić katalogi.
+					Co to jest udostępnianie plików SMB dla systemów Windows i Windows Server?
+				 Dotyczy: ✅ Windows Server 2028 Preview, ✅ Windows Server 2025, ✅ Windows Server 2022, ✅ Windows Server 2019, ✅ Windows Server 2016, ✅ Windows 11, ✅ Windows 10, ✅ Azure Local 2311.2 and later
+			Opinia
+				W tym artykule
+	 Ten artykuł zawiera omówienie protokołu bloku komunikatów serwera (SMB) w systemie Windows. Obejmuje praktyczne zastosowania, funkcje i kluczowe pojęcia dotyczące udostępniania plików.
+Protokół SMB jest protokołem udostępniania plików sieciowych. Protokół SMB umożliwia odczytywanie i zapisywanie w plikach za pośrednictwem sieci na podstawie protokołu TCP/IP lub innych protokołów. Za pomocą protokołu SMB aplikacja (lub użytkownik aplikacji) może uzyskiwać dostęp do plików lub innych zasobów na serwerze zdalnym, umożliwiając aplikacjom odczytywanie, tworzenie i aktualizowanie plików na serwerze zdalnym. Protokół SMB może również komunikować się z dowolnym programem serwera skonfigurowanym do odbierania żądania klienta SMB.
+Protokół SMB to również protokół sieci szkieletowej dla rozwiązań magazynu hiperkonwergentnego i klastrowanego, takich jak bezpośrednie miejsca do magazynowania i replika magazynu. Aby uzyskać więcej informacji, zobacz protokół SMB jako podstawa dla usług systemu Windows Server.
+Usage
+W tej sekcji omówiono kilka praktycznych sposobów korzystania z protokołu SMB.
+              Przechowywanie plików do wirtualizacji (Hyper-V™ przez SMB). Hyper-V można używać do przechowywania plików maszyn wirtualnych, takich jak konfiguracja, pliki wirtualnego dysku twardego (VHD) i migawki, w udziałach plikowych za pośrednictwem protokołu SMB 3.0. Tej funkcji można używać zarówno dla autonomicznych serwerów plików, jak i klastrowanych serwerów plików, które używają Hyper-V razem z udostępnionym magazynem plików dla klastra.
+              Microsoft SQL Server przez SMB. W programie SQL Server mogą być przechowywane pliki bazy danych użytkowników w udziałach plików SMB. Obecnie program SQL Server za pośrednictwem protokołu SMB jest obsługiwany w programie SQL Server 2008 R2 dla autonomicznych serwerów SQL. Nadchodzące wersje programu SQL Server dodają obsługę klastrowanych serwerów SQL i systemowych baz danych.
+              Tradycyjne przechowywanie danych użytkowników końcowych. Protokół SMB 3.0 zapewnia usprawnienia zadań pracownika informacyjnego (lub klienta). Te ulepszenia obejmują zmniejszenie opóźnień aplikacji doświadczanych przez użytkowników biura oddziału podczas uzyskiwania dostępu do danych za pośrednictwem sieci WAN i ochrony danych przed atakami podsłuchiwania.
+Note
+Jeśli musisz zaoszczędzić miejsce do przechowywania w udziale plików SMB, rozważ użycie usługi Azure File Sync z włączonym tieringiem w chmurze. Usługa Azure File Sync umożliwia buforowanie najczęściej używanych plików lokalnie i warstwowo najmniej często używanych plików do chmury, co pozwala zaoszczędzić miejsce do magazynowania lokalnego przy zachowaniu wydajności. Aby uzyskać szczegółowe informacje, zobacz Planowanie wdrożenia usługi Azure File Sync.
+Funkcje protokołu SMB
+Protokół SMB obejmuje szeroką gamę funkcji zorganizowanych w następujące kategorie:
+              Bezpieczeństwo i uwierzytelnianie – SMB zapewnia wiele warstw ochrony, w tym szyfrowanie, podpisywanie, blokowanie NTLM oraz ograniczanie szybkości uwierzytelniania. Te funkcje chronią dane podczas przesyłania i pomagają zapobiegać nieautoryzowanemu dostępowi i atakom siłowym.
+              Sieć i łączność – SMB obsługuje wiele opcji transportu, w tym tradycyjne TCP, QUIC dla bezpiecznego dostępu do internetu bez VPN oraz RDMA dla wysokowydajnych obciążeń centrów danych. Funkcje, takie jak alternatywne porty i wzmocnienie zabezpieczeń zapory, zapewniają inną elastyczność i bezpieczeństwo.
+              Wydajność – SMB zawiera funkcje optymalizujące prędkość transferu plików i redukcję narzutu sieciowego, w tym kompresję, limity przepustowości, buforowanie katalogów oraz optymalizacje WAN.
+              Wysoka dostępność i skalowalność – dla środowisk korporacyjnych SMB obsługuje przezroczyste przełączanie awaryjne, serwery plików typu scale-out oraz kroczące aktualizacje klastra, aby zapewnić ciągły dostęp do udziałów plików podczas konserwacji lub awarii.
+              Zarządzanie i monitorowanie – administratorzy mogą zarządzać SMB za pomocą poleceń PowerShell, kontrolować wersje dialektów oraz monitorować wydajność za pomocą dedykowanych liczników. Kontroler zasad SMB (wersja podglądowa) jest dostępny w wersji Windows Server Insider Preview wersji 29707 lub nowszej oraz w Windows 11. Wykorzystuje konfigurację opartą na intencjach do określenia pożądanego stanu ustawień SMB dla całego serwera i dla poszczególnych udziałów, a następnie doprowadza te ustawienia do zgodności, aby utrzymać ten stan. Aby uzyskać więcej informacji, zobacz Kontroler zasad SMB w Windows Server.
+Aby uzyskać szczegółowe informacje o poszczególnych funkcjach i ich dostępności w różnych wersjach systemu Windows, zobacz Funkcje protokołu SMB w systemach Windows i Windows Server.
+Składniki SMB
+Komunikacja SMB obejmuje dwa składniki: klienta SMB i serwera SMB. Te terminy odnoszą się do ról protokołu SMB, a nie wersji systemu operacyjnego Windows.
+              Serwer SMB to komponent, który udostępnia zasoby (pliki, drukarki, nazwane rury) i odpowiada na żądania klientów SMB. Podczas tworzenia zasobu współdzielonego na komputerze, serwer SMB tego komputera obsługuje połączenia przychodzące i żądania dostępu do plików.
+              Klient SMB to komponent, który łączy się z udziałami zdalnymi i wysyła żądania do serwerów SMB. Podczas mapowania dysku sieciowego lub uzyskiwania dostępu do ścieżki UNC, takiej jak \\server\share, klient SMB komputera inicjuje to połączenie i zarządza nim.
+Systemy operacyjne Windows Server i Windows klienta obejmują składniki klienta SMB i serwera SMB. Oznacza to, że komputer kliencki z systemem Windows, taki jak Windows 11, może hostować udziały plików (działające jako serwer SMB), a jednocześnie łączyć się z udziałami na innych komputerach (działając jako klient SMB). Podobnie system Windows Server może nawiązywać połączenie z udziałami udostępnionymi na innych serwerach lub klienckich komputerach.
+Dostępność funkcji różni się w zależności od wersji systemu operacyjnego. Niektóre funkcje są dostępne tylko w składniku serwera SMB, niektóre tylko w składniku klienta SMB, a niektóre w obu. Ponadto niektóre funkcje mogą być dostępne w systemie Windows Server, ale nie w wersjach klienckich systemu Windows lub na odwrót. Aby uzyskać więcej informacji na temat dostępności funkcji w różnych wersjach systemu Windows, zobacz Funkcje protokołu SMB w systemach Windows i Windows Server.
+Dialekty SMB
+Dialekt SMB to określona wersja protokołu SMB, która definiuje funkcje, możliwości i formaty komunikatów obsługiwane podczas komunikacji między klientem a serwerem. Po nawiązaniu połączenia SMB klient i serwer negocjują użycie najwyższej wersji dialektu, która jest obsługiwana. Wyższe wersje dialektu zapewniają więcej funkcji, takich jak lepsze zabezpieczenia, lepsza wydajność i nowe możliwości, przy zachowaniu zgodności z poprzednimi wersjami.
+W poniższej tabeli przedstawiono, która wersja dialektu SMB jest obsługiwana przez każdą wersję systemu operacyjnego Windows.
+Dialekt SMB
+Klient systemu Windows
+Serwer z systemem Windows
+SMB 3.1.1
+Windows 10 w wersji 1607 lub nowszej
+Windows Server 2016 i nowsze wersje
+SMB 3.02
+Windows 8.1
+Windows Server 2012 R2
+Protokół SMB 3.0
+Windows 8
+Windows Server 2012
+Note
+Chociaż wiele wersji systemu Windows obsługuje ten sam dialekt SMB (3.1.1), każda wersja wprowadza więcej funkcji i ulepszeń poza protokołem podstawowym. Aby uzyskać więcej informacji na temat ulepszeń i dostępności funkcji specyficznych dla wersji, zobacz Funkcje protokołu SMB w systemach Windows i Windows Server.
+Protokół SMB jako podstawa
+Protokół SMB służy jako podstawowy protokół dla wielu usług magazynu i plików systemu Windows Server. Usługi te opierają się na protokole SMB, aby zapewnić więcej możliwości jednocześnie zachowując funkcje zabezpieczeń, wydajności i niezawodności tego protokołu.
+Pamięć masowa hiperkonwergentna i klastrowa
+Protokół SMB to protokół sieci szkieletowej dla infrastruktury hiperkonwergentnej (HCI) i rozwiązań magazynu klastrowanego:
+              Bezpośrednie miejsca do magazynowania wykorzystuje SMB 3 do komunikacji między węzłami, w tym replikacji danych i synchronizacji pamięci podręcznej we wdrożeniach hiperkonwergencyjnych i rozdzielonych. Funkcja SMB Direct (RDMA) zapewnia łączność o wysokiej przepływności i małych opóźnieniach między węzłami klastra. Aby uzyskać więcej informacji, zobacz omówienie Bezpośrednie miejsca do magazynowania.
+              Storage Replica wykorzystuje SMB 3 do replikacji danych między serwerami lub klastrami w celu odzyskiwania po awarii. Szyfrowanie SMB chroni replikowane dane podczas przesyłania. Aby uzyskać więcej informacji, zobacz Omówienie repliki magazynowania.
+              Rozdzielone architektury pamięci masowej dzielą obliczenia i pamięć masową na odrębne klastry, przy czym klastry obliczeniowe uzyskują dostęp do pamięci masowej przez SMB 3. Ta architektura umożliwia niezależne skalowanie zasobów obliczeniowych i magazynowych. Aby uzyskać więcej informacji, zobacz Architektury magazynowania klastrów w trybie przełączania awaryjnego.
+Technologie serwera plików
+Kilka funkcji serwera plików korzysta z protokołu SMB w celu uzyskania dostępu do plików:
+              Scale-Out Serwer plików zapewnia nieprzerwanie dostępne udziały plików na wielu węzłach klastra za pomocą SMB 3. Aplikacje, takie jak Hyper-V i SQL Server, mogą przechowywać dane w tych udziałach z przezroczystym trybem failover. Aby uzyskać więcej informacji, zobacz  omówienie serwera plikówScale-Out.
+              Przestrzenie nazw DFS organizują współdzielone foldery rozproszone na wielu serwerach w logiczną przestrzeń nazw. Podczas gdy DFS Namespaces zarządza przestrzenią nazw i odwołaniami, rzeczywisty dostęp do plików odbywa się za pomocą SMB. Aby uzyskać więcej informacji, zobacz Omówienie przestrzeni nazw systemu plików DFS.
+              DFS Replication replikuje foldery między serwerami dla scenariuszy redundancji i oddziałów. Dostęp do replikowanej zawartości jest uzyskiwany za pośrednictwem udziałów plików SMB. Aby uzyskać więcej informacji, zobacz Omówienie replikacji systemu plików DFS.
+Obciążenia wirtualizacji i aplikacji
+Protokół SMB 3 umożliwia magazyn o wysokiej wydajności dla środowisk zwirtualizowanych:
+              Hyper-V przez protokół SMB pozwala przechowywać pliki maszyn wirtualnych (konfiguracje, VHD/VHDX i punkty kontrolne) na udziałach plików SMB 3 zamiast lokalnej pamięci. Ta funkcja upraszcza zarządzanie magazynem i włącza funkcje, takie jak migracja na żywo. Aby uzyskać więcej informacji, zobacz Deploy Hyper-V over SMB.
+              SQL Server over SMB obsługuje przechowywanie plików bazy danych na udziałach SMB 3, dzięki czemu możesz korzystać z SMB Multichannel i SMB Direct dla wydajności.
+Te usługi korzystają z funkcji SMB, takich jak szyfrowanie, podpisywanie, Multichannel i Direct (RDMA). Po włączeniu funkcji zabezpieczeń protokołu SMB usługi zależne od protokołu SMB dziedziczą te zabezpieczenia.
+Rejestrowanie i inspekcja zdarzeń
+Protokół SMB udostępnia funkcje rejestrowania i inspekcji zdarzeń, aby pomóc administratorom monitorować aktywność udostępniania plików, rozwiązywać problemy z łącznością i wykrywać potencjalne zagrożenia bezpieczeństwa.
+System Windows rejestruje zdarzenia SMB w dzienniku zdarzeń systemu Windows w obszarze Dzienniki aplikacji i usług > Microsoft > Windows > SMBClient i SMBServer. Te logi rejestrują zdarzenia połączeń, błędy uwierzytelniania, szczegóły dotyczące dostępu do zasobu i negocjacji protokołu. Administratorzy mogą używać tych dzienników do diagnozowania problemów z łącznością, identyfikowania nieprawidłowo skonfigurowanych klientów lub badania nieautoryzowanych prób dostępu.
+Począwszy od systemów Windows Server 2025 i Windows 11 24H2, protokół SMB obejmuje rozszerzone funkcje inspekcji na potrzeby podpisywania i szyfrowania. Administratorzy mogą przeprowadzać inspekcję, czy klienci i serwery obsługują podpisywanie i szyfrowanie protokołu SMB, pomagając zidentyfikować niezgodne urządzenia, które mogą stanowić zagrożenie bezpieczeństwa. Tę inspekcję można skonfigurować za pomocą zasad grupy lub programu PowerShell.
+Aby uzyskać więcej informacji na temat audytowania zabezpieczeń SMB, zobacz Ulepszenia zabezpieczeń SMB.
+Treści powiązane
+Poniższa lista zawiera więcej zasobów dotyczących protokołu SMB i powiązanych technologii w systemach Windows Server 2012 R2, Windows Server 2012 i Windows Server 2016.
+              Pamięć masowa w Windows Server
+              Scale-Out File Server dla danych aplikacji
+              Popraw wydajność serwera plików dzięki SMB Direct
+              Wdrażaj Hyper-V przez SMB
+              Wdrażanie SMB Multichannel
+              Wdrażanie szybkich i wydajnych serwerów plików dla aplikacji serwerowych
+              SMB: Przewodnik rozwiązywania problemów
+			Opinia
+					Czy ta strona była pomocna?
+						Tak
+						Nie
+							Nie
+								Potrzebujesz pomocy dotyczącej tego tematu?
+								Chcesz spróbować użyć asystenta Ask Learn, aby wyjaśnić ten temat lub uzyskać instrukcje, które go dotyczą?
+			Zapytaj platformę Learn
+			Zapytaj platformę Learn
+				 Zaproponować poprawkę? 
+				Dodatkowe zasoby
+				Ostatnia aktualizacja o 
+		2026-11-17
+				

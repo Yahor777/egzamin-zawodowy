@@ -1,0 +1,190 @@
+https://learn.microsoft.com/pl-pl/windows-server/networking/dns/manage-dns-zones
+
+
+				 Spis treści 
+				Wyjdź z trybu edytora
+			Zapytaj platformę Learn
+			Zapytaj platformę Learn
+			Tryb odczytu
+			Spis treści
+			Przeczytaj w języku angielskim
+			Dodaj
+			Dodaj do planów
+					Kopiuj znaczniki Markdown
+					Drukuj
+						Notatka
+						Dostęp do tej strony wymaga autoryzacji. Może spróbować zalogować się lub zmienić katalogi.
+						Dostęp do tej strony wymaga autoryzacji. Możesz spróbować zmienić katalogi.
+					Zarządzanie strefami DNS przy użyciu serwera DNS w systemie Windows Server
+				 Dotyczy: ✅ Windows Server 2025, ✅ Windows Server 2022, ✅ Windows Server 2019, ✅ Windows Server 2016
+			Opinia
+				W tym artykule
+	 Utwórz podstawowe, pomocnicze, wycinkowe i odwrotne strefy DNS przy użyciu roli serwera DNS w systemie Windows Server.
+W tym artykule pokazano również, jak skonfigurować ustawienia transferu strefy i wykonać delegowanie strefy.
+Prerequisites
+Przed rozpoczęciem zarządzania strefą DNS w systemie Windows Server należy spełnić następujące wymagania wstępne:
+System Windows Server z zainstalowaną i skonfigurowaną rolą serwera DNS. Zobacz Szybki start: instalowanie i konfigurowanie serwera DNS, aby dowiedzieć się, jak rozpocząć pracę.
+Określ typ strefy, którą chcesz utworzyć, zobacz Strefy DNS , aby dowiedzieć się więcej.
+Konto, które jest członkiem grupy Administratorzy lub równoważne.
+Potrzebna jest w pełni kwalifikowana nazwa domeny (FQDN) strefy, którą chcesz utworzyć.
+Jeśli chcesz utworzyć strefę pomocniczą lub wycinkową, potrzebny jest adres IP serwerów DNS hostujących strefę podstawową.
+Serwer DNS systemu Windows Server można zdalnie zarządzać przy użyciu wszystkich metod opisanych w tym artykule.
+Tworzenie strefy podstawowej
+Tworzenie zintegrowanej strefy podstawowej usługi Active Directory
+Aby utworzyć zintegrowaną strefę podstawową usługi Active Directory, wybierz odpowiednią metodę i wykonaj kroki.
+              PowerShell
+              GUI
+Poniżej przedstawiono sposób tworzenia zintegrowanej strefy DNS usługi Active Directory przy użyciu polecenia Add-DnsServerPrimaryZone programu PowerShell.
+Utwórz nową strefę podstawową dla north.contoso.com i ustaw zakres replikacji, uruchom następujące polecenie:
+Add-DnsServerPrimaryZone -Name "north.contoso.com" -ReplicationScope "Forest" -PassThru
+Poniżej przedstawiono sposób tworzenia strefy wyszukiwania do przodu przy użyciu Menedżera DNS.
+Na pulpicie systemu Windows otwórz menu Start , wybierz pozycję Narzędzia administracyjne systemu > Windows DNS.
+W drzewie konsoli połącz się z serwerem DNS, którym chcesz zarządzać, rozwiń serwer DNS, kliknij prawym przyciskiem myszy, a następnie wybierz pozycję Nowa strefa.
+Na stronie Kreator nowej strefy wybierz pozycję Dalej.
+Na stronie Typ strefy wybierz pozycję Strefa podstawowa i upewnij się, że zaznaczono opcję Zapisz strefę w usłudze Active Directory . Ta opcja jest dostępna, gdy serwer DNS jest również kontrolerem domeny usług AD DS.
+Na stronie Zakres replikacji strefy usługi Active Directory wybierz jedną z następujących opcji:
+Wszystkie serwery DNS uruchomione na kontrolerach domeny usług AD DS w lesie.
+Wszystkie serwery DNS uruchomione w domenie usług AD DS w domenie.
+Wszystkie kontrolery domeny w tej domenie (zgodność systemu Windows 2000).
+Wszystkie kontrolery domeny zarejestrowane w określonej partycji katalogu.
+Na stronie Strefa wyszukiwania do przodu lub wstecznego wybierz pozycję Strefa wyszukiwania do przodu.
+Na stronie nazwy strefy określ nazwę strefy DNS. Na przykład north.contoso.com
+Na stronie Aktualizacja dynamiczna wybierz jedną z następujących opcji:
+Zezwalaj tylko na bezpieczne aktualizacje dynamiczne (zalecane dla usługi Active Directory).
+Zezwalaj zarówno na niezabezpieczone, jak i bezpieczne aktualizacje dynamiczne.
+Nie zezwalaj na aktualizacje dynamiczne.
+Wybierz przycisk Zakończ , aby ukończyć pracę Kreatora nowej strefy.
+Tworzenie strefy podstawowej opartej na plikach
+Aby utworzyć strefę podstawową opartą na plikach, wybierz odpowiednią metodę i wykonaj kroki.
+              PowerShell
+              GUI
+Poniżej przedstawiono sposób tworzenia strefy DNS opartej na pliku przy użyciu polecenia Add-DnsServerPrimaryZone programu PowerShell.
+Aby dodać strefę DNS opartą na pliku east.contoso.com przy użyciu pliku east.contoso.com.dns, uruchom następujące polecenie na komputerze z zainstalowaną rolą serwera DNS.
+Add-DnsServerPrimaryZone -Name "east.contoso.com" -ZoneFile "east.contoso.com.dns"
+Oto jak utworzyć strefę wyszukiwania do przodu opartą na plikach przy użyciu Menedżera DNS.
+Na pulpicie systemu Windows otwórz menu Start , wybierz pozycję Narzędzia administracyjne systemu > Windows DNS.
+W drzewie konsoli rozwiń serwer DNS, a następnie kliknij prawym przyciskiem myszy, a następnie wybierz pozycję Nowa strefa.
+Na stronie Kreator nowej strefy wybierz pozycję Dalej.
+Na stronie Typ strefy wybierz pozycję Strefa podstawowa i upewnij się, że strefa w usłudze Active Directorynie jest zaznaczona. Ta opcja jest dostępna tylko, jeśli serwer DNS jest również kontrolerem domeny usług AD DS.
+Na stronie Strefa wyszukiwania do przodu lub wstecznego wybierz pozycję Strefa wyszukiwania do przodu.
+Na stronie nazwy strefy określ nazwę strefy DNS. Na przykład east.contoso.com.
+Na stronie Plik strefy jest dostępna opcja określania nowej nazwy pliku z domyślną nazwą strefy z rozszerzeniem .dns. Na przykład east.contoso.com.dns. Możesz również użyć istniejącego pliku strefy skopiowanego do folderu %SystemRoot%\system32\dns na serwerze DNS.
+Na stronie Aktualizacja dynamiczna wybierz jedną z następujących opcji:
+Zezwalaj zarówno na niezabezpieczone, jak i bezpieczne aktualizacje dynamiczne.
+Nie zezwalaj na aktualizacje dynamiczne.
+Wybierz przycisk Zakończ , aby ukończyć pracę Kreatora nowej strefy.
+Tworzenie strefy pomocniczej
+Aby utworzyć strefę pomocniczą, wybierz odpowiednią metodę i wykonaj kroki.
+              PowerShell
+              GUI
+Poniżej przedstawiono sposób tworzenia pomocniczej strefy DNS przy użyciu polecenia Add-DnsServerSecondaryZone programu PowerShell.
+Dodaj strefę pomocniczą western.contoso.com, korzystając z nazwy pliku strefy south.contoso.dns i serwera strefy podstawowej pod adresem IP 172.23.90.124, korzystając z następującego polecenia:
+Add-DnsServerSecondaryZone -Name "south.contoso.com" -ZoneFile "south.contoso.com.dns" -MasterServers 172.23.90.124
+Poniżej przedstawiono sposób tworzenia pomocniczej strefy wyszukiwania przy użyciu Menedżera DNS.
+Na pulpicie systemu Windows otwórz menu Start , wybierz pozycję Narzędzia administracyjne systemu > Windows DNS.
+W drzewie konsoli rozwiń serwer DNS, a następnie kliknij prawym przyciskiem myszy, a następnie wybierz pozycję Nowa strefa.
+Na stronie Kreator nowej strefy wybierz pozycję Dalej.
+Na stronie Typ strefy wybierz pozycję Strefa pomocnicza.
+Na stronie Nazwa strefy określ nazwę strefy pomocniczej. Nazwa strefy musi być zgodna z nazwą strefy podstawowej, z której ma zostać zreplikowana. Na przykład south.contoso.com.
+Na stronie Główne serwery DNS określ adresy IP co najmniej jednego serwera DNS, który hostuje kopie strefy podstawowej. Należy upewnić się, że strefa podstawowa zezwala na transfery na serwer DNS hostujący strefę pomocniczą. Na przykład 172.23.90.124.
+Wybierz przycisk Zakończ w Kreatorze kończenia pracy z nową strefą.
+Utwórz strefę pomocniczą
+Aby utworzyć strefę wycinkową, wybierz odpowiednią metodę i postępuj zgodnie z krokami.
+              PowerShell
+              GUI
+Poniżej przedstawiono sposób tworzenia pomocniczej strefy DNS przy użyciu polecenia Add-DnsServerStubZone programu PowerShell.
+Aby dodać strefę wycinkową dla strefy west.contoso.com przy użyciu autorytatywnego serwera DNS 172.23.90.124, uruchom następujące polecenie:
+Add-DnsServerStubZone -Name "west.contoso.com" -MasterServers "172.23.90.124" -PassThru -ZoneFile "west.contoso.com.dns"
+Oto jak utworzyć strefę wycinkową przy użyciu Menedżera DNS.
+Na pulpicie systemu Windows otwórz menu Start , wybierz pozycję Narzędzia administracyjne systemu > Windows DNS.
+W drzewie konsoli rozwiń serwer DNS, a następnie kliknij prawym przyciskiem myszy, a następnie wybierz pozycję Nowa strefa.
+Na stronie Kreator nowej strefy wybierz pozycję Dalej.
+Na stronie Typ strefy wybierz pozycję Strefa wycinkowa. Jeśli serwer DNS jest również kontrolerem domeny usług AD DS, można przechowywać informacje o strefie w usłudze Active Directory.
+Jeśli wybrano przechowywanie danych strefy w usługach AD DS, wybierz jedną z następujących opcji:
+Wszystkie serwery DNS uruchomione na kontrolerach domeny usług AD DS w lesie.
+Wszystkie serwery DNS uruchomione w domenie usług AD DS w domenie.
+Wszystkie kontrolery domeny w tej domenie (zgodność systemu Windows 2000).
+Wszystkie kontrolery domeny zarejestrowane w określonej partycji katalogu.
+Określ nazwę strefy. Na przykład west.contoso.com
+Na stronie Główne serwery DNS podaj adres IP serwera DNS, który jest autorytatywny dla strefy docelowej. Na przykład 172.23.90.124.
+Wybierz przycisk Zakończ w Kreatorze kończenia pracy z nową strefą.
+Tworzenie strefy wyszukiwania wstecznego
+Aby utworzyć strefę wyszukiwania wstecznego, wybierz odpowiednią metodę i wykonaj kroki.
+              PowerShell
+              GUI
+Oto jak utworzyć zintegrowaną odwrotną strefę DNS usługi Active Directory przy użyciu polecenia Add-DnsServerPrimaryZone programu PowerShell.
+Aby dodać strefę wyszukiwania wstecznego dla zakresu adresów IPv4 10.1.0.0/24 i ustawić zakres replikacji, uruchom następujące polecenie.
+Add-DnsServerPrimaryZone -NetworkID "10.1.0.0/24" -ReplicationScope "Forest"
+Oto jak utworzyć odwrotną strefę wyszukiwania przy użyciu Menedżera DNS.
+Na pulpicie systemu Windows otwórz menu Start , wybierz pozycję Narzędzia administracyjne systemu > Windows DNS.
+W drzewie konsoli rozwiń serwer DNS, a następnie kliknij prawym przyciskiem myszy, a następnie wybierz pozycję Nowa strefa.
+Na stronie Kreator nowej strefy wybierz pozycję Dalej.
+Na stronie Typ strefy wybierz pozycję Strefa podstawowa i upewnij się, że wybrano opcję Zapisz strefę w usłudze Active Directory. Ta opcja jest dostępna, jeśli serwer DNS jest również kontrolerem domeny usług AD DS.
+Na stronie Zakres replikacji strefy usługi Active Directory wybierz jedną z następujących opcji:
+Wszystkie serwery DNS uruchomione na kontrolerach domeny usług AD DS w lesie.
+Wszystkie serwery DNS uruchomione w domenie usług AD DS w domenie.
+Wszystkie kontrolery domeny w tej domenie (zgodność systemu Windows 2000).
+Wszystkie kontrolery domeny zarejestrowane w określonej partycji katalogu.
+Na stronie Strefa wyszukiwania do przodu lub wstecznego wybierz strefę wyszukiwania wstecznego.
+Na stronie Nazwa strefy wyszukiwania wstecznego wybierz jedną z następujących opcji:
+Strefa wyszukiwania wstecznego IPv4.
+Strefa wyszukiwania wstecznego IPv6.
+Na stronie Identyfikator sieci wprowadź identyfikator sieci w normalnej kolejności (a nie odwrotnej). Na przykład dla sieci IPv4 192.168.220.0/24 wprowadź identyfikator sieci jako 192.168.220. Nazwa strefy in-addr.arpa jest automatycznie dołączana.
+Na stronie Aktualizacja dynamiczna wybierz jedną z następujących opcji:
+Zezwalaj tylko na bezpieczne aktualizacje dynamiczne (zalecane dla usługi Active Directory).
+Zezwalaj zarówno na niezabezpieczone, jak i bezpieczne aktualizacje dynamiczne.
+Nie zezwalaj na aktualizacje dynamiczne.
+Wybierz przycisk Zakończ , aby ukończyć pracę Kreatora nowej strefy.
+Konfiguracja ustawień transferu strefy
+Aby skonfigurować ustawienia transferu strefy dla podstawowej strefy DNS, wybierz odpowiednią metodę i wykonaj kroki.
+              PowerShell
+              GUI
+Poniżej przedstawiono sposób ustawiania ustawień transferu strefy dla istniejącej strefy DNS przy użyciu polecenia Set-DnsServerPrimaryZone programu PowerShell.
+Aby skonfigurować transfery stref, aby były dozwolone tylko dla serwerów w rekordach serwerów nazw (NS) dla strefy DNS west.contoso.com, uruchom następujące polecenie.
+Set-DnsServerPrimaryZone -name "west.contoso.com" -SecureSecondaries "TransferToZoneNameServer" -PassThru
+Za pomocą Menedżera DNS można kontrolować, czy strefa może być przenoszona na inne serwery i które serwery mogą odbierać transfer strefy.
+Na pulpicie systemu Windows otwórz menu Start , wybierz pozycję Narzędzia administracyjne systemu > Windows DNS.
+W drzewie konsoli rozwiń serwer DNS i strefę DNS, kliknij prawym przyciskiem myszy, a następnie wybierz polecenie Właściwości.
+Na karcie Transfery stref wybierz jedną z następujących opcji:
+Aby wyłączyć transfery stref, wyczyść pole wyboru Zezwalaj na transfery stref.
+Aby zezwolić na transfery stref, zaznacz pole wyboru Zezwalaj na transfery stref.
+W przypadku dozwolonych transferów stref wybierz jedną z następujących opcji:
+Aby zezwolić na transfer strefy na dowolny serwer, wybierz opcję Do dowolnego serwera.
+Aby zezwolić na transfer strefy wyłącznie do serwerów DNS wymienionych w zakładce Serwery nazw, wybierz opcję Tylko do serwerów wymienionych w zakładce Serwery nazw.
+Aby zezwolić na transfery stref tylko do określonych serwerów DNS, wybierz tylko do następujących serwerów, a następnie dodaj adres IP co najmniej jednego serwera DNS.
+Wykonaj delegowanie strefy
+Aby wykonać delegowanie strefy dla poddomeny, wybierz odpowiednią metodę i wykonaj kroki.
+              PowerShell
+              GUI
+Poniżej przedstawiono sposób delegowania south.west.contoso.com poddomeny przy użyciu polecenia Add-DnsServerZoneDelegation programu PowerShell.
+Aby delegować poddomenę south do serwera nazw west-ns01.contoso.com przy użyciu adresu IP 172.23.90.136, uruchom następujące polecenie.
+Add-DnsServerZoneDelegation -Name "west.contoso.com" -ChildZoneName "south" -NameServer "west-ns01.contoso.com" -IPAddress 172.23.90.136 -PassThru -Verbose
+Poniżej przedstawiono sposób tworzenia delegowania strefy przy użyciu Menedżera DNS.
+Na pulpicie systemu Windows otwórz menu Start , wybierz pozycję Narzędzia administracyjne systemu > Windows DNS.
+W drzewie konsoli rozwiń serwer DNS, kliknij prawym przyciskiem myszy strefę DNS, aby delegować, a następnie wybierz pozycję Nowe delegowanie.
+Na stronie Nazwa domeny delegowanej wprowadź nazwę domeny delegowanej. Aby na przykład delegować poddomenę south.west.contoso.com, wprowadź south. W pełni kwalifikowana nazwa domeny (FQDN) jest automatycznie dołączana.
+Wybierz pozycję Dodaj , aby określić nazwy i adresy IP serwera DNS do hostowania strefy delegowanej.
+Wprowadź dowolny z następujących:
+Nazwa FQDN serwera DNS, który jest autorytatywny dla strefy delegowanej, a następnie wybierz pozycję Rozwiąż. W razie potrzeby dodaj inne serwery DNS po zweryfikowaniu wybierz przycisk OK.
+Or
+Ręcznie wprowadź adres IP serwera DNS, który jest autorytatywny dla strefy delegowanej. W razie potrzeby dodaj inne serwery DNS po zweryfikowaniu wybierz przycisk OK.
+Wybierz przycisk Zakończ , aby ukończyć pracę Kreatora nowego delegowania.
+Dalsze kroki
+Teraz, gdy utworzono strefę DNS, skonfigurowano ustawienia transferu strefy i wykonano delegowanie strefy, oto inne artykuły, które należy wziąć pod uwagę.
+              zasad DNS — omówienie
+ dokumentacja programu PowerShell w systemie DNS
+              Omówienie Anycast DNS
+			Opinia
+					Czy ta strona była pomocna?
+						Tak
+						Nie
+							Nie
+								Potrzebujesz pomocy dotyczącej tego tematu?
+								Chcesz spróbować użyć asystenta Ask Learn, aby wyjaśnić ten temat lub uzyskać instrukcje, które go dotyczą?
+			Zapytaj platformę Learn
+			Zapytaj platformę Learn
+				 Zaproponować poprawkę? 
+				Dodatkowe zasoby
+				Ostatnia aktualizacja o 
+		2025-08-16
+				

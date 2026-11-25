@@ -1,0 +1,152 @@
+https://learn.microsoft.com/pl-pl/windows-server/networking/dns/quickstart-install-configure-dns-server
+
+
+				 Spis treści 
+				Wyjdź z trybu edytora
+			Zapytaj platformę Learn
+			Zapytaj platformę Learn
+			Tryb odczytu
+			Spis treści
+			Przeczytaj w języku angielskim
+			Dodaj
+			Dodaj do planów
+					Kopiuj znaczniki Markdown
+					Drukuj
+						Notatka
+						Dostęp do tej strony wymaga autoryzacji. Może spróbować zalogować się lub zmienić katalogi.
+						Dostęp do tej strony wymaga autoryzacji. Możesz spróbować zmienić katalogi.
+					Szybki start: instalowanie i konfigurowanie serwera DNS w systemie Windows Server
+				 Dotyczy: ✅ Windows Server 2025, ✅ Windows Server 2022, ✅ Windows Server 2019, ✅ Windows Server 2016
+			Opinia
+				W tym artykule
+	 System nazw domen (DNS) jest niezbędny do tłumaczenia nazw domen na adresy IP, umożliwiając łączność sieciową i dostęp do zasobów. Ten przewodnik szybkiego startu przeprowadzi Cię przez instalowanie i konfigurowanie roli serwera DNS w systemie Windows Server. Dowiedz się, jak skonfigurować strefy DNS, zarządzać zapytaniami i konfigurować opcje serwera przy użyciu programu PowerShell lub Menedżera serwera. Możesz również znaleźć informacje na temat przekazywania zapytań DNS do serwerów wskazujących korzenie DNS lub opcjonalnie do nadrzędnego serwera nazw.
+Prerequisites
+Przed zainstalowaniem i skonfigurowaniem serwera DNS komputer musi spełniać następujące wymagania wstępne:
+Komputer z obsługiwaną wersją systemu Windows Server.
+Statyczny adres IP.
+Konto, które jest członkiem grupy Administratorzy lub równoważne.
+Instalowanie serwera DNS
+Zainstalowanie serwera systemu nazw domen (DNS) obejmuje dodanie roli serwera DNS do istniejącego serwera systemu Windows Server.
+Tip
+Podczas instalowania usług Active Directory Domain Services (AD DS) za pomocą Kreatora instalacji usług Domenowych Active Directory kreator zapewnia opcję automatycznego instalowania i konfigurowania serwera DNS. Wynikowa strefa DNS jest zintegrowana z przestrzenią nazw domeny usług AD DS. Aby dowiedzieć się więcej, zobacz Omówienie integracji usług Active Directory Domain Services.
+Aby zainstalować rolę serwera DNS jako serwer autonomiczny, wykonaj następujące kroki:
+              PowerShell
+              GUI
+Poniżej przedstawiono sposób instalowania roli serwera DNS przy użyciu polecenia Install-WindowsFeature .
+Uruchom program PowerShell na komputerze w sesji z podwyższonym poziomem uprawnień.
+Aby zainstalować rolę DNS, uruchom następujące polecenie. Instalacja nie wymaga ponownego uruchomienia.
+Install-WindowsFeature -Name DNS
+Poniżej przedstawiono sposób instalowania roli serwera DNS przy użyciu Menedżera serwera z poziomu pulpitu systemu Windows.
+Na pulpicie systemu Windows otwórz menu Start , a następnie wybierz kafelek Menedżer serwera .
+W menu przejdź do pozycji Zarządzaj, a następnie wybierz pozycję Dodaj role i funkcje.
+Na stronie Przed rozpoczęciem wybierz przycisk Dalej , aby rozpocząć.
+Na stronie Wybieranie typu instalacji wybierz opcję Instalacja oparta na rolach lub oparta na funkcjach , a następnie wybierz przycisk Dalej.
+Na stronie Wybieranie serwera docelowego pozostaw opcje domyślne. Wybierz Dalej.
+Na stronie Wybieranie ról serwera zaznacz pole wyboru Serwer DNS , a następnie wybierz przycisk Dalej .
+Zostanie wyświetlony monit o dodanie funkcji, które są wymagane dla serwera DNS, jeśli są zadowoleni z ustawień domyślnych, wybierz pozycję Dodaj funkcje.
+Na stronie Wybieranie funkcji możesz pozostawić opcje domyślne, a następnie wybrać przycisk Dalej .
+Na stronie Serwer DNS przejrzyj opis roli i elementy do zanotowania, wybierz przycisk Dalej , aby kontynuować.
+Na stronie Potwierdzanie wyboru instalacji przejrzyj wybrane role i funkcje, a następnie wybierz przycisk Zainstaluj , aby rozpocząć proces instalacji.
+Po zakończeniu instalacji wybierz pozycję Zamknij. Instalacja nie wymaga ponownego uruchomienia.
+Konfigurowanie serwera DNS
+Teraz możesz kontynuować konfigurowanie serwera.
+Konfigurowanie interfejsów
+Domyślnie serwer DNS nasłuchuje żądań we wszystkich interfejsach adresów IP. Serwer DNS można skonfigurować tak, aby nasłuchiwał na określonym interfejsie za pomocą graficznego interfejsu użytkownika lub programu PowerShell.
+              PowerShell
+              GUI
+Poniżej przedstawiono sposób konfigurowania interfejsu używanego do nasłuchiwania żądań DNS przy użyciu polecenia Set-DNSServerSetting .
+Uruchom program PowerShell na komputerze w sesji z podwyższonym poziomem uprawnień.
+Znajdź istniejący adres IP komputerów, uruchamiając polecenie cmdlet Get-NetIPAddress . Zanotuj adres IP, którego chcesz użyć dla serwera DNS.
+Get-NetIPAddress | fl IPAddress,InterfaceAlias
+Zapisz bieżące ustawienie serwera DNS w zmiennej tymczasowej, ustaw właściwość ListeningIpAddress i zastosuj nowe ustawienia, uruchamiając następujące polecenia. Zastąp symbol zastępczy <ip_address> adresem IP, który zanotowałeś wcześniej.
+$DnsServerSettings = Get-DnsServerSetting -ALL
+$DnsServerSettings.ListeningIpAddress = @("<ip_address>")
+Set-DNSServerSetting $DnsServerSettings
+Poniżej przedstawiono sposób konfigurowania interfejsu używanego do nasłuchiwania żądań DNS przy użyciu konsoli Menedżera DNS.
+Na pulpicie systemu Windows otwórz menu Start . Wybierz Narzędzia administracyjne systemu Windows, DNS>.
+Wybierz i przytrzymaj (lub kliknij prawym przyciskiem myszy) serwer, a następnie wybierz pozycję Właściwości.
+Aby ograniczyć użycie określonego adresu IP przez serwer DNS, wybierz pozycję Tylko następujący adres IP, wybierz adres IP, którego chcesz użyć, a następnie wybierz przycisk OK.
+Skonfiguruj wskazówki główne
+Serwery typu root hints są używane do wspomagania rozwiązywania informacji o adresach DNS, gdy serwer DNS nie jest w stanie rozwiązać zapytania lokalnie, ani z hostowanej strefy, ani z pamięci podręcznej serwera DNS. Serwery nazw wskazówek głównych są domyślnie wypełniane w nowych instalacjach.
+Listę serwerów nazw głównych można edytować, jeśli jest to wymagane, przechodząc do karty Wskazówki główne właściwości serwera DNS okna dialogowego lub przy użyciu programu PowerShell.
+Usuwanie wszystkich serwerów wskazówek głównych nie jest obsługiwane. Zamiast tego skonfiguruj serwer DNS tak, aby nie używał głównego serwera nazw wskazówek, wybierając opcję Wyłącz serwer rekursji na karcie Zaawansowane konsoli menedżera DNS. Wyłączenie rekursji powoduje również wyłączenie wszystkich skonfigurowanych usług przesyłania dalej. Alternatywnie usuń zaznaczenie pola Użyj wskazówek głównych, jeśli nie ma dostępnych serwerów przekazujących na karcie Serwery przekazujące.
+              PowerShell
+              GUI
+Poniżej przedstawiono sposób aktualizowania serwera nazw głównej wskazówki DNS przy użyciu polecenia Set-DnsServerRootHint .
+Uruchom program PowerShell na komputerze w sesji z podwyższonym poziomem uprawnień.
+Znajdź istniejący adres IP komputera, uruchamiając polecenie cmdlet Get-DnsServerRootHint . Zanotuj serwer nazw, który chcesz zaktualizować.
+Get-DnsServerRootHint
+Zapisz bieżące ustawienie serwera DNS w zmiennej, uruchamiając następujące polecenia. Zastąp symbol zastępczy <root_hint_name_server> zanotowany wcześniej serwerem nazw root hint.
+$RootHintServer = (Get-DnsServerRootHint | Where-Object {$_.NameServer.RecordData.NameServer -match "<root_hint_name_server>"} )
+Ustaw właściwość Ipv4address w zmiennej tymczasowej, uruchamiając następujące polecenia.
+Zastąp symbol zastępczy <ip_address> zaktualizowanym adresem IP.
+$RootHintServer.IPAddress[0].RecordData.Ipv4address = "<ip_address>"
+Zastosuj zaktualizowany rekord, uruchamiając następujące polecenia.
+Set-DnsServerRootHint $RootHintServer
+Aby sprawdzić zaktualizowane wskazówki główne, uruchom następujące polecenie. Zwróć uwagę, że serwer nazw ma kropkę końcową (.).
+Get-DnsServerRootHint
+Oto jak konfigurować wskazówki dotyczące serwerów głównych DNS przy użyciu konsoli Menedżera DNS.
+Na pulpicie systemu Windows otwórz menu Start . Wybierz Narzędzia administracyjne systemu Windows, DNS>.
+Wybierz i przytrzymaj (lub kliknij prawym przyciskiem myszy) serwer, a następnie wybierz pozycję Właściwości.
+Wybierz kartę Wskazówki główne , wybierz element do edycji, a następnie wybierz pozycję Edytuj.
+Wprowadź w pełni kwalifikowaną nazwę domeny, a następnie wybierz pozycję Rozwiąż. Sprawdź adres IP. W razie potrzeby zmodyfikuj adres IP.
+Kliknij przycisk OK.
+Przejrzyj zaktualizowany serwer wskazówek root w liście. Gdy wszystko będzie gotowe, wybierz przycisk OK. Zwróć uwagę, że serwer nazw ma kropkę końcową (.).
+Konfigurowanie usług przesyłania dalej
+Opcjonalnie można skonfigurować usługę przesyłania dalej w celu rozpoznawania informacji o adresie DNS, a nie przekazywania ruchu do serwerów głównych DNS. Usługi przesyłania dalej można dodawać przy użyciu graficznego interfejsu użytkownika lub polecenia Set-DNSServerForwarder cmdlet programu PowerShell.
+Note
+Wskazówki dotyczące katalogu głównego DNS nie są używane, chyba że serwery przekazywania zapytań nie odpowiadają.
+              PowerShell
+              GUI
+Poniżej przedstawiono sposób instalowania roli serwera DNS przy użyciu polecenia Install-WindowsFeature .
+Uruchom program PowerShell na komputerze w sesji z podwyższonym poziomem uprawnień.
+Aby skonfigurować przesyłniki DNS, zastąp symbole <ip_forwarder_1> i <ip_forwarder_2> adresem IP serwera DNS, który ma być używany jako przesyłnik. Następnie uruchom następujące polecenia.
+$Forwarders = "<ip_forwarder_1>","<ip_forwarder_2>"
+Set-DnsServerForwarder -IPAddress $Forwarders
+Poniżej przedstawiono sposób konfigurowania usług przesyłania dalej DNS przy użyciu konsoli Menedżera DNS.
+Na pulpicie systemu Windows otwórz menu Start . Wybierz Narzędzia administracyjne systemu Windows, DNS>.
+Wybierz i przytrzymaj (lub kliknij prawym przyciskiem myszy) serwer, a następnie wybierz pozycję Właściwości.
+Wybierz kartę Usługi przesyłania dalej , a następnie wybierz pozycję Edytuj.
+Wprowadź adres IP serwera DNS na potrzeby przekazywania żądań do. Powtórz ten krok tyle razy, ile potrzebujesz.
+Kliknij przycisk OK.
+Przejrzyj serwer DNS z listy, wybierz przycisk OK lub Zastosuj , aby ukończyć konfigurację.
+Usuwanie roli serwera DNS
+Aby usunąć rolę serwera DNS, wykonaj następujące kroki.
+              PowerShell
+              GUI
+Poniżej przedstawiono sposób odinstalowania roli serwera DNS przy użyciu polecenia Uninstall-WindowsFeature .
+W wierszu polecenia programu PowerShell z podwyższonym poziomem uprawnień uruchom następujące polecenie:
+Uninstall-WindowsFeature -Name DNS
+Poniżej przedstawiono sposób odinstalowywania roli serwera DNS przy użyciu Menedżera serwera z pulpitu systemu Windows.
+Na pulpicie systemu Windows otwórz menu Start , a następnie wybierz kafelek Menedżer serwera .
+W menu przejdź do pozycji Zarządzaj, a następnie wybierz pozycję Usuń role i funkcje.
+Na stronie Przed rozpoczęciem wybierz pozycję Dalej , aby rozpocząć.
+Na stronie Wybierz serwer docelowy wybierz serwer, z którego chcesz usunąć usługę roli serwera DNS, a następnie wybierz przycisk Dalej.
+Z listy wyczyść pole wyboru Serwer DNS .
+Zostanie wyświetlony monit o usunięcie funkcji, które wymagają serwera DNS, wybierz pozycję Usuń funkcje, a następnie dalej , aby kontynuować.
+Na stronie Usuwanie funkcji możesz pozostawić domyślne opcje, a następnie wybrać przycisk Dalej .
+Na stronie Potwierdzanie wyboru usuwania przejrzyj wybrane role i funkcje, a następnie wybierz pozycję Usuń.
+Po usunięciu roli i funkcji wybierz pozycję Zamknij.
+Uruchom ponownie komputer, kończąc odinstalowywanie.
+Important
+Podczas usuwania usługi roli serwera DNS z komputera z systemem Windows Server należy pamiętać o następujących kwestiach:
+W przypadku serwera DNS, który obsługuje strefy zintegrowane z AD DS, strefy te są zapisywane lub usuwane w zależności od typu ich przechowywania. Dane strefy nie zostaną usunięte, chyba że odinstalowany serwer DNS jest ostatnim serwerem DNS hostujący ten strefę.
+W przypadku serwera DNS, który hostuje standardowe strefy DNS, pliki strefy pozostają w  katalogu%systemroot%\System32\Dns , ale nie są ponownie ładowane, jeśli serwer DNS jest ponownie zainstalowany.
+Jeśli tworzysz nową strefę o takiej samej nazwie jak stara strefa, stary plik strefy zostanie zastąpiony nowym plikiem strefy.
+Treści powiązane
+              zasad DNS — omówienie
+              Omówienie usługi Anycast DNS
+			Opinia
+					Czy ta strona była pomocna?
+						Tak
+						Nie
+							Nie
+								Potrzebujesz pomocy dotyczącej tego tematu?
+								Chcesz spróbować użyć asystenta Ask Learn, aby wyjaśnić ten temat lub uzyskać instrukcje, które go dotyczą?
+			Zapytaj platformę Learn
+			Zapytaj platformę Learn
+				 Zaproponować poprawkę? 
+				Dodatkowe zasoby
+				Ostatnia aktualizacja o 
+		2025-08-16
+				

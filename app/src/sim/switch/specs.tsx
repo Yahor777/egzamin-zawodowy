@@ -11,7 +11,7 @@ export const SWITCH_FORMS: Record<string, (s: SwitchState) => FormSpec> = {
     okText: 'Operation successful.',
     fields: [
       { k: 'status', label: 'MTU VLAN Configuration', type: 'radio', options: DISABLE_ENABLE, def: 'disable' },
-      { k: 'uplink', label: 'Current Uplink Port', type: 'select', options: ports(s), def: '1' },
+      { k: 'uplink', label: 'Change Uplink Port', type: 'select', options: ports(s), def: '1' },
     ],
     intro: 'MTU VLAN (Multi-Tenant Unit VLAN): every port can talk only to the uplink port. Port Based VLAN and 802.1Q VLAN cannot be enabled at the same time.',
   }),
@@ -62,7 +62,7 @@ export const SWITCH_LISTS: Record<string, (s: SwitchState) => ListSpec> = {
     max: s.ports,
     fields: [
       { k: 'id', label: 'VLAN ID', type: 'text', valid: [2, s.ports], hint: `(2–${s.ports})` },
-      { k: 'members', label: 'VLAN Member Ports', type: 'text', valid: 'nonempty', hint: 'e.g. 1-4' },
+      { k: 'members', label: 'Member', type: 'text', valid: 'nonempty', hint: 'e.g. 1-4' },
     ],
     columns: ['id', 'members'],
   }),
@@ -83,15 +83,15 @@ export const SWITCH_LISTS: Record<string, (s: SwitchState) => ListSpec> = {
       { k: 'port', label: 'Port', type: 'select', options: ports(s) },
       {
         k: 'type',
-        label: 'Storm Type',
+        label: 'Included Storm Type',
         type: 'select',
         options: [
-          ['bc', 'Broadcast'],
+          ['ul', 'UL-Frame'],
           ['mc', 'Multicast'],
-          ['ul', 'Unknown unicast'],
+          ['bc', 'Broadcast'],
         ],
       },
-      { k: 'rate', label: 'Rate (Kbps)', type: 'text', def: '64', valid: [1, 1000000] },
+      { k: 'rate', label: 'Total Rate (Kbit/sec)', type: 'text', def: '64', valid: [1, 1000000] },
     ],
     columns: ['port', 'type', 'rate'],
   }),

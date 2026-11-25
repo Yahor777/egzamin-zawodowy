@@ -1,0 +1,111 @@
+https://learn.microsoft.com/pl-pl/windows-server/storage/folder-redirection/folder-redirection-using-group-policy
+
+
+				 Spis treści 
+				Wyjdź z trybu edytora
+			Zapytaj platformę Learn
+			Zapytaj platformę Learn
+			Tryb odczytu
+			Spis treści
+			Przeczytaj w języku angielskim
+			Dodaj
+			Dodaj do planów
+					Kopiuj znaczniki Markdown
+					Drukuj
+						Notatka
+						Dostęp do tej strony wymaga autoryzacji. Może spróbować zalogować się lub zmienić katalogi.
+						Dostęp do tej strony wymaga autoryzacji. Możesz spróbować zmienić katalogi.
+					Konfigurowanie przekierowania folderów przy użyciu zasad grupy
+				 Dotyczy: ✅ Windows Server 2025, ✅ Windows Server 2022, ✅ Windows Server 2019, ✅ Windows Server 2016, ✅ Windows 11, ✅ Windows 10, ✅ Azure Local 2311.2 and later
+			Opinia
+				W tym artykule
+	 Przekierowanie folderu umożliwia administratorom przekierowywanie ścieżek folderów do nowej lokalizacji lokalnie lub w udziale sieciowym. Za pomocą zasad grupy można skonfigurować te lokalizacje w obszarze Ustawienia systemu Windows w konsoli zarządzania zasadami grupy (GPMC). Ścieżka to <Group Policy Object Name>\User Configuration\Policies\Windows Settings\Folder Redirection.
+Aby dowiedzieć się więcej na temat przekierowania folderów, zobacz Omówienie przekierowania folderów, plików trybu offline i profilów użytkowników mobilnych.
+Które foldery można przekierować?
+Możesz użyć konsoli zarządzania zasadami grupy (GPMC) do przekierowania następujących folderów:
+AppData/Roaming
+Contacts
+Desktop
+Documents
+Downloads
+Favorites
+Links
+Music
+Pictures
+Zapisane gry
+Searches
+Start Menu
+Videos
+Typy przekierowania folderów
+Przekierowanie folderu można skonfigurować tak, aby przekierowywało foldery wszystkich użytkowników do jednej lokalizacji lub przypisywać różne lokalizacje na podstawie członkostwa w grupach zabezpieczeń użytkowników. Poniższa tabela zawiera podsumowanie typów przekierowania folderów.
+Można wybrać między następującymi ustawieniami:
+              Podstawowa — przekieruj folder wszystkich użytkowników do tej samej lokalizacji. To ustawienie umożliwia przekierowywanie folderu wszystkich osób do tej samej lokalizacji i jest stosowane do wszystkich użytkowników znajdujących się w obiekcie zasad grupy. Dla tego ustawienia dostępne są następujące opcje określania lokalizacji folderu docelowego:
+              Utwórz folder dla każdego użytkownika w ścieżce głównej. Ta opcja tworzy folder w formularzu \\server\share\User Account Name\Folder Name. Każdy użytkownik ma unikatową ścieżkę dla przekierowanego folderu.
+              Przekieruj do następującej lokalizacji. Ta opcja używa jawnej ścieżki dla lokalizacji przekierowania. Jeśli jest używana jawna ścieżka, może to spowodować, że wielu użytkowników będzie współużytkować tę samą ścieżkę dla przekierowanego folderu. Rozważ użycie zmiennych środowiskowych w ścieżce, aby utworzyć unikatową ścieżkę dla każdego użytkownika.
+              Przekieruj do lokalizacji profilu użytkownika lokalnego. Ta opcja przenosi lokalizację folderu do profilu użytkownika lokalnego w folderze Użytkownicy .
+              Zaawansowane — określ lokalizacje dla różnych grup użytkowników. To ustawienie umożliwia określenie zachowania przekierowania dla określonego folderu na podstawie członkostw w grupach zabezpieczeń obiektu zasad grupy.
+              Nie skonfigurowano. Ta opcja jest ustawieniem domyślnym. To ustawienie określa, że przekierowanie folderów oparte na politykach zostało usunięte dla tego GPO. Wszystkie foldery są przekierowywane do lokalizacji profilu użytkownika lokalnego lub pozostają tam, gdzie są oparte na wybranych opcjach przekierowania. Nie wprowadzono żadnych zmian w bieżącej lokalizacji folderu.
+Wymagania wstępne dotyczące przekierowywania folderów
+Aby skonfigurować przekierowywanie folderów przy użyciu zasad grupy, należy spełnić następujące wymagania wstępne:
+Domena usług Active Directory Domain Services (AD DS) z komputerami klienckimi przyłączonymi do domeny. Nie ma wymagań dotyczących poziomu funkcjonalności lasu ani domeny ani wymagań dotyczących schematu.
+Uprawnienie w systemie Active Directory Domain Services (AD DS) do tworzenia i łączenia obiektów zasad grupy (GPO) w domenie lub jednostce organizacyjnej, w której znajdują się użytkownicy.
+Komputery klienckie z systemem Windows lub Windows Server.
+Komputer z zainstalowaną Konsolą Zarządzania Zasadami Grupy.
+Konfigurowanie przekierowania folderu
+Aby skonfigurować przekierowywanie folderów przy użyciu zasad grupy, wykonaj następujące kroki:
+Wybierz przycisk Start , wpisz Zarządzanie zasadami grupy, otwórz zarządzanie zasadami grupy z listy najlepszych dopasowań.
+W drzewie konsoli rozwiń domenę lub jednostkę organizacyjną (OU), w której chcesz utworzyć lub edytować obiekt zasad grupy.
+Wykonaj jedną z następujących akcji:
+Aby utworzyć nowy obiekt zasad grupy (GPO), który określa, którzy użytkownicy powinni przeprowadzić synchronizację w tle w sieciach taryfowych, kliknij prawym przyciskiem myszy odpowiednią domenę lub jednostkę organizacyjną (OU), a następnie wybierz polecenie Utwórz obiekt zasad grupy w tej domenie i połącz go tutaj.
+OR
+Aby edytować istniejący obiekt zasad grupy, który określa, którzy użytkownicy powinni przeprowadzać synchronizację w tle w sieciach mierzonych, kliknij prawym przyciskiem myszy odpowiedni obiekt zasad grupy, a następnie wybierz polecenie Edytuj.
+W drzewie nawigacji Edytora zarządzania zasadami grupy rozwiń Konfiguracja użytkownika > Zasady > Ustawienia systemu Windows > Przekierowanie folderów.
+Kliknij prawym przyciskiem myszy folder, który chcesz przekierować, a następnie wybierz polecenie Właściwości.
+Na karcie Cel wybierz opcję, której chcesz użyć dla elementu docelowego przekierowania.
+Wybierz lokalizację docelową przekierowania folderu zgodnie z opisem w temacie Typy przekierowania folderów.
+W razie potrzeby wprowadź ścieżkę lokalizacji docelowej. Ścieżka może być folderem lokalnym lub zasobem sieciowym. Ścieżka musi mieć postać \\server\share\FolderName.
+Wybierz przycisk OK , aby zapisać ustawienia.
+Powtórz kroki dla każdego folderu, który chcesz przekierować.
+Aby wymusić zastosowanie zasad grupy, uruchom polecenie "gpupdate /force" na komputerach klienckich lub poczekaj na następny okres odświeżania zasad grupy.
+Konfigurowanie innych ustawień dla przekierowanego folderu
+Na karcie Ustawienia w polu Właściwości folderu można włączyć następujące ustawienia.
+              Udziel użytkownikowi wyłącznych praw. To ustawienie jest domyślnie włączone i jest zalecanym ustawieniem. To ustawienie określa, że administrator i inni użytkownicy nie mają uprawnień dostępu do tego folderu.
+              Przenieś zawartość <FolderName> do nowej lokalizacji. To ustawienie przenosi wszystkie dane, które użytkownik ma w folderze lokalnym do folderu udostępnionego w sieci.
+Caution
+Przenoszenie wszystkich danych może zająć dużo czasu, w zależności od szybkości połączenia i ilości danych. Czas przenoszenia wszystkich danych może być znaczący, jeśli obie lokalizacje są zdalne. Może również wystąpić opóźnienie podczas przypinania i odprzypinania plików w lokalizacjach zdalnych, ponieważ plik musi być synchronizowany między pamięcią podręczną a zasobem plików.
+              Usunięcie polityki. Poniższa tabela zawiera podsumowanie zachowania przekierowanych folderów i ich zawartości, gdy zasada grupy nie ma już zastosowania, na podstawie decyzji dotyczących usuwania zasad. Następujące opcje usuwania zasad są dostępne na karcie Ustawienia w obszarze Usuwanie zasad.
+Opcja usuwania zasad
+Wybrane ustawienie
+Result
+Przekieruj folder z powrotem do lokalizacji profilu użytkownika po usunięciu zasad1
+Enabled
+- Folder powraca do lokalizacji profilu użytkownika.— Zawartość jest kopiowana, a nie przenoszona, z powrotem do lokalizacji profilu użytkownika. — Zawartość nie jest usuwana z przekierowanej lokalizacji.— Użytkownik nadal ma dostęp do zawartości, ale tylko na komputerze lokalnym.
+Pozostaw folder w nowej lokalizacji po usunięciu zasad
+Enabled
+- Folder pozostaje w jego przekierowanej lokalizacji.- Zawartość pozostaje w przekierowanej lokalizacji. — Użytkownik nadal ma dostęp do zawartości w przekierowanym folderze.
+              1 Przeniesienie wszystkich danych z powrotem do profilu użytkownika może zająć dużo czasu, w zależności od szybkości połączenia i ilości danych. Czas przenoszenia wszystkich danych może być znaczący, jeśli obie lokalizacje są zdalne. Może również wystąpić opóźnienie podczas przypinania i odprzypinania plików w lokalizacjach zdalnych, ponieważ plik musi być synchronizowany między pamięcią podręczną a zasobem plików.
+Możesz również użyć GPMC (konsoli zarządzania zasadami grupowymi) do skonfigurowania następujących ustawień zasad przekierowania folderu:
+              Użyj zlokalizowanych nazw podfolderów podczas przekierowywania menu Start i Moje dokumenty. Ta polityka znajduje się w następujących ścieżkach: Computer Configuration\Policies\Administrative Templates\System\Folder Redirection, albo User Configuration\Policies\Administrative Templates\System\Folder Redirection.
+              Nie udostępniaj automatycznie przekierowanych folderów w trybie offline. Te zasady znajdują się w następującej ścieżce: User Configuration\Policies\Administrative Templates\System\Folder Redirection.
+Określanie lokalizacji folderów w profilu użytkownika
+Możesz użyć zasad grupy, aby określić inną lokalizację (innymi słowy "przekierowanie" lokalizacji) dla folderów w profilach użytkowników. Foldery można przekierowywać do jednej lokalizacji dla wszystkich lub do różnych lokalizacji na podstawie członkostwa w grupie zabezpieczeń użytkowników. Można również skonfigurować inne ustawienia dla przekierowanego folderu. Ustawienia, które można skonfigurować, obejmują:
+Przyznawanie wyłącznych praw użytkownika do folderu.
+Przeniesienie zawartości folderu do nowej lokalizacji.
+Stosowanie zasad przekierowania w starszych systemach operacyjnych Windows.
+Określanie zachowania systemu w przypadku usunięcia zasad.
+Treści powiązane
+              Wdrażanie przekierowania folderu za pomocą plików trybu offline
+			Opinia
+					Czy ta strona była pomocna?
+						Tak
+						Nie
+							Nie
+								Potrzebujesz pomocy dotyczącej tego tematu?
+								Chcesz spróbować użyć asystenta Ask Learn, aby wyjaśnić ten temat lub uzyskać instrukcje, które go dotyczą?
+			Zapytaj platformę Learn
+			Zapytaj platformę Learn
+				 Zaproponować poprawkę? 
+				Dodatkowe zasoby
+				Ostatnia aktualizacja o 
+		2025-08-16
+				

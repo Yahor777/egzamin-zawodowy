@@ -1,0 +1,78 @@
+https://zse.rzeszow.pl/windows/2022/lekcja04-przylaczanie-klienta-do-domeny-2022
+
+    Pracownia Systemów Operacyjnych
+            PRZYŁĄCZANIE KLIENTA DO DOMENY
+                Ćwiczenie nr 4
+                                Lista Ćwiczeń
+                Strona Główna
+            Wprowadzenie do lekcji
+            1. Komputer w domenie.Każdy komputer należący do domeny ma swoje konto w usłudze AD DS. Domyślnie konta komputerów tworzone są w kontenerze Computers.
+            2. Sposoby tworzenia kont komputerów w domenie.
+            – użytkownik z odpowiednimi uprawnieniami przyłącza komputer do domeny, a jego konto utworzy się w kontenerze Computers,
+            – administrator tworzy konto komputera w domenie, a następnie podaje jego nazwę użytkownikowi, który przyłącza go do domeny lub robi to samodzielnie.
+                        I. Tworzenie konto komputera.
+                                Aby utworzyć konto komputera w domenie, należy wybrać z menu „Menedżera serwera” opcję „Narzędzia”, a następnie „Użytkownicy i komputery usługi Active Directory”.
+                                Następnie zaznaczamy np. kontener Computers i klikając go prawym przyciskiem myszy (PPM), wybieramy opcję „Nowy”, a potem „Komputer”.
+                                Podajemy nazwę komputera comp01 i jeśli chcemy, aby użytkownikiem przyłączającym komputer do domeny był administrator domeny, naciskamy „OK”.
+                                Natomiast jeśli chcemy uprawnić jakiegoś użytkownika do przyłączania tego komputera do domeny, wybieramy opcję Zmień, a później wpisujemy nazwę naszego użytkownika i klikamy Sprawdź nazwy. Możemy też wyszukać użytkownika, korzystając z opcji Zaawansowane → Znajdź teraz. Gdy już wybierzemy użytkownika (u nas James JB. Bond), naciskamy OK.
+                                I widzimy, że konto naszego komputera zostało utworzone w kontenerze Computers.
+                                Jeśli nie wiemy, czy ktoś oprócz administratora może przyłączyć danego klienta do domeny, wystarczy zaznaczyć nasz komputer i (przy widoku zaawansowanym) kliknąć go prawym przyciskiem myszy (PPM), wybrać opcję Właściwości i tam w zakładce Zabezpieczenia odnajdziemy naszego użytkownika.
+                        II. Przyłączanie komputerów do domeny.
+                                Najpierw musimy właściwie skonfigurować interfejsy sieciowe. Z Panelu sterowania serwera wybieramy „Centrum sieci i udostępniania”, gdzie klikamy „Zmień ustawienia karty sieciowej”. Pojawią nam się nasze karty sieciowe, które oznaczamy odpowiednio jako LAN i WAN.
+                                WAN jest odpowiedzialny za połączenie z internetem, natomiast LAN służy do wewnętrznego połączenia w domenie pomiędzy klientem a serwerem.
+                                W naszym przypadku na interfejsie WAN ustawiamy dynamiczną konfigurację. Robimy to w ten sposób, że zaznaczamy interfejs WAN i klikamy prawym przyciskiem myszy (PPM) → „Właściwości”, a następnie dwukrotnie klikamy opcję Protokół internetowy w wersji 4 (TCP/IPv4). Teraz wystarczy zaznaczyć powyższe opcje i zaakceptować zmiany.
+                                WAŻNE! Należy w obydwu oknach kliknąć OK, ponieważ dopiero wtedy nasze ustawienia zostaną zapisane. Dla pewności można jeszcze wyłączyć i włączyć kartę sieciową.
+                                Podobnie postępujemy w przypadku interfejsu LAN, z tą różnicą, że tutaj adresy przypisujemy ręcznie (statycznie). Nasz serwer będzie miał adres IP 192.168.110.1 z maską 24-bitową (zapis CIDR: 192.168.110.1/24). Pełna konfiguracja powinna być następująca:
+                                – adres IP: 192.168.110.1
+                                – maska podsieci: 255.255.255.0
+                                – brama domyślna: nie ustawiamy bramy
+                                – preferowany serwer DNS: 192.168.110.1
+                                – alternatywny serwer DNS, np.: 8.8.8.8
+                                Wprowadzamy nasze ustawienia tak jak powyżej, zatwierdzamy zmiany (klikając dwukrotnie OK) i ewentualnie wyłączamy i włączamy kartę sieciową.
+                                Teraz skonfigurujemy kartę sieciową na kliencie.
+                                Ważne! Aby nasz klient „widział się” z serwerem, musi znajdować się w tej samej podsieci!
+                                Przechodzimy w znany już sposób do konfiguracji karty sieciowej na kliencie i wprowadzamy następujące ustawienia:
+                                – adres IP, np.: 192.168.110.20 – inny niż na serwerze
+                                – maska podsieci: 255.255.255.0 – oczywiście taka sama jak na serwerze
+                                – brama domyślna: 192.168.110.1 – adres naszego serwera
+                                – preferowany serwer DNS: 192.168.110.1 – adres naszego serwera
+                                – alternatywny serwer DNS: można pozostawić bez wpisu
+                                Wprowadzamy nasze ustawienia tak jak powyżej, zatwierdzamy zmiany (klikając dwukrotnie OK) i ewentualnie wyłączamy i włączamy kartę sieciową.
+                                Teraz na serwerze za pomocą wiersza poleceń należy sprawdzić ustawienia naszych kart sieciowych poleceniem:
+                                $ ipconfig /all
+                                Jeśli na karcie LAN mamy takie ustawienia jak powyżej, oznacza to, że wszystko jest w porządku.
+                                Podobnie na kliencie za pomocą wiersza poleceń należy sprawdzić ustawienie karty sieciowej poleceniem:
+                                $ ipconfig /all
+                                Jeśli na karcie mamy takie ustawienia jak powyżej, oznacza to, że wszystko jest w porządku.
+                                Sprawdzamy teraz połączenie pomiędzy maszynami. Najpierw z serwera na klienta poleceniem:
+                                $ ping 192.168.110.20
+                                oraz z klienta na serwer:
+                                $ ping 192.168.110.1
+                                Jeśli odpowiedź z polecenia ping nie wraca, warto sprawdzić, czy na kliencie bądź serwerze komunikacji nie blokuje zapora systemu, którą na potrzeby ćwiczenia wystarczy wyłączyć. Powyżej widać, że u nas wszystko działa poprawnie.
+                                Jeśli polecenia ping działają prawidłowo, możemy przystąpić do przyłączenia naszego klienta do domeny. Wykonujemy to z poziomu klienta: z Ustawień systemu wybieramy opcję System, a następnie Zaawansowane ustawienia systemu.
+                                Prchodzimy do zakładki Nazwa komputera i wybieramy opcję Zmień.
+                                Wybieramy opcję Domena i wpisujemy nazwę naszej domeny: elektronik.local.
+                                Następnie wpisujemy login i hasło użytkownika, który jest odpowiedzialny za przyłączenie tego komputera do domeny. Może to być administrator lub użytkownik, który jest do tego uprawniony. My przyłączymy komputer za pomocą konta administrator, podając jego login i hasło. Następnie naciskamy OK.
+                                Jeśli wszystko przebiegło pomyślnie, powinniśmy otrzymać komunikat o udanym przyłączeniu do domeny. Po naciśnięciu przycisku OK restartujemy komputer.
+                                Widzimy na kliencie, że po restarcie nie zalogowaliśmy się automatycznie na konto lokalne, tylko pojawił się ekran z godziną i datą. Aby przejść do logowania, należy nacisnąć klawisz Enter.
+                                Pojawia nam się ekran logowania, na którym, aby zalogować się do domeny, musimy wybrać opcję Inny użytkownik. Gdybyśmy nacisnęli klawisz Enter, zalogowalibyśmy się lokalnie na konto użytkownika zse.
+                                Klikamy więc opcję Inny użytkownik i moglibyśmy już zalogować się do domeny ELEKTRONIK, wpisując jedynie nazwę użytkownika oraz hasło, ponieważ domena została już ustawiona domyślnie (kolor żółty). Warto jednak zapoznać się z opcjami dostępnymi pod hasłem Jak zalogować się do innej domeny? (kolor niebieski). Klikamy w ten link.
+                                Wyświetla się tutaj pełna podpowiedź. Pokazuje ona logowanie do domeny (kolor żółty) albo lokalnie do komputera (kolor niebieski) – zawsze możemy tę opcję rozwinąć i z niej skorzystać.
+                                Zgodnie z podpowiedzią wpisujemy nazwę naszej domeny oraz naszego użytkownika (elektronik.local\bondj), hasło i naciskamy klawisz Enter.
+                                Tak na marginesie dodam, że uniwersalny sposób logowania do domeny wygląda następująco:
+                                nazwa_użytkownika@nazwa_domeny, czyli u nas: [email protected], i oczywiście wprowadzamy hasło.
+                                Po zalogowaniu możemy sprawdzić, czy nasz komputer faktycznie został przyłączony do domeny. Z Ustawień systemu wybieramy sekcję System i widzimy, że nasz komputer pracuje w domenie. Dodatkowo możemy zweryfikować, na jakiego użytkownika jesteśmy zalogowani. W lewym górnym rogu Ustawień widzimy, że zalogowano nas do domeny jako użytkownik James JB. Bond.
+                        Zadanie do wykonania na lekcji
+                            Na kliencie ustaw nazwę komputera komp02 i przyłącz go do swojej domeny jako administrator.
+                            Zaloguj się do domeny z konta administratora i sprawdź połączenie pomiędzy serwerem a klientem „obustronnymi pingami”.
+                            Odłącz komputer komp02 od domeny i zmień jego nazwę na komp03.
+                            Zmień adres IP swojego serwera na 192.168.x.1, gdzie x jest Twoim numerem w dzienniku lekcyjnym.
+                            Skonfiguruj właściwie kartę sieciową na kliencie i ustaw dowolny adres IP z puli 192.168.x.100 – 192.168.x.150.
+                            Przyłącz komputer komp03 do swojej domeny jako administrator, zaloguj się za pomocą tego konta i sprawdź połączenie poleceniem „ping”.
+                            Odłącz komputer komp03 od domeny i zmień jego nazwę na komp04.
+                            Skonfiguruj właściwie kartę sieciową na kliencie i ustaw adres IP 192.168.x.x+1, gdzie x jest nadal Twoim numerem w dzienniku lekcyjnym.
+                            Utwórz na serwerze konto komputera komp04 w kontenerze Computers i pozwól na przyłączanie go do domeny innemu użytkownikowi niż administrator.
+                            Przyłącz komputer komp04 do domeny przez użytkownika do tego uprawnionego, zaloguj się na nim i sprawdź połączenie obustronnymi poleceniami „ping”.
+                            Ustaw dowolnemu użytkownikowi możliwość logowania do domeny poza czasem, w którym odbywają się zajęcia z przedmiotu PSSO. Sprawdź, czy można zalogować się z klienta tym użytkownikiem do domeny.
+                            Temu samemu użytkownikowi ustaw logowanie do domeny w czasie, w którym odbywają się zajęcia z przedmiotu PSSO, i również sprawdź, czy można zalogować się z klienta tym użytkownikiem do domeny.
+    © 2009 - 2026 Copyright ZSE Rzeszów | Developed by Maciej Biel & Ireneusz Paździor

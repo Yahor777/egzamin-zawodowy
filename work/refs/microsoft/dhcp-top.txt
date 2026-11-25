@@ -1,0 +1,70 @@
+https://learn.microsoft.com/pl-pl/windows-server/networking/technologies/dhcp/dhcp-top
+
+
+				 Spis treści 
+				Wyjdź z trybu edytora
+			Zapytaj platformę Learn
+			Zapytaj platformę Learn
+			Tryb odczytu
+			Spis treści
+			Przeczytaj w języku angielskim
+			Dodaj
+			Dodaj do planów
+					Kopiuj znaczniki Markdown
+					Drukuj
+						Notatka
+						Dostęp do tej strony wymaga autoryzacji. Może spróbować zalogować się lub zmienić katalogi.
+						Dostęp do tej strony wymaga autoryzacji. Możesz spróbować zmienić katalogi.
+					Co to jest serwer DHCP (Dynamic Host Configuration Protocol) w systemie Windows Server?
+				 Dotyczy: ✅ Windows Server 2025, ✅ Windows Server 2022, ✅ Windows Server 2019, ✅ Windows Server 2016, ✅ Azure Local 2311.2 and later
+			Opinia
+				W tym artykule
+	 Serwer DHCP (Dynamic Host Configuration Protocol) w systemie Windows Server automatyzuje przypisywanie i zarządzanie adresami IP oraz powiązanymi konfiguracjami sieci. Dzięki scentralizowaniu tych zadań serwer DHCP zmniejsza nakład pracy ręcznej, minimalizuje błędy i zapewnia efektywne wykorzystanie zasobów adresów IP w całej sieci.
+System Windows Server zawiera serwer DHCP jako opcjonalną rolę serwera sieciowego, którą można wdrożyć w celu zarządzania i oferowania dzierżaw adresów IP oraz innych informacji klientom DHCP. Wszystkie systemy operacyjne klienta z systemem Windows obejmują klienta DHCP w ramach protokołu TCP/IP, a klient DHCP jest domyślnie włączony.
+Protokół dynamicznej konfiguracji hosta (DHCP) to protokół klient/serwer, który automatycznie udostępnia hostowi protokołu internetowego (IP) swój adres IP i inne powiązane informacje konfiguracyjne, takie jak maska podsieci i brama domyślna. Dokumenty RFC 2131 i 2132 definiują protokół DHCP jako standard IETF (Internet Engineering Task Force) oparty na protokole Bootstrap Protocol (BOOTP), z którym protokół DHCP dzieli wiele szczegółów implementacji. Protokół DHCP umożliwia hostom uzyskanie wymaganych informacji o konfiguracji protokołu TCP/IP z serwera DHCP.
+Dlaczego warto używać protokołu DHCP?
+Każde urządzenie w sieci opartej na protokole TCP/IP musi mieć unikatowy adres unicast IP, aby uzyskać dostęp do sieci i jej zasobów. Bez protokołu DHCP adresy IP dla nowych komputerów lub komputerów, które są przenoszone z jednej podsieci do innej, należy skonfigurować ręcznie; Adresy IP komputerów usuniętych z sieci muszą zostać ręcznie odzyskane.
+Dzięki usłudze DHCP cały proces jest zautomatyzowany i zarządzany centralnie. Serwer DHCP obsługuje pulę adresów IP i dzierżawi adres dla dowolnego klienta z włączoną obsługą protokołu DHCP podczas uruchamiania w sieci. Ponieważ adresy IP są dynamiczne (dzierżawione), a nie statyczne (trwale przypisane), adresy IP, które przestają być używane, są automatycznie zwracane do puli w celu ponownej alokacji.
+Administrator sieci ustanawia serwery DHCP, które utrzymują informacje o konfiguracji protokołu TCP/IP i udostępniają konfigurację adresów klientom obsługującym protokół DHCP w postaci oferty dzierżawy. Serwer DHCP przechowuje informacje o konfiguracji w bazie danych, która obejmuje:
+Prawidłowe parametry konfiguracji PROTOKOŁU TCP/IP dla wszystkich klientów w sieci.
+Prawidłowe adresy IP, które są przechowywane w puli i przeznaczone do przypisywania klientom, oraz adresy wykluczone z tej puli.
+Zarezerwowane adresy IP skojarzone z określonymi klientami DHCP. Umożliwia to spójne przypisywanie pojedynczego adresu IP do pojedynczego klienta DHCP.
+Czas trwania dzierżawy lub czas, dla którego można użyć adresu IP, zanim będzie wymagane odnowienie dzierżawy.
+Klient z obsługą protokołu DHCP po zaakceptowaniu oferty dzierżawy otrzymuje:
+Prawidłowy adres IP podsieci, z którą nawiązuje połączenie.
+Żądane opcje DHCP to dodatkowe parametry, które serwer DHCP jest skonfigurowany do przypisywania klientom. Niektóre przykłady opcji DHCP to Router (brama domyślna), Serwery DNS i Nazwa domeny DNS.
+Zalety serwera DHCP
+Protokół DHCP zapewnia następujące korzyści.
+              Niezawodna konfiguracja adresu IP. Protokół DHCP minimalizuje błędy konfiguracji spowodowane ręczną konfiguracją adresów IP, takimi jak błędy typograficzne lub konflikty adresów spowodowane przypisaniem adresu IP do więcej niż jednego komputera w tym samym czasie.
+              Ograniczona administracja siecią. Protokół DHCP obejmuje następujące funkcje w celu zmniejszenia administracji siecią:
+Scentralizowana i zautomatyzowana konfiguracja protokołu TCP/IP.
+Możliwość definiowania konfiguracji protokołu TCP/IP z centralnej lokalizacji.
+Możliwość przypisywania pełnego zakresu dodatkowych wartości konfiguracji PROTOKOŁU TCP/IP za pomocą opcji DHCP.
+Wydajna obsługa zmian adresów IP dla klientów, którzy muszą być często aktualizowani, takich jak urządzenia przenośne przenoszące się do różnych lokalizacji w sieci bezprzewodowej.
+Przekazywanie początkowych komunikatów DHCP przy użyciu agenta przekaźnika DHCP, co eliminuje konieczność używania serwera DHCP w każdej podsieci.
+Funkcje serwera DHCP
+Serwer DHCP w systemie Windows Server obejmuje następujące funkcje:
+              Zasady DHCP. Ta funkcja umożliwia tworzenie zasad, które stosują opcje i ustawienia DHCP na podstawie właściwości klienta, takich jak adres MAC lub klasa dostawcy.
+              Rejestrowanie audytu DHCP Ta funkcja umożliwia śledzenie aktywności serwera DHCP, w tym przydziałów dzierżawy oraz ich wygasania i odnawiania.
+              Zarządzanie serwerem DHCP. Ta funkcja umożliwia zarządzanie serwerami DHCP przy użyciu programu Windows PowerShell, konsoli DHCP lub Centrum administracyjnego systemu Windows.
+              Autoryzacja serwera DHCP. Ta funkcja umożliwia autoryzowanie serwerów DHCP w usłudze Active Directory, co uniemożliwia nieautoryzowanym serwerom udostępnianie adresów IP klientom.
+              Integracja serwera DHCP z usługą DNS. Dynamiczny system DNS automatycznie aktualizuje rekordy DNS, gdy dzierżawy DHCP są przypisywane lub odnawiane, dzięki czemu klienci mogą mapować nazwy hostów do adresów IP.
+              Integracja serwera DHCP z protokołami IPv4 i IPv6. Ta funkcja umożliwia przypisywanie zarówno adresów IPv4, jak i IPv6 do klientów przy użyciu protokołu DHCP, zapewniając obsługę obu standardów adresowania IP.
+              DHCP failover. Ta funkcja umożliwia dwóm serwerom DHCP współużytkowanie jednego zakresu, zapewniając nadmiarowość i równoważenie obciążenia.
+              Integracja serwera DHCP z usługą IPAM. Ta funkcja umożliwia zarządzanie serwerami DHCP przy użyciu zarządzania adresami IP (IPAM), zapewniając scentralizowaną lokalizację do zarządzania przypisaniami i dzierżawami adresów IP.
+Wprowadzenie do protokołu DHCP
+Aby dowiedzieć się, jak zainstalować i skonfigurować protokół DHCP w systemie Windows Server, zobacz Szybki start: instalowanie i konfigurowanie serwera DHCP.
+			Opinia
+					Czy ta strona była pomocna?
+						Tak
+						Nie
+							Nie
+								Potrzebujesz pomocy dotyczącej tego tematu?
+								Chcesz spróbować użyć asystenta Ask Learn, aby wyjaśnić ten temat lub uzyskać instrukcje, które go dotyczą?
+			Zapytaj platformę Learn
+			Zapytaj platformę Learn
+				 Zaproponować poprawkę? 
+				Dodatkowe zasoby
+				Ostatnia aktualizacja o 
+		2025-05-13
+				

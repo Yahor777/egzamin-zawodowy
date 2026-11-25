@@ -1,0 +1,193 @@
+https://learn.microsoft.com/pl-pl/troubleshoot/windows-server/networking/configure-ipv6-in-windows
+
+
+				 Spis treści 
+				Wyjdź z trybu edytora
+			Zapytaj platformę Learn
+			Zapytaj platformę Learn
+			Tryb odczytu
+			Spis treści
+			Przeczytaj w języku angielskim
+			Dodaj
+			Dodaj do planów
+					Kopiuj znaczniki Markdown
+					Drukuj
+						Notatka
+						Dostęp do tej strony wymaga autoryzacji. Może spróbować zalogować się lub zmienić katalogi.
+						Dostęp do tej strony wymaga autoryzacji. Możesz spróbować zmienić katalogi.
+					Wskazówki dotyczące konfigurowania protokołu IPv6 w systemie Windows dla zaawansowanych użytkowników.
+				 Dotyczy: Supported versions of Windows Server
+			Opinia
+				W tym artykule
+Systemy Windows Vista, Windows Server 2008 i nowsze wersje systemu Windows wdrażają protokół RFC 3484i stosują tabelę prefiksów w celu ustalenia, który adres ma zostać użyty, kiedy wiele adresów jest dostępnych dla nazwy DNS.
+Domyślnie system Windows preferuje globalne adresy unicast IPv6 względem adresów IPv4.
+              Oryginalny numer KB: 929852
+Podsumowanie
+Administratorzy IT często wyłączają protokół IPv6 w celu rozwiązywania problemów związanych z siecią, takich jak problemy z rozpoznawaniem nazw.
+Ważne
+Protokół IPv6 (Internet Protocol version 6) jest niezbędnym składnikiem systemu Windows Vista i Windows Server 2008 i jego nowszych wersji.
+Nie zalecamy wyłączania składników IPv6 lub IPv6 ani odłączeń protokołu IPv6 z interfejsów. Jeśli to zrobisz, niektóre składniki systemu Windows mogą nie działać.
+Zalecamy pierwszeństwo protokołu IPv4 przed IPv6 w zasadach prefiksów zamiast wyłączania protokołu IPv6.
+Użycie klucza rejestru do konfiguracji IPv6
+Ważna
+Należy rozważnie wykonywać czynności podane w tej sekcji. Niepoprawne zmodyfikowanie rejestru może być przyczyną poważnych problemów. Przed zmodyfikowaniem rejestru należy utworzyć jego kopię zapasową, aby móc przywrócić rejestr na wypadek problemów.
+Uwaga 16.
+Aby te zmiany zostały wprowadzone, należy ponownie uruchomić komputer.
+Wartość inna niż 0 lub 32 spowoduje błąd usługi Routing i dostęp zdalny po wprowadzeniu tej zmiany.
+Funkcje protokołu IPv6 można skonfigurować, modyfikując następujący klucz rejestru:
+              Lokalizacja: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters\
+              Nazwa: DisabledComponents
+              Typ: REG_DWORD
+              Wartość minimalna: 0x00 (wartość domyślna)
+              Maksymalna wartość: 0xFF (wyłączono protokół IPv6)
+Funkcjonalność IPv6
+Wartość rejestru i komentarze
+Preferowanie protokołu IPv4 zamiast IPv6
+Wartość dziesiętna 32Szesnastkowa 0x20Dwójkowa xx1x xxxxZalecane zamiast wyłączenia protokołu IPv6.Aby potwierdzić preferencje protokołu IPv4 za pośrednictwem protokołu IPv6, wykonaj następujące polecenia:— Otwórz wiersz polecenia lub program PowerShell.- Użyj polecenia "ping", aby sprawdzić preferowaną wersję adresu IP. Na przykład "ping bing.com". — Jeśli preferowany jest protokół IPv4, w odpowiedzi powinien zostać zwrócony adres IPv4.Połączenia sieciowe:— Otwórz wiersz polecenia lub program PowerShell.- Użyj polecenia "netsh interface ipv6 show prefixpolicies"— Sprawdź, czy zasady "Prefiks" zostały zmodyfikowane w celu nadania priorytetowi IPv4.- Prefiks "::ffff:0:0/96" powinien mieć wyższy priorytet niż prefiks "::/0".Jeśli na przykład masz dwa wpisy, jeden z pierwszeństwem 35, a drugi z pierwszeństwem 40, preferowany będzie jeden z pierwszeństwem 40.
+Wyłączanie protokołu IPv6
+Liczba dziesiętna 255Szesnastkowa 0xFFDwójkowa 1111 1111Jeśli po wyłączeniu protokołu IPv6 w systemie Windows 7 z dodatkiem SP1 lub Windows Server 2008 R2 z dodatkiem SP1 wystąpi opóźnienie uruchamiania, zobacz artykuł Występuje opóźnienie w uruchomieniu po wyłączeniu protokołu IPv6 na systemie Windows.  Ponadto uruchamianie systemu wydłuży się o 5 sekund, jeśli protokół IPv6 zostanie nieprawidłowo wyłączony przez skonfigurowanie ustawienia rejestru DisabledComponents na wartość 0xfffffff. Poprawna wartość to 0xff. Aby uzyskać więcej informacji, zobacz artykuł Omówienie protokołu internetowego w wersji 6 (IPv6).   Wartość rejestru DisabledComponents nie ma wpływu na stan tego pola wyboru. Dlatego nawet jeśli w kluczu rejestru DisabledComponents ustawiono wyłączenie protokołu IPv6, można zaznaczyć to pole wyboru na karcie Sieć dla każdego z interfejsów. Takie zachowanie jest oczekiwane. Nie można całkowicie wyłączyć protokołu IPv6, ponieważ protokół IPv6 jest używany wewnętrznie w systemie w przypadku wielu zadań TCPIP. Na przykład nadal będzie można uruchamiać polecenie ping ::1 po skonfigurowaniu tego ustawienia.
+Wyłączanie protokołu IPv6 we wszystkich interfejsach bez tunelowania
+Wartość dziesiętna 16Szesnastkowa 0x10Dwójkowa xxx1 xxxx
+Wyłączanie protokołu IPv6 we wszystkich interfejsach tunelowania
+Wartość dziesiętna 1Szesnastkowa 0x01Dwójkowa xxxx xxx1
+Wyłączanie protokołu IPv6 we wszystkich interfejsach bez tunelowania (z wyjątkiem sprzężenia zwrotnego) i w interfejsach tunelowania protokołu IPv6
+Wartość dziesiętna 17Szesnastkowa 0x11Dwójkowa xxx1 xxx1
+Preferowanie protokołu IPv6 zamiast IPv4
+Dwójkowa xx0x xxxx
+Ponowne włączanie protokołu IPv6 we wszystkich interfejsach bez tunelowania
+Dwójkowa xxx0 xxxx
+Ponowne włączanie protokołu IPv6 we wszystkich interfejsach tunelowania
+Dwójkowa xxx xxx0
+Ponowne włączanie protokołu IPv6 w interfejsach bez tunelowania i w interfejsach tunelowania protokołu IPv6
+Dwójkowa xxx0 xxx0
+Aby zmodyfikować klucz rejestru, możesz wykonać następujące kroki:
+Otwórz okno administracyjnego wiersza polecenia.
+Uruchom następujące polecenie:
+reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters" /v DisabledComponents /t REG_DWORD /d <value> /f
+Uwaga
+Zastąp <wartość> odpowiednią wartością.
+Jak obliczyć wartość rejestru
+System Windows używa masek bitowych do sprawdzenia wartości DisabledComponents oraz ustalenia, czy dany składnik powinien być wyłączony.
+Aby dowiedzieć się, który składnik kontroluje każdy bit (od najniższego do najwyższego), zapoznaj się z poniższą tabelą.
+Name (Nazwa)
+Ustawienie
+Tunel
+Wyłącz interfejsy tunelu.
+Tunnel6to4
+Wyłącz interfejsy 6to4.
+TunnelIsatap
+Wyłącz interfejsy Isatap.
+Tunel Teredo
+Wyłącz interfejsy Teredo.
+Macierzyste
+Wyłącz interfejsy macierzyste (również protokół PPP).
+PreferIpv4
+Preferuj protokół IPv4 w domyślnych zasadach prefiksu.
+TunnelCp
+Wyłącz interfejsy CP
+TunnelIpTls
+Wyłącz interfejsy IP-TLS
+Dla każdego bitu, wartość 0 oznacza fałsz a 1 oznacza prawdę. Przykład można znaleźć w poniższej tabeli.
+Ustawienie
+Pierwszeństwo protokołu IPv4 przed IPv6 w zasadach prefiksów
+Wyłączanie protokołu IPv6 we wszystkich interfejsach bez tunelowania
+Wyłączanie protokołu IPv6 we wszystkich interfejsach tunelowania
+Wyłączanie protokołu IPv6 w interfejsach bez tunelowania (z wyjątkiem sprzężenia zwrotnego) i w interfejsach tunelowania protokołu IPv6
+Wyłącz interfejsy tunelu.
+0
+0
+1
+1
+Wyłącz interfejsy 6to4.
+0
+0
+0
+0
+Wyłącz interfejsy Isatap.
+0
+0
+0
+0
+Wyłącz interfejsy Teredo.
+0
+0
+0
+0
+Wyłącz interfejsy macierzyste (również protokół PPP).
+0
+1
+0
+1
+Preferuj protokół IPv4 w domyślnych zasadach prefiksu.
+1
+0
+0
+0
+Wyłącz interfejsy CP
+0
+0
+0
+0
+Wyłącz interfejsy IP-TLS
+0
+0
+0
+0
+Plik binarny
+0010 0000
+0001 0000
+0000 0001
+0001 0001
+Szesnastkowy
+0x20
+0x10
+0x01
+0x11
+Ta wartość rejestru nie ma wpływu na stan tego pola wyboru. Dlatego nawet jeśli klucz rejestru ustawiono wyłączenie protokołu IPv6, można zaznaczyć pole wyboru na karcie Sieć dla każdego z interfejsów. Takie zachowanie jest oczekiwane.
+Odłączony protokół IPv6 z interfejsu
+Uwaga
+Nie zalecamy powiązania protokołu IPv6 z karty sieciowej Ethernet lub Wi-Fi bez konieczności wprowadzania uzasadnionych potrzeb. System Windows jest testowany, a niektóre produkty i funkcje oczekują, że protokół IPv6 ma być powiązany i funkcjonalny.
+Usunięcie powiązania IPv6 z karty sieciowej może spowodować nieobsługiwaną konfigurację systemu Windows.
+W przypadku odłączania protokołu od karty sieciowej zdecydowanie zalecamy użycie metody opartej na usłudze WMI, takiej jak Disable-NetAdapterBinding.
+Protokół IPv6 można usunąć z interfejsu sieciowego przy użyciu jednej z następujących metod:
+Usuń zaznaczenie protokołu internetowego w wersji 6 (TCP/IPv6) w graficznym interfejsie użytkownika właściwości sieci. Zobacz poprzedni zrzut ekranu.
+Uruchamianie polecenia programu PowerShell Disable-NetAdapterBinding -Name "<MyAdapter>" -ComponentID ms_tcpip[6]
+Interfejsy tunelowe IPv6
+Domyślnie gdy do interfejsu przypisano publiczny adres IPv4 (Publiczny adres IPv4czyli adres IPv4 spoza zakresów 10.0.0.0/8, 172.16.0.0/12 i 192.168.0.0/16), w systemach Windows jest włączony protokół tunelowania 6to4. Mechanizm 6to4 automatycznie przypisuje adres IPv6 interfejsowi tunelowania 6to4 dla każdego takiego przypisanego adresu i dynamicznie rejestruje te adresy IPv6 na przypisanym serwerze DNS.
+Jeśli nie powinno to działać w ten sposób, zaleca się wyłączenie interfejsów tunelowania IPv6 na właściwych hostach.
+Protokół tunelowania 6to4 i inne technologie przejściowe IPv6 można wyłączyć przy użyciu jednej z następujących metod:
+              DisabledComponents Ustaw klucz rejestru na 0x01.
+Ustaw następujące zasady grupy:
+              Konfiguracja\komputera Szablony administracyjne Sieci\\TCPIP Ustawienia\IPv6 Transition Technologies
+Ustaw stan 6to4 na wyłączone
+Ustawianie funkcji Sate protokołu ISATAP na wartość Wyłączone
+Ustaw stan Teredo na wyłączone
+Uwaga 16.
+Protokół ISATAP i Teredo są domyślnie wyłączone w systemie Windows.
+Odwołanie
+Aby uzyskać informacje na temat protokołu RFC 3484, zobacz artykuł Wybór domyślnego adresu dla protokołu IPv6.
+Więcej informacji na temat sposobu ustawienia pierwszeństwa protokołu IPv4 nad IPv6, znajduje się w dokumencie Użycie SIO_ADDRESS_LIST_SORT.
+Informacje o protokole RFC 4291 znajdują się w dokumencie Architektura adresowania IP w wersji 6.
+Więcej informacji o powiązanych problemach znajduje się w poniższych artykułach:
+Przykład nr 1: Na kontrolerach domen można napotkać sytuację, kiedy LDAP nad UDP 389 przestaje działać.
+Zobacz artykuł Jak używać Portqry do rozwiązywania problemów z łącznością usługi Active Directory
+Przykład 2: Program Exchange Server 2010 może napotkać problemy, w których program Exchange przestaje działać.
+Zobacz artykuł Argumenty przeciwko wyłączeniu protokołu IPv6 i Wyłączenie protokołu IPv6 i programu Exchange — cały proces.
+Przykład nr 3: Klastry trybu Failover, zobacz artykuł Czym jest w ogóle wirtualny adapter klastra trybu failover firmy Microsoft? i Klastry trybu failover i protokół IPv6 w systemie Windows Server 2012 R2.
+Narzędzia ułatwiające śledzenie sieci: Microsoft Network Monitor 3.4 (archiwum)
+Ostrzeżenie
+Monitor sieci Netmon 3.4 nie jest kompatybilny z systemem Windows Server 2012 ani nowszymi systemami operacyjnymi, kiedy włączone jest sprzężenie LBFO NIC.
+			Opinia
+					Czy ta strona była pomocna?
+						Tak
+						Nie
+							Nie
+								Potrzebujesz pomocy dotyczącej tego tematu?
+								Chcesz spróbować użyć asystenta Ask Learn, aby wyjaśnić ten temat lub uzyskać instrukcje, które go dotyczą?
+			Zapytaj platformę Learn
+			Zapytaj platformę Learn
+				 Zaproponować poprawkę? 
+				Dodatkowe zasoby
+				Ostatnia aktualizacja o 
+		2026-02-12
+				

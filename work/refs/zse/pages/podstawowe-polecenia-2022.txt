@@ -1,0 +1,84 @@
+https://zse.rzeszow.pl/windows/2022/podstawowe-polecenia-2022
+
+    Pracownia Systemów Operacyjnych
+            PODSTAWOWE POLECENIA
+                Ćwiczenie wprowadzające nr 1
+                Ćwiczenia wprowadzające
+                Lista Ćwiczeń
+                Strona Główna
+            Wprowadzenie do lekcji
+                Aby rozpocząć pracę z sieciowymi systemami operacyjnymi należy przypomnieć sobie kilka podstawowych poleceń systemowych, które pozwolą nam sprawniej poruszać się w środowisku nie tylko serwerowym, systemu Windows.
+                        I. Polecenie ipconfig
+                                ipconfig – bez parametrów wyświetla nam podstawowe informacje dotyczące konfiguracji interfejsów sieciowych (adres IP, brama, maska itp.).
+                                ipconfig /all – wyświetla szczegółowe informacje dotyczące konfiguracji interfejsów sieciowych (adres IP, brama, maska, adresy serwerów DHCP i DNS, adres MAC itp.).
+                                ipconfig /release – czyści adres IP karty sieciowej.
+                                ipconfig /renew – odnawia (pobiera z serwera DHCP) adres IP karty sieciowej.
+                        II. Polecenie ping
+                                ping – sprawdza połączenie na poziomie protokołu IP, wyświetla informacje o tym, czy miejsce docelowe odpowiada, i po jakim czasie została odebrana odpowiedź.
+ping www.elektronik.rzeszow.pl – wysyła żądanie do „naszego” adresu (domyślnie – 4).
+                                ping www.elektronik.rzeszow.pl -t – wysyła zapytanie bez limitu żądań (kombinacja klawiszy Ctrl+C spowoduje przerwanie działania).
+                                ping www.elektronik.rzeszow.pl -n 6 – określa limit 6 żądań.
+                                ping www.elektronik.rzeszow.pl -f -l 16000 – wysyła zapytanie sprawdzające, czy pakiet o wielkości 16000 bajtów może być przesłany bez fragmentacji.
+                                ping www.elektronik.rzeszow.pl -f -l 1450 – wysyła zapytanie dla pakietu 1450 bajtów.
+                        III. Polecenie tracert
+                                tracert – to narzędzie diagnostyczne, które ustala trasę (listę routerów) do lokalizacji docelowej.
+tracert www.elektronik.rzeszow.pl
+                                tracert -d www.elektronik.rzeszow.pl – nie wyświetla nazw routerów.
+                        IV. Polecenie pathping
+                                pathping – to narzędzie, które śledzi trasę pakietu do punktu docelowego i wyświetla informacje o utraconych pakietach dla każdego routera (serwera).
+pathping www.elektronik.rzeszow.pl
+                                Oczekiwanie na odpowiedź może potrwać kilka minut.
+                        V. Polecenie netstat
+                                netstat – to narzędzie do analizy połączeń sieciowych.
+netstat – bez parametrów, wyświetla aktywne połączenia protokołu TCP.
+                                netstat -e – wyświetla statystyki naszego interfejsu.
+                                netstat -a – wyświetla wszystkie aktywne połączenia protokołu TCP oraz porty protokołu TCP i UDP, na których komputer nasłuchuje.
+                                netstat -o – wyświetla aktywne połączenia protokołu TCP i dołącza identyfikatory procesów (PID) poszczególnych połączeń.
+                        VII. Polecenie net user
+                                net user – polecenie to służy do tworzenia, modyfikacji oraz wyświetlania informacji o kontach użytkowników w systemie.
+net user – bez parametrów wyświetla nam listę kont użytkowników w naszym komputerze.
+                                net user test qwerty /add – tworzymy konto test z hasłem qwerty. Po pierwszym poleceniu otrzymujemy błąd, więc musimy uruchomić wiersz poleceń z uprawnieniami administratora.
+                                net user test – sprawdzamy szczegółowe informacje o użytkowniku test.
+                                lusrmgr.msc – możemy też sprawdzić graficznie, czy to konto zostało utworzone, uruchamiając odpowiednią przystawkę za pomocą polecenia lusrmgr.msc. Wciskamy kombinację klawiszy Win+R, a potem wpisujemy nasze polecenie.
+                                Powinniśmy uzyskać powyższy efekt.
+                                net user test QwErTy – ustawiamy (zmieniamy) nowe hasło dla konta użytkownika test.
+                                net user test /active:no – wyłączamy konto test.
+                                net user test /expires:31-12-2030 – ustawiamy datę wygaśnięcia konta test.
+                                net user test /times:pn,13:00-14:00;pt,8:00-12:00 – ustawiamy dni i godziny logowania dla konta test.
+                                net user test /delete – usuwamy konto test.
+                        VIII. Polecenie net localgroup
+                                net localgroup – polecenie to służy do tworzenia, modyfikacji grup lokalnych w systemie Windows.
+net localgroup – wyświetla nam listę grup lokalnych w naszym systemie.
+                                net localgroup tygrysek /add – tworzymy grupę tygrysek.
+                                net localgroup tygrysek test /add – dodajemy do grupy tygrysek użytkownika test (jeszcze raz go utworzymy).
+                                net localgroup tygrysek – i widzimy, że grupa tygrysek ma nowego członka.
+                                net localgroup tygrysek test /del – usuwamy z grupy tygrysek użytkownika test.
+                                net localgroup tygrysek /del – usuwamy grupę tygrysek.
+                        IX. Polecenie net share
+                                net share – polecenie to służy do udostępniania zasobów w sieci, łącznie z nadawaniem pewnych właściwości tym zasobom.
+                                Warto jednak najpierw skorzystać z pomocy, wpisując net share /help, żeby zobaczyć, z jakich opcji możemy skorzystać. I tak przykładowo:
+ – NAZWA_UDZIALU=dysk:ścieżka – wprowadzamy nazwę udziału sieciowego i ścieżkę dostępu.
+ – /GRANT:użytkownik(grupa),uprawnienia – nazwa użytkownika lub grupy i uprawnienia.
+ – /USERS:liczba – liczba użytkowników korzystających równocześnie z zasobu.
+ – /REMARK:"tekst" – możemy wprowadzić jakiś opis do zasobu.
+                                W tym przykładzie przejdziemy na dysk d i utworzymy folder o nazwie Spectre. Następnie wprowadzimy polecenie, którym stworzymy udział sieciowy NAZWA_UDZIALU odnoszący się do folderu Spectre, z pełnymi uprawnieniami dla grupy Wszyscy, z którego równocześnie może korzystać 6 użytkowników, z opisem „Udział do ćwiczeń”. Polecenie będzie miało postać:
+ net share NAZWA_UDZIALU=D:\Spectre /GRANT:Wszyscy,full /USERS:6 /REMARK:"Udział do ćwiczeń"
+                                Polecenie net share NAZWA_UDZIALU – wyświetla właściwości utworzonego udziału sieciowego.
+                                Możemy także w trybie graficznym sprawdzić właściwości utworzonego udziału sieciowego.
+                        X. Polecenie net use
+                                Polecenie net use pozwoli nam wykonać czynność mapowania udostępnionych zasobów. Powinno mieć ono następującą postać:
+ net use litera_dysku: \\nazwa_komputera lub jego adres IP\NAZWA_UDZIALU
+ W naszym konkretnym przykładzie polecenie to będzie miało postać:
+ net use X: \\DESKTOP-GTI7S6B\NAZWA_UDZIALU
+ Widzimy, że polecenie zostało wykonane pomyślnie, ale na zaznaczonym obszarze powinna pojawić się ikonka z dyskiem X. Nic takiego jednak się nie wydarzyło, ponieważ wykonaliśmy to polecenie z wiersza poleceń uruchomionego z uprawnieniami administratora. Ta ikonka pojawi się tylko na koncie administratora.
+                                Natomiast jeśli chcemy, aby nasze mapowanie dotyczyło zalogowanego aktualnie użytkownika, musimy uruchomić standardowo wiersz poleceń i wpisać ponownie powyższe polecenie:
+ net use X: \\DESKTOP-GTI7S6B\NAZWA_UDZIALU
+ Teraz wygląda to znacznie lepiej. Należy jednak pamiętać, że polecenie to działa tylko w aktualnej sesji. Jeśli chcemy, żeby na stałe zmapować nasz udział, musimy dodać parametr persistent. Ostatecznie polecenie powinno być następujące:
+ net use X: \\DESKTOP-GTI7S6B\NAZWA_UDZIALU /persistent:yes
+                                Jeśli chcemy usunąć zmapowany dysk, należy użyć polecenia:
+ net use X: /del
+                        XI. Podsumowanie
+                                Oczywiście w tej instrukcji podane są tylko przykładowe parametry działające z poszczególnymi poleceniami. Aby uzyskać więcej informacji na temat stosowanych poleceń, wystarczy skorzystać z pomocy, wpisując np. ping /help.
+ping /help – korzystamy z pomocy do polecenia ping.
+                                Natomości jeśli chcemy uzyskać więcej informacji na temat stosowanych poleceń wraz z ich parametrem, wystarczy wpisać np. net user times /help.
+    © 2009 - 2026 Copyright ZSE Rzeszów | Developed by Maciej Biel & Ireneusz Paździor

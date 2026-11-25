@@ -1,0 +1,2563 @@
+{
+ "StatusRpm": {
+  "menu": "Status",
+  "text": "Status\n\nFirmware Version:\t\n3.16.9 Build 150310 Rel.55295n\n\nHardware Version:\t\nWR841N v10 00000000\n\n\nLAN\nMAC Address:\t\n00-0A-EB-13-09-19\n\nIP Address:\t\n192.168.0.1\n\nSubnet Mask:\t\n255.255.255.0\n\n\nWireless\nWireless Radio:\tEnable\nRemote AP:\tTP-LINK_0919\n\nMode:\t11bgn mixed\nChannel Width:\tAutomatic\nChannel:\tAuto (Current channel 10)\nMAC Address:\t00-0A-EB-13-09-19\nWDS Status:\tDisable\n\nWAN\nMAC Address:\t00-0A-EB-13-09-1A\nIP Address:\t0.0.0.0\tDynamic IP\nSubnet Mask:\t0.0.0.0\t \nDefault Gateway:\t0.0.0.0\tWAN port is unplugged!\nDNS Server:\t0.0.0.0 , 0.0.0.0\n\nTraffic Statistics\n\n\tReceived\tSent\nBytes:\t0\t0\nPackets:\t0\t0\n\n\nSystem Up Time:\t\n0 days 00:38:37\n\t",
+  "inputs": [
+   {
+    "n": "Refresh",
+    "t": "button",
+    "v": "Refresh"
+   }
+  ]
+ },
+ "WzdStartRpm": {
+  "menu": "Quick Setup",
+  "text": "Quick Setup\n\nRun the Quick Setup to manually configure your internet connection and wireless settings.\nTo continue, please click the Next button.\nTo exit, please click the Exit  button.\n\n       ",
+  "inputs": [
+   {
+    "n": "ClientId",
+    "t": "hidden",
+    "v": ""
+   },
+   {
+    "n": "Exit",
+    "t": "button",
+    "v": "Exit"
+   },
+   {
+    "n": "Next",
+    "t": "button",
+    "v": "Next"
+   }
+  ]
+ },
+ "WpsCfgRpm": {
+  "menu": "WPS",
+  "text": "WPS (Wi-Fi Protected Setup)\n \nWPS Status:\tEnabled    \n \nCurrent PIN:\t95699172        \n\t  Disable PIN of this device\n \nAdd a new device:\t\n ",
+  "inputs": [
+   {
+    "n": "EnWps",
+    "t": "submit",
+    "v": "Enable WPS"
+   },
+   {
+    "n": "DisWps",
+    "t": "submit",
+    "v": "Disable WPS"
+   },
+   {
+    "n": "DefPin",
+    "t": "submit",
+    "v": "Restore PIN"
+   },
+   {
+    "n": "NewPin",
+    "t": "submit",
+    "v": "Gen New PIN"
+   },
+   {
+    "n": "pin_lock",
+    "t": "checkbox",
+    "v": "on"
+   },
+   {
+    "n": "NewDev",
+    "t": "button",
+    "v": "Add Device"
+   }
+  ]
+ },
+ "WanCfgRpm": {
+  "menu": "- WAN",
+  "text": "WAN\n\nWAN Connection Type:\t\nDynamic IP\nStatic IP\nPPPoE/Russia PPPoE\nBigPond Cable\nL2TP/Russia L2TP\nPPTP/Russia PPTP\n     \n\nIP Address:\t\n192.168.202.138\n\nSubnet Mask:\t\n255.255.255.0\n\nDefault Gateway:\t\n192.168.202.254\n\n\t         \n\nMTU Size (in bytes):\t  (The default is 1500, do not change unless necessary.)\n\n\t  Use These DNS Servers\nPrimary DNS:\t\nSecondary DNS:\t  (Optional)\n\nHost Name:\t\n\n\t  Get IP with Unicast DHCP (It is usually not required.)\n\n\t",
+  "inputs": [
+   {
+    "n": "wan",
+    "t": "select-one",
+    "v": "0",
+    "opts": [
+     "WAN1"
+    ]
+   },
+   {
+    "n": "wantype",
+    "t": "select-one",
+    "v": "0",
+    "opts": [
+     "Dynamic IP",
+     "Static IP",
+     "PPPoE/Russia PPPoE",
+     "BigPond Cable",
+     "L2TP/Russia L2TP",
+     "PPTP/Russia PPTP"
+    ]
+   },
+   {
+    "n": "Discover",
+    "t": "button",
+    "v": "Detect"
+   },
+   {
+    "n": "Intranet",
+    "t": "checkbox",
+    "v": "2"
+   },
+   {
+    "n": "netRange",
+    "t": "text",
+    "v": ""
+   },
+   {
+    "n": "RenewIp",
+    "t": "submit",
+    "v": "Renew"
+   },
+   {
+    "n": "ReleaseIp",
+    "t": "submit",
+    "v": "Release"
+   },
+   {
+    "n": "mtu",
+    "t": "text",
+    "v": "1500"
+   },
+   {
+    "n": "manual",
+    "t": "checkbox",
+    "v": "2"
+   },
+   {
+    "n": "dnsserver",
+    "t": "text",
+    "v": "10.10.19.2"
+   },
+   {
+    "n": "dnsserver2",
+    "t": "text",
+    "v": "10.10.13.18"
+   },
+   {
+    "n": "hostName",
+    "t": "text",
+    "v": "TL-WR940N_TL-WR941ND"
+   },
+   {
+    "n": "flagMode",
+    "t": "checkbox",
+    "v": "2"
+   },
+   {
+    "n": "Save",
+    "t": "submit",
+    "v": "Save"
+   }
+  ]
+ },
+ "MacCloneCfgRpm": {
+  "menu": "- MAC Clone",
+  "text": "MAC Clone\n\nWAN MAC Address:\t \nYour PC's MAC Address:\t \n\n",
+  "inputs": [
+   {
+    "n": "mac1",
+    "t": "text",
+    "v": "00-0A-EB-13-09-19"
+   },
+   {
+    "n": "RestoreMAC",
+    "t": "button",
+    "v": "Restore Factory MAC"
+   },
+   {
+    "n": "pcmac",
+    "t": "text",
+    "v": "38-83-45-F2-4A-E9"
+   },
+   {
+    "n": "CloneMAC",
+    "t": "button",
+    "v": "Clone MAC Address To"
+   },
+   {
+    "n": "wan",
+    "t": "select-one",
+    "v": "1",
+    "opts": [
+     "WAN1"
+    ]
+   },
+   {
+    "n": "Save",
+    "t": "submit",
+    "v": "Save"
+   }
+  ]
+ },
+ "NetworkCfgRpm": {
+  "menu": "- LAN",
+  "text": "LAN\n\nMAC Address:\t\n00-0A-EB-13-09-19\n\nIP Address:\t\nSubnet Mask:\t\n255.0.0.0\n255.255.0.0\n255.255.255.0\nOther Mask\n\t \nIGMP Proxy:\t\nDisable\nEnable\n\n\tNote:IGMP(Internet Group Management Protocol) works for IPTV multicast stream.The device supports both IGMP proxy with enabled/disabled option and IGMP snooping.\n\n\t\n\t",
+  "inputs": [
+   {
+    "n": "lantype",
+    "t": "select-one",
+    "v": "0",
+    "opts": [
+     "Static IP",
+     "Dynamic IP(DHCP)"
+    ]
+   },
+   {
+    "n": "lanip",
+    "t": "text",
+    "v": "192.168.0.1"
+   },
+   {
+    "n": "lanmask",
+    "t": "select-one",
+    "v": "2",
+    "opts": [
+     "255.0.0.0",
+     "255.255.0.0",
+     "255.255.255.0",
+     "Other Mask"
+    ]
+   },
+   {
+    "n": "inputMask",
+    "t": "text",
+    "v": "255.255.255.0"
+   },
+   {
+    "n": "langw",
+    "t": "text",
+    "v": "0.0.0.0"
+   },
+   {
+    "n": "igmpEn",
+    "t": "select-one",
+    "v": "1",
+    "opts": [
+     "Disable",
+     "Enable"
+    ]
+   },
+   {
+    "n": "Save",
+    "t": "submit",
+    "v": "Save"
+   },
+   {
+    "n": "igmpChanged",
+    "t": "hidden",
+    "v": "0"
+   }
+  ]
+ },
+ "WlanNetworkRpm": {
+  "menu": "- Wireless Settings",
+  "text": "Wireless Settings\n\nWireless Network Name:\t (Also called the SSID)\nRegion:\t\nAlbania\nAlgeria\nArgentina\nArmenia\nAustralia\nAustria\nAzerbaijan\nBahrain\nBelarus\nBelgium\nBelize\nBolivia\nBrazil\nBrunei Darussalam\nBulgaria\nCanada\nChile\nChina\nColombia\nCosta Rica\nCroatia\nCyprus\nCzech Republic\nDenmark\nDominican Republic\nEcuador\nEgypt\nEl Salvador\nEstonia\nFinland\nFrance\nGeorgia\nGermany\nGreece\nGuatemala\nHonduras\nHong Kong\nHungary\nIceland\nIndia\nIndonesia\nIran\nIreland\nIsrael\nItaly\nJapan\nJapan1\nJapan2\nJapan3\nJapan4\nJapan5\nJapan6\nJordan\nKazakhstan\nNorth Korea\nKorea Republic\nKorea Republic3\nKuwait\nLatvia\nLebanon\nLiechtenstein\nLithuania\nLuxembourg\nMacau\nMacedonia\nMalaysia\nMalta\nMexico\nMonaco\nMorocco\nNetherlands\nNew Zealand\nNorway\nOman\nPakistan\nPanama\nPeru\nPhilippines\nPoland\nPortugal\nPuerto Rico\nQatar\nRomania\nRussia\nSaudi Arabia\nSingapore\nSlovak Republic\nSlovenia\nSouth Africa\nSpain\nSweden\nSwitzerland\nSyria\nTaiwan\nThailand\nTrinidad & Tobago\nTunisia\nTurkey\nUkraine\nUnited Arab Emirates\nUnited Kingdom\nUnited States\nUruguay\nUzbekistan\nVenezuela\nViet Nam\nYemen\nZimbabwe\n\nWarning:\n \n\tEnsure you select a correct country to conform local law.\nIncorrect settings may cause interference.\n \t \nMode:\t\n11bg mixed\n11bgn mixed\n\nChannel Width:\t\nAuto\n20MHz\n40MHz\n\nChannel:\t\nAuto\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n\n \t\n \n\t  Enable Wireless Router Radio\n\t  Enable SSID Broadcast\n\t  Enable WDS Bridging\n\n\t",
+  "inputs": [
+   {
+    "n": "ssid1",
+    "t": "text",
+    "v": "TP-LINK_0919"
+   },
+   {
+    "n": "ssid2",
+    "t": "text",
+    "v": "TP-LINK_0919_2"
+   },
+   {
+    "n": "enssid2",
+    "t": "checkbox",
+    "v": "2"
+   },
+   {
+    "n": "ssid3",
+    "t": "text",
+    "v": "TP-LINK_0919_3"
+   },
+   {
+    "n": "enssid3",
+    "t": "checkbox",
+    "v": "2"
+   },
+   {
+    "n": "ssid4",
+    "t": "text",
+    "v": "TP-LINK_0919_4"
+   },
+   {
+    "n": "enssid4",
+    "t": "checkbox",
+    "v": "2"
+   },
+   {
+    "n": "region",
+    "t": "select-one",
+    "v": "101",
+    "opts": [
+     "Albania",
+     "Algeria",
+     "Argentina",
+     "Armenia",
+     "Australia",
+     "Austria",
+     "Azerbaijan",
+     "Bahrain",
+     "Belarus",
+     "Belgium",
+     "Belize",
+     "Bolivia",
+     "Brazil",
+     "Brunei Darussalam",
+     "Bulgaria",
+     "Canada",
+     "Chile",
+     "China",
+     "Colombia",
+     "Costa Rica",
+     "Croatia",
+     "Cyprus",
+     "Czech Republic",
+     "Denmark",
+     "Dominican Republic",
+     "Ecuador",
+     "Egypt",
+     "El Salvador",
+     "Estonia",
+     "Finland",
+     "France",
+     "Georgia",
+     "Germany",
+     "Greece",
+     "Guatemala",
+     "Honduras",
+     "Hong Kong",
+     "Hungary",
+     "Iceland",
+     "India",
+     "Indonesia",
+     "Iran",
+     "Ireland",
+     "Israel",
+     "Italy",
+     "Japan",
+     "Japan1",
+     "Japan2",
+     "Japan3",
+     "Japan4",
+     "Japan5",
+     "Japan6",
+     "Jordan",
+     "Kazakhstan",
+     "North Korea",
+     "Korea Republic",
+     "Korea Republic3",
+     "Kuwait",
+     "Latvia",
+     "Lebanon",
+     "Liechtenstein",
+     "Lithuania",
+     "Luxembourg",
+     "Macau",
+     "Macedonia",
+     "Malaysia",
+     "Malta",
+     "Mexico",
+     "Monaco",
+     "Morocco",
+     "Netherlands",
+     "New Zealand",
+     "Norway",
+     "Oman",
+     "Pakistan",
+     "Panama",
+     "Peru",
+     "Philippines",
+     "Poland",
+     "Portugal",
+     "Puerto Rico",
+     "Qatar",
+     "Romania",
+     "Russia",
+     "Saudi Arabia",
+     "Singapore",
+     "Slovak Republic",
+     "Slovenia",
+     "South Africa",
+     "Spain",
+     "Sweden",
+     "Switzerland",
+     "Syria",
+     "Taiwan",
+     "Thailand",
+     "Trinidad & Tobago",
+     "Tunisia",
+     "Turkey",
+     "Ukraine",
+     "United Arab Emirates",
+     "United Kingdom",
+     "United States",
+     "Uruguay",
+     "Uzbekistan",
+     "Venezuela",
+     "Viet Nam",
+     "Yemen",
+     "Zimbabwe"
+    ]
+   },
+   {
+    "n": "band",
+    "t": "select-one",
+    "v": "0",
+    "opts": [
+     "2.4G",
+     "5G"
+    ]
+   },
+   {
+    "n": "mode",
+    "t": "select-one",
+    "v": "5",
+    "opts": [
+     "11bg mixed",
+     "11bgn mixed"
+    ]
+   },
+   {
+    "n": "chanWidth",
+    "t": "select-one",
+    "v": "2",
+    "opts": [
+     "Auto",
+     "20MHz",
+     "40MHz"
+    ]
+   },
+   {
+    "n": "channel",
+    "t": "select-one",
+    "v": "15",
+    "opts": [
+     "Auto",
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11"
+    ]
+   },
+   {
+    "n": "rate",
+    "t": "select-one",
+    "v": "",
+    "opts": []
+   },
+   {
+    "n": "ap",
+    "t": "checkbox",
+    "v": "1"
+   },
+   {
+    "n": "broadcast",
+    "t": "checkbox",
+    "v": "2"
+   },
+   {
+    "n": "wdsbrl",
+    "t": "checkbox",
+    "v": "2"
+   },
+   {
+    "n": "brlssid",
+    "t": "text",
+    "v": ""
+   },
+   {
+    "n": "brlbssid",
+    "t": "text",
+    "v": ""
+   },
+   {
+    "n": "survey",
+    "t": "button",
+    "v": "Survey"
+   },
+   {
+    "n": "addrType",
+    "t": "select-one",
+    "v": "1",
+    "opts": [
+     "Auto",
+     "WDS1",
+     "WDS2"
+    ]
+   },
+   {
+    "n": "keytype",
+    "t": "select-one",
+    "v": "1",
+    "opts": [
+     "None",
+     "WEP (ASCII)",
+     "WEP (HEX)",
+     "WPA-PSK/WPA2-PSK"
+    ]
+   },
+   {
+    "n": "wepindex",
+    "t": "select-one",
+    "v": "1",
+    "opts": [
+     "1",
+     "2",
+     "3",
+     "4"
+    ]
+   },
+   {
+    "n": "authtype",
+    "t": "select-one",
+    "v": "1",
+    "opts": [
+     "open",
+     "shared"
+    ]
+   },
+   {
+    "n": "keytext",
+    "t": "text",
+    "v": ""
+   },
+   {
+    "n": "Save",
+    "t": "submit",
+    "v": "Save"
+   }
+  ]
+ },
+ "WlanSecurityRpm": {
+  "menu": "- Wireless Security",
+  "text": "Wireless Security\n \n\n   Disable Security\n \n\n  WPA/WPA2 - Personal(Recommended)\nVersion:\t\nAutomatic\nWPA-PSK\nWPA2-PSK\n\nEncryption:\t\nAutomatic\nTKIP\nAES\n\nWireless Password:\t\n \t(You can enter ASCII characters between 8 and 63 or Hexadecimal characters between 8 and 64.)\nGroup Key Update Period:\t  Seconds\n \t(Keep it default if you are not sure, minimum is 30, 0 means no update)\n\n\n  WPA/WPA2 - Enterprise\nVersion:\t\nAutomatic\nWPA\nWPA2\n\nEncryption:\t\nAutomatic\nTKIP\nAES\n\nRadius Server IP:\t\nRadius Port:\t (1-65535, 0 stands for default port 1812)\nRadius Password:\t\nGroup Key Update Period:\t  Seconds\n\n\n  WEP\nType:\t\nAutomatic\nOpen System\nShared Key\n\nWEP Key Format:\t\nHexadecimal\nASCII\n\nKey Selected\tWEP Key\tKey Type\nKey 1: \t\t\nDisabled\n64bit\n128bit\n152bit\n\nKey 2: \t\t\nDisabled\n64bit\n128bit\n152bit\n\nKey 3: \t\t\nDisabled\n64bit\n128bit\n152bit\n\nKey 4: \t\t\nDisabled\n64bit\n128bit\n152bit\n\n\n \n \t",
+  "inputs": [
+   {
+    "n": "vapIdx",
+    "t": "select-one",
+    "v": "",
+    "opts": []
+   },
+   {
+    "n": "secType",
+    "t": "radio",
+    "v": "0"
+   },
+   {
+    "n": "secType",
+    "t": "radio",
+    "v": "3"
+   },
+   {
+    "n": "pskSecOpt",
+    "t": "select-one",
+    "v": "2",
+    "opts": [
+     "Automatic",
+     "WPA-PSK",
+     "WPA2-PSK"
+    ]
+   },
+   {
+    "n": "pskCipher",
+    "t": "select-one",
+    "v": "3",
+    "opts": [
+     "Automatic",
+     "TKIP",
+     "AES"
+    ]
+   },
+   {
+    "n": "pskSecret",
+    "t": "text",
+    "v": "hello-tp-link"
+   },
+   {
+    "n": "interval",
+    "t": "text",
+    "v": "0"
+   },
+   {
+    "n": "secType",
+    "t": "radio",
+    "v": "2"
+   },
+   {
+    "n": "wpaSecOpt",
+    "t": "select-one",
+    "v": "3",
+    "opts": [
+     "Automatic",
+     "WPA",
+     "WPA2"
+    ]
+   },
+   {
+    "n": "wpaCipher",
+    "t": "select-one",
+    "v": "1",
+    "opts": [
+     "Automatic",
+     "TKIP",
+     "AES"
+    ]
+   },
+   {
+    "n": "radiusIp",
+    "t": "text",
+    "v": ""
+   },
+   {
+    "n": "radiusPort",
+    "t": "text",
+    "v": "1812"
+   },
+   {
+    "n": "radiusSecret",
+    "t": "text",
+    "v": ""
+   },
+   {
+    "n": "intervalWpa",
+    "t": "text",
+    "v": "0"
+   },
+   {
+    "n": "secType",
+    "t": "radio",
+    "v": "1"
+   },
+   {
+    "n": "wepSecOpt",
+    "t": "select-one",
+    "v": "3",
+    "opts": [
+     "Automatic",
+     "Open System",
+     "Shared Key"
+    ]
+   },
+   {
+    "n": "keytype",
+    "t": "select-one",
+    "v": "1",
+    "opts": [
+     "Hexadecimal",
+     "ASCII"
+    ]
+   },
+   {
+    "n": "keynum",
+    "t": "radio",
+    "v": "1"
+   },
+   {
+    "n": "key1",
+    "t": "text",
+    "v": ""
+   },
+   {
+    "n": "length1",
+    "t": "select-one",
+    "v": "0",
+    "opts": [
+     "Disabled",
+     "64bit",
+     "128bit",
+     "152bit"
+    ]
+   },
+   {
+    "n": "keynum",
+    "t": "radio",
+    "v": "2"
+   },
+   {
+    "n": "key2",
+    "t": "text",
+    "v": ""
+   },
+   {
+    "n": "length2",
+    "t": "select-one",
+    "v": "0",
+    "opts": [
+     "Disabled",
+     "64bit",
+     "128bit",
+     "152bit"
+    ]
+   },
+   {
+    "n": "keynum",
+    "t": "radio",
+    "v": "3"
+   },
+   {
+    "n": "key3",
+    "t": "text",
+    "v": ""
+   },
+   {
+    "n": "length3",
+    "t": "select-one",
+    "v": "0",
+    "opts": [
+     "Disabled",
+     "64bit",
+     "128bit",
+     "152bit"
+    ]
+   },
+   {
+    "n": "keynum",
+    "t": "radio",
+    "v": "4"
+   },
+   {
+    "n": "key4",
+    "t": "text",
+    "v": ""
+   },
+   {
+    "n": "length4",
+    "t": "select-one",
+    "v": "0",
+    "opts": [
+     "Disabled",
+     "64bit",
+     "128bit",
+     "152bit"
+    ]
+   },
+   {
+    "n": "Save",
+    "t": "submit",
+    "v": "Save"
+   }
+  ]
+ },
+ "WlanMacFilterRpm": {
+  "menu": "- Wireless MAC Filtering",
+  "text": "Wireless MAC Filtering\n\nWireless MAC Filtering:\tDisabled    \n \nFiltering Rules\n               Deny the stations specified by any enabled entries in the list to access.\n               Allow the stations specified by any enabled entries in the list to access.\n \n\nID\tMAC Address\tStatus\tDescription\tModify\n1\tEC-17-2F-F0-32-14\tEnabled\tTom's\tModify Delete\n\n \n         \n \n   ",
+  "inputs": [
+   {
+    "n": "vapIdx",
+    "t": "select-one",
+    "v": "",
+    "opts": []
+   },
+   {
+    "n": "Enfilter",
+    "t": "button",
+    "v": "Enable"
+   },
+   {
+    "n": "Disfilter",
+    "t": "button",
+    "v": "Disable"
+   },
+   {
+    "n": "ExcludeUnlisted",
+    "t": "radio",
+    "v": "1"
+   },
+   {
+    "n": "ExcludeUnlisted",
+    "t": "radio",
+    "v": "2"
+   },
+   {
+    "n": "Add",
+    "t": "button",
+    "v": "Add New..."
+   },
+   {
+    "n": "EnAll",
+    "t": "button",
+    "v": "Enable All"
+   },
+   {
+    "n": "DisAll",
+    "t": "button",
+    "v": "Disable All"
+   },
+   {
+    "n": "DelAll",
+    "t": "button",
+    "v": "Delete All"
+   },
+   {
+    "n": "PrevPage",
+    "t": "button",
+    "v": "Previous"
+   },
+   {
+    "n": "NextPage",
+    "t": "button",
+    "v": "Next"
+   }
+  ]
+ },
+ "WlanAdvRpm": {
+  "menu": "- Wireless Advanced",
+  "text": "Wireless Advanced\n \nOperation Mode:\t\nHigh\nMiddle\nLow\n\nBeacon Interval :\t   (40-1000)\nRTS Threshold:\t   (256-2346)\nFragmentation Threshold:\t   (256-2346)\nDTIM Interval:\t   (1-255)\n \t  Enable WMM\n \t  Enable Short GI\n \t Enable AP Isolation\n \n \t",
+  "inputs": [
+   {
+    "n": "txPower",
+    "t": "select-one",
+    "v": "0",
+    "opts": [
+     "High",
+     "Middle",
+     "Low"
+    ]
+   },
+   {
+    "n": "beaconPeriod",
+    "t": "text",
+    "v": "100"
+   },
+   {
+    "n": "rtsThreshold",
+    "t": "text",
+    "v": "2346"
+   },
+   {
+    "n": "fragThreshold",
+    "t": "text",
+    "v": "2346"
+   },
+   {
+    "n": "dtimInterval",
+    "t": "text",
+    "v": "1"
+   },
+   {
+    "n": "wmm",
+    "t": "checkbox",
+    "v": "2"
+   },
+   {
+    "n": "shortGI",
+    "t": "checkbox",
+    "v": "2"
+   },
+   {
+    "n": "apisolation",
+    "t": "checkbox",
+    "v": "2"
+   },
+   {
+    "n": "Save",
+    "t": "submit",
+    "v": "Save"
+   }
+  ]
+ },
+ "WlanStationRpm": {
+  "menu": "- Wireless Statistics",
+  "text": "Wireless Statistics\n\nCurrent Connected Wireless Stations numbers:\t0    \n\n\n   ",
+  "inputs": [
+   {
+    "n": "vapIdx",
+    "t": "select-one",
+    "v": "",
+    "opts": []
+   },
+   {
+    "n": "Refresh",
+    "t": "button",
+    "v": "Refresh"
+   },
+   {
+    "n": "PrevPage",
+    "t": "button",
+    "v": "Previous"
+   },
+   {
+    "n": "NextPage",
+    "t": "button",
+    "v": "Next"
+   }
+  ]
+ },
+ "LanDhcpServerRpm": {
+  "menu": "- DHCP Settings",
+  "text": "DHCP Settings\n\nDHCP Server:\t Disable  Enable\nStart IP Address:\t\nEnd IP Address:\t\nAddress Lease Time:\t  minutes (1~2880 minutes, the default value is 120)\nDefault Gateway:\t\nDefault Domain:\t\nPrimary DNS:\t\nSecondary DNS:\t\n\n\t",
+  "inputs": [
+   {
+    "n": "dhcpserver",
+    "t": "radio",
+    "v": "0"
+   },
+   {
+    "n": "dhcpserver",
+    "t": "radio",
+    "v": "1"
+   },
+   {
+    "n": "ip1",
+    "t": "text",
+    "v": "192.168.0.100"
+   },
+   {
+    "n": "ip2",
+    "t": "text",
+    "v": "192.168.0.199"
+   },
+   {
+    "n": "Lease",
+    "t": "text",
+    "v": "120"
+   },
+   {
+    "n": "gateway",
+    "t": "text",
+    "v": "192.168.0.1"
+   },
+   {
+    "n": "domain",
+    "t": "text",
+    "v": ""
+   },
+   {
+    "n": "dnsserver",
+    "t": "text",
+    "v": "0.0.0.0"
+   },
+   {
+    "n": "dnsserver2",
+    "t": "text",
+    "v": "0.0.0.0"
+   },
+   {
+    "n": "Save",
+    "t": "submit",
+    "v": "Save"
+   }
+  ]
+ },
+ "AssignedIpAddrListRpm": {
+  "menu": "- DHCP Client List",
+  "text": "DHCP Client List\n\nNo attached client currently.\n\n",
+  "inputs": [
+   {
+    "n": "Refresh",
+    "t": "submit",
+    "v": "Refresh"
+   }
+  ]
+ },
+ "FixMapCfgRpm": {
+  "menu": "- Address Reservation",
+  "text": "Address Reservation\n\n\nID\tMAC Address\tReserved IP Address\tStatus\tModify\n\n\n         \n\n   ",
+  "inputs": [
+   {
+    "n": "Addnew",
+    "t": "button",
+    "v": "Add New..."
+   },
+   {
+    "n": "Enall",
+    "t": "button",
+    "v": "Enable All"
+   },
+   {
+    "n": "Disall",
+    "t": "button",
+    "v": "Disable All"
+   },
+   {
+    "n": "Delall",
+    "t": "button",
+    "v": "Delete All"
+   },
+   {
+    "n": "PrevPage",
+    "t": "button",
+    "v": "Previous"
+   },
+   {
+    "n": "NextPage",
+    "t": "button",
+    "v": "Next"
+   },
+   {
+    "n": "Page",
+    "t": "hidden",
+    "v": "1"
+   }
+  ]
+ },
+ "VirtualServerRpm": {
+  "menu": "- Virtual Servers",
+  "text": "Virtual Servers\n\n\nID\tService Port\tInternal Port\tIP Address\tProtocol\tStatus\tModify\n\n\n         \n\n   ",
+  "inputs": [
+   {
+    "n": "Addnew",
+    "t": "button",
+    "v": "Add New..."
+   },
+   {
+    "n": "Enall",
+    "t": "button",
+    "v": "Enable All"
+   },
+   {
+    "n": "Disall",
+    "t": "button",
+    "v": "Disable All"
+   },
+   {
+    "n": "Delall",
+    "t": "button",
+    "v": "Delete All"
+   },
+   {
+    "n": "PrevPage",
+    "t": "button",
+    "v": "Previous"
+   },
+   {
+    "n": "NextPage",
+    "t": "button",
+    "v": "Next"
+   },
+   {
+    "n": "Page",
+    "t": "hidden",
+    "v": "1"
+   }
+  ]
+ },
+ "SpecialAppRpm": {
+  "menu": "- Port Triggering",
+  "text": "Port Triggering\n\n\nID\tTrigger Port\tTrigger Protocol\tIncoming Ports\tIncoming Protocol\tStatus\tModify\n\n\n         \n\n   ",
+  "inputs": [
+   {
+    "n": "Addnew",
+    "t": "button",
+    "v": "Add New..."
+   },
+   {
+    "n": "Enall",
+    "t": "button",
+    "v": "Enable All"
+   },
+   {
+    "n": "Disall",
+    "t": "button",
+    "v": "Disable All"
+   },
+   {
+    "n": "Delall",
+    "t": "button",
+    "v": "Delete All"
+   },
+   {
+    "n": "PrevPage",
+    "t": "button",
+    "v": "Previous"
+   },
+   {
+    "n": "NextPage",
+    "t": "button",
+    "v": "Next"
+   },
+   {
+    "n": "Page",
+    "t": "hidden",
+    "v": "1"
+   }
+  ]
+ },
+ "DMZRpm": {
+  "menu": "- DMZ",
+  "text": "DMZ\n\nCurrent DMZ Status:\t Enable  Disable\nDMZ Host IP Address:\t\n\n",
+  "inputs": [
+   {
+    "n": "enable",
+    "t": "radio",
+    "v": "1"
+   },
+   {
+    "n": "enable",
+    "t": "radio",
+    "v": "0"
+   },
+   {
+    "n": "ipAddr",
+    "t": "text",
+    "v": ""
+   },
+   {
+    "n": "netmask",
+    "t": "text",
+    "v": "255.255.255.0"
+   },
+   {
+    "n": "Save",
+    "t": "submit",
+    "v": "Save"
+   }
+  ]
+ },
+ "UpnpCfgRpm": {
+  "menu": "- UPnP",
+  "text": "UPnP\n\n\nCurrent UPnP Status:\t\nEnabled\n\t\n\n\nCurrent UPnP Settings List\n\nID\tApp Description\tExternal Port\tProtocol\tInternal Port\tIP Address\tStatus\n\n\n",
+  "inputs": [
+   {
+    "n": "upnpenb",
+    "t": "hidden",
+    "v": ""
+   },
+   {
+    "n": "Upnpdisable",
+    "t": "submit",
+    "v": "Disable"
+   },
+   {
+    "n": "Upnpenable",
+    "t": "submit",
+    "v": "Enable"
+   },
+   {
+    "n": "Refresh",
+    "t": "button",
+    "v": "Refresh"
+   }
+  ]
+ },
+ "BasicSecurityRpm": {
+  "menu": "- Basic Security",
+  "text": "Basic Security\n\nFirewall\nSPI Firewall:\t Enable  Disable\n\nVPN\nPPTP Passthrough:\t Enable  Disable\nL2TP Passthrough:\t Enable  Disable\nIPSec Passthrough:\t Enable  Disable\n\nALG\nFTP ALG:\t Enable  Disable\nTFTP ALG:\t Enable  Disable\nH323 ALG:\t Enable  Disable\nRTSP ALG:\t Enable  Disable\nSIP ALG:\t Enable  Disable\n\n\t",
+  "inputs": [
+   {
+    "n": "spi",
+    "t": "radio",
+    "v": "1"
+   },
+   {
+    "n": "spi",
+    "t": "radio",
+    "v": "0"
+   },
+   {
+    "n": "pptp_passthrough",
+    "t": "radio",
+    "v": "1"
+   },
+   {
+    "n": "pptp_passthrough",
+    "t": "radio",
+    "v": "0"
+   },
+   {
+    "n": "l2tp_passthrough",
+    "t": "radio",
+    "v": "1"
+   },
+   {
+    "n": "l2tp_passthrough",
+    "t": "radio",
+    "v": "0"
+   },
+   {
+    "n": "ipsec_passthrough",
+    "t": "radio",
+    "v": "1"
+   },
+   {
+    "n": "ipsec_passthrough",
+    "t": "radio",
+    "v": "0"
+   },
+   {
+    "n": "ftp_alg",
+    "t": "radio",
+    "v": "1"
+   },
+   {
+    "n": "ftp_alg",
+    "t": "radio",
+    "v": "0"
+   },
+   {
+    "n": "tftp_alg",
+    "t": "radio",
+    "v": "1"
+   },
+   {
+    "n": "tftp_alg",
+    "t": "radio",
+    "v": "0"
+   },
+   {
+    "n": "h323_alg",
+    "t": "radio",
+    "v": "1"
+   },
+   {
+    "n": "h323_alg",
+    "t": "radio",
+    "v": "0"
+   },
+   {
+    "n": "rtsp_alg",
+    "t": "radio",
+    "v": "1"
+   },
+   {
+    "n": "rtsp_alg",
+    "t": "radio",
+    "v": "0"
+   },
+   {
+    "n": "sip_alg",
+    "t": "radio",
+    "v": "1"
+   },
+   {
+    "n": "sip_alg",
+    "t": "radio",
+    "v": "0"
+   },
+   {
+    "n": "Save",
+    "t": "button",
+    "v": "Save"
+   }
+  ]
+ },
+ "AdvScrRpm": {
+  "menu": "- Advanced Security",
+  "text": "Advanced Security\n\n\nPackets Statistics Interval (5 ~ 60):\t\n5\n10\n15\n20\n25\n30\n35\n40\n45\n50\n55\n60\n Seconds\n\nDoS Protection:\tDisable  Enable\n\n Enable ICMP-FLOOD Attack Filtering\nICMP-FLOOD Packets Threshold (5 ~ 3600):\t Packets/Secs\n\n Enable UDP-FLOOD Filtering\nUDP-FLOOD Packets Threshold (5 ~ 3600):\tPackets/Secs\n\n Enable TCP-SYN-FLOOD Attack Filtering\nTCP-SYN-FLOOD Packets Threshold (5 ~ 3600):\tPackets/Secs\n\n Ignore Ping Packet from WAN Port to Router\n Forbid Ping Packet from LAN Port to Router\n\n   ",
+  "inputs": [
+   {
+    "n": "interval",
+    "t": "select-one",
+    "v": "10",
+    "opts": [
+     "5",
+     "10",
+     "15",
+     "20",
+     "25",
+     "30",
+     "35",
+     "40",
+     "45",
+     "50",
+     "55",
+     "60"
+    ]
+   },
+   {
+    "n": "dosAttack",
+    "t": "radio",
+    "v": "1"
+   },
+   {
+    "n": "dosAttack",
+    "t": "radio",
+    "v": "2"
+   },
+   {
+    "n": "bIcmpFlood",
+    "t": "checkbox",
+    "v": "2"
+   },
+   {
+    "n": "usIcmpFlood",
+    "t": "text",
+    "v": "50"
+   },
+   {
+    "n": "bUdpFlood",
+    "t": "checkbox",
+    "v": "2"
+   },
+   {
+    "n": "usUdpFlood",
+    "t": "text",
+    "v": "500"
+   },
+   {
+    "n": "bTcpSynFlood",
+    "t": "checkbox",
+    "v": "2"
+   },
+   {
+    "n": "usTcpSynFlood",
+    "t": "text",
+    "v": "50"
+   },
+   {
+    "n": "ping",
+    "t": "checkbox",
+    "v": "2"
+   },
+   {
+    "n": "lanPing",
+    "t": "checkbox",
+    "v": "2"
+   },
+   {
+    "n": "Save",
+    "t": "submit",
+    "v": "Save"
+   },
+   {
+    "n": "Showhostlist",
+    "t": "button",
+    "v": "Blocked DoS Host List"
+   }
+  ]
+ },
+ "LocalManageControlRpm": {
+  "menu": "- Local Management",
+  "text": "Local Management\n\n\nManagement Rules\n               All the PCs on the LAN are allowed to access the Router's Web-Based Utility\n               Only the PCs listed can browse the built-in web pages to perform Administrator tasks\nMAC 1:\t\nMAC 2:\t\nMAC 3:\t\nMAC 4:\t\nYour PC's MAC Address:\t \n\n \n",
+  "inputs": [
+   {
+    "n": "enableWhitelist",
+    "t": "radio",
+    "v": "0"
+   },
+   {
+    "n": "enableWhitelist",
+    "t": "radio",
+    "v": "1"
+   },
+   {
+    "n": "mac0",
+    "t": "text",
+    "v": ""
+   },
+   {
+    "n": "mac1",
+    "t": "text",
+    "v": ""
+   },
+   {
+    "n": "mac2",
+    "t": "text",
+    "v": ""
+   },
+   {
+    "n": "mac3",
+    "t": "text",
+    "v": ""
+   },
+   {
+    "n": "pcmac",
+    "t": "text",
+    "v": "38-83-45-F2-4A-E9"
+   },
+   {
+    "n": "addmac",
+    "t": "button",
+    "v": "Add"
+   },
+   {
+    "n": "Save",
+    "t": "submit",
+    "v": "Save"
+   }
+  ]
+ },
+ "ManageControlRpm": {
+  "menu": "- Remote Management",
+  "text": "Remote Management\n\nWeb Management Port:\t\nRemote Management IP Address:\t (Enter 255.255.255.255 for all)\n\n\t",
+  "inputs": [
+   {
+    "n": "port",
+    "t": "text",
+    "v": "80"
+   },
+   {
+    "n": "ip",
+    "t": "text",
+    "v": "0.0.0.0"
+   },
+   {
+    "n": "Save",
+    "t": "submit",
+    "v": "Save"
+   }
+  ]
+ },
+ "ParentCtrlRpm": {
+  "menu": "Parental Control",
+  "text": "Parental Control Settings\n\n\nNon-Parental PCs not listed will not be able to access the Internet.\nParental Control:\t Disable    Enable\nMAC Address of Parental PC:\t\nMAC Address of Your PC:\t \n\t\n\n\n\nID\tMAC address\tWebsite Description\tSchedule\tStatus\tModify\n1\t6C-62-6D-F7-32-0C\tgoogle\tPermanent\t\tEdit Delete\n\n   \n\n      Current No. \n1\n Page",
+  "inputs": [
+   {
+    "n": "ctrl_enable",
+    "t": "radio",
+    "v": "0"
+   },
+   {
+    "n": "ctrl_enable",
+    "t": "radio",
+    "v": "1"
+   },
+   {
+    "n": "parent_mac_addr",
+    "t": "text",
+    "v": ""
+   },
+   {
+    "n": "man_mac",
+    "t": "text",
+    "v": "38-83-45-F2-4A-E9"
+   },
+   {
+    "n": "writeMac",
+    "t": "button",
+    "v": "Copy To Above"
+   },
+   {
+    "n": "save",
+    "t": "button",
+    "v": "Save"
+   },
+   {
+    "n": "enable0",
+    "t": "checkbox",
+    "v": "on"
+   },
+   {
+    "n": "Add",
+    "t": "button",
+    "v": "Add New..."
+   },
+   {
+    "n": "EnAll",
+    "t": "button",
+    "v": "Enable All"
+   },
+   {
+    "n": "DisAll",
+    "t": "button",
+    "v": "Disable All"
+   },
+   {
+    "n": "DelAll",
+    "t": "button",
+    "v": "Delete All"
+   },
+   {
+    "n": "PrevPage",
+    "t": "button",
+    "v": "Previous"
+   },
+   {
+    "n": "NextPage",
+    "t": "button",
+    "v": "Next"
+   },
+   {
+    "n": "selPage",
+    "t": "select-one",
+    "v": "1",
+    "opts": [
+     "1"
+    ]
+   },
+   {
+    "n": "Page",
+    "t": "hidden",
+    "v": "1"
+   }
+  ]
+ },
+ "AccessCtrlAccessRulesRpm": {
+  "menu": "- Rule",
+  "text": "Access Control Rule Management\n\n\n Enable Internet Access Control\n \n   Default Filter Policy\n Allow the packets specified by any enabled access control policy to pass through the Router\n Deny the packets specified by any enabled access control policy to pass through the Router\n\n\n\n\nID\tRule Name\tHost\tTarget\tSchedule\tStatus\tModify\n1\ttplink\ttplink\tAccess\ttplink\t\tEdit Delete\n\n\n\n \n   \n \n\t ID    To ID  \n\n\n      Current No. \n1\n Page",
+  "inputs": [
+   {
+    "n": "enableCtrl",
+    "t": "checkbox",
+    "v": "1"
+   },
+   {
+    "n": "defRule",
+    "t": "radio",
+    "v": "1"
+   },
+   {
+    "n": "defRule",
+    "t": "radio",
+    "v": "0"
+   },
+   {
+    "n": "save",
+    "t": "button",
+    "v": "Save"
+   },
+   {
+    "n": "enable0",
+    "t": "checkbox",
+    "v": "on"
+   },
+   {
+    "n": "Setup",
+    "t": "button",
+    "v": "Setup Wizard"
+   },
+   {
+    "n": "Add",
+    "t": "button",
+    "v": "Add New..."
+   },
+   {
+    "n": "EnAll",
+    "t": "button",
+    "v": "Enable All"
+   },
+   {
+    "n": "DisAll",
+    "t": "button",
+    "v": "Disable All"
+   },
+   {
+    "n": "DelAll",
+    "t": "button",
+    "v": "Delete All"
+   },
+   {
+    "n": "MoveTo",
+    "t": "button",
+    "v": "Move"
+   },
+   {
+    "n": "SrcIndex",
+    "t": "text",
+    "v": ""
+   },
+   {
+    "n": "DestIndex",
+    "t": "text",
+    "v": ""
+   },
+   {
+    "n": "PrevPage",
+    "t": "button",
+    "v": "Previous"
+   },
+   {
+    "n": "NextPage",
+    "t": "button",
+    "v": "Next"
+   },
+   {
+    "n": "selPage",
+    "t": "select-one",
+    "v": "1",
+    "opts": [
+     "1"
+    ]
+   },
+   {
+    "n": "Page",
+    "t": "hidden",
+    "v": "1"
+   }
+  ]
+ },
+ "AccessCtrlHostsListsRpm": {
+  "menu": "- Host",
+  "text": "Host Settings\n\n\nID\tHost Description\tInformation\tModify\n1\ttplink\tIP: 192.168.0.115 - 192.168.0.155 \tEdit Delete\n\n\n \n\n\n      Current No. \n1\n Page",
+  "inputs": [
+   {
+    "n": "Add",
+    "t": "button",
+    "v": "Add New..."
+   },
+   {
+    "n": "DelAll",
+    "t": "button",
+    "v": "Delete All"
+   },
+   {
+    "n": "PrevPage",
+    "t": "button",
+    "v": "Previous"
+   },
+   {
+    "n": "NextPage",
+    "t": "button",
+    "v": "Next"
+   },
+   {
+    "n": "selPage",
+    "t": "select-one",
+    "v": "1",
+    "opts": [
+     "1"
+    ]
+   },
+   {
+    "n": "Page",
+    "t": "hidden",
+    "v": "1"
+   }
+  ]
+ },
+ "AccessCtrlAccessTargetsRpm": {
+  "menu": "- Target",
+  "text": "Target Settings\n\n\nID\tTarget Description\tInformation\tModify\n1\tAccess\twww.google.com \tEdit Delete\n\n\n \n\n\n      Current No. \n1\n Page",
+  "inputs": [
+   {
+    "n": "Add",
+    "t": "button",
+    "v": "Add New..."
+   },
+   {
+    "n": "DelAll",
+    "t": "button",
+    "v": "Delete All"
+   },
+   {
+    "n": "PrevPage",
+    "t": "button",
+    "v": "Previous"
+   },
+   {
+    "n": "NextPage",
+    "t": "button",
+    "v": "Next"
+   },
+   {
+    "n": "selPage",
+    "t": "select-one",
+    "v": "1",
+    "opts": [
+     "1"
+    ]
+   },
+   {
+    "n": "Page",
+    "t": "hidden",
+    "v": "1"
+   }
+  ]
+ },
+ "AccessCtrlTimeSchedRpm": {
+  "menu": "- Schedule",
+  "text": "Schedule Settings\n\n\nID\tSchedule Description\tDay\tTime\tModify\n1\ttplink\t Wed Thu Fri \t00:00 - 24:00\tEdit Delete\n \n\n\n      Current No. \n1\n Page",
+  "inputs": [
+   {
+    "n": "Add",
+    "t": "button",
+    "v": "Add New..."
+   },
+   {
+    "n": "DelAll",
+    "t": "button",
+    "v": "Delete All"
+   },
+   {
+    "n": "PrevPage",
+    "t": "button",
+    "v": "Previous"
+   },
+   {
+    "n": "NextPage",
+    "t": "button",
+    "v": "Next"
+   },
+   {
+    "n": "selPage",
+    "t": "select-one",
+    "v": "1",
+    "opts": [
+     "1"
+    ]
+   },
+   {
+    "n": "Page",
+    "t": "hidden",
+    "v": "1"
+   }
+  ]
+ },
+ "StaticRouteTableRpm": {
+  "menu": "- Static Routing List",
+  "text": "Static Routing\n\n\nID\tDestination Network\tSubnet Mask\tDefault Gateway\tStatus\tModify\n\n\n         \n\n   ",
+  "inputs": [
+   {
+    "n": "Addnew",
+    "t": "button",
+    "v": "Add New..."
+   },
+   {
+    "n": "Enall",
+    "t": "button",
+    "v": "Enable All"
+   },
+   {
+    "n": "Disall",
+    "t": "button",
+    "v": "Disable All"
+   },
+   {
+    "n": "Delall",
+    "t": "button",
+    "v": "Delete All"
+   },
+   {
+    "n": "PrevPage",
+    "t": "button",
+    "v": "Previous"
+   },
+   {
+    "n": "NextPage",
+    "t": "button",
+    "v": "Next"
+   },
+   {
+    "n": "Page",
+    "t": "hidden",
+    "v": "1"
+   }
+  ]
+ },
+ "SysRouteTableRpm": {
+  "menu": "- System Routing Table",
+  "text": "System Routing Table\n\n\nID\tDestination Network\tSubnet Mask\tGateway\tInterface\n1\t192.168.0.0\t255.255.255.0\t0.0.0.0\tLAN & WLAN\n2\t239.0.0.0\t255.0.0.0\t0.0.0.0\tLAN & WLAN\n\n\n",
+  "inputs": [
+   {
+    "n": "Refresh",
+    "t": "submit",
+    "v": "Refresh"
+   }
+  ]
+ },
+ "QoSCfgRpm": {
+  "menu": "- Control Settings",
+  "text": "Bandwidth Control Settings\n\n\nEnable Bandwidth Control:\t\nLine Type:\t   ADSL         Other\nEgress Bandwidth:\t   Kbps\nIngress Bandwidth:\t   Kbps\n\n\n    ",
+  "inputs": [
+   {
+    "n": "QoSCtrl",
+    "t": "checkbox",
+    "v": "1"
+   },
+   {
+    "n": "userWanType",
+    "t": "radio",
+    "v": "0"
+   },
+   {
+    "n": "userWanType",
+    "t": "radio",
+    "v": "1"
+   },
+   {
+    "n": "up_bandWidth",
+    "t": "text",
+    "v": "512"
+   },
+   {
+    "n": "down_bandWidth",
+    "t": "text",
+    "v": "2048"
+   },
+   {
+    "n": "Save",
+    "t": "submit",
+    "v": "Save"
+   }
+  ]
+ },
+ "QoSRuleListRpm": {
+  "menu": "- Rule List",
+  "text": "Bandwidth Control Rule List\n\n\nID\tDescription\tEgress Bandwidth(Kbps)\tIngress Bandwidth(Kbps)\tEnable\tModify\nMin\tMax\tMin\tMax\nThe current list is empty.\n\n\n   \n\n      Current No. \n1\n Page",
+  "inputs": [
+   {
+    "n": "Add",
+    "t": "button",
+    "v": "Add New..."
+   },
+   {
+    "n": "DelAll",
+    "t": "button",
+    "v": "Delete All"
+   },
+   {
+    "n": "PrevPage",
+    "t": "button",
+    "v": "Previous"
+   },
+   {
+    "n": "NextPage",
+    "t": "button",
+    "v": "Next"
+   },
+   {
+    "n": "Page",
+    "t": "select-one",
+    "v": "1",
+    "opts": [
+     "1"
+    ]
+   }
+  ]
+ },
+ "LanArpBindingRpm": {
+  "menu": "- Binding Settings",
+  "text": "Binding Settings\n\n\nARP Binding:\t Disable  Enable\n\t\n\n\n\nID\tMAC Address\tIP Address\tBind\tModify\t \nThe list is empty\n\n              \n\n      Current No. \n1\n   Page",
+  "inputs": [
+   {
+    "n": "arpServer",
+    "t": "radio",
+    "v": "0"
+   },
+   {
+    "n": "arpServer",
+    "t": "radio",
+    "v": "1"
+   },
+   {
+    "n": "Save",
+    "t": "button",
+    "v": "Save"
+   },
+   {
+    "n": "Addnew",
+    "t": "button",
+    "v": "Add New..."
+   },
+   {
+    "n": "Enall",
+    "t": "button",
+    "v": "Enable All"
+   },
+   {
+    "n": "Disall",
+    "t": "button",
+    "v": "Disable All"
+   },
+   {
+    "n": "Delall",
+    "t": "button",
+    "v": "Delete All"
+   },
+   {
+    "n": "Find",
+    "t": "button",
+    "v": "Find Item"
+   },
+   {
+    "n": "PrevPage",
+    "t": "button",
+    "v": "Previous"
+   },
+   {
+    "n": "NextPage",
+    "t": "button",
+    "v": "Next"
+   },
+   {
+    "n": "selPage",
+    "t": "select-one",
+    "v": "1",
+    "opts": [
+     "1"
+    ]
+   },
+   {
+    "n": "Page",
+    "t": "hidden",
+    "v": "1"
+   }
+  ]
+ },
+ "LanArpBindingListRpm": {
+  "menu": "- ARP List",
+  "text": "ARP List\n\n\nID\tMAC Address\tIP Address\tStatus\tConfigure\t \n1\t38-83-45-F2-4A-E9\t192.168.0.100\tUnbound\tLoad Delete\n\n\n        ",
+  "inputs": [
+   {
+    "n": "Capture",
+    "t": "submit",
+    "v": "Bind All"
+   },
+   {
+    "n": "Resall",
+    "t": "submit",
+    "v": "Load All"
+   },
+   {
+    "n": "Refresh",
+    "t": "submit",
+    "v": "Refresh"
+   }
+  ]
+ },
+ "DdnsAddRpm": {
+  "menu": "Dynamic DNS",
+  "text": "DDNS\n\nService Provider:\t\nComexe ( www.comexe.cn )\nDyndns ( dyn.com/dns )\nNo-IP ( www.noip.com )\n  Go to register...\n\nUser Name:\t\nPassword:\t\nDomain Name:\t\n\n\t  Enable DDNS\nConnection Status:\t\nDDNS not launching!\n\n\t   \n\n",
+  "inputs": [
+   {
+    "n": "provider",
+    "t": "select-one",
+    "v": "3",
+    "opts": [
+     "Comexe ( www.comexe.cn )",
+     "Dyndns ( dyn.com/dns )",
+     "No-IP ( www.noip.com )"
+    ]
+   },
+   {
+    "n": "username",
+    "t": "text",
+    "v": ""
+   },
+   {
+    "n": "pwd",
+    "t": "password",
+    "v": ""
+   },
+   {
+    "n": "cliUrl",
+    "t": "text",
+    "v": ""
+   },
+   {
+    "n": "EnDdns",
+    "t": "checkbox",
+    "v": "2"
+   },
+   {
+    "n": "Login",
+    "t": "submit",
+    "v": "Login"
+   },
+   {
+    "n": "Logout",
+    "t": "submit",
+    "v": "Logout"
+   },
+   {
+    "n": "Save",
+    "t": "submit",
+    "v": "Save"
+   }
+  ]
+ },
+ "DateTimeCfgRpm": {
+  "menu": "- Time Settings",
+  "text": "Time Settings\n\nTime zone:\t\n(GMT-12:00) Eniwetok,Kwajalein\n(GMT-11:00) Midway Island,Samoa\n(GMT-10:00) Hawaii\n(GMT-09:00) Alaska\n(GMT-08:00) Pacific Time\n(GMT-07:00) Mountain Time (US Canada)\n(GMT-06:00) Central Time (US Canada)\n(GMT-05:00) Eastern Time (US Canada)\n(GMT-04:30) Caracas\n(GMT-04:00) Atlantic Time (Canada)\n(GMT-03:30) Newfoundland\n(GMT-03:00) Brasilia, Buenos Aires\n(GMT-02:00) Mid-Atlantic\n(GMT-01:00) Azores, Cape Verde Is\n(GMT) Greenwich Mean Time, Dublin, London\n(GMT+01:00) Berlin, Stockholm, Rome, Bern, Brussels\n(GMT+02:00) Athens, Helsinki, Eastern Europe, Israel\n(GMT+03:00) Baghdad, Kuwait, Nairobi, Riyadh, Moscow\n(GMT+03:30) Teheran\n(GMT+04:00) Abu Dhabi, Muscat, Kazan, Volgograd\n(GMT+04:30) Kabul\n(GMT+05:00) Islamabad, Karachi, Ekaterinburg\n(GMT+05:30) Madras, Calcutta, Bombay, New Delhi\n(GMT+05:45) Katmandu\n(GMT+06:00) Alma-Ata, Dhaka\n(GMT+06:30) Rangoon\n(GMT+07:00) Bangkok, Jakarta, Hanoi\n(GMT+08:00) Beijing, Hong Kong, Perth, Singapore\n(GMT+09:00) Tokyo, Osaka, Sapporo, Seoul, Yakutsk\n(GMT+09:30) Adelaide\n(GMT+10:00) Brisbane, Canberra, Melbourne, Sydney\n(GMT+11:00) Magadan, Solomon Is., New Caledonia\n(GMT+12:00) Fiji, Kamchatka, Auckland\n(GMT+13:00) Nuku'alofa\n\nDate:\t            (MM/DD/YY)\nTime:\t             (HH/MM/SS)\nNTP Server 1:\t (Optional)\nNTP Server 2:\t (Optional)\n\t\n\n\t\nEnable DaylightSaving\n\nStart:\t2015  \nJan\nFeb\nMar\nApr\nMay\nJun\nJul\nAug\nSep\nOct\nNov\nDec\n \nFirst\n2nd\n3rd\n4th\nLast\n \nMon\nTue\nWed\nThu\nFri\nSat\nSun\n \n0am\n1am\n2am\n3am\n4am\n5am\n6am\n7am\n8am\n9am\n10am\n11am\n12pm\n1pm\n2pm\n3pm\n4pm\n5pm\n6pm\n7pm\n8pm\n9pm\n10pm\n11pm\n\nEnd:\t2015  \nJan\nFeb\nMar\nApr\nMay\nJun\nJul\nAug\nSep\nOct\nNov\nDec\n \nFirst\n2nd\n3rd\n4th\nLast\n \nMon\nTue\nWed\nThu\nFri\nSat\nSun\n \n0am\n1am\n2am\n3am\n4am\n5am\n6am\n7am\n8am\n9am\n10am\n11am\n12pm\n1pm\n2pm\n3pm\n4pm\n5pm\n6pm\n7pm\n8pm\n9pm\n10pm\n11pm\n\nDaylight Saving Status:\t\n\n\tNote: Click the \"GET GMT\" to update the time from the internet with the pre-defined servers\n\nor entering the customized server (IP Address or Domain Name) in the above frames.\n\n\t",
+  "inputs": [
+   {
+    "n": "timezone",
+    "t": "select-one",
+    "v": "240",
+    "opts": [
+     "(GMT-12:00) Eniwetok,Kwajalein",
+     "(GMT-11:00) Midway Island,Samoa",
+     "(GMT-10:00) Hawaii",
+     "(GMT-09:00) Alaska",
+     "(GMT-08:00) Pacific Time",
+     "(GMT-07:00) Mountain Time (US Canada)",
+     "(GMT-06:00) Central Time (US Canada)",
+     "(GMT-05:00) Eastern Time (US Canada)",
+     "(GMT-04:30) Caracas",
+     "(GMT-04:00) Atlantic Time (Canada)",
+     "(GMT-03:30) Newfoundland",
+     "(GMT-03:00) Brasilia, Buenos Aires",
+     "(GMT-02:00) Mid-Atlantic",
+     "(GMT-01:00) Azores, Cape Verde Is",
+     "(GMT) Greenwich Mean Time, Dublin, London",
+     "(GMT+01:00) Berlin, Stockholm, Rome, Bern, Brussels",
+     "(GMT+02:00) Athens, Helsinki, Eastern Europe, Israel",
+     "(GMT+03:00) Baghdad, Kuwait, Nairobi, Riyadh, Moscow",
+     "(GMT+03:30) Teheran",
+     "(GMT+04:00) Abu Dhabi, Muscat, Kazan, Volgograd",
+     "(GMT+04:30) Kabul",
+     "(GMT+05:00) Islamabad, Karachi, Ekaterinburg",
+     "(GMT+05:30) Madras, Calcutta, Bombay, New Delhi",
+     "(GMT+05:45) Katmandu",
+     "(GMT+06:00) Alma-Ata, Dhaka",
+     "(GMT+06:30) Rangoon",
+     "(GMT+07:00) Bangkok, Jakarta, Hanoi",
+     "(GMT+08:00) Beijing, Hong Kong, Perth, Singapore",
+     "(GMT+09:00) Tokyo, Osaka, Sapporo, Seoul, Yakutsk",
+     "(GMT+09:30) Adelaide",
+     "(GMT+10:00) Brisbane, Canberra, Melbourne, Sydney",
+     "(GMT+11:00) Magadan, Solomon Is., New Caledonia",
+     "(GMT+12:00) Fiji, Kamchatka, Auckland",
+     "(GMT+13:00) Nuku'alofa"
+    ]
+   },
+   {
+    "n": "month",
+    "t": "text",
+    "v": "1"
+   },
+   {
+    "n": "day",
+    "t": "text",
+    "v": "1"
+   },
+   {
+    "n": "year",
+    "t": "text",
+    "v": "2015"
+   },
+   {
+    "n": "hour",
+    "t": "text",
+    "v": "16"
+   },
+   {
+    "n": "minute",
+    "t": "text",
+    "v": "21"
+   },
+   {
+    "n": "second",
+    "t": "text",
+    "v": "16"
+   },
+   {
+    "n": "ntpA",
+    "t": "text",
+    "v": "0.0.0.0"
+   },
+   {
+    "n": "ntpB",
+    "t": "text",
+    "v": "0.0.0.0"
+   },
+   {
+    "n": "isTimeChanged",
+    "t": "hidden",
+    "v": "0"
+   },
+   {
+    "n": "GetGmtTime",
+    "t": "submit",
+    "v": "Get GMT"
+   },
+   {
+    "n": "DaylightSaving",
+    "t": "checkbox",
+    "v": "on"
+   },
+   {
+    "n": "start_month",
+    "t": "select-one",
+    "v": "2",
+    "opts": [
+     "Jan",
+     "Feb",
+     "Mar",
+     "Apr",
+     "May",
+     "Jun",
+     "Jul",
+     "Aug",
+     "Sep",
+     "Oct",
+     "Nov",
+     "Dec"
+    ]
+   },
+   {
+    "n": "start_count",
+    "t": "select-one",
+    "v": "2",
+    "opts": [
+     "First",
+     "2nd",
+     "3rd",
+     "4th",
+     "Last"
+    ]
+   },
+   {
+    "n": "start_week",
+    "t": "select-one",
+    "v": "0",
+    "opts": [
+     "Mon",
+     "Tue",
+     "Wed",
+     "Thu",
+     "Fri",
+     "Sat",
+     "Sun"
+    ]
+   },
+   {
+    "n": "start_hour",
+    "t": "select-one",
+    "v": "2",
+    "opts": [
+     "0am",
+     "1am",
+     "2am",
+     "3am",
+     "4am",
+     "5am",
+     "6am",
+     "7am",
+     "8am",
+     "9am",
+     "10am",
+     "11am",
+     "12pm",
+     "1pm",
+     "2pm",
+     "3pm",
+     "4pm",
+     "5pm",
+     "6pm",
+     "7pm",
+     "8pm",
+     "9pm",
+     "10pm",
+     "11pm"
+    ]
+   },
+   {
+    "n": "end_month",
+    "t": "select-one",
+    "v": "10",
+    "opts": [
+     "Jan",
+     "Feb",
+     "Mar",
+     "Apr",
+     "May",
+     "Jun",
+     "Jul",
+     "Aug",
+     "Sep",
+     "Oct",
+     "Nov",
+     "Dec"
+    ]
+   },
+   {
+    "n": "end_count",
+    "t": "select-one",
+    "v": "1",
+    "opts": [
+     "First",
+     "2nd",
+     "3rd",
+     "4th",
+     "Last"
+    ]
+   },
+   {
+    "n": "end_week",
+    "t": "select-one",
+    "v": "0",
+    "opts": [
+     "Mon",
+     "Tue",
+     "Wed",
+     "Thu",
+     "Fri",
+     "Sat",
+     "Sun"
+    ]
+   },
+   {
+    "n": "end_hour",
+    "t": "select-one",
+    "v": "3",
+    "opts": [
+     "0am",
+     "1am",
+     "2am",
+     "3am",
+     "4am",
+     "5am",
+     "6am",
+     "7am",
+     "8am",
+     "9am",
+     "10am",
+     "11am",
+     "12pm",
+     "1pm",
+     "2pm",
+     "3pm",
+     "4pm",
+     "5pm",
+     "6pm",
+     "7pm",
+     "8pm",
+     "9pm",
+     "10pm",
+     "11pm"
+    ]
+   },
+   {
+    "n": "isDaylightSavingChanged",
+    "t": "hidden",
+    "v": "1"
+   },
+   {
+    "n": "Save",
+    "t": "submit",
+    "v": "Save"
+   }
+  ]
+ },
+ "DiagnosticRpm": {
+  "menu": "- Diagnostic",
+  "text": "Diagnostic Tools\n\nDiagnostic Parameters\nDiagnostic Tool:\t Ping    Traceroute\nIP Address/ Domain Name:\t\nPing Count:\t (1-50)\nPing Packet Size:\t (4-1472 Bytes)\nPing Timeout:\t (100-2000 Milliseconds)\nTraceroute Max TTL:\t (1-30)\nDiagnostic Results\n\n\n\t",
+  "inputs": [
+   {
+    "n": "doType",
+    "t": "radio",
+    "v": "ping"
+   },
+   {
+    "n": "doType",
+    "t": "radio",
+    "v": "tracert"
+   },
+   {
+    "n": "pingAddr",
+    "t": "text",
+    "v": ""
+   },
+   {
+    "n": "isNew",
+    "t": "hidden",
+    "v": "new"
+   },
+   {
+    "n": "sendNum",
+    "t": "text",
+    "v": "4"
+   },
+   {
+    "n": "pSize",
+    "t": "text",
+    "v": "64"
+   },
+   {
+    "n": "overTime",
+    "t": "text",
+    "v": "800"
+   },
+   {
+    "n": "trHops",
+    "t": "text",
+    "v": "20"
+   },
+   {
+    "n": "result",
+    "t": "textarea",
+    "v": "This device is ready."
+   },
+   {
+    "n": "Sub",
+    "t": "button",
+    "v": "Start"
+   }
+  ]
+ },
+ "SoftwareUpgradeRpm": {
+  "menu": "- Firmware Upgrade",
+  "text": "Firmware Upgrade\n\nFile:\t\nFirmware Version:\t\n3.16.9 Build 150310 Rel.55295n\n\nHardware Version:\t\nWR841N v10 00000000\n\n\n\t",
+  "inputs": [
+   {
+    "n": "Filename",
+    "t": "file",
+    "v": ""
+   },
+   {
+    "n": "Upgrade",
+    "t": "button",
+    "v": "Upgrade"
+   }
+  ]
+ },
+ "RestoreDefaultCfgRpm": {
+  "menu": "- Factory Defaults",
+  "text": "Factory Defaults\n\nClick the following button to reset all configuration settings to their default values.\n\n",
+  "inputs": [
+   {
+    "n": "Restorefactory",
+    "t": "submit",
+    "v": "Restore"
+   }
+  ]
+ },
+ "BakNRestoreRpm": {
+  "menu": "- Backup & Restore",
+  "text": "Backup & Restore\n\nConfiguration Backup:\t\nConfiguration File:\t   \t\t \n",
+  "inputs": [
+   {
+    "n": "Backup",
+    "t": "button",
+    "v": "Backup"
+   },
+   {
+    "n": "filename",
+    "t": "file",
+    "v": ""
+   },
+   {
+    "n": "Restore",
+    "t": "button",
+    "v": "Restore"
+   }
+  ]
+ },
+ "SysRebootRpm": {
+  "menu": "- Reboot",
+  "text": "Reboot\n\nClick this button to reboot this device.\n\n",
+  "inputs": [
+   {
+    "n": "Reboot",
+    "t": "submit",
+    "v": "Reboot"
+   }
+  ]
+ },
+ "ChangeLoginPwdRpm": {
+  "menu": "- Password",
+  "text": "Password\n\nUsername and password can contain between 1 - 15 characters and may not include spaces.\n\nOld User Name:\t\nOld Password:\t\n\n\nNew User Name:\t\nNew Password:\t\nConfirm New Password:\t\n\n\t     ",
+  "inputs": [
+   {
+    "n": "oldname",
+    "t": "text",
+    "v": ""
+   },
+   {
+    "n": "oldpassword",
+    "t": "password",
+    "v": ""
+   },
+   {
+    "n": "newname",
+    "t": "text",
+    "v": ""
+   },
+   {
+    "n": "newpassword",
+    "t": "password",
+    "v": ""
+   },
+   {
+    "n": "newpassword2",
+    "t": "password",
+    "v": ""
+   },
+   {
+    "n": "Save",
+    "t": "submit",
+    "v": "Save"
+   },
+   {
+    "n": "Clear",
+    "t": "reset",
+    "v": "Clear All"
+   }
+  ]
+ },
+ "SystemLogRpm": {
+  "menu": "- System Log",
+  "text": "System Log\n\n  \n  Auto Mail Feature:\t\nDisabled\n\t\n\n\n  Log Type:  \nALL\nPPP\nDHCP\nVPN\nWIRELESS\nDDNS\nSECURITY\nFILTER\nOTHER\n\t  Log Level:  \nERROR\nWARNING\nNOTICE\nINFO\nALL\n\n\nIndex\tTime\tType\tLevel\tLog Content\n1\t1st day 00:53:13\t'+content+'\tINFO\tUser clear system log.\n\n\n\nTime = 2015-01-01 0:53:12 3193s\nH-Ver = WR940N v3/WR941ND v6 00000000 : S-Ver = 3.16.9 Build 150312 Rel.59597n\nL = 192.168.0.1 : M = 255.255.255.0\nW1 = DHCP : W = 192.168.202.138 : M = 255.255.255.0 : G = 192.168.202.254\n\n\n             \n\n      Current No. \n1\n   Page",
+  "inputs": [
+   {
+    "n": "AutoMail",
+    "t": "button",
+    "v": "Mail Settings"
+   },
+   {
+    "n": "logType",
+    "t": "select-one",
+    "v": "0",
+    "opts": [
+     "ALL",
+     "PPP",
+     "DHCP",
+     "VPN",
+     "WIRELESS",
+     "DDNS",
+     "SECURITY",
+     "FILTER",
+     "OTHER"
+    ]
+   },
+   {
+    "n": "logLevel",
+    "t": "select-one",
+    "v": "7",
+    "opts": [
+     "ERROR",
+     "WARNING",
+     "NOTICE",
+     "INFO",
+     "ALL"
+    ]
+   },
+   {
+    "n": "Refresh",
+    "t": "button",
+    "v": "Refresh"
+   },
+   {
+    "n": "SaveLog",
+    "t": "button",
+    "v": "Save Log"
+   },
+   {
+    "n": "MailLog",
+    "t": "button",
+    "v": "Mail Log"
+   },
+   {
+    "n": "ClearLog",
+    "t": "submit",
+    "v": "Clear Log"
+   },
+   {
+    "n": "PrevPage",
+    "t": "button",
+    "v": "Previous"
+   },
+   {
+    "n": "NextPage",
+    "t": "button",
+    "v": "Next"
+   },
+   {
+    "n": "selPage",
+    "t": "select-one",
+    "v": "1",
+    "opts": [
+     "1"
+    ]
+   },
+   {
+    "n": "Page",
+    "t": "hidden",
+    "v": "1"
+   }
+  ]
+ },
+ "SystemStatisticRpm": {
+  "menu": "- Statistics",
+  "text": "Statistics\n\nCurrent Statistics Status:\t\nDisabled\n\t\n\nPackets Statistics Interval(5~60):\t\n5\n10\n15\n20\n25\n30\n35\n40\n45\n50\n55\n60\n  Seconds\t\n\t  Auto-refresh\t\n\nSorted Rules:\t\nSorted by IP Address\nSorted by Total Packets\nSorted by Total Bytes\nSorted by Current Packets\nSorted by Current Bytes\n\t    \n\n \tTotal\tCurrent\tModify\nIP Address/\nMAC Address\tPackets\tBytes\tPackets\tBytes\tICMP Tx\tUDP Tx\tSYN Tx\nThe current list is empty.\n\n\n   \n5\n10\n20\n50\n100\n entries per page.   Current No. \n1\n Page \n\n\n      ",
+  "inputs": [
+   {
+    "n": "Staton",
+    "t": "submit",
+    "v": "Enable"
+   },
+   {
+    "n": "Statoff",
+    "t": "submit",
+    "v": "Disable"
+   },
+   {
+    "n": "interval",
+    "t": "select-one",
+    "v": "10",
+    "opts": [
+     "5",
+     "10",
+     "15",
+     "20",
+     "25",
+     "30",
+     "35",
+     "40",
+     "45",
+     "50",
+     "55",
+     "60"
+    ]
+   },
+   {
+    "n": "autoRefresh",
+    "t": "checkbox",
+    "v": "2"
+   },
+   {
+    "n": "Refresh",
+    "t": "submit",
+    "v": "Refresh"
+   },
+   {
+    "n": "sortType",
+    "t": "select-one",
+    "v": "5",
+    "opts": [
+     "Sorted by IP Address",
+     "Sorted by Total Packets",
+     "Sorted by Total Bytes",
+     "Sorted by Current Packets",
+     "Sorted by Current Bytes"
+    ]
+   },
+   {
+    "n": "ResetAll",
+    "t": "button",
+    "v": "Reset All"
+   },
+   {
+    "n": "DeleteAll",
+    "t": "button",
+    "v": "Delete All"
+   },
+   {
+    "n": "Num_per_page",
+    "t": "select-one",
+    "v": "5",
+    "opts": [
+     "5",
+     "10",
+     "20",
+     "50",
+     "100"
+    ]
+   },
+   {
+    "n": "Goto_page",
+    "t": "select-one",
+    "v": "1",
+    "opts": [
+     "1"
+    ]
+   },
+   {
+    "n": "PrevPage",
+    "t": "submit",
+    "v": "Previous"
+   },
+   {
+    "n": "NextPage",
+    "t": "submit",
+    "v": "Next"
+   }
+  ]
+ }
+}

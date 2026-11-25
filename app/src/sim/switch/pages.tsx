@@ -265,8 +265,8 @@ function UserAccountPage({ state, onChange }: SwitchPageProps) {
   return (
     <form onSubmit={save} noValidate>
       <Panel title="User Account">
-        <TextRow id="sw-user-name" label="User Name" value={user} onChange={setUser} maxLength={16} hint="(1–16 characters)" />
-        <TextRow id="sw-user-old" label="Old Password" type="password" value={old} onChange={setOld} autoComplete="current-password" />
+        <TextRow id="sw-user-name" label="New Username" value={user} onChange={setUser} maxLength={16} hint="(1–16 characters)" />
+        <TextRow id="sw-user-old" label="Current Password" type="password" value={old} onChange={setOld} autoComplete="current-password" />
         <TextRow
           id="sw-user-new"
           label="New Password"

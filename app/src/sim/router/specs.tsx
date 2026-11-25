@@ -373,7 +373,7 @@ export const ROUTER_LISTS: Record<string, ListSpec> = {
     columns: ['desc', 'days', 'from', 'to'],
   },
   'bw-rules': {
-    title: 'Bandwidth Control Rules List',
+    title: 'Bandwidth Control Rule List',
     formTitle: 'Bandwidth Control Rule Settings',
     fields: [
       { k: 'ip', label: 'IP Range', type: 'text', valid: 'nonempty', hint: 'e.g. 192.168.0.100 - 192.168.0.110' },

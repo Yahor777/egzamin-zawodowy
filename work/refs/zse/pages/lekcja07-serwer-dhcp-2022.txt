@@ -1,0 +1,94 @@
+https://zse.rzeszow.pl/windows/2022/lekcja07-serwer-dhcp-2022
+
+    Pracownia Systemów Operacyjnych
+            INSTALACJA I KONFIGURACJA SERWERA DHCP
+                Ćwiczenie nr 7
+                                Lista Ćwiczeń
+                Strona Główna
+            Wprowadzenie do lekcji
+                1. Usługa DHCP.DHCP (Dynamic Host Configuration Protocol) – to protokół komunikacyjny umożliwiający automatyczne przypisywanie adresów IP komputerom i innym urządzeniom sieciowym. Urządzenia te pracują jako klienci DHCP, a ponieważ obsługują protokół TCP/IP, to oprócz prawidłowych adresów IP otrzymują także inne potrzebne im parametry konfiguracyjne. Nazywane są one opcjami DHCP (np. adres routera, serwera DNS itp.).
+                        I. Instalacja serwera DHCP.
+                                Na początek musimy doinstalować rolę serwera DHCP. Uruchamiamy więc Menedżera serwera i wybieramy opcję Dodaj role i funkcje.
+                                Uruchamia się „Kreator dodawania ról i funkcji” – naciskamy „Dalej”.
+                                Pozostawiamy pierwszą opcję i naciskamy „Dalej”.
+                                Wybieramy nasz serwer (innego nie mamy) i naciskamy „Dalej”.
+                                Zaznaczamy „DHCP”.
+                                Pojawi nam się podczas zaznaczania takie okno z informacją, jakie funkcje zostaną dołączone do tej roli. Naciskamy „Dodaj funkcje”.
+                                Mamy już naszą rolę serwera zaznaczoną – naciskamy „Dalej”.
+                                Możemy jeszcze coś dodać do instalacji, ale my tego nie robimy i naciskamy „Dalej”.
+                                Jeszcze informacja o samej usłudze, którą instalujemy, i naciskamy „Dalej”.
+                                Zaznaczamy restart komputera, jeśli zaistnieje taka konieczność, po czym naciskamy „Tak” i „Zainstaluj”.
+                                Musimy trochę poczekać, aż rola się zainstaluje. Można okno procesu instalacji „zamknąć”, a u góry i tak będzie widać, że proces nie został formalnie przerwany, tylko trwa nadal.
+                                Ponieważ widzimy u góry żółty wykrzyknik, to klikamy naszą chorągiewkę obok i wybieramy opcję „Dokończ konfigurację funkcji DHCP”.
+                                Pojawi się okno kreatora konfiguracji i naciskamy „Dalej”.
+                                W tym miejscu możemy podać dane użytkownika, który będzie miał uprawnienia autoryzacyjne serwera DHCP w usłudze Active Directory. My pozostawiamy konto Administratora i klikamy „Potwierdź”.
+                                W ostatnim oknie wyświetlone jest podsumowanie i klikamy „Zamknij”.
+                        II. Konfiguracja serwera DHCP.
+                        Zanim przejdziemy do naszej przystawki DHCP, musimy założyć, jakie ustawienia przyjmie nasz serwer. Skupimy się na kilku podstawowych parametrach:
+                        – Nazwa zakresu: Serwer ZSE
+                        – Pula serwera DHCP (zakres): 50 adresów, zaczynając od 192.168.110.101
+                        – Czas dzierżawy: 3,5 godziny
+                        – Adres routera: adres naszego serwera, czyli 192.168.110.1
+                        – Adresy DNS: 192.168.110.1 oraz 8.8.8.8
+                                Przechodzimy zatem do wprowadzenia naszych parametrów. W menu „Menedżera serwera” klikamy opcję „Narzędzia” i wybieramy „DHCP”.
+                                Widzimy okno menedżera serwera DHCP. Zielony znacznik wyboru przy protokole IPv4 świadczy o tym, że nasz serwer DHCP jest autoryzowany, ale możemy to jeszcze sprawdzić, klikając na nim prawym przyciskiem myszy (PPM).
+                                Ponieważ instalowaliśmy usługi Active Directory i DHCP na tej samej maszynie, autoryzacja wykonuje się automatycznie, a dostępna jest tylko opcja „Dezautoryzuj”. Gdyby było inaczej (niższe okno), trzeba kliknąć opcję „Autoryzuj” i odświeżyć nasz serwer DHCP.
+                                Teraz utworzymy zakres serwera DHCP dla protokołu IPv4. Klikamy na IPv4 prawym przyciskiem myszy (PPM) i wybieramy „Nowy zakres”.
+                                Uruchamia się kreator – naciskamy „Dalej”.
+                                Podajemy nazwę naszego zakresu, opis i naciskamy „Dalej”.
+                                Następnie podajemy pulę adresów oraz maskę podsieci i naciskamy „Dalej”.
+                                Można wykluczyć jakiś adres IP z tej puli, ale my tego nie będziemy robić – naciskamy „Dalej”.
+                                Ustawiamy czas dzierżawy adresu IP (u nas 3 i pół godziny) i naciskamy „Dalej”.
+                                Możemy opcjonalnie jeszcze skonfigurować kilka opcji (adres routera, serwera DNS) – naciskamy „Dalej”.
+                                Podajemy adres IP naszego serwera i pamiętajmy, aby kliknąć „Dodaj”, a dopiero potem „Dalej”.
+                                Możemy określić adresy serwerów DNS, z jakich chcemy korzystać w naszej sieci, oraz opcjonalnie nazwę domeny. Podajemy adres naszego serwera oraz jakiś publiczny (np. 8.8.8.8) i klikamy „Dalej”.
+                                Jeżeli korzystamy z serwerów WINS, to możemy je tutaj podać, ale lepiej tego nie robić. Naciskamy „Dalej”.
+                                Aktywujemy utworzony przez nas zakres, naciskając „Dalej”.
+                                Kończymy pracę kreatora, naciskając „Zakończ”.
+                                I widzimy już skonfigurowany nowy zakres serwera DHCP.
+                                Logujemy się teraz z poziomu klienta do domeny i sprawdzamy w wierszu poleceń jego adres IP. Jest to adres, który ustawiony jest statycznie i nie należy do określonej przez nas puli. Musimy to zmienić.
+                                W wyszukiwarce systemu Windows wpisujemy „ncpa.cpl”.
+                                We właściwościach karty sieciowej ustawiamy automatyczne pobieranie adresów. Po tej zmianie wystarczy wyłączyć i włączyć kartę sieciową, co powinno pozwolić na uzyskanie adresu z naszej puli skonfigurowanej na serwerze DHCP.
+                                Możemy też wpisać w wierszu poleceń ipconfig /release oraz ipconfig /renew, a następnie ipconfig /all. Sprawdzamy adres IP i widzimy, że pobrany adres to 192.168.110.101, a więc pierwszy z puli serwera DHCP. Czas dzierżawy również się zgadza.
+                                Sprawdzamy jeszcze na serwerze, czy nasz komputer jest podłączony do serwera DHCP, i widzimy, że w opcji „Dzierżawy adresów” figuruje nasza maszyna.
+                        III. Wykluczanie adresów IP.
+                                Spróbujemy jeszcze wykluczyć jakieś adresy. Najlepiej te początkowe, aby sprawdzić, czy wykluczenie działa. Na opcji „Pula adresów” klikamy prawym przyciskiem myszy (PPM) i wybieramy „Nowy zakres wykluczenia”.
+                                Wykluczymy 5 pierwszych adresów, po czym klikamy „Dodaj” oraz „Zamknij”.
+                                I widzimy na serwerze, że pojawił się wpis dotyczący wykluczeń.
+                                Teraz na kliencie musimy ponownie wyłączyć i włączyć kartę sieciową, co pozwoli nam na uzyskanie adresu IP z pominięciem tych wykluczonych. Wszystko się zgadza – nasz komputer pobrał adres 192.168.110.106.
+                        IV. Przypisywanie konkretnego adresu IP do danego klienta.
+                                Przypiszemy teraz konkretny adres IP do naszego klienta. Sprawdzamy adres MAC na maszynie klienckiej – u nas jest to: 00-0C-29-B1-D6-BE.
+                                Na serwerze korzystamy z naszej przystawki DHCP i tam zaznaczamy sekcję „Zastrzeżenia”. Następnie klikamy prawym przyciskiem myszy (PPM) i wybieramy „Nowe zastrzeżenie”.
+                                Przypiszemy adres IP np. 192.168.110.169 dla naszego komputera z adresem fizycznym 00-0C-29-B1-D6-BE. Dodajemy też nazwę zastrzeżenia, ewentualnie opis, pozostawiamy zaznaczoną opcję „Oba” i klikamy „Dodaj” oraz „Zamknij”.
+                                Ponownie na kliencie czyścimy i odnawiamy ustawienia karty sieciowej, a następnie sprawdzamy, jaki adres pobrała nasza maszyna. Wszystko się zgadza – jest to adres 192.168.110.169.
+                        V. Tworzenie dwóch lub więcej serwerów DHCP.
+                                Warunkiem koniecznym do wykonania takiej operacji jest posiadanie na serwerze większej ilości kart sieciowych. Przy wyłączonym serwerze dodajemy trzecią kartę. W opcji "Ustawienia" naszej serwerowej maszyny wirtualnej wybieramy "Sieć", a następnie dodajemy trzecią kartę, podłączamy ją do opcji "Sieć wewnętrzna" i nadajemy jej nazwę intnet2 (na karcie nr 2 mamy intnet1) i klikamy ok.
+                                Podobną czynność wykonujemy na kliencie, dodając drugą kartę sieciową z nazwą taką samą jak na serwerze.
+                                Musimy jescze przypisać jakiś adres IP do tej trzeciej karty na serwerze. Wchodzimy we właściwości karty sieciowej i ustawiamy adres 10.70.70.1
+                                Teraz stworzymy sobie nowy (drugi) zakres serwera DHCP dla protokołu IPv4 dla kolejnej karty. Klikamy na IPv4 PPM i "Nowy Zakres".
+                                Uruchamia się kreator - naciskamy "Dalej".
+                                Podajemy nazwę naszego zakresu, opis i naciskamy "Dalej".
+                                Następnie podajemy pulę adresów oraz maskę podsieci (podajemy adresy z trzeciego interfejsu) i naciskamy "Dalej".
+                                Można wykluczyć jakiś adres IP z tej puli, ale my tego nie będziemy robić - naciskamy "Dalej".
+                                Ustawiamy czas dzierżawy adresu IP (u nas 2 godziny) i naciskamy "Dalej".
+                                Możemy opcjonalnie jeszcze skonfigurować kilka opcji (adres routera, DNS) - naciskamy "Dalej".
+                                Podajemy adres IP naszego serwera i pamiętajmy aby kliknąć "Dodaj", a dopiero potem "Dalej".
+                                Możemy określić adresy serwerów DNS z jakich chcemy korzystać w naszej sieci i opcjonalnie nazwę domeny. Podajemy adres naszego serwera DNS na którym "stoi" domena. Jest to 192.168.10.1 i klikamy "Dalej".
+                                Jeżeli korzystamy z serwerów WINS to możemy je tutaj podać. My nic nie wpisujemy i naciskamy "Dalej"
+                                Aktywujemy utworzony przez nasz zakres naciskając "Dalej"
+                                Kończymy pracę kreatora naciskając "Zakończ".
+                                I widzimy już skonfigurowane dwa zakresy serwera DHCP.
+                                Teraz włączamy klienta, uruchamiamy wiersz poleceń i sprawdzamy czy nasze karty mają przydzielone odpowiednie adresy.
+                -->
+                        Zadanie do wykonania na lekcji
+                        Wszystkie czynności udokumentuj zrzutami ekranu i umieść w sprawozdaniu.
+                                Ustaw adres IP swojego serwera na 10.80.80.10 z maską 255.255.255.0.
+                                Ustaw pulę adresów na serwerze DHCP od 10.80.80.20 do 10.80.80.100, z czasem dzierżawy 4 godziny i sprawdź, czy klient pobiera właściwe ustawienia.
+                                Sprawdź również, czy po uruchomieniu DHCP na kliencie jest dostęp do internetu.
+                                Zmień adres IP swojego serwera na 192.168.x+x.1, gdzie x jest Twoim numerem w dzienniku lekcyjnym.
+                                Ustaw pulę adresów na serwerze DHCP od 192.168.x+x.200 do 192.168.x+x.235 z czasem dzierżawy 1 godzina i sprawdź, czy klient pobiera właściwy adres.
+                                Wyklucz 15 pierwszych adresów z ustawionej puli i ponownie sprawdź na kliencie i na serwerze, czy właściwy adres został pobrany.
+                                Sprawdź również, czy po uruchomieniu DHCP na kliencie jest dostęp do internetu.
+                                Dodaj drugi serwer DHCP z pulą na 100 adresów. Wykorzystaj do tego pulę adresów prywatnych z klasy B.
+                                Sprawdź, czy po uruchomieniu serwerów DHCP na kliencie karty sieciowe pobierają właściwe adresy.
+    © 2009 - 2026 Copyright ZSE Rzeszów | Developed by Maciej Biel & Ireneusz Paździor

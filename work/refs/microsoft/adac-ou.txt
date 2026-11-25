@@ -1,0 +1,300 @@
+https://learn.microsoft.com/pl-pl/windows-server/identity/ad-ds/get-started/adac/active-directory-administrative-center
+
+
+				 Spis treści 
+				Wyjdź z trybu edytora
+			Zapytaj platformę Learn
+			Zapytaj platformę Learn
+			Tryb odczytu
+			Spis treści
+			Przeczytaj w języku angielskim
+			Dodaj
+			Dodaj do planów
+					Kopiuj znaczniki Markdown
+					Drukuj
+						Notatka
+						Dostęp do tej strony wymaga autoryzacji. Może spróbować zalogować się lub zmienić katalogi.
+						Dostęp do tej strony wymaga autoryzacji. Możesz spróbować zmienić katalogi.
+					Zaawansowane zarządzanie usługami AD DS przy użyciu Centrum administracyjnego usługi Active Directory (poziom 200)
+				 Dotyczy: ✅ Windows Server 2025, ✅ Windows Server 2022, ✅ Windows Server 2019, ✅ Windows Server 2016
+			Opinia
+				W tym artykule
+	 W tym artykule szczegółowo przedstawiono zaktualizowane Centrum administracyjne usługi Active Directory wraz z Koszem usługi Active Directory, szczegółowymi zasadami haseł i Podglądem historii programu Windows PowerShell, w tym architekturę, przykłady typowych zadań oraz informacje dotyczące rozwiązywania problemów. Aby zapoznać się z wprowadzeniem, zobacz Wprowadzenie do ulepszeń Centrum administracyjnego usługi Active Directory (poziom 100).
+Architektura Centrum administracyjnego usługi Active Directory
+Pliki wykonywalne i biblioteki DLL Centrum administracyjnego Active Directory
+Moduł i podstawowa architektura Centrum administracyjnego usługi Active Directory nie uległy zmianie w związku z koszem na obiekty usunięte, drobiazgowymi zasadami haseł i funkcjonalnością przeglądu historii.
+Microsoft.ActiveDirectory.Management.UI.dll
+Microsoft.ActiveDirectory.Management.UI.resources.dll
+Microsoft.ActiveDirectory.Management.dll
+Microsoft.ActiveDirectory.Management.resources.dll
+ActiveDirectoryPowerShellResources.dll
+Podstawowe środowisko Windows PowerShell i warstwa operacji dla funkcji kosza przedstawiono tutaj:
+Włączanie Kosza Active Directory i zarządzanie nim przy użyciu Centrum administracyjnego Active Directory
+Capabilities
+System Windows Server 2012 lub jego nowsze wersje z Centrum administracyjnym Active Directory umożliwia konfigurowanie i zarządzanie koszem Active Directory dla dowolnej partycji domeny w lesie. Nie trzeba już używać programu Windows PowerShell ani Ldp.exe do włączenia kosza usługi Active Directory lub przywracania obiektów w partycjach domeny.
+Centrum administracyjne usługi Active Directory ma zaawansowane kryteria filtrowania, co ułatwia przywracanie docelowe w dużych środowiskach z wieloma celowo usuniętymi obiektami.
+Limitations
+Ponieważ Centrum administracyjne usługi Active Directory może zarządzać jedynie partycjami domenowymi, nie jest w stanie przywrócić usuniętych obiektów z partycji konfiguracji, DNS domeny ani DNS lasu. (Nie można usunąć obiektów z partycji schematu). Aby przywrócić obiekty z partycji niebędących domenami, użyj polecenia Restore-ADObject.
+Centrum administracyjne usługi Active Directory nie może przywrócić poddrzew obiektów w jednej operacji. Jeśli na przykład usuniesz jednostkę organizacyjną z zagnieżdżonymi jednostkami organizacyjnymi, użytkownikami, grupami i komputerami, przywrócenie bazowej jednostki organizacyjnej nie spowoduje przywrócenia obiektów podrzędnych.
+Note
+Operacja grupowego przywracania w Centrum administracyjnym usługi Active Directory podejmuje "najlepszy wysiłek" w sortowaniu usuniętych obiektów tylko w ramach zaznaczenia, dlatego elementy nadrzędne są umieszczane przed elementami podrzędnymi na liście przywracania. W prostych przypadkach testowych poddrzewa obiektów da się przywrócić za pomocą jednej operacji. Ale przypadki rogu, takie jak zaznaczenie zawierające częściowe drzewa (drzewa z niektórymi usuniętymi węzłami nadrzędnymi brakuje) lub przypadki błędów, takie jak pomijanie obiektów podrzędnych, gdy przywracanie nadrzędne kończy się niepowodzeniem, może nie działać zgodnie z oczekiwaniami. Z tego powodu należy zawsze przywracać poddrzewa obiektów jako oddzielną czynność po przywróceniu obiektów nadrzędnych.
+Kosz usługi Active Directory wymaga poziomu funkcjonalności drzewa systemu Windows Server 2008 R2 i musisz być członkiem grupy Administratorzy grupy przedsiębiorstwa. Po włączeniu kosza usługi Active Directory nie można go wyłączyć. Kosz Active Directory zwiększa rozmiar bazy danych Active Directory (NTDS.DIT) na każdym kontrolerze domeny w lesie. Miejsce na dysku używane przez kosz nadal rośnie wraz z upływem czasu, ponieważ zachowuje obiekty i wszystkie ich atrybuty.
+Włączanie kosza usługi Active Directory przy użyciu Centrum administracyjnego usługi Active Directory
+Aby włączyć kosz Active Directory, otwórz Centrum administracyjne Active Directory i wybierz nazwę swojego lasu w okienku nawigacji. W okienku Zadania wybierz pozycję Włącz Kosz.
+W Centrum administracyjnym usługi Active Directory jest wyświetlane okno dialogowe Potwierdzenie włączania kosza. To okno dialogowe ostrzega, że włączenie kosza jest nieodwracalne. Wybierz przycisk OK , aby włączyć kosz usługi Active Directory. Centrum administracyjne usługi Active Directory wyświetla kolejne okno dialogowe przypominające, że kosz usługi Active Directory nie jest w pełni funkcjonalny, dopóki wszystkie kontrolery domeny nie zreplikują zmiany konfiguracji.
+Important
+Opcja włączenia kosza usługi Active Directory jest niedostępna, jeśli:
+Poziom funkcjonalności lasu jest niższy niż Windows Server 2008 R2.
+Jest już włączona.
+Równoważne polecenie cmdlet programu Windows PowerShell usługi Active Directory to:
+Enable-ADOptionalFeature
+Aby uzyskać więcej informacji na temat włączania kosza usługi Active Directory przy użyciu programu Windows PowerShell, zobacz Przewodnik krok po kroku kosza usługi Active Directory.
+Zarządzanie koszem Active Directory przy użyciu Centrum administracyjnego Active Directory
+W tej sekcji użyto przykładu istniejącej domeny o nazwie corp.contoso.com. Ta domena organizuje użytkowników w nadrzędną jednostki organizacyjnej o nazwie UserAccounts. Jednostka organizacyjna UserAccounts zawiera trzy podrzędne jednostki organizacyjne o nazwie według działu. Każda z tych podrzędnych jednostek organizacyjnych zawiera kolejne jednostki organizacyjne, użytkowników i grupy.
+Magazynowanie i filtrowanie
+Kosz usługi Active Directory zachowuje wszystkie obiekty usunięte w lesie. Zapisuje te obiekty zgodnie z atrybutem msDS-deletedObjectLifetime , który domyślnie jest ustawiony tak, aby był zgodny z atrybutem tombstoneLifetime lasu. W każdym lesie utworzonym przy użyciu systemu Windows Server 2003 z dodatkiem SP1 lub nowszym wartość tombstoneLifetime jest domyślnie ustawiona na 180 dni. W każdym lesie uaktualnionym z systemu Windows 2000 lub zainstalowanym z systemem Windows Server 2003 (bez dodatku Service Pack) domyślny atrybut tombstoneLifetime nie jest ustawiony, a w związku z tym system Windows używa wewnętrznej wartości domyślnej 60 dni. Wszystko to można skonfigurować. Centrum administracyjne usługi Active Directory umożliwia przywrócenie wszystkich obiektów usuniętych z partycji domeny lasu. Aby przywrócić usunięte obiekty z innych partycji, takich jak Konfiguracja, należy nadal używać polecenia cmdlet Restore-ADObject. Włączenie kosza usługi Active Directory sprawia, że kontener Usuniętych obiektów jest widoczny w każdej partycji domeny w Centrum administracyjnym usługi Active Directory.
+Kontener Usunięte obiekty zawiera wszystkie obiekty możliwe do przywrócenia w tej partycji domeny. Usunięte obiekty starsze niż msDS-deletedObjectLifetime są nazywane obiektami recyklingu. Centrum administracyjne usługi Active Directory nie pokazuje obiektów z recyklingu i nie można przywrócić tych obiektów przy użyciu Centrum administracyjnego usługi Active Directory.
+Aby uzyskać dokładniejsze wyjaśnienie architektury kosza i reguł przetwarzania, zobacz Kosz usługi Active Directory: opis, implementacja, najlepsze rozwiązania i rozwiązywanie problemów.
+Centrum administracyjne usługi Active Directory sztucznie ogranicza domyślną liczbę obiektów zwracanych z kontenera do 20 000 obiektów. Ten limit można zwiększyć nawet o 100 000 obiektów, wybierając menu Zarządzaj , a następnie wybierając pozycję Opcje listy zarządzania.
+Restoration
+Filtering
+Centrum administracyjne usługi Active Directory oferuje zaawansowane kryteria i opcje filtrowania, z którymi należy się zaznajomić, zanim zajdzie konieczność ich użycia w rzeczywistym przywróceniu. Domeny celowo usuwają wiele obiektów w okresie ich istnienia. Ponieważ okres istnienia usuniętego obiektu wynosi prawdopodobnie 180 dni, nie można przywrócić wszystkich obiektów, gdy wystąpi awaria.
+Zamiast pisać złożone filtry LDAP i konwertować wartości UTC na daty i godziny, użyj menu podstawowego i zaawansowanego filtru , aby wyświetlić listę tylko odpowiednich obiektów. Jeśli znasz dzień usunięcia, nazwy obiektów lub innych kluczowych danych, użyj ich do zalet podczas filtrowania. Przełącz opcje filtru zaawansowanego, wybierając strzałkę po prawej stronie pola wyszukiwania.
+Operacja przywracania obsługuje wszystkie standardowe opcje kryteriów filtrowania, tak samo jak każda inna wyszukiwarka. Spośród wbudowanych filtrów ważne do przywracania obiektów są zwykle:
+ANR (niejednoznaczne rozpoznawanie nazw — nie ma na liście w menu, ale jest używane podczas wpisywania w polu Filtr )
+Ostatnia modyfikacja między podanymi datami
+Obiekt to użytkownik/inetorgperson/komputer/grupa/jednostka organizacji
+Name
+Po usunięciu
+Ostatni znany rodzic
+Typ
+Description
+City
+Country/region
+Department
+Identyfikator pracownika
+Imię
+Stanowisko
+Nazwisko
+Nazwa konta SAM
+State/Province
+Numer telefonu
+nazwa UPN
+Kod pocztowy
+Można dodać wiele kryteriów. Na przykład można znaleźć wszystkie obiekty użytkownika usunięte 24 września 2012 r. z Chicago w stanie Illinois ze stanowiskiem Menedżer.
+Można również dodawać, modyfikować lub zmieniać kolejność nagłówków kolumn, aby zapewnić więcej szczegółów podczas oceniania obiektów do odzyskania.
+Aby uzyskać więcej informacji na temat usługi ANR, zobacz Atrybuty usługi ANR.
+Pojedynczy obiekt
+Przywracanie usuniętych obiektów zawsze było pojedynczą operacją. Centrum administracyjne usługi Active Directory ułatwia tę operację. Aby przywrócić usunięty obiekt, taki jak pojedynczy użytkownik:
+Wybierz nazwę domeny w okienku nawigacji Centrum administracyjnego usługi Active Directory.
+Kliknij dwukrotnie pozycję Usunięte obiekty na liście zarządzania.
+Kliknij prawym przyciskiem myszy obiekt, a następnie wybierz polecenie Przywróć lub wybierz polecenie Przywróć w okienku Zadania .
+Obiekt jest przywracany do oryginalnej lokalizacji.
+Wybierz pozycję Przywróć, aby zmienić lokalizację przywracania. Ta opcja jest przydatna, jeśli usunięty kontener nadrzędny obiektu został również usunięty, ale nie chcesz przywracać elementu nadrzędnego.
+Wiele obiektów równorzędnych
+Można przywrócić wiele równorzędnych obiektów, takich jak wszyscy użytkownicy w jednostce organizacyjnej. Przytrzymaj wciśnięty klawisz CTRL i wybierz co najmniej jeden usunięty obiekt, który chcesz przywrócić. Wybierz pozycję Przywróć w okienku Zadania. Można również zaznaczyć wszystkie wyświetlane obiekty, przytrzymując klawisze CTRL i A lub zakres obiektów za pomocą klawiszy SHIFT i klikając.
+Wiele obiektów hierarchicznych nadrzędnych i podrzędnych
+Ważne jest, aby zrozumieć proces przywracania środowiska z wieloma nadrzędnymi i podrzędnymi elementami, ponieważ Centrum administracyjne usługi Active Directory nie może przywrócić zagnieżdżonego drzewa usuniętych obiektów za pomocą pojedynczego działania.
+Przywróć najbardziej usunięty obiekt w drzewie.
+Przywróć bezpośrednie elementy podrzędne tego obiektu nadrzędnego.
+Przywróć bezpośrednie elementy podrzędne tych obiektów nadrzędnych.
+Powtarzaj według potrzeby, aż wszystkie obiekty zostaną przywrócone.
+Nie można przywrócić obiektu podrzędnego przed przywróceniem jego obiektu nadrzędnego. Próba przywrócenia zwraca następujący błąd:
+The operation could not be performed because the object's parent is either uninstantiated or deleted.
+Atrybut Last Known Parent pokazuje związek nadrzędny każdego obiektu. Atrybut Ostatni znany element nadrzędny zmienia się z usuniętej lokalizacji na przywróconą lokalizację po odświeżeniu Centrum administracyjnego usługi Active Directory po przywróceniu elementu nadrzędnego. W związku z tym można przywrócić ten obiekt podrzędny, gdy lokalizacja obiektu nadrzędnego nie wyświetla już nazwy wyróżniającej usuniętego kontenera obiektu.
+Rozważmy scenariusz, w którym administrator przypadkowo usunie jednostkę organizacyjną sprzedaży, która zawiera podrzędne jednostki organizacyjne i użytkowników.
+Najpierw zwróć uwagę na wartość Ostatnio Znany Rodzic dla wszystkich usuniętych użytkowników i sposób, w jaki się odczytuje OU=Sales\0ADEL:<guid+nazwa wyróżniająca kontenera usuniętego obiektu>:
+Odfiltruj niejednoznaczną nazwę "Sales", aby odzyskać usuniętą jednostkę organizacyjną, którą następnie przywrócisz:
+Odśwież Centrum administracyjne usługi Active Directory, aby wyświetlić ostatnią znaną zmianę atrybutu nadrzędnego obiektu usuniętego użytkownika na przywróconą nazwę wyróżniającą jednostki organizacyjnej sprzedaży:
+Odfiltruj wszystkich użytkowników sprzedaży. Przytrzymaj wciśnięty CTRL + A, aby zaznaczyć wszystkich użytkowników sprzedaży, którzy zostali usunięci. Wybierz pozycję Przywróć , aby przenieść obiekty z kontenera Usunięte obiekty do jednostki organizacyjnej Sales z członkostwem w grupach i atrybutami nienaruszonymi.
+Jeśli jednostka organizacyjna sprzedaży zawierała własne podrzędne jednostki organizacyjne, należy najpierw przywrócić podrzędne jednostki organizacyjne przed przywróceniem ich elementów podrzędnych itd.
+Aby przywrócić wszystkie zagnieżdżone usunięte obiekty, określając usunięty kontener macierzysty, zobacz Dodatek B: Przywracanie wielu usuniętych obiektów usługi Active Directory (przykładowy skrypt).
+Polecenie cmdlet programu Windows PowerShell usługi Active Directory służące do przywracania usuniętych obiektów to:
+Restore-ADObject
+Funkcja polecenia cmdlet Restore-ADObject nie zmieniła się między systemami Windows Server 2008 R2 i Windows Server 2012.
+Filtrowanie po stronie serwera
+Istnieje możliwość, że w miarę upływu czasu kontener Usunięte obiekty zgromadzi ponad 20 000 (a nawet 100 000) obiektów w średnich i dużych przedsiębiorstwach i napotka trudności w wyświetlaniu wszystkich obiektów. Ponieważ mechanizm filtrowania w Centrum administracyjnym usługi Active Directory opiera się na filtrowaniu po stronie klienta, nie może wyświetlić tych dodatkowych obiektów. Aby obejść to ograniczenie, wykonaj następujące kroki, aby przeprowadzić wyszukiwanie po stronie serwera:
+Kliknij prawym przyciskiem myszy kontener Usunięte obiekty i wybierz pozycję Wyszukaj w tym węźle.
+Wybierz cudzysłów, aby uwidocznić menu +Dodaj kryteria, wybierz pozycję +Dodaj i dodaj ostatnią modyfikację między podanymi datami. Czas ostatniej modyfikacji ( atrybut whenChanged ) to bliskie przybliżenie czasu usunięcia. W większości środowisk są identyczne. To zapytanie wykonuje wyszukiwanie po stronie serwera.
+Znajdź usunięte obiekty do przywrócenia przy użyciu dalszego wyświetlania filtrowania, sortowania itd., w wynikach, a następnie przywróć je normalnie.
+Konfigurowanie precyzyjnych zasad haseł i zarządzanie nimi przy użyciu Centrum administracyjnego usługi Active Directory
+Konfigurowanie precyzyjnych zasad haseł
+Centrum administracyjne usługi Active Directory umożliwia tworzenie obiektów zasad haseł szczegółowych (FGPP) i zarządzanie nimi. System Windows Server 2008 wprowadził funkcję FGPP, ale system Windows Server 2012 ma pierwszy graficzny interfejs zarządzania. Zasady haseł szczegółowe są stosowane na poziomie domeny i umożliwiają zastępowanie pojedynczego hasła domeny wymaganego przez system Windows Server 2003. W przypadku tworzenia różnych zasad FGPP z różnymi ustawieniami poszczególni użytkownicy lub grupy uzyskują różne polityki haseł w domenie.
+Aby uzyskać informacje o szczegółowych zasadach dotyczących haseł, zobacz AD DS Fine-Grained Przewodnik krok po kroku po zasadach dotyczących haseł i blokady konta (Windows Server 2008 R2).
+W okienku Nawigacji wybierz pozycję Widok drzewa, wybierz domenę, wybierz pozycję System, a następnie wybierz pozycję Kontener ustawień haseł. W okienku Zadania wybierz pozycję Nowy, a następnie wybierz pozycję Ustawienia hasła.
+Zarządzanie precyzyjnymi zasadami haseł
+Utworzenie nowego FGPP lub edytowanie istniejącego powoduje wyświetlenie edytora ustawień haseł . W tym miejscu skonfigurujesz wszystkie żądane zasady haseł, tak jak w systemie Windows Server 2008 lub Windows Server 2008 R2, tylko teraz z specjalnie utworzonym edytorem.
+Wypełnij wszystkie wymagane pola (czerwona gwiazdka) i wszystkie pola opcjonalne, a następnie wybierz pozycję Dodaj , aby ustawić użytkowników lub grupy, które otrzymają te zasady. Program FGPP zastępuje domyślne ustawienia zasad domeny dla tych określonych podmiotów zabezpieczeń. Na powyższym zrzucie ekranu restrykcyjne zasady dotyczą tylko wbudowanego konta administratora, aby zapobiec naruszeniu zabezpieczeń. Zasady są zbyt złożone, aby użytkownicy standardowi przestrzegali, ale doskonale nadają się do konta wysokiego ryzyka używanego tylko przez specjalistów IT.
+Należy również ustawić pierwszeństwo i do których użytkowników i grup zasady mają zastosowanie w danej domenie.
+Cmdlety Windows PowerShell dla usługi Active Directory dotyczące zasad haseł o drobnoziarnistej kontroli to:
+Add-ADFineGrainedPasswordPolicySubject
+Get-ADFineGrainedPasswordPolicy
+Get-ADFineGrainedPasswordPolicySubject
+New-ADFineGrainedPasswordPolicy
+Remove-ADFineGrainedPasswordPolicy
+Remove-ADFineGrainedPasswordPolicySubject
+Set-ADFineGrainedPasswordPolicy
+Funkcjonalność szczegółowych polityk haseł cmdlet nie zmieniła się między systemami Windows Server 2008 R2 i Windows Server 2012. Na poniższym diagramie przedstawiono powiązane argumenty cmdletów.
+Centrum administracyjne usługi Active Directory umożliwia również zlokalizowanie wynikowego zestawu zastosowanego programu FGPP dla określonego użytkownika. Kliknij prawym przyciskiem myszy dowolnego użytkownika i wybierz pozycję Wyświetl wynikowe ustawienia hasła , aby otworzyć stronę Ustawienia hasła , która ma zastosowanie do tego użytkownika za pośrednictwem niejawnego lub jawnego przypisania:
+Badanie właściwości dowolnego użytkownika lub grupy pokazuje ustawienia Bezpośrednio skojarzone hasło, które są jawnie przypisane FGPPs:
+Niejawne przypisanie FGPP nie jest tutaj wyświetlane. W tym celu należy użyć opcji Wyświetl wynikowe ustawienia hasła .
+Korzystanie z Przeglądarki historii programu Windows PowerShell w Centrum administracyjnym usługi Active Directory
+Przyszłość zarządzania systemem Windows to program Windows PowerShell. Warstwowanie narzędzi graficznych na podstawie struktury automatyzacji zadań sprawia, że zarządzanie najbardziej złożonymi systemami rozproszonymi jest spójne i wydajne. Musisz zrozumieć, jak działa program Windows PowerShell, aby osiągnąć pełny potencjał i zmaksymalizować inwestycje obliczeniowe.
+Centrum administracyjne usługi Active Directory udostępnia teraz pełną historię wszystkich uruchomionych poleceń cmdlet programu Windows PowerShell oraz ich argumentów i wartości. Możesz skopiować historię poleceń cmdlet w innym miejscu na potrzeby badania lub modyfikacji i ponownego użycia. Możesz utworzyć notatki dotyczące zadań, aby ułatwić izolowanie wyników programu Windows PowerShell dla poleceń Centrum administracyjnego usługi Active Directory. Możesz również filtrować historię, aby znaleźć punkty orientacyjne.
+Celem Przeglądarki historii programu Windows PowerShell w Centrum administracyjnym usługi Active Directory jest zapoznanie się z praktycznym doświadczeniem.
+Wybierz strzałkę, aby wyświetlić podgląd historii programu Windows PowerShell.
+Następnie utwórz użytkownika lub zmodyfikuj członkostwo grupy. Przeglądarka historii stale aktualizuje zwinięty widok każdego polecenia cmdlet, które zostało uruchomione w Centrum administracyjnym usługi Active Directory z określonymi argumentami.
+Rozwiń dowolną pozycję listy, która Cię interesuje, aby wyświetlić wszystkie wartości podane w argumentach cmdletu.
+Wybierz pozycję Uruchom zadanie , aby utworzyć notację ręczną przed użyciem Centrum administracyjnego usługi Active Directory do tworzenia, modyfikowania lub usuwania obiektu. Wpisz to, co robisz. Po zakończeniu zmiany wybierz pozycję Zakończ zadanie. Notatka zadania grupuje wszystkie akcje wykonywane w zwijaną notatkę, której można użyć do lepszego zrozumienia.
+Aby na przykład wyświetlić polecenia programu Windows PowerShell używane do zmiany hasła użytkownika i usunąć użytkownika z grupy:
+Wybranie pola Pokaż wszystko spowoduje również wyświetlenie poleceń cmdlet programu Windows PowerShell z poleceniami cmdlet Get-* pobierającymi tylko dane.
+Podgląd historii pokazuje rzeczywiste polecenia uruchamiane w Centrum administracyjnym usługi Active Directory. Możesz zauważyć, że niektóre polecenia cmdlet wydają się być uruchamiane niepotrzebnie. Możesz na przykład utworzyć nowego użytkownika za pomocą polecenia:
+New-ADUser
+Projekt Centrum administracyjnego usługi Active Directory wymaga minimalnego użycia kodu i modułowości. Dlatego zamiast zestawu funkcji, które tworzą nowych użytkowników, oraz innego zestawu, który modyfikuje istniejących użytkowników, minimalnie wykonuje każdą funkcję, a następnie łączy je ze sobą za pomocą poleceń cmdlet. Miej to na uwadze, gdy uczysz się usługi Active Directory w programie Windows PowerShell. Możesz również użyć tej metody jako techniki uczenia, gdzie zobaczysz, jak po prostu można użyć programu Windows PowerShell do wykonania jednego zadania.
+Zarządzanie różnymi domenami w Centrum administracyjnym usługi Active Directory
+Po otwarciu Centrum administracyjnego usługi Active Directory domena, do której jest obecnie zalogowany użytkownik na tym komputerze (domena lokalna), zostanie wyświetlona w okienku nawigacji Centrum administracyjne usługi Active Directory (okienko po lewej stronie). W zależności od praw bieżącego zestawu poświadczeń logowania można wyświetlać obiekty usługi Active Directory w tej domenie lokalnej lub zarządzać nimi.
+Można również użyć tego samego zestawu poświadczeń logowania i tego samego wystąpienia Centrum administracyjnego usługi Active Directory do wyświetlania lub zarządzania obiektami usługi Active Directory w dowolnej innej domenie w tym samym lesie lub w domenie w innym lesie, który ma ustanowioną relację zaufania z domeną lokalną. Obsługiwane są zarówno relacje zaufania jednokierunkowe, jak i dwukierunkowe relacje zaufania. Do wykonania tej procedury nie jest wymagane minimalne członkostwo w grupie.
+Note
+Jeśli istnieje jednokierunkowa relacja zaufania między domeną A a domeną B, za pomocą której użytkownicy w domenie A mogą uzyskać dostęp do zasobów w domenie B, ale użytkownicy w domenie B nie mogą uzyskać dostępu do zasobów w domenie A, jeśli używasz Centrum administracyjnego usługi Active Directory na komputerze, na którym domena A jest domeną lokalną, możesz nawiązać połączenie z domeną B z bieżącym zestawem poświadczeń logowania i w tym samym wystąpieniu Centrum administracyjnego usługi Active Directory.
+Jeśli jednak używasz Centrum administracyjnego usługi Active Directory na komputerze, na którym domena B jest domeną lokalną, nie można nawiązać połączenia z domeną A z tym samym zestawem poświadczeń w tym samym wystąpieniu Centrum administracyjnego usługi Active Directory.
+Windows Server 2012: Aby zarządzać domeną zagraniczną w wybranym wystąpieniu Centrum administracyjnego usługi Active Directory przy użyciu bieżącego zestawu poświadczeń logowania
+Aby otworzyć Centrum administracyjne usługi Active Directory, w Menedżerze serwera wybierz pozycję Narzędzia, a następnie wybierz pozycję Centrum administracyjne usługi Active Directory.
+Aby otworzyć pozycję Dodaj węzły nawigacji, wybierz pozycję Zarządzaj, a następnie wybierz pozycję Dodaj węzły nawigacji.
+W Dodaj Węzły Nawigacji, wybierz Połącz z innymi domenami.
+W obszarze Połącz z wpisz nazwę domeny obcej, którą chcesz zarządzać (na przykład contoso.com), a następnie wybierz przycisk OK.
+Po pomyślnym nawiązaniu połączenia z domeną zagraniczną przejrzyj kolumny w oknie Dodaj węzły nawigacji, wybierz kontener lub kontenery, które chcesz dodać do okienka nawigacji Centrum administracyjnego usługi Active Directory, a następnie wybierz pozycję OK.
+Windows Server 2008 R2: Aby zarządzać domeną zagraniczną w wybranym wystąpieniu Centrum administracyjnego usługi Active Directory przy użyciu bieżącego zestawu poświadczeń logowania
+Aby otworzyć Centrum administracyjne usługi Active Directory, wybierz pozycję Start, wybierz pozycję Narzędzia administracyjne, a następnie wybierz pozycję Centrum administracyjne usługi Active Directory.
+Tip
+Innym sposobem otwarcia Centrum administracyjnego usługi Active Directory jest wybranie pozycji Start, wybierz pozycję Uruchom, a następnie wpisz dsac.exe.
+Następnie otwórz pozycję Dodaj węzły nawigacyjne w górnej części okna Centrum administracyjnego usługi Active Directory, wybierz pozycję Dodaj węzły nawigacyjne.
+Tip
+Innym sposobem otwarcia pozycji Dodaj węzły nawigacyjne jest kliknięcie prawym przyciskiem myszy w dowolnym miejscu w pustym miejscu w okienku nawigacji Centrum administracyjnego usługi Active Directory, a następnie wybranie pozycji Dodaj węzły nawigacyjne.
+W Dodaj Węzły Nawigacji, wybierz Połącz z innymi domenami.
+W obszarze Połącz z wpisz nazwę domeny obcej, którą chcesz zarządzać (na przykład contoso.com), a następnie wybierz przycisk OK.
+Po pomyślnym nawiązaniu połączenia z domeną zagraniczną przejrzyj kolumny w oknie Dodaj węzły nawigacji, wybierz kontener lub kontenery, które chcesz dodać do okienka nawigacji Centrum administracyjnego usługi Active Directory, a następnie wybierz pozycję OK.
+Zarządzanie domeną przy użyciu poświadczeń logowania, które różnią się od bieżącego zestawu poświadczeń logowania
+Aby otworzyć Centrum administracyjne usługi Active Directory w wierszu polecenia, wpisz następujące polecenie, a następnie wybierz Enter:
+runas /user:<domain\user> dsac
+              <domain\user> to zestaw poświadczeń, z którymi chcesz otworzyć Centrum administracyjne usługi Active Directory, i dsac jest nazwą pliku wykonywalnego Centrum administracyjnego usługi Active Directory.
+Po otwarciu Centrum administracyjnego usługi Active Directory przejdź przez okienko nawigacji, aby wyświetlić domenę usługi Active Directory lub zarządzać nią.
+Rozwiązywanie problemów z zarządzaniem usługami AD DS
+Opcje rozwiązywania problemów
+Opcje rejestrowania
+Centrum administracyjne usługi Active Directory zawiera teraz wbudowane rejestrowanie w ramach pliku konfiguracji śledzenia. Utwórz/zmodyfikuj następujący plik w tym samym folderze co dsac.exe:
+              dsac.exe.config
+Utwórz następującą zawartość:
+<appSettings>
+  <add key="DsacLogLevel" value="Verbose" />
+</appSettings>
+<system.diagnostics>
+ <trace autoflush="false" indentsize="4">
+  <listeners>
+   <add name="myListener"
+    type="System.Diagnostics.TextWriterTraceListener"
+    initializeData="dsac.trace.log" />
+   <remove name="Default" />
+  </listeners>
+ </trace>
+</system.diagnostics>
+Poziomy szczegółowości dla elementu DsacLogLevel to None, Error, Warning, Info i Verbose. Nazwa pliku wyjściowego jest konfigurowalna i zapisywana w tym samym folderze co dsac.exe. W danych wyjściowych można dowiedzieć się więcej o tym, jak działa Centrum administracyjne usługi Active Directory, które kontrolery domeny skontaktowały się, jakie polecenia programu Windows PowerShell zostały uruchomione, jakie były odpowiedzi i dalsze szczegóły.
+Na przykład w przypadku użycia poziomu informacji , który zwraca wszystkie wyniki z wyjątkiem szczegółowości na poziomie śledzenia:
+DSAC.exe rozpoczyna się.
+Rozpoczyna się rejestrowanie.
+Kontroler domeny jest proszony o zwrócenie informacji o domenie początkowej.
+[12:42:49][TID 3][Info] Command Id, Action, Command, Time, Elapsed Time ms (output), Number objects (output)
+[12:42:49][TID 3][Info] 1, Invoke, Get-ADDomainController, 2012-04-16T12:42:49
+[12:42:49][TID 3][Info] Get-ADDomainController-Discover:$null-DomainName:"CORP"-ForceDiscover:$null-Service:ADWS-Writable:$null
+Kontroler domeny DC1 zwrócony z domeny Corp.
+Załadowany dysk wirtualny usługi PS Active Directory.
+[12:42:49][TID 3][Info] 1, Output, Get-ADDomainController, 2012-04-16T12:42:49, 1
+[12:42:49][TID 3][Info] Found the domain controller 'DC1' in the domain 'CORP'.
+[12:42:49][TID 3][Info] 2, Invoke, New-PSDrive, 2012-04-16T12:42:49
+[12:42:49][TID 3][Info] New-PSDrive-Name:"ADDrive0"-PSProvider:"ActiveDirectory"-Root:""-Server:"dc1.corp.contoso.com"
+[12:42:49][TID 3][Info] 2, Output, New-PSDrive, 2012-04-16T12:42:49, 1
+[12:42:49][TID 3][Info] 3, Invoke, Get-ADRootDSE, 2012-04-16T12:42:49
+Uzyskaj informacje o domenie głównej DSE.
+[12:42:49][TID 3][Info] Get-ADRootDSE -Server:"dc1.corp.contoso.com"
+[12:42:49][TID 3][Info] 3, Output, Get-ADRootDSE, 2012-04-16T12:42:49, 1
+[12:42:49][TID 3][Info] 4, Invoke, Get-ADOptionalFeature, 2012-04-16T12:42:49
+Uzyskaj informacje o koszu recycle bin domeny Active Directory.
+[12:42:49][TID 3][Info] Get-ADOptionalFeature -LDAPFilter:"(msDS-OptionalFeatureFlags=1)" -Server:"dc1.corp.contoso.com"
+[12:42:49][TID 3][Info] 4, Output, Get-ADOptionalFeature, 2012-04-16T12:42:49, 1
+[12:42:49][TID 3][Info] 5, Invoke, Get-ADRootDSE, 2012-04-16T12:42:49
+[12:42:49][TID 3][Info] Get-ADRootDSE -Server:"dc1.corp.contoso.com"
+[12:42:49][TID 3][Info] 5, Output, Get-ADRootDSE, 2012-04-16T12:42:49, 1
+[12:42:49][TID 3][Info] 6, Invoke, Get-ADRootDSE, 2012-04-16T12:42:49
+[12:42:49][TID 3][Info] Get-ADRootDSE -Server:"dc1.corp.contoso.com"
+[12:42:49][TID 3][Info] 6, Output, Get-ADRootDSE, 2012-04-16T12:42:49, 1
+[12:42:49][TID 3][Info] 7, Invoke, Get-ADOptionalFeature, 2012-04-16T12:42:49
+[12:42:49][TID 3][Info] Get-ADOptionalFeature -LDAPFilter:"(msDS-OptionalFeatureFlags=1)" -Server:"dc1.corp.contoso.com"
+[12:42:50][TID 3][Info] 7, Output, Get-ADOptionalFeature, 2012-04-16T12:42:50, 1
+[12:42:50][TID 3][Info] 8, Invoke, Get-ADForest, 2012-04-16T12:42:50
+Uzyskaj las usługi Active Directory.
+[12:42:50][TID 3][Info] Get-ADForest -Identity:"corp.contoso.com" -Server:"dc1.corp.contoso.com"
+[12:42:50][TID 3][Info] 8, Output, Get-ADForest, 2012-04-16T12:42:50, 1
+[12:42:50][TID 3][Info] 9, Invoke, Get-ADObject, 2012-04-16T12:42:50
+Uzyskaj informacje o schemacie dla obsługiwanych typów szyfrowania, FGPP i niektórych informacji o użytkowniku.
+[12:42:50][TID 3][Info] Get-ADObject
+-LDAPFilter:"(|(ldapdisplayname=msDS-PhoneticDisplayName)(ldapdisplayname=msDS-PhoneticCompanyName)(ldapdisplayname=msDS-PhoneticDepartment)(ldapdisplayname=msDS-PhoneticFirstName)(ldapdisplayname=msDS-PhoneticLastName)(ldapdisplayname=msDS-SupportedEncryptionTypes)(ldapdisplayname=msDS-PasswordSettingsPrecedence))"
+-Properties:lDAPDisplayName
+-ResultPageSize:"100"
+-ResultSetSize:$null
+-SearchBase:"CN=Schema,CN=Configuration,DC=corp,DC=contoso,DC=com"
+-SearchScope:"OneLevel"
+-Server:"dc1.corp.contoso.com"
+[12:42:50][TID 3][Info] 9, Output, Get-ADObject, 2012-04-16T12:42:50, 7
+[12:42:50][TID 3][Info] 10, Invoke, Get-ADObject, 2012-04-16T12:42:50
+Uzyskaj wszystkie informacje o obiekcie domeny, które mają być wyświetlone administratorowi, który kliknął nagłówek domeny.
+[12:42:50][TID 3][Info] Get-ADObject
+-IncludeDeletedObjects:$false
+-LDAPFilter:"(objectClass=*)"
+-Properties:allowedChildClassesEffective,allowedChildClasses,lastKnownParent,sAMAccountType,systemFlags,userAccountControl,displayName,description,whenChanged,location,managedBy,memberOf,primaryGroupID,objectSid,msDS-User-Account-Control-Computed,sAMAccountName,lastLogonTimestamp,lastLogoff,mail,accountExpires,msDS-PhoneticCompanyName,msDS-PhoneticDepartment,msDS-PhoneticDisplayName,msDS-PhoneticFirstName,msDS-PhoneticLastName,pwdLastSet,operatingSystem,operatingSystemServicePack,operatingSystemVersion,telephoneNumber,physicalDeliveryOfficeName,department,company,manager,dNSHostName,groupType,c,l,employeeID,givenName,sn,title,st,postalCode,managedBy,userPrincipalName,isDeleted,msDS-PasswordSettingsPrecedence
+-ResultPageSize:"100"
+-ResultSetSize:"20201"
+-SearchBase:"DC=corp,DC=contoso,DC=com"
+-SearchScope:"Base"
+-Server:"dc1.corp.contoso.com"
+Ustawienie poziomu Pełne pokazuje również stosy platformy .NET dla każdej funkcji, ale nie zawierają one wystarczającej ilości danych, aby być przydatne, z wyjątkiem przypadków rozwiązywania problemów po dsac.exe występuje naruszenie dostępu lub awaria. Dwie prawdopodobne przyczyny tego problemu to:
+Usługi sieci Web w usłudze Active Directory nie są uruchomione na żadnym dostępnym kontrolerze domeny.
+Komunikacja sieciowa jest blokowana w usługach sieci Web usługi Active Directory z komputera z uruchomionym Centrum administracyjnym usługi Active Directory.
+Important
+Dostępna jest również poza pasmem wersja usługi o nazwie Brama zarządzania usługą Active Directory, która działa w systemach Windows Server 2008 z dodatkiem SP2 i Windows Server 2003 z dodatkiem SP2.
+Następujące błędy są wyświetlane, gdy nie są dostępne żadne wystąpienia usług sieci Web w usłudze Active Directory:
+Error
+Operation
+"Nie można nawiązać połączenia z żadną domeną. Odśwież lub spróbuj ponownie, gdy połączenie jest dostępne"
+Pokazano na początku aplikacji Centrum administracyjnego usługi Active Directory
+Nie można odnaleźć dostępnego serwera w domenie NetBIOS o nazwie <> z działającą usługą sieci Web Active Directory (ADWS).
+Wyświetlane podczas próby wybrania węzła domeny w aplikacji Centrum administracyjne usługi Active Directory
+Aby rozwiązać ten problem, wykonaj następujące kroki:
+Sprawdź, czy Usługi sieci Web Active Directory są uruchomione na co najmniej jednym kontrolerze domeny (a najlepiej na wszystkich kontrolerach domeny w lesie). Upewnij się, że ustawiono automatyczne uruchamianie na wszystkich kontrolerach domeny.
+Na komputerze z uruchomionym Centrum administracyjnym usługi Active Directory sprawdź, czy można zlokalizować serwer z uruchomionymi usługami sieci Web Active Directory, uruchamiając następujące polecenia NLTest.exe:
+nltest /dsgetdc:<domain NetBIOS name> /ws /force
+nltest /dsgetdc:<domain fully qualified DNS name> /ws /force
+Jeśli testy te kończą się niepowodzeniem, mimo że usługi sieci Web Active Directory są uruchomione, problem dotyczy rozpoznawania nazw lub protokołu LDAP, a nie usług Sieci Web Active Directory lub Centrum administracyjnego usługi Active Directory. Ten test kończy się niepowodzeniem z powodu błędu "1355 0x54B ERROR_NO_SUCH_DOMAIN", jeśli usługi sieci Web Active Directory nie są uruchomione na żadnym kontrolerze domeny, więc dokładnie sprawdź, zanim dotrzesz do jakichkolwiek wniosków.
+Na kontrolerze domeny zwróconym przez usługę Nltest zrzuć listę portów nasłuchiwania za pomocą następującego polecenia:
+Netstat -anob > ports.txt
+Sprawdź plik ports.txt i sprawdź, czy usługa usług sieci Web Active Directory nasłuchuje na porcie 9389. Przykład:
+TCP    0.0.0.0:9389    0.0.0.0:0    LISTENING    1828
+[Microsoft.ActiveDirectory.WebServices.exe]
+TCP    [::]:9389       [::]:0       LISTENING    1828
+[Microsoft.ActiveDirectory.WebServices.exe]
+Jeśli usługa nasłuchuje, zweryfikuj reguły Zapory systemu Windows i upewnij się, że zezwalają na ruch przychodzący TCP 9389. Domyślnie kontrolery domeny włączają regułę zapory "Usługi sieci Web w usłudze Active Directory (TCP-in). Jeśli usługa nie nasłuchuje, sprawdź ponownie, czy jest uruchomiona na tym serwerze i uruchom ją ponownie. Sprawdź, czy żaden inny proces nie nasłuchuje już na porcie 9389.
+Zainstaluj program NetMon lub inne narzędzie przechwytywania sieci na komputerze z uruchomionym Centrum administracyjnym usługi Active Directory i na kontrolerze domeny zwróconym przez narzędzie Nltest. Zbierz jednoczesne przechwytywanie ruchu sieciowego na obu komputerach, na których uruchamiasz Centrum administracyjne Active Directory i obserwujesz błąd przed zatrzymaniem przechwytywania. Sprawdź, czy klient może wysyłać i odbierać z kontrolera domeny na porcie TCP 9389. Jeśli pakiety są wysyłane, ale nigdy nie docierają lub docierają i kontroler domeny odpowiada, ale nigdy nie docierają do klienta, prawdopodobnie między komputerami w sieci znajduje się zapora, która porzuca pakiety na tym porcie. Ta zapora może być oprogramowaniem lub sprzętem i może być częścią oprogramowania do ochrony urządzenia końcowego (antywirusowego) firmy innej niż Microsoft.
+Treści powiązane
+              Kosz usługi Active Directory, szczegółowe zasady haseł i Podgląd historii programu PowerShell
+			Opinia
+					Czy ta strona była pomocna?
+						Tak
+						Nie
+							Nie
+								Potrzebujesz pomocy dotyczącej tego tematu?
+								Chcesz spróbować użyć asystenta Ask Learn, aby wyjaśnić ten temat lub uzyskać instrukcje, które go dotyczą?
+			Zapytaj platformę Learn
+			Zapytaj platformę Learn
+				 Zaproponować poprawkę? 
+				Dodatkowe zasoby
+				Ostatnia aktualizacja o 
+		2025-08-16
+				

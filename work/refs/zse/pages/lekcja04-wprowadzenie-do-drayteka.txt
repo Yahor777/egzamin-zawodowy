@@ -1,0 +1,62 @@
+https://zse.rzeszow.pl/psk/lekcja04-wprowadzenie-do-drayteka
+
+    Pracownia Systemów Operacyjnych
+            PRACOWNIA SIECI KOMPUTEROWYCH
+                Ćwiczenie nr 1
+                                Lista Ćwiczeń
+                Strona Główna
+            Wprowadzenie
+                Zajmiemy się teraz routerami Drayteka. W tej instrukcji zobaczycie podstawy, ale będą one niezbędne do zrobienia następnych ćwiczeń, jak chociażby VLANY na routerze, czy też łączenie routera z przełącznikiem z wykorzysteniem vlanów.
+				W tej części zobaczycie:
+				- ustalanie adresu IP routera
+				- ustawianie nowego adresu IP routera
+				- ustawianie statycznej dzierżawy na porcie WAN
+				- konfiguracja serwera DHCP
+				- ustawianie statycznego adresu IP dla danego hosta
+                        I. Ustalanie adresu IP routera.
+                                   Na początku po podłączeniu routera do naszej karty sieciowej musimy sprawdzić jego aktualny adres IP. Aby to zrobić uruchamiamy wiersz poleceń i wpsujemy komendę: ipconfig. Adres bramy to adres naszego urządzenia. 
+                        II. Logowanie do routera.
+                                W przeglądarce wpisujemy adres bramy jaki otrzymaliśmy w konsoli. W moim przypadku będzie to 192.168.1.1.
+								- Login: admin
+								- Hasło: admin
+                        III. Przywracamy ustawienia fabryczne.
+                                Na sam początek przywrócimy sobie fabryczne ustawienia routera. Na każdych zajęciach związanych z routerami Drayteka, będziecie musieli je resetować do tych ustawień. Klikamy przycisk na zaznaczonym obszarze.
+                                Zaznaczamy, że chcemy przywrócić do ustawień fabrycznych i klikamy Reboot now.
+							IV. Ustawianie statycznej dzierżawy na porcie WAN.
+                                Przechodzimy do ustawień WAN naszego routera. Wystarczy, że na stronie początkowej klikniemy na pierwszy port WAN.
+                                Zaznaczamy, że chcemy ustawić nasze ustawienia adresacji:
+								- adres IP: 172.16.110.200+x, gdzie x oznacza numer naszej grupy roboczej
+								- Maska: 255.255.255.0
+								- Brama: 172.16.110.2
+								- DNS: 8.8.8.8
+								- Alternatywny DNS: 8.8.4.4
+								Teraz wszystko zatwierdzamy
+                                Po zatwierdzeniu, router będzie musiał się zrestartować, zezwalamy.
+							V. Ustawiamy adres routera oraz konfigurujemy serwer DHCP.
+                                Po zalogowaniu, wybieramy zaznaczony obszar.
+                                Wybieramy Details Page.
+                                Widzimy teraz kilka opcji. W lewym panelu ustawimy adres routera, a co za tym idzie po wydaniu polecenia ipconfig w wierszu poleceń zidentyfikuje się nam ten adres jako brama.
+								Drugi panel odpowiada za nasz serwer DHCP.
+								Ustawimy adres routera na:
+								- Adres IP: 172.16.111.10
+								- Maska: 255.255.255.0
+								Serwer DHCP:
+								- Początkowy adres: 172.16.111.11
+								- Pula adresów: 100
+								- Brama: 172.16.111.10
+								- Czas dzierżawy adresu: 86400s = 24 godziny
+								- DNS: 172.16.111.10
+								Na koniec wszystko zatwierdzamy i restartujemy router.
+							VI. Sprawdzamy czy wszystko działa poprawnie.
+                                Teraz wpiszmy w wiersz poleceń polecenie: ipconfig Widzimy, że nasz adres IP to 172.16.111.11 oraz brama to 172.16.111.10, czyli wszystko zgadza się z tym co ustawilismy. 
+                                Zobaczmy czy możemy zalogować się do interfejsu webowego. Jak widzimy panel webowy również jest pod adresem 172.16.111.10
+                        VII. Konfigurujemy statyczny adres IP dla naszego hosta.
+                                Klikamy w zakładkę LAN i klikamy Bind IP to Mac.
+                                Włączamy tę funkcję, klikając enable i w tabeli oznaczonej ARP table naszego hosta. Klikamy na niego dwukrotnie .
+                                Teraz widzimy, że nasz host pojawił się w drugiej tabeli. Przypiszmy mu adres, na przykład
+								- IP: 172.16.111.55
+								- MAC: Dodany automatycznie
+								- Komenatarz Opcjonalnie
+                                Teraz zatwierdzamy wszystko klikając OK.
+                                W wierszu poleceń sprawdźmy nasz adres IP, poprzez polecenie ipconfig. Jak widzimy wszystko jest w porządku.
+    © 2009 - 2026 Copyright ZSE Rzeszów | Developed by Maciej Biel & Ireneusz Paździor

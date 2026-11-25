@@ -1,0 +1,29 @@
+https://zse.rzeszow.pl/psk/lekcja06-wifi-na-drayteku
+
+    Pracownia Systemów Operacyjnych
+            PRACOWNIA SIECI KOMPUTEROWYCH
+                Ćwiczenie nr 6
+                                Lista Ćwiczeń
+                Strona Główna
+            Wprowadzenie
+                Jednym z zadań pojawiających się na egzaminie zawodowym INF02 jest konfiguracja sieci Wi-Fi. Sieci te mogą działać w różnych podsieciach z wykorzystaniem Vlanów. W tej instrukcji wykorzystamy podsieć pierwszą, gdzie początkowym adresem IP w serwerze DHCP będzie 192.168.1.11. 
+                    Dla przykładu skonfigurujemy sieć 2.4 GHz, ale w przypadku 5 GHz postępowanie jest identyczne.
+                        I. Tworzymy sieć.
+                                    Po zalogowaniu się do routera przechodzimy do zakładki Wireless LAN (2.4 GHz)
+                                    Pojawia nam się okno konfiguracyjne Wi-Fi. Tutaj możemy stworzyć kilka różnych sieci z kilkoma właściwościami, takimi jak: 
+                                    - ustawiać SSID
+                                    - sieć ukryta
+                                    - aktywna sieć
+                                    - Izolowanie od np. VPN-a
+                                Stwórzmy dwie sieci, z czego jedna będzie ukryta
+                                - Pierwsze SSID: ZSE_PSK_Wi-Fi
+                                - Drugie SSID: ZSE_test dodatkowo zaznaczamy opcję Hide SSID.
+                                Rozwijamy zakładkę Wireless LAN (2.4 GHz) i klikamy Security i teraz możemy ustawić tryb zabezpieczeń do danego SSID oraz ustawić hasło. 
+                                W tym przypadku będziemy wykorzystywać WPA2/PSK oraz ustawimy dowolne hasło. 
+                                Przechodzimy do drugiej zakładki SSID2 i tu musimy wszystko ustawić ręcznie.
+                                Ustawimy zabezpieczenia podobnie jak w przypadku pierwszej sieci, czyli WPA2/PSK oraz dowolne hasło.
+                        II. Sprawdzamy działanie Wi-Fi.
+                                Na laptopie czy na telefonie szukamy naszego pierwszego Wi-Fi, w tym przypadku, jest to ZSE_PSK_WIFI. Jak widać jest wykrywane. Po wpisaniu hasła wszystko działa jak powinno.
+                                Na laptopie czy na telefonie szukamy naszego drugiego Wi-Fi, ale jest to sieć ukryta, więc musimy na samym dole kliknąć Sieć ukryta i wpisać SSID - ZSE_test. Po wpisaniu hasła wszystko działa jak powinno.
+                                W wierszu poleceń wpiszmy polecenie ipconfig. Jak widzimy adres jest poprawny, ponieważ serwer DHCP miał początkowy adres 192.168.1.11.
+    © 2009 - 2026 Copyright ZSE Rzeszów | Developed by Maciej Biel & Ireneusz Paździor

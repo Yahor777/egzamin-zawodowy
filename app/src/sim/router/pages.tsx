@@ -275,7 +275,7 @@ function StatusPage({ state, go }: RouterPageProps) {
       <Panel title="Wireless">
         <Kv
           rows={[
-            ['Operation Mode', 'Access Point'],
+            ['Operation Mode', 'Wireless Router Mode'],
             ['Wireless Radio', b.enabled ? 'Enable' : 'Disable'],
             ['Name (SSID)', b.ssid],
             ['Mode', b.mode],
@@ -588,7 +588,7 @@ function LanPage({ state, onChange, setNotice, api }: RouterPageProps) {
         <MsgBox msg={msg} />
         {ask ? (
           <ConfirmBox
-            text="Changing the LAN IP address/subnet mask will reboot the router. Afterwards you have to log in at the new IP address. Continue?"
+            text="Modification of LAN Settings will result in the rebooting of this device, OK?"
             onOk={apply}
             onCancel={() => setAsk(false)}
           />
@@ -918,7 +918,7 @@ function DhcpSettingsPage({ state, onChange }: RouterPageProps) {
       return setMsg({ kind: 'err', text: 'The LAN IP address of the router cannot be within the address pool.' })
     if (!/^\d+$/.test(d.lease.trim())) return setMsg({ kind: 'err', text: 'Invalid lease time.' })
     const lease = Number(d.lease.trim())
-    if (lease < 1 || lease > 2880) return setMsg({ kind: 'err', text: 'The address lease time must be between 1 and 2880 minutes.' })
+    if (lease < 1 || lease > 2880) return setMsg({ kind: 'err', text: 'Address lease time is out of range (1 ~ 2880). Please input another time!' })
     if (gw !== '' && (!isIp(gw) || (!isUnset(gw) && !sameSubnet(gw, lanIp, mask))))
       return setMsg({ kind: 'err', text: 'Invalid default gateway — it must be in the LAN subnet.' })
     if (dns1 !== '' && !isIp(dns1)) return setMsg({ kind: 'err', text: ipErr('primary DNS server') })
@@ -1764,7 +1764,7 @@ function PasswordPage({ state, onChange }: RouterPageProps) {
   return (
     <form onSubmit={save} noValidate>
       <Panel title="Password">
-        <p className="dv-intro">The length of the user name and password cannot exceed 15 characters and cannot include spaces.</p>
+        <p className="dv-intro">Username and password can contain between 1 - 15 characters and may not include spaces.</p>
         <TextRow id="rt-pw-olduser" label="Old User Name" value={oldUser} onChange={setOldUser} />
         <TextRow id="rt-pw-old" label="Old Password" type="password" value={old} onChange={setOld} autoComplete="current-password" />
         <TextRow id="rt-pw-user" label="New User Name" value={user} onChange={setUser} maxLength={15} />
@@ -1799,13 +1799,13 @@ function RebootPage({ api }: RouterPageProps) {
   const [ask, setAsk] = useState(false)
   return (
     <Panel title="Reboot">
-      <p className="dv-intro">Click this button to reboot the device.</p>
+      <p className="dv-intro">Click this button to reboot this device.</p>
       <Actions>
         <button type="button" className="dv-btn" onClick={() => setAsk(true)} disabled={ask}>
           Reboot
         </button>
       </Actions>
-      {ask ? <ConfirmBox text="Are you sure to reboot the Device?" onOk={() => api.reboot()} onCancel={() => setAsk(false)} /> : null}
+      {ask ? <ConfirmBox text="Are you sure to reboot this device?" onOk={() => api.reboot()} onCancel={() => setAsk(false)} /> : null}
     </Panel>
   )
 }
@@ -1826,7 +1826,7 @@ function FactoryPage({ state, onChange, api, setNotice }: RouterPageProps) {
         </button>
       </Actions>
       {ask ? (
-        <ConfirmBox danger text="Are you sure to restore all settings to the factory defaults?" onOk={restore} onCancel={() => setAsk(false)} />
+        <ConfirmBox danger text="Any settings you have saved will be lost if you restore Factory Defaults. Are you sure to continue?" onOk={restore} onCancel={() => setAsk(false)} />
       ) : null}
       <PlHint>Ustawienia fabryczne: adres 192.168.0.1, maska 255.255.255.0, login admin / hasło admin.</PlHint>
     </Panel>

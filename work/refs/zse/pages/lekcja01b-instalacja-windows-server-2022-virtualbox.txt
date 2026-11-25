@@ -1,0 +1,42 @@
+https://zse.rzeszow.pl/windows/2022/lekcja01b-instalacja-windows-server-2022-virtualbox
+
+    Pracownia Systemów Operacyjnych
+            INSTALACJA WINDOWS SERVER 2022 - VIRTUALBOX
+                Ćwiczenie wprowadzające nr 1b
+                Ćwiczenia wprowadzające
+                Lista Ćwiczeń
+                Strona Główna
+                        I. Instalacja programu VirtualBox
+                                Pobieramy aplikację VirtualBox (u nas 7.2.8) i uruchamiamy instalację, zezwalając tej aplikacji na uruchomienie się na naszym komputerze.
+                                Uruchamia nam się kreator instalacji – naciskamy „Next”.
+                                Zapoznajemy się z licencją, akceptujemy ją i naciskamy „Next”.
+                                Wybór elementów, które chcemy zainstalować, a także zmiana lokalizacji instalacji naszej aplikacji. My nie zmieniamy nic i klikamy „Next”.
+                                Ostrzeżenie o możliwości przerwania działania internetu w trakcie instalacji – naciskamy „Yes”.
+                                VirtualBox wymaga dodatkowych pakietów – instalujemy je, klikając „Yes”.
+                                Wybieramy skróty i klikamy „Next”.
+                                Gotowość do instalacji – naciskamy „Install”.
+                                Instalacja może chwilę potrwać.
+                                Instalacja zakończyła się sukcesem – naciskamy „Finish”, możemy się zgodzić na uruchomienie aplikacji.
+                                Mamy pierwsze uruchomienie VM VirtualBox. Klikając opcję „New”, można stawiać nasze wirtualne maszyny.
+                        II. Instalacja Windows Server 2022 na VirtualBox
+                                Najpierw tworzymy wirtualną przestrzeń dla naszego systemu. Uruchamiamy program VirtualBox i wybieramy z menu opcję "Nowa".
+                                Ustawiamy nazwę dla naszej maszyny (u nas Windows Server 2022) i wybieramy obraz ISO. Odznaczamy także opcję "Proceed with Unattended Installation". Jeśli zostawimy to zaznaczone, to instalator Windows Server przeskoczy wszystkie kroki i za nas zainstaluje system czego nie chcemy.
+                                Po kliknięciu "Zakończ" musimy jeszcze wejść w "Ustawienia" naszej maszyny.
+                                Określamy ilość pamięci RAM dla naszej maszyny (minimum 2048 MB) - my dajemy 8192 i idziemy dalej.
+                                Zaznaczamy "Sieć", gdzie musimy utworzyć przynajmniej dwa interfejsy, aby nasz serwer mógł świadczyć usługę routingu z dostępem do Internetu. Pierwszy interfejs ustawiamy na opcję "NAT".
+                                Drugi interfejs na opcję "Sieć wewnętrzna", podajemy jakąś nazwę np. LAN-W i naciskamy OK.
+                                Po upewnieniu się, że wszystko mamy ustawione poprawnie, klikamy "Uruchom".
+                                Na początku ustawiamy właściwe opcje języka oraz klawiatury i naciskamy "Dalej".
+                                Następnie naciskamy "Zainstaluj teraz".
+                                Widzimy ekran aktywacji naszego systemu. Możemy wpisać klucz teraz lub później. My klikamy „Nie mam klucza produktu”.
+                                Następnie wybieramy rodzaj systemu i typ interfejsu systemu (ze środowiskiem graficznym lub bez – my wybieramy z GUI) i naciskamy „Dalej”.
+                                Czytamy, akceptujemy licencję i naciskamy „Dalej”.
+                                Następnie wybieramy typ instalacji systemu.
+                                W kolejnym kroku wykonujemy podział naszego dysku na partycje (my zostawiamy cały dysk) i naciskamy „Dalej”.
+                                I rozpoczyna się właściwy proces instalacji.
+                                Po instalacji musimy wprowadzić hasło dla konta „Administrator”.
+                                Następnie naciskamy klawisze "Ctrl+Alt+Del" (na VM wystarczy prawy Ctrl+Del).
+                                Mamy ekran logowania – wpisujemy hasło dla naszego konta.
+                                I jesteśmy zalogowani na naszym serwerze.
+                                Powinien też uruchomić się automatycznie „Menedżer serwera”.
+    © 2009 - 2026 Copyright ZSE Rzeszów | Developed by Maciej Biel & Ireneusz Paździor

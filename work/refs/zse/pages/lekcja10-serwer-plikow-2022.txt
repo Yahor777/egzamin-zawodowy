@@ -1,0 +1,139 @@
+https://zse.rzeszow.pl/windows/2022/lekcja10-serwer-plikow-2022
+
+    Pracownia Systemów Operacyjnych
+            SERWER PLIKÓW I UDOSTĘPNIANIE ZASOBÓW
+                Ćwiczenie nr 10
+                                Lista Ćwiczeń
+                Strona Główna
+            Wprowadzenie do lekcji
+                1. Definicja serwera plików.
+                To rola serwera, która umożliwia stworzenie centralnego repozytorium służącego do przechowywania i udostępniania danych użytkownikom w sieci komputerowej.
+                2. Najważniejsze funkcje serwera plików:
+                – łatwiejsze zarządzanie udostępnianymi udziałami,
+                – możliwość określania limitów przestrzeni dyskowej nakładanych na użytkownika,
+                – usługa indeksowania – pliki wyszukiwane są znacznie szybciej,
+                – możliwość włączenia usługi Volume Shadow Copy (kopii w tle) – dzięki temu można uzyskać dostęp do poprzednich wersji plików zapisanych na serwerze,
+                – usługa DFS – pozwala w jednym miejscu zintegrować wiele różnych udziałów w tzw. obszar nazw.
+                3. System plików NTFS.
+                To system plików stosowany w rodzinie systemów operacyjnych Windows, będący następcą struktury FAT32, cechujący się głównie wyższym poziomem bezpieczeństwa danych na poziomie pojedynczych plików i katalogów.
+                4. Najważniejsze cechy systemu plików NTFS:
+                – większe bezpieczeństwo danych (zarządzanie prawami dostępu),
+                – szyfrowanie danych (funkcja EFS),
+                – lepsze wykorzystanie przestrzeni na dysku (mniejsza jednostka alokacji plików niż w systemie FAT),
+                – możliwość kompresji danych oraz całych woluminów dyskowych,
+                – możliwość ustalenia limitów na dysku dla każdego użytkownika,
+                – mechanizm zapobiegający znacznej fragmentacji dysku,
+                – większa odporność na błędy (system automatycznie wykrywa uszkodzone sektory i odpowiednio je oznacza),
+                – możliwość obsługi dużych partycji (powyżej 32 GB),
+                – możliwość obsługi plików o rozmiarze większym niż 4 GB.
+                5. Uprawnienia do zasobów udostępnionych:
+                – pełna kontrola – pozwala użytkownikowi na wykonywanie wszystkich operacji,
+                – modyfikacja – posiada te same właściwości co pełna kontrola, z wyłączeniem prawa do zmiany uprawnień innych użytkowników i przejmowania obiektów na własność,
+                – odczyt – umożliwia odczytywanie oraz uruchamianie plików i katalogów.
+                6. Edytor listy ACL (Access Control List).
+                Edytor listy ACL to narzędzie systemowe, które umożliwia elastyczną i znacznie silniejszą kontrolę uprawnień dostępu do zasobów.
+                7. Praktyczne funkcje edytora ACL:
+                – zarządzanie własnością obiektów,
+                – konfigurowanie inspekcji systemu,
+                – precyzyjne określanie czynnych uprawnień.
+                8. Dziedziczenie uprawnień.
+                Dziedziczenie uprawnień oznacza, że uprawnienia zastosowane do folderu nadrzędnego będą automatycznie przypisywane do plików i podfolderów znajdujących się poniżej danego obiektu (dotyczy to ustawień domyślnych). Funkcję tę można włączyć lub wyłączyć w zaawansowanych opcjach bezpieczeństwa obiektu.
+                9. Mapowanie dysku.
+                Mapowanie dysku odnosi się do wybranego udziału sieciowego i pozwala uzyskać do niego bezpośredni dostęp z poziomu Eksploratora plików, bez konieczności każdorazowego ręcznego wpisywania pełnej ścieżki sieciowej UNC.
+                        I. Instalacja serwera plików.
+                        Generalnie podczas podnoszenia systemu do poziomu kontrolera domeny mechanizm podstawowego udostępniania zasobów automatycznie się instaluje. Niemniej jednak zapewnia on tylko podstawowe możliwości związane z udostępnianiem plików i katalogów. Jeśli chcielibyśmy na przykład narzucić sztywne przydziały dyskowe, musimy doinstalować dodatkową opcję systemową o nazwie „File Server Resource Manager”.
+                                Uruchamiamy „Menedżera serwera” i wybieramy opcję „Dodaj role i funkcje”.
+                                Uruchamia się „Kreator dodawania ról i funkcji” – naciskamy „Dalej”.
+                                Pozostawiamy pierwszą opcję i naciskamy „Dalej”.
+                                Wybieramy nasz serwer (innego nie mamy) i naciskamy „Dalej”.
+                                Zaznaczamy sekcję „Usługi plików i magazynowania”. Jak już wcześniej wspomniano, mamy zainstalowaną tę funkcję bazowo, ale musimy jeszcze zaznaczyć rolę „Menedżer zasobów serwera plików”. Dodatkowo (opcjonalnie) dodajemy dwie opcje związane z obsługą przestrzeni nazw DFS.
+                                Podczas zaznaczania pojawią nam się dwa okna z informacją, jakie funkcje zostaną dołączone do tych ról. Naciskamy przycisk „Dodaj funkcje”.
+                                Mamy już zaznaczone wszystkie wymagane opcje – naciskamy „Dalej”.
+                                Możemy jeszcze coś dodać do procesu instalacji, ale my tego nie robimy i naciskamy „Dalej”.
+                                Zaznaczamy restart komputera, jeśli zaistnieje taka konieczność, po czym naciskamy „Tak” i „Zainstaluj”.
+                                Musimy trochę poczekać, aż rola się zainstaluje. Można okno z procesem instalacji „zamknąć”, a u góry menedżera i tak będzie widać, że proces konfiguracji nadal trwa. Po pomyślnym zainstalowaniu usługi klikamy „Zamknij”.
+                        II. Podstawowa konfiguracja udziału sieciowego.
+                                Z menu „Menedżera serwera” wybieramy teraz sekcję „Usługi plików i magazynowania”, a następnie zaznaczamy „Udziały” i z menu podręcznego „Zadania” wybieramy opcję „Nowy udział”.
+                                Uruchamia się „Kreator nowego udziału”. Wybieramy najprostszy sposób udostępniania zasobów, czyli protokół SMB w profilu „Szybki” i naciskamy „Dalej”.
+                                Następnie podajemy konkretną ścieżkę dostępu do folderu. Wybieramy opcję „Wpisz ścieżkę niestandardową”, a następnie klikamy przycisk „Przeglądaj…”.
+                                Wybieramy opcję „Nowy folder”, podajemy jego nazwę (u nas: Zasoby) i naciskamy przycisk „Wybierz folder”.
+                                Widząc, że wybrany przez nas folder jest właściwy, ponownie naciskamy przycisk „Wybierz folder”.
+                                Teraz zatwierdzamy nasz wybór, klikając „Dalej”.
+                                Następnie podajemy nazwę, pod którą nasz folder będzie widoczny w sieci lokalnej, lub pozostawiamy tę zgodną z jego fizyczną nazwą na serwerze. Możemy także dodać krótki opis. Zwracamy uwagę na zdalną ścieżkę do udziału, z której będziemy korzystać, i naciskamy „Dalej”.
+                                W kolejnym kroku możemy włączyć np. ukrywanie zasobów, do których dany użytkownik nie ma uprawnień dostępu (pierwsza opcja), dostęp do plików w trybie offline lub dodatkowe szyfrowanie danych. My zaznaczamy opcję drugą i naciskamy „Dalej”.
+                                W kolejnym oknie możemy precyzyjnie określić uprawnienia kontrolujące dostęp. Klikamy więc przycisk „Dostosowywanie uprawnień”.
+                                Następnie wyłączymy dziedziczenie uprawnień struktury dyskowej, klikając opcję „Wyłącz dziedziczenie”.
+                                W wyświetlonym oknie możemy dokonać bezpośredniej konwersji dziedziczonych uprawnień na uprawnienia jawne lub całkowicie usunąć wszystkie wpisy. My wybieramy tę pierwszą opcję.
+                                Następnie usuwamy zbędne wpisy, pozostawiając tylko właściciela oraz grupę Administratorzy. Teraz możemy dokładnie określić, kto oprócz nich ma mieć dostęp do tego folderu. Naciskamy więc przycisk „Dodaj”.
+                                Następnie klikamy odnośnik „Wybierz podmiot zabezpieczeń”.
+                                Wskazujemy użytkownika (lub grupę), któremu chcemy nadać uprawnienia dostępu do naszego folderu. W naszym przykładzie będzie to konto bondj. Najpierw wpisujemy nazwę, a potem sprawdzamy, czy taki użytkownik znajduje się w strukturze usługi AD. Jeśli tak, to klikamy „OK”.
+                                Zezwalamy naszemu użytkownikowi na:
+                                – odczyt i wykonywanie,
+                                – wyświetlanie zawartości folderu,
+                                – odczyt.
+                                Uprawnienia te będą domyślnie dotyczyć tego folderu, jego podfolderów oraz znajdujących się w nich plików. Jeśli poprawnie zaznaczyliśmy powyższe opcje, naciskamy „OK”.
+                                Widzimy, że nasz użytkownik został pomyślnie dodany do listy uprawnionych podmiotów i jeśli zgadzamy się z tymi ustawieniami, klikamy „Zastosuj”, a następnie „OK”.
+                                Sprawdzamy jeszcze, czy nasze uprawnienia zostały skonfigurowane właściwie, i klikamy „Dalej”.
+                                Na koniec generowane jest potwierdzenie poprawności naszych ustawień i klikamy przycisk „Utwórz”.
+                                Otrzymujemy ostateczne potwierdzenie utworzenia udziału sieciowego i klikamy „Zamknij”.
+                                I widzimy w oknie „Menedżera serwera”, że nasz folder stał się już aktywnym udziałem sieciowym. Jest to podstawowe udostępnienie, bez włączonego na ten moment przydziału dyskowego (limitu).
+                                Teraz sprawdzamy dostęp do naszego zasobu z poziomu komputera klienckiego. Logujemy się użytkownikiem bondj i w pasku adresu „Eksploratora plików” wpisujemy naszą ścieżkę sieciową. Można odnieść się bezpośrednio do zasobu (\\server00\zasoby) lub ogólnie do serwera (\\server00).
+                                Następnie przechodzimy do folderu Zasoby i weryfikujemy, czy działają przypisane uprawnienia bezpieczeństwa. Widzimy, że przy próbie dodania nowego pliku uzyskujemy odmowę dostępu, czyli wszystko działa poprawnie.
+                        III. Konfiguracja przydziału.
+                        Dzięki temu, że zainstalowaliśmy na serwerze przystawkę „File Server Resource Manager”, możemy naszym udziałom narzucać sztywne przydziały dyskowe. Możemy to wykonać na dwa sposoby. Pierwszy z nich uwzględnia szablony przydziału domyślnie udostępnione przez system Windows Server, natomiast drugi sposób pozwala na całkowicie dowolne i niestandardowe konfigurowanie limitów.
+                                Najpierw wykorzystamy gotowe szablony systemowe i ustawimy przydział dla naszego folderu. Z poziomu „Menedżera serwera” klikamy prawym przyciskiem myszy (PPM) na udziale „Zasoby” i wybieramy opcję „Konfiguruj przydział”.
+                                Z dostępnych szablonów można wybrać określoną przestrzeń dla tego folderu. My wybieramy limit 100 MB i klikamy „OK”.
+                                I widzimy ustawiony przydział wraz z pełną informacją, ile wolnego miejsca jeszcze zostało. W naszym przypadku folder jest pusty, więc mamy dostępną pełną ilość 100 MB.
+                                W kolejnym kroku utworzymy swój własny, niestandardowy przydział. Na początek przygotujemy nowy zasób sieciowy, który do tego wykorzystamy. Powinien on mieć następujące parametry:
+                                – nazwa udziału: Spike,
+                                – uprawnienia bezpieczeństwa: pełna kontrola dla grupy Administratorzy, właściciela oraz użytkownika bondj.
+                                Należy to wykonać w analogiczny sposób jak opisano w punkcie II, a efekt końcowy powinien być taki jak wyżej.
+                                Teraz skonfigurujemy swój własny przydział (np. o rozmiarze 1,5 GB). Mając uruchomiony „Menedżer serwera”, z menu „Narzędzia” wybieramy systemową przystawkę „File Server Resource Manager”.
+                                Następnie rozwijamy sekcję „Zarządzanie przydziałami”, zaznaczamy pozycję „Przydziały”, klikamy prawym przyciskiem myszy (PPM) i wybieramy opcję „Utwórz przydział…”.
+                                Klikamy przycisk „Przeglądaj…”, wskazujemy na dysku nasz folder Spike i naciskamy „OK”.
+                                Gdy nasz docelowy folder jest już wybrany, zaznaczamy opcję „Zdefiniuj właściwości niestandardowe przydziału” i klikamy przycisk „Właściwości niestandardowe”.
+                                W polu „Limit” ustawiamy odpowiednią wartość (u nas: 1,5 GB), pozostawiamy przydział jako sztywny i klikamy przycisk „Dodaj”, aby zdefiniować próg generowania powiadomień. W nowym oknie wpisujemy wartość procentową np. 90 i naciskamy „OK”.
+                                Mamy więc już zdefiniowaną odpowiednią pojemność (1,5 GB) oraz określony próg powiadomień (90%), więc możemy nacisnąć przycisk „OK”.
+                                Sprawdzamy, czy wszystkie wprowadzone parametry są poprawne. Jeśli tak, naciskamy przycisk „Utwórz”.
+                                Możemy z konfiguracji naszego przydziału utworzyć nowy szablon lub z tego zrezygnować. My chcemy go zachować na przyszłość, więc podajemy nazwę Nowy_1.5 GB i naciskamy „OK”.
+                                Widzimy, że nasz nowy przydział został pomyślnie utworzony wraz ze szczegółowym podsumowaniem.
+                                Wracamy do okna „Menedżera serwera”, odświeżamy ustawienia i widzimy aktywny przydział przypisany do zasobu Spike wraz z pełną informacją, ile wolnego miejsca jeszcze zostało. U nas folder jest pusty, więc mamy do dyspozycji pełną ilość 1,5 GB.
+                        IV. Publikacja w usłudze AD i limit użytkowników.
+                        Zarządzanie sieciowymi udziałami może odbywać się również bezpośrednio z poziomu systemowego narzędzia „Zarządzanie komputerem”. Mając uruchomioną tę przystawkę, zyskujemy pełny wgląd do opcji takich jak:
+                        – Udziały,
+                        – Sesje,
+                        – Otwarte pliki.
+                                Aby uruchomić to narzędzie, wystarczy w polu wyszukiwania systemu wpisać frazę „Zarządzanie komputerem”. Z menu po lewej stronie wybieramy kolejno „Foldery udostępnione”, a następnie „Udziały”. Widzimy udostępnione w sieci foldery, a do udziału sieciowego „Spike” podłączony jest aktualnie jeden klient.
+                                W zakładce „Sesje” znajdują się szczegółowe informacje na temat tego, kto jest aktualnie podłączony do naszego udziału sieciowego oraz z jakiego komputera loguje się do zasobu.
+                                Natomiast w zakładce „Otwarte pliki” widzimy, z jakich plików korzysta obecnie maszyna kliencka. Niemniej jednak należy pamiętać, że liczba otwartych plików w tym oknie nie zawsze jest idealnie zgodna ze stanem faktycznym.
+                                Chcielibyśmy teraz opublikować nasz udział w usłudze AD oraz ustawić sztywny limit użytkowników jednocześnie korzystających z zasobu. Warto dodać, że sama publikacja w obecnych środowiskach serwerowych niewiele zmienia, ale już limit jednoczesnych połączeń użytkowników jest opcją bardzo przydatną. Zaznaczamy więc pozycję „Udziały”, klikamy folder „Spike” prawym przyciskiem myszy (PPM) i z menu podręcznego wybieramy „Właściwości”.
+                                W kolejnym kroku, w zakładce „Ogólne”, zaznaczamy opcję „Zezwalaj tylu użytkownikom”, a następnie podajemy określoną wartość (u nas: 5). Pamiętajmy o tym, aby zatwierdzić wprowadzone zmiany poprzez kliknięcie przycisku „Zastosuj”.
+                                Aby opublikować nasz folder w usłudze AD, wystarczy wybrać zakładkę „Publikowanie” i zaznaczyć opcję „Publikuj ten udział w usłudze AD”. Na koniec klikamy przycisk „Zastosuj” oraz „OK”.
+                                Dodatkowo możemy ułatwić zarządzanie i stworzyć bezpośredni skrót dostępu do folderu udostępnionego z poziomu katalogu domeny. Uruchamiamy więc przystawkę „Użytkownicy i komputery usługi Active Directory”, w dowolnym wybranym miejscu (u nas w jednostce organizacyjnej „Informatycy”) klikamy prawym przyciskiem myszy (PPM), wybieramy kolejno „Nowy”, a następnie klikamy opcję „Folder udostępniony”.
+                                Podajemy nazwę udziału Spike, pełną ścieżkę sieciową w formacie UNC: \\server00\Spike i naciskamy „OK”.
+                                I widzimy nasz folder dostępny bezpośrednio z poziomu przystawki AD. Wystarczy go zaznaczyć, kliknąć prawym przyciskiem myszy (PPM) i wybrać opcję „Eksploruj”, aby zarządzać jego zawartością.
+                        V. Tworzenie zasobu ukrytego.
+                        Zarządzając zasobami sieciowymi z poziomu konsoli „Zarządzanie komputerem”, możemy zauważyć, że niektóre udziały mają znak $ na końcu nazwy. Oznacza to, że taki udział jest ukryty i niewidoczny podczas zwykłego przeglądania sieci, ale po wpisaniu pełnej ścieżki sieciowej uzyskujemy do niego bezproblemowy dostęp. W tym punkcie utworzymy właśnie taki zasób.
+                                Tym razem utworzymy folder sieciowy bezpośrednio z poziomu tego narzędzia. W menu drzewa po lewej stronie zaznaczamy pozycję „Udziały”, klikamy ją prawym przyciskiem myszy (PPM) i wybieramy opcję „Nowy udział”.
+                                Uruchamia nam się „Kreator tworzenia folderu udostępnionego”, więc klikamy „Dalej”.
+                                Następnie podajemy fizyczną ścieżkę dostępu na lokalnym dysku serwera (u nas: C:\Ukryty) i klikamy „Dalej”. Ponieważ takiego folderu nie ma jeszcze na naszym dysku, potwierdzamy chęć jego automatycznego utworzenia, klikając „Tak”.
+                                W kolejnym oknie wykonujemy kluczową czynność tego punktu – ukrywamy nasz zasób sieciowy poprzez dodanie znaku dolara $ na samym końcu nazwy udziału. Dodajemy jeszcze opcjonalny opis „Folder ukryty” i naciskamy „Dalej”.
+                                Moglibyśmy w tym miejscu nadać konkretne, zaawansowane uprawnienia bezpieczeństwa do naszego folderu, ale ponieważ potrafimy już to robić, na potrzeby tego ćwiczenia pozostawimy opcje domyślne i klikamy „Dalej”.
+                                W ostatnim kroku kończymy konfigurację i zamykamy pracę kreatora, klikając przycisk „Zakończ”.
+                                Widzimy, że nasz zasób ukryty został poprawnie utworzony w strukturze z charakterystycznym znakiem dolara na końcu: Ukryty$.
+                                Teraz, będąc zalogowanym na maszynie klienckiej jako użytkownik bondj, wpisujemy w pasku Eksploratora ścieżkę sieciową serwera: \\server00. Jak widać, nasz ukryty folder nie wyświetla się na liście zasobów.
+                                Ale gdy tylko podamy pełną i bezpośrednią ścieżkę sieciową \\server00\Ukryty$, okazuje się, że uzyskujemy pełny dostęp do zawartości folderu Ukryty$.
+                        Zadanie do wykonania na lekcji
+                                Utwórz na serwerze jednostkę organizacyjną o nazwie „Zasoby_2”, a w niej dwóch użytkowników.
+                                Utwórz na serwerze (na dysku lokalnym C) folder o nazwie „PSO”, udostępnij go w sieci z limitem jednoczesnych połączeń dla 5 użytkowników i nadaj mu opis „Zajęcia lekcyjne”.
+                                Opublikuj folder „PSO” w usłudze AD oraz utwórz skrót przekierowania do tego udziału wewnątrz jednostki organizacyjnej „Zasoby_2”.
+                                Jeden z utworzonych użytkowników ma otrzymać uprawnienia wyłącznie do odczytu zawartości tego folderu, natomiast drugi użytkownik nie powinien mieć do niego żadnego dostępu.
+                                Sprawdź poprawność działania nadanych uprawnień z poziomu maszyny klienckiej.
+                                Utwórz na serwerze w jednostce organizacyjnej „Zasoby_2” kolejnych czterech użytkowników oraz nowy folder lokalny o nazwie „PSO1”.
+                                Wykonaj analogiczne czynności konfiguracyjne z punktów 2–3, stosując je bezpośrednio do folderu „PSO1”.
+                                Utwórz dwie lokalne grupy zabezpieczeń o nazwach: „Informatycy” oraz „Elektronicy”.
+                                Przypisz użytkowników do nowo utworzonych grup w taki sposób, aby trzech z nich posiadało pełną kontrolę do obydwu folderów, a trzech pozostałych miało pełną kontrolę wyłącznie do folderu „PSO”, natomiast do zasobu „PSO1” całkowity brak dostępu.
+                                Sprawdź poprawność nadanych uprawnień zabezpieczeń z poziomu komputera klienckiego.
+                                Utwórz jeden sieciowy folder ukryty o dowolnej nazwie, przypisując uprawnienia do odczytu tylko i wyłącznie dla członków tych dwóch grup zabezpieczeń.
+                                Sprawdź nadane uprawnienia ukrytego udziału sieciowego z poziomu komputera klienckiego.
+    © 2009 - 2026 Copyright ZSE Rzeszów | Developed by Maciej Biel & Ireneusz Paździor

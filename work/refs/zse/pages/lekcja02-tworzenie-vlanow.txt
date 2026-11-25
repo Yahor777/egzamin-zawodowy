@@ -1,0 +1,56 @@
+https://zse.rzeszow.pl/psk/lekcja02-tworzenie-vlanow
+
+    Pracownia Systemów Operacyjnych
+            PRACOWNIA SIECI KOMPUTEROWYCH
+                Ćwiczenie nr 2
+                                Lista Ćwiczeń
+                Strona Główna
+            Trochę teorii
+                Vlan -  sieć komputerowa wydzielona logicznie w ramach innej, większej sieci fizycznej.
+				Metoda I: przedstawiona metoda pozwoli tworzyć nam vlany, bez ręcznej zmiany PVID portów.
+                        I. Ustawienia karty sieciowej komputera.
+                                    Przechodzimy do ustawień karty sieciowej i ustawiamy statyczne pobieranie adresu IP.
+                                Przypisujemy naszemu komputerowi odpowiedni adres IP i maskę sieciową:
+								- Adres IP: 192.168.0.10+x, gdzie x oznacza numer Twojego komputera.
+								- Maska: 255.255.255.0 
+								Pozostałe wartości zostawiamy puste. Następnie klikamy OK.
+                        II. Interfejs webowy przełącznika.
+                                W pasku przeglądarki wpisujemy fabryczny adres przełącznika 192.168.0.1.
+								- Login: admin
+								- Hasło: admin
+								Klikamy Login
+                                Przechodzimy do zakładki System IP i ustawiamy adres naszego przełącznika na: 192.168.1.200+x, gdzie x oznacza numer Twojej grupy roboczej.
+								Naciskamy Apply
+                        III. Interfejs webowy przełącznika.
+                                Teraz musimy w opcjach karty sieciowej naszego komputera ustawić automatyczne pobieranie adresu IP, ponieważ switch działa już zgodnie z adresacją naszej sieci.
+                        IV. Tworzymy VLANY.
+                                Teraz w naszej przeglądarce wpisujemy nowy adres przełącznika. W moim przypadku będzie to 192.168.1.201.
+                                Powyższy schemat pokazuje nam jak będą wykorzystane poszczególne porty na naszym switchu. Aktualnie jesteśmy wpięci do portu numer 1 na przełączniku!
+                                Przechodzimy teraz do zakładki VLAN -> Port config. Na porcie 8 mamy podpięty kabel z internetem, więc ustawimy go w tryb pracy GENERAL, aby po dodaniu go do vlanów, nie zmieniało się jego PVID. Resztę portów ustawiamy w tryb pracy ACCESS, aby automatycznie po dodaniu ich do vlanów zmieniało się ich PVID.
+                                Uwaga! Jesteśmy wpięci do portu numer 1 na naszym przełączniku. Przechodzimy do zakładki VLAN config i klikamy CREATE.
+                                Teraz nadamy ID naszemu vlanowi oraz przypiszemy odpowiednie porty. 
+								- ID: 11 
+								- Porty: 1,2 i 8 
+								Klikamy Apply
+                                Po stworzeniu tego vlanu pojawi nam się taki komunikat. Nie panikujmy! Jest to spowodowane tym, że jesteśmy wpięci w port, który jest w dodany do vlanu niezarządzającego. W celu ponownego przywrócenia połączenia przepnijmy się do innego portu, przykładowo do portu 5.
+                                Aby nie powtórzyła się sytuacja z poprzedniego etapu, utworzymy sobie vlan odpowiedzialny za management. W tym celu tworzymy vlan o następujących parametrach:
+								- ID: 22
+								- Description: Management
+								- Port: 3
+								Klikamy Apply.
+                                Przechodzimy do zakładki System -> System IP -> Management VLAN i w tym miejscu wpisujemy ID naszego vlanu, czyli 22. Klikamy Apply
+                                Teraz znowu pojawił nam się powyższy komunikat. Przyczyną tego stanu, jest to, że jesteśmy wpięci w Management, a co za tym idzie nie dostajemy adresu IP z serwera DHCP i musimy go przypisać ręcznie.
+                                Przechodzimy do ustawień naszej karty sieciowej i ustawiamy:
+								- IP: 192.168.1.100+x, gdzie x oznacza numer twojego komputera
+								- Maska: 255.255.255.0
+								- Brama: 192.168.1.100
+								- DNS: 8.8.8.8
+								Teraz zatwierdzamy wszystko i przepinamy się do portu 3.
+                                Tworzymy teraz kolejny vlan 33
+                                Tworzymy teraz kolejny vlan 44.
+                                Możemy teraz zobaczyć efekt konfiguracji portów i vlanów.
+                                Następnym elementem, będzie zmienienie trybu pracy wszystkich portów w GENERAL.
+                        IV. Efekt pracy.
+                                Teraz przepinając się do innego portu, przykładowo do 1, możemy zauważyć, że mamy połączenie z Interntem. Dla testu spingujmy stronę szkoły: 
+								ping elektronik.rzeszow.pl
+    © 2009 - 2026 Copyright ZSE Rzeszów | Developed by Maciej Biel & Ireneusz Paździor

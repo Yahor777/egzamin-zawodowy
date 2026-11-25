@@ -50,7 +50,7 @@ export function Aduc(_p: WinProps) {
   if (!domain)
     return (
       <Mmc title="Użytkownicy i komputery usługi Active Directory" nodes={[{ id: 'root', label: 'Użytkownicy i komputery usługi Active Directory', icon: <IcUsers size={16} />, depth: 0 }]} cur="root" onNode={() => {}} actions={null}>
-        <p className="mmc-empty">Nie można połączyć się z kontrolerem domeny: ten serwer nie jest jeszcze kontrolerem domeny. Podwyższ poziom serwera w Menedżerze serwera (flaga powiadomień).</p>
+        <p className="mmc-empty">Nie można połączyć się z kontrolerem domeny: ten serwer nie jest jeszcze kontrolerem domeny. Podnieś poziom serwera w Menedżerze serwera (flaga powiadomień).</p>
       </Mmc>
     )
 
@@ -553,7 +553,7 @@ export function DhcpConsole(_p: WinProps) {
         { id: `sc:${id}`, label: `Zakres [${id}] ${s.name}${s.active ? '' : ' (nieaktywny)'}`, icon: <IcFolder size={14} />, depth: 3 },
         { id: `sc:${id}:pool`, label: 'Pula adresów', icon: <IcFolder size={14} />, depth: 4 },
         { id: `sc:${id}:lease`, label: 'Dzierżawy adresów', icon: <IcFolder size={14} />, depth: 4 },
-        { id: `sc:${id}:res`, label: 'Rezerwacje', icon: <IcFolder size={14} />, depth: 4 },
+        { id: `sc:${id}:res`, label: 'Zastrzeżenia', icon: <IcFolder size={14} />, depth: 4 },
         { id: `sc:${id}:opt`, label: 'Opcje zakresu', icon: <IcFolder size={14} />, depth: 4 },
       ]
     }),
@@ -566,7 +566,7 @@ export function DhcpConsole(_p: WinProps) {
   const leases = api.network.bench ? srvIps(st).flatMap((ip) => leasesOf(api.network.bench!.model, ip)) : []
   const patchScope = (id: string, f: (s: DhcpScope) => DhcpScope) => setD((d) => ({ ...d, scopes: d.scopes.map((s) => (scopeId(s) === id ? f(s) : s)) }))
   const del = async (s: DhcpScope) => {
-    if ((await show('DHCP', `Czy na pewno chcesz usunąć zakres ${scopeId(s)}?\n\nZostaną usunięte wszystkie dzierżawy i rezerwacje.`, 'warn', ['Tak', 'Nie'])) === 'Tak') {
+    if ((await show('DHCP', `Czy na pewno chcesz usunąć zakres ${scopeId(s)}?\n\nZostaną usunięte wszystkie dzierżawy i zastrzeżenia.`, 'warn', ['Tak', 'Nie'])) === 'Tak') {
       setD((d) => ({ ...d, scopes: d.scopes.filter((x) => scopeId(x) !== scopeId(s)) }))
       setNode('ipv4')
     }
@@ -601,8 +601,8 @@ export function DhcpConsole(_p: WinProps) {
       )}
       {scope && sub === 'res' && (
         <>
-          <div className="mmc-act-g">Rezerwacje</div>
-          <Act onClick={() => setDlg({ k: 'res', id: sid })}>Nowa rezerwacja...</Act>
+          <div className="mmc-act-g">Zastrzeżenia</div>
+          <Act onClick={() => setDlg({ k: 'res', id: sid })}>Nowe zastrzeżenie...</Act>
           {sel && (
             <Act onClick={() => patchScope(sid, (x) => ({ ...x, reservations: x.reservations.filter((r) => r.ip !== sel) }))}>Usuń</Act>
           )}
@@ -654,7 +654,7 @@ export function DhcpConsole(_p: WinProps) {
           rows={[
             ['pool', 'Pula adresów'],
             ['lease', 'Dzierżawy adresów'],
-            ['res', 'Rezerwacje'],
+            ['res', 'Zastrzeżenia'],
             ['opt', 'Opcje zakresu'],
           ].map(([k, l]) => ({ key: k, icon: <IcFolder size={16} />, cells: [l, ''], menu: [] }))}
           sel={sel}
@@ -690,12 +690,12 @@ export function DhcpConsole(_p: WinProps) {
       )}
       {scope && sub === 'res' && (
         <ListView
-          cols={['Rezerwacja', 'Identyfikator klienta', 'Opis']}
+          cols={['Zastrzeżenie', 'Identyfikator klienta', 'Opis']}
           rows={scope.reservations.map((r) => ({ key: r.ip, icon: <IcUser size={16} />, cells: [`[${r.ip}] ${r.name}`, r.mac, r.desc], menu: [{ label: 'Usuń', onClick: () => patchScope(sid, (x) => ({ ...x, reservations: x.reservations.filter((q) => q.ip !== r.ip) })) }] }))}
           sel={sel}
           onSel={setSel}
           onOpen={() => {}}
-          onBlankMenu={[{ label: 'Nowa rezerwacja...', onClick: () => setDlg({ k: 'res', id: sid }) }]}
+          onBlankMenu={[{ label: 'Nowe zastrzeżenie...', onClick: () => setDlg({ k: 'res', id: sid }) }]}
         />
       )}
       {scope && sub === 'opt' && (
@@ -731,7 +731,7 @@ export function DhcpConsole(_p: WinProps) {
   )
 }
 
-const STEPS_SCOPE = ['Kreator nowego zakresu', 'Nazwa zakresu', 'Zakres adresów IP', 'Dodawanie wykluczeń i opóźnienia', 'Czas trwania dzierżawy', 'Konfigurowanie opcji DHCP', 'Router (brama domyślna)', 'Nazwa domeny i serwery DNS', 'Aktywuj zakres', 'Kończenie pracy kreatora']
+const STEPS_SCOPE = ['Kreator nowego zakresu', 'Nazwa zakresu', 'Zakres adresów IP', 'Dodawanie wykluczeń i opóźnienia', 'Czas trwania dzierżawy', 'Konfigurowanie opcji DHCP', 'Router (brama domyślna)', 'Nazwa domeny i serwery DNS', 'Serwery WINS', 'Aktywowanie zakresu', 'Kończenie pracy kreatora']
 
 function NewScope({ hostDomain, existing, onClose, onOk }: { hostDomain: string; existing: DhcpScope[]; onClose: () => void; onOk: (s: DhcpScope) => void }) {
   const [step, setStep] = useState(0)
@@ -795,8 +795,8 @@ function NewScope({ hostDomain, existing, onClose, onOk }: { hostDomain: string;
           <Btn onClick={back} disabled={step === 0}>
             &lt; Wstecz
           </Btn>
-          <Btn primary onClick={step === 9 ? finish : nextStep}>
-            {step === 9 ? 'Zakończ' : 'Dalej >'}
+          <Btn primary onClick={step === 10 ? finish : nextStep}>
+            {step === 10 ? 'Zakończ' : 'Dalej >'}
           </Btn>
           <Btn onClick={onClose}>Anuluj</Btn>
         </>
@@ -904,6 +904,12 @@ function NewScope({ hostDomain, existing, onClose, onOk }: { hostDomain: string;
       )}
       {step === 8 && (
         <>
+          <p>Komputery działające w Twojej sieci mogą używać serwerów WINS do konwersji nazw NetBIOS na adresy IP.</p>
+          <p>Jeśli w sieci nie ma serwerów WINS, możesz pominąć ten krok i kliknąć przycisk Dalej.</p>
+        </>
+      )}
+      {step === 9 && (
+        <>
           <p>Klienci mogą uzyskiwać dzierżawy adresów dopiero po aktywowaniu zakresu.</p>
           <p>Czy chcesz teraz aktywować ten zakres?</p>
           <label className="w-radio">
@@ -914,7 +920,7 @@ function NewScope({ hostDomain, existing, onClose, onOk }: { hostDomain: string;
           </label>
         </>
       )}
-      {step === 9 && (
+      {step === 10 && (
         <>
           <p>Kończenie pracy Kreatora nowego zakresu. Zakres „{name.trim()}” ({start} – {end}/{prefix}) zostanie utworzony.</p>
           <p>Czas dzierżawy: {fmtLease(days * 1440 + hours * 60 + mins)}</p>
@@ -938,16 +944,16 @@ function NewRes({ scope, onClose, onOk }: { scope: DhcpScope; onClose: () => voi
   const [err, setErr] = useState('')
   const add = () => {
     const x = ipToInt(ip)
-    if (!name.trim()) return setErr('Wprowadź nazwę rezerwacji.')
-    if (x === null || x < (ipToInt(scope.start) ?? 0) || x > (ipToInt(scope.end) ?? 0)) return setErr('Adres IP rezerwacji musi należeć do zakresu adresów zakresu.')
+    if (!name.trim()) return setErr('Wprowadź nazwę zastrzeżenia.')
+    if (x === null || x < (ipToInt(scope.start) ?? 0) || x > (ipToInt(scope.end) ?? 0)) return setErr('Adres IP zastrzeżenia musi należeć do zakresu adresów zakresu.')
     if (!/^([0-9a-f]{2}[-:]?){5}[0-9a-f]{2}$/i.test(mac.trim())) return setErr('Wprowadź prawidłowy adres MAC (12 cyfr szesnastkowych).')
-    if (scope.reservations.some((r) => r.ip === ip)) return setErr('Rezerwacja dla tego adresu IP już istnieje.')
+    if (scope.reservations.some((r) => r.ip === ip)) return setErr('Zastrzeżenie dla tego adresu IP już istnieje.')
     onOk({ name: name.trim(), ip, mac: mac.replace(/[-:]/g, '').toUpperCase(), desc })
     onClose()
   }
   return (
     <SvModal
-      title="Nowa rezerwacja"
+      title="Nowe zastrzeżenie"
       buttons={
         <>
           <Btn primary onClick={add}>
@@ -957,11 +963,11 @@ function NewRes({ scope, onClose, onOk }: { scope: DhcpScope; onClose: () => voi
         </>
       }
     >
-      <Field label="Nazwa rezerwacji:">
+      <Field label="Nazwa zastrzeżenia:">
         <input id="rs-name" className="w-input" autoFocus value={name} onChange={(e) => setName(e.target.value)} />
       </Field>
       <Field label="Adres IP:">
-        <IpInput id="rs-ip" label="Adres IP rezerwacji" value={ip} onChange={setIp} />
+        <IpInput id="rs-ip" label="Adres IP zastrzeżenia" value={ip} onChange={setIp} />
       </Field>
       <Field label="Adres MAC:">
         <input id="rs-mac" className="w-input" value={mac} onChange={(e) => setMac(e.target.value)} placeholder="08-00-27-AA-BB-CC" />

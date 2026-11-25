@@ -1,0 +1,231 @@
+https://learn.microsoft.com/pl-pl/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-
+
+
+				 Spis treści 
+				Wyjdź z trybu edytora
+			Zapytaj platformę Learn
+			Zapytaj platformę Learn
+			Tryb odczytu
+			Spis treści
+			Przeczytaj w języku angielskim
+			Dodaj
+			Dodaj do planów
+					Kopiuj znaczniki Markdown
+					Drukuj
+						Notatka
+						Dostęp do tej strony wymaga autoryzacji. Może spróbować zalogować się lub zmienić katalogi.
+						Dostęp do tej strony wymaga autoryzacji. Możesz spróbować zmienić katalogi.
+					Instalowanie usług Active Directory Domain Services
+				 Dotyczy: ✅ Windows Server 2025, ✅ Windows Server 2022, ✅ Windows Server 2019, ✅ Windows Server 2016
+			Opinia
+				W tym artykule
+	 W tym temacie opisano sposób instalowania usług Active Directory Domain Services (AD DS) w systemie Windows Server przy użyciu dowolnej z następujących metod:
+Windows PowerShell
+Menedżer serwera
+Instalacja kontrolera RODC przy użyciu graficznego interfejsu użytkownika
+Prerequisites
+Następujące poświadczenia są wymagane do uruchomienia Adprep.exe i zainstalowania usług AD DS.
+Aby zainstalować nowy las, musisz zalogować się jako administrator lokalny komputera.
+Aby zainstalować nową domenę podrzędną lub nowe drzewo domen, musisz zalogować się jako członek grupy Administratorzy przedsiębiorstwa.
+Aby zainstalować dodatkowy kontroler domeny w istniejącej domenie, musisz być członkiem grupy Administratorzy domeny.
+Note
+Jeśli nie uruchamiasz polecenia adprep.exe niezależnie i instalujesz pierwszy kontroler domeny z systemem Windows Server w istniejącej domenie lub lesie, pojawi się prośba o podanie poświadczeń w celu uruchomienia poleceń adprep. Wymagania dotyczące poświadczeń są następujące:
+Aby wprowadzić pierwszy kontroler domeny systemu Windows Server w lesie, należy podać poświadczenia dla członka grupy Administratorzy przedsiębiorstwa, grupy Administratorzy schematu i grupy Administratorzy domeny w domenie, która hostuje wzorzec schematu.
+Aby wprowadzić pierwszy kontroler domeny systemu Windows Server w domenie, należy podać poświadczenia dla członka grupy Administratorzy domeny.
+Aby wprowadzić pierwszy kontroler domeny tylko do odczytu (RODC) w lesie, należy podać poświadczenia dla członka grupy Administratorzy przedsiębiorstwa.
+Instalowanie usług AD DS przy użyciu programu Windows PowerShell
+Zacznij od dodania roli przy użyciu programu Windows PowerShell. To polecenie instaluje rolę serwera usług AD DS oraz narzędzia administracyjne dla AD DS i Active Directory Lightweight Directory Services (AD LDS), w tym narzędzia z graficznym interfejsem użytkownika, takie jak Active Directory - Użytkownicy i Komputery, oraz narzędzia wiersza poleceń, takie jak dcdia.exe. Narzędzia administracyjne serwera nie są instalowane domyślnie podczas korzystania z programu Windows PowerShell. Należy określić "IncludeManagementTools do zarządzania serwerem lokalnym lub zainstalować narzędzia administracji zdalnej serwera w celu zarządzania serwerem zdalnym.
+Install-WindowsFeature -name AD-Domain-Services -IncludeManagementTools
+Nie jest wymagane ponowne uruchomienie do momentu ukończenia instalacji usług AD DS.
+Następnie możesz uruchomić to polecenie, aby wyświetlić dostępne polecenia cmdlet w module ADDSDeployment.
+Get-Command -Module ADDSDeployment
+Aby wyświetlić listę argumentów, które można określić dla poleceń cmdlet oraz składni:
+Get-Help <cmdlet name>
+Aby na przykład wyświetlić argumenty tworzenia nieobsadzonego konta kontrolera domeny tylko do odczytu (RODC), wpisz
+Get-Help Add-ADDSReadOnlyDomainControllerAccount
+Możesz również pobrać najnowsze przykłady i pojęcia dotyczące poleceń cmdlet programu Windows PowerShell. Aby uzyskać więcej informacji, zobacz about_Updatable_Help.
+Można uruchamiać polecenia cmdlet programu Windows PowerShell na serwerach zdalnych.
+W programie Windows PowerShell użyj polecenia Invoke-Command z cmdlet ADDSDeployment. Aby na przykład zainstalować usługi AD DS na serwerze zdalnym o nazwie ConDC3 w domenie contoso.com, wpisz:
+Invoke-Command { Install-ADDSDomainController -DomainName contoso.com -Credential (Get-Credential) } -ComputerName ConDC3
+-or-
+W Menedżerze serwera utwórz grupę serwerów zawierającą serwer zdalny. Wybierz prawym przyciskiem nazwę serwera zdalnego i wybierz pozycję Windows PowerShell.
+Aby wyświetlić pełną listę poleceń cmdlet programu ADDSDeployment w programie Windows PowerShell, zobacz dokumentację modułu ADDSDeployment.
+Określanie poświadczeń programu Windows PowerShell
+Poświadczenia można określić bez ujawniania ich w postaci zwykłego tekstu na ekranie przy użyciu polecenia Get-credential.
+Operacja dla argumentów -SafeModeAdministratorPassword i LocalAdministratorPassword jest specjalna:
+Jeśli nie zostanie określony jako argument, polecenie cmdlet wyświetli monit o wprowadzenie i potwierdzenie zamaskowanego hasła. Jest to preferowane użycie przy interaktywnym uruchamianiu polecenia cmdlet.
+Jeśli wskazano wartość, musi być ona bezpiecznym ciągiem znaków. Nie jest to preferowane użycie, gdy polecenie cmdlet jest uruchamiane w trybie interaktywnym.
+Możesz na przykład ręcznie wyświetlić monit o hasło przy użyciu polecenia cmdlet Read-Host w celu wyświetlenia monitu użytkownika o bezpieczny ciąg
+-SafeModeAdministratorPassword (Read-Host -Prompt "DSRM Password:" -AsSecureString)
+Warning
+Poprzednia opcja nie potwierdza hasła, należy zachować szczególną ostrożność. Hasło nie jest widoczne.
+Można również podać bezpieczny ciąg jako przekonwertowaną zmienną w postaci zwykłego tekstu, chociaż jest to zdecydowanie niezalecane:
+-SafeModeAdministratorPassword (ConvertTo-SecureString "Password1" -AsPlainText -Force)
+Warning
+Podanie lub zapisanie hasła w postaci zwykłego tekstu nie jest zalecane. Każdy, kto uruchamia to polecenie w skrypcie lub przegląda ramię, zna hasło trybu przywracania usług katalogowych (DSRM) tego kontrolera domeny. Dzięki tej wiedzy mogą personifikować sam kontroler domeny i podnieść swoje uprawnienia do najwyższego poziomu w lesie usługi Active Directory.
+Używanie poleceń cmdlet testowych
+Każde polecenie cmdlet ADDSDeployment ma odpowiadające mu polecenie cmdlet testowe. Polecenia cmdlet testowe uruchamiają tylko testy wstępne dla operacji instalacji; nie skonfigurowano żadnych ustawień instalacji. Argumenty dla każdego polecenia cmdlet testowego są takie same jak w przypadku odpowiedniego polecenia cmdlet instalacji, ale "SkipPreChecks nie jest dostępny dla poleceń cmdlet testowych.
+Testowe polecenie cmdlet
+Description
+              Test-ADDSForestInstallation
+Uruchamia wymagania wstępne dotyczące instalowania nowego lasu usługi Active Directory.
+              Test-ADDSDomainInstallation
+Uruchamia wymagania wstępne dotyczące instalowania nowej domeny w usłudze Active Directory.
+              Test-ADDSDomainControllerInstallation
+Uruchamia wymagania wstępne dotyczące instalowania kontrolera domeny w usłudze Active Directory.
+              Test-ADDSReadOnlyDomainControllerAccountCreation
+Uruchamia procedury wstępne dotyczące dodawania konta kontrolera domeny tylko do odczytu (RODC).
+Instalowanie nowej domeny głównej lasu przy użyciu programu Windows PowerShell
+Polecenie cmdlet Install-ADDSForest instaluje nowy las.
+Na przykład, aby zainstalować nowy las o nazwie corp.contoso.com i zostać bezpiecznie poproszonym o podanie hasła DSRM, wpisz:
+Install-ADDSForest -DomainName "corp.contoso.com"
+Note
+Serwer DNS jest instalowany domyślnie podczas uruchamiania polecenia Install-ADDSForest.
+Aby zainstalować nowy las o nazwie corp.contoso.com, utwórz delegowanie DNS w domenie contoso.com, ustaw poziom funkcjonalności domeny na Windows Server i ustaw poziom funkcjonalności lasu na Windows Server 2025, zainstaluj bazę danych usługi Active Directory i folder SYSVOL na dysku D:\, zainstaluj pliki dziennika na dysku E:\ i zostanie wyświetlony monit o podanie hasła i wpisz tryb przywracania usług katalogowych:
+Install-ADDSForest -DomainName corp.contoso.com -CreateDNSDelegation -DomainMode Win2008 -ForestMode Win2025 -DatabasePath "d:\NTDS" -SYSVOLPath "d:\SYSVOL" -LogPath "e:\Logs"
+Instalowanie nowej domeny podrzędnej lub drzewa przy użyciu programu Windows PowerShell
+Użyj polecenia cmdlet Install-ADDSDomain , aby zainstalować nową domenę.
+Note
+Argument -credential jest wymagany tylko wtedy, gdy użytkownik nie jest obecnie zalogowany jako członek grupy Administratorzy przedsiębiorstwa.
+Argument -NewDomainNetBIOSName jest wymagany, jeśli chcesz zmienić automatycznie wygenerowaną nazwę 15 znaków na podstawie prefiksu nazwy domeny DNS lub jeśli nazwa przekracza 15 znaków.
+Aby na przykład użyć poświadczeń corp\EnterpriseAdmin1 , aby utworzyć nową domenę podrzędną o nazwie podrzędnej z domeną nadrzędną o nazwie corp.contoso.com, zainstalować serwer DNS, utworzyć delegowanie DNS w domenie corp.contoso.com , ustawić poziom funkcjonalności domeny na windows Server 2025, aby kontroler domeny był serwerem wykazu globalnego w lokacji o nazwie Houston, użyj DC1.corp.contoso.com jako kontroler domeny źródłowej replikacji zainstaluj bazę danych usługi Active Directory i folder SYSVOL na dysku D:\, zainstaluj pliki dziennika na dysku E:\ i zostanie wyświetlony monit o podanie hasła trybu przywracania usług katalogowych, ale nie zostanie wyświetlony monit o potwierdzenie polecenia, wpisz:
+Install-ADDSDomain -SafeModeAdministratorPassword -Credential (get-credential corp\EnterpriseAdmin1) -NewDomainName child -ParentDomainName corp.contoso.com -InstallDNS -CreateDNSDelegation -DomainMode Win2025 -ReplicationSourceDC DC1.corp.contoso.com -SiteName Houston -DatabasePath "d:\NTDS" -SYSVOLPath "d:\SYSVOL" -LogPath "e:\Logs" -Confirm:$False
+Instalowanie dodatkowego kontrolera domeny (repliki) przy użyciu programu Windows PowerShell
+Zainstaluj install-ADDSDomainController , aby zainstalować dodatkowy kontroler domeny.
+Aby zainstalować kontroler domeny i serwer DNS w domenie corp.contoso.com i wyświetlić monit o podanie poświadczeń administratora domeny i hasła DSRM, wpisz:
+Install-ADDSDomainController -Credential (Get-Credential CORP\Administrator) -DomainName "corp.contoso.com"
+Jeśli komputer jest już przyłączony do domeny i jesteś członkiem grupy Administratorzy domeny, możesz użyć:
+Install-ADDSDomainController -DomainName "corp.contoso.com"
+Aby zostać poproszonym o nazwę domeny, wpisz:
+Install-ADDSDomainController -Credential (Get-Credential) -DomainName (Read-Host "Domain to promote into")
+Następujące polecenie użyje poświadczeń contoso\EnterpriseAdmin1, aby zainstalować zapisywalny kontroler domeny i serwer wykazu globalnego w lokalizacji o nazwie Boston, zainstalować serwer DNS, utworzyć delegowanie DNS w domenie contoso.com, zainstalować z nośnika przechowywanego w folderze c:\ADDS IFM, zainstalować bazę danych usługi Active Directory i folder SYSVOL na dysku D:\, zainstalować pliki dzienników na dysku E:\, aby serwer został automatycznie uruchomiony ponownie po zakończeniu instalacji usług AD DS i wyświetli monit o podanie hasła trybu przywracania usług katalogowych.
+Install-ADDSDomainController -Credential (Get-Credential CONTOSO\EnterpriseAdmin1) -CreateDNSDelegation -DomainName corp.contoso.com -SiteName Boston -InstallationMediaPath "c:\ADDS IFM" -DatabasePath "d:\NTDS" -SYSVOLPath "d:\SYSVOL" -LogPath "e:\Logs"
+Przeprowadzanie etapowej instalacji kontrolera RODC przy użyciu programu Windows PowerShell
+Użyj polecenia cmdlet Add-ADDSReadOnlyDomainControllerAccount , aby utworzyć konto kontrolera RODC.
+Aby na przykład utworzyć konto RODC o nazwie RODC1:
+Add-ADDSReadOnlyDomainControllerAccount -DomainControllerAccountName RODC1 -DomainName corp.contoso.com -SiteName Boston -DelegatedAdministratorAccountName AdminUser
+Następnie uruchom następujące polecenia na serwerze, który chcesz dołączyć do konta RODC1. Nie można dołączyć serwera do domeny. Najpierw zainstaluj rolę serwera usług AD DS i narzędzia do zarządzania.
+Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools
+Następnie uruchom następujące polecenie, aby utworzyć kontroler RODC.
+Install-ADDSDomainController -DomainName corp.contoso.com -SafeModeAdministratorPassword (Read-Host -Prompt "DSRM Password:" -AsSecureString) -Credential (Get-Credential Corp\AdminUser) -UseExistingAccount
+Naciśnij Y , aby potwierdzić lub dołączyć argument "-Confirm:$false" , aby zapobiec monitowi o potwierdzenie.
+Instalowanie usług AD DS przy użyciu Menedżera serwera
+Usługi AD DS można zainstalować w systemie Windows Server za pomocą Kreatora dodawania ról w Menedżerze serwera, a następnie Kreatora konfiguracji usług Domenowych Active Directory, który jest nowy począwszy od systemu Windows Server 2012. Kreator instalacji usług domenowych Active Directory (dcpromo.exe) został wycofany od systemu Windows Server 2012.
+W poniższych sekcjach opisano sposób tworzenia pul serwerów w celu zainstalowania usług AD DS na wielu serwerach i zarządzania nimi oraz sposobu używania kreatorów do instalowania usług AD DS.
+Tworzenie pul serwerów
+Menedżer serwera może pulować inne serwery w sieci, o ile są one dostępne z komputera z uruchomionym Menedżerem serwera. Po utworzeniu puli można wybrać te serwery do zdalnej instalacji usług AD DS lub innych opcji konfiguracji możliwych w Menedżerze serwera. Komputer z menedżerem serwera automatycznie pule się. Aby uzyskać więcej informacji na temat pul serwerów, zobacz Dodawanie serwerów do Menedżera serwera.
+Note
+Aby zarządzać komputerem przyłączonym do domeny przy użyciu Menedżera serwera na serwerze grupy roboczej lub odwrotnie, wymagane są dodatkowe kroki konfiguracji. Aby uzyskać więcej informacji, zobacz "Dodawanie serwerów w grupach roboczych i zarządzanie nimi" w temacie Dodawanie serwerów do Menedżera serwera.
+Instalowanie usług AD DS
+Użyj poniższych procedur, aby zainstalować usługi AD DS przy użyciu metody graficznego interfejsu użytkownika. Kroki można wykonać lokalnie lub zdalnie.
+Instalowanie usług AD DS przy użyciu Menedżera serwera
+W Menedżerze serwera wybierz pozycję Zarządzaj i wybierz pozycję Dodaj role i funkcje , aby uruchomić Kreatora dodawania ról.
+Na stronie Przed rozpoczęciem wybierz pozycję Dalej.
+Na stronie Wybierz typ instalacji wybierz Instalacja oparta na rolach lub oparta na funkcjach, a następnie wybierz Dalej.
+Na stronie Wybieranie serwera docelowego wybierz pozycję Wybierz serwer z puli serwerów, wybierz nazwę serwera, na którym chcesz zainstalować usługi AD DS, a następnie wybierz przycisk Dalej.
+Aby wybrać serwery zdalne, najpierw utwórz pulę serwerów i dodaj do niej serwery zdalne. Aby uzyskać więcej informacji na temat tworzenia pul serwerów, zobacz Dodawanie serwerów do Menedżera serwera.
+Na stronie Wybieranie ról serwera wybierz pozycję Usługi domenowe Active Directory, a następnie w oknie dialogowym Dodawanie ról i funkcji wybierz pozycję Dodaj funkcje, a następnie wybierz przycisk Dalej.
+Na stronie Wybieranie funkcji wybierz wszelkie dodatkowe funkcje, które chcesz zainstalować, a następnie wybierz pozycję Dalej.
+Na stronie Usługi domenowe Active Directory przejrzyj informacje, a następnie wybierz pozycję Dalej.
+Na stronie Potwierdź wybory instalacji wybierz pozycję Zainstaluj.
+Na stronie Wyniki sprawdź, czy instalacja zakończyła się pomyślnie, a następnie wybierz pozycję Podwyższ poziom tego serwera do kontrolera domeny , aby uruchomić Kreatora konfiguracji usług Domenowych Active Directory.
+Important
+Jeśli w tym momencie zamkniesz Kreatora dodawania ról bez uruchamiania Kreatora konfiguracji usług Domenowych Active Directory, możesz go ponownie uruchomić, wybierając pozycję Zadania w Menedżerze serwera.
+Na stronie Konfiguracja wdrożenia wybierz jedną z następujących opcji:
+Jeśli instalujesz dodatkowy kontroler domeny w istniejącej domenie, wybierz pozycję Dodaj kontroler domeny do istniejącej domeny i wpisz nazwę domeny (na przykład emea.corp.contoso.com) lub wybierz pozycję Wybierz , aby wybrać domenę i poświadczenia (na przykład określ konto, które jest członkiem grupy Administratorzy domeny), a następnie wybierz przycisk Dalej.
+Note
+Nazwa domeny i bieżące poświadczenia użytkownika są dostarczane domyślnie tylko wtedy, gdy maszyna jest przyłączona do domeny i wykonujesz instalację lokalną. Jeśli instalujesz usługi AD DS na serwerze zdalnym, musisz określić poświadczenia zgodnie z projektem. Jeśli bieżące poświadczenia użytkownika nie są wystarczające do przeprowadzenia instalacji, wybierz pozycję Zmień... w celu określenia różnych poświadczeń.
+Jeśli instalujesz nową domenę podrzędną, wybierz pozycję Dodaj nową domenę do istniejącego lasu, w polu Wybierz typ domeny wybierz pozycję Domena podrzędna, wpisz lub przejdź do nazwy nadrzędnej nazwy DNS domeny (na przykład corp.contoso.com), wpisz względną nazwę nowej domeny podrzędnej (na przykład emea), wpisz poświadczenia, które mają być używane do utworzenia nowej domeny,  a następnie wybierz przycisk Dalej.
+Jeśli instalujesz nowe drzewo domen, wybierz opcję Dodaj nową domenę do istniejącego lasu, dla Wybierz typ domeny wybierz Domena drzewa, wpisz nazwę domeny głównej (na przykład corp.contoso.com), wpisz nazwę DNS nowej domeny (na przykład fabrikam.com), wpisz poświadczenia potrzebne do utworzenia nowej domeny, a następnie wybierz Dalej.
+Jeśli instalujesz nowy las, wybierz pozycję Dodaj nowy las , a następnie wpisz nazwę domeny głównej (na przykład corp.contoso.com).
+Na stronie Opcje kontrolera domeny wybierz jedną z następujących opcji:
+Jeśli tworzysz nowy las lub domenę, wybierz poziomy funkcjonalności domeny i lasu, wybierz pozycję Serwer systemu nazw domen (DNS), określ hasło DSRM, a następnie kliknij przycisk Dalej.
+Jeśli dodajesz kontroler domeny do istniejącej domeny, wybierz pozycję Serwer systemu nazw domen (DNS), wykaz globalny (GC) lub kontroler domeny tylko do odczytu (RODC), wybierz nazwę lokalizacji, wpisz hasło DSRM i następnie wybierz przycisk Dalej.
+Aby uzyskać więcej informacji o opcjach na tej stronie, które są dostępne lub niedostępne w różnych warunkach, zobacz Opcje kontrolera domeny.
+Na stronie Opcje DNS (która jest wyświetlana tylko w przypadku instalowania serwera DNS) wybierz opcję Zaktualizuj delegowanie DNS zgodnie z potrzebami. Jeśli tak, podaj poświadczenia, które mają uprawnienia do tworzenia rekordów delegowania DNS w nadrzędnej strefie DNS.
+Jeśli nie można skontaktować się z serwerem DNS hostujący strefę nadrzędną, opcja Zaktualizuj delegowanie DNS nie jest dostępna.
+Aby dowiedzieć się, czy należy zaktualizować delegowanie DNS, zapoznaj się z Opis delegowania strefy. Jeśli spróbujesz zaktualizować delegowanie DNS i wystąpi błąd, zobacz Opcje DNS.
+Na stronie Opcje kontrolera RODC (która jest wyświetlana tylko w przypadku instalowania kontrolera RODC), określ nazwę grupy lub użytkownika, który będzie zarządzać kontrolerem RODC, dodaj konta do lub usuń konta z grup replikacji haseł Dozwolone lub Odrzucone, a następnie wybierz przycisk Dalej.
+Aby uzyskać więcej informacji, zobacz Zasady replikacji haseł.
+Na stronie Opcje dodatkowe wybierz jedną z następujących opcji:
+Jeśli tworzysz nową domenę, wpisz nową nazwę NetBIOS lub sprawdź domyślną nazwę NetBIOS domeny, a następnie wybierz przycisk Dalej.
+Jeśli dodasz kontroler domeny do istniejącej domeny, wybierz kontroler domeny, z którego chcesz replikować dane instalacji usług AD DS (lub zezwól kreatorowi na wybranie dowolnego kontrolera domeny). Jeśli instalujesz z nośnika, wybierz pozycję Zainstaluj z typu ścieżki nośnika i zweryfikuj ścieżkę do plików źródłowych instalacji, a następnie wybierz przycisk Dalej.
+Nie można użyć instalacji z nośnika (IFM), aby zainstalować pierwszy kontroler domeny w domenie. Funkcja IFM nie działa w różnych wersjach systemu operacyjnego. Innymi słowy, aby zainstalować dodatkowy kontroler domeny z systemem Windows Server przy użyciu ifm, należy utworzyć nośnik kopii zapasowej na kontrolerze domeny systemu Windows Server. Aby uzyskać więcej informacji na temat ifm, zobacz Instalowanie dodatkowego kontrolera domeny przy użyciu ifm.
+Na stronie Ścieżki wpisz lokalizacje bazy danych usługi Active Directory, plików dziennika i folderu SYSVOL (lub zaakceptuj lokalizacje domyślne), a następnie wybierz przycisk Dalej.
+Important
+Nie przechowuj bazy danych usługi Active Directory, plików dziennika ani folderu SYSVOL na woluminie danych sformatowanym przy użyciu systemu plików ReFS (Resilient File System).
+Na stronie Opcje przygotowywania wprowadź poświadczenia, które są wystarczające do uruchomienia narzędzia adprep.
+Na stronie Przeglądanie opcji potwierdź wybrane opcje, wybierz pozycję Wyświetl skrypt , jeśli chcesz wyeksportować ustawienia do skryptu programu Windows PowerShell, a następnie wybierz przycisk Dalej.
+Na stronie Sprawdzanie wymagań wstępnych upewnij się, że weryfikacja wymagań wstępnych została ukończona, a następnie wybierz pozycję Zainstaluj.
+Na stronie Wyniki sprawdź, czy serwer został pomyślnie skonfigurowany jako kontroler domeny. Serwer zostanie automatycznie uruchomiony ponownie, aby ukończyć instalację usług AD DS.
+Wykonaj etapową instalację kontrolera RODC za pomocą graficznego interfejsu użytkownika
+Instalacja etapowa kontrolera RODC umożliwia jego utworzenie w dwóch etapach. W pierwszym etapie członek grupy Administratorzy domen tworzy konto kontrolera RODC. W drugim etapie do konta RODC jest dołączany serwer. Drugi etap można wykonać przez członka grupy Administratorzy domeny lub delegowanego użytkownika lub grupy domeny.
+Tworzenie konta kontrolera RODC przy użyciu narzędzi do zarządzania usługą Active Directory
+Konto RODC można utworzyć przy użyciu Centrum administracyjnego Active Directory lub Użytkowników i komputerów Active Directory.
+wybierz pozycję Start, wybierz pozycję Narzędzia administracyjne, a następnie wybierz pozycję Centrum administracyjne usługi Active Directory.
+W okienku nawigacji (okienko po lewej stronie) wybierz nazwę domeny.
+Na liście Zarządzanie (środkowe okienko) wybierz jednostkę organizacyjną Kontrolery domeny .
+W okienku Zadania (po prawej stronie) wybierz pozycję Wstępnie utwórz konto kontrolera domeny tylko do odczytu.
+-Or-
+wybierz pozycję Start, wybierz pozycję Narzędzia administracyjne, a następnie wybierz pozycję Użytkownicy i komputery usługi Active Directory.
+Wybierz prawym przyciskiem pozycję Kontrolery domeny jednostki organizacyjnej (OU) lub wybierz jednostkę organizacyjną Kontrolery domeny , a następnie wybierz pozycję Akcja.
+wybierz pozycję Wstępnie utwórz konto kontrolera domeny tylko do odczytu.
+Na stronie Kreatora instalacji usług domenowych Active Directory, jeśli chcesz zmodyfikować domyślne zasady replikacji haseł (PRP), wybierz opcję Użyj instalacji trybu zaawansowanego, a następnie wybierz przycisk Dalej.
+Na stronie Poświadczenia sieciowe w obszarze Określ poświadczenia konta do wykonania instalacji wybierz pozycję Moje bieżące zalogowane poświadczenia lub wybierz pozycję Alternatywne poświadczenia, a następnie wybierz pozycję Ustaw. W oknie dialogowym Zabezpieczenia systemu Windows podaj nazwę użytkownika i hasło dla konta, które może zainstalować dodatkowy kontroler domeny. Aby zainstalować dodatkowy kontroler domeny, musisz być członkiem grupy Administratorzy przedsiębiorstwa lub Administratorzy domeny. Po zakończeniu podawania poświadczeń wybierz pozycję Dalej.
+Na stronie Określanie nazwy komputera wpisz nazwę komputera serwera, który będzie kontrolerem RODC.
+Na stronie Wybierz witrynę wybierz witrynę z listy lub wybierz opcję zainstalowania kontrolera domeny w witrynie odpowiadającej adresowi IP komputera, na którym uruchomiono kreator, a następnie wybierz przycisk Dalej.
+Na stronie Dodatkowe opcje kontrolera domeny wybierz następujące opcje, a następnie wybierz przycisk Dalej:
+              Serwer DNS: ta opcja jest domyślnie wybrana, aby kontroler domeny mógł działać jako serwer systemu nazw domen (DNS). Jeśli nie chcesz, aby kontroler domeny był serwerem DNS, wyczyść tę opcję. Jeśli jednak nie zainstalujesz roli serwera DNS na kontrolerze RODC, a kontroler RODC jest jedynym kontrolerem domeny w oddziale, użytkownicy w oddziale nie będą mogli wykonywać rozpoznawania nazw, gdy sieć rozległa (WAN) do lokacji centrum jest w trybie offline.
+              Wykaz globalny: ta opcja jest domyślnie zaznaczona. Dodaje on katalog globalny, partycje katalogowe tylko do odczytu do kontrolera domeny i włącza funkcję wyszukiwania katalogu globalnego. Jeśli nie chcesz, aby kontroler domeny był serwerem wykazu globalnego, wyczyść tę opcję. Jeśli jednak nie zainstalujesz serwera wykazu globalnego w oddziale lub nie włączysz buforowania członkostwa w grupie uniwersalnej dla lokalizacji zawierającej kontroler RODC, użytkownicy w oddziale nie będą mogli logować się do domeny, gdy sieć WAN do głównej lokalizacji jest w trybie offline.
+              Kontroler domeny tylko do odczytu. Podczas tworzenia konta kontrolera RODC ta opcja jest domyślnie zaznaczona i nie można jej wyczyścić.
+W przypadku wybrania pola wyboru Użyj instalacji trybu zaawansowanego na stronie powitalnej zostanie wyświetlona strona Określanie zasad replikacji haseł . Domyślnie żadne hasła kont nie są replikowane do kontrolera RODC, a konta wrażliwe na zabezpieczenia (takie jak członkowie grupy Administratorzy domeny) mają wyraźnie zabronione replikowanie ich haseł do kontrolera RODC.
+Aby dodać inne konta do zasad, wybierz pozycję Dodaj, a następnie wybierz pozycję Zezwalaj na hasła dla konta do replikacji do tego kontrolera RODC lub wybierz pozycję Odmów hasła dla konta z replikacji do tego kontrolera RODC , a następnie wybierz konta.
+Po zakończeniu (lub zaakceptowaniu ustawienia domyślnego) wybierz przycisk Dalej.
+Na stronie Delegacja instalacji i administracji kontrolera RODC wpisz nazwę użytkownika lub grupy, która podłączy serwer do konta RODC, które tworzysz. Możesz wpisać nazwę tylko jednego podmiotu zabezpieczeń.
+Aby wyszukać w katalogu określonego użytkownika lub grupy, wybierz pozycję Ustaw. W obszarze Wybierz użytkownika lub grupę wpisz nazwę użytkownika lub grupy. Zalecamy delegowanie instalacji i administracji RODC do grupy.
+Ten użytkownik lub grupa będzie również mieć lokalne uprawnienia administracyjne na kontrolerze RODC po instalacji. Jeśli nie określisz użytkownika lub grupy, tylko członkowie grupy Administratorzy domeny lub Administratorzy przedsiębiorstwa będą mogli dołączyć serwer do konta.
+Po zakończeniu wybierz pozycję Dalej.
+Na stronie Podsumowanie przejrzyj wybrane opcje. w razie potrzeby wybierz pozycję Wstecz , aby zmienić wybrane opcje.
+Aby zapisać ustawienia wybrane w pliku odpowiedzi, którego można użyć do zautomatyzowania kolejnych operacji usług AD DS, wybierz pozycję Eksportuj ustawienia. Wpisz nazwę pliku odpowiedzi, a następnie wybierz pozycję Zapisz.
+Jeśli masz pewność, że wybrane opcje są dokładne, wybierz przycisk Dalej , aby utworzyć konto kontrolera RODC.
+Na stronie Zakończenie pracy Kreatora instalacji Usług domenowych Active Directory wybierz pozycję Zakończ.
+Po utworzeniu konta kontrolera RODC można dołączyć serwer do konta w celu ukończenia instalacji kontrolera RODC. Ten drugi etap można wykonać w oddziale, gdzie będzie znajdować się kontroler RODC. Serwer, na którym wykonasz tę procedurę, nie może być przyłączony do domeny. Kreator dodawania ról w Menedżerze serwera służy do dołączania serwera do konta kontrolera RODC.
+Dołączanie serwera do konta kontrolera RODC przy użyciu Menedżera serwera
+Zaloguj się jako administrator lokalny.
+W Menedżerze serwera wybierz pozycję Dodaj role i funkcje.
+Na stronie Przed rozpoczęciem wybierz pozycję Dalej.
+Na stronie Wybierz typ instalacji wybierz Instalacja oparta na rolach lub oparta na funkcjach, a następnie wybierz Dalej.
+Na stronie Wybieranie serwera docelowego wybierz pozycję Wybierz serwer z puli serwerów, wybierz nazwę serwera, na którym chcesz zainstalować usługi AD DS, a następnie wybierz przycisk Dalej.
+Na stronie Wybieranie ról serwera wybierz pozycję Active Directory Domain Services, wybierz pozycję Dodaj funkcje , a następnie wybierz pozycję Dalej.
+Na stronie Wybieranie funkcji wybierz wszelkie dodatkowe funkcje, które chcesz zainstalować, a następnie wybierz pozycję Dalej.
+Na stronie Usługi domenowe Active Directory przejrzyj informacje, a następnie wybierz pozycję Dalej.
+Na stronie Potwierdź wybory instalacji wybierz pozycję Zainstaluj.
+Na stronie Wyniki sprawdź, czy instalacja powiodła się, a następnie wybierz pozycję Podwyższ poziom tego serwera do kontrolera domeny , aby uruchomić Kreatora konfiguracji usług Domenowych Active Directory.
+Important
+Jeśli w tym momencie zamkniesz Kreatora dodawania ról bez uruchamiania Kreatora konfiguracji usług Domenowych Active Directory, możesz go ponownie uruchomić, wybierając pozycję Zadania w Menedżerze serwera.
+Na stronie Konfiguracja wdrożenia wybierz pozycję Dodaj kontroler domeny do istniejącej domeny, wpisz nazwę domeny (na przykład emea.contoso.com) i poświadczenia (na przykład określ konto delegowane do zarządzania i instalacji kontrolera RODC), a następnie wybierz przycisk Dalej.
+Na stronie Opcje kontrolera domeny wybierz pozycję Użyj istniejącego konta kontrolera RODC, wpisz i potwierdź hasło trybu przywracania usług katalogowych, a następnie wybierz przycisk Dalej.
+Jeśli instalujesz z nośnika, na stronie Opcje dodatkowe wybierz pozycję Zainstaluj z typu ścieżki nośnika i zweryfikuj ścieżkę do plików źródłowych instalacji, wybierz kontroler domeny, z którego chcesz replikować dane instalacji usług AD DS (lub zezwól kreatorowi na wybranie dowolnego kontrolera domeny), a następnie wybierz przycisk Dalej.
+Na stronie Ścieżki wpisz lokalizacje bazy danych usługi Active Directory, plików dziennika i folderu SYSVOL lub zaakceptuj lokalizacje domyślne, a następnie wybierz przycisk Dalej.
+Na stronie Przejrzyj opcje potwierdź wybrane opcje, wybierz pozycję Wyświetl skrypt , aby wyeksportować ustawienia do skryptu programu Windows PowerShell, a następnie wybierz przycisk Dalej.
+Na stronie Sprawdzanie wymagań wstępnych upewnij się, że weryfikacja wymagań wstępnych została ukończona, a następnie wybierz pozycję Zainstaluj.
+Aby ukończyć instalację usług AD DS, serwer zostanie automatycznie uruchomiony ponownie.
+Treści powiązane
+              Wdrażanie lasu za pomocą Menedżera serwera
+              Instalowanie repliki kontrolera domeny systemu Windows Server w istniejącej domenie
+              Instalowanie domeny podrzędnej usługi Active Directory lub drzewa
+              Instalowanie kontrolera domeny usługi Active Directory systemu Windows Server Read-Only
+			Opinia
+					Czy ta strona była pomocna?
+						Tak
+						Nie
+							Nie
+								Potrzebujesz pomocy dotyczącej tego tematu?
+								Chcesz spróbować użyć asystenta Ask Learn, aby wyjaśnić ten temat lub uzyskać instrukcje, które go dotyczą?
+			Zapytaj platformę Learn
+			Zapytaj platformę Learn
+				 Zaproponować poprawkę? 
+				Dodatkowe zasoby
+				Ostatnia aktualizacja o 
+		2025-08-16
+				

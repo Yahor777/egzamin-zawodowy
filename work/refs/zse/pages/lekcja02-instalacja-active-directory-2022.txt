@@ -1,0 +1,66 @@
+https://zse.rzeszow.pl/windows/2022/lekcja02-instalacja-active-directory-2022
+
+    Pracownia Systemów Operacyjnych
+            INSTALACJA ACTIVE DIRECTORY
+                Ćwiczenie nr 2
+                                Lista Ćwiczeń
+                Strona Główna
+            Wprowadzenie do lekcji
+            1. Definicja Active Directory.To usługa katalogowa dla systemu Windows Server, w której przechowywane są informacje o obiektach dostępnych w sieci. Inaczej mówiąc, to hierarchiczna baza danych, pozwalająca na wyszukanie określonych obiektów i uzyskanie do nich dostępu.
+            2. Struktura Active Directory.
+            – liść – to najmniejsza, podstawowa jednostka,
+            – kontener – to np. jednostka organizacyjna – w niej znajdują się liście,
+            – domena – złożona jest z liści i kontenerów,
+            – drzewo – jedna domena lub kilka domen pracujących pod tą samą przestrzenią nazw DNS,
+            – las – może składać się z jednego lub wielu drzew.
+            3. Inne pojęcia Active Directory.
+            – obiekt – to wyróżniony element (np. użytkownik, komputer, drukarka itp.) w domenie, posiadający nazwę oraz zbiór atrybutów,
+            – schemat AD – to zbiór definicji wszystkich rodzajów obiektów katalogu i ich atrybutów,
+            – domena – to grupa komputerów połączonych w sieć, które podlegają wspólnym zasadom bezpieczeństwa i współdzielą 
+            bazę kont użytkowników. Całością zarządza serwer pełniący rolę kontrolera domeny,
+            – PDC (Primary Domain Controller) – podstawowy kontroler domeny; to serwer uwierzytelniający logowania do domeny oraz 
+            przechowujący i obsługujący bazę danych usług katalogowych domeny (AD).
+            4. Przykładowa struktura Active Directory.
+            5. Najważniejsze funkcje Active Directory.
+            – zgodność z protokołem TCP/IP,
+            – obsługa LDAP (Lightweight Directory Access Protocol),
+            – obsługa DNS (Domain Name System),
+            – łatwość zarządzania,
+            – obsługa zabezpieczeń:
+            IPsec – ruch IP jest szyfrowany za pomocą nagłówka IPsec,
+            Kerberos – protokół uwierzytelniania i autoryzacji w sieci komputerowej,
+            szyfrowanie SSL – certyfikacja i szyfrowanie witryn WWW.
+                        I. Przygotowanie maszyn do instalacji Active Directory.
+                                Jeśli korzystamy z VMware i chcemy przejść do instalacji AD, pamiętajmy o właściwych ustawieniach interfejsów sieciowych na wirtualnych maszynach. Na serwerze ustawiamy pierwszy interfejs na NAT.
+                                Drugi interfejs ustawiamy na Custom -> VMnet2.
+                                Na kliencie, który będzie później przyłączany do domeny, ustawiamy tylko jeden interfejs na Custom -> VMnet2.
+                                Wykonamy jeszcze jedną czynność, która ułatwi nam pracę na serwerze. Z „Panelu sterowania” wybierzemy „Centrum sieci i udostępniania”, skąd klikniemy opcję „Zmień ustawienia karty sieciowej”. Przypiszemy naszym interfejsom właściwe nazwy. Ethernet to będzie WAN, a Ethernet 2 to będzie LAN.
+                                Widzimy powyżej właściwie zmienione nazwy interfejsów WAN i LAN.
+                        II. Instalacja Active Directory.
+                                Uruchamiamy Windows Server 2022 i z paska narzędzi klikamy „Menedżer serwera”. Pojawia nam się okno, z którego wybieramy „Dodaj role i funkcje”.
+                                Uruchamia nam się kreator instalacji – naciskamy „Dalej”.
+                                Wybieramy pierwszą opcję i naciskamy „Dalej”.
+                                Wybieramy z dostępnej listy serwerów ten właściwy (my mamy tylko jeden) i naciskamy „Dalej”.
+                                Z dostępnych ról wybieramy „Usługi domenowe Active Directory”.
+                                Pojawi nam się okno z informacją, że nie można zainstalować AD DS bez dodatkowych funkcji. Zaznaczamy opcję „Dołącz narzędzia…” i naciskamy „Dodaj funkcje”.
+                                Mamy już naszą funkcję wybraną i naciskamy „Dalej”.
+                                Jeśli chcemy jeszcze coś dodać, to wybieramy to z dostępnej listy. My więcej nic nie dodajemy, więc naciskamy „Dalej”.
+                                Możemy przeczytać, czym jest AD DS, wraz z informacją o tym, że warto zainstalować dwa kontrolery domeny oraz DNS – naciskamy „Dalej”.
+                                Możemy zaznaczyć, aby po zainstalowaniu AD DS nastąpił restart systemu. Następnie naciskamy „Tak” i „Zainstaluj”.
+                                Kiedy instalacja dobiegnie końca, klikamy „Zamknij”.
+                                Po zainstalowaniu u góry w „Menedżerze serwera” pojawi się informacja, co należy zrobić, aby serwer stał się kontrolerem domeny. Klikamy „Podnieś poziom tego serwera do…”.
+                                Następnie ustawiamy opcję „Dodaj nowy las” i podajemy nazwę domeny – u nas będzie to elektronik.local i naciskamy „Dalej”.
+                                Możemy też wybrać poziom funkcjonalności lasu i domeny, dodając inne systemy serwerowe (np. Server 2008). My pozostawiamy Server 2016, dodajemy DNS, ustawiamy hasło przywracania i naciskamy „Dalej”.
+                                Nie tworzymy delegacji nazw, bo nie mamy jeszcze DNS-a na serwerze, tylko naciskamy „Dalej”.
+                                Weryfikacja nazwy NetBIOS domeny. U nas jest właściwa (ELEKTRONIK) i naciskamy „Dalej”.
+                                Możemy określić ścieżki dostępu np. do bazy danych, ale my pozostawiamy domyślne i naciskamy „Dalej”.
+                                Podsumowanie wszystkich naszych opcji i naciskamy „Dalej”.
+                                Trwa sprawdzanie wymagań. Jeśli sprawdzenie wymagań powiodło się, naciskamy „Zainstaluj”.
+                                Trwa instalacja.
+                                Nastąpi restart – klikamy „Zamknij” i może to chwilę potrwać.
+                                Podczas logowania widzimy już naszą domenę ELEKTRONIK. Wpisujemy hasło i logujemy się do domeny.
+                                Czekamy chwilę, aż uruchomi się „Menedżer serwera” i widzimy nasze nowe role.
+                                Jeśli klikniemy np. „Usługi AD DS”, to możemy sobie szczegółowo przejrzeć ich działanie oraz zdarzenia itp.
+                                Jeśli klikniemy teraz „Narzędzia”, możemy sobie wybrać przystawkę „Użytkownicy i komputery usługi Active Directory”.
+                                Wystarczy teraz tylko „rozwinąć” naszą domenę i mamy naszą przystawkę „Użytkownicy i komputery usługi Active Directory”.
+    © 2009 - 2026 Copyright ZSE Rzeszów | Developed by Maciej Biel & Ireneusz Paździor

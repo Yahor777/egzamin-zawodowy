@@ -1,0 +1,74 @@
+https://zse.rzeszow.pl/psk/lekcja08-trunk-miedzy-switchem-a-routerem
+
+    Pracownia Systemów Operacyjnych
+            PRACOWNIA SIECI KOMPUTEROWYCH
+                Ćwiczenie nr 8
+                                Lista Ćwiczeń
+                Strona Główna
+            Kilka informacji!
+                Zrobimy teraz połączenia trunkowe między routerem a przełącznikiem. Zadanie tego typu pojawia się na egzaminie zawodowym, więc warto go przyswoić.
+				Poniższy schemat obrazuje w jaki sposób dokonamy konfiguracji VLAN-ów na routerze i switchu oraz w jaki sposób wszystko połączymy. 
+                        I. Konfigurujemy router.
+                                    Na początek zmienimy adres routera na 192.168.10.10. Dodatkowo włączymy sobie serwer DHCP, z przykładową konfiguracją:
+									- Początkowy adres IP: 192.168.10.11
+									- Pula adresów: 10
+									- Adres bramy: 192.168.10.10 adres routera
+									- Czas dzierżawy: 86400 sekund
+									- Adres DNS: 192.168.10.10 adres routera
+									Zatwierdzamy i łączymy się z routerem po nowym adresie.
+                                Przechodzimy teraz do zakładki LAN oraz VLAN. Teraz według schematu dodamy sobie port TRUNK 2 do VLAN-ów oznaczonych na routerze jako: 0,1,2,3. Dodatkowo przy VLAN-ie 0 dodamy port 1. Teraz bardzo ważna część, bowiem ustawimy podsieci oraz Tag VLAN:
+								- VLAN0:
+									- Porty: 1 i 2
+									- Podsieć: LAN1
+									- VID: 11
+								- VLAN1:
+									- Porty: 2
+									- Podsieć: LAN2
+									- VID: 222
+								- VLAN2:
+									- Porty: 2
+									- Podsieć: LAN3
+									- VID: 333
+								- VLAN3:
+									- Porty: 2
+									- Podsieć: LAN4
+									- VID: 444
+								Teraz zatwierdzamy wszystko i przejdziemy do konfiguracji podsieci.
+                                Podsieć oznaczona jako LAN2:
+								- Adres IP 10.10.111.10
+								Serwer DHCP
+								- Początkowy adres IP: 10.10.111.11
+								- Pula adresów: 10
+								- Adres bramy: 10.10.111.10
+								- Adres DNS: 10.10.111.10
+								Aby nie tracić czasu na ponowne uruchamianie, przechodzimy do zakładki LAN -> General setup -> Details page
+                                Podsieć oznaczona jako LAN3:
+								- Adres IP 10.10.222.10
+								Serwer DHCP
+								- Początkowy adres IP: 10.10.222.11
+								- Pula adresów: 10
+								- Adres bramy: 10.10.222.10
+								- Adres DNS: 10.10.222.10
+                                Podsieć oznaczona jako LAN4:
+								- Adres IP 10.10.33.10
+								Serwer DHCP
+								- Początkowy adres IP: 10.10.33.11
+								- Pula adresów: 10
+								- Adres bramy: 10.10.33.10
+								- Adres DNS: 10.10.33.10
+								Teraz możemy uruchomić cały router ponownie.
+                                Warto jeszcze przejść do opcji General Setup w zakładce LAN i sprawdzić czy nasze podsieci są uruchomione i czy mają poprawne adresy.
+                        II. Konfigurujemy przełącznik.
+                                    Teraz przejdziemy do konfiguracji przełącznika. Stworzymy 4 VLAN-y zgodnie ze schematem. UWAGA! ID VLAN-u musi odpowiadać nadanemu Tagowaniu na routerze. Należy dodatkowo pamiętać o przełączeniu portu numer 2 w tryb pracy TRUNK oraz o dodaniu go każdego VLAN-u, bowiem będzie on odpowiadał za TRUNK pomiędzy switchem a routerem. Ostateczna konfiguracja VLAN-ów powinna wyglądać tak jak na powyższym zdjęciu.
+                                    Teraz zmienimy jeszcze adres IP naszego przełącznika, aby pracował w tej samej podsieci co nasz router oraz przypiszemy VLAN 11 do managementu:
+									- Adres IP: 192.168.10.12
+									- Maska: 255.255.255.0
+									- MANAGEMENT VLAN: 11
+									Zatwierdzamy.
+                        III. Łączymy wszystko ze sobą.
+                                    Łączymy teraz nasze urządzenia patchcordem z portem numer 2.
+                        IV. Testujemy poprawność działania.
+                                   Połączymy teraz dwa komputery poprzez porty numer: 3 i 4, które są w tym samym VLAN-ie. Jak widzimy adres IP został przydzielony poprawnie
+                                    Drugi komputer uzyskał adres 10.10.222.12. Wykorzystując polecenie PING sprawdźmy połączenie. Jak widzimy wszystko działa poprawnie.
+                                    Drugi komputer uzyskał adres 10.10.222.12. Wykorzystując polecenie PING sprawdźmy połączenie. Jak widzimy wszystko działa poprawnie.
+    © 2009 - 2026 Copyright ZSE Rzeszów | Developed by Maciej Biel & Ireneusz Paździor

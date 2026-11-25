@@ -35,7 +35,7 @@ export function Gpmc(_p: WinProps) {
   if (!domain)
     return (
       <Mmc title="Zarządzanie zasadami grupy" nodes={[{ id: 'root', label: 'Zarządzanie zasadami grupy', icon: <IcShield size={16} />, depth: 0 }]} cur="root" onNode={() => {}} actions={null}>
-        <p className="mmc-empty">Nie można połączyć się z domeną: ten serwer nie jest jeszcze kontrolerem domeny. Podwyższ poziom serwera do kontrolera domeny w Menedżerze serwera.</p>
+        <p className="mmc-empty">Nie można połączyć się z domeną: ten serwer nie jest jeszcze kontrolerem domeny. Podnieś poziom serwera do kontrolera domeny w Menedżerze serwera.</p>
       </Mmc>
     )
 
@@ -55,7 +55,7 @@ export function Gpmc(_p: WinProps) {
     { id: 'gpos', label: 'Obiekty zasad grupy', icon: <IcFolder size={14} />, depth: 4 },
     ...g.gpos.map((x) => ({ id: `gpo:${x.id}`, label: x.name, icon: <IcShield size={14} />, depth: 5 })),
     { id: 'wmi', label: 'Filtry WMI', icon: <IcFolder size={14} />, depth: 4 },
-    { id: 'starter', label: 'Starter GPO', icon: <IcFolder size={14} />, depth: 4 },
+    { id: 'starter', label: 'Początkowe obiekty zasad grupy', icon: <IcFolder size={14} />, depth: 4 },
     { id: 'sites', label: 'Witryny', icon: <IcFolder size={14} />, depth: 2 },
     { id: 'gpm', label: 'Modelowanie zasad grupy', icon: <IcFolder size={14} />, depth: 1 },
     { id: 'gpr', label: 'Wyniki zasad grupy', icon: <IcFolder size={14} />, depth: 1 },
@@ -105,8 +105,8 @@ export function Gpmc(_p: WinProps) {
     ]
   }
   const contMenu: MenuItem[] = [
-    { label: 'Utwórz obiekt GPO w tej domenie i umieść tu link...', onClick: () => setDlg({ k: 'new', target }) },
-    { label: 'Połącz istniejący obiekt GPO...', onClick: () => setDlg({ k: 'link', target }) },
+    { label: 'Utwórz obiekt zasad grupy w tej domenie i połącz go tutaj...', onClick: () => setDlg({ k: 'new', target }) },
+    { label: 'Połącz istniejący obiekt zasad grupy...', onClick: () => setDlg({ k: 'link', target }) },
     { sep: true },
     { label: 'Zablokuj dziedziczenie', disabled: true },
     { label: 'Aktualizacja usługi Zasady grupy...', onClick: gpUpdate },
@@ -320,7 +320,7 @@ function NewGpoDlg({ domain, names, where, onClose, onOk }: { domain: string; na
     onClose()
   }
   return (
-    <SvModal title="Nowy GPO" buttons={<OkCancel onOk={ok} onCancel={onClose} />}>
+    <SvModal title="Nowy obiekt zasad grupy" buttons={<OkCancel onOk={ok} onCancel={onClose} />}>
       <p>Nazwa:</p>
       <input id="gpo-name" className="w-input" autoFocus value={name} onChange={(e) => setName(e.target.value)} />
       <p>Źródłowy Starter GPO:</p>

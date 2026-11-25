@@ -1,0 +1,94 @@
+https://learn.microsoft.com/pl-pl/windows-server/storage/file-server/ntfs-overview
+
+
+				 Spis treści 
+				Wyjdź z trybu edytora
+			Zapytaj platformę Learn
+			Zapytaj platformę Learn
+			Tryb odczytu
+			Spis treści
+			Przeczytaj w języku angielskim
+			Dodaj
+			Dodaj do planów
+					Kopiuj znaczniki Markdown
+					Drukuj
+						Notatka
+						Dostęp do tej strony wymaga autoryzacji. Może spróbować zalogować się lub zmienić katalogi.
+						Dostęp do tej strony wymaga autoryzacji. Możesz spróbować zmienić katalogi.
+					Omówienie systemu plików NTFS
+				 Dotyczy: ✅ Windows Server 2025, ✅ Windows Server 2022, ✅ Windows Server 2019, ✅ Windows Server 2016, ✅ Windows 11, ✅ Windows 10
+			Opinia
+				W tym artykule
+	 New Technology File System (NTFS) to domyślny system plików dla nowoczesnego systemu operacyjnego Windows. Udostępnia zaawansowane funkcje, w tym deskryptory zabezpieczeń, szyfrowanie, limity przydziału dysku i obsługę zaawansowanych metadanych, zwiększając zarówno zabezpieczenia, jak i zarządzanie danymi. Ponadto system plików NTFS bezproblemowo integruje się z udostępnionymi woluminami klastra (CSV), umożliwiając wysoce dostępne miejsce do przechowywania, do którego wiele węzłów w klastrze odtwarzania awaryjnego może uzyskiwać jednoczesny dostęp. Ta integracja zapewnia ciągłą dostępność i odporność danych.
+Zwiększona niezawodność
+System plików NTFS zwiększa niezawodność dzięki utrzymywaniu pliku dziennika opartego na transakcji i informacji o punktach kontrolnych. Jeśli wystąpi awaria systemu, system NTFS używa tego dziennika do automatycznego przywracania spójności systemu plików podczas następnego uruchamiania, minimalizując ryzyko utraty danych. Po wykryciu nieprawidłowego sektora system NTFS dynamicznie ponownie mapuje klaster, którego dotyczy problem, na klaster w dobrej kondycji, oznacza oryginalny klaster jako bezużyteczny i zapewnia zachowanie danych. Na przykład po awarii systemu ntfs może odzyskać zmiany, ponownie tworząc dziennik transakcji, pomagając zachować integralność danych i zmniejszyć przestoje.
+System PLIKÓW NTFS zawiera funkcję o nazwie samonaprawiające ntfs, która automatycznie wykrywa i naprawia niewielkie uszkodzenie systemu plików w tle bez konieczności przełączenia woluminu do trybu offline. Takie proaktywne podejście pomaga zachować integralność danych i zminimalizować zakłócenia dla użytkowników i aplikacji.
+W przypadku poważniejszego uszkodzenia systemu plików, narzędzie chkdsk umożliwia skanowanie i naprawę woluminów NTFS, utrzymując je w trybie online i minimalizując przestoje. Jedynym okresem niedostępnym woluminu jest faza wymagana do przywrócenia spójności danych. W przypadku używania systemu plików NTFS z woluminami CSV można przeprowadzić naprawy bez żadnych przestojów, zapewniając ciągłą dostępność. Aby dowiedzieć się więcej, zobacz Kondycja systemu plików NTFS i Chkdsk.
+Zwiększone bezpieczeństwo
+              Szczegółowa kontrola dostępu przy użyciu list ACL: system NTFS umożliwia przypisywanie szczegółowych uprawnień do plików i folderów przy użyciu list kontroli dostępu (ACL). Możesz określić, którzy użytkownicy i grupy mają dostęp, zdefiniować typ dostępu, taki jak odczyt, zapis lub modyfikacja, i dostosować zabezpieczenia w celu spełnienia wymagań organizacji.
+              Obsługa zintegrowanego szyfrowania dysków funkcją BitLocker: system NTFS bezproblemowo współpracuje z szyfrowaniem dysków funkcją BitLocker w celu ochrony poufnych danych na woluminach. Funkcja BitLocker stosuje sprzętowe funkcje zabezpieczeń, takie jak moduł TPM (Trusted Platform Module) w celu zapewnienia szyfrowania urządzeń, ochrony danych, nawet jeśli dysk zostanie usunięty i zainstalowany w innym systemie. Pomaga to zapobiec nieautoryzowanemu dostępowi do danych użytkownika i krytycznych plików systemowych. Aby dowiedzieć się więcej, zobacz Omówienie funkcji BitLocker.
+Obsługa dużych woluminów
+System plików NTFS obsługuje duże woluminy o maksymalnych rozmiarach określonych zarówno przez wersję systemu Windows, jak i wybrany rozmiar klastra. W systemie Windows Server 2019 lub nowszym oraz w systemie Windows 10 w wersji 1709 lub nowszej woluminy NTFS mogą być tak duże, jak 8 petabajtów (PB). Starsze wersje systemu Windows obsługują woluminy do 256 terabajtów (TB). Rzeczywisty maksymalny rozmiar woluminu i pliku zależy od rozmiaru klastra i całkowitej liczby klastrów obsługiwanych przez system plików NTFS (do 232 –1 klastrów). Poniższa tabela zawiera podsumowanie największych obsługiwanych woluminów i rozmiarów plików dla każdego rozmiaru klastra:
+Rozmiar klastra
+Największy wolumin i plik
+4 KB (rozmiar domyślny)
+16 TB
+8 KB
+32 TB
+16 KB
+64 TB
+32 KB
+128 TB
+64 KB (wcześniejsza maksymalna)
+256 TB
+128 KB
+512 TB
+256 KB
+1 PB
+512 KB
+2 PB
+1024 KB
+4 PB
+2048 KB (maksymalny rozmiar)
+8 PB
+Jeśli spróbujesz zainstalować wolumin o rozmiarze klastra większym niż obsługiwana maksymalna wersja systemu Windows, zostanie wyświetlony błąd STATUS_UNRECOGNIZED_VOLUME.
+Important
+Niektóre usługi i aplikacje mogą wymuszać własne limity dotyczące rozmiarów plików i woluminów. Na przykład w przypadku korzystania z funkcji poprzednich wersji lub aplikacji kopii zapasowych, które korzystają z migawek usługi kopiowania woluminów w tle (bez obudowy SAN lub RAID), maksymalny obsługiwany rozmiar woluminu wynosi 64 TB. W zależności od obciążenia pracą i wydajności pamięci może być konieczne użycie mniejszych wolumenów.
+Wymagania dotyczące formatowania dużych plików
+Aby umożliwić odpowiednie rozszerzenie dużych .vhdx plików, istnieją nowe zalecenia dotyczące formatowania woluminów. Podczas formatowania woluminów używanych z deduplikacją danych lub hostowania dużych plików, takich jak .vhdx pliki większe niż 1 TB, użyj polecenia cmdlet Format-Volume z następującymi parametrami:
+Format-Volume -DriveLetter <DriveLetter> -FileSystem NTFS -AllocationUnitSize 65536 -UseLargeFRS
+W tym przykładzie parametr AllocationUnitSize ustawia rozmiar jednostki alokacji na 64 KB (65 536 bajtów) i UseLargeFRS umożliwia obsługę dużych segmentów rekordów plików.
+Można również uruchomić format polecenie w wierszu poleceń z podwyższonymi uprawnieniami, gdzie /L formatuje duży wolumin segmentu rekordów plików (FRS) i /A:64k ustawia rozmiar jednostki alokacji 64 KB.
+format <DriveLetter> /l /a:64k
+Maksymalna nazwa i ścieżka pliku
+System PLIKÓW NTFS obsługuje długie nazwy plików i ścieżki o długości rozszerzonej, z następującymi maksymalnymi wartościami:
+              Obsługa długich nazw plików ze zgodnością z poprzednimi wersjami: system NTFS obsługuje długie nazwy plików, przechowując alias 8.3 na dysku (w standardzie Unicode) w celu zapewnienia zgodności z systemami plików, które nakładają limit 8.3 na nazwy plików i rozszerzenia. W razie potrzeby ze względów wydajności można selektywnie wyłączyć alias 8.3 na poszczególnych woluminach NTFS w systemie Windows Server 2008 R2, Windows 8 i nowszych wersjach systemu operacyjnego Windows. W systemach Windows Server 2008 R2 i nowszych nazwy krótkie są domyślnie wyłączone, gdy wolumin jest sformatowany przy użyciu systemu operacyjnego. Aby zapewnić zgodność aplikacji, krótkie nazwy nadal są włączone na woluminie systemowym.
+              Obsługa ścieżek o długości rozszerzonej: wiele funkcji interfejsu API systemu Windows ma wersje Unicode, które zezwalają na dłuższą ścieżkę o długości około 32 767 znaków. Suma ta przekracza limit ścieżki 260 znaków zdefiniowany przez ustawienie MAX_PATH. Aby uzyskać szczegółowe wymagania dotyczące nazwy pliku i formatu ścieżki oraz wskazówki dotyczące implementowania ścieżek rozszerzonej długości, zobacz Nazewnictwo plików, ścieżek i przestrzeni nazw.
+              Magazyn klastrowany: w przypadku użycia w klastrach trybu failover system NTFS obsługuje woluminy stale dostępne, do których można uzyskiwać dostęp jednocześnie przez wiele węzłów klastra w przypadku użycia z systemem plików CSV. Aby dowiedzieć się więcej, zobacz Używanie klastrowych woluminów współdzielonych w klastrze z przełączaniem awaryjnym.
+Elastyczna alokacja pojemności
+Jeśli miejsce na woluminie jest ograniczone, system NTFS zapewnia następujące sposoby pracy z pojemnością magazynu serwera:
+Użyj przydziałów dysku, aby śledzić i kontrolować użycie miejsca na dysku na woluminach NTFS dla poszczególnych użytkowników.
+Użyj kompresji systemu plików, aby zmaksymalizować ilość danych, które można przechowywać.
+Zwiększ rozmiar woluminu NTFS, dodając nieprzydzielone miejsce z tego samego dysku lub z innego dysku.
+Zainstaluj wolumin w dowolnym pustym folderze na lokalnym woluminie NTFS, jeśli zabraknie liter dysku lub konieczne jest utworzenie dodatkowego miejsca dostępnego z istniejącego folderu.
+Zobacz także
+dokumentacja usługi Windows Server Storage
+zalecenia dotyczące rozmiaru klastra dla systemu plików ReFS i systemu plików NTFS
+              Omówienie systemu plików ReFS (Resilient File System)
+              Co nowego w systemie plików NTFS dla systemu Windows Server (Windows Server 2012 R2)
+              Co nowego w systemie plików NTFS (Windows Server 2008 R2, Windows 7)
+              Informacje o transakcyjnym systemie plików NTFS
+			Opinia
+					Czy ta strona była pomocna?
+						Tak
+						Nie
+							Nie
+								Potrzebujesz pomocy dotyczącej tego tematu?
+								Chcesz spróbować użyć asystenta Ask Learn, aby wyjaśnić ten temat lub uzyskać instrukcje, które go dotyczą?
+			Zapytaj platformę Learn
+			Zapytaj platformę Learn
+				 Zaproponować poprawkę? 
+				Dodatkowe zasoby
+				Ostatnia aktualizacja o 
+		2025-08-16
+				

@@ -1,0 +1,112 @@
+https://learn.microsoft.com/pl-pl/troubleshoot/windows-client/networking/cannot-access-shared-folder-file-explorer
+
+
+				 Spis treści 
+				Wyjdź z trybu edytora
+			Zapytaj platformę Learn
+			Zapytaj platformę Learn
+			Tryb odczytu
+			Spis treści
+			Przeczytaj w języku angielskim
+			Dodaj
+			Dodaj do planów
+					Kopiuj znaczniki Markdown
+					Drukuj
+						Notatka
+						Dostęp do tej strony wymaga autoryzacji. Może spróbować zalogować się lub zmienić katalogi.
+						Dostęp do tej strony wymaga autoryzacji. Możesz spróbować zmienić katalogi.
+					Nie można uzyskać dostępu do folderów udostępnionych z Eksploratora plików w systemie Windows 10
+				 Dotyczy: Supported versions of Windows Client
+			Opinia
+				W tym artykule
+Dotyczy: system Windows 10
+Ogólne rozwiązywanie problemów
+Zamiast z Eksploratora plików uzyskaj dostęp do folderu udostępnionego za pomocą wiersza polecenia, używając poniższego polecenia:
+net use <DeviceName>: \\<ServerName>\<ShareName>
+Uwaga
+Aby uzyskać więcej informacji, zobacz wykorzystanie sieci:
+Włącz funkcję obsługi protokołu SMB 1.0 z Panel sterowania, wykonując następujące kroki:
+Otwórz Panel sterowania.
+Wybierz pozycję Programy>Programy i funkcje>Włącz lub wyłącz funkcje systemu Windows>Obsługa udostępniania plików SMB 1.0/CIFS.
+Sprawdź klienta SMB 1.0/CIFS, a następnie naciśnij klawisz Enter.
+Włącz opcje odnajdywania sieci oraz udostępniania plików i drukarek, wykonując następujące kroki:
+Otwórz Panel sterowania.
+Wybierz pozycję Sieć i sieć internetowa>Sieć i centrum udostępniania> Zaawansowane ustawienia udostępniania.
+Kliknij pozycję Włącz odnajdywanie sieci.
+Wybierz pozycję Włącz udostępnianie plików i drukarek w obszarze Prywatne.
+Wybierz opcję Zapisz zmiany.
+Ustaw typ uruchamiania określonych usług na wartość Automatyczne, aby komputer był widoczny w sieci. Poniżej przedstawiono sposób postępowania:
+Przejdź do ekranu startowego.
+Przejdź do pozycji Wyszukaj, wprowadź wyraz Usługi i naciśnij klawisz Enter.
+Zmień właściwość Typ uruchamiania na Automatyczna dla następujących usług.
+Host dostawcy odnajdywania funkcji
+Publikacja zasobu odnajdywania funkcji
+Usługa odnajdowania SSDP
+Host urządzenia UPnP
+Uruchom ponownie system.
+Mogą zostać wyświetlone następujące komunikaty o błędach:
+Nie masz uprawnień dostępu do \\<IPAddress lub nazwa hosta>
+Rozwiązanie
+Oto jak udostępnić uprawnienia wszystkim dla folderu, który chcesz udostępnić:
+Naciśnij i przytrzymaj (lub kliknij prawym przyciskiem myszy) udostępniony folder.
+Kliknij polecenie Właściwości, a następnie kliknij kartę Zaawansowane udostępnianie na karcie Udostępnianie.
+Wybierz pozycję Uprawnienia, zaznacz opcję Zezwalaj na pełną kontrolę nad wszystkimi, a następnie naciśnij klawisz Enter.
+W oknie dialogowym Zaawansowane udostępnianie wybierz pozycję OK.
+Oto jak zezwolić na uprawnienie Pełna kontrola dla wszystkich:
+Wybierz pozycję Edytuj na karcie Zabezpieczenia.
+Wybierz pozycję Dodaj, wprowadź pozycję Wszyscy w polu Wprowadź nazwy obiektów do wybrania, a następnie naciśnij klawisz Enter.
+Zaznacz opcję Zezwalaj na pełną kontrolę nad wszystkimi i naciśnij klawisz Enter.
+Zamknij okno dialogowe Właściwości.
+Oto jak upewnić się, że protokół TCP/IP NetBIOS jest włączony:
+Przejdź do ekranu startowego.
+Przejdź do pozycji Wyszukaj, wprowadź wyraz Usługi i naciśnij klawisz Enter.
+Kliknij dwukrotnie pomocnika NetBIOS protokołu TCP/IP w okienku po prawej stronie i upewnij się, że właściwość Typ uruchamiania jest ustawiona na Wartość automatyczna.
+Przejdź do Panelu sterowania>Sieci i internet>Sieć i centrum udostępniania, wybierz pozycję Zmień ustawienia karty w okienku po lewej stronie, a następnie kliknij dwukrotnie pozycję Ethernet.
+Wybierz pozycję Właściwości i kliknij dwukrotnie pozycję Protokół internetowy w wersji 4 (TCP/IPv4) na karcie Sieć.
+Wybierz pozycję Zaawansowane, następnie wybierz pozycję Włącz netBIOS za pośrednictwem protokołu TCP/IP na karcie WINS, a następnie naciśnij klawisz Enter.
+Kliknij przycisk OK dwukrotnie, aby zamknąć okno dialogowe.
+Nie można uzyskać dostępu do tego folderu udostępnionego, ponieważ zasady bezpieczeństwa Twojej organizacji blokują nieuwierzytelnionych użytkowników.
+Rozwiązanie
+Dostęp gościa można włączyć z komputera przy użyciu jednej z następujących metod:
+Metoda 1.: Włączanie niezabezpieczonego logowania gościa za pomocą Edytora rejestru
+Uruchom Edytor rejestru.
+Przejdź do Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\LanmanWorkstation.
+Uwaga
+Jeśli klucz nie istnieje, musisz go utworzyć. Naciśnij i przytrzymaj (kliknij prawym przyciskiem myszy) system Windows, wybierz pozycję Nowy>Klucz, a następnie nadaj kluczowi nazwę LanmanWorkstation.
+Naciśnij i przytrzymaj (kliknij prawym przyciskiem myszy) pozycję LanmanWorkstation, wybierz pozycję Nowa>Wartość DWORD (32-bitowa), a następnie nadaj jej nazwę AllowInsecureGuestAuth. Kliknij dwukrotnie, ustaw dane wartości na 1, a następnie naciśnij klawisz Enter.
+Metoda 2..: Włączanie niezabezpieczonego logowania gościa za pomocą Edytora zasady grupy lokalnej
+Przejdź do ekranu startowego.
+Przejdź do pozycji Wyszukaj, wprowadź słowo gpedit.msc, a następnie naciśnij klawisz Enter.
+Przejdź do pozycji Konfiguracja komputera>Szablony administracyjne>Sieć>Lanman Workstation.
+W okienku po prawej stronie kliknij dwukrotnie pozycję Włącz niezabezpieczone logowanie gości.
+Wybierz opcję Włączone, a następnie naciśnij klawisz Enter.
+Kod błędu: 0x80004005. Nieokreślony błąd
+Zamiast automatycznie uzyskiwać adres IP, określ adres IP. Postępuj zgodnie z poniższymi instrukcjami:
+Kliknij pozycję Użyj następującego adresu IP, jeśli chcesz określić adres IP karty sieciowej.
+W polu Adres IP wpisz adres IP, który chcesz przypisać do tej karty sieciowej. Ten adres IP musi być unikatowym adresem w zakresie adresów dostępnych dla twojej sieci. Skontaktuj się z administratorem sieci, aby uzyskać listę prawidłowych adresów IP dla sieci.
+W polu Maska podsieci wpisz maskę podsieci dla sieci.
+W polu Brama domyślna wpisz adres IP komputera lub urządzenia w sieci łączącej sieć z inną siecią lub Internetem.
+W polu Preferowany serwer DNS wpisz adres IP komputera, który rozpoznaje nazwy hostów jako adresy IP.
+W polu Alternatywny serwer DNS wpisz adres IP komputera DNS, którego chcesz użyć, jeśli preferowany serwer DNS stanie się niedostępny.
+Wybierz przycisk OK. W oknie dialogowym Właściwości połączenia lokalnego kliknij przycisk Zamknij.
+W oknie dialogowym Stan połączenia lokalnego kliknij przycisk Zamknij.
+Wystąpił błąd systemowy nr 53. Nie znaleziono ścieżki sieciowej
+Gdy próbujesz uzyskać dostęp do udostępnionych plików za pomocą protokołu Server Message Block (SMB — blok komunikatów serwera), otrzymujesz następujący komunikat o błędzie:
+Wystąpił błąd systemowy 53. Nie można znaleźć ścieżki sieciowej.
+W śladach sieci serwer nie wysyła żądania ustanowienia połączenia (pakiet TCP SYN). Można jednak użyć protokół telnet do nawiązania połączenia z serwerem za pośrednictwem portu 445 protokołu TCP.
+Ten problem występuje, jeśli usługa pomocnika NetBIOS TCP/IP została zatrzymana lub usługa ta jest uruchomiona jako system lokalny, ale nie usługa lokalna.
+Aby rozwiązać ten problem, upewnij się, że usługa pomocnika NetBIOS TCP/IP jest uruchomiona jako usługa lokalna.
+			Opinia
+					Czy ta strona była pomocna?
+						Tak
+						Nie
+							Nie
+								Potrzebujesz pomocy dotyczącej tego tematu?
+								Chcesz spróbować użyć asystenta Ask Learn, aby wyjaśnić ten temat lub uzyskać instrukcje, które go dotyczą?
+			Zapytaj platformę Learn
+			Zapytaj platformę Learn
+				 Zaproponować poprawkę? 
+				Dodatkowe zasoby
+				Ostatnia aktualizacja o 
+		2026-02-12
+				

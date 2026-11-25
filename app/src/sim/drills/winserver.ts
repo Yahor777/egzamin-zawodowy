@@ -116,7 +116,7 @@ export const WS_DRILLS: DrillDef[] = [
         intro_pl: ['Serwer, stacja i przełącznik są połączone kablami. Serwer ma nazwę domyślną i nie ma żadnych ról. Konta: Administrator, hasło ZAQ!2wsx (serwer i stacja).'],
         prepare: (s) => ({ ...s, links: CABLES.map((l) => [...l] as [string, string]) }),
         tasks: [
-          task('dc', 'server', 'Serwer: kontroler domeny', [`ustaw statyczny adres IPv4 serwera ${ip}, maska 255.255.255.0, preferowany DNS ${ip}`, `zainstaluj rolę Usługi domenowe w usłudze Active Directory i podnieś serwer do roli kontrolera domeny (nowy las ${dom})`], [
+          task('dc', 'server', 'Serwer: kontroler domeny', [`ustaw statyczny adres IPv4 serwera ${ip}, maska 255.255.255.0, preferowany DNS ${ip}`, `zainstaluj rolę Usługi domenowe Active Directory i podnieś serwer do roli kontrolera domeny (nowy las ${dom})`], [
             ck('ip', `Адрес сервера ${ip}/24, DNS ${ip}`, 'adres statyczny', (c) => staticIs(c, ip) && srvA(c)?.dns1 === ip),
             ck('role', 'Роль AD DS установлена', 'rola AD DS', (c) => hasRoleC(c, 'ADDS')),
             ck('dom', `Новый лес ${dom}`, 'domena', (c) => !!c.server && srv(c.server).domain?.name === dom),

@@ -84,6 +84,29 @@ export function Theory() {
           </button>
         ))}
       </div>
+
+      <h2 className="sec">{ru ? 'Материалы школы (ZSE Жешув)' : 'Materiały szkoły (ZSE Rzeszów)'}</h2>
+      <p className="hint sec-hint">
+        {ru
+          ? 'Публичные упражнения вашей школы — пошаговые инструкции со скриншотами польского интерфейса. Ссылки открываются на сайте школы.'
+          : 'Publiczne ćwiczenia pracowni — krok po kroku, ze zrzutami ekranu.'}
+      </p>
+      <div className="list card flush">
+        {[
+          ['https://zse.rzeszow.pl/windows/lista-cwiczen', 'Windows Server 2022 / 2019', ru ? 'AD, DHCP, DNS, pliki, IIS, FTP, GPO' : 'AD, DHCP, DNS, pliki, IIS, FTP, GPO'],
+          ['https://zse.rzeszow.pl/ubuntu/lista-cwiczen', 'Ubuntu Server 24.04 / 20.04', 'netplan, DHCP, DNS, Samba, FTP, SSH'],
+          ['https://zse.rzeszow.pl/psk/lista-cwiczen', ru ? 'Pracownia sieci (PSK): switch, VLAN, router' : 'Pracownia sieci (PSK): przełącznik, VLAN, ruter', ru ? 'switch, VLAN, trunk, router, Wi-Fi' : 'przełącznik, VLAN, trunk, ruter, Wi-Fi'],
+          ['https://zse.rzeszow.pl/sieci/materialy', 'Sieci komputerowe', ru ? 'теория: OSI, TCP/IP, адресация, подсети' : 'teoria: OSI, TCP/IP, adresacja, podsieci'],
+        ].map(([href, title, sub]) => (
+          <a key={href} className="list-row" href={href} target="_blank" rel="noreferrer noopener">
+            <span className="lr-main">
+              <span className="lr-title">{title}</span>
+              <span className="lr-sub">{sub}</span>
+            </span>
+            <Icon name="chevron" size={18} />
+          </a>
+        ))}
+      </div>
     </div>
   )
 }

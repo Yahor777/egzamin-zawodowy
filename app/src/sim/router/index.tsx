@@ -90,7 +90,7 @@ export const ROUTER_MENU: MenuItem[] = [
     label: 'Bandwidth Control',
     children: [
       { id: 'bw-settings', label: 'Control Settings' },
-      { id: 'bw-rules', label: 'Rules List' },
+      { id: 'bw-rules', label: 'Rule List' },
     ],
   },
   {

@@ -251,7 +251,7 @@ export function ServerManager({ arg, setArg }: WinProps) {
                   <IcWarn size={18} />
                   <div>
                     <b>Konfiguracja po wdrożeniu</b>
-                    <p>Wymagana konfiguracja. Instalacja usługi Usługi domenowe w usłudze Active Directory na serwerze {host} zakończyła się pomyślnie.</p>
+                    <p>Wymagana konfiguracja. Instalacja usługi Usługi domenowe Active Directory na serwerze {host} zakończyła się pomyślnie.</p>
                     <button
                       className="sv-link"
                       onClick={() => {
@@ -259,7 +259,7 @@ export function ServerManager({ arg, setArg }: WinProps) {
                         api.open('srvpromote')
                       }}
                     >
-                      Podwyższ poziom tego serwera do poziomu kontrolera domeny
+                      Podnieś poziom tego serwera do kontrolera domeny
                     </button>
                   </div>
                 </div>
@@ -277,7 +277,7 @@ export function ServerManager({ arg, setArg }: WinProps) {
                         api.open('srvdhcpcfg')
                       }}
                     >
-                      Ukończ konfigurację DHCP
+                      Dokończ konfigurację funkcji DHCP
                     </button>
                   </div>
                 </div>
@@ -451,7 +451,7 @@ export function AddRoles({ close }: WinProps) {
   const installed = (id: string) => ALWAYS.includes(id) || v.roles.includes(id)
   const introRoles = ROLES.filter((r) => selRoles.includes(r.id) && r.intro)
   const pages: [string, string][] = [
-    ['start', 'Zanim rozpoczniesz'],
+    ['start', 'Przed rozpoczęciem'],
     ['type', 'Typ instalacji'],
     ['server', 'Wybór serwera'],
     ['roles', 'Role serwera'],
@@ -707,7 +707,7 @@ export function AddRoles({ close }: WinProps) {
                         close()
                       }}
                     >
-                      Podwyższ poziom tego serwera do poziomu kontrolera domeny
+                      Podnieś poziom tego serwera do kontrolera domeny
                     </button>
                   )}
                   {pendingNow.includes('DHCP') && (
@@ -718,7 +718,7 @@ export function AddRoles({ close }: WinProps) {
                         close()
                       }}
                     >
-                      Ukończ konfigurację DHCP
+                      Dokończ konfigurację funkcji DHCP
                     </button>
                   )}
                 </div>
@@ -774,7 +774,7 @@ const PROMOTE_STEPS: [string, string][] = [
   ['dns', 'Opcje DNS'],
   ['extra', 'Opcje dodatkowe'],
   ['paths', 'Ścieżki'],
-  ['review', 'Przegląd opcji'],
+  ['review', 'Przeglądanie opcji'],
   ['prereq', 'Sprawdzanie wymagań wstępnych'],
   ['install', 'Instalacja'],
   ['results', 'Wyniki'],
@@ -785,7 +785,7 @@ const PROMOTE_TITLES: Record<string, string> = {
   dns: 'Opcje DNS',
   extra: 'Opcje dodatkowe',
   paths: 'Ścieżki',
-  review: 'Przegląd opcji',
+  review: 'Przeglądanie opcji',
   prereq: 'Sprawdzanie wymagań wstępnych',
   install: 'Instalacja',
 }
@@ -851,7 +851,7 @@ export function Promote({ close }: WinProps) {
   if (!v.roles.includes('ADDS'))
     return (
       <div className="sv-text pad">
-        <Warn>Rola Usługi domenowe w usłudze Active Directory nie jest zainstalowana na tym serwerze. Najpierw użyj Kreatora dodawania ról i funkcji.</Warn>
+        <Warn>Rola Usługi domenowe Active Directory nie jest zainstalowana na tym serwerze. Najpierw użyj Kreatora dodawania ról i funkcji.</Warn>
         <Btn onClick={close}>Zamknij</Btn>
       </div>
     )

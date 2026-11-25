@@ -1,0 +1,101 @@
+https://zse.rzeszow.pl/windows/2022/lekcja03-tworzenie-uzytkownikow-2022
+
+    Pracownia Systemów Operacyjnych
+            TWORZENIE UŻYTKOWNIKÓW I JEDNOSTEK ORGANIZACYJNYCH
+                Ćwiczenie nr 3
+                                Lista Ćwiczeń
+                Strona Główna
+            Wprowadzenie do lekcji
+                1. Ogólne typy kont użytkownika.
+                – użytkownicy lokalni – konta tworzone są na lokalnym komputerze i umożliwiają korzystanie z jego zasobów,
+                – użytkownicy domenowi – konta są tworzone i przechowywane na kontrolerze domeny w usłudze AD i umożliwiają logowanie do domeny oraz korzystanie z zasobów znajdujących się tam komputerów.
+                2. Uwierzytelnianie użytkowników – dwufazowe.
+                – interaktywne logowanie – podczas logowania na lokalnym komputerze sprawdzana jest tożsamość użytkownika, co pozwala na nadanie lub odmowę dostępu do usługi AD,
+                – uwierzytelnianie sieciowe – uprawnienia użytkownika sprawdzane są przy każdej próbie skorzystania z zasobu sieciowego przez protokół Kerberos.
+                3. Definicja jednostki organizacyjnej.
+                Jednostka organizacyjna (organizational unit – OU) to kontener usługi katalogowej, w którym można umieszczać inne obiekty (użytkowników, grupy, komputery, inne OU).
+                        I. Tworzenie użytkowników.
+                                Aby utworzyć nowego użytkownika, należy wybrać z górnego menu „Menedżera serwera” opcję „Narzędzia”, a następnie przystawkę „Użytkownicy i komputery usługi Active Directory”.
+                                Rozwijamy naszą domenę i widzimy dostępne kontenery systemowe.
+                                Następnie zaznaczamy kontener „Users”, w którym będziemy tworzyć użytkownika, i prawym przyciskiem myszy (PPM) wybieramy opcję „Nowy”, a potem „Użytkownik”.
+                                Podajemy dane użytkownika i naciskamy „Dalej”.
+                                Podajemy hasło, wybieramy interesujące nas ustawienia konta i naciskamy „Dalej”.
+                                Na koniec wyświetlane są informacje o tym, z jakimi właściwościami zostanie utworzone nasze konto. Naciskamy „Zakończ”.
+                                Widzimy, że nasz obiekt został utworzony.
+                        II. Modyfikacja kont użytkowników.
+                                W dowolnym momencie możemy zmodyfikować właściwości użytkownika. Zaznaczamy nasz obiekt i klikamy go prawym przyciskiem myszy (PPM), po czym wybieramy „Właściwości”. Widzimy kilka zakładek, z których interesują nas na chwilę obecną dwie – „Ogólne” oraz „Konto”. W pierwszej zakładce znajdują się ogólne informacje o naszym obiekcie, natomiast w zakładce „Konto” możemy dokonać wielu zmian. Na przykład możemy wyłączyć konto, ustawić datę jego wygaśnięcia, odblokować je itp. My najpierw wybierzemy opcję „Godziny logowania”.
+                                Po wybraniu tej opcji możemy dowolnie ustawić godziny i dni logowania dla naszego użytkownika.
+                                Natomiast za pomocą opcji „Zaloguj do” możemy ograniczyć logowanie użytkownika do konkretnego komputera.
+                        III. Tworzenie i usuwanie kont przy użyciu programu PowerShell – polecenia dsadd i dsrm.
+                                Do tworzenia konta wykorzystamy polecenie dsadd. Składnia jest następująca:dsadd obiekt nazwa_DN_obiektu [przełączniki]Przykładowe przełączniki:– ln – nazwisko użytkownika– fn – imię użytkownika– upn – login– pwd – hasło
+                                – mustchpwd (yes, no) – wymuszenie zmiany hasła przy pierwszym logowaniu
+                                – disabled (yes, no) – włączenie lub wyłączenie konta
+                                Przykład 1:
+                                Tworzymy włączone konto użytkownika z następującymi parametrami:
+                                – login: bondj1
+                                – hasło: 1qazXSW@
+                                – imię: James
+                                – nazwisko: Bond1
+                                – kontener: Users
+                                Wpisujemy więc polecenie w programie PowerShell:
+                                $ dsadd user "CN=James JB. Bond1,CN=Users,DC=elektronik,DC=local" -ln Bond1 -fn James -upn [email protected] -pwd 1qazXSW@ -disabled no
+                                W usłudze AD widzimy utworzone przez nas konto.
+                                Jeśli chcielibyśmy utworzyć konto z innymi parametrami, warto skorzystać z pomocy poprzez wpisanie polecenia:
+                                $ dsadd user /?
+                                Uzyskamy szczegółowy wykaz przełączników stosowanych przy tworzeniu kont użytkowników.
+                                Do usunięcia dowolnego obiektu w usłudze AD (np. konta użytkownika) wykorzystamy polecenie dsrm. Składnia jest następująca:
+                                dsrm nazwa_DN_obiektu
+                                Innym poleceniem służącym do usuwania konta użytkownika jest net user. Składnia jest następująca:
+                                net user nazwa_użytkownika /delete
+                                Przykład 2:
+                                W tym przykładzie usuniemy wcześniej utworzone przez nas konto za pomocą polecenia dsrm:
+                                $ dsrm "CN=James JB. Bond1,CN=Users,DC=elektronik,DC=local"
+                        IV. Tworzenie jednostek organizacyjnych.
+                                Aby utworzyć nową jednostkę organizacyjną, należy wybrać z górnego menu „Menedżera serwera” opcję „Narzędzia” → „Użytkownicy i komputery usługi Active Directory”, a następnie zaznaczamy naszą domenę lub inną jednostkę organizacyjną i klikając ją prawym przyciskiem myszy (PPM), wybieramy opcję „Nowy”, a potem „Jednostka organizacyjna”.
+                                Podajemy nazwę jednostki organizacyjnej (możemy zostawić zaznaczoną opcję ochrony przed przypadkowym usunięciem) i naciskamy „OK”.
+                                Widzimy, że nasza jednostka organizacyjna o nazwie Klasa została utworzona w naszej domenie.
+                        V. Przenoszenie jednostek organizacyjnych i innych obiektów.
+                                Zaznaczamy przenoszony obiekt (u nas Klasa) i klikając go prawym przyciskiem myszy (PPM), z menu podręcznego wybieramy opcję „Przenieś…”.
+                                Wybieramy konkretne miejsce docelowe, kontener lub jednostkę organizacyjną (u nas na potrzeby ćwiczenia utworzona została jednostka organizacyjna Pracownia) i naciskamy „OK”.
+                                Jeśli przy tworzeniu jednostki organizacyjnej zostawiliśmy włączoną opcję zabezpieczającą przed przypadkowym usunięciem, uzyskamy powyższy komunikat.
+                                Aby to zmienić, trzeba włączyć „Opcje zaawansowane”, które wybieramy z menu „Widok”.
+                                Następnie należy zaznaczyć przenoszony obiekt, kliknąć go prawym przyciskiem myszy (PPM) i wybrać „Właściwości”, a potem przejść do zakładki „Obiekt”, odznaczyć zabezpieczenie oraz kliknąć „Zastosuj” i „OK”.
+                                Powtarzamy nasze czynności związane z przeniesieniem i widzimy, że teraz w jednostce organizacyjnej Pracownia znajduje się już nasz obiekt Klasa.
+                        VI. Tworzenie i usuwanie jednostek organizacyjnych przy użyciu wiersza poleceń – polecenia dsadd i dsrm.
+                                Podobnie jak wcześniej przy kontach użytkowników, wykorzystamy do tego polecenie dsadd. Składnia jest następująca:
+                                dsadd ou nazwa_DN_obiektu
+                                Przykład 1:
+                                Tworzymy jednostkę organizacyjną Informatycy w domenie elektronik.local:
+                                $ dsadd ou "OU=Informatycy,DC=elektronik,DC=local"
+                                Widzimy, że nasza operacja zakończyła się sukcesem.
+                                A teraz usuniemy jednostkę organizacyjną za pomocą polecenia dsrm. Składnia jest następująca:dsrm nazwa_DN_obiektu
+                                Przykład 2:Usuwamy jednostkę organizacyjną Informatycy w domenie elektronik.local:
+                                $ dsrm "OU=Informatycy,DC=elektronik,DC=local"
+                                Widzimy, że nasza operacja zakończyła się sukcesem.
+                        VII. Przenoszenie obiektów za pomocą wiersza poleceń – polecenie dsmove.
+                                Wykorzystamy do tego polecenie dsmove. Składnia jest następująca:
+                                dsmove nazwa_DN_obiektu -newparent nazwa_DN_nowego_obiektu
+                                Przykład 1:Przeniesiemy użytkownika James JB. Bond1 z kontenera Users do jednostki organizacyjnej Pracownia:
+                                $ dsmove "CN=James JB. Bond1,CN=Users,DC=elektronik,DC=local" -newparent "OU=Pracownia,DC=elektronik,DC=local"
+                                I widzimy naszego użytkownika w jednostce organizacyjnej Pracownia.
+                                Przykład 2:A teraz ponownie utworzymy jednostkę organizacyjną Informatycy i przeniesiemy do niej jednostkę organizacyjną Pracownia:
+                                $ dsadd ou "OU=Informatycy,DC=elektronik,DC=local"
+                                $ dsmove "OU=Pracownia,DC=elektronik,DC=local" -newparent "OU=Informatycy,DC=elektronik,DC=local"
+                                Widzimy naszą jednostkę organizacyjną Informatycy, w której znajduje się jednostka organizacyjna Pracownia oraz wcześniej przeniesiony użytkownik James JB. Bond1 oraz jednostka organizacyjna Klasa.
+                        Zadanie do wykonania na lekcji
+                            Korzystając z przystawki „Użytkownicy i komputery usługi AD”, utwórz:
+                            włączone konto ze swoim imieniem i nazwiskiem, z możliwością logowania tylko w godzinach swoich zajęć szkolnych i wygaśnięciem konta do końca 2026 roku,
+                            wyłączone konto ze swoim imieniem i nazwiskiem, z możliwością logowania tylko w godzinach zajęć z PSO, z wymuszeniem zmiany hasła przy pierwszym logowaniu i wygaśnięciem konta do końca 2027 roku.
+                            Korzystając z konsoli i polecenia dsadd:
+                            utwórz włączone konto ze swoim imieniem, nazwiskiem, loginem, wymuszeniem zmiany hasła i wygaśnięciem konta za 60 dni,
+                            utwórz wyłączone konto ze swoim imieniem, nazwiskiem, loginem, nazwą wyświetlaną, hasłem (poprzez „niewidoczne” wpisanie go) oraz z adresem e-mail.
+                            Korzystając z konsoli i polecenia dsrm, usuń powyższe konta.
+                            Korzystając z przystawki „Użytkownicy i komputery usługi AD”, utwórz:
+                            dwie jednostki organizacyjne Elektronik1 i Elektronik2 w swojej domenie,
+                            dwóch użytkowników i umieść ich w tych jednostkach organizacyjnych (po jednym w każdej).
+                            Korzystając z konsoli i poleceń dsadd i dsmove:
+                            utwórz w domenie elektronik dwie jednostki organizacyjne Informatyk1 i Informatyk2,
+                            przenieś utworzonych użytkowników do tych jednostek (każdego oddzielnie),
+                            utwórz w domenie jednostkę organizacyjną Pracownicy i przenieś do niej jednostki organizacyjne Informatyk1 i Informatyk2,
+                            usuń jednostki organizacyjne Elektronik1, Elektronik2 oraz Pracownicy.
+    © 2009 - 2026 Copyright ZSE Rzeszów | Developed by Maciej Biel & Ireneusz Paździor

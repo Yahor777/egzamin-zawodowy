@@ -1,0 +1,88 @@
+https://zse.rzeszow.pl/psk/lekcja03-trunki
+
+    Pracownia Systemów Operacyjnych
+            PRACOWNIA SIECI KOMPUTEROWYCH
+                Ćwiczenie nr 3
+                                Lista Ćwiczeń
+                Strona Główna
+            Wprowadzenie
+                Trunk - jest to połączenie pomiędzy switchami, bądź switchami i routerami. Pozwala na przenoszenie całego ruchu VLANowego za pomocą jednego łącza.
+				Tak ma się prezentować efekt finalny. Jak widzimy dwa switche są spięte ze sobą poprzez port 7. Tylko switch numer 1 ma port z internetem, który będzie dawał internet vlanom 100 i 200. Vlan 350 będzie pozbawiony dostępu do internetu. Port 6 będzie odpowiadał za management, a dodatkowo po dodaniu do niego portu trunkowego, będziemy mieć możliwość zarządzania switchem 1 i 2, będąc wpięci np. do switcha numer 2.
+                        I. Ustawienia karty sieciowej komputera.
+                                    Przechodzimy do ustawień karty sieciowej i ustawiamy statyczne pobieranie adresu IP.
+                                Przypisujemy naszemu komputerowi odpowiedni adres IP i maskę sieciową: 
+								- Adres IP: 192.168.0.10+x, gdzie x oznacza numer Twojego komputera.
+								- Maska: 255.255.255.0 
+								Pozostałe wartości zostawiamy puste. Następnie klikamy OK.
+                        II. Interfejs webowy przełącznika.
+                                W pasku przeglądarki wpisujemy fabryczny adres przełącznika 192.168.0.1.
+								- Login: admin 
+								- Hasło: admin 
+								Klikamy Login
+                                Przechodzimy do zakładki System IP i ustawiamy adres naszego przełącznika na: 192.168.1.200+x, gdzie x oznacza numer Twojej grupy roboczej.
+								Naciskamy Apply
+							III. Zmiana ustawień karty sieciowej.
+                                Teraz musimy w opcjach karty sieciowej naszego komputera ustawić automatyczne pobieranie adresu IP, ponieważ switch działa już zgodnie z adresacją naszej sieci.
+                        IV. Tworzymy VLANY.
+                                Teraz w naszej przeglądarce wpisujemy nowy adres przełącznika. W moim przypadku będzie to 192.168.1.201.
+                                Powyższy schemat pokazuje nam jak będą wykorzystane poszczególne porty na naszym switchu. Jesteśmy wpięciu do portu numer 1 na przełączniku
+                                Przechodzimy teraz do zakładki VLAN -> Port config. Na porcie 8 mamy podpięty kabel z internetem, więc ustawimy go w tryb pracy GENERAL, aby po dodaniu go do vlanów, nie zmieniało się jego PVID. Resztę portów ustawiamy w tryb pracy ACCESS, aby automatycznie po dodaniu ich do vlanów zmieniało się ich PVID.
+                                Przechodzimy do zakładki Vlan config i klikamy CREATE.
+                                Teraz nadamy ID naszemu vlanowi oraz przypiszemy odpowiednie porty. 
+								- ID: 100 
+								- Porty: 1,2,3,8 
+								Klikamy Apply
+                                Po stworzeniu tego vlanu pojawi nam się taki komunikat. Nie panikujmy! Jest to spowodowane tym, że jesteśmy wpięci w port, który jest w vlanie nieodpowiedzialnym za  zarządzanie przełącznikiem. W celu ponownego przywrócenia połączenia przepnijmy się do innego portu, przykładowo do portu 5.
+                                Aby nie powtórzyła się sytuacja z poprzedniego etapu, utworzymy sobie vlan odpowiedzialny za management. W tym celu tworzymy vlan o następujących parametrach:
+								- ID: 350
+								- Description: Management
+								- Port: 6
+								Klikamy Apply oraz przepinamy się do portu 6.
+                                Przechodzimy do zakładki System -> System IP -> Management VLAN i w tym miejscu wpisujemy ID naszego vlanu, czyli 350. Klikamy Apply
+                                Teraz znowu może pojawić się powyższy komunikat. Przyczyną tego stanu, jest to, że jesteśmy wpięci w Management, a co za tym idzie nie dostajemy adresu IP z serwera DHCP i musimy go przypisać ręcznie.
+                                Przechodzimy do ustawień naszej karty sieciowej i ustawiamy:
+								- IP: 192.168.1.100+x, gdzie x oznacza numer Twojego komputera
+								- Maska: 255.255.255.0
+								- Brama: 192.168.1.100
+								- DNS: 8.8.8.8
+								Zatwierdzamy i wracamy do przeglądarki.
+                                Tworzymy teraz pozostałe vlany.Vlan -> Vlan config:
+								- ID: 200
+								- Porty: 4,5,8
+								Klikamy Apply
+                                Teraz musimy ustawić wszystkie porty w tryb pracy GENERAL. Przechodzimy do zakładki "Port config", wybieramy wszystkie porty i ustawiwamy je na GENERAL.
+                        V. Ustawiamy TRUNKA na pierwszym switchu.
+                                Zmieniamy tryb pracy portu 7 na TRUNK i dodajemy go do każdego vlanu.
+                                Efekt końcowy powinien być następujący, jak widzimy Vlany: 100 i 200 mają dostęp do internetu, poprzez port 8 oraz wszystkie Vlany mają dodany port 7 (trunkowy).
+					VI. Konfigurujemy drugi switch.
+                                    Przechodzimy do ustawień karty sieciowej i ustawiamy statyczne pobieranie adresu IP.
+                                Przypisujemy naszemu komputerowi odpowiedni adres IP i maskę sieciową: 
+								- Adres IP: 192.168.0.10+x, gdzie x oznacza numer Twojego komputera.
+								- Maska: 255.255.255.0 
+								Pozostałe wartości zostawiamy puste. Następnie klikamy OK.
+                                W pasku przeglądarki wpisujemy fabryczny adres przełącznika 192.168.0.1.
+								- Login: admin 
+								- Hasło: admin 
+								Klikamy Login
+                                Przechodzimy do zakładki System IP i ustawiamy adres naszego przełącznika na: 192.168.1.210+x, gdzie x oznacza numer Twojej grupy roboczej.
+								Naciskamy Apply
+                                Teraz nasz komputer nie ma zapewnionego automatycznego przydzielania adresu. Musimy to zrobić ręcznie, ponieważ w innym przypadku nie dostaniemy się na przełącznik, więc nasze ustawienia będą wyglądać następująco:
+								- IP: 192.168.1.120+x, gdzie x oznacza numer Twojego komputera
+								- Maska: 255.255.255.0 
+								- Brama: 192.168.1.100 
+								- DNS: 8.8.8.8 
+								Teraz wszystko zatwierdzamy i możemy się logować do switcha.
+                                W pasku przeglądarki wpisujemy nowy adres przełącznika 192.168.1.211.
+								- Login: admin 
+								- Hasło: admin 
+								Klikamy Login
+						VII. Tworzymy vlany na drugim switchu.
+                                Na powyższym schemacie widzimy, które porty będą w danym vlanie na drugim switchu. Praktycznie powtarzamy wszystkie czynności jak wcześniej, ale dodamy sobie port 8 tylko do vlanu 200, więc jego tryb pracy możemy od razu ustawić na ACCESS. Pamiętajmy, że jesteśmy wpięci do portu numer 1.
+						VIII. Ustawiamy trunka na drugim switchu.
+                                Zmieniamy tryb pracy portu 7 na TRUNK i dodajemy go do każdego vlanu.
+                                Efekt końcowy powinien być następujący. Jak widzimy każdy vlan ma dodany port trunkowy - 7
+						IX. Spinamy patchcordem i testujemy.
+                                Teraz za pomocą patchcorda musimy spiąć nasze switche z portem 7.
+                                Zauważmy teraz, że jestem wpięty do vlanu 100 i mam dostęp do internetu.
+                                Dodatkowo jestem wpięty drugim komputerem do drugiego switcha i mam z niego dostęp do managementu pierwszego switcha!
+    © 2009 - 2026 Copyright ZSE Rzeszów | Developed by Maciej Biel & Ireneusz Paździor

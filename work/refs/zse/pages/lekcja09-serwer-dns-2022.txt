@@ -1,0 +1,116 @@
+https://zse.rzeszow.pl/windows/2022/lekcja09-serwer-dns-2022
+
+    Pracownia Systemów Operacyjnych
+            INSTALACJA I KONFIGURACJA SERWERA DNS
+                Ćwiczenie nr 9
+                                Lista Ćwiczeń
+                Strona Główna
+            Wprowadzenie do lekcji
+                1. Definicja serwera DNS.Serwer DNS to usługa rozpoznawania nazw, która na podstawie nazwy (np. komputera) określa jego adres IP.
+                2. Sposoby działania serwera DNS.
+                – Strefa przeszukiwania w przód – tłumaczy nazwy w sieci lokalnej na adresy IP.
+                – Strefa przeszukiwania wstecz – tłumaczy adresy IP w sieci lokalnej na nazwy.
+                3. Strefy serwera DNS.
+                – strefa podstawowa – tworzy strefę podstawową zawierającą kopię główną bazy danych strefy, w której administratorzy dokonują wszystkich zmian w rekordach zasobów strefy.
+                – strefa pomocnicza – tworzy duplikat strefy podstawowej na innym serwerze.
+                – strefa skrótowa – tworzy kopię strefy podstawowej zawierającą rekordy ważnych zasobów, które określają autorytatywne serwery strefy.
+                4. Architektura DNS.Składa się ona z trzech elementów:
+                – Obszar nazw DNS – ma strukturę drzewa, w której każda gałąź identyfikuje domenę.
+                – Serwer nazw – aplikacja na komputerze serwera, która utrzymuje informacje o strukturze drzewa domeny.
+                – Programy rozpoznawania nazw – czyli resolver, będący programem klienckim, który generuje zapytania DNS i wysyła je do serwera DNS.
+                5. Przykładowa komunikacja DNS.
+                – Resolver wysyła żądanie rozpoznania nazwy do swojego serwera DNS:
+                – Serwer DNS klienta przesyła żądanie do głównego serwera nazw:
+                – Serwer DNS klienta przekazuje żądanie do serwera domeny najwyższego poziomu:
+                – Serwer DNS klienta przekazuje żądanie do serwera domeny drugiego poziomu:
+                – Serwer DNS klienta odpowiada programowi rozpoznawania nazw klienta:
+                6. Rodzaje rekordów stosowanych przez serwer DNS.
+                – SOA (Start of Authority) – autorytatywny serwer dla strefy. Może i musi istnieć tylko jeden taki rekord dla strefy.
+                – A (Address IPv4) – rekord mapuje nazwę hosta na adres IPv4.
+                – AAAA (Address IPv6) – rekord mapuje nazwę hosta na adres IPv6.
+                – CNAME (Canonical Name) – określa alias nazwy hosta.
+                – PTR (Pointer) – wskaźnik, który mapuje adres IP na nazwę hosta (przy wstecznym wyszukiwaniu).
+                – NS (Name Server) – określenie serwera nazw dla domeny, dzięki czemu możliwe są wyszukiwania DNS wewnątrz różnych stref.
+                – MX (Mail Exchanger) – określenie dla domeny serwera wymiany poczty elektronicznej.
+                        I. Instalacja serwera DNS.
+                        Generalnie podczas podnoszenia serwera do poziomu kontrolera domeny serwer DNS automatycznie się instaluje i nie musielibyśmy już tego robić. Niemniej jednak, na potrzeby tego ćwiczenia, pokażę, jak instaluje się serwer DNS po uprzednim odinstalowaniu go.
+                                Uruchamiamy „Menedżera serwera” i wybieramy opcję „Dodaj role i funkcje”.
+                                Uruchamia się „Kreator dodawania ról i funkcji” – naciskamy „Dalej”.
+                                Pozostawiamy pierwszą opcję i naciskamy „Dalej”.
+                                Wybieramy nasz serwer (innego nie mamy) i naciskamy „Dalej”.
+                                Zaznaczamy opcję „Serwer DNS”.
+                                Podczas zaznaczania pojawi nam się okno z informacją, jakie funkcje zostaną dołączone do tej roli. Naciskamy „Dodaj funkcje”.
+                                Mamy już naszą rolę zaznaczoną – naciskamy „Dalej”.
+                                Możemy jeszcze coś dodać do instalacji, ale my tego nie robimy i naciskamy „Dalej”.
+                                Wyświetli się informacja o samej usłudze, którą instalujemy – naciskamy „Dalej”.
+                                Zaznaczamy restart komputera, jeśli zaistnieje taka konieczność, naciskamy „Tak” i „Zainstaluj”.
+                                Musimy trochę poczekać, aż rola się zainstaluje. Można proces instalacji „zamknąć”, a z góry i tak będzie widać, że nie został on formalnie zamknięty, tylko trwa nadal.
+                        II. Konfiguracja serwera DNS (stref przeszukiwania).
+                                W menu „Menedżera serwera” klikamy opcję „Narzędzia” i wybieramy „DNS”.
+                                Widzimy, że są dostępne dwie strefy, z których jedna jest już skonfigurowana. Usuniemy ją i rozpoczniemy jej konfigurację od nowa.
+                                Teraz już widzimy, że obie strefy nie są skonfigurowane, więc możemy przejść do właściwego działania.
+                                Najpierw skonfigurujemy strefę przeszukiwania do przodu, czyli kojarzenie nazwy z adresem IP. Zaznaczamy „Strefy wyszukiwania do przodu” i klikamy prawym przyciskiem myszy (PPM), wybierając „Nowa strefa…”.
+                                Uruchamia się „Kreator nowych stref” – klikamy „Dalej”.
+                                Następnie zaznaczamy strefę podstawową z opcją przechowywania w usłudze AD i klikamy „Dalej”.
+                                Pozostawiamy opcję z naszą domeną (bo tylko jedną posiadamy) – klikamy „Dalej”.
+                                Podajemy nazwę strefy taką samą jak nasza domena i klikamy „Dalej”.
+                                Możemy zabronić aktualizacji dynamicznych i samodzielnie na serwerze aktualizować rekordy. Jednak my zostawiamy bezpieczne aktualizacje dynamiczne i klikamy „Dalej”.
+                                Końcowe okno kreatora informujące nas o tym, jakie ustawienia wybraliśmy. Naciskamy „Zakończ”.
+                                I mamy już utworzoną strefę przeszukiwania do przodu z rekordem startowym (SOA), rekordem serwera nazw (NS) oraz rekordem nazwy naszego serwera (A), skojarzonym z adresami 192.168.110.1 oraz 192.168.29.129.
+                                Ponieważ nie ma w niej rekordu dotyczącego naszego klienta, sprawdzimy jego adres IP znanym już poleceniem: 
+                                $ ipconfig /all
+                                a następnie dodamy rekord ręcznie. Nazwa naszego hosta to comp01, a jego adres IP to 192.168.110.169.
+                                Klikamy zatem na naszej nazwie strefy elektronik.local prawym przyciskiem myszy (PPM) i wybieramy opcję „Nowy host (A lub AAAA)”.
+                                Podajemy nazwę hosta comp01 oraz jego adres IP 192.168.110.169 i naciskamy „Dodaj hosta”.
+                                Otrzymujemy potwierdzenie utworzenia rekordu i naciskamy „OK”, a w kolejnym oknie klikamy „Gotowe”.
+                                I widzimy, że nasz wpis pojawił się w utworzonej strefie serwera DNS.
+                                Teraz możemy sprawdzić, czy nasz DNS działa. Zastosujemy do tego najpierw polecenie „nslookup”, a następnie „ping”. Najpierw wykonamy te polecenia z poziomu serwera:
+                                $ nslookup server00
+                                $ nslookup comp01
+                                $ ping comp01
+                                Podobną czynność wykonamy z poziomu klienta:
+                                $ nslookup server00
+                                $ nslookup comp01
+                                $ ping server00
+                                Kolejną czynnością, jaką wykonamy na naszym serwerze DNS, będzie utworzenie aliasu do naszego hosta (klienta). Będzie on dostępny pod inną nazwą, np. nasz_klient. Dla pewności możemy wykonać polecenie ping na tę nazwę jeszcze przed stworzeniem aliasu, żeby udowodnić brak rekordu o takiej nazwie. Wpisujemy więc na serwerze:
+                                $ ping nasz_klient
+                                Jak można się spodziewać, nasz serwer DNS nie jest w stanie odnaleźć takiej nazwy.
+                                Przechodzimy więc do tworzenia aliasu. Zaznaczamy naszą domenę na serwerze DNS i klikamy prawym przyciskiem myszy (PPM), wybierając opcję „Nowy alias (CNAME)…”.
+                                Pojawia nam się okno, w którym podajemy nazwę aliasu nasz_klient oraz pełną nazwę hosta, dla którego jest on tworzony: comp01.elektronik.local. (pamiętamy o kropce na końcu), po czym klikamy „OK”.
+                                I widzimy, że pojawił się nowy rekord typu alias, odnoszący się do hosta comp01.elektronik.local.
+                                Następnie sprawdzamy jego działanie poleceniami ping i nslookup:
+                                $ ping nasz_klient
+                                $ nslookup nasz_klient
+                                I widzimy, że otrzymujemy odpowiedź z adresu 192.168.110.169 oraz poprawne skojarzenie naszej nazwy z właściwym hostem.
+                        III. Konfiguracja serwera DNS (strefa przeszukiwania wstecz).
+                                Teraz skonfigurujemy strefę przeszukiwania wstecz, która działa odwrotnie niż strefa wyszukiwania do przodu, czyli kojarzy adres IP z nazwą. Żeby zrozumieć, o co dokładnie chodzi, wystarczy np. na serwerze wpisać polecenie nslookup, które będzie się odnosić bezpośrednio do adresu IP klienta:
+                                $ nslookup 192.168.110.169
+                                Otrzymujemy komunikat o braku możliwości zidentyfikowania (odnalezienia) wpisu na naszym serwerze DNS. Strefa wyszukiwania wstecznego powinna nam to umożliwić.
+                                Przystępujemy do konfiguracji strefy przeszukiwania wstecznego, czyli kojarzenia adresu IP z nazwą. Zaznaczamy „Strefy wyszukiwania wstecznego” i klikamy prawym przyciskiem myszy (PPM), wybierając opcję „Nowa strefa…”.
+                                Podobnie jak wcześniej uruchamia się „Kreator nowych stref” – klikamy „Dalej”.
+                                Następnie zaznaczamy strefę podstawową z opcją przechowywania w usłudze AD i klikamy „Dalej”.
+                                Pozostawiamy opcję z naszą domeną (bo tylko jedną posiadamy) – klikamy „Dalej”.
+                                Zaznaczamy strefę wyszukiwania dla protokołu IPv4 i klikamy „Dalej”.
+                                Podajemy adres naszej sieci, a poniżej widzimy, jaką nazwę będzie nosiła nasza strefa z charakterystycznie odwróconym adresem sieci (trzy bajty) oraz domeną in-addr.arpa. Następnie klikamy „Dalej”.
+                                Możemy zabronić aktualizacji dynamicznych i samodzielnie na serwerze ustawiać wszystkie opcje albo zostawić bezpieczne aktualizacje dynamiczne i kliknąć „Dalej”.
+                                Końcowe okno kreatora informujące nas o tym, jakie ustawienia wybraliśmy. Warto zwrócić uwagę na odwrócony adres IP ze wspomnianą już domeną in-addr.arpa. Naciskamy „Zakończ”.
+                                I mamy już utworzoną strefę wyszukiwania wstecznego.
+                                Sprawdzamy teraz na serwerze, czy działa nam wsteczne wyszukiwanie. Oczywiście na razie nie będzie działać, ponieważ nie mamy jeszcze dodanego rekordu PTR.
+                                Możemy to zrobić poprzez dodanie nowego rekordu w strefie wstecznego wyszukiwania albo bezpośrednio ze strefy wyszukiwania do przodu – wystarczy zaznaczyć właściwy rekord, kliknąć prawym przyciskiem myszy (PPM) i wybrać „Właściwości”.
+                                Następnie zaznaczamy opcję „Aktualizuj skojarzony rekord wskaźnika (PTR)”. Klikamy „Zastosuj” i „OK”.
+                                Widzimy, że nasz rekord został pomyślnie dodany do strefy wyszukiwania wstecznego.
+                                Teraz ponownie z poziomu serwera sprawdzamy, czy nasza strefa wyszukiwania wstecznego działa. Wpisujemy: 
+                                $ nslookup 192.168.110.169
+                                I otrzymujemy właściwy wpis na naszym serwerze DNS. Oznacza to, że nasz rekord został poprawnie dodany do strefy wyszukiwania wstecznego.
+                        Zadanie do wykonania na lekcji
+                        Wszystkie czynności udokumentuj zrzutami ekranu i umieść w sprawozdaniu.
+                                Zmień nazwę klienta na komp11.
+                                Zaloguj się z klienta do domeny dowolnym użytkownikiem, sprawdź jego adres IP i wprowadź ręcznie rekord dotyczący tego komputera do strefy wyszukiwania do przodu na serwerze DNS.
+                                Sprawdź za pomocą poleceń ping oraz nslookup, czy serwer DNS działa właściwie dla tego komputera.
+                                Utwórz dwa aliasy: jeden stanowiący Twoje imię, drugi – Twoje nazwisko (bez polskich liter) do tego komputera.
+                                Sprawdź za pomocą poleceń ping oraz nslookup, czy aliasy działają właściwie.
+                                Dodaj rekord dotyczący tego komputera do strefy wyszukiwania wstecznego.
+                                Sprawdź za pomocą polecenia nslookup, czy wsteczne wyszukiwanie działa.
+                                Utwórz dwa aliasy (dowolne nazwy bez polskich liter) w strefie wyszukiwania wstecznego do tego komputera.
+                                Sprawdź za pomocą poleceń ping oraz nslookup, czy aliasy w strefie wyszukiwania wstecznego działają właściwie.
+    © 2009 - 2026 Copyright ZSE Rzeszów | Developed by Maciej Biel & Ireneusz Paździor

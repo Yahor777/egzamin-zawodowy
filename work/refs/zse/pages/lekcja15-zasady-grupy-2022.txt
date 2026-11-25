@@ -1,0 +1,43 @@
+https://zse.rzeszow.pl/windows/2022/lekcja15-zasady-grupy-2022
+
+    Pracownia Systemów Operacyjnych
+            ZASADY GRUPY
+                Ćwiczenie nr 14
+                Seria 3
+                Lista Ćwiczeń
+                Strona Główna
+            Wprowadzenie do lekcji
+                1. Zasady grupy – wprowadzenie.– Zasady grupy (Group Policy) – są mechanizmem kontrolowania i wdrażania ustawień konfiguracyjnych systemu operacyjnego.2. Edytor obiektów zasad grupy.– GPO (Group Policy Object) – to narzędzie, które umożliwia scentralizowane zarządzanie wieloma użytkownikami jednocześnie, z możliwością stosowania dziedziczenia zasad.3. Kategorie zasad grupy.– zasady dotyczące komputerów – dotyczą ustawień komputera i ładowane są podczas startu systemu, jeszcze przed zalogowaniem użytkownika,– zasady dotyczące użytkowników – dotyczą ustawień specyficznych dla użytkownika i ładowane są w momencie logowania do systemu.4. Stosowanie konsoli Group Policy Management.Group Policy Management (Zarządzanie Zasadami Grupy) to przystawka konsoli MMC, z której często administratorzy korzystają do tworzenia obiektów GPO i zarządzania nimi.5. Uruchamianie „Edytora obiektów zasad grupy”.Możemy to zrobić na dwa sposoby:– dodajemy do konsoli przystawkę „Zasady grupy” i tam ją uruchamiamy,– wpisujemy w wierszu poleceń gpedit.msc.
+                        I. Tworzenie przykładowej zasady dotyczącej użytkownika.
+                                Tworzymy w domenie jednostkę organizacyjną „Informatycy”. Następnie w „Menedżerze serwera” z menu „Narzędzia” wybieramy przystawkę „Zarządzanie zasadami grupy”.
+                                Pojawia nam się okno, w którym klikamy naszą jednostkę organizacyjną „Informatycy”, następnie klikamy prawym przyciskiem myszy (PPM) i wybieramy opcję „Utwórz obiekt zasad…”.
+                                Tworzymy nową polisę – nazywamy ją „Polisa dla informatyków” i naciskamy przycisk „OK”.
+                                Zaznaczamy naszą polisę, klikamy prawym przyciskiem myszy (PPM) i wybieramy „Edytuj”, aby nałożyć ograniczenia dla naszych użytkowników.
+                                Następnie z poziomu sekcji „Konfiguracja użytkownika” wybieramy np. „Opcje klawiszy Ctrl+Alt+Del” i postaramy się wyłączyć użytkownikom „Menedżera zadań”.
+                                Klikamy dwukrotnie opcję „Usuń Menedżera zadań” i pojawia nam się okno, w którym tę funkcję uaktywniamy. Możemy dodać opcjonalny komentarz, po czym naciskamy „Zastosuj” i „OK”.
+                                Gdy rozwiniemy naszą polisę w drzewie opcji po lewej stronie, zobaczymy szczegółowe parametry w zakładce „Ustawienia” po prawej stronie.
+                                Następnie tworzymy dwa konta użytkowników w jednostce organizacyjnej „Informatycy”.
+                                Logujemy się na maszynie klienckiej jednym z tych użytkowników. Po pomyślnym zalogowaniu i wciśnięciu kombinacji klawiszy „Ctrl+Alt+Del” powinniśmy uzyskać widoczny efekt.
+                                Na tym ekranie nie widać bezpośrednio, na jakie konto jesteśmy zalogowani, ale możemy to sprawdzić w inny sposób – np. wpisując w wierszu poleceń polecenie taskmgr. Powinniśmy wówczas otrzymać powyższy komunikat o blokadzie.
+                        Zadanie do wykonania na lekcji
+                        Wszystkie czynności udokumentuj zrzutami ekranu i umieść w sprawozdaniu.
+                                Dla wszystkich użytkowników domeny ustaw następujące zasady:
+                                        pozwolenie na wyłączenie serwera bez konieczności logowania,
+                                        wymuszenie hasła: złożone, o długości minimum 10 znaków, zmiana hasła wymuszana co 60 dni.
+                                Utwórz jednostkę organizacyjną „Zawodowcy”, a w niej dwóch użytkowników.
+                                Ustaw dla niej następujące zasady (sprawdź działanie restrykcji na profilu jednego z użytkowników):
+                                        wyłącz możliwość zmiany tapety na pulpicie,
+                                        wyłącz funkcję „Opcje folderów”,
+                                        usuń listę „Wszystkie programy” z menu Start,
+                                        usuń ikonę dysku lokalnego C z sekcji „Ten komputer”.
+                                Utwórz jednostkę organizacyjną „Kadry” i w niej trzech nowych użytkowników.
+                                Utwórz na dysku lokalnym C serwera katalog „obraz” i umieść w nim plik o nazwie grafika.jpg, który pobierz ze ścieżki sieciowej: \\172.16.110.253\systemy.
+                                Następnie, korzystając z zasad grupy, ustaw dla tej jednostki organizacyjnej następujące zasady (sprawdź działanie konfiguracji na profilu jednego z użytkowników):
+                                        zablokuj (wyłącz) opcję „Uruchom”,
+                                        po kliknięciu kombinacji klawiszy CTRL+ALT+DEL – usuń opcję zmiany hasła,
+                                        usuń przycisk wylogowania z menu Start,
+                                        wyłącz dostęp do wiersza poleceń,
+                                        ustaw dla tych użytkowników obraz z pliku o nazwie grafika.jpg z katalogu C:\obraz jako stałe tło pulpitu.
+                                Przenieś jednego użytkownika z j.o. „Kadry” do j.o. „Zawodowcy” i sprawdź, jak działają przypisane ustawienia.
+                                Przenieś jednego użytkownika z j.o. „Zawodowcy” do j.o. „Kadry” i sprawdź, jak działają przypisane ustawienia.
+    © 2009 - 2026 Copyright ZSE Rzeszów | Developed by Maciej Biel & Ireneusz Paździor

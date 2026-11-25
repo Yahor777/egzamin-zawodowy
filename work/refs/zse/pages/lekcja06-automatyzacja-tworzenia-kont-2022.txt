@@ -1,0 +1,108 @@
+https://zse.rzeszow.pl/windows/2022/lekcja06-automatyzacja-tworzenia-kont-2022
+
+    Pracownia Systemów Operacyjnych
+            AUTOMATYZACJA TWORZENIA UŻYTKOWNIKÓW W WINDOWS SERVER 2022
+                Ćwiczenie nr 6
+                Seria 1
+                Lista Ćwiczeń
+                Strona Główna
+            Wprowadzenie do lekcji
+                1. Tworzenie wielu użytkowników.Administratorzy czasami muszą stworzyć setki kont użytkowników i korzystają wtedy z mechanizmów służących do automatyzacji procesu tworzenia dużej liczby obiektów usługi Active Directory. Przykładowe narzędzia, które służą do tego celu, to:
+                – ldifde.exe – to narzędzie, które służy do tworzenia i modyfikacji obiektów v usłudze AD za pomocą importu z pliku, w którym przygotowane są odpowiednie wpisy,
+                – csvde.exe – to narzędzie, które służy do tworzenia obiektów w usłudze AD za pomocą importu z pliku CSV,
+                – Windows PowerShell – to narzędzie, które służy do tworzenia obiektów w usłudze AD za pomocą importu z pliku CSV,
+                – skrypty VBS – tworzony jest skrypt w formacie VBS służący do tworzenia obiektów.
+                W naszym przypadku do procesu automatyzacji wykorzystamy programy ldifde.exe oraz Windows PowerShell.
+                        I. Korzystanie z narzędzia ldifde.exe.
+                        Narzędzie to umożliwia tworzenie, modyfikowanie i usuwanie obiektów, a także eksportowanie do pliku informacji dotyczących użytkowników czy grup do innych aplikacji lub usług.
+                                Aby sprawdzić możliwości programu, wystarczy uruchomić program PowerShell i wpisać:
+                                $ ldifde
+                                Uzyskamy informacje, jakich parametrów możemy używać przy stosowaniu tego polecenia.
+                                Podstawowe parametry, które będziemy stosować, to np.:
+                                i – tryb importu (eksport jest ustawiony domyślnie),
+                                s – nazwa serwera (w naszym przypadku mamy tylko jeden serwer w domenie, więc ten parametr jest zbędny),
+                                f – nazwa pliku (zostawiamy domyślną lokalizację pliku lub możemy podać miejsce, gdzie ma on zostać wyeksportowany),
+                                r – służy do filtrowania obiektów,
+                                d – miejsce przeszukiwania bazy LDAP.
+                                Spróbujemy teraz wyeksportować informacje o naszej domenie. Użyjemy polecenia:
+                                $ ldifde -f domena.txt
+                                Operacja zakończyła się sukcesem. Wyeksportowane zostały informacje o 256 obiektach naszej domeny, a plik znajduje się w domyślnej lokalizacji: C:\Users\Administrator.
+                                Sprawdzamy teraz nasz plik domena.txt. U góry znajduje się informacja o tym, że dotyczy on domeny elektronik.local.
+                                Jeśli chcemy uzyskać informacje o konkretnym obiekcie (np. wybranym użytkowniku), najpierw sprawdzamy jego pełną nazwę DN, np. poleceniem: 
+                                $ dsquery user
+                                a następnie wyeksportujemy informacje tylko o nim, dodatkowo umieszczając je w pliku user.txt na pulpicie. Użyjemy do tego polecenia:
+                                $ ldifde -f C:\Users\Administrator\Desktop\user.txt -d "CN=James JB. Bond03,OU=Informatycy,DC=elektronik,DC=local"
+                                Operacja zakończyła się sukcesem. Wyeksportowana została informacja o 1 obiekcie, a plik znajduje się w lokalizacji: C:\Users\Administrator\Desktop.
+                                I ponownie sprawdzamy, czy plik user.txt znajduje się na pulpicie oraz jaka jest jego zawartość.
+                                Używając filtrowania, możemy wyeksportować informacje np. tylko o użytkownikach znajdujących się w naszej domenie. Polecenie będzie miało postać:
+                                $ ldifde -f users.txt -r objectClass=user 
+                                Operacja zakończyła się sukcesem, wyeksportowana została informacja o 10 obiektach.
+                        II. Tworzenie i usuwanie kont użytkowników za pomocą programu LDIFDE.
+                        To polecenie ma ograniczone możliwości (np. nie da się ustawić hasła), ale można dzięki niemu zakładać konta dla większej grupy użytkowników. Należy utworzyć plik z konkretnymi parametrami, a następnie zaimportować go poprzez ldifde.
+                                Tworząc taki plik, należy poprawnie go wypełnić i pamiętać o tym, aby nie zrobić żadnej literówki. Dodatkowo zbędne znaki nowego wiersza i spacje też mogą być powodem błędów zwracanych przez PowerShell. Aby tego uniknąć, można wyeksportować do pliku informacje o już istniejącym koncie, a następnie dokonać w nim odpowiednich zmian, zostawiając tylko te parametry, które nas interesują. Skorzystamy z pliku user.txt, w którym mamy informacje o użytkowniku James JB. Bond03.
+                                Pozostawimy w naszym pliku tylko te wpisy, które zostały zaznaczone na zielono. Oczywiście zmienimy indeksację konta (numery przy loginach, nazwach itp.), ponieważ w innym przypadku otrzymalibyśmy informację, że taki obiekt już istnieje.
+                                Po usunięciu zbędnych wpisów i drobnych zmianach nazewnictwa nasz plik powinien mieć taką zawartość jak wyżej. Opis przykładowo użytych parametrów jest następujący: 
+                                DN: CN=James JB. Bond001,CN=Users,DC=elektronik,DC=local – nazwa DN obiektu,
+                                changetype: add – dodawanie obiektu,
+                                objectClass: user – typ obiektu,
+                                CN: James JB. Bond001 – pełna nazwa użytkownika,
+                                sn: Bond001 – nazwisko,
+                                givenName: James – imię,
+                                initials: JB,
+                                userAccountControl: 544 – włączenie konta (546 – wyłączenie),
+                                sAMAccountName: James JB. Bond001 – nazwa konta,
+                                userPrincipalName: [email protected] – nazwa główna (login) użytkownika.
+                                Wpisujemy teraz polecenie:
+                                $ ldifde -i -f c:\Users\Administrator\Desktop\user.txt  
+                                i powinniśmy uzyskać powyższy efekt.
+                                I sprawdzamy, czy nasze konto faktycznie zostało utworzone z odpowiednimi parametrami.
+                                Ponieważ poprzedni plik zadziałał, teraz utworzymy więcej kont użytkowników (10). Powielamy 10-krotnie zawartość naszego pliku user.txt, zmieniając w każdym bloku albo nazwy użytkowników i powiązanych z nimi wpisów, albo tylko indeksy przy nazwisku, np. Bondj002, Bondj003 itp. Dodatkowo zrobimy pięć kont wyłączonych, stosując parametr userAccountControl: 546. Powinno to wyglądać tak jak wyżej.
+                                Wpisujemy teraz polecenie:
+                                $ ldifde -i -f c:\Users\Administrator\Desktop\user.txt 
+                                i powinniśmy uzyskać powyższy efekt z informacją, że pomyślnie zmodyfikowano 10 wpisów.
+                                Sprawdzamy jeszcze, czy nasze konta faktycznie zostały utworzone, i widzimy, że wszystko się zgadza. Na żółto zaznaczone zostały konta wyłączone.
+                                Aby usunąć nasze obiekty przy użyciu ldifde, wystarczy zmienić w pliku (lub stworzyć nowy) parametr „add” na „delete” (pozostałe atrybuty należy wykasować). Oczywiście sens kasowania kont w taki sposób jest wątpliwy, ale jeśli ktoś bardzo chce…
+                                Na koniec wpisujemy klasyczne już polecenie:
+                                $ ldifde -i -f c:\Users\Administrator\Desktop\user.txt
+                                i powinniśmy uzyskać poniższy efekt z informacją, że pomyślnie zmodyfikowano 10 wpisów.
+                        III. Wykorzystanie polecenia ldifde do zarządzania innymi obiektami
+                        Polecenie ldifde możemy też wykorzystać do tworzenia innych obiektów, takich jak grupy czy jednostki organizacyjne.
+                                W tym przykładzie zajmiemy się tworzeniem grup, ale dodatkowo wykorzystamy możliwość dodania do niej w trakcie tworzenia kilku użytkowników. Najpierw sprawdzimy w kontenerze Users, jakie mamy grupy, poleceniem:
+                                $ dsquery group "CN=Users,DC=elektronik,DC=local"
+                                Wybierzemy grupę np. Klasa2 i sprawdzimy, czy ma jakichś członków, poleceniem:
+                                $ dsget group "CN=Klasa2,CN=Users,DC=elektronik,DC=local" -members
+                                Wiemy już, że nasza grupa ma trzech członków, więc możemy teraz wyeksportować do pliku informacje o niej poleceniem:
+                                $ ldifde -f group.txt -d "CN=Klasa2,CN=Users,DC=elektronik,DC=local"
+                                W kolejnym kroku podejrzymy zawartość pliku group.txt, żeby zobaczyć, jakie parametry należy użyć, aby utworzyć nową grupę, która będzie zawierać naszych trzech użytkowników. Zostały one zaznaczone na zielono.
+                                Po skasowaniu zbędnych opcji i delikatnych zmianach zawartość pliku powinna być taka jak wyżej. Jak widać, tworzymy grupę o nazwie Testowa.
+                                Na koniec wpisujemy klasyczne już polecenie:
+                                $ ldifde -i -f group.txt
+                                i powinniśmy uzyskać powyższy efekt z informacją, że pomyślnie zmodyfikowano 1 wpis.
+                                Oczywiście musimy jeszcze sprawdzić, czy taka grupa została utworzona oraz czy zawiera tych trzech członków. Użyjemy do tego znanych poleceń:
+                                $ dsget group "CN=Testowa,CN=Users,DC=elektronik,DC=local" -desc -secgrp -scope
+                                $ dsget group "CN=Testowa,CN=Users,DC=elektronik,DC=local" -members
+                                Wszystko się zgadza – mamy globalną grupę zabezpieczeń zawierającą trzech członków.
+                        IV. Tworzenie i usuwanie kont użytkowników za pomocą programu Windows PowerShell.
+                        Za pomocą programu Windows PowerShell możemy tworzyć użytkowników bezpośrednio lub z wykorzystaniem pliku *.csv. Odpowiednio uzupełniony plik pozwala zakładać konta dla większej grupy użytkowników. Dodatkowo to narzędzie ma większe możliwości niż ldifde, ponieważ pozwala na zakładanie kont z hasłem.
+                                Najpierw utworzymy pojedynczego użytkownika za pomocą odpowiedniego polecenia. Składnia polecenia jest dosyć skomplikowana i należy uważać, aby nie popełnić żadnej literówki. Wpisujemy więc:
+                                $ New-ADUser -Name "James JB. Bond10" -SamAccountName "James JB. Bond10" -UserPrincipalName "[email protected]" -GivenName "James" -SurName "Bond10" -Path "OU=Informatycy,DC=elektronik,DC=local" -Enabled $true -AccountPassword (Read-Host -AsSecureString "Password") -ChangePasswordAtLogon $true
+                                Jeśli uzyskaliśmy powyższy efekt, oznacza to, że polecenie zostało wykonane poprawnie, a konto zostało utworzone.
+                                Teraz sprawdzamy w usłudze Active Directory, czy nasze konto faktycznie zostało utworzone z odpowiednimi parametrami. Jak widać, wszystko się zgadza.
+                                Teraz utworzymy więcej kont użytkowników – w naszym przypadku 10. Musimy utworzyć plik typu *.csv. Otwieramy program MS Excel albo Notatnik i tworzymy plik np. 10kont.csv, podając parametry konta oddzielone przecinkami oraz odpowiadające im wartości (dane).
+                                Wpisujemy teraz polecenie:
+                                $ Import-CSV 10kont.csv | foreach {New-ADUser -SamAccountName $_.SamAccountName -Name $_.Name -Surname $_.surname -GivenName $_.GivenName -Path "OU=Informatycy,DC=elektronik,DC=local" -AccountPassword (ConvertTo-SecureString -AsPlainText $_.password -Force) -UserPrincipalName $_.UserPrincipalName -Description $_.Description -Company $_.Company -Department $_.Department -Enabled $true}
+                                Powinniśmy uzyskać powyższy efekt.
+                                I na koniec sprawdzamy jeszcze, czy nasze konto zostało pomyślnie utworzone. Widzimy, że tak jest i zgadza się nawet nadany opis.
+                        Zadanie do wykonania na lekcji
+                                 Korzystając z polecenia ldifde, wyeksportuj informacje o całej domenie do pliku. Potwierdź to zrzutem ekranu z interpretera poleceń oraz z utworzonego pliku. Przedstaw informacje dotyczące grupy „Administratorzy”.
+                                 Korzystając z polecenia ldifde, wyeksportuj informacje o dowolnym użytkowniku do pliku – zrzuty ekranu jak wyżej.
+                                 Utwórz dwie jednostki organizacyjne: „Produkcja” i „Administracja”.
+                                 Utwórz w j.o. „Produkcja” za pomocą ldifde 10 włączonych kont użytkowników z takimi danymi jak: imię, nazwisko, nazwa główna konta, opis „Produkcja” – zrzuty jak wyżej.
+                                 Wyeksportuj do pliku informacje o tej jednostce organizacyjnej.
+                                 Usuń j.o. „Produkcja” za pomocą polecenia dsrm.
+                                 Utwórz w j.o. „Administracja” za pomocą ldifde 10 kont użytkowników (5 włączonych i 5 wyłączonych) z takimi danymi jak: imię, nazwisko, nazwa główna konta, opis „Administracja”, inicjały użytkownika, nazwa wyświetlana – zrzuty jak wyżej.
+                                 Wyeksportuj do pliku informacje o tej jednostce organizacyjnej.
+                                 Usuń j.o. „Administracja” za pomocą polecenia dsrm.
+                                 Utwórz j.o. „Power”.
+                                 Utwórz w j.o. „Power” za pomocą PS i pliku *.csv 10 włączonych kont użytkowników z takimi danymi jak: imię, nazwisko, nazwa główna konta, opis „Power”, inicjały użytkownika, nazwa wyświetlana – zrzuty jak wyżej.
+    © 2009 - 2026 Copyright ZSE Rzeszów | Developed by Maciej Biel & Ireneusz Paździor

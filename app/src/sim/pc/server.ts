@@ -34,12 +34,12 @@ export const ROLES: RoleDef[] = [
   { id: 'ADCS', name: 'Usługi certyfikatów Active Directory', nav: 'AD CS', desc: 'Usługi certyfikatów Active Directory (AD CS) służą do tworzenia urzędów certyfikacji i powiązanych usług ról, które umożliwiają wystawianie certyfikatów i zarządzanie nimi w różnych aplikacjach.' },
   {
     id: 'ADDS',
-    name: 'Usługi domenowe w usłudze Active Directory',
+    name: 'Usługi domenowe Active Directory',
     nav: 'AD DS',
-    desc: 'Usługi domenowe w usłudze Active Directory (AD DS) przechowują informacje o użytkownikach, komputerach i innych urządzeniach w sieci. Usługi AD DS pomagają administratorom bezpiecznie zarządzać tymi informacjami i ułatwiają udostępnianie zasobów oraz współpracę między użytkownikami.',
+    desc: 'Usługi domenowe Active Directory (AD DS) przechowują informacje o użytkownikach, komputerach i innych urządzeniach w sieci. Usługi AD DS pomagają administratorom bezpiecznie zarządzać tymi informacjami i ułatwiają udostępnianie zasobów oraz współpracę między użytkownikami.',
     req: RSAT_AD,
     intro: [
-      'Usługi domenowe w usłudze Active Directory (AD DS) przechowują informacje o użytkownikach, komputerach i innych urządzeniach w sieci. Usługi AD DS pomagają administratorom bezpiecznie zarządzać tymi informacjami i ułatwiają udostępnianie zasobów oraz współpracę między użytkownikami.',
+      'Usługi domenowe Active Directory (AD DS) przechowują informacje o użytkownikach, komputerach i innych urządzeniach w sieci. Usługi AD DS pomagają administratorom bezpiecznie zarządzać tymi informacjami i ułatwiają udostępnianie zasobów oraz współpracę między użytkownikami.',
       'Zwróć uwagę:',
       '• Aby zapewnić, że użytkownicy mogą nadal logować się w sieci w przypadku awarii serwera, zainstaluj co najmniej dwa kontrolery domeny dla domeny.',
       '• Usługi AD DS wymagają zainstalowania w sieci serwera DNS. Jeśli serwer DNS nie jest zainstalowany, zostanie wyświetlony monit o zainstalowanie roli serwera DNS na tym komputerze.',

@@ -1,0 +1,278 @@
+{
+ "server-manager": {
+  "url": "https://learn.microsoft.com/pl-pl/windows-server/administration/server-manager/server-manager",
+  "chars": 16298,
+  "images": []
+ },
+ "add-roles-features": {
+  "url": "https://learn.microsoft.com/pl-pl/windows-server/administration/server-manager/add-remove-roles-features",
+  "chars": 18480,
+  "images": []
+ },
+ "install-adds": {
+  "url": "https://learn.microsoft.com/pl-pl/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-",
+  "chars": 30680,
+  "images": [
+   [
+    "media/install-active-directory-domain-services--level-100-/adds_smi_smpromotes.gif",
+    "Zrzut ekranu przedstawiający stronę Postęp instalacji Kreatora dodawania ról i funkcji z wywołaną opcją Podwyższanie poziomu tego serwera do kontrolera domeny."
+   ],
+   [
+    "media/install-active-directory-domain-services--level-100-/adds_smi_tasks.gif",
+    "Zrzut ekranu przedstawiający Menedżera serwera z ikoną ostrzeżenia dotyczącego konfiguracji po wdrożeniu."
+   ],
+   [
+    "media/install-active-directory-domain-services--level-100-/adds_smi_tasks.gif",
+    "Zrzut ekranu przedstawiający ikonę ostrzeżenia o konfiguracji po wdrożeniu."
+   ]
+  ]
+ },
+ "dhcp-install-config": {
+  "url": "https://learn.microsoft.com/pl-pl/windows-server/networking/technologies/dhcp/quickstart-install-configure-dhcp-server",
+  "chars": 12281,
+  "images": []
+ },
+ "dns-install-config": {
+  "url": "https://learn.microsoft.com/pl-pl/windows-server/networking/dns/quickstart-install-configure-dns-server",
+  "chars": 12606,
+  "images": []
+ },
+ "dns-zones": {
+  "url": "https://learn.microsoft.com/pl-pl/windows-server/networking/dns/manage-dns-zones",
+  "chars": 15495,
+  "images": []
+ },
+ "gpmc": {
+  "url": "https://learn.microsoft.com/pl-pl/windows-server/identity/ad-ds/manage/group-policy/group-policy-management-console",
+  "chars": 9950,
+  "images": []
+ },
+ "fsrm-overview": {
+  "url": "https://learn.microsoft.com/pl-pl/windows-server/storage/fsrm/fsrm-overview",
+  "chars": 7672,
+  "images": []
+ },
+ "fsrm-quota": {
+  "url": "https://learn.microsoft.com/pl-pl/windows-server/storage/fsrm/quota-management",
+  "chars": 3297,
+  "images": []
+ },
+ "ntfs-overview": {
+  "url": "https://learn.microsoft.com/pl-pl/windows-server/storage/file-server/ntfs-overview",
+  "chars": 9410,
+  "images": []
+ },
+ "folder-redirection": {
+  "url": "https://learn.microsoft.com/pl-pl/windows-server/storage/folder-redirection/folder-redirection-using-group-policy",
+  "chars": 10365,
+  "images": []
+ },
+ "iis-getstarted": {
+  "url": "https://learn.microsoft.com/pl-pl/iis/get-started/introduction-to-iis/iis-web-server-overview",
+  "chars": 5683,
+  "images": []
+ },
+ "iis-new-site": {
+  "url": "https://learn.microsoft.com/pl-pl/iis/configuration/system.applicationhost/sites/site/",
+  "chars": 17994,
+  "images": [
+   [
+    "index/_static/image2.png",
+    "Screenshot that shows the Add Web Site dialog box. Contoso is entered in the Site name text box."
+   ],
+   [
+    "index/_static/image4.png",
+    "Screenshot that shows the F T P Authentication pane. Anonymous Authentication is listed and disabled."
+   ],
+   [
+    "index/_static/image6.png",
+    "Screenshot that shows the Site Information page. My New F T P Site is entered in the F T P site name text box."
+   ],
+   [
+    "index/_static/image8.png",
+    "Screenshot that shows the Binding and S S L Settings page. Allow S S L is selected."
+   ],
+   [
+    "index/_static/image10.png",
+    "Screenshot that shows the Authentication and Authorization Information page. Anonymous and Read are selected."
+   ]
+  ]
+ },
+ "ipv6-config": {
+  "url": "https://learn.microsoft.com/pl-pl/troubleshoot/windows-server/networking/configure-ipv6-in-windows",
+  "chars": 11118,
+  "images": [
+   [
+    "media/configure-ipv6-in-windows/network-properties.svg",
+    "Opcja Protokół internetowy w wersji 6 (TCP/IPv6) we właściwościach sieci."
+   ]
+  ]
+ },
+ "dns-client-settings": {
+  "url": "https://learn.microsoft.com/pl-pl/troubleshoot/windows-server/networking/best-practices-for-dns-client-settings",
+  "chars": 12292,
+  "images": []
+ },
+ "shared-folder-access": {
+  "url": "https://learn.microsoft.com/pl-pl/troubleshoot/windows-client/networking/cannot-access-shared-folder-file-explorer",
+  "chars": 7502,
+  "images": [
+   [
+    "media/cannot-access-shared-folder-file-explorer/smb-client-feature-on.svg",
+    "Zrzut ekranu przedstawiający funkcję klienta SMB 1.0/CIFS w ramach elementu pomocy technicznej udostępniania plików SMB 1.0/CIFS w oknie dialogowym Funkcje systemu Windows."
+   ],
+   [
+    "media/cannot-access-shared-folder-file-explorer/turn-on-network-discovery-share-settings.svg",
+    "Zrzut ekranu przedstawiający opcję Włączanie odnajdywania sieci i opcję Włączanie udostępniania plików i drukarek w ustawieniach udostępniania zaawansowanego."
+   ],
+   [
+    "media/cannot-access-shared-folder-file-explorer/do-not-have-permission-access-error.svg",
+    "Zrzut ekranu przedstawiający brak uprawnień dostępu do błędu folderu udostępnionego."
+   ],
+   [
+    "media/cannot-access-shared-folder-file-explorer/error-1-share-permission.svg",
+    "Zrzut ekranu przedstawia kroki udostępniania uprawnień folderu wszystkim."
+   ],
+   [
+    "media/cannot-access-shared-folder-file-explorer/error-1-allow-permission.svg",
+    "Zrzut ekranu przedstawiający kroki zezwalania na uprawnienie Pełna kontrola dla wszystkich."
+   ],
+   [
+    "media/cannot-access-shared-folder-file-explorer/configure-tcpip-netbios-service.svg",
+    "Zrzut ekranu przedstawiający kartę Ogólne okna dialogowego Właściwości pomocnika netBIOS protokołu TCP/IP, na której jest ustawiony typ uruchamiania automatyczny."
+   ],
+   [
+    "media/cannot-access-shared-folder-file-explorer/enable-netbios-over-tcpip.svg",
+    "Zrzut ekranu przedstawia kroki włączania usługi NetBIOS za pośrednictwem protokołu TCP/IP."
+   ],
+   [
+    "media/cannot-access-shared-folder-file-explorer/cannot-access-this-shared-folder-error.svg",
+    "Zrzut ekranu przedstawiający błąd „Nie można uzyskać dostępu do tego folderu udostępnionego”."
+   ],
+   [
+    "media/cannot-access-shared-folder-file-explorer/gpo-setting.svg",
+    "Zrzut ekranu przedstawiający kroki włączania niezabezpieczonego logowania gościa za pomocą edytora zasady grupy lokalnej."
+   ],
+   [
+    "media/cannot-access-shared-folder-file-explorer/error-0x80004005.svg",
+    "Zrzut ekranu przedstawiający kod błędu 0x80004005."
+   ]
+  ]
+ },
+ "adac-ou": {
+  "url": "https://learn.microsoft.com/pl-pl/windows-server/identity/ad-ds/get-started/adac/active-directory-administrative-center",
+  "chars": 36814,
+  "images": [
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adrestore.png",
+    "Ilustracja przedstawiająca podstawowy program Windows PowerShell i warstwę operacji dla funkcji kosza."
+   ],
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adac_tr_enablerecyclebin.png",
+    "Zrzut ekranu przedstawiający, jak włączyć kosz w Centrum Administracyjnym Active Directory."
+   ],
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adac_tr_enablerecyclebinexampleou.png",
+    "Zrzut ekranu przedstawiający przykład istniejącej domeny."
+   ],
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adac_tr_deletedobjectscontainer.png",
+    "Zrzut ekranu z wyróżnionym kontenerem Usunięte obiekty."
+   ],
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adac_tr_mgmtlist.png",
+    "Zrzut ekranu przedstawiający sposób zwiększania limitu liczby obiektów zwracanych z kontenera, wybierając opcję menu Opcje listy zarządzania."
+   ],
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adac_tr_addcriteria.png",
+    "Zrzut ekranu przedstawiający opcje filtrowania dostępne podczas przywracania."
+   ],
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adac_tr_columnheaders.png",
+    "Zrzut ekranu pokazujący, gdzie dodać, zmodyfikować lub zmienić kolejność nagłówków kolumn, aby zapewnić więcej szczegółów podczas oceniania obiektów do odzyskania."
+   ],
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adac_tr_restoresingle.gif",
+    "Zrzut ekranu, który wyróżnia menu używane do przywracania obiektu do jego oryginalnej lokalizacji."
+   ],
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adac_tr_restoretosingle.gif",
+    "Zrzut ekranu pokazujący, gdzie można przywrócić obiekt bez przywracania elementu nadrzędnego."
+   ],
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adac_tr_restorepeers.png",
+    "Zrzut ekranu przedstawiający przywracanie wielu równorzędnych projektów."
+   ],
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adac_tr_lastknownparent.gif",
+    "Zrzut ekranu przedstawiający wartość ostatniego znanego atrybutu nadrzędnego."
+   ],
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adac_tr_lastknownparentsales.png",
+    "Zrzut ekranu przedstawiający opcję menu Przywróć."
+   ],
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adac_tr_lastknownparentsalesrestored.gif",
+    "Zrzut ekranu pokazujący, gdzie można zobaczyć ostatnią znaną zmianę atrybutu nadrzędnego obiektu usuniętego użytkownika na przywróconą nazwę wyróżniającą jednostki organizacyjnej sprzedaży."
+   ],
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adac_tr_lastknownparentsalesundelete.png",
+    "Zrzut ekranu przedstawiający wybrane obiekty i postęp w przenoszeniu z kontenera Usunięte obiekty do jednostki organizacyjnej Sprzedaży."
+   ],
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adac_tr_passwordsettings.png",
+    "Zrzut ekranu pokazujący, gdzie można dodać nowe ustawienia hasła."
+   ],
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adac_tr_createpasswordsettings.png",
+    "Zrzut ekranu przedstawiający edytor ustawień haseł do tworzenia lub edytowania precyzyjnych zasad haseł."
+   ],
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adac_tr_precedence.png",
+    "Zrzut ekranu pokazujący, gdzie można ustawić pierwszeństwo i do których użytkowników i grup zasady mają zastosowanie w danej domenie."
+   ],
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adac_tr_fgpp.gif",
+    "Ilustracja przedstawiająca skojarzone argumenty dla poleceń cmdlet."
+   ],
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adac_tr_rsop.png",
+    "Zrzut ekranu przedstawiający opcję menu „Wyświetlanie wynikowych ustawień hasła”."
+   ],
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adac_tr_fgppsettings.gif",
+    "Zrzut ekranu z wyróżniającą się sekcją ustawienia bezpośrednio powiązanego hasła. "
+   ],
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adac_tr_historyviewer.gif",
+    "Zrzut ekranu przedstawiający Podgląd historii programu Windows PowerShell w Centrum administracyjnym usługi Active Directory."
+   ],
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adac_tr_raiseviewer.png",
+    "Zrzut ekranu przedstawiający sposób wyświetlania podglądu historii programu Windows PowerShell."
+   ],
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adac_tr_viewargs.png",
+    "Zrzut ekranu pokazujący, jak rozwinąć element wiersza, aby wyświetlić wszystkie wartości podane w argumentach polecenia cmdlet."
+   ],
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adac_tr_removeuser.gif",
+    "Zrzut ekranu przedstawiający sposób wyświetlenia poleceń programu Windows PowerShell używanych do zmiany hasła użytkownika i usuwania użytkownika z grupy."
+   ],
+   [
+    "media/advanced-ad-ds-management-using-active-directory-administrative-center--level-200-/adds_adac_tr_showall.png",
+    "Zrzut ekranu przedstawiający zaawansowane zarządzanie usługami AD DS."
+   ]
+  ]
+ },
+ "file-server-overview": {
+  "url": "https://learn.microsoft.com/pl-pl/windows-server/storage/file-server/file-server-smb-overview",
+  "chars": 13984,
+  "images": []
+ },
+ "dhcp-top": {
+  "url": "https://learn.microsoft.com/pl-pl/windows-server/networking/technologies/dhcp/dhcp-top",
+  "chars": 7117,
+  "images": []
+ }
+}

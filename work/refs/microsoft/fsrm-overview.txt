@@ -1,0 +1,89 @@
+https://learn.microsoft.com/pl-pl/windows-server/storage/fsrm/fsrm-overview
+
+
+				 Spis treści 
+				Wyjdź z trybu edytora
+			Zapytaj platformę Learn
+			Zapytaj platformę Learn
+			Tryb odczytu
+			Spis treści
+			Przeczytaj w języku angielskim
+			Dodaj
+			Dodaj do planów
+					Kopiuj znaczniki Markdown
+					Drukuj
+						Notatka
+						Dostęp do tej strony wymaga autoryzacji. Może spróbować zalogować się lub zmienić katalogi.
+						Dostęp do tej strony wymaga autoryzacji. Możesz spróbować zmienić katalogi.
+					Menedżer zasobów serwera plików (FSRM) — omówienie
+				 Dotyczy: ✅ Windows Server 2025, ✅ Windows Server 2022, ✅ Windows Server 2019, ✅ Windows Server 2016
+			Opinia
+				W tym artykule
+Menedżer zasobów serwera plików (FSRM) to usługa roli w systemie Windows Server, która umożliwia zarządzanie i klasyfikowanie danych przechowywanych na serwerach plików. Moduł FSRM umożliwia automatyczne klasyfikowanie plików, wykonywanie zadań na podstawie tych klasyfikacji, ustawianie przydziałów folderów i tworzenie raportów monitorowania użycia magazynu. W systemie Windows Server w wersji 1803 moduł FSRM dodaje możliwość zapobiegania tworzeniu dzienników zmian.
+Note
+Aby uzyskać informacje o nowych funkcjach w starszych wersjach systemu Windows Server, zobacz Co nowego w Menedżerze zasobów serwera plików.
+Features
+Moduł FSRM zawiera następujące funkcje:
+              Zarządzanie limitami przydziału: ogranicz miejsce dozwolone dla woluminu lub folderu. Te limity można automatycznie stosować do nowych folderów tworzonych na woluminie. Można również zdefiniować szablony przydziałów, które można zastosować do nowych woluminów lub folderów.
+              Infrastruktura klasyfikacji plików: uzyskaj wgląd w dane, automatyzując procesy klasyfikacji, dzięki czemu można efektywniej zarządzać danymi. Można klasyfikować pliki i stosować zasady na podstawie tej klasyfikacji. Przykładowe zasady obejmują dynamiczną kontrolę dostępu w celu ograniczenia dostępu do plików, szyfrowania plików i wygaśnięcia pliku. Pliki można klasyfikować automatycznie przy użyciu reguł klasyfikacji plików lub ręcznie, modyfikując właściwości wybranego pliku lub folderu.
+              Zadania zarządzania plikami: uzyskaj możliwość zastosowania zasad warunkowych lub akcji do plików na podstawie ich klasyfikacji. Warunki zadania zarządzania plikami obejmują lokalizację pliku, właściwości klasyfikacji, datę utworzenia pliku, datę ostatniej modyfikacji pliku lub czas ostatniego uzyskania dostępu do pliku. Akcje, które może wykonać zadanie zarządzania plikami, obejmują możliwość wygasania plików, szyfrowania plików lub uruchamiania polecenia niestandardowego.
+              Zarządzanie osłonami plików: kontrolowanie typów plików, które użytkownik może przechowywać na serwerze plików. Można ograniczyć rozszerzenie, które można przechowywać w udostępnionych plikach. Na przykład można utworzyć osłonę plików, która nie zezwala na przechowywanie plików z rozszerzeniem MP3 w osobistych folderach udostępnionych na serwerze plików.
+              Raporty przechowywania: te raporty ułatwiają identyfikowanie trendów użycia dysku i sposobu klasyfikowania danych. Możesz również monitorować wybraną grupę użytkowników pod kątem prób zapisania nieautoryzowanych plików.
+Funkcje fsRM można skonfigurować i zarządzać nimi przy użyciu aplikacji FSRM lub programu Windows PowerShell.
+Important
+Moduł FSRM obsługuje woluminy sformatowane tylko w systemie plików NTFS. System plików odpornych na błędy nie jest obsługiwany.
+Zastosowania praktyczne
+Poniższa lista zawiera kilka praktycznych zastosowań usługi FSRM:
+Użyj infrastruktury klasyfikacji plików w scenariuszu dynamicznej kontroli dostępu. Utwórz zasady, które udzielają dostępu do plików i folderów na podstawie sposobu klasyfikowania plików na serwerze plików.
+Utwórz regułę klasyfikacji plików, która oznacza dowolny plik zawierający co najmniej 10 numerów PESEL jako zawartość klienta.
+Wygaśnięcie dowolnego pliku, który nie został zmodyfikowany w ciągu ostatnich 10 lat.
+Utwórz limit przydziału 200 MB dla katalogu macierzystego każdego użytkownika i powiadom go, gdy używa 180 MB.
+Nie zezwalaj na przechowywanie plików muzycznych w osobistych folderach udostępnionych.
+Zaplanuj raport uruchamiany w każdą niedzielę wieczorem o północy, który generuje listę ostatnio używanych plików z poprzednich dwóch dni. Ten raport może pomóc w ustaleniu weekendowej aktywności składowania i odpowiednio zaplanować przestój pracy serwera.
+Co nowego — zapobieganie tworzeniu dzienników zmian przez moduł FSRM
+Począwszy od systemu Windows Server, wersja 1803, można teraz uniemożliwić usłudze FSRM utworzenie dziennika zmian (nazywanego również dziennikiem USN) na woluminach po uruchomieniu usługi. Ta funkcja może zaoszczędzić trochę miejsca na każdym woluminie, ale wyłącza klasyfikację plików w czasie rzeczywistym.
+Aby zapobiec tworzeniu przez FSRM dziennika zmian na pewnych bądź wszystkich woluminach podczas uruchamiania usługi, wykonaj następujące kroki:
+Zatrzymaj usługę SRMSVC. Otwórz sesję programu PowerShell jako administrator i wprowadź polecenie Stop-Service SrmSvc.
+Usuń dziennik USN dla woluminów, na których chcesz zaoszczędzić miejsce, używając fsutil polecenia :
+fsutil usn deletejournal /d <VolumeName>
+Na przykład: fsutil usn deletejournal /d c:
+Otwórz Edytor rejestru, wpisując regedit w tej samej sesji programu PowerShell.
+Przejdź do następującego klucza: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SrmSvc\Settings.
+Aby zapobiec tworzeniu dziennika zmian dla całego serwera, wykonaj następujące kroki:
+Important
+Jeśli chcesz wyłączyć tworzenie dziennika tylko dla określonych woluminów, przejdź do następnego kroku.
+Kliknij prawym przyciskiem myszy klucz Ustawienia, a następnie wybierz pozycję Nowa>wartość DWORD (32-bitowa).
+Nadaj wartości nazwę SkipUSNCreationForSystem.
+Ustaw wartość na 1 (w systemie szesnastkowym).
+Aby zapobiec tworzeniu dziennika zmian dla określonych woluminów, wykonaj następujące kroki:
+Zidentyfikuj ścieżki woluminu, które chcesz pominąć. Możesz użyć fsutil volume list polecenia lub następującego polecenia programu PowerShell:
+Get-Volume | Format-Table DriveLetter,FileSystemLabel,Path
+Oto przykładowe dane wyjściowe:
+DriveLetter FileSystemLabel Path
+----------- --------------- ----
+             System Reserved \\?\Volume{8d3c9e8a-0000-0000-0000-100000000000}\
+C                           \\?\Volume{8d3c9e8a-0000-0000-0000-501f00000000}\
+Wróć do sesji Edytora rejestru. Kliknij prawym przyciskiem HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SrmSvc\Settings myszy klucz, a następnie wybierz pozycję Nowa>Wartość wielociągową.
+Nadaj wartości nazwę SkipUSNCreationForVolumes.
+Wprowadź ścieżkę dla każdego woluminu, który chcesz pominąć. Umieść każdą ścieżkę w osobnym wierszu. Przykład:
+\\?\Volume{8d3c9e8a-0000-0000-0000-100000000000}\
+\\?\Volume{8d3c9e8a-0000-0000-0000-501f00000000}\
+Note
+Jeśli w Edytorze rejestru zostanie wyświetlone ostrzeżenie o usunięciu pustych ciągów, możesz bezpiecznie zignorować komunikat. Oto przykład komunikatu, który może zostać wyświetlony: Dane typu REG_MULTI_SZ nie mogą zawierać pustych ciągów. Edytor rejestru usunie wszystkie znalezione puste ciągi.
+Uruchom usługę SRMSVC. Na przykład w sesji programu PowerShell wprowadź .Start-Service SrmSvc
+Powiązane linki
+              Omówienie dynamicznej kontroli dostępu
+			Opinia
+					Czy ta strona była pomocna?
+						Tak
+						Nie
+							Nie
+								Potrzebujesz pomocy dotyczącej tego tematu?
+								Chcesz spróbować użyć asystenta Ask Learn, aby wyjaśnić ten temat lub uzyskać instrukcje, które go dotyczą?
+			Zapytaj platformę Learn
+			Zapytaj platformę Learn
+				 Zaproponować poprawkę? 
+				Dodatkowe zasoby
+				Ostatnia aktualizacja o 
+		2025-08-16
+				
