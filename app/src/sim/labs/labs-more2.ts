@@ -3,7 +3,7 @@
 // Parts that are not simulated (cabling work, hardware, AD/GPO, BitLocker, FTP, screenshots) are listed in each summary.
 import type { Lab, LabCheck, LabCtx } from './labs'
 import type { Link, PcAdapter } from '../net'
-import { maskToPrefix, pcAnswersPing } from '../net'
+import { maskToPrefix, pcAnswersPing, serverForwards } from '../net'
 
 // ---------------------------------------------------------------- helpers
 const norm = (s: string) => s.replace(/\s+/g, ' ').trim()
@@ -597,12 +597,12 @@ const lab_26_06_10: Lab = {
       id: 'server',
       device: 'server',
       title_ru: 'Windows Server: V101, V102 и маршрутизация',
-      text_pl: ['interfejs V101: 192.168.0.3/24, brama: adres rutera, DNS localhost', 'interfejs V102: 192.168.1.1/24, DNS localhost', 'rola Dostęp zdalny, usługa Routing, włącz Routing LAN', 'zapora: serwer odpowiada na żądanie echa ICMP'],
-      hint_ru: 'ncpa.cpl: переименуй адаптеры в V101 (порт 4) и V102 (порт 2). Диспетчер сервера → Добавить роли → «Dostęp zdalny» (служба маршрутизации). Брандмауэр: разреши ICMPv4 Echo.',
+      text_pl: ['interfejs V101: 192.168.0.3/24, brama: adres rutera, DNS localhost', 'interfejs V102: 192.168.1.1/24, DNS localhost', 'rola Dostęp zdalny, usługa ról Routing; w konsoli Routing i dostęp zdalny: Konfiguruj i włącz routing i dostęp zdalny (Konfiguracja niestandardowa → Routing sieci LAN)', 'zapora: serwer odpowiada na żądanie echa ICMP'],
+      hint_ru: 'ncpa.cpl: переименуй адаптеры в V101 (порт 4) и V102 (порт 2). Диспетчер сервера → Добавить роли → «Dostęp zdalny» → Usługi ról → Routing; затем флажок → «Otwórz kreatora Wprowadzenie» → «Wdróż tylko sieć VPN» → консоль «Routing i dostęp zdalny» → ПКМ по серверу → «Konfiguruj i włącz routing i dostęp zdalny» → Konfiguracja niestandardowa → Routing sieci LAN. Брандмауэр: разреши ICMPv4 Echo.',
       checks: [
         ck('v101', 'V101 = 192.168.0.3/24, шлюз 192.168.0.1', 'V101', (c) => staticOk(srvA(c, 'V101'), '192.168.0.3', 24, '192.168.0.1')),
         ck('v102', 'V102 = 192.168.1.1/24', 'V102', (c) => staticOk(srvA(c, 'V102'), '192.168.1.1', 24, '')),
-        ck('role', 'Роль «Dostęp zdalny» (маршрутизация) установлена', 'rola Dostęp zdalny', (c) => hasRoles(c, 'RAS')),
+        ck('role', 'Роль «Dostęp zdalny» + служба Routing установлены, маршрутизация LAN настроена и запущена', 'rola Dostęp zdalny i Routing', (c) => hasRoles(c, 'RAS', 'Routing') && serverForwards(c.server)),
         ck('icmp', 'Сервер отвечает на ping (брандмауэр)', 'reguła ICMP', (c) => !!c.server && pcAnswersPing(c.server)),
       ],
     },

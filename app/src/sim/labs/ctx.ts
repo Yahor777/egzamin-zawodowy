@@ -1,7 +1,7 @@
 // Pure helpers shared by LabPage and the headless lab tests.
 import { linuxApi } from '../linux/api'
 import type { LinuxState } from '../linux/model'
-import { canPing, defaultPcState, ipToInt, networkOf, prefixToMask, sameSubnet, pcAddress, type DeviceKey, type DhcpServer, type Link, type NetworkModel, type PcState } from '../net'
+import { canPing, defaultPcState, serverForwards, ipToInt, networkOf, prefixToMask, sameSubnet, pcAddress, type DeviceKey, type DhcpServer, type Link, type NetworkModel, type PcState } from '../net'
 import type { RouterState, SwitchState } from '../types'
 import { browse } from '../bench/diagnose'
 import type { Lab, LabCtx } from './labs'
@@ -54,7 +54,7 @@ function forwardersOf(s: LabSave, api: ReturnType<typeof linuxApi> | null): Netw
   const conf = [api?.file('/etc/sysctl.conf')?.content ?? '', ...(api?.listDir('/etc/sysctl.d') ?? []).map((f) => api?.file(`/etc/sysctl.d/${f}`)?.content ?? '')].join('\n')
   return {
     linux: /^\s*net\.ipv4\.ip_forward\s*=\s*1\s*$/m.test(conf),
-    server: !!s.server?.server?.roles.includes('RAS'),
+    server: serverForwards(s.server),
   }
 }
 

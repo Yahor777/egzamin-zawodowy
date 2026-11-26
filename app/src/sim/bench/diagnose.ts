@@ -23,6 +23,24 @@ import {
 } from '../net'
 import { dnsLookup, parseUrl, serveHttp, type HttpOutcome } from '../domain'
 
+/** Hosts that sit in the router's LAN segment (what its ARP / DHCP tables list): { ip, mac, name } */
+export function routerHosts(m: NetworkModel): { ip: string; mac: string; name: string }[] {
+  const dom = buildDomains(m)
+  const lan = dom.get('router:lan-if')
+  const out: { ip: string; mac: string; name: string }[] = []
+  if (!lan) return out
+  for (const key of ['pc', 'laptop', 'server'] as const) {
+    const pc = m[key]
+    if (!pc || !isOn(m, key)) continue
+    for (const a of pc.adapters) {
+      if (!a.enabled || dom.get(`${key}:${a.id}`) !== lan) continue
+      const cfg = pcAddress(a)
+      if (cfg && !cfg.addr.ip.startsWith('169.254.')) out.push({ ip: cfg.addr.ip, mac: a.mac, name: pc.hostname })
+    }
+  }
+  return out
+}
+
 export type WebDevice = 'router' | 'switch' | 'printer'
 export type PcKey = 'pc' | 'laptop' | 'server'
 
@@ -356,14 +374,14 @@ export function browse(m: NetworkModel, key: PcKey, input: string, opts: { booti
     if (noVlan.get(pcPort) && noVlan.get(pcPort) === noVlan.get(o.port) && m.switch) {
       const sp = switchPortFor(m, pcPort)
       const pv = sp ? vlanOfSwitchPort(m, sp) : null
-      const target = o.key === 'switch' ? 'интерфейс управления свитча живёт в VLAN 1' : (() => {
+      const target = o.key === 'switch' ? `интерфейс управления свитча живёт в VLAN ${m.switch?.dot1q ? (m.switch.mgmtVlan ?? 1) : 1}${m.switch?.mgmtVlan && m.switch.mgmtVlan !== 1 ? ' (Management VLAN)' : ''}` : (() => {
         const tsp = m.links.map(([x, y]) => (devOf(x) === o.key && devOf(y) === 'switch' ? y : devOf(y) === o.key && devOf(x) === 'switch' ? x : null)).find(Boolean)
         return tsp ? `${DEV_RU_ACC[o.key]} подключён к порту ${tsp.split(':')[1]} (VLAN ${vlanOfSwitchPort(m, tsp)})` : `${DEV_RU_ACC[o.key]} в другом VLAN`
       })()
       why.push({
         short: 'ПК и устройство в разных VLAN',
         text: `Кабели есть, но ПК стоит в порту ${sp?.split(':')[1] ?? '?'} свитча с PVID ${pv ?? '?'} (VLAN ${pv ?? '?'}), а ${target}. Свитч не пропускает кадры между VLAN.`,
-        fix: 'Переткни ПК в порт того же VLAN, что и устройство (или настраивай свитч до того, как разнёс порты по VLAN).',
+        fix: o.key === 'switch' && m.switch?.mgmtVlan && m.switch.mgmtVlan !== 1 ? `Переткни ПК в порт Management VLAN (${m.switch.mgmtVlan}) — System → System Info → System IP.` : 'Переткни ПК в порт того же VLAN, что и устройство (или настраивай свитч до того, как разнёс порты по VLAN).',
       })
     } else if (allOn.get(pcPort) && allOn.get(pcPort) === allOn.get(o.port)) {
       const off = (['switch', 'router'] as DeviceKey[]).filter((d) => !isOn(m, d))

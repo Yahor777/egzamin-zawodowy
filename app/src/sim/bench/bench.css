@@ -150,6 +150,17 @@
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
+.bd-face.face-switch10 {
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 3px;
+  padding: 8px 5px;
+}
+.bd-compact .bd-face.face-switch10 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+.bd-face.face-router6 {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
 .bd-face.face-router .bd-port.wan .pl {
   color: #8fb6f0;
 }

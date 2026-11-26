@@ -13,6 +13,17 @@ export interface RouterWifiBand {
   security: 'none' | 'wpa2-psk' | 'wpa-wpa2-psk' | 'wpa3-sae'
   encryption: 'auto' | 'aes' | 'tkip'
   password: string
+  /** DrayTek: SSID2…SSID4 of the same radio (SSID1 = the fields above); TP-Link models never set it */
+  more?: RouterWifiSsid[]
+}
+
+/** An additional SSID of one radio (DrayTek Vigor: 4 SSIDs per band). */
+export interface RouterWifiSsid {
+  enabled: boolean
+  ssid: string
+  broadcastSsid: boolean
+  security: RouterWifiBand['security']
+  password: string
 }
 
 export interface RouterState {
@@ -66,7 +77,8 @@ export interface RouterState {
 /** Router VLANs: VLAN 1 is the LAN itself (RouterState.lan / .dhcp); membership[i] = LAN port i+1 (lan1…lan4). */
 export interface RouterVlanState {
   enabled: boolean
-  vlans: { id: number; name: string; ports: PortMembership[] }[]
+  /** `tag`: VLAN id on the wire when it differs from `id` (DrayTek: id = subnet LANn, tag = the VID); default = id */
+  vlans: { id: number; name: string; ports: PortMembership[]; tag?: number }[]
   /** IP interfaces of VLANs other than 1 (VLAN 1 uses RouterState.lan) */
   ifaces: RouterVlanIface[]
   /** routing between the VLAN interfaces */
@@ -98,6 +110,10 @@ export interface SwitchState {
   adminPassword: string
   passwordChanged: boolean
   ip: { dhcp: boolean; ip: string; mask: string; gateway: string }
+  /** VLAN of the management interface (System IP → Management VLAN on JetStream-class switches); missing = 1 */
+  mgmtVlan?: number
+  /** JetStream-class switches: link type per port (index = port-1); missing = every port ACCESS */
+  linkType?: ('access' | 'general' | 'trunk')[]
   /** 802.1Q VLAN mode enabled (otherwise all ports in default VLAN 1) */
   dot1q: boolean
   vlans: { id: number; name: string; members: PortMembership[] }[] // members[i] = port i+1

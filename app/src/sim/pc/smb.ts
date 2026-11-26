@@ -1,7 +1,7 @@
 // File sharing of Windows Server (pure, no React): NTFS permissions with inheritance, SMB shares and their
 // permissions, who gets in from a client (credentials, firewall, reachability), the remote file operations over
 // a share (effective access = share permission ∩ NTFS, Deny wins) and File Server Resource Manager (quotas, file screens).
-import { ipToInt, pcAddress, type AdUser, type FsrmQuota, type FsrmQuotaTpl, type FsrmState, type NtAce, type NtAcl, type PcState, type PcUser, type SmbShare } from '../net'
+import { ipToInt, pcAddress, type AdUser, type FsrmQuota, type FsrmQuotaTpl, type FsrmState, type NtAce, type NtAcl, type PcState, type PcUser, type SmbSession, type SmbShare } from '../net'
 import { authAd, dnsLookup, fwAllows, serverAt, type BenchLink } from '../domain'
 import { children, fileKey, fileSize, isDir, mkdirs, parentOf, readFile, writeFile } from './fs'
 import { BUILTIN_GROUPS, groupsOf } from './model'
@@ -667,3 +667,20 @@ export function tokenFor(st: PcState, who: string): Token {
   }
   return { name: who, who: [EVERYONE, AUTH, who].map(low), admin: false }
 }
+
+// ------------------------------------------------------------------ sessions (Foldery udostępnione → Sesje / Otwarte pliki)
+export const smbSessionsOf = (server: PcState): SmbSession[] => srv(server).smbSessions ?? []
+/** the client connected to `share` (or opened `file` on it); idempotent, so it can run from an effect */
+export function noteSmbSession(server: PcState, o: { computer: string; ip: string; user: string; share?: string; file?: string }): PcState {
+  const list = smbSessionsOf(server)
+  const i = list.findIndex((x) => norm(x.computer) === norm(o.computer) && norm(x.user) === norm(o.user))
+  const cur = i >= 0 ? list[i] : { computer: o.computer, ip: o.ip, user: o.user, shares: [], since: Date.now(), files: [] }
+  const shares = o.share && !cur.shares.some((x) => norm(x) === norm(o.share!)) ? [...cur.shares, o.share] : cur.shares
+  const files = o.file && !cur.files.some((x) => norm(x) === norm(o.file!)) ? [...cur.files, o.file] : cur.files
+  if (i >= 0 && shares === cur.shares && files === cur.files) return server
+  return withSrv(server, (x) => ({ ...x, smbSessions: i >= 0 ? list.map((s, k) => (k === i ? { ...cur, shares, files } : s)) : [...list, { ...cur, shares, files }] }))
+}
+export const closeSmbFile = (server: PcState, computer: string, user: string, file: string): PcState =>
+  withSrv(server, (x) => ({ ...x, smbSessions: smbSessionsOf(server).map((s) => (norm(s.computer) === norm(computer) && norm(s.user) === norm(user) ? { ...s, files: s.files.filter((f) => norm(f) !== norm(file)) } : s)) }))
+export const closeSmbSession = (server: PcState, computer: string, user: string | null): PcState =>
+  withSrv(server, (x) => ({ ...x, smbSessions: smbSessionsOf(server).filter((s) => !(norm(s.computer) === norm(computer) && (user === null || norm(s.user) === norm(user)))) }))

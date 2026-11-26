@@ -509,6 +509,8 @@ export function DeviceShell(props: {
   onReboot?: () => void
   /** host hook: the user restored factory defaults (called after onChange) */
   onFactoryReset?: () => void
+  /** own login page (DrayTek / JetStream have their own); default = the shared one */
+  loginView?: (p: { username: string; password: string; onLogin: () => void }) => ReactNode
   renderApp: (api: ShellApi) => ReactNode
 }) {
   const { deviceIp, embedded } = props
@@ -601,6 +603,8 @@ export function DeviceShell(props: {
     page = <RestartPage restart={restart} embedded={!!embedded} />
   } else if (effectiveHost !== deviceIp) {
     page = <Unreachable host={host} />
+  } else if (!loggedIn && props.loginView) {
+    page = props.loginView({ username: props.username, password: props.password, onLogin: () => setLoggedIn(true) })
   } else if (!loggedIn) {
     page = (
       <LoginPage

@@ -7,6 +7,14 @@ import {
 } from './kit'
 import { maskToPrefix, sameSubnet } from '../net'
 import type { LabCtx } from '../labs/labs'
+import { ROUTER_MODEL, SWITCH_MODEL } from '../models'
+import type { RouterState } from '../types'
+
+/** the router of these drills works in 192.168.0.0/24 whatever its model (DrayTek's own factory network is 192.168.1.0/24) */
+const LAN_0: Partial<RouterState> = {
+  lan: { ip: '192.168.0.1', mask: '255.255.255.0', mac: '02-1A-2B-4F-2A-28' },
+  dhcp: { enabled: true, start: '192.168.0.100', end: '192.168.0.199', leaseMinutes: 120, gateway: '192.168.0.1', dns1: '', dns2: '', domain: '' },
+}
 
 const X = (r: { int: (a: number, b: number) => number }) => r.int(2, 19)
 const PC_PORTS = { pc: ['eth0'] }
@@ -113,8 +121,9 @@ export const NET_DRILLS: DrillDef[] = [
     build: (p) => {
       const ip = `192.168.0.${(p.host as number) + (p.X as number)}`
       return {
-        devices: { router: {}, pc: { adapters: [pcAd('eth0', 'Ethernet', p.mac as string)] } },
+        devices: { router: LAN_0, pc: { adapters: [pcAd('eth0', 'Ethernet', p.mac as string)] } },
         ports: { router: RT_PORTS, ...PC_PORTS },
+        intro_pl: ['Ruter pracuje w sieci 192.168.0.0/24 (adres 192.168.0.1, serwer DHCP włączony).'],
         tasks: [
           task('router', 'router', 'Rezerwacja', [`na ruterze zarezerwuj adres ${ip} dla karty sieciowej stacji roboczej`, 'odśwież dzierżawę na stacji i sprawdź, że otrzymała zarezerwowany adres'], [
             ck('res', `Резерв ${ip} для MAC станции`, 'rezerwacja', (c) => resv(c, p.mac as string, ip), 2),
@@ -351,9 +360,9 @@ export const NET_DRILLS: DrillDef[] = [
     docs: [D.windowsNet, D.bench],
     params: (r) => ({ X: X(r) }),
     build: (p) => ({
-      devices: { router: {}, pc: { adapters: [pcAd('eth0', 'Ethernet', '08-00-27-5A-11-C3', { dhcp: false, ip: `10.${p.X}.0.50`, mask: '255.255.255.0', gateway: `10.${p.X}.0.1`, dnsAuto: false, dns1: '8.8.8.8' })] } },
+      devices: { router: LAN_0, pc: { adapters: [pcAd('eth0', 'Ethernet', '08-00-27-5A-11-C3', { dhcp: false, ip: `10.${p.X}.0.50`, mask: '255.255.255.0', gateway: `10.${p.X}.0.1`, dnsAuto: false, dns1: '8.8.8.8' })] } },
       ports: { router: RT_PORTS, ...PC_PORTS },
-      intro_pl: ['Ruter ma włączony serwer DHCP. Stacja ma ręcznie wpisany adres z innej sieci.'],
+      intro_pl: ['Ruter (192.168.0.1/24) ma włączony serwer DHCP. Stacja ma ręcznie wpisany adres z innej sieci.'],
       tasks: [
         task('pc', 'pc', 'Stacja robocza', ['podłącz stację do portu LAN rutera', 'ustaw automatyczne uzyskiwanie adresu IP i adresu serwera DNS', 'odnów dzierżawę i wyświetl pełną konfigurację karty'], [
           ck('auto', 'IPv4 и DNS — автоматически', 'automatycznie', (c) => !!c.pc?.adapters[0].dhcp && c.pc.adapters[0].dnsAuto),
@@ -447,7 +456,8 @@ export const NET_DRILLS: DrillDef[] = [
     build: (p) => {
       const swip = `192.168.0.${p.sw}`
       return {
-        devices: { router: {}, switch: {}, pc: {} },
+        // the conflict exists only with the TP-Link factory addresses (both 192.168.0.1): this drill forces those models
+        devices: { router: { model: ROUTER_MODEL.tplink }, switch: { model: SWITCH_MODEL.tplink }, pc: {} },
         ports: { router: RT_PORTS, switch: SW_PORTS, pc: ['eth0'] },
         requiredLinks: [['router:lan1', 'switch:1'], ['pc:eth0', 'switch:2']],
         schema_ru: ['Ruter LAN1 ↔ przełącznik port 1', 'Stacja robocza ↔ przełącznik port 2'],

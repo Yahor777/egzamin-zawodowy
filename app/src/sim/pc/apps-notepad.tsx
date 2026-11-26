@@ -5,6 +5,7 @@
 import { useEffect, useState } from 'react'
 import { HOME, isDir, parentOf, resolvePath } from './fs'
 import { isNetPath, vread, vwrite, type FsEnv } from './smb-vfs'
+import { useNoteSmb } from './apps-shared'
 import { useMsg, usePc, type WinProps } from './ui'
 
 export function Notepad({ arg, setArg, data }: WinProps) {
@@ -26,6 +27,7 @@ export function Notepad({ arg, setArg, data }: WinProps) {
   const [type, setType] = useState<'txt' | 'all'>('txt')
   const [msg, setMsg] = useState('')
   const [dirty, setDirty] = useState(false)
+  useNoteSmb(arg && isNetPath(st, arg) && !data.openError ? arg : null, true)
   useEffect(() => {
     if (!data.openError) return
     const e = data.openError as string

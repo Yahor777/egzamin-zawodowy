@@ -35,6 +35,7 @@ import { defaultRouterState } from './defaults'
 import { GenericForm, GenericList, type Values } from './generic'
 import { ROUTER_FORMS, ROUTER_LISTS } from './specs'
 import { VlanIfacePage, VlanPage, routerLanNets } from './vlan'
+import { routerTitle } from '../models'
 
 export interface RouterPageProps {
   page: string
@@ -259,7 +260,7 @@ function StatusPage({ state, go }: RouterPageProps) {
         <Kv
           rows={[
             ['Firmware Version', FIRMWARE],
-            ['Hardware Version', `${state.model.replace(/\s*\(.*\)\s*$/, '')} v4 00000000`],
+            ['Hardware Version', `${routerTitle(state.model).replace(/\s*\(.*\)\s*$/, '')} v4 00000000`],
           ]}
         />
       </Panel>
@@ -1654,7 +1655,7 @@ function FirmwarePage({ state }: RouterPageProps) {
         <span className="dv-static">{FIRMWARE}</span>
       </Row>
       <Row label="Hardware Version">
-        <span className="dv-static">{state.model.replace(/\s*\(.*\)\s*$/, '')} v4 00000000</span>
+        <span className="dv-static">{routerTitle(state.model).replace(/\s*\(.*\)\s*$/, '')} v4 00000000</span>
       </Row>
       <MsgBox msg={msg} />
       <Actions>

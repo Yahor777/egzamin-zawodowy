@@ -12,6 +12,7 @@ import { PcSim, type PcView } from './pc/PcSim'
 import { WIN_SERVER_NAME } from './pc/server'
 import { defaultRouterState } from './router'
 import { defaultSwitchState } from './switch'
+import { preferredModels } from './models'
 
 // Free practice with a single device; state is kept per device in this browser.
 function useSaved<T>(key: string, init: () => T): [T, Dispatch<SetStateAction<T>>] {
@@ -133,8 +134,8 @@ const NET_LAB: BenchLab = {
 }
 const freshNet = (): LabSave => ({
   v: 1,
-  router: defaultRouterState(),
-  switch: defaultSwitchState(),
+  router: defaultRouterState({ model: preferredModels().router }),
+  switch: defaultSwitchState({ model: preferredModels().switch }),
   linux: sandboxLinux(),
   pc: defaultPcState(),
   links: [],
@@ -149,7 +150,7 @@ const DOMAIN_LAB: BenchLab = {
 }
 const freshDomain = (): LabSave => ({
   v: 1,
-  switch: defaultSwitchState(),
+  switch: defaultSwitchState({ model: preferredModels().switch }),
   linux: sandboxLinux(),
   pc: defaultPcState(),
   server: defaultServerState(),

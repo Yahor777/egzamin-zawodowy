@@ -7,6 +7,7 @@ import { linksMatch } from '../labs/labs'
 import type { LabSave } from '../labs/ctx'
 import { DEV_PL, DEV_RU } from './diagnose'
 import { benchDevices, portLabel, portsOf } from './ports'
+import { routerFactoryIp, routerFullName, routerKind, switchFactoryIp, switchFullName, switchKind } from '../models'
 import type { BenchLab, Station } from './station'
 import { useCompact } from './useCompact'
 import { Hint } from '../../components/Hint'
@@ -42,7 +43,7 @@ export function Bench({
   const [msg, setMsg] = useState('')
   const links = s.links
   const name = (d: DeviceKey) => (ru ? DEV_RU : DEV_PL)[d]
-  const full = (p: string) => `${name(p.split(':')[0] as DeviceKey)} ${portLabel(p)}`
+  const full = (p: string) => `${name(p.split(':')[0] as DeviceKey)} ${portLabel(p, s)}`
   const cableIdx = (p: string) => links.findIndex(([a, b]) => a === p || b === p)
 
   const tapPort = (p: string) => {
@@ -72,6 +73,11 @@ export function Bench({
   const devices = benchDevices(lab, s)
   const conflicts = ipConflicts(st.model)
   const anyPc = s.pc ? 'pc' : s.laptop ? 'laptop' : null
+  const rIp = routerFactoryIp(s.router?.model)
+  const sIp = switchFactoryIp(s.switch?.model)
+  const sameIp = rIp === sIp
+  const dtRouter = !!s.router && routerKind(s.router.model) === 'draytek'
+  const jsSwitch = !!s.switch && switchKind(s.switch.model) === 'jetstream'
 
   return (
     <div ref={ref} className={`bench ${compact ? 'bd-compact' : ''}`}>
@@ -96,7 +102,7 @@ export function Bench({
         ))}
         {ru ? (
           <ol>
-            <li>Адрес и логин устройства с завода — на наклейке снизу («Перевернуть»).</li>
+            <li>Адрес и логин устройства с завода — на наклейке снизу («Перевернуть»). {s.router && routerKind(s.router.model) === 'draytek' ? `У DrayTek это ${rIp}, admin / admin.` : ''}</li>
             <li>Соедини кабелем ПК с LAN-портом того устройства, которое настраиваешь. Если и роутер, и свитч с заводскими настройками — подключай их по одному: у обоих один адрес.</li>
             <li>ПК должен быть в той же сети, что и устройство. Роутер сам выдаст ПК адрес по DHCP. Свитч адреса не раздаёт — задай ПК вручную адрес из сети свитча (например 192.168.0.10 / 255.255.255.0).</li>
             <li>Открой Windows → Przeglądarka и впиши адрес устройства.</li>
@@ -112,6 +118,40 @@ export function Bench({
           </ol>
         )}
       </Hint>
+
+      {ru && (dtRouter || jsSwitch) && (
+        <Hint id={`${hintKey}.models`} label="Подсказка: где что на DrayTek / T2500G (в заданиях меню названы по TP-Link)">
+          {dtRouter && (
+            <>
+              <p>
+                <b>DrayTek Vigor2927</b> (вход {rIp}, admin / admin; кнопка «?» на каждой странице):
+              </p>
+              <ul>
+                <li>WAN (Network → WAN) → <b>WAN → Internet Access → Details Page</b> (вкладка Static or Dynamic IP).</li>
+                <li>Адрес LAN и DHCP (Network → LAN, DHCP Settings) → <b>LAN → General Setup → Details Page</b>: Start IP Address + IP Pool Counts (конец пула = старт + число − 1), Gateway, Lease Time в секундах, DNS.</li>
+                <li>Address Reservation → <b>LAN → Bind IP to MAC</b> (двойной щелчок по хосту в ARP Table → Add → OK).</li>
+                <li>802.1Q VLAN и VLAN Interfaces → <b>LAN → VLAN</b> (порты, Subnet, VID) + <b>LAN → General Setup</b> (адрес и DHCP каждой подсети LAN2…LAN8).</li>
+                <li>Static Routing → <b>Routing → Static Route</b>; Virtual Servers → <b>NAT → Port Redirection</b>.</li>
+                <li>Wireless Settings / Security → <b>Wireless LAN (2.4 GHz) → General Setup / Security</b> (SSID1…4, WPA2/PSK).</li>
+                <li>System Tools → Password / Reboot / Factory Defaults → <b>System Maintenance → Administrator Password / Reboot System</b>.</li>
+              </ul>
+            </>
+          )}
+          {jsSwitch && (
+            <>
+              <p>
+                <b>TP-Link JetStream T2500G-10TS</b> (вход {sIp}, admin / admin; 10 портов):
+              </p>
+              <ul>
+                <li>IP Setting → <b>System → System Info → System IP</b> (Static IP; <b>Management VLAN</b> — VLAN, из которого доступно управление).</li>
+                <li>User Account → <b>System → User Management → Edit</b>; Reboot / Reset → <b>System → System Tools</b>; Port Setting → <b>Switching → Port → Port Config</b>.</li>
+                <li>802.1Q VLAN → <b>VLAN → 802.1Q VLAN</b>: вкладка <b>Port Config</b> (Link Type: ACCESS = Untagged + PVID сам, TRUNK = Tagged, GENERAL = на выбор UNTAG/TAG) и вкладка <b>VLAN Config → Create</b> (ID, порты).</li>
+                <li>Tagged = TRUNK (или GENERAL с TAG), Untagged = ACCESS (или GENERAL с UNTAG); PVID порта доступа выставляется автоматически.</li>
+              </ul>
+            </>
+          )}
+        </Hint>
+      )}
 
       <div className="bd-grid">
         {devices.map((d) => (
@@ -195,13 +235,21 @@ export function Bench({
         {ru ? (
           <ul>
             <li>
-              <b>Какой адрес вписать.</b> В браузер вписывают адрес управления устройства: у роутера — адрес LAN (с завода 192.168.0.1), у свитча — его IP (с завода тоже 192.168.0.1). Логин с завода — admin / admin (написан на наклейке снизу).
+              <b>Какой адрес вписать.</b> В браузер вписывают адрес управления устройства: у роутера — адрес LAN (с завода {rIp}), у свитча — его IP (с завода {sameIp ? 'тоже ' : ''}{sIp}). Логин с завода — admin / admin (написан на наклейке снизу).
             </li>
             <li>
               <b>ПК в той же подсети.</b> Компьютер может открыть страницу только устройства из своей подсети (или через шлюз). Если у ПК 192.168.1.100/24, а у свитча 192.168.0.1/24 — это разные сети, страница не откроется. Поэтому для настройки свитча ПК временно ставят адрес 192.168.0.10/24.
             </li>
             <li>
-              <b>Только одно 192.168.0.1 в сети.</b> Роутер и свитч с завода имеют одинаковый адрес. Если оба подключены — конфликт IP: откроется то одно, то другое. Сначала настрой свитч (смени ему адрес), потом подключай роутер.
+              {sameIp ? (
+                <>
+                  <b>Только одно 192.168.0.1 в сети.</b> Роутер и свитч с завода имеют одинаковый адрес. Если оба подключены — конфликт IP: откроется то одно, то другое. Сначала настрой свитч (смени ему адрес), потом подключай роутер.
+                </>
+              ) : (
+                <>
+                  <b>Адреса разные.</b> Роутер ({rIp}) и свитч ({sIp}) с завода в разных сетях, конфликта нет. Но ПК должен быть в сети того устройства, которое открываешь: роутер сам выдаст ПК адрес по DHCP, для свитча адрес ПК задают вручную (192.168.0.10/24). Не оставляй у свитча и роутера один адрес.
+                </>
+              )}
             </li>
             <li>
               <b>Перезагрузка после смены IP.</b> Роутер после смены адреса LAN сам перезагружается: старый адрес больше не работает, линк на портах на время пропадает, а ПК по DHCP получает адрес уже из новой сети. Если у ПК статический адрес — поменяй его на адрес из новой подсети и впиши в браузер новый адрес.
@@ -239,8 +287,9 @@ function DeviceCard({ d, lab, s, st, pick, sel, onPort, hintKey }: { d: DeviceKe
   const state = !on ? 'off' : boot ? 'boot' : 'on'
   const links = s.links
   const name = (ru ? DEV_RU : DEV_PL)[d]
-  const model = d === 'router' ? s.router?.model : d === 'switch' ? s.switch?.model : d === 'linux' ? 'Ubuntu Server 24.04' : d === 'printer' ? 'LaserJet M404 (symulator)' : d === 'laptop' ? 'Windows 11 — nie jest częścią zadania' : d === 'server' ? 'Windows Server 2022 Standard' : 'Windows 11'
-  const ports = portsOf(lab, d)
+  const model = d === 'router' ? (s.router ? routerFullName(s.router.model) : undefined) : d === 'switch' ? (s.switch ? switchFullName(s.switch.model) : undefined) : d === 'linux' ? 'Ubuntu Server 24.04' : d === 'printer' ? 'LaserJet M404 (symulator)' : d === 'laptop' ? 'Windows 11 — nie jest częścią zadania' : d === 'server' ? 'Windows Server 2022 Standard' : 'Windows 11'
+  const ports = portsOf(lab, d, s)
+  const faceCls = d === 'switch' && ports.length > 8 ? ' face-switch10' : d === 'router' && ports.length > 5 ? ' face-router6' : ''
 
   return (
     <section className={`bd-card st-${state}`} aria-label={name}>
@@ -254,7 +303,7 @@ function DeviceCard({ d, lab, s, st, pick, sel, onPort, hintKey }: { d: DeviceKe
       </header>
       {boot && <div className="bd-progress" key={boot.until} style={{ animationDuration: `${boot.total}ms` }} />}
 
-      <div className={`bd-face face-${d}`}>
+      <div className={`bd-face face-${d}${faceCls}`}>
         {ports.map((pt) => {
           const id = `${d}:${pt}`
           const ci = links.findIndex(([a, b]) => a === id || b === id)
@@ -265,13 +314,13 @@ function DeviceCard({ d, lab, s, st, pick, sel, onPort, hintKey }: { d: DeviceKe
               className={`bd-port ${ci >= 0 ? 'plugged' : ''} ${lit ? 'lit' : ''} ${pick === id ? 'pick' : ''} ${ci >= 0 && sel === ci ? 'sel' : ''} ${pt === 'wan' ? 'wan' : ''}`}
               style={ci >= 0 ? ({ '--cc': CABLE_COLORS[ci % CABLE_COLORS.length] } as CSSProperties) : undefined}
               onClick={() => onPort(id)}
-              aria-label={`${name} ${portLabel(id)}${ci >= 0 ? (ru ? ', кабель ' : ', kabel ') + (ci + 1) : ''}${lit ? ' link' : ''}`}
+              aria-label={`${name} ${portLabel(id, s)}${ci >= 0 ? (ru ? ', кабель ' : ', kabel ') + (ci + 1) : ''}${lit ? ' link' : ''}`}
             >
               <span className="jack">
                 <span className="led" />
                 {ci >= 0 && <span className="plug">{ci + 1}</span>}
               </span>
-              <span className="pl">{d === 'switch' ? pt : portLabel(id)}</span>
+              <span className="pl">{d === 'switch' ? pt : portLabel(id, s)}</span>
             </button>
           )
         })}
@@ -295,7 +344,7 @@ function DeviceCard({ d, lab, s, st, pick, sel, onPort, hintKey }: { d: DeviceKe
       </div>
       <Hint id={`${hintKey}.dev.${d}`} label={ru ? 'Подсказка' : 'Podpowiedź'} className="bd-why">
         <DeviceInfo d={d} s={s} st={st} lab={lab} />
-        <Why d={d} />
+        <Why d={d} s={s} />
       </Hint>
     </section>
   )
@@ -367,14 +416,18 @@ function DeviceInfo({ d, s, st, lab }: { d: DeviceKey; s: LabSave; st: Station; 
   return <div className="bd-info">{rows}</div>
 }
 
-function Why({ d }: { d: DeviceKey }) {
+function Why({ d, s }: { d: DeviceKey; s: LabSave }) {
   const lang = useLang()
   if (lang !== 'ru') return null
+  const dt = !!s.router && routerKind(s.router.model) === 'draytek'
+  const js = !!s.switch && switchKind(s.switch.model) === 'jetstream'
   const text: Record<DeviceKey, string> = {
-    router:
-      'Перезагрузка: после смены адреса LAN роутер перезапускается сам; ПК, воткнутый в него, потом заново берёт адрес по DHCP. RESET (держать на включённом роутере): заводские настройки — 192.168.0.1, admin/admin, DHCP включён. WAN — порт «в Интернет», через него роутер не раздаёт адреса и не настраивается.',
-    switch:
-      'Свитч не раздаёт адреса: чтобы зайти на 192.168.0.1, дай ПК статический адрес 192.168.0.10/24. После смены IP свитча старая страница перестанет отвечать — впиши новый адрес. Управление свитчем живёт в VLAN 1: ПК в порту другого VLAN до него не достучится. RESET — заводской адрес 192.168.0.1 и admin/admin.',
+    router: dt
+      ? 'DrayTek Vigor2927: порты WAN1 («в Интернет») и P1–P5 (LAN). После смены адреса LAN ПК, воткнутый в роутер, заново берёт адрес по DHCP (ipconfig /renew). Сброс: кнопка Factory Reset (RESET, держать) или System Maintenance → Reboot System → Using factory default configuration — 192.168.1.1, admin/admin, DHCP включён. Порт «WAN2 / P6» становится LAN-портом P6, если выключить WAN2 (WAN → General Setup).'
+      : 'Перезагрузка: после смены адреса LAN роутер перезапускается сам; ПК, воткнутый в него, потом заново берёт адрес по DHCP. RESET (держать на включённом роутере): заводские настройки — 192.168.0.1, admin/admin, DHCP включён. WAN — порт «в Интернет», через него роутер не раздаёт адреса и не настраивается.',
+    switch: js
+      ? 'TP-Link JetStream T2500G-10TS (10 портов: 1–8 медные, 9–10 SFP). Свитч не раздаёт адреса: чтобы зайти на 192.168.0.1, дай ПК статический адрес 192.168.0.10/24. После смены IP старая страница перестанет отвечать — впиши новый адрес. Управление живёт в Management VLAN (System → System Info → System IP; с завода 1): ПК в порту другого VLAN до него не достучится — переткни кабель в порт Management VLAN. RESET — заводской адрес 192.168.0.1 и admin/admin.'
+      : 'Свитч не раздаёт адреса: чтобы зайти на 192.168.0.1, дай ПК статический адрес 192.168.0.10/24. После смены IP свитча старая страница перестанет отвечать — впиши новый адрес. Управление свитчем живёт в VLAN 1: ПК в порту другого VLAN до него не достучится. RESET — заводской адрес 192.168.0.1 и admin/admin.',
     linux: 'Выключение сервера = сеть и DHCP-сервер на нём пропадают. В тренажёре файлы и настройки Linux при перезагрузке сохраняются.',
     pc: 'Windows сама просит адрес по DHCP, когда появляется линк (вставили кабель, включили устройство на другом конце). Нет ответа — адрес 169.254.x.x (APIPA). Статические настройки не меняются.',
     laptop:
@@ -393,8 +446,8 @@ function Sticker({ d, s }: { d: DeviceKey; s: LabSave }) {
   const rows: [string, string][] =
     d === 'router'
       ? [
-          ['Model', `TL-${(s.router?.model ?? 'WR840N').split(' ')[0]}`],
-          ['Default Access', 'http://192.168.0.1'],
+          ['Model', routerFullName(s.router?.model)],
+          ['Default Access', `http://${routerFactoryIp(s.router?.model)}`],
           ['Username', 'admin'],
           ['Password', 'admin'],
           ['MAC', s.router?.lan.mac ?? ''],
@@ -402,8 +455,8 @@ function Sticker({ d, s }: { d: DeviceKey; s: LabSave }) {
         ]
       : d === 'switch'
         ? [
-            ['Model', `TL-${(s.switch?.model ?? 'SG108E').split(' ')[0]}`],
-            ['Default IP', '192.168.0.1'],
+            ['Model', switchFullName(s.switch?.model)],
+            ['Default IP', switchFactoryIp(s.switch?.model)],
             ['Username', 'admin'],
             ['Password', 'admin'],
             ['Power', '5V ⎓ 0.6A'],

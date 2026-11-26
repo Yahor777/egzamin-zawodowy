@@ -5,10 +5,11 @@ import { NET_DRILLS } from './net'
 import { EXTRA_DRILLS } from './extra'
 import { WS_DRILLS } from './winserver'
 import { SHARE_DRILLS } from './winserver-shares'
+import { WS_RRAS_DRILLS } from './winserver-rras'
 
 export { TOPICS, type DrillDef, type DrillLab, type DrillTopic }
 
-export const DRILLS: DrillDef[] = [...LINUX_DRILLS, ...NET_DRILLS, ...EXTRA_DRILLS, ...WS_DRILLS, ...SHARE_DRILLS]
+export const DRILLS: DrillDef[] = [...LINUX_DRILLS, ...NET_DRILLS, ...EXTRA_DRILLS, ...WS_DRILLS, ...SHARE_DRILLS, ...WS_RRAS_DRILLS]
 
 export const drillById = (id: string) => DRILLS.find((d) => d.id === id)
 

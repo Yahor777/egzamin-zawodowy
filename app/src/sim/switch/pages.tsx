@@ -19,6 +19,7 @@ import { GenericForm, GenericList, type Values } from '../router/generic'
 import { SWITCH_FORMS, SWITCH_LISTS } from './specs'
 import { isHostIn, isIp, isUnset, isValidMask, sameSubnet } from '../router/ip'
 import { defaultSwitchState } from './defaults'
+import { switchTitle } from '../models'
 
 export interface SwitchPageProps {
   page: string
@@ -166,13 +167,13 @@ function SystemInfoPage({ state }: SwitchPageProps) {
         className="dv-kvtable"
         columns={['Item', 'Value']}
         rows={[
-          ['Device Description', state.model],
+          ['Device Description', switchTitle(state.model)],
           ['MAC Address', SWITCH_MAC],
           ['IP Address', state.ip.ip],
           ['Subnet Mask', state.ip.mask],
           ['Default Gateway', state.ip.gateway || '0.0.0.0'],
           ['Firmware Version', SWITCH_FW],
-          ['Hardware Version', `${state.model.replace(/\s*\(.*\)\s*$/, '')} 6.0`],
+          ['Hardware Version', `${switchTitle(state.model).replace(/\s*\(.*\)\s*$/, '')} 6.0`],
         ].map(([k, v]) => ({ key: k, cells: [k, v] }))}
       />
     </Panel>
@@ -325,7 +326,7 @@ function FirmwarePage({ state }: SwitchPageProps) {
         <span className="dv-static">{SWITCH_FW}</span>
       </Row>
       <Row label="Hardware Version">
-        <span className="dv-static">{state.model.replace(/\s*\(.*\)\s*$/, '')} 6.0</span>
+        <span className="dv-static">{switchTitle(state.model).replace(/\s*\(.*\)\s*$/, '')} 6.0</span>
       </Row>
       <Row id="sw-fw-file" label="Firmware File">
         <input id="sw-fw-file" type="file" className="dv-file" />

@@ -19,8 +19,11 @@ export interface RoleDef {
   req?: { id: string; name: string }[]
   intro?: string[]
   notes?: string[]
-  /** only a catalog entry — installing is allowed but the role has no console in the simulator */
-  sub?: { id: string; name: string; desc: string; indent: number; def?: boolean }[]
+  /** child entries; with `svc` they are the "Wybieranie usług ról" page of the wizard, otherwise nodes of the roles tree */
+  sub?: { id: string; name: string; desc: string; indent: number; def?: boolean; /** pulls these ids in as well */ needs?: string[]; /** header of a group, not a role service itself */ group?: boolean }[]
+  svc?: boolean
+  /** title of the role's intro page ("Rola Serwer sieci Web (IIS)") */
+  introTitle?: string
 }
 
 const RSAT_AD = [
@@ -45,10 +48,9 @@ export const ROLES: RoleDef[] = [
       '• Usługi AD DS wymagają zainstalowania w sieci serwera DNS. Jeśli serwer DNS nie jest zainstalowany, zostanie wyświetlony monit o zainstalowanie roli serwera DNS na tym komputerze.',
     ],
   },
-  { id: 'ADFS', name: 'Usługi Active Directory Federation Services', nav: 'AD FS', desc: 'Usługi Active Directory Federation Services (AD FS) zapewniają uproszczone, bezpieczne możliwości federacji tożsamości i logowania jednokrotnego do sieci Web.' },
-  { id: 'ADLDS', name: 'Usługi Active Directory Lightweight Directory Services', nav: 'AD LDS', desc: 'Usługi Active Directory Lightweight Directory Services (AD LDS) udostępniają magazyn danych i usługę katalogową dla aplikacji obsługujących katalogi, bez wymagania usług domenowych.' },
-  { id: 'ADRMS', name: 'Usługi Active Directory Rights Management Services', nav: 'AD RMS', desc: 'Usługi Active Directory Rights Management Services (AD RMS) pomagają chronić informacje przed nieautoryzowanym użyciem.' },
-  { id: 'DEVHEALTH', name: 'Attestation kondycji urządzeń', nav: 'Attestation kondycji', desc: 'Usługa Attestation kondycji urządzeń sprawdza kondycję urządzeń przed udzieleniem dostępu do zasobów.' },
+  { id: 'ADFS', name: 'Usługi federacyjne Active Directory (AD FS)', nav: 'AD FS', desc: 'Usługi Active Directory Federation Services (AD FS) zapewniają uproszczone, bezpieczne możliwości federacji tożsamości i logowania jednokrotnego do sieci Web.' },
+  { id: 'ADLDS', name: 'Usługi LDS w usłudze Active Directory', nav: 'AD LDS', desc: 'Usługi Active Directory Lightweight Directory Services (AD LDS) udostępniają magazyn danych i usługę katalogową dla aplikacji obsługujących katalogi, bez wymagania usług domenowych.' },
+  { id: 'ADRMS', name: 'Usługi zarządzania prawami dostępu w usłudze Active Directory', nav: 'AD RMS', desc: 'Usługi Active Directory Rights Management Services (AD RMS) pomagają chronić informacje przed nieautoryzowanym użyciem.' },
   {
     id: 'DHCP',
     name: 'Serwer DHCP',
@@ -77,7 +79,7 @@ export const ROLES: RoleDef[] = [
   },
   { id: 'FAX', name: 'Serwer faksów', nav: 'Faks', desc: 'Serwer faksów wysyła i odbiera faksy oraz umożliwia zarządzanie zasobami faksu, takimi jak zadania, ustawienia, raporty i urządzenia faksu na tym serwerze.' },
   { id: 'HYPERV', name: 'Hyper-V', nav: 'Hyper-V', desc: 'Rola Hyper-V umożliwia tworzenie maszyn wirtualnych i zarządzanie nimi oraz ich zasobami. Każda maszyna wirtualna to system komputerowy działający w odizolowanym środowisku wykonawczym.', req: [{ id: 'RSAT-Hyper-V-Tools', name: 'Narzędzia administracji serwera zdalnego\\Narzędzia administracji rolami\\Narzędzia Hyper-V' }], intro: ['Funkcja Hyper-V umożliwia tworzenie maszyn wirtualnych i zarządzanie nimi oraz ich zasobami.', 'Zwróć uwagę:', '• Zainstaluj co najmniej jedną kartę sieciową do ruchu maszyn wirtualnych.'] },
-  { id: 'HGS', name: 'Usługa Host Guardian Service', nav: 'HGS', desc: 'Usługa Host Guardian Service udostępnia usługi attestation i ochrony kluczy, które umożliwiają uruchamianie osłoniętych maszyn wirtualnych.' },
+  { id: 'HGS', name: 'Usługa Ochrona hosta', nav: 'HGS', desc: 'Usługa Host Guardian Service udostępnia usługi attestation i ochrony kluczy, które umożliwiają uruchamianie osłoniętych maszyn wirtualnych.' },
   {
     id: 'FS',
     name: 'Usługi plików i magazynowania',
@@ -106,48 +108,99 @@ export const ROLES: RoleDef[] = [
     req: [{ id: 'RSAT-Print', name: 'Narzędzia administracji serwera zdalnego\\Narzędzia administracji rolami\\Narzędzia usług drukowania i dokumentów' }],
     intro: ['Usługi drukowania i zarządzania dokumentami umożliwiają zarządzanie serwerami wydruku i drukarkami sieciowymi z jednej konsoli.', 'Zwróć uwagę:', '• Przed instalacją upewnij się, że sterowniki drukarek są dostępne dla klientów.'],
   },
-  { id: 'RAS', name: 'Zdalny dostęp', nav: 'Zdalny dostęp', desc: 'Zdalny dostęp zapewnia łączność ze zdalnymi użytkownikami przez DirectAccess, VPN i serwer proxy aplikacji sieci Web.' },
+  {
+    id: 'RAS',
+    name: 'Dostęp zdalny',
+    nav: 'Dostęp zdalny',
+    desc: 'Funkcja Dostęp zdalny zapewnia bezproblemową łączność za pomocą funkcji DirectAccess, wirtualnej sieci prywatnej i serwera proxy aplikacji sieci Web. Routing zapewnia tradycyjne możliwości, w tym translację adresów sieciowych (NAT) i inne opcje routingu.',
+    req: [{ id: 'RSAT-RemoteAccess', name: 'Narzędzia administracji serwera zdalnego\\Narzędzia administracji rolami\\Narzędzia do zarządzania dostępem zdalnym' }],
+    svc: true,
+    intro: [
+      'Funkcja dostępu zdalnego integruje funkcje DirectAccess, sieci VPN i serwera proxy aplikacji sieci Web w jednej konsoli zarządzania.',
+      'Wdrożenie funkcji DirectAccess umożliwia łączność z wewnętrzną siecią firmową na zarządzanych komputerach połączonych do domeny jako klientach funkcji DirectAccess. Łączność jest płynna i transparentna. Jest dostępna zawsze, gdy komputery znajdują się w Internecie.',
+      'Wdróż sieć VPN, aby umożliwić uruchamianie na komputerach klienckich systemów operacyjnych nieobsługujących funkcji DirectAccess lub, w przypadku skonfigurowania tych komputerów w grupie roboczej, zdalne uzyskiwanie na nich dostępu do sieci firmowej za pomocą połączenia VPN.',
+      'Serwer proxy aplikacji sieci Web pozwala na publikowanie określonych aplikacji opartych na protokołach HTTP i HTTPS z sieci firmowej na urządzeniach użytkowników spoza niej.',
+      'Skonfiguruj funkcje routingu usługi RRAS za pomocą konsoli Routing i dostęp zdalny.',
+    ],
+    sub: [
+      { id: 'DirectAccess-VPN', name: 'DirectAccess i VPN (RAS)', desc: 'Usługa DirectAccess i VPN (RAS) umożliwia zdalnym użytkownikom łączenie się z siecią firmową za pomocą DirectAccess lub wirtualnej sieci prywatnej.', indent: 0 },
+      { id: 'Routing', name: 'Routing', desc: 'Routing zapewnia obsługę routerów translacji adresów sieciowych (NAT), routerów sieci lokalnych (LAN) korzystających z protokołu BGP, routerów korzystających z protokołu RIP oraz routerów obsługujących multiemisję (serwer IGMP).', indent: 0, needs: ['DirectAccess-VPN', 'IIS'] },
+      { id: 'Web-Application-Proxy', name: 'Serwer proxy aplikacji sieci Web', desc: 'Serwer proxy aplikacji sieci Web publikuje wybrane aplikacje sieci Web z sieci firmowej na urządzeniach spoza niej.', indent: 0 },
+    ],
+  },
   { id: 'RDS', name: 'Usługi pulpitu zdalnego', nav: 'Usługi pulpitu zdalnego', desc: 'Usługi pulpitu zdalnego umożliwiają użytkownikom dostęp do pulpitów wirtualnych, programów sesyjnych i aplikacji w farmie serwerów.' },
   {
     id: 'IIS',
     name: 'Serwer sieci Web (IIS)',
     nav: 'IIS',
+    introTitle: 'Rola Serwer sieci Web (IIS)',
     desc: 'Serwer sieci Web (IIS) udostępnia niezawodną, możliwą do zarządzania i skalowalną infrastrukturę aplikacji sieci Web.',
     req: [{ id: 'Web-Mgmt-Console', name: 'Narzędzia zarządzania\\Konsola zarządzania usługami IIS' }],
+    svc: true,
     sub: [
-      { id: 'Web-Ftp-Server', name: 'Serwer FTP', desc: 'Serwer FTP umożliwia publikowanie plików za pomocą protokołu FTP w witrynach FTP zarządzanych przez usługi IIS.', indent: 1 },
-      { id: 'Web-Ftp-Service', name: 'Usługa FTP', desc: 'Usługa FTP umożliwia tworzenie witryn FTP i przesyłanie plików przez protokół FTP.', indent: 2 },
+      { id: 'Web-Server', name: 'Serwer sieci Web', desc: 'Serwer sieci Web oferuje obsługę witryn sieci Web w formacie HTML i opcjonalną obsługę programów ASP.NET i ASP oraz serwera sieci Web.', indent: 0, def: true, group: true },
+      { id: 'Web-Common-Http', name: 'Wspólne funkcje HTTP', desc: 'Wspólne funkcje HTTP obsługują statyczną zawartość, dokumenty domyślne, przeglądanie katalogów, błędy HTTP i przekierowania HTTP.', indent: 1, def: true, group: true },
+      { id: 'Web-Default-Doc', name: 'Dokument domyślny', desc: 'Dokument domyślny umożliwia skonfigurowanie witryny tak, aby zwracała domyślny dokument, gdy klienci nie określą konkretnego pliku.', indent: 2, def: true },
+      { id: 'Web-Dir-Browsing', name: 'Przeglądanie katalogów', desc: 'Przeglądanie katalogów umożliwia użytkownikom wyświetlanie zawartości katalogu na serwerze sieci Web.', indent: 2, def: true },
+      { id: 'Web-Http-Errors', name: 'Błędy HTTP', desc: 'Błędy HTTP umożliwiają skonfigurowanie komunikatów o błędach zwracanych do klientów.', indent: 2, def: true },
+      { id: 'Web-Static-Content', name: 'Zawartość statyczna', desc: 'Zawartość statyczna umożliwia serwerowi sieci Web publikowanie statycznych formatów plików, takich jak HTML i obrazy.', indent: 2, def: true },
+      { id: 'Web-Http-Redirect', name: 'Przekierowanie HTTP', desc: 'Przekierowanie HTTP umożliwia przekierowanie żądań klientów do określonego miejsca docelowego.', indent: 2 },
+      { id: 'Web-Health', name: 'Kondycja i diagnostyka', desc: 'Kondycja i diagnostyka udostępniają funkcje rejestrowania i monitorowania.', indent: 1, def: true, group: true },
+      { id: 'Web-Http-Logging', name: 'Rejestrowanie HTTP', desc: 'Rejestrowanie HTTP umożliwia rejestrowanie aktywności witryny sieci Web na serwerze.', indent: 2, def: true },
+      { id: 'Web-Request-Monitor', name: 'Monitor żądań', desc: 'Monitor żądań monitoruje kondycję aplikacji sieci Web.', indent: 2, def: true },
+      { id: 'Web-Performance', name: 'Wydajność', desc: 'Wydajność zapewnia kompresję zawartości.', indent: 1, def: true, group: true },
+      { id: 'Web-Stat-Compression', name: 'Kompresja zawartości statycznej', desc: 'Kompresja zawartości statycznej kompresuje statyczną zawartość przed jej zwróceniem klientowi.', indent: 2, def: true },
+      { id: 'Web-Security', name: 'Zabezpieczenia', desc: 'Zabezpieczenia to zestaw funkcji zabezpieczających serwer sieci Web.', indent: 1, def: true, group: true },
+      { id: 'Web-Filtering', name: 'Filtrowanie żądań', desc: 'Filtrowanie żądań umożliwia blokowanie żądań HTTP na podstawie reguł.', indent: 2, def: true },
+      { id: 'Web-Basic-Auth', name: 'Uwierzytelnianie podstawowe', desc: 'Uwierzytelnianie podstawowe wymaga od użytkownika podania prawidłowej nazwy użytkownika i hasła.', indent: 2 },
+      { id: 'Web-Windows-Auth', name: 'Uwierzytelnianie systemu Windows', desc: 'Uwierzytelnianie systemu Windows uwierzytelnia klientów przy użyciu protokołu NTLM lub Kerberos.', indent: 2 },
+      { id: 'Web-Url-Auth', name: 'Autoryzacja adresów URL', desc: 'Autoryzacja adresów URL umożliwia tworzenie reguł ograniczających dostęp do zawartości sieci Web.', indent: 2 },
+      { id: 'Web-Ftp-Server', name: 'Serwer FTP', desc: 'Serwer FTP umożliwia publikowanie plików za pomocą protokołu FTP w witrynach FTP zarządzanych przez usługi IIS.', indent: 0, group: true },
+      { id: 'Web-Ftp-Service', name: 'Usługa FTP', desc: 'Usługa FTP umożliwia tworzenie witryn FTP i przesyłanie plików przez protokół FTP.', indent: 1, needs: ['Web-Ftp-Server'] },
+      { id: 'Web-Mgmt-Tools', name: 'Narzędzia zarządzania', desc: 'Narzędzia zarządzania to infrastruktura do zarządzania serwerem sieci Web (IIS).', indent: 0, def: true, group: true },
+      { id: 'Web-Mgmt-Console', name: 'Konsola zarządzania usługami IIS', desc: 'Konsola zarządzania usługami IIS umożliwia zarządzanie serwerem sieci Web za pomocą interfejsu graficznego.', indent: 1, def: true },
     ],
     intro: [
-      'Aby zapewnić bezpieczną i niezawodną infrastrukturę sieci Web, rola serwera sieci Web (IIS) udostępnia serwer WWW, który hostuje witryny i aplikacje sieci Web.',
+      'Serwery sieci Web to komputery umożliwiające udostępnianie informacji przez Internet oraz za pośrednictwem sieci intranet i ekstranet. Rola Serwer sieci Web zawiera Internetowe usługi informacyjne (IIS) 10.0 z rozszerzonymi funkcjami zabezpieczeń, diagnostyki i administracji oraz platformę serwera sieci Web integrującą usługi IIS 10.0 oraz programy ASP.NET i Windows Communication Foundation.',
       'Zwróć uwagę:',
-      '• Domyślna instalacja serwera sieci Web (IIS) obejmuje instalację ról usług, które umożliwiają obsługę zawartości statycznej i wykonywanie ogólnych zadań administracyjnych.',
+      '• Domyślna instalacja roli serwera sieci Web (IIS) obejmuje instalację ról usług, które umożliwiają obsługę zawartości statycznej, wykonywanie ogólnych zadań administracyjnych, na przykład dokumentów domyślnych i błędów HTTP, monitorowanie i rejestrowanie aktywności serwera oraz skonfigurowanie kompresji zawartości statycznej.',
     ],
   },
-  { id: 'WDS', name: 'Usługi wdrażania systemu Windows', nav: 'WDS', desc: 'Usługi wdrażania systemu Windows umożliwiają zdalne wdrażanie systemów operacyjnych Windows za pomocą instalacji sieciowej.', req: [{ id: 'WDS-Tools', name: 'Narzędzia administracji serwera zdalnego\\Narzędzia administracji rolami\\Narzędzia usług wdrażania systemu Windows' }], intro: ['Usługi wdrażania systemu Windows umożliwiają zdalne wdrażanie systemów operacyjnych Windows. Można ich używać do konfigurowania nowych komputerów przez instalację sieciową.', 'Zwróć uwagę:', '• Serwer WDS wymaga serwera DHCP i DNS w sieci oraz woluminu NTFS na obrazy.'] },
+  { id: 'WDS', name: 'Windows Deployment Services', nav: 'WDS', desc: 'Usługi wdrażania systemu Windows umożliwiają zdalne wdrażanie systemów operacyjnych Windows za pomocą instalacji sieciowej.', req: [{ id: 'WDS-Tools', name: 'Narzędzia administracji serwera zdalnego\\Narzędzia administracji rolami\\Narzędzia usług wdrażania systemu Windows' }], intro: ['Usługi wdrażania systemu Windows umożliwiają zdalne wdrażanie systemów operacyjnych Windows. Można ich używać do konfigurowania nowych komputerów przez instalację sieciową.', 'Zwróć uwagę:', '• Serwer WDS wymaga serwera DHCP i DNS w sieci oraz woluminu NTFS na obrazy.'] },
   { id: 'WSUS', name: 'Windows Server Update Services', nav: 'WSUS', desc: 'Windows Server Update Services umożliwia administratorom sieci określanie aktualizacji firmy Microsoft, które mają zostać zainstalowane, oraz tworzenie grup komputerów i zarządzanie nimi.' },
-  { id: 'VAS', name: 'Aktywacja zbiorcza', nav: 'Aktywacja zbiorcza', desc: 'Aktywacja zbiorcza automatyzuje i upraszcza wydawanie licencji zbiorczych dla produktów Microsoft.' },
+  { id: 'VAS', name: 'Usługi aktywacji zbiorczej', nav: 'Aktywacja zbiorcza', desc: 'Aktywacja zbiorcza automatyzuje i upraszcza wydawanie licencji zbiorczych dla produktów Microsoft.' },
 ]
 
 export const FEATURES: { id: string; name: string; desc: string; indent?: number }[] = [
-  { id: 'NET-Framework-35', name: '.NET Framework 3.5 (zawiera .NET 2.0 i 3.0)', desc: '.NET Framework 3.5 łączy możliwości interfejsu API .NET Framework 2.0 z nowymi technologiami do tworzenia aplikacji.' },
-  { id: 'NET-Framework-45', name: '.NET Framework 4.8 (zainstalowano 2 z 7)', desc: '.NET Framework 4.8 zapewnia kompleksowy model programowania do tworzenia aplikacji.' },
+  { id: 'NET-Framework-45', name: '.NET Framework 4.8 Features (Zainstalowano 2 z 7)', desc: '.NET Framework 4.8 zapewnia kompleksowy model programowania do tworzenia aplikacji.' },
+  { id: 'System-Insights', name: 'Analiza systemu', desc: 'Analiza systemu przewiduje przyszłe zużycie zasobów na podstawie lokalnych danych.' },
   { id: 'BitLocker', name: 'Szyfrowanie dysków funkcją BitLocker', desc: 'Funkcja BitLocker pomaga chronić dane przez szyfrowanie woluminów dysku.' },
+  { id: 'BranchCache', name: 'BranchCache', desc: 'BranchCache buforuje zawartość sieciową na komputerach w oddziałach.' },
+  { id: 'DirectPlay', name: 'DirectPlay', desc: 'DirectPlay zapewnia obsługę starszych aplikacji multimedialnych.' },
+  { id: 'Enhanced-Storage', name: 'Enhanced Storage', desc: 'Enhanced Storage umożliwia dodatkowe zabezpieczenia dla zgodnych urządzeń pamięci masowej.' },
+  { id: 'Windows-TIFF-IFilter', name: 'Filtr TIFF IFilter systemu Windows', desc: 'Filtr TIFF IFilter umożliwia indeksowanie plików TIFF.' },
+  { id: 'NET-Framework-35', name: 'Funkcje programu .NET Framework 3.5', desc: '.NET Framework 3.5 łączy możliwości interfejsu API .NET Framework 2.0 z nowymi technologiami do tworzenia aplikacji.' },
   { id: 'GPMC', name: 'Zarządzanie zasadami grupy', desc: 'Zarządzanie zasadami grupy to narzędzie do zarządzania obiektami zasad grupy (GPO) w całym przedsiębiorstwie.' },
+  { id: 'QoS', name: 'Jakość usług (we/wy)', desc: 'Jakość usług we/wy umożliwia ustalanie priorytetów ruchu we/wy magazynu.' },
+  { id: 'Failover-Clustering', name: 'Klaster pracy w trybie failover', desc: 'Klaster trybu failover umożliwia grupie niezależnych serwerów współpracę w celu zwiększenia dostępności aplikacji i usług.' },
+  { id: 'Internet-Print-Client', name: 'Klient drukowania internetowego', desc: 'Klient drukowania internetowego umożliwia drukowanie na drukarkach sieci Web za pomocą protokołu IPP.' },
+  { id: 'NFS-Client', name: 'Klient systemu plików NFS', desc: 'Klient systemu plików NFS umożliwia dostęp do plików na serwerach UNIX.' },
   { id: 'Telnet-Client', name: 'Klient Telnet', desc: 'Klient Telnet umożliwia łączenie się ze zdalnymi serwerami Telnet.' },
+  { id: 'TFTP-Client', name: 'Klient TFTP', desc: 'Klient TFTP umożliwia przesyłanie plików przez protokół TFTP.' },
+  { id: 'MSMQ', name: 'Kolejkowanie komunikatów', desc: 'Kolejkowanie komunikatów zapewnia niezawodną komunikację między aplikacjami.' },
   { id: 'Windows-Server-Backup', name: 'Kopia zapasowa systemu Windows Server', desc: 'Kopia zapasowa systemu Windows Server umożliwia tworzenie kopii zapasowych i odzyskiwanie systemu operacyjnego, aplikacji i danych.' },
+  { id: 'Multipath-IO', name: 'Wielościeżkowe we/wy', desc: 'Wielościeżkowe we/wy zapewnia obsługę wielu ścieżek danych do urządzenia magazynującego.' },
   { id: 'RSAT', name: 'Narzędzia administracji serwera zdalnego', desc: 'Narzędzia administracji serwera zdalnego obejmują narzędzia do zdalnego zarządzania rolami i funkcjami systemu Windows Server.' },
   { id: 'RSAT-AD-AdminCenter', name: 'Centrum administracyjne usługi Active Directory', desc: 'Centrum administracyjne usługi Active Directory umożliwia zarządzanie obiektami AD przez interfejs oparty na zadaniach.', indent: 1 },
   { id: 'RSAT-ADDS-Tools', name: 'Przystawki i narzędzia wiersza polecenia usług AD DS', desc: 'Przystawki i narzędzia wiersza polecenia usług AD DS, w tym Użytkownicy i komputery usługi Active Directory.', indent: 1 },
-  { id: 'SNMP-Service', name: 'Usługa SNMP', desc: 'Usługa SNMP zawiera agentów, którzy monitorują aktywność urządzeń sieciowych.' },
-  { id: 'Multipath-IO', name: 'Wielościeżkowe we/wy', desc: 'Wielościeżkowe we/wy zapewnia obsługę wielu ścieżek danych do urządzenia magazynującego.' },
   { id: 'NLB', name: 'Równoważenie obciążenia sieciowego', desc: 'Równoważenie obciążenia sieciowego (NLB) rozdziela ruch IP między wiele serwerów.' },
+  { id: 'SNMP-Service', name: 'Usługa SNMP', desc: 'Usługa SNMP zawiera agentów, którzy monitorują aktywność urządzeń sieciowych.' },
   { id: 'PowerShell-ISE', name: 'Windows PowerShell ISE', desc: 'Windows PowerShell umożliwia automatyzowanie zadań administracyjnych za pomocą skryptów i poleceń cmdlet.' },
-  { id: 'Failover-Clustering', name: 'Klaster trybu failover', desc: 'Klaster trybu failover umożliwia grupie niezależnych serwerów współpracę w celu zwiększenia dostępności aplikacji i usług.' },
 ]
 
 export const roleOf = (id: string) => ROLES.find((r) => r.id === id)
 export const featureName = (id: string) => {
+  if (id === 'RSAT-RemoteAccess') return 'Narzędzia administracji serwera zdalnego\\Narzędzia administracji rolami\\Narzędzia do zarządzania dostępem zdalnym'
   const r = ROLES.flatMap((x) => x.req ?? []).find((q) => q.id === id)
   return r?.name ?? FEATURES.find((f) => f.id === id)?.name ?? id
 }
@@ -255,6 +308,7 @@ const TOOLS: ToolDef[] = [
   { label: 'Menedżer zasobów serwera plików', req: 'FS-Resource-Manager', app: 'fsrm' },
   { label: 'Monitor wydajności' },
   { label: 'Podgląd zdarzeń' },
+  { label: 'Routing i dostęp zdalny', req: 'Routing', app: 'rras' },
   { label: 'Usługi' },
   { label: 'Usługi składowe' },
   { label: 'Użytkownicy i komputery usługi Active Directory', req: 'ADDS', app: 'aduc' },

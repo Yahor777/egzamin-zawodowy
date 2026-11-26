@@ -41,7 +41,7 @@ function Wiz({ title, steps, cur, host, children, footer }: { title: string; ste
         {!api.compact && (
           <ol className="sv-wiz-nav" aria-label="Kroki kreatora">
             {steps.map(([id, label]) => (
-              <li key={id} className={id === cur ? 'on' : steps.findIndex((s) => s[0] === id) < steps.findIndex((s) => s[0] === cur) ? 'done' : ''} aria-current={id === cur ? 'step' : undefined}>
+              <li key={id} style={id.startsWith('rs:') ? { paddingLeft: 26 } : undefined} className={id === cur ? 'on' : steps.findIndex((s) => s[0] === id) < steps.findIndex((s) => s[0] === cur) ? 'done' : ''} aria-current={id === cur ? 'step' : undefined}>
                 {label}
               </li>
             ))}
@@ -207,7 +207,7 @@ export function ServerManager({ arg, setArg }: WinProps) {
             <IcChevron dir="right" size={12} />
           </button>
           <span className="sv-bc">
-            Menedżer serwera <i>▸</i> <b>{crumb}</b>
+            Menedżer serwera <i>•</i> <b>{crumb}</b>
           </span>
         </div>
         <div className="sv-hbtns">
@@ -264,6 +264,24 @@ export function ServerManager({ arg, setArg }: WinProps) {
                   </div>
                 </div>
               )}
+              {v.pending.includes('RAS') && (
+                <div className="sv-n">
+                  <IcWarn size={18} />
+                  <div>
+                    <b>Konfiguracja po wdrożeniu</b>
+                    <p>Wymagana konfiguracja dla funkcji DirectAccess i VPN (RAS) na {host}.</p>
+                    <button
+                      className="sv-link"
+                      onClick={() => {
+                        setNotif(false)
+                        api.open('rrasgs')
+                      }}
+                    >
+                      Otwórz kreatora Wprowadzenie
+                    </button>
+                  </div>
+                </div>
+              )}
               {v.pending.includes('DHCP') && (
                 <div className="sv-n">
                   <IcWarn size={18} />
@@ -297,7 +315,7 @@ export function ServerManager({ arg, setArg }: WinProps) {
           {page === 'dash' && (
             <div className="sv-pane">
               <div className="sv-welcome">
-                <div className="sv-w-h">WITAMY W MENEDŻERZE SERWERA</div>
+                <div className="sv-w-h">MENEDŻER SERWERA — ZAPRASZAMY!</div>
                 <div className="sv-w-body">
                   <div className="sv-w-l">
                     <div className="sv-w-ql">SZYBKI START</div>
@@ -423,12 +441,12 @@ export function ServerManager({ arg, setArg }: WinProps) {
 
 // ---------------- Kreator dodawania ról i funkcji ----------------
 const TITLES: Record<string, string> = {
-  start: 'Przed rozpoczęciem',
-  type: 'Wybierz typ instalacji',
-  server: 'Wybierz serwer docelowy',
-  roles: 'Wybierz role serwera',
-  features: 'Wybierz funkcje',
-  confirm: 'Potwierdź wybrane opcje instalacji',
+  start: 'Zanim rozpoczniesz',
+  type: 'Wybieranie typu instalacji',
+  server: 'Wybieranie serwera docelowego',
+  roles: 'Wybieranie ról serwera',
+  features: 'Wybieranie funkcji',
+  confirm: 'Potwierdzanie opcji instalacji',
   results: 'Postęp instalacji',
 }
 
@@ -442,6 +460,8 @@ export function AddRoles({ close }: WinProps) {
   const [selFeat, setSelFeat] = useState<string[]>([])
   const [restart, setRestart] = useState(false)
   const [ask, setAsk] = useState<RoleDef | null>(null)
+  const [askSvc, setAskSvc] = useState<{ role: RoleDef; svc: string } | null>(null)
+  const [autoAsk, setAutoAsk] = useState(false)
   const [tools, setTools] = useState(true)
   const [info, setInfo] = useState('Wybierz rolę, aby wyświetlić jej opis.')
   const [pct, setPct] = useState(0)
@@ -449,20 +469,21 @@ export function AddRoles({ close }: WinProps) {
   const [done, setDone] = useState<string[]>([])
 
   const installed = (id: string) => ALWAYS.includes(id) || v.roles.includes(id)
-  const introRoles = ROLES.filter((r) => selRoles.includes(r.id) && r.intro)
+  const sortedRoles = [...ROLES].sort((a, b) => a.name.localeCompare(b.name, 'pl'))
+  const introRoles = sortedRoles.filter((r) => selRoles.includes(r.id) && (r.intro || r.svc))
   const pages: [string, string][] = [
-    ['start', 'Przed rozpoczęciem'],
+    ['start', 'Zanim rozpoczniesz'],
     ['type', 'Typ instalacji'],
-    ['server', 'Wybór serwera'],
+    ['server', 'Wybieranie serwera'],
     ['roles', 'Role serwera'],
     ['features', 'Funkcje'],
-    ...introRoles.map((r) => [`r:${r.id}`, r.nav] as [string, string]),
+    ...introRoles.flatMap((r): [string, string][] => [...(r.intro ? [[`r:${r.id}`, r.introTitle ?? r.name] as [string, string]] : []), ...(r.svc ? [[`rs:${r.id}`, 'Usługi ról'] as [string, string]] : [])]),
     ['confirm', 'Potwierdzenie'],
     ['results', 'Wyniki'],
   ]
   const idx = pages.findIndex((p) => p[0] === step)
   const needIp = selRoles.some((r) => ['DHCP', 'DNS', 'ADDS'].includes(r)) && hasDynamicIp(st)
-  const allSelRoleNames = [...selRoles.map((id) => roleOf(id)?.name ?? ROLES.flatMap((r) => r.sub ?? []).find((s) => s.id === id)?.name ?? id)]
+  const allSelRoleNames = sortedRoles.flatMap((r) => (selRoles.includes(r.id) ? [r.name, ...(r.sub ?? []).filter((q) => selRoles.includes(q.id)).map((q) => q.name)] : (r.sub ?? []).filter((q) => selRoles.includes(q.id)).map((q) => q.name)))
 
   useEffect(() => {
     if (!started || pct >= 100) return
@@ -470,22 +491,55 @@ export function AddRoles({ close }: WinProps) {
     return () => window.clearInterval(t)
   }, [started, pct])
 
-  const rows = ROLES.flatMap((r) => {
-    if (r.id !== 'FS') return [{ id: r.id, name: r.name, desc: r.desc, indent: 0 }, ...(r.sub ?? []).map((s) => ({ id: s.id, name: s.name, desc: s.desc, indent: s.indent }))]
+  const rows = sortedRoles.flatMap((r) => {
+    const sub = r.svc ? [] : (r.sub ?? []).map((s) => ({ id: s.id, name: s.name, desc: s.desc, indent: s.indent }))
+    if (r.id !== 'FS') return [{ id: r.id, name: r.name, desc: r.desc, indent: 0 }, ...sub]
     const cnt = 2 + (r.sub ?? []).filter((s) => !s.def && installed(s.id)).length
-    return [{ id: r.id, name: `${r.name} (zainstalowano ${cnt} z 12)`, desc: r.desc, indent: 0 }, ...(r.sub ?? []).map((s) => ({ id: s.id, name: s.name, desc: s.desc, indent: s.indent }))]
+    return [{ id: r.id, name: `${r.name} (Zainstalowano ${cnt} z 12)`, desc: r.desc, indent: 0 }, ...sub]
   })
+  /** a role (with the default services of the role when it has a "Usługi ról" page) */
+  const addRole = (r: RoleDef, tools: boolean) => {
+    const defs = r.svc ? (r.sub ?? []).filter((x) => x.def && !installed(x.id)).map((x) => x.id) : []
+    setSelRoles((cur) => uniq([...cur, r.id, ...defs]))
+    if (tools) setSelFeat((cur) => uniq([...cur, ...(r.req ?? []).map((q) => q.id)]))
+  }
   const toggleRole = (id: string) => {
     if (installed(id) || id === 'FS-FileServer-grp') return
-    if (selRoles.includes(id)) return setSelRoles(selRoles.filter((x) => x !== id))
-    if (id.startsWith('Web-Ftp')) {
-      // FTP is a service of the IIS role: pull in the role (and its management console) with it
-      if (!installed('IIS') && !selRoles.includes('IIS')) setSelFeat(uniq([...selFeat, 'Web-Mgmt-Console']))
-      return setSelRoles(uniq([...selRoles, ...(installed('IIS') ? [] : ['IIS']), ...(id === 'Web-Ftp-Service' ? ['Web-Ftp-Server'] : []), id]))
-    }
     const r = roleOf(id)
-    if (r?.req && !r.req.every((q) => v.features.includes(q.id))) return setAsk(r)
+    if (selRoles.includes(id)) return setSelRoles(selRoles.filter((x) => x !== id && !(r?.svc && r.sub?.some((q) => q.id === x))))
+    if (r?.req && id !== 'RAS' && !r.req.every((q) => v.features.includes(q.id))) return setAsk(r)
+    if (r?.svc) return addRole(r, false)
     setSelRoles([...selRoles, id])
+  }
+  /** the services of a role on its "Wybieranie usług ról" page; a group header carries the entries below it */
+  const subtree = (r: RoleDef, id: string) => {
+    const list = r.sub ?? []
+    const i = list.findIndex((x) => x.id === id)
+    const out = [id]
+    for (let k = i + 1; k < list.length && list[k].indent > list[i].indent; k++) out.push(list[k].id)
+    return list[i]?.group ? out : [id]
+  }
+  const toggleSvc = (r: RoleDef, id: string) => {
+    if (installed(id)) return
+    const tree = subtree(r, id)
+    if (selRoles.includes(id)) {
+      const gone = new Set([...tree, ...(r.sub ?? []).filter((q) => q.needs?.includes(id)).map((q) => q.id)])
+      return setSelRoles(selRoles.filter((x) => !gone.has(x)))
+    }
+    const sub = r.sub!.find((q) => q.id === id)!
+    if (sub.needs?.some((n) => n === 'IIS') && !installed('IIS') && !selRoles.includes('IIS')) return setAskSvc({ role: r, svc: id })
+    const need = (sub.needs ?? []).filter((n) => n !== 'IIS')
+    setSelRoles((cur) => uniq([...cur, r.id, ...tree, ...need]))
+  }
+  const acceptSvc = () => {
+    if (!askSvc) return
+    const { role, svc } = askSvc
+    const sub = role.sub!.find((q) => q.id === svc)!
+    const iis = roleOf('IIS')!
+    const defs = (iis.sub ?? []).filter((x) => x.def).map((x) => x.id)
+    setSelRoles((cur) => uniq([...cur, role.id, svc, ...(sub.needs ?? []).filter((n) => n !== 'IIS'), ...(sub.needs?.includes('IIS') && !installed('IIS') ? ['IIS', ...defs] : [])]))
+    if (tools) setSelFeat((cur) => uniq([...cur, 'RSAT-RemoteAccess', ...(sub.needs?.includes('IIS') ? ['Web-Mgmt-Console'] : [])]))
+    setAskSvc(null)
   }
   const install = () => {
     const toInstall = selRoles
@@ -496,7 +550,7 @@ export function AddRoles({ close }: WinProps) {
         ...x,
         roles: uniq([...x.roles, ...toInstall]),
         features: uniq([...x.features, ...selFeat]),
-        pending: uniq([...x.pending, ...(toInstall.includes('ADDS') && !x.domain ? ['ADDS'] : []), ...(toInstall.includes('DHCP') && !x.dhcp?.authorized ? ['DHCP'] : [])]),
+        pending: uniq([...x.pending, ...(toInstall.includes('ADDS') && !x.domain ? ['ADDS'] : []), ...(toInstall.includes('DHCP') && !x.dhcp?.authorized ? ['DHCP'] : []), ...(toInstall.includes('RAS') && !x.rras?.configured ? ['RAS'] : [])]),
       }))
     })
     setDone([...allSelRoleNames, ...selFeat.map(featureName).map((n) => n.split('\\').pop() as string)])
@@ -508,7 +562,7 @@ export function AddRoles({ close }: WinProps) {
   const next = () => setStep(pages[Math.min(pages.length - 1, idx + 1)][0])
   const back = () => setStep(pages[Math.max(0, idx - 1)][0])
   const finished = started && pct >= 100
-  const pendingNow = [...(selRoles.includes('ADDS') && !v.domain ? ['ADDS'] : []), ...(selRoles.includes('DHCP') ? ['DHCP'] : [])]
+  const pendingNow = [...(selRoles.includes('ADDS') && !v.domain ? ['ADDS'] : []), ...(selRoles.includes('DHCP') ? ['DHCP'] : []), ...(selRoles.includes('RAS') ? ['RAS'] : [])]
   const footer =
     step === 'results' ? (
       <Btn primary onClick={close}>
@@ -528,7 +582,7 @@ export function AddRoles({ close }: WinProps) {
         <Btn onClick={close}>Anuluj</Btn>
       </>
     )
-  const title = step.startsWith('r:') ? (roleOf(step.slice(2))?.name ?? '') : TITLES[step]
+  const title = step.startsWith('rs:') ? 'Wybieranie usług ról' : step.startsWith('r:') ? (roleOf(step.slice(2))?.introTitle ?? roleOf(step.slice(2))?.name ?? '') : TITLES[step]
 
   return (
     <>
@@ -555,15 +609,15 @@ export function AddRoles({ close }: WinProps) {
         )}
         {step === 'type' && (
           <div className="sv-text">
-            <p>Wybierz typ instalacji. Możesz zainstalować role i funkcje na działającym fizycznym komputerze, na maszynie wirtualnej lub na offline'owym wirtualnym dysku twardym (VHD).</p>
+            <p>Wybierz typ instalacji. Role i funkcje można zainstalować na działającym komputerze fizycznym, na maszynie wirtualnej lub na offline'owym wirtualnym dysku twardym (VHD).</p>
             <label className="w-radio sv-radio">
               <input type="radio" name="it" checked readOnly /> <b>Instalacja oparta na rolach lub oparta na funkcjach</b>
             </label>
-            <p className="sv-sub">Skonfiguruj pojedynczy serwer, dodając role, usługi ról i funkcje.</p>
+            <p className="sv-sub">Skonfiguruj pojedynczy serwer, dodając do niego role, usługi ról i funkcje.</p>
             <label className="w-radio sv-radio dis">
               <input type="radio" name="it" disabled /> <b>Instalacja usług pulpitu zdalnego</b>
             </label>
-            <p className="sv-sub">Zainstaluj wymagane usługi ról dla infrastruktury pulpitu wirtualnego (VDI), aby utworzyć wdrożenie pulpitu wirtualnego na maszynach lub sesji.</p>
+            <p className="sv-sub">Zainstaluj wymagane usługi ról Infrastruktury pulpitu wirtualnego (VDI), aby utworzyć wdrożenie pulpitów opartych na maszynach wirtualnych lub sesjach.</p>
           </div>
         )}
         {step === 'server' && (
@@ -609,7 +663,7 @@ export function AddRoles({ close }: WinProps) {
                     <div key={r.id} onMouseEnter={() => setInfo(r.desc)} onFocus={() => setInfo(r.desc)}>
                       <Check on={inst || selRoles.includes(r.id)} disabled={installed(r.id) || r.id === 'FS-FileServer-grp'} onChange={() => toggleRole(r.id)} sub={r.indent}>
                         {r.name}
-                        {ALWAYS.includes(r.id) && r.id !== 'FS' ? ' (zainstalowano)' : ''}
+                        {(installed(r.id) && r.id !== 'FS') || r.id === 'FS-FileServer-grp' ? ' (Zainstalowano)' : ''}
                       </Check>
                     </div>
                   )
@@ -634,7 +688,7 @@ export function AddRoles({ close }: WinProps) {
                     <div key={f.id} onMouseEnter={() => setInfo(f.desc)}>
                       <Check on={inst || selFeat.includes(f.id)} disabled={inst} sub={f.indent} onChange={(on) => setSelFeat(on ? [...selFeat, f.id] : selFeat.filter((x) => x !== f.id))}>
                         {f.name}
-                        {inst ? ' (zainstalowano)' : ''}
+                        {inst ? ' (Zainstalowano)' : ''}
                       </Check>
                     </div>
                   )
@@ -647,6 +701,31 @@ export function AddRoles({ close }: WinProps) {
             </aside>
           </div>
         )}
+        {step.startsWith('rs:') && (() => {
+          const r = roleOf(step.slice(3))!
+          return (
+            <div className="sv-split">
+              <div className="sv-text">
+                <p>Wybierz usługi ról do zainstalowania dla roli {r.name}.</p>
+                <b className="sv-h">Usługi ról</b>
+                <div className="sv-roles" role="tree">
+                  {(r.sub ?? []).map((q) => (
+                    <div key={q.id} onMouseEnter={() => setInfo(q.desc)} onFocus={() => setInfo(q.desc)}>
+                      <Check on={installed(q.id) || selRoles.includes(q.id)} disabled={installed(q.id)} onChange={() => toggleSvc(r, q.id)} sub={q.indent}>
+                        {q.name}
+                        {installed(q.id) ? ' (Zainstalowano)' : ''}
+                      </Check>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <aside className="sv-desc">
+                <b>Opis</b>
+                <p>{info}</p>
+              </aside>
+            </div>
+          )
+        })()}
         {step.startsWith('r:') && (
           <div className="sv-text">
             {roleOf(step.slice(2))?.intro?.map((p, i) => <p key={i}>{p}</p>)}
@@ -661,8 +740,8 @@ export function AddRoles({ close }: WinProps) {
         {step === 'confirm' && (
           <div className="sv-text">
             <p>Aby zainstalować następujące role, usługi ról lub funkcje na wybranym serwerze, kliknij przycisk Zainstaluj.</p>
-            <Check on={restart} onChange={setRestart}>
-              W razie potrzeby automatycznie uruchom ponownie serwer docelowy
+            <Check on={restart} onChange={(v) => (v ? setAutoAsk(true) : setRestart(false))}>
+              Automatycznie uruchom ponownie serwer docelowy, jeśli będzie to potrzebne
             </Check>
             <p className="sv-sub">Może być konieczne ponowne uruchomienie serwera docelowego, aby ukończyć instalację. Wybierz opcję powyżej, aby serwer uruchomił się ponownie automatycznie.</p>
             <ul className="sv-sum">
@@ -675,7 +754,7 @@ export function AddRoles({ close }: WinProps) {
               ))}
               {pendingNow.length > 0 && (
                 <li className="warn">
-                  <IcWarn size={14} /> Wymagana konfiguracja po wdrożeniu. Po instalacji uruchom kreatora konfiguracji ({pendingNow.includes('ADDS') ? 'AD DS' : 'DHCP'}).
+                  <IcWarn size={14} /> Wymagana konfiguracja po wdrożeniu. Po instalacji uruchom kreatora konfiguracji ({pendingNow.includes('ADDS') ? 'AD DS' : pendingNow.includes('DHCP') ? 'DHCP' : 'RAS'}).
                 </li>
               )}
             </ul>
@@ -721,6 +800,17 @@ export function AddRoles({ close }: WinProps) {
                       Dokończ konfigurację funkcji DHCP
                     </button>
                   )}
+                  {pendingNow.includes('RAS') && (
+                    <button
+                      className="sv-link"
+                      onClick={() => {
+                        api.open('rrasgs')
+                        close()
+                      }}
+                    >
+                      Otwórz kreatora Wprowadzenie
+                    </button>
+                  )}
                 </div>
               </div>
             )}
@@ -731,6 +821,56 @@ export function AddRoles({ close }: WinProps) {
           </div>
         )}
       </Wiz>
+      {autoAsk && (
+        <SvModal
+          title="Kreator dodawania ról i funkcji"
+          buttons={
+            <>
+              <Btn primary onClick={() => (setRestart(true), setAutoAsk(false))}>
+                Tak
+              </Btn>
+              <Btn onClick={() => setAutoAsk(false)}>Nie</Btn>
+            </>
+          }
+        >
+          <p>
+            <IcWarn size={16} /> Jeśli jest wymagane ponowne uruchomienie, ten serwer zostanie automatycznie ponownie uruchomiony bez dodatkowych powiadomień. Funkcje opcjonalne (np. narzędzia administracyjne) mogą być wyświetlane na tej stronie, ponieważ są wybierane domyślnie. Jeśli nie chcesz instalować funkcji opcjonalnych, kliknij polecenie Poprzedni, aby wyczyścić ich pola wyboru. Czy chcesz zezwolić na automatyczne ponowne uruchamianie?
+          </p>
+        </SvModal>
+      )}
+      {askSvc && (
+        <SvModal
+          title="Kreator dodawania ról i funkcji"
+          wide
+          buttons={
+            <>
+              <Btn primary onClick={acceptSvc}>
+                Dodaj funkcje
+              </Btn>
+              <Btn onClick={() => setAskSvc(null)}>Anuluj</Btn>
+            </>
+          }
+        >
+          <h3 className="sv-mh">Czy dodać funkcje wymagane przez funkcję {askSvc.role.sub!.find((q) => q.id === askSvc.svc)!.name}?</h3>
+          <p>Nie można zainstalować funkcji {askSvc.role.sub!.find((q) => q.id === askSvc.svc)!.name}, jeśli nie zostaną zainstalowane również następujące usługi ról lub funkcje.</p>
+          <ul className="sv-sum">
+            <li>{askSvc.role.name}</li>
+            <li style={{ paddingLeft: 16 }}>DirectAccess i VPN (RAS)</li>
+            <li>Narzędzia administracji serwera zdalnego</li>
+            <li style={{ paddingLeft: 16 }}>Narzędzia administracji rolami</li>
+            <li style={{ paddingLeft: 32 }}>Narzędzia do zarządzania dostępem zdalnym</li>
+            <li style={{ paddingLeft: 48 }}>[Narzędzia] Graficzny interfejs i narzędzia wiersza polecenia dostępu zdalnego</li>
+            <li style={{ paddingLeft: 48 }}>[Narzędzia] Moduł dostępu zdalnego dla programu Windows PowerShell</li>
+            <li>Serwer sieci Web (IIS)</li>
+            <li style={{ paddingLeft: 16 }}>Narzędzia zarządzania</li>
+            <li style={{ paddingLeft: 32 }}>[Narzędzia] Konsola zarządzania usługami IIS</li>
+            <li style={{ paddingLeft: 32 }}>Narzędzia i skrypty zarządzania usługami IIS</li>
+          </ul>
+          <Check on={tools} onChange={setTools}>
+            Dołącz narzędzia do zarządzania (jeśli dotyczy)
+          </Check>
+        </SvModal>
+      )}
       {ask && (
         <SvModal
           title="Kreator dodawania ról i funkcji"
@@ -739,8 +879,7 @@ export function AddRoles({ close }: WinProps) {
               <Btn
                 primary
                 onClick={() => {
-                  setSelRoles([...selRoles, ask.id])
-                  if (tools) setSelFeat(uniq([...selFeat, ...(ask.req ?? []).map((q) => q.id)]))
+                  addRole(ask, tools)
                   setAsk(null)
                 }}
               >
@@ -751,7 +890,7 @@ export function AddRoles({ close }: WinProps) {
           }
           wide
         >
-          <h3 className="sv-mh">Dodać funkcje wymagane dla {ask.name}?</h3>
+          <h3 className="sv-mh">Czy dodać funkcje wymagane przez {ask.name}?</h3>
           <p>Aby zarządzać tą funkcją, wymagane są następujące narzędzia, ale nie muszą być zainstalowane na tym samym serwerze.</p>
           <ul className="sv-sum">
             {(ask.req ?? []).map((q) => (

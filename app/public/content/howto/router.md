@@ -1,5 +1,7 @@
 # Роутер (ruter): WAN, LAN, DHCP, резервирование
 
+> В школе ZSE Rzeszów на занятиях стоит **DrayTek Vigor2927** — другое меню (LAN → General Setup, Bind IP to MAC, LAN → VLAN…). См. страницу «DrayTek Vigor2927» (`draytek`). Тренажёр переключается в *Настройки → Оборудование*.
+
 Меню как у TP-Link (классический интерфейс). После каждого изменения — **Save** (*Zapisz*).
 
 ## WAN — Network → WAN

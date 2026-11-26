@@ -10,12 +10,13 @@ import {
   addAutoQuota, addQuota, addScreen, aclRows, allPrincipals, bitsText, createShare, effAcl, fmtSize, fsrmOf, grantNtfs, has,
   inheritedFrom, ntfsBits, ownAcl, quotaInstances, removeShare, resolvePrincipal, setExplicitRows, setFsrm, setOwnAcl, shareNameError, tokenFor, userShares, usedUnder, whoLabel, type AclRow,
 } from './smb'
-import { vcopy, vdelete, vjoin, vlist, vmkdir, vwrite, type FsEnv, type VErr } from './smb-vfs'
-import { baseName, fileKey, fileSize, isDir, parentOf, resolvePath } from './fs'
+import { isNetPath, vcopy, vdelete, vjoin, vlist, vmkdir, vwrite, type FsEnv, type VErr } from './smb-vfs'
+import { baseName, fileKey, fileSize, isDir, mkdirs, parentOf, resolvePath } from './fs'
 import { cDrive } from './hwcmd'
 import { plNum } from '../hw'
 import { IcChevron, IcDrive, IcFolder, IcGroup, IcPc, IcSearch, IcUser } from './icons'
 import { Act, ListView, Mmc } from './apps-sys'
+import { useNoteSmb } from './apps-shared'
 import { isServer, srv } from './server'
 import { Btn, Chk, OkCancel, Radio, Sel, SvModal, type Node } from './sv-common'
 import { Buttons, Tabs, useLongPress, useMsg, usePc, type MenuItem, type WinProps } from './ui'
@@ -257,6 +258,7 @@ export function FsBrowser({ arg, setArg }: { arg: string; setArg: (a: string) =>
   const [dismissed, setDismissed] = useState<string | null>(null)
   const [msg, show] = useMsg()
   const list = vlist(env, path)
+  useNoteSmb(list.ok && isNetPath(st, path) ? path : null, false)
   const needCred = !list.ok && list.kind === 'login' && dismissed !== path
   const host = path.startsWith('\\\\') ? parseUnc(path)!.host : ''
   const server = isServer(st)
@@ -582,7 +584,7 @@ function EntryEditor({ init, onOk, onClose }: { init?: NtAce; onOk: (a: NtAce) =
   )
 }
 
-function AdvSec({ path, onClose }: { path: string; onClose: () => void }) {
+export function AdvSec({ path, onClose }: { path: string; onClose: () => void }) {
   const api = usePc()
   const st = api.state
   const [draft, setDraft] = useState<NtAcl>(() => ({ ...ownAcl(st, path), aces: ownAcl(st, path).aces.map((a) => ({ ...a })) }))
@@ -717,7 +719,7 @@ function AdvSec({ path, onClose }: { path: string; onClose: () => void }) {
 }
 
 // ================================================================== Udostępnianie zaawansowane
-function AdvShare({ path, onClose }: { path: string; onClose: () => void }) {
+export function AdvShare({ path, onClose }: { path: string; onClose: () => void }) {
   const api = usePc()
   const st = api.state
   const existing = userShares(st).filter((s) => low(s.path) === low(path))
@@ -1386,74 +1388,281 @@ export function SharesList({ onNew }: { onNew: () => void }) {
   )
 }
 
-/** Kreator nowego udziału (Udział SMB — szybki) */
+/** Kreator nowego udziału (Menedżer serwera → Usługi plików i magazynowania → Udziały → Zadania → Nowy udział…) */
+const PROFILES: [string, string][] = [
+  ['Udział SMB — szybki', 'Ten profil podstawowy to najszybszy sposób na skonfigurowanie udziału plików SMB. Zwykle jest odpowiedni na potrzeby ogólnego udostępniania plików komputerom z systemem Windows. Opcje udziału można skonfigurować później w oknie dialogowym Właściwości.'],
+  ['Udział SMB — zaawansowany', 'Ten profil zaawansowany udostępnia wszystkie opcje konfiguracji udziału SMB, w tym właściwości zarządzania, przydziały i klasyfikacje.'],
+  ['Udział SMB — aplikacje', 'Ten profil udziału SMB ma ustawienia odpowiednie dla aplikacji, takich jak Hyper-V lub bazy danych.'],
+  ['Udział NFS — szybki', 'Ten profil podstawowy to najszybszy sposób na skonfigurowanie udziału plików NFS dla klientów systemu UNIX. Wymaga zainstalowanego Serwera NFS.'],
+  ['Udział NFS — zaawansowany', 'Ten profil zaawansowany udostępnia wszystkie opcje konfiguracji udziału NFS. Wymaga zainstalowanego Serwera NFS.'],
+]
+const WSTEPS = ['Wybieranie profilu', 'Lokalizacja udziału', 'Nazwa udziału', 'Inne ustawienia', 'Uprawnienia', 'Potwierdzenie', 'Wyniki']
+const WTITLES = ['Wybieranie profilu dla tego udziału', 'Wybieranie serwera i ścieżki dla tego udziału', 'Określanie nowej nazwy udziału', 'Konfigurowanie ustawień udziału', 'Określanie uprawnień kontrolujących dostęp', 'Potwierdzanie wyboru', 'Wyświetl wyniki']
 export function NewShareWizard({ onClose }: { onClose: () => void }) {
   const api = usePc()
   const st = api.state
   const [step, setStep] = useState(0)
+  const [profile, setProfile] = useState(0)
+  const [byVol, setByVol] = useState(false)
   const [path, setPath] = useState('')
   const [name, setName] = useState('')
   const [desc, setDesc] = useState('')
+  const [abe, setAbe] = useState(false)
+  const [cache, setCache] = useState(true)
+  const [branch, setBranch] = useState(false)
+  const [enc, setEnc] = useState(false)
   const [err, setErr] = useState('')
-  const abs = resolvePath('C:\\', path.trim() || 'C:\\')
+  const [sec, setSec] = useState(false)
+  const [pick, setPick] = useState(false)
+  const host = st.hostname.toUpperCase()
+  const folderPath = byVol ? `C:\\Shares\\${name || '…'}` : resolvePath('C:\\', path.trim() || 'C:\\')
+  const abs = folderPath
   const next = () => {
-    if (step === 0) {
-      if (!path.trim() || !isDir(st, abs)) return setErr(`Folder „${path.trim() || '…'}” nie istnieje. Utwórz go najpierw w Eksploratorze plików.`)
-      if (!name) setName(baseName(abs) || abs[0])
-      setErr('')
-      return setStep(1)
-    }
+    setErr('')
+    if (step === 0 && profile > 2) return setErr('Nie można utworzyć udziału NFS: na tym serwerze nie jest zainstalowana rola Serwer NFS (Usługi plików i magazynowania → Serwer NFS).')
     if (step === 1) {
+      if (!byVol && !path.trim()) return setErr('Wprowadź ścieżkę niestandardową do folderu.')
+      if (!byVol && !/^[a-z]:\\/i.test(abs)) return setErr('Ścieżka musi zawierać literę dysku, na przykład C:\\Zasoby.')
+      if (!name && !byVol) setName(baseName(abs) || abs[0])
+    }
+    if (step === 2) {
       const e = shareNameError(st, name)
       if (e) return setErr(e)
-      setErr('')
-      return setStep(2)
+      // the folder is created now (as with "Nowy folder" in "Wybieranie folderu"), so that its permissions can be edited
+      if (!isDir(st, abs)) api.update((s) => mkdirs(s, abs))
     }
-    api.update((s) => createShare(s, { name: name.trim(), path: abs, ...(desc ? { desc } : {}), perms: [{ who: EVERYONE, type: 'allow', level: 'full' }] }))
-    onClose()
+    setStep(step + 1)
   }
+  const create = () => {
+    api.update((s) => createShare(s, { name: name.trim(), path: abs, ...(desc ? { desc } : {}), abe, cache, encrypt: enc, perms: [{ who: EVERYONE, type: 'allow', level: 'full' }] }))
+    setStep(6)
+  }
+  const aces = step >= 4 && isDir(st, abs) ? effAcl(st, abs) : []
+  const T = 'Kreator nowego udziału'
   return (
-    <SvModal wide title="Kreator nowego udziału" buttons={<><Btn disabled={step === 0} onClick={() => setStep(step - 1)}>&lt; Wstecz</Btn><Btn primary onClick={next}>{step === 2 ? 'Utwórz' : 'Dalej >'}</Btn><Btn onClick={onClose}>Anuluj</Btn></>}>
-      {step === 0 && (
-        <>
-          <p>
-            <b>Wybierz serwer i ścieżkę dla tego udziału</b>
-          </p>
-          <p>Profil udziału: Udział SMB — szybki</p>
-          <label className="w-field row sv-f">
-            Wpisz niestandardową ścieżkę:
-            <input className="w-input" id="ns-path" list="ns-dirs" value={path} onChange={(e) => setPath(e.target.value)} autoCapitalize="off" spellCheck={false} />
-            <datalist id="ns-dirs">{(st.dirs ?? []).map((d) => <option key={d} value={d} />)}</datalist>
-          </label>
-        </>
+    <SvModal
+      wide
+      title={T}
+      buttons={
+        step === 6 ? (
+          <Btn primary onClick={onClose}>
+            Zamknij
+          </Btn>
+        ) : (
+          <>
+            <Btn disabled={step === 0} onClick={() => setStep(step - 1)}>
+              &lt; Wstecz
+            </Btn>
+            <Btn disabled={step === 5} onClick={next}>
+              Dalej &gt;
+            </Btn>
+            <Btn primary disabled={step !== 5} onClick={create}>
+              Utwórz
+            </Btn>
+            <Btn onClick={onClose}>Anuluj</Btn>
+          </>
+        )
+      }
+    >
+      <div className="sv-split">
+        <ol className="sv-wiz-nav" aria-label="Kroki kreatora" style={{ minWidth: 120 }}>
+          {WSTEPS.map((t, i) => (
+            <li key={t} className={i === step ? 'on' : i < step ? 'done' : ''}>
+              {t}
+            </li>
+          ))}
+        </ol>
+        <div className="sv-text">
+          <h3 className="sv-mh">{WTITLES[step]}</h3>
+          {step === 0 && (
+            <div className="sv-split">
+              <div>
+                <p>Profil udziału plikowego:</p>
+                <div className="sv-lb" role="listbox" style={{ height: 120 }}>
+                  {PROFILES.map(([t], i) => (
+                    <div key={t} role="option" aria-selected={profile === i} className={profile === i ? 'on' : ''} onClick={() => setProfile(i)}>
+                      {t}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <aside className="sv-desc">
+                <b>Opis:</b>
+                <p>{PROFILES[profile][1]}</p>
+              </aside>
+            </div>
+          )}
+          {step === 1 && (
+            <>
+              <p>Serwer:</p>
+              <table className="fw-table" aria-label="Serwery">
+                <thead>
+                  <tr>
+                    <th>Nazwa serwera</th>
+                    <th>Stan</th>
+                    <th>Rola klastra</th>
+                    <th>Węzeł-właściciel</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="sel">
+                    <td>{host}</td>
+                    <td>Online</td>
+                    <td>Nieklastrowany</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>Lokalizacja udziału:</p>
+              <Radio name="ns-loc" on={byVol} onChange={() => setByVol(true)}>
+                Wybierz według woluminu:
+              </Radio>
+              <table className="fw-table" aria-label="Woluminy">
+                <thead>
+                  <tr>
+                    <th>Wolumin</th>
+                    <th>Wolne miejsce</th>
+                    <th>Pojemność</th>
+                    <th>System plików</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className={byVol ? 'sel' : ''} onClick={() => setByVol(true)}>
+                    <td>C:</td>
+                    <td>42,1 GB</td>
+                    <td>59,4 GB</td>
+                    <td>NTFS</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p className="sv-sub">Udział plików będzie nowym folderem w katalogu \Shares w wybranym woluminie.</p>
+              <Radio name="ns-loc" on={!byVol} onChange={() => setByVol(false)}>
+                Wpisz ścieżkę niestandardową:
+              </Radio>
+              <div className="sv-fillrow">
+                <input id="ns-path" className="w-input" list="ns-dirs" value={path} disabled={byVol} onChange={(e) => setPath(e.target.value)} autoCapitalize="off" spellCheck={false} />
+                <Btn disabled={byVol} onClick={() => setPick(true)}>
+                  Przeglądaj…
+                </Btn>
+                <datalist id="ns-dirs">{(st.dirs ?? []).map((d) => <option key={d} value={d} />)}</datalist>
+              </div>
+            </>
+          )}
+          {step === 2 && (
+            <>
+              <label className="w-field row sv-f">
+                Nazwa udziału:
+                <input id="ns-name" className="w-input" value={name} onChange={(e) => setName(e.target.value)} autoCapitalize="off" spellCheck={false} />
+              </label>
+              <label className="w-field row sv-f">
+                Opis udziału:
+                <textarea className="w-input" rows={3} value={desc} onChange={(e) => setDesc(e.target.value)} />
+              </label>
+              <p className="sv-sub">Ścieżka lokalna do udziału: {abs}</p>
+              <p className="sv-sub">Ścieżka zdalna do udziału: \\{host}\{name}</p>
+            </>
+          )}
+          {step === 3 && (
+            <>
+              <p>Skonfiguruj ustawienia udziału.</p>
+              <Chk on={abe} onChange={setAbe}>
+                Włącz wyliczanie oparte na dostępie
+              </Chk>
+              <p className="sv-sub">Wyliczanie oparte na dostępie powoduje wyświetlanie tylko plików i folderów, do których użytkownik ma uprawnienia dostępu. Jeśli użytkownik nie ma uprawnień Odczyt (lub równoważnych) do folderu, folder zostanie ukryty w widoku użytkownika w systemie Windows.</p>
+              <Chk on={cache} onChange={(v) => (setCache(v), !v && setBranch(false))}>
+                Zezwalaj na buforowanie udziału
+              </Chk>
+              <p className="sv-sub">Buforowanie umożliwia udostępnianie zawartości danego udziału użytkownikom w trybie offline. Jeśli użytkownik ma uprawnienia do udziału, może uzyskać dostęp do zawartości w trybie offline.</p>
+              <Chk on={branch} onChange={(v) => cache && setBranch(v)}>
+                Włącz usługę BranchCache dla udziałów plików
+              </Chk>
+              <Chk on={enc} onChange={setEnc}>
+                Szyfrowanie danych
+              </Chk>
+              <p className="sv-sub">Po włączeniu tej opcji dostęp zdalny do tego udziału będzie szyfrowany. Dzięki temu dane są chronione przed nieautoryzowanym dostępem podczas transferu danych w sieci.</p>
+            </>
+          )}
+          {step === 4 && (
+            <>
+              <p>Uprawnienia dostępu do plików w udziale są ustawiane przy użyciu kombinacji uprawnień folderu, uprawnień udziału i opcjonalnie centralnych zasad dostępu.</p>
+              <p>Uprawnienia udziału: Wszyscy: pełna kontrola</p>
+              <p>Uprawnienia folderu:</p>
+              <table className="fw-table" aria-label="Uprawnienia folderu">
+                <thead>
+                  <tr>
+                    <th>Typ</th>
+                    <th>Podmiot</th>
+                    <th>Dostęp</th>
+                    <th>Dotyczy</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {aces.map((a, i) => (
+                    <tr key={i}>
+                      <td>{a.type === 'allow' ? 'Zezwalaj' : 'Odmów'}</td>
+                      <td>{whoLabel(st, a.who)}</td>
+                      <td>{bitsText(a.bits)}</td>
+                      <td>Ten folder, podfoldery i pliki</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <Btn onClick={() => setSec(true)}>Dostosowywanie uprawnień…</Btn>
+            </>
+          )}
+          {step === 5 && (
+            <>
+              <p>Potwierdź poprawność następujących ustawień, a następnie kliknij przycisk Utwórz.</p>
+              <div className="rras-sum" style={{ maxHeight: 220 }}>
+                <b>LOKALIZACJA UDZIAŁU</b>
+                <p>Serwer: {host} • Rola klastra: Nieklastrowany • Ścieżka lokalna: {abs}</p>
+                <b>WŁAŚCIWOŚCI UDZIAŁU</b>
+                <p>Nazwa udziału: {name} • Opis: {desc} • Protokół: SMB</p>
+                <p>Wyliczanie oparte na dostępie: {abe ? 'Włączone' : 'Wyłączone'} • Buforowanie: {cache ? 'Włączone' : 'Wyłączone'} • BranchCache: {branch ? 'Włączone' : 'Wyłączone'} • Zaszyfruj dane: {enc ? 'Włączone' : 'Wyłączone'}</p>
+              </div>
+            </>
+          )}
+          {step === 6 && (
+            <>
+              <p>Pomyślnie utworzono udział.</p>
+              <table className="fw-table" aria-label="Wyniki">
+                <thead>
+                  <tr>
+                    <th>Zadanie</th>
+                    <th>Postęp</th>
+                    <th>Stan</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Utwórz udział SMB</td>
+                    <td>████████████</td>
+                    <td>Zakończono</td>
+                  </tr>
+                  <tr>
+                    <td>Ustaw uprawnienia SMB</td>
+                    <td>████████████</td>
+                    <td>Zakończono</td>
+                  </tr>
+                </tbody>
+              </table>
+            </>
+          )}
+          {err && <p className="sv-err">{err}</p>}
+        </div>
+      </div>
+      {sec && <AdvSec path={abs} onClose={() => setSec(false)} />}
+      {pick && (
+        <SvModal title="Wybieranie folderu" buttons={<OkCancel onOk={() => setPick(false)} onCancel={() => setPick(false)} okLabel="Wybierz folder" />}>
+          <div className="sv-lb" role="listbox" style={{ height: 140 }}>
+            {['C:\\', ...(st.dirs ?? [])].map((d) => (
+              <div key={d} role="option" aria-selected={path === d} className={path === d ? 'on' : ''} onClick={() => setPath(d)}>
+                {d}
+              </div>
+            ))}
+          </div>
+        </SvModal>
       )}
-      {step === 1 && (
-        <>
-          <p>
-            <b>Określ nazwę udziału</b>
-          </p>
-          <label className="w-field row sv-f">
-            Nazwa udziału:
-            <input className="w-input" id="ns-name" value={name} onChange={(e) => setName(e.target.value)} autoCapitalize="off" spellCheck={false} />
-          </label>
-          <label className="w-field row sv-f">
-            Opis udziału:
-            <input className="w-input" value={desc} onChange={(e) => setDesc(e.target.value)} />
-          </label>
-          <p className="sv-sub">Ścieżka zdalna do udziału: \\{st.hostname.toUpperCase()}\{name}</p>
-        </>
-      )}
-      {step === 2 && (
-        <>
-          <p>
-            <b>Potwierdź wybrane opcje</b>
-          </p>
-          <p>Lokalizacja udziału: {abs}</p>
-          <p>Nazwa udziału: {name}</p>
-          <p>Uprawnienia udziału: Wszyscy — Pełna kontrola (uprawnienia NTFS pozostają bez zmian)</p>
-        </>
-      )}
-      {err && <p className="sv-err">{err}</p>}
     </SvModal>
   )
 }

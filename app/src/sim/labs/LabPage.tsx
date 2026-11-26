@@ -13,6 +13,7 @@ import { canPing, defaultPcState, leaseFor, linkUp, wifiCheck, wifiScan, type De
 import { PcSim, type PcView } from '../pc/PcSim'
 import { defaultRouterState } from '../router'
 import { defaultSwitchState } from '../switch'
+import { preferredModels } from '../models'
 import type { DocRef } from '../drills/kit'
 import { D } from '../drills/docs'
 import { lKey, markSolution, markStarted, recordCheck, statusOf, SHEETS, usePractice } from '../drills/progress'
@@ -33,8 +34,9 @@ export function freshState(lab: Lab): LabSave {
   const d = lab.devices
   const s: LabSave = {
     v: 1,
-    router: d.router ? defaultRouterState(d.router) : undefined,
-    switch: d.switch ? defaultSwitchState(d.switch) : undefined,
+    // the equipment profile of the Settings page decides the model unless the lab forces one
+    router: d.router ? defaultRouterState({ model: preferredModels().router, ...d.router }) : undefined,
+    switch: d.switch ? defaultSwitchState({ model: preferredModels().switch, ...d.switch }) : undefined,
     linux: d.linux ? createLinuxState(d.linux) : undefined,
     pc: d.pc ? defaultPcState(d.pc) : undefined,
     server: d.server ? defaultServerState(d.server) : undefined,

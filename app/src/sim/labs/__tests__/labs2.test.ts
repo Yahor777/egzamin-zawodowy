@@ -101,9 +101,26 @@ const ping = (s: LabSave, L: Lab, from: 'pc' | 'server', ip: string) => {
   s.router!.staticRoutes = routes!.map((r) => ({ ...r, enabled: false }))
   expect('disabled static route → no reply', !ping(s, L, 'pc', '192.168.0.1'))
   s.router!.staticRoutes = routes
+  const rras = s.server!.server!.rras
   s.server!.server!.roles = []
   expect('server without routing role does not forward', !ping(s, L, 'pc', '192.168.0.1'))
-  s.server!.server!.roles = ['RAS']
+  s.server!.server!.roles = ['RAS', 'DirectAccess-VPN', 'Routing']
+  s.server!.server!.rras = undefined
+  expect('role installed but RRAS not configured → no forwarding', !ping(s, L, 'pc', '192.168.0.1'))
+  s.server!.server!.rras = { ...rras!, running: false }
+  expect('RRAS configured but service stopped → no forwarding', !ping(s, L, 'pc', '192.168.0.1'))
+  s.server!.server!.rras = { ...rras!, lan: false }
+  expect('RRAS without LAN routing → no forwarding', !ping(s, L, 'pc', '192.168.0.1'))
+  s.server!.server!.rras = rras
+  // static route of RRAS on the server replaces the default gateway
+  const v101 = s.server!.adapters.find((a) => a.name === 'V101')!
+  const gw = v101.gateway
+  v101.gateway = ''
+  expect('no gateway, no route → the router WAN address is unreachable', !ping(s, L, 'pc', '90.90.90.1'))
+  s.server!.server!.rras = { ...rras!, routes: [{ iface: 'eth0', dest: '90.90.90.0', mask: '255.255.255.248', gw: '192.168.0.1', metric: 1 }] }
+  expect('RRAS static route → the router WAN address is reachable', ping(s, L, 'pc', '90.90.90.1'))
+  s.server!.server!.rras = rras
+  v101.gateway = gw
   s.router!.staticRoutes = [{ ...routes![0], gateway: '192.168.0.99' }]
   expect('static route with a next hop nobody owns → no reply', !ping(s, L, 'pc', '192.168.0.1'))
 }

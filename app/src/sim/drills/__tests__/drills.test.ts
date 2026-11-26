@@ -113,6 +113,45 @@ for (const def of DRILLS) {
   }
 }
 
+// ---------- RRAS: NAT lets the inner station reach the outer side; without it (or without the service) the ping dies
+{
+  const def = DRILLS.find((d) => d.id === 'ws-rras')!
+  const seen = new Set<string>()
+  for (let seed = 1; seed < 40 && seen.size < 2; seed++) {
+    const lab = makeDrillLab(def, seed)
+    const kind = String(lab.params.kind)
+    if (seen.has(kind)) continue
+    seen.add(kind)
+    const s = fresh(lab)
+    const h = { s, lab, cmd: (...c: string[]) => s.pc!.history.push(...c) } as unknown as H
+    await SOLVE['ws-rras'](lab.params as P, h)
+    const ping = () => canPing(buildModel(lab, s), ['pc:eth0'], '192.168.0.1').ok
+    const ok = (name: string, v: boolean) => {
+      if (!v) failures++
+      console.log(`${v ? 'ok  ' : 'FAIL'} rras ${kind}: ${name}`)
+    }
+    ok('station reaches the router after the wizard', ping())
+    const rras = s.server!.server!.rras!
+    s.server!.server!.rras = { ...rras, running: false }
+    ok('service stopped → no ping', !ping())
+    s.server!.server!.rras = { ...rras, lan: false, natPub: undefined }
+    ok('no routing / NAT → no ping', !ping())
+    if (kind === 'nat') {
+      s.server!.server!.rras = { ...rras, natPub: undefined }
+      ok('routing without NAT: the router has no way back', !ping())
+      s.server!.server!.rras = { ...rras, natPub: 'eth0' }
+      ok('NAT on the inner interface → no ping', !ping())
+    } else {
+      s.server!.server!.rras = rras
+      const rt = s.router!.staticRoutes
+      s.router!.staticRoutes = []
+      ok('no route back on the router → no ping', !ping())
+      s.router!.staticRoutes = rt
+      ok('route restored → ping', ping())
+    }
+  }
+}
+
 console.log(`\n${DRILLS.length} drills`)
 if (failures) throw new Error(`${failures} drill run(s) failed`)
 console.log('ALL DRILLS OK')

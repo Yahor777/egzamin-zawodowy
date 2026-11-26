@@ -5,6 +5,8 @@ import { SwitchPage } from './pages'
 import { SWITCH_HELP } from './help'
 import { defaultSwitchState } from './defaults'
 import './switch.css'
+import { switchKind, switchTitle } from '../models'
+import { JetStreamSim } from '../jetstream'
 
 export { defaultSwitchState }
 
@@ -74,16 +76,23 @@ export interface SwitchSimProps {
   onReboot?: () => void
   /** called after the factory-default state has been committed via onChange */
   onFactoryReset?: () => void
+  /** switch ports (1…n) with a cable and link (JetStream port picture) */
+  linked?: number[]
 }
 
-export function SwitchSim({ state, onChange, embedded, onLogout, onReboot, onFactoryReset }: SwitchSimProps) {
+/** Renders the web UI of the model in `state.model` (TP-Link Easy Smart or JetStream T2500G). */
+export function SwitchSim(props: SwitchSimProps) {
+  return switchKind(props.state.model) === 'jetstream' ? <JetStreamSim {...props} /> : <EasySmartSim {...props} />
+}
+
+function EasySmartSim({ state, onChange, embedded, onLogout, onReboot, onFactoryReset }: SwitchSimProps) {
   const [page, setPage] = useState('sys-info')
-  const short = state.model.replace(/\s*\(.*\)\s*$/, '')
+  const short = switchTitle(state.model).replace(/\s*\(.*\)\s*$/, '')
   return (
     <DeviceShell
       theme="dv-theme-switch"
       idPrefix="sw"
-      model={state.model}
+      model={switchTitle(state.model)}
       deviceKind={`${state.ports}-Port Gigabit Easy Smart Switch`}
       deviceIp={state.ip.ip}
       username={state.adminUser}

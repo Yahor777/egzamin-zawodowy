@@ -3382,6 +3382,7 @@ textarea.w-input {
 .sv-wiz {
   position: relative;
   flex: 1;
+  height: min(540px, 60vh);
   min-height: 0;
   display: flex;
   flex-direction: column;
@@ -3882,3 +3883,20 @@ textarea.w-input {
   align-items: center;
   margin-bottom: 8px;
 }
+
+/* ---- Routing i dostęp zdalny ---- */
+.rras-gs { display: flex; flex-direction: column; height: 100%; background: #fff; color: #1a1a1a }
+.rras-gs-h { background: linear-gradient(#e8edf2, #cfd8e0); padding: 12px 16px; display: flex; flex-direction: column; gap: 2px }
+.rras-gs-h small { color: #444 }
+.rras-gs-b { flex: 1; padding: 14px 20px; overflow: auto; font-size: 13px }
+.rras-gs-f { padding: 10px 16px; display: flex; justify-content: flex-end; background: #f0f0f0 }
+.rras-opt { display: block; text-align: left; width: 100%; margin: 10px 0; padding: 8px 10px; background: #fff; border: 1px solid #cfe0f1; color: #1565c0; cursor: pointer; font: inherit }
+.rras-opt b { display: block; font-weight: 500; font-size: 14px }
+.rras-opt span { display: block; font-size: 11px; margin-top: 3px }
+.rras-opt:hover { background: #eaf3fc }
+.rras-mode { margin-bottom: 6px }
+.rras-mode .sv-sub { margin: 0 0 0 24px }
+.rras-sum { border: 1px solid #aaa; background: #fff; padding: 4px 8px; margin: 6px 0; max-height: 120px; overflow: auto }
+.rras-sum p { margin: 4px 0 }
+.rras-welcome h3 { margin: 4px 0 8px; font-size: 16px }
+.rras-li { margin: 2px 0 }

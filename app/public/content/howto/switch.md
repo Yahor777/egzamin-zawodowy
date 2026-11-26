@@ -1,5 +1,7 @@
 # Свитч (przełącznik zarządzalny): IP управления и VLAN 802.1Q
 
+> В школе ZSE Rzeszów стоит **TP-Link JetStream T2500G-10TS** (System IP → Management VLAN, VLAN → Port config ACCESS/GENERAL/TRUNK). См. страницу «Свитч T2500G-10TS» (`switch-t2500g`). Тренажёр переключается в *Настройки → Оборудование*.
+
 Интерфейс как у TP-Link Easy Smart (TL-SG108E). С завода: `192.168.0.1`, `admin`/`admin`, **DHCP-сервера нет** — ПК нужен статический адрес `192.168.0.x/24`.
 
 ## IP управления — System → IP Setting

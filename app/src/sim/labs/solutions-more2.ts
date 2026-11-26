@@ -1,6 +1,7 @@
 // Reference solutions of the VLAN / static-route labs (labs-more2.ts). Standalone on purpose: solutions.ts spreads
 // SOLVE_MORE2 into LAB_SOLVE, so nothing here may touch solutions.ts exports while the module is being evaluated.
 import type { LabSave } from './ctx'
+import { configureRras } from '../pc/rras'
 import type { LH, LabSteps } from './solutions'
 
 type Pc = NonNullable<LabSave['pc']>
@@ -236,7 +237,8 @@ export const SOLVE_MORE2: Record<string, LabSteps> = {
     server: ({ s }) => {
       srvAd(s, 'eth0', { name: 'V101', ...staticIp('192.168.0.3', M24, '192.168.0.1', '127.0.0.1') })
       srvAd(s, 'eth1', { name: 'V102', ...staticIp('192.168.1.1', M24, '', '127.0.0.1') })
-      s.server!.server!.roles.push('RAS')
+      s.server!.server!.roles.push('RAS', 'DirectAccess-VPN', 'Routing')
+      s.server = configureRras(s.server!, { lan: true })
       s.server!.firewallIcmp = true
     },
     pc: ({ s }) => {

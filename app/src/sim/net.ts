@@ -190,6 +190,38 @@ export interface ServerState {
   fsrm?: FsrmState
   /** built-in rule "Udostępnianie plików i drukarek (SMB — ruch przychodzący)" enabled; set when the first share is created */
   fps?: boolean
+  /** Routing i dostęp zdalny (rrasmgmt.msc); missing = not configured */
+  rras?: RrasState
+  /** SMB sessions of the clients that have connected to this server (Zarządzanie komputerem → Foldery udostępnione → Sesje / Otwarte pliki) */
+  smbSessions?: SmbSession[]
+}
+
+export interface SmbSession {
+  /** client computer name and address */
+  computer: string
+  ip: string
+  /** account the session runs as (NETBIOS\login or SERVER\login) */
+  user: string
+  /** shares used by the session */
+  shares: string[]
+  /** connected since (ms) */
+  since: number
+  /** files open over this session (full local paths on the server) */
+  files: string[]
+}
+
+/** Routing i dostęp zdalny: the wizard "Konfiguruj i włącz…" has been run, the service runs, what it routes */
+export interface RrasState {
+  configured: boolean
+  running: boolean
+  /** IPv4 routing between the interfaces (Routing sieci LAN) */
+  lan: boolean
+  /** adapter id of the NAT public interface (Translator adresów sieciowych); missing = no NAT */
+  natPub?: string
+  /** adapter ids of NAT private interfaces */
+  natPriv?: string[]
+  /** IPv4 → Trasy statyczne (adapter id of the interface, destination, mask, gateway, metric) */
+  routes: { iface: string; dest: string; mask: string; gw: string; metric: number }[]
 }
 
 /** NTFS access mask bits: read data (RD), write/create (WR), list folder (LS), delete (DEL), change permissions (ACL) */
@@ -212,6 +244,12 @@ export interface SmbShare {
   desc?: string
   /** maximum number of simultaneous users; missing = the maximum allowed */
   limit?: number
+  /** Kreator nowego udziału → Konfigurowanie ustawień udziału (access-based enumeration, caching, encryption); display only */
+  abe?: boolean
+  cache?: boolean
+  encrypt?: boolean
+  /** published in Active Directory (Właściwości → Publikowanie) */
+  published?: boolean
   perms: { who: string; type: 'allow' | 'deny'; level: 'full' | 'change' | 'read' }[]
 }
 export interface FsrmQuotaTpl {
@@ -331,6 +369,12 @@ export interface IisSite {
   /** FTP authorization rules */
   rules?: { who: string; perm: string }[]
   ssl?: string
+  /** FTP published on this web site ("Dodaj publikację FTP…"): the FTP binding is in `bindings`, its settings here */
+  ftp?: { ssl: string; auth: { anonymous: boolean; basic: boolean }; rules: { who: string; perm: string }[] }
+  /** Przekierowanie HTTP */
+  redirect?: { url: string; exact: boolean; childOnly: boolean; status: 301 | 302 | 307 }
+  /** Autoryzacja adresów URL: rules, first match wins (new rules go on top), no rules = everybody */
+  urlAuth?: { type: 'allow' | 'deny'; who: 'all' | 'anon' | 'roles' | 'users'; value?: string }[]
 }
 export interface IisState {
   pools: IisPool[]
@@ -459,6 +503,12 @@ export interface NetworkModel {
 
 export const devOf = (p: PortId) => p.split(':')[0] as DeviceKey
 
+/** A Windows Server routes between its interfaces only when Routing i dostęp zdalny is configured and running (role service Routing installed). */
+export const serverForwards = (pc?: PcState): boolean => {
+  const v = pc?.server
+  return !!v && v.roles.includes('RAS') && v.roles.includes('Routing') && !!v.rras?.configured && v.rras.running && v.rras.lan
+}
+
 /** Is the device powered (and finished booting)? */
 export function isOn(m: NetworkModel, d: DeviceKey): boolean {
   return m.power?.[d] !== false
@@ -481,6 +531,18 @@ function adapterOf(m: NetworkModel, port: PortId): PcAdapter | undefined {
 
 // ---------------- Wi-Fi ----------------
 const WIFI_BANDS = ['wifi24', 'wifi5'] as const
+type RouterWifiBandRef = { ssid: string; security: string; password: string; broadcastSsid: boolean }
+/** every enabled SSID the router sends: SSID1 of each radio + (DrayTek) SSID2…SSID4 */
+function wifiSsids(r: RouterState): RouterWifiBandRef[] {
+  const out: RouterWifiBandRef[] = []
+  for (const b of WIFI_BANDS) {
+    const band = r[b]
+    if (!band.enabled) continue
+    out.push(band)
+    for (const x of band.more ?? []) if (x.enabled && x.ssid) out.push(x)
+  }
+  return out
+}
 export interface WifiNet {
   ssid: string
   secured: boolean
@@ -492,9 +554,8 @@ export function wifiScan(m: NetworkModel): WifiNet[] {
   const r = m.router
   if (!r || !isOn(m, 'router')) return []
   const out: WifiNet[] = []
-  for (const b of WIFI_BANDS) {
-    const band = r[b]
-    if (band.enabled && band.broadcastSsid && band.ssid && !out.some((x) => x.ssid === band.ssid))
+  for (const band of wifiSsids(r)) {
+    if (band.broadcastSsid && band.ssid && !out.some((x) => x.ssid === band.ssid))
       out.push({ ssid: band.ssid, secured: band.security !== 'none', security: band.security === 'none' ? 'Otwarta' : band.security === 'wpa3-sae' ? 'WPA3' : band.security === 'wpa-wpa2-psk' ? 'WPA/WPA2' : 'WPA2' })
   }
   return out
@@ -504,19 +565,15 @@ export function wifiScan(m: NetworkModel): WifiNet[] {
 export function wifiBand(m: NetworkModel, a: PcAdapter): RouterWifiBandRef | null {
   const r = m.router
   if (!r || !isOn(m, 'router') || !a.enabled || !a.wifi) return null
-  for (const b of WIFI_BANDS) {
-    const band = r[b]
-    if (band.enabled && band.ssid === a.wifi.ssid && (band.security === 'none' || band.password === a.wifi.password)) return band
-  }
+  for (const band of wifiSsids(r)) if (band.ssid === a.wifi.ssid && (band.security === 'none' || band.password === a.wifi.password)) return band
   return null
 }
-type RouterWifiBandRef = NonNullable<NetworkModel['router']>['wifi24']
 
 /** Try to join `ssid` with `password` (hidden networks can be joined by typing the name). */
 export function wifiCheck(m: NetworkModel, ssid: string, password: string): { ok: boolean; message?: string } {
   const r = m.router
   if (!r || !isOn(m, 'router')) return { ok: false, message: 'Nie można połączyć się z tą siecią.' }
-  const band = WIFI_BANDS.map((b) => r[b]).find((b) => b.enabled && b.ssid === ssid)
+  const band = wifiSsids(r).find((b) => b.ssid === ssid)
   if (!band) return { ok: false, message: 'Nie można połączyć się z tą siecią.' }
   if (band.security !== 'none' && band.password !== password) return { ok: false, message: 'Nieprawidłowy klucz zabezpieczeń sieci. Spróbuj ponownie.' }
   return { ok: true }
@@ -537,7 +594,8 @@ export function linkUp(m: NetworkModel, port: PortId): boolean {
   return isOn(m, devOf(port)) && isOn(m, devOf(peer)) && switchPortEnabled(m, port) && switchPortEnabled(m, peer)
 }
 
-const ROUTER_LAN_PORTS = ['router:lan1', 'router:lan2', 'router:lan3', 'router:lan4']
+/** lan1…lan6: the TP-Link has 4 LAN ports, the DrayTek Vigor2927 P1…P5 (+ P6 when WAN2 is turned into a LAN port) */
+const ROUTER_LAN_PORTS = ['router:lan1', 'router:lan2', 'router:lan3', 'router:lan4', 'router:lan5', 'router:lan6']
 
 /** Router VLAN bridge node: VLAN 1 is the LAN interface itself. */
 const routerBridge = (id: number) => (id === 1 ? 'router:lan-if' : `router:vlan${id}`)
@@ -567,7 +625,7 @@ export function buildDomains(m: NetworkModel, opts: { ignoreVlans?: boolean } = 
     }
     if (rv && ROUTER_LAN_PORTS.includes(port)) {
       const i = ROUTER_LAN_PORTS.indexOf(port)
-      for (const v of rv.vlans) if (v.ports[i] === 'tagged') t.set(v.id, routerBridge(v.id))
+      for (const v of rv.vlans) if (v.ports[i] === 'tagged') t.set(v.tag ?? v.id, routerBridge(v.id))
     }
     return t
   }
@@ -600,10 +658,15 @@ export function buildDomains(m: NetworkModel, opts: { ignoreVlans?: boolean } = 
       const vlan = sw.dot1q && !opts.ignoreVlans ? sw.pvid[i] : 1
       const v = sw.vlans.find((x) => x.id === vlan)
       const member = !sw.dot1q || opts.ignoreVlans || (v && v.members[i] !== 'none')
-      if (member) union(`switch:${i + 1}`, `switch:vlan${vlan}`)
+      // JetStream GENERAL port with PVID 1 that is an untagged (UNTAG egress) member of other VLANs too — the "Internet port"
+      // of the ZSE lessons: the upstream device is seen by every such VLAN, but no longer by the default VLAN 1 (which keeps
+      // the management interface isolated from it). Simplification: this bridges those VLANs together.
+      const shared = sw.dot1q && !opts.ignoreVlans && sw.linkType?.[i] === 'general' && sw.pvid[i] === 1 ? sw.vlans.filter((v) => v.id !== 1 && v.members[i] === 'untagged') : []
+      if (member && !shared.length) union(`switch:${i + 1}`, `switch:vlan${vlan}`)
+      for (const v of shared) union(`switch:${i + 1}`, `switch:vlan${v.id}`)
     }
-    // management interface lives in VLAN 1
-    union('switch:mgmt', 'switch:vlan1')
+    // management interface lives in VLAN 1 unless "Management VLAN" (System IP) says otherwise
+    union('switch:mgmt', `switch:vlan${sw.dot1q ? (sw.mgmtVlan ?? 1) : 1}`)
   }
   // Wi-Fi stations that joined the router's network sit in its LAN (VLAN 1)
   if (m.router && isOn(m, 'router'))
@@ -732,40 +795,64 @@ function staticNextHop(n: Net, target: string): string | null {
   return best?.gw ?? null
 }
 
+/** Longest-prefix static route of Routing i dostęp zdalny on the Windows Server. */
+function serverNextHop(pc: PcState | undefined, target: string): string | null {
+  let best: { gw: string; prefix: number; metric: number } | null = null
+  for (const r of pc?.server?.rras?.routes ?? []) {
+    const p = maskToPrefix(r.mask)
+    if (p === null || ipToInt(r.dest) === null || !sameSubnet(r.dest, target, p)) continue
+    if (!best || p > best.prefix || (p === best.prefix && r.metric < best.metric)) best = { gw: r.gw, prefix: p, metric: r.metric }
+  }
+  return best?.gw ?? null
+}
+
+/** A forwarded packet leaving the server through its NAT public interface gets that interface's address as the source. */
+function natOut(n: Net, dev: DeviceKey, inIf: Endpoint | null, outIf: Endpoint): Endpoint | undefined {
+  if (dev !== 'server' || !inIf) return undefined
+  const pub = n.m.server?.server?.rras?.natPub
+  return pub && n.m.forwarders?.server && outIf.port === `server:${pub}` ? outIf : undefined
+}
+
 /** One-way delivery from the sending device to the endpoint owning `target`; returns that endpoint and the sender's endpoint used. */
-function walk(n: Net, origin: Endpoint[], target: string): { dst: Endpoint; src: Endpoint } | null {
+function walk(n: Net, origin: Endpoint[], target: string): { dst: Endpoint; src: Endpoint; nat?: Endpoint } | null {
   let dev = origin[0].device
   let ifs = origin
   let arrived: Endpoint | null = null
   let src: Endpoint | null = null
+  let nat: Endpoint | undefined
   const seen = new Set<string>()
   for (let hop = 0; hop < 12; hop++) {
     // the packet reached a device that owns the address
     if (arrived) {
       const own = ifs.find((e) => e.addrs.some((a) => a.ip === target))
-      if (own) return { dst: own, src: src! }
+      if (own) return { dst: own, src: src!, nat }
     }
     // 1) on-link delivery
     for (const i of ifs)
       for (const e of n.eps)
-        if (e.device !== dev && e.addrs.some((a) => a.ip === target) && direct(n, i, e, target) && mayForward(n, dev, arrived, i)) return { dst: e, src: src ?? i }
+        if (e.device !== dev && e.addrs.some((a) => a.ip === target) && direct(n, i, e, target) && mayForward(n, dev, arrived, i)) return { dst: e, src: src ?? i, nat: nat ?? natOut(n, dev, arrived, i) }
     // 2) next hop: static route (router), else default gateway
-    const cand: { via: Endpoint; ip: string }[] = []
+    const cand: { via: Endpoint; ip: string; out: Endpoint }[] = []
     const hopIps: { ip: string; from: Endpoint[] }[] = []
     if (dev === 'router') {
       const gw = staticNextHop(n, target)
+      if (gw) hopIps.push({ ip: gw, from: ifs })
+    }
+    if (dev === 'server' && n.m.server?.server?.rras?.running) {
+      const gw = serverNextHop(n.m.server, target)
       if (gw) hopIps.push({ ip: gw, from: ifs })
     }
     for (const i of ifs) if (i.gateway && !(dev === 'router' && i.port !== 'router:wan')) hopIps.push({ ip: i.gateway, from: [i] })
     for (const h of hopIps)
       for (const i of h.from)
         for (const e of n.eps)
-          if (e.device !== dev && e.addrs.some((a) => a.ip === h.ip) && direct(n, i, e, h.ip) && mayForward(n, dev, arrived, i)) cand.push({ via: e, ip: h.ip })
+          if (e.device !== dev && e.addrs.some((a) => a.ip === h.ip) && direct(n, i, e, h.ip) && mayForward(n, dev, arrived, i)) cand.push({ via: e, ip: h.ip, out: i })
     const next = cand[0]
     if (!next) return null
     const key = `${next.via.device}|${next.ip}`
     if (seen.has(key)) return null
     seen.add(key)
+    nat = nat ?? natOut(n, dev, arrived, next.out)
     if (!src) src = origin.find((i) => i.addrs.some((a) => sameSubnet(a.ip, next.ip, a.prefix))) ?? origin[0]
     arrived = next.via
     dev = next.via.device
@@ -783,10 +870,10 @@ function roundTrip(m: NetworkModel, domains: Map<PortId, string>, eps: Endpoint[
   const n: Net = { m, domains, eps }
   const out = walk(n, froms, target)
   if (!out) return null
-  const srcIp = out.src.addrs.find((a) => a.ip !== target)?.ip ?? out.src.addrs[0].ip
+  const srcIp = (out.nat ?? out.src).addrs.find((a) => a.ip !== target)?.ip ?? (out.nat ?? out.src).addrs[0].ip
   const dev = out.dst.device
   const back = walk(n, eps.filter((e) => e.device === dev && e.port !== out.src.port), srcIp)
-  return back && back.dst.device === out.src.device ? out.dst : null
+  return back && back.dst.device === (out.nat ?? out.src).device ? out.dst : null
 }
 
 /** Two powered devices with the same IP in one L2 segment. */

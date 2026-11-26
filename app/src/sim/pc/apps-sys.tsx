@@ -31,6 +31,7 @@ import { Devmgmt } from './apps-hw'
 import { FsBrowser, isPathArg, normPath, ThisPcDrives, thisPcCount } from './apps-files'
 import { HOME } from './fs'
 import { fpsOn } from './smb'
+import { useSharedFolders } from './apps-shared'
 import { Buttons, Group, Tabs, useLongPress, useMsg, usePc, type MenuItem, type WinProps } from './ui'
 
 // ---------------- MMC shell ----------------
@@ -41,7 +42,22 @@ interface Node {
   depth: number
 }
 
-export function Mmc({ nodes, cur, onNode, children, actions, title }: { nodes: Node[]; cur: string; onNode: (id: string) => void; children: ReactNode; actions: ReactNode; title: string }) {
+function TreeNode({ n, cur, onNode, menu }: { n: Node; cur: string; onNode: (id: string) => void; menu?: MenuItem[] }) {
+  const api = usePc()
+  const lp = useLongPress((x, y) => {
+    onNode(n.id)
+    if (menu?.length) api.menuAt(x, y, menu)
+  })
+  return (
+    <button role="treeitem" aria-selected={cur === n.id} className={`mmc-node ${cur === n.id ? 'on' : ''}`} style={{ paddingLeft: 6 + n.depth * 14, ['--d' as string]: n.depth }} onClick={() => onNode(n.id)} {...(menu?.length ? lp : {})}>
+      {n.icon}
+      <span>{n.label}</span>
+    </button>
+  )
+}
+
+/** `nodeMenu`: right-click (long press on touch) menu of a node in the console tree */
+export function Mmc({ nodes, cur, onNode, children, actions, title, nodeMenu }: { nodes: Node[]; cur: string; onNode: (id: string) => void; children: ReactNode; actions: ReactNode; title: string; nodeMenu?: (id: string) => MenuItem[] }) {
   const api = usePc()
   return (
     <div className={`mmc ${api.compact ? 'compact' : ''}`}>
@@ -76,10 +92,7 @@ export function Mmc({ nodes, cur, onNode, children, actions, title }: { nodes: N
         {!api.compact && (
           <div className="mmc-tree" role="tree">
             {nodes.map((n) => (
-              <button key={n.id} role="treeitem" aria-selected={cur === n.id} className={`mmc-node ${cur === n.id ? 'on' : ''}`} style={{ paddingLeft: 6 + n.depth * 14, ['--d' as string]: n.depth }} onClick={() => onNode(n.id)}>
-                {n.icon}
-                <span>{n.label}</span>
-              </button>
+              <TreeNode key={n.id} n={n} cur={cur} onNode={onNode} menu={nodeMenu?.(n.id)} />
             ))}
           </div>
         )}
@@ -922,10 +935,16 @@ export function LocalUsers({ arg, full }: WinProps & { full?: boolean }) {
   const [node, setNode] = useState(arg === 'groups' ? 'groups' : full ? 'root' : 'users')
   const [sel, setSel] = useState<string | null>(null)
   const [msg, show] = useMsg()
+  const shNode = (node.startsWith('sh:') || node === 'shared' ? node : 'shared') as 'sh:shares' | 'sh:sessions' | 'sh:files' | 'shared'
+  const sh = useSharedFolders(shNode)
   const nodes: Node[] = full
     ? [
         { id: 'root', label: 'Zarządzanie komputerem (lokalne)', icon: <IcMgmt size={16} />, depth: 0 },
         { id: 'tools', label: 'Narzędzia systemowe', icon: <IcSystem size={14} />, depth: 1 },
+        { id: 'shared', label: 'Foldery udostępnione', icon: <IcFolder size={14} />, depth: 2 },
+        { id: 'sh:shares', label: 'Udziały', icon: <IcFolder size={14} />, depth: 3 },
+        { id: 'sh:sessions', label: 'Sesje', icon: <IcFolder size={14} />, depth: 3 },
+        { id: 'sh:files', label: 'Otwarte pliki', icon: <IcFolder size={14} />, depth: 3 },
         { id: 'lusr', label: 'Użytkownicy i grupy lokalne', icon: <IcUsers size={14} />, depth: 2 },
         { id: 'users', label: 'Użytkownicy', icon: <IcFolder size={14} />, depth: 3 },
         { id: 'groups', label: 'Grupy', icon: <IcFolder size={14} />, depth: 3 },
@@ -977,6 +996,7 @@ export function LocalUsers({ arg, full }: WinProps & { full?: boolean }) {
           <Act onClick={() => api.open('newgroup')}>Nowa grupa...</Act>
         </>
       )}
+      {(node.startsWith('sh:') || node === 'shared') && sh.actions}
       {sel && node === 'users' && findUser(st, sel) && (
         <>
           <div className="mmc-act-g sel">{sel}</div>
@@ -1026,9 +1046,11 @@ export function LocalUsers({ arg, full }: WinProps & { full?: boolean }) {
         />
       )}
       {(node === 'root' || node === 'tools') && <p className="mmc-empty">Wybierz element w drzewie konsoli: Narzędzia systemowe › Użytkownicy i grupy lokalne.</p>}
+      {(node.startsWith('sh:') || node === 'shared') && sh.center}
       {node === 'devmgmt' && <Devmgmt />}
       {(node === 'disk' || node === 'svc') && <p className="mmc-empty">Ta przystawka nie jest dostępna w symulatorze.</p>}
       {msg}
+      {sh.dialogs}
     </Mmc>
   )
 }

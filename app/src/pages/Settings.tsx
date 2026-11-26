@@ -4,6 +4,7 @@ import { useT } from '../lib/i18n'
 import { canCompress } from '../lib/codec'
 import { DEFAULT_EXAM, resetExam, setExam, today, useExam, validDay, daysBetween } from '../lib/settings'
 import { resetProgress, setLang, useLang } from '../lib/store'
+import { setHwProfile, useHwProfile } from '../sim/models'
 import { exportCode, importCode, type ImportResult } from '../lib/transfer'
 
 export function Settings() {
@@ -19,6 +20,7 @@ export function Settings() {
 
   const ru = lang === 'ru'
   const exam = useExam()
+  const hw = useHwProfile()
   const [withLabs, setWithLabs] = useState(false)
   const [busy, setBusy] = useState(false)
 
@@ -61,6 +63,27 @@ export function Settings() {
             Polski
           </button>
         </div>
+      </div>
+      <div className="panel">
+        <h2>{ru ? 'Оборудование в тренажёрах' : 'Sprzęt w symulatorach'}</h2>
+        <p className="muted">
+          {ru
+            ? 'Какие роутер и свитч ставить в новые задания, листы и «Стол»: как в школе ZSE Rzeszów (DrayTek Vigor2927 + TP-Link JetStream T2500G-10TS — с ними идут занятия PSK) или домашние TP-Link (WR840N + SG108E). Задание может явно потребовать своё оборудование.'
+            : 'Jakie urządzenia wstawiać do nowych zadań: jak w ZSE Rzeszów (DrayTek + JetStream) albo TP-Link.'}
+        </p>
+        <div className="row">
+          <button className={`btn ${hw === 'school' ? 'primary' : ''}`} aria-pressed={hw === 'school'} onClick={() => setHwProfile('school')}>
+            {ru ? 'Как в моей школе: DrayTek + TP-Link T2500G' : 'Jak w mojej szkole: DrayTek + T2500G'}
+          </button>
+          <button className={`btn ${hw === 'tplink' ? 'primary' : ''}`} aria-pressed={hw === 'tplink'} onClick={() => setHwProfile('tplink')}>
+            {ru ? 'TP-Link: WR840N + SG108E' : 'TP-Link: WR840N + SG108E'}
+          </button>
+        </div>
+        <p className="muted small">
+          {ru
+            ? 'Действует на новые попытки. Уже начатые задания и сохранённые столы остаются со старым оборудованием — чтобы сменить, сбрось задание («Заново»).'
+            : 'Dotyczy nowych podejść; zapisane zadania zachowują swoje urządzenia.'}
+        </p>
       </div>
       <div className="panel">
         <h2>{ru ? 'Даты экзамена и время на учёбу' : 'Daty egzaminu i czas nauki'}</h2>

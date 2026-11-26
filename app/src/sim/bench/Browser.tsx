@@ -3,12 +3,13 @@
 // whose code matches the real cause. The Russian "Почему?" diagnostic and the address helper are
 // hidden behind an optional "Подсказка" button (the student types the address himself).
 import { useEffect, useRef, useState } from 'react'
-import { ipToInt, linkUp, pcAddress, sameSubnet, type NetworkModel, type PcState } from '../net'
+import { canPing, ipToInt, linkUp, pcAddress, sameSubnet, type NetworkModel, type PcState } from '../net'
+import { routerTitle, switchTitle } from '../models'
 import { RouterSim } from '../router'
 import { SwitchSim } from '../switch'
 import type { RouterState, SwitchState } from '../types'
 import { SitePage, titleOf } from './SitePage'
-import { addressBook, browse, DEV_RU, type BrowseResult, type PcKey, type WebDevice } from './diagnose'
+import { addressBook, browse, DEV_RU, routerHosts, type BrowseResult, type PcKey, type WebDevice } from './diagnose'
 import type { Station } from './station'
 import { useCompact } from './useCompact'
 import './browser.css'
@@ -90,8 +91,8 @@ export function Browser({ st, pcKey, pc, router, switch: sw, printer, onRouter, 
 
   let title = 'Nowa karta'
   if (nav && loading) title = r?.host ?? 'Ładowanie…'
-  else if (device === 'router') title = router?.model ?? 'Router'
-  else if (device === 'switch') title = sw?.model ?? 'Switch'
+  else if (device === 'router') title = routerTitle(router?.model)
+  else if (device === 'switch') title = switchTitle(sw?.model)
   else if (device === 'printer') title = 'Drukarka — stan'
   else if (site) title = titleOf(site, r?.host ?? '')
   else if (r) title = r.host
@@ -218,12 +219,12 @@ export function Browser({ st, pcKey, pc, router, switch: sw, printer, onRouter, 
         ) : device === 'router' && router ? (
           <>
             {r?.conflict && <ConflictBar r={r} />}
-            <RouterSim key={ep('router')} state={router} onChange={onRouter} embedded onReboot={() => st.reboot('router')} onFactoryReset={() => st.factoryReset('router')} />
+            <RouterSim key={ep('router')} state={router} onChange={onRouter} embedded onReboot={() => st.reboot('router')} onFactoryReset={() => st.factoryReset('router')} hosts={routerHosts(st.model)} linked={['wan', 'lan1', 'lan2', 'lan3', 'lan4', 'lan5', 'lan6'].filter((p) => linkUp(st.model, `router:${p}`))} ping={(ip) => canPing(st.model, 'router:lan-if', ip).ok} />
           </>
         ) : device === 'switch' && sw ? (
           <>
             {r?.conflict && <ConflictBar r={r} />}
-            <SwitchSim key={ep('switch')} state={sw} onChange={onSwitch} embedded onReboot={() => st.reboot('switch')} onFactoryReset={() => st.factoryReset('switch')} />
+            <SwitchSim key={ep('switch')} state={sw} onChange={onSwitch} embedded onReboot={() => st.reboot('switch')} onFactoryReset={() => st.factoryReset('switch')} linked={Array.from({ length: sw.ports }, (_, i) => i + 1).filter((p) => linkUp(st.model, `switch:${p}`))} />
           </>
         ) : device === 'printer' && printer ? (
           <PrinterPage ip={printer.ip} prefix={printer.prefix} />

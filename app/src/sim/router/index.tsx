@@ -4,6 +4,9 @@ import { DeviceLayout, DeviceShell, type MenuItem } from './shell'
 import { RouterPage } from './pages'
 import { ROUTER_HELP } from './help'
 import './router.css'
+import { routerKind, routerTitle } from '../models'
+import { DrayTekSim } from '../draytek'
+import type { Host } from '../draytek/pages'
 
 export { defaultRouterState } from './defaults'
 
@@ -139,17 +142,28 @@ export interface RouterSimProps {
   onReboot?: () => void
   /** called after the factory-default state has been committed via onChange */
   onFactoryReset?: () => void
+  /** hosts the router sees on its LAN (DrayTek ARP / DHCP tables); default: state.clients */
+  hosts?: Host[]
+  /** router ports with a cable and link, e.g. ['wan', 'lan1'] (DrayTek front panel) */
+  linked?: string[]
+  /** ping from the router (DrayTek Diagnostics → Ping Diagnosis) */
+  ping?: (ip: string) => boolean
 }
 
-export function RouterSim({ state, onChange, embedded, onLogout, onReboot, onFactoryReset }: RouterSimProps) {
+/** Renders the web UI of the model in `state.model` (TP-Link WR840N-like or DrayTek Vigor2927). */
+export function RouterSim(props: RouterSimProps) {
+  return routerKind(props.state.model) === 'draytek' ? <DrayTekSim {...props} /> : <TpLinkRouterSim {...props} />
+}
+
+function TpLinkRouterSim({ state, onChange, embedded, onLogout, onReboot, onFactoryReset }: RouterSimProps) {
   const [page, setPage] = useState('status')
   const [notice, setNotice] = useState('')
-  const short = state.model.replace(/\s*\(.*\)\s*$/, '')
+  const short = routerTitle(state.model).replace(/\s*\(.*\)\s*$/, '')
   return (
     <DeviceShell
       theme="dv-theme-router"
       idPrefix="rt"
-      model={state.model}
+      model={routerTitle(state.model)}
       deviceKind="300Mbps Wireless N Router"
       deviceIp={state.lan.ip}
       username={state.adminUser ?? 'admin'}
@@ -163,7 +177,7 @@ export function RouterSim({ state, onChange, embedded, onLogout, onReboot, onFac
       renderApp={(api) => (
         <DeviceLayout
           idPrefix="rt"
-          model={state.model}
+          model={routerTitle(state.model)}
           subtitle={`300Mbps Wireless N Router · Model No. ${short}`}
           menu={ROUTER_MENU}
           page={page}
