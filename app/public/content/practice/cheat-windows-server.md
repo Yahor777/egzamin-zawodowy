@@ -237,7 +237,7 @@ New-FsrmQuota -Path "C:\DOKUMENTY" -Size 100MB
 
 ## 9. GPO (`gpmc.msc`)
 
-*Las → Domeny → egzamin.local* → ПКМ на OU (или на домене = «korzeń domeny») → **Utwórz obiekt GPO w tej domenie i połącz go tutaj…** → имя → ПКМ на GPO → **Edytuj**. На станции: `gpupdate /force`, проверка `gpresult /r`.
+*Las → Domeny → egzamin.local* → ПКМ на OU (или на домене = «korzeń domeny») → **Utwórz obiekt zasad grupy w tej domenie i umieść tu link…** → имя → ПКМ на GPO → **Edytuj**. На станции: `gpupdate /force`, проверка `gpresult /r`.
 
 | Что просят | Путь в Edytor zarządzania zasadami grupy |
 |---|---|

@@ -163,7 +163,7 @@ function serverLines(a: PcState | undefined, b: PcState | undefined, clientCmds:
   const g1 = gpoOf(b)
   for (const g of g1.gpos.filter((g) => !g0.gpos.some((x) => x.id === g.id))) {
     set(`gpmc.msc → Obiekty zasad grupy → Nowy: ${g.name}`)
-    for (const l of g1.links.filter((l) => l.gpo === g.id)) set(`gpmc.msc → ПКМ на ${l.target === 'domain' ? 'домене' : `OU ${l.target.slice(3)}`} → Połącz istniejący obiekt GPO → ${g.name}`)
+    for (const l of g1.links.filter((l) => l.gpo === g.id)) set(`gpmc.msc → ПКМ на ${l.target === 'domain' ? 'домене' : `OU ${l.target.slice(3)}`} → Połącz z istniejącym obiektem zasad grupy → ${g.name}`)
     for (const [id, v] of Object.entries(g.settings)) set(`Edytuj ${g.name} → ${polOf(id)?.name ?? id}: ${v.state === 'enabled' ? 'Włączone' : 'Wyłączone'}${v.v?.path ? ` — ${v.v.path}` : ''}`)
     for (const d of g.drives) set(`Edytuj ${g.name} → Konfiguracja użytkownika → Preferencje → Mapowania dysków → Nowy: litera ${d.letter}:, lokalizacja ${d.path}, akcja Utwórz`)
   }

@@ -4,7 +4,7 @@ GPO действует на объекты **внутри** контейнера
 
 ## 1. Создание и связывание
 
-`gpmc.msc` → *Las* → *Domeny* → домен → ПКМ на OU → **Utwórz obiekt GPO w tej domenie i połącz go tutaj…** → имя. ПКМ на GPO → **Edytuj…**
+`gpmc.msc` → *Las* → *Domeny* → домен → ПКМ на OU → **Utwórz obiekt zasad grupy w tej domenie i umieść tu link…** → имя. ПКМ на GPO → **Edytuj…**
 
 ## 2. Где настройки
 

@@ -165,7 +165,7 @@ export const WS_SCENARIOS: WsScenario[] = [
     doc: '9. GPO (`gpmc.msc`)',
     steps: [
       { pl: 'Umieść plik logo.jpg w udostępnionym folderze (\\\\SERWER\\tapeta$), uprawnienie Odczyt dla użytkowników', ru: 'Путь к обоям должен быть UNC, доступный пользователям.' },
-      { pl: 'gpmc.msc → PPM na OU Uczniowie → Utwórz obiekt GPO w tej domenie i połącz go tutaj… → nazwa', ru: 'GPO привязываем к OU, где лежат пользователи.' },
+      { pl: 'gpmc.msc → PPM na OU Uczniowie → Utwórz obiekt zasad grupy w tej domenie i umieść tu link… → nazwa', ru: 'GPO привязываем к OU, где лежат пользователи.' },
       { pl: 'PPM na GPO → Edytuj', ru: 'Открывается Edytor zarządzania zasadami grupy.' },
       { pl: 'Konfiguracja użytkownika → Zasady → Szablony administracyjne → Pulpit → Pulpit → Tapeta pulpitu = Włączone, nazwa \\\\SERWER\\tapeta$\\logo.jpg', ru: 'Обои — настройка ПОЛЬЗОВАТЕЛЯ.' },
       { pl: '… Panel sterowania → Personalizacja → Uniemożliwiaj zmianę tła pulpitu = Włączone', ru: 'Запрет смены обоев.' },

@@ -119,3 +119,15 @@ Get-FsrmQuota ; Get-FsrmFileScreen
 * «Tylko dla…» без *Wyłącz dziedziczenie* — лишние записи SYSTEM / Użytkownicy остаются.
 * Ввёл логин без домена (`jkowalski` вместо `FIRMA\jkowalski`) на клиенте не из домена.
 * Проверяешь с самого сервера (`C:\Dane`) — это NTFS без udziału; проверка должна идти **с клиента** по `\\IP\udział`.
+
+## Menedżer serwera → Nowy udział… («Kreator nowego udziału»)
+
+*Menedżer serwera* → **Usługi plików i magazynowania** → **Udziały** → *Zadania* → **Nowy udział…**. Страницы мастера: **Wybieranie profilu** (*Udział SMB — szybki* — нужный; NFS без роли *Serwer NFS* недоступен) → **Lokalizacja udziału** (*Wybierz według woluminu* — папка `C:\Shares\имя` создаётся сама, либо **Wpisz ścieżkę niestandardową**) → **Nazwa udziału** (nazwa, opis; «ścieżka zdalna» `\\SERWER\nazwa`; `$` в конце = скрытый) → **Inne ustawienia** (*wyliczanie oparte na dostępie*, *buforowanie*, *BranchCache*, *szyfrowanie danych*) → **Uprawnienia** (кнопка **Dostosowywanie uprawnień…** = «Zaawansowane ustawienia zabezpieczeń»: *Wyłącz dziedziczenie* → *Dodaj* → *Wybierz podmiot zabezpieczeń*) → **Potwierdzenie** → **Utwórz** → **Wyniki**.
+
+## Zarządzanie komputerem → Foldery udostępnione
+
+`compmgmt.msc` (*Narzędzia → Zarządzanie komputerem*) → *Narzędzia systemowe* → **Foldery udostępnione**:
+
+* **Udziały** — список: администрати­вные **ADMIN$**, **C$**, **IPC$** (и ваши), колонка *Liczba połączeń klienta*. ПКМ → **Nowy udział…** (мастер *Kreator tworzenia folderu udostępnionego*: **Ścieżka folderu** → если папки нет, «Czy chcesz ją utworzyć?» → **Nazwa, opis i ustawienia** → **Uprawnienia do folderu udostępnionego**: 4 готовых варианта + *Dostosowywanie uprawnień*). ПКМ на udziale → **Właściwości**: *Ogólne* (**Limit użytkowników**: *Zezwalaj tylu użytkownikom*), *Publikowanie* (*Publikuj ten udział w usłudze Active Directory*), *Uprawnienia udziału*, *Zabezpieczenia* (NTFS). **Zatrzymaj udostępnianie** — снять общий доступ.
+* **Sesje** — кто сейчас подключён (*Użytkownik, Komputer, Typ, Liczba otwartych plików, Czas połączenia*). Сессия появляется, когда клиент открыл `\\сервер\udział` в Проводнике (или диск подключён по `net use`). **Otwarte pliki** — какие файлы открыты (например, файл открыт в Notatniku через udział).
+

@@ -3381,7 +3381,7 @@ textarea.w-input {
 /* ---------- wizards ---------- */
 .sv-wiz {
   position: relative;
-  flex: 1;
+  flex: none;
   height: min(540px, 60vh);
   min-height: 0;
   display: flex;
@@ -3900,3 +3900,17 @@ textarea.w-input {
 .rras-sum p { margin: 4px 0 }
 .rras-welcome h3 { margin: 4px 0 8px; font-size: 16px }
 .rras-li { margin: 2px 0 }
+
+/* Menedżer serwera 2022: pulpit powitalny (pomarańczowe bloki po lewej) */
+.sv-w-body { grid-template-columns: 112px minmax(0, 1fr) !important; }
+.sv.compact .sv-w-body { grid-template-columns: 70px minmax(0, 1fr) !important; }
+.sv-w-side { display: flex; flex-direction: column; min-height: 230px }
+.sv-w-side > div { color: #fff; font-size: 9.5px; font-weight: 600; letter-spacing: 0.5px; padding: 6px 8px; display: flex; align-items: flex-end }
+.sv-w-side .a { flex: 1.6; background: #f26b21 }
+.sv-w-side .b { flex: 1; background: #f4883e }
+.sv-w-side .c { flex: 1; background: #f7a24d }
+.sv-qs.big { color: #1469b5 !important; font-size: 18px; font-weight: 300; margin-bottom: 4px }
+.sv-qs.big:hover { background: rgba(0, 120, 215, 0.08) !important }
+.sv-qs .sv-qs-n { background: #9a9a9a; border-radius: 50%; width: 20px; height: 20px; font-size: 12px }
+.sv-qs.big .sv-qs-n { background: #f26b21; color: #fff; width: 26px; height: 26px; font-size: 15px }
+.sv-w-m { padding-left: 24px }

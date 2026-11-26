@@ -166,7 +166,7 @@ export function DnsManager(_p: WinProps) {
   )
 }
 
-// ---------------- Kreator nowej strefy ----------------
+// ---------------- Kreator nowych stref ----------------
 function ZoneWizard({ reverse, dc, domain, zones, onClose, onOk }: { reverse: boolean; dc: boolean; domain: string; zones: DnsZone[]; onClose: () => void; onOk: (z: Partial<DnsZone> & { name: string }) => void }) {
   const [step, setStep] = useState('welcome')
   const [kind, setKind] = useState<'primary' | 'secondary' | 'stub'>('primary')
@@ -183,7 +183,7 @@ function ZoneWizard({ reverse, dc, domain, zones, onClose, onOk }: { reverse: bo
   const zoneName = reverse && !byName ? (reverseZoneName(netId) ?? '') : name.trim().toLowerCase()
   const steps = ['welcome', 'type', ...(useAd ? ['scope'] : []), ...(reverse ? ['revtype'] : []), 'name', ...(!useAd ? ['file'] : []), 'dyn', 'finish']
   const idx = steps.indexOf(step)
-  const titles: Record<string, string> = { welcome: 'Kreator nowej strefy', type: 'Typ strefy', scope: 'Zakres replikacji strefy usługi Active Directory', revtype: 'Nazwa strefy wyszukiwania wstecznego', name: reverse ? 'Nazwa strefy wyszukiwania wstecznego' : 'Nazwa strefy', file: 'Plik strefy', dyn: 'Aktualizacja dynamiczna', finish: 'Kończenie pracy Kreatora nowej strefy' }
+  const titles: Record<string, string> = { welcome: 'Kreator nowych stref - Zapraszamy!', type: 'Typ strefy', scope: 'Zakres replikacji strefy usługi Active Directory', revtype: 'Nazwa strefy wyszukiwania wstecznego', name: reverse ? 'Nazwa strefy wyszukiwania wstecznego' : 'Nazwa strefy', file: 'Plik strefy', dyn: 'Aktualizacja dynamiczna', finish: 'Kończenie pracy Kreatora nowych stref' }
   const next = () => {
     setErr('')
     if (step === 'type' && kind !== 'primary') return setErr('Strefy dodatkowe i zastępcze nie są obsługiwane w tym symulatorze. Wybierz „Strefa podstawowa”.')
@@ -203,7 +203,7 @@ function ZoneWizard({ reverse, dc, domain, zones, onClose, onOk }: { reverse: bo
   const dynOpts = (useAd ? (['secure', 'nonsecure', 'none'] as const) : (['nonsecure', 'none'] as const))
   return (
     <SvModal
-      title="Kreator nowej strefy"
+      title="Kreator nowych stref"
       wide
       buttons={
         <>
@@ -224,10 +224,10 @@ function ZoneWizard({ reverse, dc, domain, zones, onClose, onOk }: { reverse: bo
       }
     >
       <h3 className="sv-mh">{titles[step]}</h3>
-      {step === 'welcome' && <p>Ten kreator pomaga w utworzeniu nowej strefy dla serwera DNS.</p>}
+      {step === 'welcome' && <><p>Ten kreator pomaga utworzyć nową strefę dla serwera DNS.</p><p>Strefa dokonuje translacji nazw systemu DNS na dotyczące ich dane, takie jak adresy IP lub usługi sieciowe.</p><p>Aby kontynuować, kliknij przycisk Dalej.</p></>}
       {step === 'type' && (
         <>
-          <p>Wybierz typ strefy, którą chcesz utworzyć.</p>
+          <p>Wybierz typ strefy, którą chcesz utworzyć:</p>
           <Radio name="zt" on={kind === 'primary'} onChange={() => setKind('primary')}>
             Strefa podstawowa
           </Radio>
@@ -238,7 +238,7 @@ function ZoneWizard({ reverse, dc, domain, zones, onClose, onOk }: { reverse: bo
             Strefa zastępcza
           </Radio>
           <Chk on={useAd} onChange={setAd}>
-            Przechowuj strefę w usłudze Active Directory (dostępne tylko wtedy, gdy serwer DNS jest zapisywalnym kontrolerem domeny)
+            Przechowuj strefę w usłudze Active Directory (dostępne, jeśli serwer DNS jest zapisywalnym kontrolerem domeny)
           </Chk>
           {!dc && <p className="sv-sub">Serwer nie jest kontrolerem domeny — pole jest nieaktywne.</p>}
         </>
@@ -313,7 +313,7 @@ function ZoneWizard({ reverse, dc, domain, zones, onClose, onOk }: { reverse: bo
       )}
       {step === 'finish' && (
         <>
-          <p>Ukończono pracę Kreatora nowej strefy. Określono następujące ustawienia:</p>
+          <p>Praca Kreatora nowych stref została zakończona pomyślnie. Określono następujące ustawienia:</p>
           <div className="sv-review">
             <p>Nazwa: {zoneName}</p>
             <p>Typ: {useAd ? 'Podstawowa w usłudze Active Directory' : 'Podstawowa'}</p>

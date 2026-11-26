@@ -137,7 +137,7 @@ export function windowsDhcpServers(srvPc: PcState | undefined): DhcpServer[] {
         end: sc.end,
         mask: prefixToMask(sc.prefix),
         gateway: sc.router,
-        dns: sc.dns ? [sc.dns] : [],
+        dns: sc.dns ? sc.dns.split(/[,;\s]+/).filter(Boolean) : [],
         reservations: sc.reservations.filter((r) => ipToInt(r.ip) !== null),
         excl: sc.excl,
         ...(sc.dnsDomain ? { domain: sc.dnsDomain } : {}),

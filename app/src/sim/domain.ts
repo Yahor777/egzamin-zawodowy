@@ -7,7 +7,7 @@ import { curIp, fwProfiles } from './pc/model'
 import { dnsOf, resolveIp, resolveName, serverFqdn } from './pc/dns'
 import { gpoOf, POLICIES } from './pc/gpo'
 import { adOf, hasRole, srv, withSrv } from './pc/server'
-import { iisOf, IIS_START_HTM } from './pc/iis'
+import { iisOf, IIS_START_HTM, urlAuthAllows } from './pc/iis'
 import { children, isDir, readFile, resolvePath } from './pc/fs'
 
 export type NetKey = 'pc' | 'laptop' | 'server'
@@ -443,7 +443,7 @@ function iisFile(srvPc: PcState, full: string): string | null {
   return null
 }
 
-export function serveHttp(srvPc: PcState, r: HttpReq): HttpOutcome {
+export function serveHttp(srvPc: PcState, r: HttpReq, hops = 0): HttpOutcome {
   if (!hasRole(srvPc, 'IIS')) return { kind: 'refused' }
   const iis = iisOf(srvPc)
   const want = r.https ? 'https' : 'http'
@@ -465,6 +465,23 @@ export function serveHttp(srvPc: PcState, r: HttpReq): HttpOutcome {
     return err(503, 0, 'Service Unavailable', 'Usługa jest niedostępna.', ['Pula aplikacji witryny jest zatrzymana.'], ['Uruchom pulę aplikacji w Menedżerze IIS (Pule aplikacji → Uruchom).'], 'HTTP.sys', '—', '0x00000000')
   if (!site.auth.anonymous && !site.auth.basic && !site.auth.windows) return err(401, 2, 'Unauthorized', 'Brak uprawnień do wyświetlenia tego katalogu lub strony przy użyciu podanych poświadczeń.', ['Wszystkie metody uwierzytelniania są wyłączone.'], ['Włącz uwierzytelnianie anonimowe w Menedżerze IIS (Uwierzytelnianie).'], 'AnonymousAuthenticationModule', 'StaticFile', '0x80070005')
   if (!site.auth.anonymous) return err(401, 2, 'Unauthorized', 'Brak uprawnień do wyświetlenia tego katalogu lub strony przy użyciu podanych poświadczeń.', ['Uwierzytelnianie anonimowe jest wyłączone, a przeglądarka nie podała poświadczeń.'], ['Włącz uwierzytelnianie anonimowe lub zaloguj się.'], 'WindowsAuthenticationModule', 'StaticFile', '0x80070005')
+  // Autoryzacja adresów URL (role service Web-Url-Auth): the request of the bench browser is anonymous
+  if (hasRole(srvPc, 'Web-Url-Auth') && !urlAuthAllows(site)) return err(401, 2, 'Unauthorized', 'Nie masz uprawnień do wyświetlenia tej strony: reguła autoryzacji adresów URL odmawia dostępu.', ['Reguła odmowy w funkcji Autoryzacja adresów URL dotyczy użytkowników anonimowych (lub wszystkich użytkowników).'], ['Usuń regułę odmowy albo dodaj regułę zezwalającą dla właściwych użytkowników (Menedżer IIS → witryna → Autoryzacja adresów URL).'], 'UrlAuthorizationModule', 'StaticFile', '0x80070005')
+  // Przekierowanie HTTP (role service Web-Http-Redirect)
+  if (site.redirect?.url && hasRole(srvPc, 'Web-Http-Redirect')) {
+    const rd = site.redirect
+    const rel0 = decodeURIComponent(r.path.split(/[?#]/)[0] || '/')
+    const query = /\?.*$/.exec(r.path)?.[0] ?? ''
+    const depthOk = !rd.childOnly || rel0.replace(/^\/+|\/+$/g, '').split('/').filter(Boolean).length <= 1
+    if (depthOk) {
+      const target = rd.exact ? rd.url : `${rd.url.replace(/\/+$/, '')}${rel0 === '/' ? '' : rel0}${query}`
+      const t = parseUrl(target)
+      const mine = srvPc.adapters.some((a) => (a.dhcp ? a.lease?.ip : a.ip) === t.host) || norm(t.host) === norm(srvPc.hostname) || t.host === r.host.toLowerCase() || t.host === 'localhost'
+      if (mine && hops < 6) return serveHttp(srvPc, { ...r, host: t.host === 'localhost' ? r.host : t.host, ip: t.host === 'localhost' ? r.ip : ipOfHost(srvPc, t.host, r.ip), port: t.port, path: t.path, https: t.scheme === 'https' }, hops + 1)
+      const code = rd.status === 301 ? 'Stałe (301)' : rd.status === 307 ? 'Tymczasowe (307)' : 'Znalezione (302)'
+      return { kind: 'page', site: site.name, plain: false, url: target, html: `<!DOCTYPE html><html><head><title>${t.host}</title></head><body style="font-family:Segoe UI,Arial,sans-serif;padding:32px"><h2>Przekierowanie HTTP — ${code}</h2><p>Przeglądarka została przekierowana do:</p><p><b>${target}</b></p><p style="color:#666">Serwer IIS odpowiedział nagłówkiem Location. Ten adres nie jest dostępny na stanowisku, więc nie można wyświetlić jego zawartości.</p></body></html>` }
+    }
+  }
   const notFound = (path: string) => err(404, 0, 'Not Found', 'Szukany zasób został usunięty, zmieniono jego nazwę lub jest tymczasowo niedostępny.', ['Katalog lub plik nie istnieje na serwerze.', 'Plik jest w innym katalogu niż ścieżka fizyczna witryny.'], ['Utwórz zawartość: zapisz plik (np. index.html) w ścieżce fizycznej witryny.', 'Sprawdź ścieżkę fizyczną witryny w Ustawieniach podstawowych.'], 'IIS Web Core', 'StaticFile', '0x80070002', path)
   if (!isDir(srvPc, dir) && !/^c:\\inetpub\\wwwroot$/i.test(dir)) return notFound(dir)
   const rel = decodeURIComponent(r.path.split(/[?#]/)[0] || '/')
@@ -486,6 +503,8 @@ export function serveHttp(srvPc: PcState, r: HttpReq): HttpOutcome {
   if (t === null) return notFound(file)
   return { kind: 'page', site: site.name, html: t, plain: !isHtml(file), url }
 }
+
+const ipOfHost = (_srvPc: PcState, host: string, fallback: string) => (/^\d+\.\d+\.\d+\.\d+$/.test(host) ? host : fallback)
 
 /** split "http://host:8080/dir/x.htm?q" */
 export function parseUrl(input: string): { scheme: 'http' | 'https'; host: string; port: number; path: string } {

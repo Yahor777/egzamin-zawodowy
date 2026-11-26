@@ -317,21 +317,17 @@ export function ServerManager({ arg, setArg }: WinProps) {
               <div className="sv-welcome">
                 <div className="sv-w-h">MENEDŻER SERWERA — ZAPRASZAMY!</div>
                 <div className="sv-w-body">
-                  <div className="sv-w-l">
-                    <div className="sv-w-ql">SZYBKI START</div>
-                    {tile(1, 'Konfiguruj ten serwer lokalny', () => setArg('local'), true)}
+                  <div className="sv-w-side" aria-hidden="true">
+                    <div className="a">SZYBKI START</div>
+                    <div className="b">CO NOWEGO</div>
+                    <div className="c">DOWIEDZ SIĘ WIĘCEJ</div>
                   </div>
                   <div className="sv-w-m">
+                    {tile(1, 'Konfiguruj ten serwer lokalny', () => setArg('local'), true)}
                     {tile(2, 'Dodaj role i funkcje', () => api.open('srvroles'))}
                     {tile(3, 'Dodaj inne serwery do zarządzania', () => void show('Menedżer serwera', 'Do tego ćwiczenia jest dostępny tylko serwer lokalny.', 'info'))}
                     {tile(4, 'Utwórz grupę serwerów', () => void show('Menedżer serwera', 'Do tego ćwiczenia jest dostępny tylko serwer lokalny.', 'info'))}
                     {tile(5, 'Połącz ten serwer z usługami w chmurze', () => void show('Menedżer serwera', 'Usługi w chmurze nie są dostępne w symulatorze.', 'info'))}
-                  </div>
-                  <div className="sv-w-r">
-                    <div className="sv-w-ql">DOWIEDZ SIĘ WIĘCEJ</div>
-                    <span className="sv-link-static">Nowości</span>
-                    <span className="sv-link-static">Rozpoczynanie pracy</span>
-                    <span className="sv-link-static">Online — Centrum zasobów</span>
                   </div>
                 </div>
               </div>
@@ -890,7 +886,7 @@ export function AddRoles({ close }: WinProps) {
           }
           wide
         >
-          <h3 className="sv-mh">Czy dodać funkcje wymagane przez {ask.name}?</h3>
+          <h3 className="sv-mh">Czy dodać funkcje wymagane przez funkcję {ask.name}?</h3>
           <p>Aby zarządzać tą funkcją, wymagane są następujące narzędzia, ale nie muszą być zainstalowane na tym samym serwerze.</p>
           <ul className="sv-sum">
             {(ask.req ?? []).map((q) => (

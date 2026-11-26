@@ -56,3 +56,14 @@ a img { border:none }
 </html>
 `
 export const IIS_DIRS = ['C:\\inetpub', 'C:\\inetpub\\wwwroot', 'C:\\inetpub\\logs']
+
+/** the default rule of Autoryzacja adresów URL on a new site */
+export const URL_AUTH_DEFAULT: NonNullable<IisSite['urlAuth']> = [{ type: 'allow', who: 'all' }]
+export const urlAuthRules = (s: IisSite) => s.urlAuth ?? URL_AUTH_DEFAULT
+export const URL_WHO = { all: 'Wszyscy użytkownicy', anon: 'Wszyscy anonimowi użytkownicy', roles: 'Określone role lub grupy użytkowników', users: 'Określeni użytkownicy' } as const
+export const REDIRECT_CODES: [301 | 302 | 307, string][] = [[301, 'Stałe (301)'], [302, 'Znalezione (302)'], [307, 'Tymczasowe (307)']]
+/** an anonymous request (the Edge of the bench has no credentials): first rule that matches decides; no match = allowed */
+export function urlAuthAllows(s: IisSite): boolean {
+  for (const r of urlAuthRules(s)) if (r.who === 'all' || r.who === 'anon') return r.type === 'allow'
+  return true
+}

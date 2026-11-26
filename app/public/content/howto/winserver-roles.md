@@ -44,3 +44,7 @@
 - **Konfiguracja użytkownika → Zasady → Szablony administracyjne**: Panel sterowania, обои, regedit, cmd, Menedżer zadań, меню Пуск.
 - **Konfiguracja użytkownika → Preferencje → Ustawienia systemu Windows → Mapowania dysków**: сетевые диски.
 - Не GPO, а свойства учётки: «nie może zmienić hasła», профиль, часы входа.
+
+## Страницы мастера «Kreator dodawania ról i funkcji» (WS 2022)
+
+*Zanim rozpoczniesz* → *Wybieranie typu instalacji* → *Wybieranie serwera docelowego* → *Wybieranie ról serwera* → *Wybieranie funkcji* → страница роли (описание) → **Wybieranie usług ról** (только у ролей с «службами ролей») → *Potwierdzanie opcji instalacji* → *Postęp instalacji*. Службы ролей: **Dostęp zdalny** → *DirectAccess i VPN (RAS)*, **Routing**, *Serwer proxy aplikacji sieci Web*; **Serwer sieci Web (IIS)** → *Wspólne funkcje HTTP* (в т. ч. **Przekierowanie HTTP**), *Zabezpieczenia* (в т. ч. **Autoryzacja adresów URL**), *Serwer FTP → Usługa FTP*. Окно «Czy dodać funkcje wymagane przez funkcję …?» → **Dodaj funkcje**. Если после установки в Menedżerze serwera жёлтый треугольник — открой флажок (⚑): *Dokończ konfigurację funkcji DHCP*, *Podnieś poziom tego serwera do kontrolera domeny*, *Otwórz kreatora Wprowadzenie* (Dostęp zdalny → RRAS, см. «Windows Server: RRAS»).

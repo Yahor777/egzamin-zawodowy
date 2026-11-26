@@ -3,14 +3,14 @@ import { useState, type ReactNode } from 'react'
 import type { IisBinding, IisSite, IisState } from '../net'
 import { Act, ListView, Mmc } from './apps-sys'
 import { IcFolder, IcGlobe, IcMgmt } from './icons'
-import { bindingConflict, bindingError, bindingInfo, conflictMsg, DUP_BINDING_MSG, iisOf } from './iis'
+import { bindingConflict, bindingError, bindingInfo, conflictMsg, DUP_BINDING_MSG, iisOf, REDIRECT_CODES, URL_WHO, urlAuthRules } from './iis'
 import { hasRole, srv, withSrv } from './server'
 import { Btn, Chk, Field, OkCancel, Radio, Sel, SvModal, type Node } from './sv-common'
 import { useMsg, usePc, type MenuItem, type WinProps } from './ui'
 
 type Msg = ReturnType<typeof useMsg>[1]
-type Dlg = { k: 'web' } | { k: 'ftp' } | { k: 'bind'; id: number } | { k: 'basic'; id: number } | { k: 'addDoc'; id: number } | { k: 'rule'; id: number }
-type Feat = 'docs' | 'browse' | 'auth' | 'ftpauth' | 'ftprules'
+type Dlg = { k: 'web' } | { k: 'ftp' } | { k: 'ftppub'; id: number } | { k: 'bind'; id: number } | { k: 'basic'; id: number } | { k: 'addDoc'; id: number } | { k: 'rule'; id: number } | { k: 'uarule'; id: number; type: 'allow' | 'deny' }
+type Feat = 'docs' | 'browse' | 'auth' | 'ftpauth' | 'ftprules' | 'redirect' | 'urlauth'
 const MSG = 'Menedżer internetowych usług informacyjnych (IIS)'
 
 const TILES: [Feat | '', string, string, string][] = [
@@ -25,6 +25,8 @@ const TILES: [Feat | '', string, string, string][] = [
   ['', 'Mapowania obsługi', 'O', '#4a8a8a'],
   ['', 'Moduły', 'Mo', '#7a8a4a'],
 ]
+const REDIRECT_TILE: [Feat, string, string, string] = ['redirect', 'Przekierowanie HTTP', '↪', '#3a8a5a']
+const URLAUTH_TILE: [Feat, string, string, string] = ['urlauth', 'Autoryzacja adresów URL', 'U', '#7a5aa6']
 const FTP_TILES: [Feat | '', string, string, string][] = [
   ['ftpauth', 'Uwierzytelnianie FTP', '🔑', '#2d6cb5'],
   ['ftprules', 'Reguły autoryzacji FTP', 'A', '#2e8b57'],
@@ -33,6 +35,12 @@ const FTP_TILES: [Feat | '', string, string, string][] = [
   ['', 'Ograniczenia adresów IP FTP', 'I', '#b24a4a'],
   ['', 'Komunikaty FTP', 'K', '#7a6aa6'],
 ]
+
+/** FTP settings of a site: an FTP site keeps them on the site, an FTP publication of a web site in `ftp` */
+const ftpAuthOf = (s: IisSite) => (s.kind === 'ftp' ? s.auth : (s.ftp?.auth ?? { anonymous: false, basic: false }))
+const ftpRulesOf = (s: IisSite) => (s.kind === 'ftp' ? (s.rules ?? []) : (s.ftp?.rules ?? []))
+const withFtpAuth = (s: IisSite, key: 'anonymous' | 'basic', on: boolean): IisSite => (s.kind === 'ftp' ? { ...s, auth: { ...s.auth, [key]: on } } : { ...s, ftp: { ssl: 'Bez protokołu SSL', rules: [], ...s.ftp, auth: { ...ftpAuthOf(s), [key]: on } } })
+const withFtpRules = (s: IisSite, rules: { who: string; perm: string }[]): IisSite => (s.kind === 'ftp' ? { ...s, rules } : { ...s, ftp: { ssl: 'Bez protokołu SSL', auth: { anonymous: false, basic: false }, ...s.ftp, rules } })
 
 export function IisManager(_p: WinProps) {
   const api = usePc()
@@ -78,9 +86,11 @@ export function IisManager(_p: WinProps) {
     else void show(MSG, `Przeglądarka nie jest dostępna w tym ćwiczeniu. Otwórz ręcznie adres http://${s.bindings[0]?.host || 'localhost'}:${s.bindings[0]?.port ?? 80}.`, 'info')
   }
   const siteMenu = (s: IisSite): MenuItem[] => [
-    { label: s.running ? 'Zatrzymaj' : 'Uruchom', onClick: () => (s.running ? stop(s) : void start(s)) },
+    { label: s.running ? 'Zarządzanie witryną sieci Web › Zatrzymaj' : 'Zarządzanie witryną sieci Web › Uruchom', onClick: () => (s.running ? stop(s) : void start(s)) },
+    { label: 'Zarządzanie witryną sieci Web › Ustawienia zaawansowane...', onClick: () => void show('Ustawienia zaawansowane', `(Ogólne)\nIdentyfikator: ${s.id}\nNazwa: ${s.name}\nPoświadczenia ścieżki fizycznej:\nPowiązania: ${s.bindings.map((b) => `${b.type}:${b.ip}:${b.port}`).join(', ')}\nPula aplikacji: ${s.pool}\nŚcieżka fizyczna: ${s.path}\nTyp logowania poświadczeń ścieżki fizycznej: ClearText\nWłączone protokoły: ${[...new Set(s.bindings.map((b) => b.type === 'https' ? 'http' : b.type))].join(',')}`, 'info') },
     { label: 'Edytuj powiązania...', onClick: () => setDlg({ k: 'bind', id: s.id }) },
     { label: 'Podstawowe ustawienia...', onClick: () => setDlg({ k: 'basic', id: s.id }) },
+    ...(s.kind === 'http' && !s.ftp ? [{ label: 'Dodaj publikację FTP...', onClick: () => pubFtp(s) }] : []),
     { sep: true },
     { label: 'Usuń', onClick: () => void del(s) },
   ]
@@ -88,6 +98,10 @@ export function IisManager(_p: WinProps) {
     { label: 'Dodaj witrynę sieci Web...', onClick: () => setDlg({ k: 'web' }) },
     { label: 'Dodaj witrynę FTP...', onClick: () => addFtp() },
   ]
+  const pubFtp = (s: IisSite) => {
+    if (!hasRole(st, 'Web-Ftp-Service')) return void show(MSG, 'Usługa FTP nie jest zainstalowana na tym serwerze. Zainstaluj ją w Menedżerze serwera: Dodaj role i funkcje → Serwer sieci Web (IIS) → Serwer FTP → Usługa FTP.', 'warn')
+    setDlg({ k: 'ftppub', id: s.id })
+  }
   const addFtp = () => {
     if (!hasRole(st, 'Web-Ftp-Service')) return void show(MSG, 'Usługa FTP nie jest zainstalowana na tym serwerze. Zainstaluj ją w Menedżerze serwera: Dodaj role i funkcje → Serwer sieci Web (IIS) → Serwer FTP → Usługa FTP.', 'warn')
     setDlg({ k: 'ftp' })
@@ -103,13 +117,23 @@ export function IisManager(_p: WinProps) {
           {siteMenu(site).filter((m) => !m.sep).map((m) => <Act key={m.label} onClick={m.onClick}>{m.label}</Act>)}
           {site.running && <Act onClick={() => (stop(site), void start(site))}>Uruchom ponownie</Act>}
           {feat === 'docs' && <DocActs site={site} sel={sel} patch={patch} setSel={setSel} add={() => setDlg({ k: 'addDoc', id: site.id })} />}
+          {feat === 'urlauth' && (
+            <>
+              <div className="mmc-act-g sel">Autoryzacja adresów URL</div>
+              <Act onClick={() => setDlg({ k: 'uarule', id: site.id, type: 'allow' })}>Dodaj regułę zezwalania...</Act>
+              <Act onClick={() => setDlg({ k: 'uarule', id: site.id, type: 'deny' })}>Dodaj regułę odmowy...</Act>
+              <Act disabled={!sel?.startsWith('u:')} onClick={() => (patch(site.id, (x) => ({ ...x, urlAuth: urlAuthRules(x).filter((_, i) => i !== Number(sel!.slice(2))) })), setSel(null))}>
+                Usuń
+              </Act>
+            </>
+          )}
           {(feat === 'browse' || feat === 'auth' || feat === 'ftpauth') && (
             <FeatActs feat={feat} site={site} sel={sel} patch={patch} />
           )}
           {feat === 'ftprules' && (
             <>
               <Act onClick={() => setDlg({ k: 'rule', id: site.id })}>Dodaj regułę zezwalającą...</Act>
-              {sel?.startsWith('x:') && <Act onClick={() => patch(site.id, (x) => ({ ...x, rules: (x.rules ?? []).filter((_, i) => i !== Number(sel.slice(2))) }))}>Usuń</Act>}
+              {sel?.startsWith('x:') && <Act onClick={() => patch(site.id, (x) => withFtpRules(x, ftpRulesOf(x).filter((_, i) => i !== Number(sel.slice(2)))))}>Usuń</Act>}
             </>
           )}
         </>
@@ -169,7 +193,13 @@ export function IisManager(_p: WinProps) {
         <div className="mm-pane">
           <h3>{site.name} Strona główna</h3>
           <div className="iis-sec">{site.kind === 'ftp' ? 'FTP' : 'IIS'}</div>
-          {tiles(site.kind === 'ftp' ? FTP_TILES : TILES, true)}
+          {tiles(site.kind === 'ftp' ? FTP_TILES : [...TILES, ...(hasRole(st, 'Web-Http-Redirect') ? [REDIRECT_TILE] : []), ...(hasRole(st, 'Web-Url-Auth') ? [URLAUTH_TILE] : [])], true)}
+          {site.kind === 'http' && site.ftp && (
+            <>
+              <div className="iis-sec">FTP</div>
+              {tiles(FTP_TILES, true)}
+            </>
+          )}
         </div>
       )}
       {site && feat && (
@@ -186,7 +216,20 @@ export function IisManager(_p: WinProps) {
       {dlg?.k === 'bind' && <Bindings site={iis.sites.find((s) => s.id === dlg.id)!} serverIp={ipOf(st)} onClose={() => setDlg(null)} onOk={(b) => patch(dlg.id, (s) => ({ ...s, bindings: b }))} />}
       {dlg?.k === 'basic' && <BasicSettings site={iis.sites.find((s) => s.id === dlg.id)!} pools={iis.pools.map((p) => p.name)} onClose={() => setDlg(null)} onOk={(n, pool, path) => patch(dlg.id, (s) => ({ ...s, name: n, pool, path }))} />}
       {dlg?.k === 'addDoc' && <AddDoc onClose={() => setDlg(null)} onOk={(n) => patch(dlg.id, (s) => ({ ...s, docs: s.docs.some((d) => d.toLowerCase() === n.toLowerCase()) ? s.docs : [n, ...s.docs] }))} />}
-      {dlg?.k === 'rule' && <FtpRule onClose={() => setDlg(null)} onOk={(r) => patch(dlg.id, (s) => ({ ...s, rules: [...(s.rules ?? []), r] }))} />}
+      {dlg?.k === 'rule' && <FtpRule onClose={() => setDlg(null)} onOk={(r) => patch(dlg.id, (s) => withFtpRules(s, [...ftpRulesOf(s), r]))} />}
+      {dlg?.k === 'uarule' && <UrlRule type={dlg.type} onClose={() => setDlg(null)} onOk={(r) => patch(dlg.id, (s) => ({ ...s, urlAuth: [r, ...urlAuthRules(s)] }))} />}
+      {dlg?.k === 'ftppub' && (
+        <AddFtp
+          iis={iis}
+          existing={iis.sites.find((s) => s.id === dlg.id)}
+          serverIp={ipOf(st)}
+          onClose={() => setDlg(null)}
+          onOk={(s) => {
+            patch(dlg.id, () => s)
+            void show(MSG, `Publikacja FTP została pomyślnie dodana do witryny „${s.name}”.`, 'info')
+          }}
+        />
+      )}
       {msg}
     </Mmc>
   )
@@ -217,10 +260,29 @@ function featureView(feat: Feat, site: IisSite, sel: string | null, setSel: (k: 
         <p className="sv-sub">Użyj akcji „{site.dirBrowse ? 'Wyłącz' : 'Włącz'}” w okienku Akcje.</p>
       </div>
     )
+  if (feat === 'redirect') return <RedirectView site={site} patch={_patch as (id: number, f: (s: IisSite) => IisSite) => void} />
+  if (feat === 'urlauth')
+    return (
+      <div className="mm-col">
+        <div className="mm-pane" style={{ flex: 'none' }}>
+          <h3>Autoryzacja adresów URL</h3>
+          <p>Użyj tej funkcji, aby określić reguły autoryzujące użytkowników do uzyskiwania dostępu do zawartości witryny. Reguły są przetwarzane od góry do dołu.</p>
+        </div>
+        <ListView
+          cols={['Tryb', 'Użytkownicy', 'Role', 'Czasowniki']}
+          rows={urlAuthRules(site).map((r, i) => ({ key: `u:${i}`, icon: <IcMgmt size={16} />, cells: [r.type === 'allow' ? 'Zezwalaj' : 'Odmów', r.who === 'users' ? (r.value ?? '') : r.who === 'all' ? 'Wszyscy użytkownicy' : r.who === 'anon' ? 'Wszyscy anonimowi użytkownicy' : '', r.who === 'roles' ? (r.value ?? '') : '', ''], menu: [] }))}
+          sel={sel}
+          onSel={setSel}
+          onOpen={() => {}}
+          onBlankMenu={[]}
+        />
+      </div>
+    )
   if (feat === 'auth' || feat === 'ftpauth') {
+    const fa = feat === 'ftpauth' ? ftpAuthOf(site) : site.auth
     const rows: [string, string, boolean, string][] = [
-      ['anonymous', 'Uwierzytelnianie anonimowe', site.auth.anonymous, ''],
-      ['basic', 'Uwierzytelnianie podstawowe', site.auth.basic, 'Żądanie HTTP 401'],
+      ['anonymous', 'Uwierzytelnianie anonimowe', fa.anonymous, ''],
+      ['basic', 'Uwierzytelnianie podstawowe', fa.basic, 'Żądanie HTTP 401'],
       ...(feat === 'auth' ? ([['windows', 'Uwierzytelnianie systemu Windows', site.auth.windows, 'Żądanie HTTP 401'], ['forms', 'Uwierzytelnianie formularzy', false, 'Przekierowanie logowania HTTP 302'], ['imp', 'Personifikacja usługi ASP.NET', false, '']] as [string, string, boolean, string][]) : []),
     ]
     return (
@@ -239,7 +301,7 @@ function featureView(feat: Feat, site: IisSite, sel: string | null, setSel: (k: 
         <h3>Reguły autoryzacji FTP</h3>
         <p>Użyj tej funkcji, aby określić reguły autoryzujące użytkowników do uzyskiwania dostępu do witryny FTP.</p>
       </div>
-      <ListView cols={['Tryb', 'Użytkownicy', 'Role', 'Uprawnienia']} rows={(site.rules ?? []).map((r, i) => ({ key: `x:${i}`, icon: <IcMgmt size={16} />, cells: ['Zezwalaj', r.who, '', r.perm], menu: [] }))} sel={sel} onSel={setSel} onOpen={() => {}} onBlankMenu={[]} />
+      <ListView cols={['Tryb', 'Użytkownicy', 'Role', 'Uprawnienia']} rows={ftpRulesOf(site).map((r, i) => ({ key: `x:${i}`, icon: <IcMgmt size={16} />, cells: ['Zezwalaj', r.who, '', r.perm], menu: [] }))} sel={sel} onSel={setSel} onOpen={() => {}} onBlankMenu={[]} />
     </div>
   )
 }
@@ -282,15 +344,17 @@ function FeatActs({ feat, site, sel, patch }: { feat: Feat; site: IisSite; sel: 
       <Act onClick={() => patch(site.id, (s) => ({ ...s, dirBrowse: !s.dirBrowse }))}>{site.dirBrowse ? 'Wyłącz' : 'Włącz'}</Act>
     )
   const key = sel?.startsWith('a:') ? (sel.slice(2) as keyof IisSite['auth']) : null
-  const known = key && key in site.auth
-  const on = known ? site.auth[key] : false
+  const fa = feat === 'ftpauth' ? ftpAuthOf(site) : site.auth
+  const known = key && key in fa
+  const on = known ? (fa as Record<string, boolean>)[key] : false
+  const set = (v: boolean) => patch(site.id, (s) => (feat === 'ftpauth' ? withFtpAuth(s, key as 'anonymous' | 'basic', v) : { ...s, auth: { ...s.auth, [key!]: v } }))
   return (
     <>
       <div className="mmc-act-g sel">Uwierzytelnianie</div>
-      <Act disabled={!known || on} onClick={() => patch(site.id, (s) => ({ ...s, auth: { ...s.auth, [key!]: true } }))}>
+      <Act disabled={!known || on} onClick={() => set(true)}>
         Włącz
       </Act>
-      <Act disabled={!known || !on} onClick={() => patch(site.id, (s) => ({ ...s, auth: { ...s.auth, [key!]: false } }))}>
+      <Act disabled={!known || !on} onClick={() => set(false)}>
         Wyłącz
       </Act>
     </>
@@ -373,6 +437,7 @@ function AddWebsite({ iis, serverIp, onClose, onOk, show }: { iis: IisState; ser
       <Field label="Ścieżka fizyczna:">
         <input id="site-path" className="w-input" value={path} onChange={(e) => setPath(e.target.value)} />
       </Field>
+      <p className="sv-sub">Uwierzytelnianie przekazywane</p>
       <div className="sv-fillrow">
         <Btn disabled>Połącz jako...</Btn>
         <Btn disabled>Testuj ustawienia...</Btn>
@@ -381,8 +446,9 @@ function AddWebsite({ iis, serverIp, onClose, onOk, show }: { iis: IisState; ser
         <b>Powiązanie</b>
       </p>
       <BindingFields b={b} set={setB} ips={serverIp ? [serverIp] : []} />
+      <p className="sv-sub">Przykład: www.contoso.com lub marketing.contoso.com</p>
       <Chk on={startNow} onChange={setStartNow}>
-        Uruchom witrynę sieci Web natychmiast
+        Natychmiast uruchom witrynę sieci Web
       </Chk>
     </SvModal>
   )
@@ -497,6 +563,79 @@ function AddDoc({ onClose, onOk }: { onClose: () => void; onOk: (n: string) => v
   )
 }
 
+function RedirectView({ site, patch }: { site: IisSite; patch: (id: number, f: (s: IisSite) => IisSite) => void }) {
+  const cur = site.redirect
+  const [on, setOn] = useState(!!cur?.url)
+  const [url, setUrl] = useState(cur?.url ?? '')
+  const [exact, setExact] = useState(cur?.exact ?? false)
+  const [child, setChild] = useState(cur?.childOnly ?? false)
+  const [code, setCode] = useState<301 | 302 | 307>(cur?.status ?? 302)
+  const [saved, setSaved] = useState(false)
+  const apply = () => {
+    patch(site.id, (s) => ({ ...s, redirect: on && url.trim() ? { url: url.trim(), exact, childOnly: child, status: code } : undefined }))
+    setSaved(true)
+  }
+  return (
+    <div className="mm-pane">
+      <h3>Przekierowanie HTTP</h3>
+      <p>Użyj tej funkcji, aby określić reguły przekierowywania żądań przychodzących do innego pliku lub adresu URL.</p>
+      <Chk on={on} onChange={(v) => (setOn(v), setSaved(false))}>
+        Przekieruj żądania do tego miejsca docelowego:
+      </Chk>
+      <input id="rd-url" className="w-input" disabled={!on} value={url} onChange={(e) => (setUrl(e.target.value), setSaved(false))} autoCapitalize="off" spellCheck={false} />
+      <p className="sv-sub">Przykład: http://www.contoso.com/sales</p>
+      <p>
+        <b>Opcje przekierowania</b>
+      </p>
+      <Chk on={exact} onChange={(v) => (setExact(v), setSaved(false))}>
+        Przekieruj wszystkie żądania do dokładnego miejsca docelowego (zamiast względem miejsca docelowego)
+      </Chk>
+      <Chk on={child} onChange={(v) => (setChild(v), setSaved(false))}>
+        Przekieruj tylko żądania dotyczące zawartości w tym katalogu (nie podkatalogów)
+      </Chk>
+      <Field label="Kod stanu:">
+        <select id="rd-code" className="w-input" value={code} onChange={(e) => (setCode(Number(e.target.value) as 301 | 302 | 307), setSaved(false))}>
+          {REDIRECT_CODES.map(([c, t]) => (
+            <option key={c} value={c}>
+              {t}
+            </option>
+          ))}
+        </select>
+      </Field>
+      <div className="sv-fillrow">
+        <Btn primary onClick={apply}>
+          Zastosuj
+        </Btn>
+        <Btn onClick={() => (setOn(!!cur?.url), setUrl(cur?.url ?? ''), setSaved(false))}>Anuluj</Btn>
+      </div>
+      {saved && <p className="sv-sub">Zmiany zostały zapisane.</p>}
+    </div>
+  )
+}
+
+function UrlRule({ type, onClose, onOk }: { type: 'allow' | 'deny'; onClose: () => void; onOk: (r: { type: 'allow' | 'deny'; who: 'all' | 'anon' | 'roles' | 'users'; value?: string }) => void }) {
+  const [who, setWho] = useState<'all' | 'anon' | 'roles' | 'users'>('all')
+  const [v, setV] = useState('')
+  const specific = who === 'roles' || who === 'users'
+  const ok = () => {
+    if (specific && !v.trim()) return
+    onOk({ type, who, ...(specific ? { value: v.trim() } : {}) })
+    onClose()
+  }
+  return (
+    <SvModal title={type === 'allow' ? 'Dodawanie reguły zezwalającej' : 'Dodawanie reguły odmowy'} buttons={<OkCancel onOk={ok} onCancel={onClose} />}>
+      <p>{type === 'allow' ? 'Zezwalaj na dostęp dla tych użytkowników:' : 'Odmów dostępu tym użytkownikom:'}</p>
+      {(['all', 'anon', 'roles', 'users'] as const).map((w) => (
+        <Radio key={w} name="ur" on={who === w} onChange={() => setWho(w)}>
+          {URL_WHO[w]}
+        </Radio>
+      ))}
+      <input id="ur-name" className="w-input" disabled={!specific} value={v} onChange={(e) => setV(e.target.value)} />
+      {specific && <p className="sv-sub">Przykład: {who === 'roles' ? 'Administratorzy, Użytkownicy' : 'Jan, Anna'}</p>}
+    </SvModal>
+  )
+}
+
 const WHO = ['Wszyscy użytkownicy', 'Wszyscy użytkownicy anonimowi', 'Określone role lub grupy użytkowników', 'Określeni użytkownicy']
 function FtpRule({ onClose, onOk }: { onClose: () => void; onOk: (r: { who: string; perm: string }) => void }) {
   const [who, setWho] = useState(WHO[3])
@@ -529,8 +668,8 @@ function FtpRule({ onClose, onOk }: { onClose: () => void; onOk: (r: { who: stri
   )
 }
 
-function AddFtp({ iis, serverIp, onClose, onOk }: { iis: IisState; serverIp: string; onClose: () => void; onOk: (s: IisSite) => void }) {
-  const [step, setStep] = useState(0)
+function AddFtp({ iis, serverIp, onClose, onOk, existing }: { iis: IisState; serverIp: string; onClose: () => void; onOk: (s: IisSite) => void; existing?: IisSite }) {
+  const [step, setStep] = useState(existing ? 1 : 0)
   const [name, setName] = useState('')
   const [path, setPath] = useState('')
   const [b, setB] = useState<IisBinding>({ type: 'ftp', ip: '*', port: 21, host: '' })
@@ -563,17 +702,22 @@ function AddFtp({ iis, serverIp, onClose, onOk }: { iis: IisState; serverIp: str
     const clash = bindingConflict(iis.sites, null, b)
     const perm = [rd && 'Odczyt', wr && 'Zapis'].filter(Boolean).join(', ')
     if (!perm) return setErr('Wybierz co najmniej jedno uprawnienie.')
+    if (existing) {
+      const rules = [{ who: specific ? uname.trim() : who, perm }]
+      onOk({ ...existing, bindings: [...existing.bindings.filter((x) => x.type !== 'ftp'), b], ftp: { ssl, auth: { anonymous: anon, basic }, rules } })
+      return onClose()
+    }
     onOk({ id: iis.next, name: name.trim(), kind: 'ftp', pool: '', path: path.trim(), bindings: [b], running: auto && !clash, docs: [], dirBrowse: false, auth: { anonymous: anon, basic, windows: false }, rules: [{ who: specific ? uname.trim() : who, perm }], ssl })
     onClose()
   }
   const titles = ['Informacje o witrynie', 'Powiązanie i ustawienia protokołu SSL', 'Informacje o uwierzytelnianiu i autoryzacji']
   return (
     <SvModal
-      title="Dodawanie witryny FTP"
+      title={existing ? 'Dodawanie publikacji FTP' : 'Dodawanie witryny FTP'}
       wide
       buttons={
         <>
-          <Btn disabled={step === 0} onClick={() => setStep(step - 1)}>
+          <Btn disabled={step === (existing ? 1 : 0)} onClick={() => setStep(step - 1)}>
             &lt; Wstecz
           </Btn>
           {step < 2 ? (
@@ -617,7 +761,7 @@ function AddFtp({ iis, serverIp, onClose, onOk }: { iis: IisState; serverIp: str
           </p>
           {['Bez protokołu SSL', 'Zezwalaj na protokół SSL', 'Wymagaj protokołu SSL'].map((o) => (
             <Radio key={o} name="ssl" on={ssl === o} onChange={() => setSsl(o)}>
-              {o === 'Bez protokołu SSL' ? 'Bez SSL' : o}
+              {o}
             </Radio>
           ))}
         </>

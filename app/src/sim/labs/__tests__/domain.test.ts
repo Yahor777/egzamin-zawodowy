@@ -288,6 +288,36 @@ function ping(s: LabSave, target: string) {
   ok('iis: firewall off → port reachable', browse(model(fwOff), 'pc', `http://${ip}:8080/`).ok)
   // server powered off / client not cabled
   ok('iis: server off → unreachable', !browse(model({ ...s, power: { server: false } }), 'pc', `http://${ip}:8080/`).ok)
+  // Przekierowanie HTTP + Autoryzacja adresów URL: role services are required, enforced for the browser of the client
+  {
+    const r = JSON.parse(JSON.stringify(s)) as LabSave
+    const sites = r.server!.server!.iis!.sites
+    const firma = sites.find((x) => x.name === 'Firma')!
+    // site 80 (Default Web Site) redirects to the Firma site on :8080
+    const dws = sites.find((x) => x.name === 'Default Web Site')!
+    dws.redirect = { url: `http://${ip}:8080/`, exact: false, childOnly: false, status: 301 }
+    r.server = allowPort(r.server!, 'WWW 8080', 'tcp', '8080')
+    ok('redirect: without the role service Web-Http-Redirect → ignored', /Internet Information Services/.test((browse(model(r), 'pc', `http://${ip}/`).site as { html: string }).html))
+    r.server = addRoles(r.server, ['Web-Http-Redirect', 'Web-Url-Auth'])
+    const red = browse(model(r), 'pc', `http://${ip}/`)
+    ok('redirect: port 80 shows the content of the target site', red.site?.kind === 'page' && red.site.html.includes('Witamy w firmie'), JSON.stringify(red.site).slice(0, 120))
+    dws.redirect = { url: 'http://www.zse.example/', exact: true, childOnly: false, status: 302 }
+    const ext = browse(model(r), 'pc', `http://${ip}/index.html`)
+    ok('redirect: external target → the page names the destination', ext.site?.kind === 'page' && ext.site.html.includes('http://www.zse.example/') && ext.site.html.includes('302'))
+    dws.redirect = { url: 'http://www.zse.example/x', exact: false, childOnly: false, status: 307 }
+    const rel = browse(model(r), 'pc', `http://${ip}/a/b.html`)
+    ok('redirect: relative target keeps the path', rel.site?.kind === 'page' && rel.site.html.includes('http://www.zse.example/x/a/b.html'))
+    dws.redirect = undefined
+    ok('url auth: default allow-all', browse(model(r), 'pc', `http://${ip}:8080/`).site?.kind === 'page')
+    firma.urlAuth = [{ type: 'deny', who: 'anon' }, { type: 'allow', who: 'all' }]
+    const den = browse(model(r), 'pc', `http://${ip}:8080/`)
+    ok('url auth: deny anonymous → 401.2', den.site?.kind === 'error' && den.site.err.status === 401 && den.site.err.sub === 2)
+    firma.urlAuth = [{ type: 'allow', who: 'users', value: 'jan' }, { type: 'allow', who: 'all' }]
+    ok('url auth: allow for a named user does not affect anonymous (next rule allows)', browse(model(r), 'pc', `http://${ip}:8080/`).site?.kind === 'page')
+    firma.urlAuth = [{ type: 'deny', who: 'anon' }]
+    r.server!.server!.roles = r.server!.server!.roles.filter((x) => x !== 'Web-Url-Auth')
+    ok('url auth: without the role service the rules are not enforced', browse(model(r), 'pc', `http://${ip}:8080/`).site?.kind === 'page')
+  }
   // direct function
   ok('iis: serveHttp without the role', serveHttp(domainBench().server!, { ip, port: 80, host: ip, path: '/', local: false }).kind === 'refused')
 }

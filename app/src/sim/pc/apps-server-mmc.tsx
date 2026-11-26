@@ -225,6 +225,7 @@ function NewOu({ where, existing, onClose, onOk }: { parent: string; where: stri
 function NewUser({ policy, domain, netbios, where, users, onClose, onOk, show }: { policy: PwPolicy; domain: string; netbios: string; where: string; users: AdUser[]; onClose: () => void; onOk: (u: AdUser) => void; show: ReturnType<typeof useMsg>[1] }) {
   const [step, setStep] = useState(0)
   const [first, setFirst] = useState('')
+  const [ini, setIni] = useState('')
   const [last, setLast] = useState('')
   const [full, setFull] = useState('')
   const [fullTouched, setFullTouched] = useState(false)
@@ -236,8 +237,8 @@ function NewUser({ policy, domain, netbios, where, users, onClose, onOk, show }:
   const [never, setNever] = useState(false)
   const [dis, setDis] = useState(false)
   const [err, setErr] = useState('')
-  const fullName = fullTouched ? full : `${first} ${last}`.trim()
-  const T = 'Nowy obiekt — Użytkownik'
+  const fullName = fullTouched ? full : [first, ini && `${ini}.`, last].filter(Boolean).join(' ').trim()
+  const T = 'Nowy obiekt - Użytkownik'
   const next = async () => {
     setErr('')
     if (step === 0) {
@@ -282,6 +283,9 @@ function NewUser({ policy, domain, netbios, where, users, onClose, onOk, show }:
         <>
           <Field label="Imię:">
             <input id="nu-first" className="w-input" autoFocus value={first} onChange={(e) => setFirst(e.target.value)} />
+          </Field>
+          <Field label="Inicjały:">
+            <input id="nu-ini" className="w-input" maxLength={6} value={ini} onChange={(e) => setIni(e.target.value)} />
           </Field>
           <Field label="Nazwisko:">
             <input id="nu-last" className="w-input" value={last} onChange={(e) => setLast(e.target.value)} />
@@ -731,7 +735,19 @@ export function DhcpConsole(_p: WinProps) {
   )
 }
 
-const STEPS_SCOPE = ['Kreator nowego zakresu', 'Nazwa zakresu', 'Zakres adresów IP', 'Dodawanie wykluczeń i opóźnienia', 'Czas trwania dzierżawy', 'Konfigurowanie opcji DHCP', 'Router (brama domyślna)', 'Nazwa domeny i serwery DNS', 'Serwery WINS', 'Aktywowanie zakresu', 'Kończenie pracy kreatora']
+const STEPS_SCOPE = ['Kreator nowych zakresów - Zapraszamy!', 'Nazwa zakresu', 'Zakres adresów IP', 'Dodaj wykluczenia i opóźnienie', 'Czas trwania dzierżawy', 'Konfiguruj opcje DHCP', 'Router (brama domyślna)', 'Nazwa domeny i serwery DNS', 'Serwery WINS', 'Uaktywnij zakres', 'Kończenie pracy Kreatora nowych zakresów']
+
+function LbList({ items, sel, onSel }: { items: string[]; sel: string | null; onSel: (i: string) => void }) {
+  return (
+    <div className="sv-lb" style={{ height: 80 }} role="listbox">
+      {items.map((i) => (
+        <div key={i} role="option" aria-selected={sel === i} className={sel === i ? 'on' : ''} onClick={() => onSel(i)}>
+          {i}
+        </div>
+      ))}
+    </div>
+  )
+}
 
 function NewScope({ hostDomain, existing, onClose, onOk }: { hostDomain: string; existing: DhcpScope[]; onClose: () => void; onOk: (s: DhcpScope) => void }) {
   const [step, setStep] = useState(0)
@@ -747,9 +763,13 @@ function NewScope({ hostDomain, existing, onClose, onOk }: { hostDomain: string;
   const [hours, setHours] = useState(0)
   const [mins, setMins] = useState(0)
   const [opts, setOpts] = useState(true)
-  const [router, setRouter] = useState('')
+  const [routerIn, setRouterIn] = useState('')
+  const [routers, setRouters] = useState<string[]>([])
+  const [selR, setSelR] = useState<string | null>(null)
   const [domain, setDomain] = useState(hostDomain)
-  const [dns, setDns] = useState('')
+  const [dnsIn, setDnsIn] = useState('')
+  const [dnsList, setDnsList] = useState<string[]>([])
+  const [selD, setSelD] = useState<string | null>(null)
   const [active, setActive] = useState(true)
   const [err, setErr] = useState('')
   const mask = prefixToMask(prefix)
@@ -757,7 +777,7 @@ function NewScope({ hostDomain, existing, onClose, onOk }: { hostDomain: string;
     const x = ipToInt(ip)
     return x !== null && x >= (ipToInt(start) ?? 0) && x <= (ipToInt(end) ?? 0)
   }
-  const build = (): DhcpScope => ({ name: name.trim(), desc, start, end, prefix, excl, leaseMin: days * 1440 + hours * 60 + mins, router: opts ? router : '', dnsDomain: opts ? domain : '', dns: opts ? dns : '', active: opts ? active : false, reservations: [] })
+  const build = (): DhcpScope => ({ name: name.trim(), desc, start, end, prefix, excl, leaseMin: days * 1440 + hours * 60 + mins, router: opts ? (routers[0] ?? '') : '', dnsDomain: opts ? domain : '', dns: opts ? dnsList.join(',') : '', active: opts ? active : false, reservations: [] })
   const nextStep = () => {
     setErr('')
     if (step === 1 && !name.trim()) return setErr('Wprowadź nazwę zakresu.')
@@ -767,9 +787,20 @@ function NewScope({ hostDomain, existing, onClose, onOk }: { hostDomain: string;
     }
     if (step === 4 && days * 1440 + hours * 60 + mins <= 0) return setErr('Czas trwania dzierżawy musi być dłuższy niż 0.')
     if (step === 5 && !opts) return setStep(9)
-    if (step === 6 && router && (ipToInt(router) === null || networkOf(router, prefix) !== networkOf(start, prefix))) return setErr('Adres routera musi być prawidłowym adresem IP z tej samej podsieci co zakres.')
-    if (step === 7 && dns && ipToInt(dns) === null) return setErr('Wprowadź prawidłowy adres IP serwera DNS.')
     setStep(step + 1)
+  }
+  const addRouter = () => {
+    if (ipToInt(routerIn) === null) return setErr('Wprowadź prawidłowy adres IP routera.')
+    if (networkOf(routerIn, prefix) !== networkOf(start, prefix)) return setErr('Adres routera musi być prawidłowym adresem IP z tej samej podsieci co zakres.')
+    setErr('')
+    setRouters([...routers.filter((x) => x !== routerIn), routerIn])
+    setRouterIn('')
+  }
+  const addDns = () => {
+    if (ipToInt(dnsIn) === null) return setErr('Wprowadź prawidłowy adres IP serwera DNS.')
+    setErr('')
+    setDnsList([...dnsList.filter((x) => x !== dnsIn), dnsIn])
+    setDnsIn('')
   }
   const addEx = () => {
     if (ipToInt(exs) === null) return setErr('Wprowadź prawidłowy adres początkowy wykluczenia.')
@@ -789,7 +820,7 @@ function NewScope({ hostDomain, existing, onClose, onOk }: { hostDomain: string;
   return (
     <SvModal
       wide
-      title="Kreator nowego zakresu"
+      title="Kreator nowych zakresów"
       buttons={
         <>
           <Btn onClick={back} disabled={step === 0}>
@@ -802,11 +833,11 @@ function NewScope({ hostDomain, existing, onClose, onOk }: { hostDomain: string;
         </>
       }
     >
-      <h3 className="sv-mh">{step === 0 ? 'Kreator nowego zakresu' : STEPS_SCOPE[step]}</h3>
-      {step === 0 && <p>Ten kreator pomaga w skonfigurowaniu zakresu adresów IP, które mogą być przydzielane komputerom w Twojej sieci.</p>}
+      <h3 className="sv-mh">{STEPS_SCOPE[step]}</h3>
+      {step === 0 && <><p>Ten kreator pomaga w utworzeniu zakresu adresów IP przypisywanych dynamicznie do komputerów w danej sieci.</p><p>Aby kontynuować, kliknij przycisk Dalej.</p></>}
       {step === 1 && (
         <>
-          <p>Podaj nazwę i opis dla tego zakresu. Dzięki tym informacjom łatwo zidentyfikujesz, jak zakres jest używany w sieci.</p>
+          <p>Wpisz nazwę i opis dla tego zakresu. Te informacje pomagają szybko określić, w jaki sposób dany zakres ma być używany w sieci.</p>
           <Field label="Nazwa:">
             <input id="sc-name" className="w-input" autoFocus value={name} onChange={(e) => setName(e.target.value)} />
           </Field>
@@ -817,7 +848,7 @@ function NewScope({ hostDomain, existing, onClose, onOk }: { hostDomain: string;
       )}
       {step === 2 && (
         <>
-          <p>Określ zakres adresów dystrybuowanych przez ten zakres.</p>
+          <p>Wprowadź zakres adresów, które mają być rozpowszechniane przez ten zakres.</p>
           <Field label="Początkowy adres IP:">
             <IpInput id="sc-start" label="Początkowy adres IP" value={start} onChange={setStart} />
           </Field>
@@ -834,7 +865,7 @@ function NewScope({ hostDomain, existing, onClose, onOk }: { hostDomain: string;
       )}
       {step === 3 && (
         <>
-          <p>Wpisz zakres adresów IP, który ma zostać wykluczony z dystrybucji. Aby wykluczyć pojedynczy adres, wpisz tylko adres początkowy.</p>
+          <p>Wpisz zakres adresów IP, który chcesz wykluczyć. Jeśli chcesz wykluczyć pojedynczy adres, wpisz go tylko w polu Początkowy adres IP.</p>
           <Field label="Początkowy adres IP:">
             <IpInput id="sc-exs" label="Początkowy adres IP wykluczenia" value={exs} onChange={setExs} />
           </Field>
@@ -856,8 +887,8 @@ function NewScope({ hostDomain, existing, onClose, onOk }: { hostDomain: string;
       )}
       {step === 4 && (
         <>
-          <p>Czas trwania dzierżawy określa, jak długo klient może używać adresu IP z tego zakresu.</p>
-          <p>Ustaw czas trwania dzierżaw dla zakresu:</p>
+          <p>Czas trwania dzierżawy powinien ogólnie być równy przeciętnemu czasowi połączenia z daną siecią fizyczną. Dla sieci ruchomych, złożonych głównie z komputerów przenośnych lub klientów połączeń telefonicznych, przydatne mogą być krótsze czasy trwania dzierżaw.</p>
+          <p>Ustaw czas trwania dzierżaw zakresów rozpowszechnianych przez ten serwer. Ograniczony do:</p>
           <div className="sv-lease">
             <label>
               Dni: <input id="sc-days" className="w-input" type="number" min={0} max={999} value={days} onChange={(e) => setDays(Math.max(0, Number(e.target.value) || 0))} />
@@ -873,7 +904,8 @@ function NewScope({ hostDomain, existing, onClose, onOk }: { hostDomain: string;
       )}
       {step === 5 && (
         <>
-          <p>Musisz skonfigurować najczęściej używane opcje DHCP, zanim klienci będą mogli używać zakresu.</p>
+          <p>Kiedy klient uzyska adres, uzyska tym samym opcje DHCP, takie jak adresy IP routerów (bram domyślnych) i serwerów DNS oraz ustawienia WINS dla danego zakresu.</p>
+          <p>Określone tutaj ustawienia zastępują ustawienia skonfigurowane w folderze Opcje serwera dla tego serwera.</p>
           <p>Czy chcesz teraz skonfigurować opcje DHCP dla tego zakresu?</p>
           <label className="w-radio">
             <input type="radio" name="op" checked={opts} onChange={() => setOpts(true)} /> Tak, chcę teraz skonfigurować te opcje
@@ -885,21 +917,37 @@ function NewScope({ hostDomain, existing, onClose, onOk }: { hostDomain: string;
       )}
       {step === 6 && (
         <>
-          <p>Wprowadź adres IP routera lub bramy domyślnej, która ma być dystrybuowana przez ten zakres.</p>
+          <p>Aby dodać adres IP routera używanego przez klientów, wprowadź ten adres poniżej.</p>
           <Field label="Adres IP:">
-            <IpInput id="sc-router" label="Adres IP routera" value={router} onChange={setRouter} />
+            <IpInput id="sc-router" label="Adres IP routera" value={routerIn} onChange={setRouterIn} />
           </Field>
+          <div className="sv-btnrow">
+            <Btn onClick={addRouter}>Dodaj</Btn>
+            <Btn disabled={!selR} onClick={() => (setRouters(routers.filter((x) => x !== selR)), setSelR(null))}>
+              Usuń
+            </Btn>
+          </div>
+          <LbList items={routers} sel={selR} onSel={setSelR} />
         </>
       )}
       {step === 7 && (
         <>
-          <p>System nazw domen (DNS) mapuje i tłumaczy nazwy domen używane przez klientów w sieci.</p>
+          <p>System DNS (Domain Name System) odwzorowuje i dokonuje translacji nazw domen używanych przez klientów w sieci.</p>
+          <p>Możesz określić domenę nadrzędną, której mają używać komputery klienckie w danej sieci do rozpoznawania nazw DNS.</p>
           <Field label="Domena nadrzędna:">
             <input id="sc-domain" className="w-input" value={domain} onChange={(e) => setDomain(e.target.value)} />
           </Field>
-          <Field label="Adres IP serwera DNS:">
-            <IpInput id="sc-dns" label="Adres IP serwera DNS" value={dns} onChange={setDns} />
+          <p>Aby skonfigurować klientów zakresu do używania serwerów DNS w sieci, wprowadź adres IP tych serwerów.</p>
+          <Field label="Adres IP:">
+            <IpInput id="sc-dns" label="Adres IP serwera DNS" value={dnsIn} onChange={setDnsIn} />
           </Field>
+          <div className="sv-btnrow">
+            <Btn onClick={addDns}>Dodaj</Btn>
+            <Btn disabled={!selD} onClick={() => (setDnsList(dnsList.filter((x) => x !== selD)), setSelD(null))}>
+              Usuń
+            </Btn>
+          </div>
+          <LbList items={dnsList} sel={selD} onSel={setSelD} />
         </>
       )}
       {step === 8 && (
@@ -910,19 +958,19 @@ function NewScope({ hostDomain, existing, onClose, onOk }: { hostDomain: string;
       )}
       {step === 9 && (
         <>
-          <p>Klienci mogą uzyskiwać dzierżawy adresów dopiero po aktywowaniu zakresu.</p>
-          <p>Czy chcesz teraz aktywować ten zakres?</p>
+          <p>Klienci mogą wydzierżawiać adresy tylko wtedy, gdy zakres jest aktywny.</p>
+          <p>Czy chcesz teraz uaktywnić ten zakres?</p>
           <label className="w-radio">
-            <input type="radio" name="ac" checked={active} onChange={() => setActive(true)} /> Tak, chcę aktywować ten zakres teraz
+            <input type="radio" name="ac" checked={active} onChange={() => setActive(true)} /> Tak, chcę uaktywnić ten zakres teraz
           </label>
           <label className="w-radio">
-            <input type="radio" name="ac" checked={!active} onChange={() => setActive(false)} /> Nie, aktywuję ten zakres później
+            <input type="radio" name="ac" checked={!active} onChange={() => setActive(false)} /> Nie, uaktywnię ten zakres później
           </label>
         </>
       )}
       {step === 10 && (
         <>
-          <p>Kończenie pracy Kreatora nowego zakresu. Zakres „{name.trim()}” ({start} – {end}/{prefix}) zostanie utworzony.</p>
+          <p>Praca Kreatora nowych zakresów została ukończona pomyślnie. Zakres „{name.trim()}” ({start} – {end}/{prefix}) zostanie utworzony.</p>
           <p>Czas dzierżawy: {fmtLease(days * 1440 + hours * 60 + mins)}</p>
           <p>Aby zamknąć kreatora, kliknij przycisk Zakończ.</p>
         </>

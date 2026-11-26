@@ -105,8 +105,8 @@ export function Gpmc(_p: WinProps) {
     ]
   }
   const contMenu: MenuItem[] = [
-    { label: 'Utwórz obiekt zasad grupy w tej domenie i połącz go tutaj...', onClick: () => setDlg({ k: 'new', target }) },
-    { label: 'Połącz istniejący obiekt zasad grupy...', onClick: () => setDlg({ k: 'link', target }) },
+    { label: 'Utwórz obiekt zasad grupy w tej domenie i umieść tu link...', onClick: () => setDlg({ k: 'new', target }) },
+    { label: 'Połącz z istniejącym obiektem zasad grupy...', onClick: () => setDlg({ k: 'link', target }) },
     { sep: true },
     { label: 'Zablokuj dziedziczenie', disabled: true },
     { label: 'Aktualizacja usługi Zasady grupy...', onClick: gpUpdate },
@@ -323,7 +323,7 @@ function NewGpoDlg({ domain, names, where, onClose, onOk }: { domain: string; na
     <SvModal title="Nowy obiekt zasad grupy" buttons={<OkCancel onOk={ok} onCancel={onClose} />}>
       <p>Nazwa:</p>
       <input id="gpo-name" className="w-input" autoFocus value={name} onChange={(e) => setName(e.target.value)} />
-      <p>Źródłowy Starter GPO:</p>
+      <p>Źródłowy początkowy obiekt zasad grupy:</p>
       <Sel value="(brak)" onChange={() => {}} options={['(brak)']} />
       <p className="sv-sub">{where ? `Obiekt GPO zostanie utworzony w domenie ${domain} i połączony z: ${where}.` : `Obiekt GPO zostanie utworzony w domenie ${domain}.`}</p>
       {err && <p className="sv-err">{err}</p>}

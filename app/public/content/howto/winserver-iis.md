@@ -37,3 +37,18 @@
 ## 5. Имя вместо IP
 
 В `dnsmgmt.msc`: зона → *Nowy host (A)*: `www` → IP сервера. На клиенте DNS = IP сервера → Edge: `http://www.firma.local:8080/`. Если в привязке сайта указан *Nazwa hosta*, то заходить нужно именно по этому имени.
+
+## 6. Przekierowanie HTTP (перенаправление)
+
+Это **служба роли**: *Dodaj role i funkcje* → *Serwer sieci Web (IIS)* → страница **Wybieranie usług ról** → *Serwer sieci Web → Wspólne funkcje HTTP* → ☑ **Przekierowanie HTTP** (по умолчанию не отмечена; школа предлагает отметить её вместе с **Autoryzacja adresów URL**). Без неё плитки в консоли нет, и перенаправление не работает.
+
+`inetmgr` → сайт → плитка **Przekierowanie HTTP**: ☑ **Przekieruj żądania do tego miejsca docelowego** → адрес (например `http://192.168.5.1:8080/`) → *Opcje przekierowania*: «dokładne miejsce docelowe» (все запросы на один адрес) и/или «tylko zawartość w tym katalogu» → **Kod stanu**: *Stałe (301)*, *Znalezione (302)*, *Tymczasowe (307)* → **Zastosuj**. Edge на клиенте покажет содержимое страницы-цели; если цель вне стенда — страницу с указанием адреса и кода.
+
+## 7. Autoryzacja adresów URL (правила доступа)
+
+Тоже служба роли: *Zabezpieczenia → Autoryzacja adresów URL*. В консоли у сайта: плитка **Autoryzacja adresów URL** → правило по умолчанию «Zezwalaj — Wszyscy użytkownicy». Действия: **Dodaj regułę zezwalania…** / **Dodaj regułę odmowy…**: *Wszyscy użytkownicy*, *Wszyscy anonimowi użytkownicy*, *Określone role lub grupy użytkowników*, *Określeni użytkownicy*. Новое правило встаёт **выше**, первое подошедшее решает. Правило «Odmów — Wszyscy anonimowi użytkownicy» → Edge без логина получает **HTTP Error 401.2 – Unauthorized**.
+
+## 8. Dodaj publikację FTP… (FTP на существующем сайте)
+
+Нужна служба роли *Serwer FTP → Usługa FTP*. ПКМ на сайте (например *Default Web Site*) → **Dodaj publikację FTP…** — мастер из двух страниц (без «Informacje o witrynie»): *Powiązanie i ustawienia protokołu SSL* (адрес, порт 21, «Bez SSL») → *Informacje o uwierzytelnianiu i autoryzacji* (Anonimowe / Podstawowe, *Zezwalaj na dostęp dla*, *Odczyt / Zapis*). К сайту добавляется привязка **ftp** (папка та же, что у сайта: `%SystemDrive%\inetpub\wwwroot`), а на странице сайта появляется раздел **FTP** (*Uwierzytelnianie FTP*, *Reguły autoryzacji FTP* …). Сначала права NTFS на папку, потом правила FTP.
+

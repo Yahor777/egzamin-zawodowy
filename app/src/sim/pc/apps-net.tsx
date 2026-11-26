@@ -963,7 +963,7 @@ export function Ipv4Props({ arg, close }: WinProps) {
           </div>
           <div className="ip-foot">
             <label className="w-check">
-              <input type="checkbox" checked={f.validate} onChange={(e) => set({ validate: e.target.checked })} /> Sprawdź przy zamykaniu poprawność ustawień
+              <input type="checkbox" checked={f.validate} onChange={(e) => set({ validate: e.target.checked })} /> Sprawdź przy zakończeniu poprawność ustawień
             </label>
             <button className="w-btn" onClick={() => api.open('ipv4adv', a.id)}>
               Zaawansowane...

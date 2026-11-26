@@ -58,20 +58,19 @@
 | Было | Стало | Источник |
 |---|---|---|
 | DHCP: узел «Rezerwacje», «Nowa rezerwacja…», «Nazwa rezerwacji» | **Zastrzeżenia**, **Nowe zastrzeżenie…**, **Nazwa zastrzeżenia** | ZSE lekcja 07 (WS2022) |
-| Мастер New Scope: не было страницы WINS; «Aktywuj zakres» | добавлена страница **Serwery WINS**; **Aktywowanie zakresu** | ZSE lekcja 07, MS Learn DHCP |
-| Add Roles: в боковом списке «Zanim rozpoczniesz» | **Przed rozpoczęciem** | MS Learn, ZSE |
+| Мастер New Scope: не было страницы WINS | добавлена страница **Serwery WINS** (2-я итерация сверки: страница активации названа по скриншотам школы — см. «Сверка по скриншотам ZSE» ниже) | ZSE lekcja 07 |
+| Add Roles: в боковом списке и заголовке первой страницы | **Zanim rozpoczniesz** (первая итерация ошибочно ставила «Przed rozpoczęciem» по MS Learn; в WS2022 pl-PL на скриншотах школы — «Zanim rozpoczniesz») | скриншоты ZSE урок 02/07/08 |
 | AD DS: «Usługi domenowe w usłudze Active Directory» | **Usługi domenowe Active Directory** | ZSE lekcja 02 (WS2022), MS Learn |
 | AD DS: «Podwyższ poziom tego serwera do poziomu kontrolera domeny» | **Podnieś poziom tego serwera do kontrolera domeny** | ZSE lekcja 02 |
 | AD DS DC-wizard: «Przegląd opcji» | **Przeglądanie opcji** | MS Learn install-adds |
 | Server Manager (flag): «Ukończ konfigurację DHCP» | **Dokończ konfigurację funkcji DHCP** | ZSE lekcja 07 |
-| GPMC: «Utwórz obiekt GPO w tej domenie i umieść tu link…», «Połącz istniejący obiekt GPO…», «Nowy GPO», «Starter GPO» | **Utwórz obiekt zasad grupy w tej domenie i połącz go tutaj…**, **Połącz istniejący obiekt zasad grupy…**, **Nowy obiekt zasad grupy**, **Początkowe obiekty zasad grupy** | MS Learn GPMC |
+| GPMC: «Utwórz obiekt GPO w tej domenie i umieść tu link…», «Połącz istniejący obiekt GPO…», «Nowy GPO», «Starter GPO» | **Utwórz obiekt zasad grupy w tej domenie i umieść tu link…** (так же в листах CKE; первая итерация по MS Learn («…i połącz go tutaj») была неверна для WS2022), **Połącz z istniejącym obiektem zasad grupy…**, **Nowy obiekt zasad grupy** (поле «Źródłowy początkowy obiekt zasad grupy»), **Początkowe obiekty zasad grupy** | скриншоты ZSE урок 15, листы CKE |
 
 Сверено без расхождений (проверено по текстам): Add Roles wizard (Typ instalacji / Wybór serwera / Role serwera / Funkcje / Potwierdzenie / Wyniki), AD DS wizard (Konfiguracja wdrożenia, Opcje kontrolera domeny, Opcje DNS, Opcje dodatkowe, Ścieżki, Sprawdzanie wymagań wstępnych), New Zone wizard (Typ strefy, Strefa wyszukiwania do przodu/wstecznego, Aktualizacja dynamiczna), FSRM (Zarządzanie przydziałami, Szablony przydziałów, Utwórz przydział…), NTFS/«Udostępnianie zaawansowane»/«Zaawansowane ustawienia zabezpieczeń», IPv4 properties (Win11, ncpa.cpl: все подписи), IIS («Dodaj witrynę sieci Web», «Edytuj powiązania», «Dodaj witrynę FTP»).
 
 Оставлено / не проверено:
-- Не подтверждены источником (возможны мелкие расхождения): «Sprawdź przy zamykaniu poprawność ustawień» (IPv4), «Kreator nowej strefy» vs «Kreator nowych stref» (ZSE пишет по-разному), «Usługi plików i magazynowania».
-- В ZSE-уроках есть пункты, которых нет у нас в явном виде: IIS «Przekierowania HTTP», «Autoryzacja adresów URL» (у нас «Autoryzacja» только в FTP); Computer Management → «Foldery udostępnione» / «Kreator tworzenia folderu udostępnionego»; «Dodaj publikację FTP…»; Routing i dostęp zdalny; serwer wydruku — **кандидаты на Фазу B/C2**.
-- Скриншоты Microsoft Learn почти отсутствуют, поэтому расположение элементов в диалогах сверено по памяти/ZSE-описаниям, а не по картинкам.
+- Скриншоты Microsoft Learn почти отсутствуют; сверка по картинкам ZSE (30–60 на урок) выполнена для ключевых диалогов — см. раздел ниже.
+- Не воспроизведено (не нужно для листов): Dostęp zdalny → «Wdróż DirectAccess», VPN-клиенты, IPv6 в RRAS, профили NFS/«Udział SMB — aplikacje» в мастере нового udziału (выбор возможен, поведение как у «szybki»), Kreator interfejsu wybierania numeru, фильтры/DFS/FSRM-страницы мастера «zaawansowany», пользователи-списки «Rola»/«Czasowniki» в URL Authorization.
 
 ## Школа (ZSE Rzeszów) — ключевые находки
 
@@ -79,9 +78,50 @@
 - Оборудование PSK: **роутеры DrayTek Vigor** (сброс до заводских, DHCP, статическая аренда, VLAN на роутере, Wi-Fi) и **управляемый коммутатор** с веб-интерфейсом «System → System IP → Management VLAN», «VLAN → Port config (режимы ACCESS/GENERAL/TRUNK)», «VLAN config → CREATE» — это **не** TL-SG108E (Easy Smart); адрес по умолчанию 192.168.0.1, admin/admin. Если у школы экзамен на этом оборудовании, нужен отдельный симулятор (DrayTek + этот коммутатор).
 - Ссылки добавлены на страницу «Теория» (блок «Материалы школы»).
 
-## Что осталось (для «Готово, когда список расхождений пуст»)
+## Сверка по скриншотам ZSE (WS2022, Фаза C2) — Windows
+
+Скриншоты скачивались только в рабочую папку (в репозиторий и приложение не копировались); Playwright 1280 / iPhone 14 нашего симулятора сравнивались со скриншотами уроков 02, 03, 04, 07, 08, 09, 10, 13, 15.
+
+### Подтверждено / исправлено термины (были «не подтверждены»)
+
+| Термин | Итог | Источник |
+|---|---|---|
+| «Sprawdź przy zamykaniu poprawność ustawień» (IPv4) | **исправлено** → «Sprawdź przy zakończeniu poprawność ustawień» | скриншот урока 04, свойства TCP/IPv4 |
+| «Kreator nowej strefy» vs «Kreator nowych stref» | **«Kreator nowych stref»** (заголовок окна, «Kreator nowych stref - Zapraszamy!», «Kończenie pracy Kreatora nowych stref»); пункт меню — «Nowa strefa…» | урок 09 |
+| «Usługi plików i magazynowania» | **подтверждено** (список ролей: «…(Zainstalowano 2 z 12)», пункт меню навигации) | уроки 02, 08, 10 |
+| «Kreator tworzenia folderów udostępnionych» | **«Kreator tworzenia folderu udostępnionego»** (единственное число, как в заголовке окна и в тексте урока 10); стартовая страница «… — Zapraszamy!» | урок 10 |
+
+### Исправления, найденные при сверке
+
+| Область | Было | Стало (по скриншотам WS2022 pl) |
+|---|---|---|
+| Add Roles: заголовки страниц | «Wybierz typ instalacji», «Wybierz serwer docelowy», «Wybierz role serwera», «Wybierz funkcje», «Potwierdź wybrane opcje instalacji»; пункт «Wybór serwera» | **Wybieranie typu instalacji / serwera docelowego / ról serwera / funkcji**, **Wybieranie usług ról**, **Potwierdzanie opcji instalacji**; пункт навигации **Wybieranie serwera** |
+| Add Roles: список ролей | 20 ролей в произвольном порядке, нестандартные имена | **19 ролей в польском алфавитном порядке** (Dostęp zdalny, Hyper-V, Serwer DHCP, … Windows Server Update Services), имена: «Usługa Ochrona hosta», «Usługi federacyjne Active Directory (AD FS)», «Usługi LDS w usłudze Active Directory», «Usługi zarządzania prawami dostępu w usłudze Active Directory», «Usługi aktywacji zbiorczej», «Windows Deployment Services»; убран «Attestation kondycji urządzeń»; «Zdalny dostęp» → **Dostęp zdalny**; пометка **(Zainstalowano)** с заглавной |
+| Add Roles: служебные окна | «Dodać funkcje wymagane dla X?»; чекбокс «W razie potrzeby automatycznie uruchom ponownie…» | **«Czy dodać funkcje wymagane przez funkcję X?»** (+ «Nie można zainstalować funkcji X, jeśli nie zostaną zainstalowane również…», «Dołącz narzędzia do zarządzania (jeśli dotyczy)»); **«Automatycznie uruchom ponownie serwer docelowy, jeśli będzie to potrzebne»** + предупреждение «Jeśli jest wymagane ponowne uruchomienie… Tak/Nie» |
+| Add Roles: страницы ролей | у IIS подэлементы (FTP) были прямо в списке ролей; не было страницы «Usługi ról» | как в WS2022: страница роли (**«Dostęp zdalny»**, **«Rola Serwer sieci Web (IIS)»**) → **Wybieranie usług ról** (Routing + диалог «Dodaj funkcje», IIS: Wspólne funkcje HTTP/Przekierowanie HTTP, Zabezpieczenia/Autoryzacja adresów URL, Serwer FTP/Usługa FTP) |
+| Server Manager: приветствие | «WITAMY W MENEDŻERZE SERWERA», синий блок | **«MENEDŻER SERWERA — ZAPRASZAMY!»**, оранжевые блоки SZYBKI START / CO NOWEGO / DOWIEDZ SIĘ WIĘCEJ слева, «1 Konfiguruj ten serwer lokalny»; разделитель «•» в строке «Menedżer serwera • Pulpit nawigacyjny» |
+| DHCP: мастер зон | «Kreator nowego zakresu», «Dodawanie wykluczeń i opóźnienia», «Konfigurowanie opcji DHCP», «Aktywowanie zakresu», поле router/DNS одиночное | **«Kreator nowych zakresów»** (+ «… - Zapraszamy!», «Kończenie pracy Kreatora nowych zakresów»), **«Dodaj wykluczenia i opóźnienie»**, **«Konfiguruj opcje DHCP»**, **«Uaktywnij zakres»**, router и DNS — **списки с кнопками «Dodaj» / «Usuń»** (школа: «pamiętaj kliknąć Dodaj, a dopiero potem Dalej»: набранный, но не добавленный адрес не сохраняется) |
+| DNS: мастер | «Kreator nowej strefy…» | **«Kreator nowych stref»**, чекбокс «Przechowuj strefę w usłudze Active Directory (dostępne, jeśli serwer DNS jest zapisywalnym kontrolerem domeny)», тексты страниц |
+| GPMC | см. таблицу выше | «umieść tu link…», «Połącz z istniejącym obiektem zasad grupy…», «Źródłowy początkowy obiekt zasad grupy:» (тексты в quiz/howto/drill обновлены) |
+| ADUC → новый пользователь | заголовок «Nowy obiekt — Użytkownik», не было «Inicjały» | **«Nowy obiekt - Użytkownik»**, поле **Inicjały** (в «Pełna nazwa»: «James JB. Bond») |
+| IIS: «Dodawanie witryny sieci Web» | «Uruchom witrynę sieci Web natychmiast», не было подписей | **«Natychmiast uruchom witrynę sieci Web»**, «Uwierzytelnianie przekazywane», «Przykład: www.contoso.com lub marketing.contoso.com», пункты «Zarządzanie witryną sieci Web › Zatrzymaj/Uruchom/Ustawienia zaawansowane…»; FTP-мастер: «Bez protokołu SSL» |
+| Nowy udział (Menedżer serwera) | трёхшаговый мини-мастер | **«Kreator nowego udziału»**: Wybieranie profilu → Lokalizacja udziału (wolumin / ścieżka niestandardowa, Przeglądaj…) → Nazwa udziału → Inne ustawienia (4 флажка) → Uprawnienia (+ «Dostosowywanie uprawnień…» = Zaawansowane ustawienia zabezpieczeń) → Potwierdzenie → Wyniki |
+
+## Закрыто в Фазе C2 (бывший список «кандидатов»)
+
+| Экран | Что сделано |
+|---|---|
+| **Routing i dostęp zdalny** | роль **Dostęp zdalny** → служба ролей **Routing**; флаг «Otwórz kreatora Wprowadzenie» («Wdróż tylko sieć VPN» → консоль); консоль `rrasmgmt.msc` (Narzędzia): ПКМ на сервере → «Konfiguruj i włącz routing i dostęp zdalny», «Kreator instalacji serwera routingu i dostępu zdalnego» (Dostęp zdalny / **Translator adresów sieciowych** / VPN+NAT / Bezpieczne połączenie / **Konfiguracja niestandardowa**; «Połączenie internetowe NAT» с выбором публичного интерфейса; «Kończenie pracy…», «Uruchamianie Routing i dostęp zdalny»), IPv4 → Ogólne / **Trasy statyczne** («Nowa trasa statyczna»: Interfejs, Miejsce docelowe, Maska sieci, Brama, Metryka) / IGMP / **NAT** (Nowy interfejs…, Właściwości: prywatny/publiczny), «Wyłącz…», Uruchom/Zatrzymaj, Właściwości. **Маршрутизация в `net.ts` требует настроенного и запущенного RRAS** (роль + служба Routing + мастер + Routing LAN); статические маршруты сервера участвуют в `canPing`; NAT: клиенты за сервером достигают «внешней» стороны (ответ идёт на публичный адрес). Лаба 26-06-10 и её эталонное решение обновлены |
+| **Zarządzanie komputerem → Foldery udostępnione** | Udziały (ADMIN$, C$, IPC$ + свои, «Liczba połączeń klienta»; Nowy udział…, Zatrzymaj udostępnianie, Właściwości: Ogólne/limit, Publikowanie, Uprawnienia udziału, Zabezpieczenia), **Kreator tworzenia folderu udostępnionego** (4 пресета разрешений), **Sesje** и **Otwarte pliki** — реальные сессии клиентов из SMB-модели (Проводник на `\\сервер\udział`/сетевой диск, Notatnik с файлом на udziale) |
+| **IIS: Przekierowanie HTTP** | служба роли `Web-Http-Redirect`; плитка и форма (adres docelowy, «dokładne miejsce docelowe», «tylko zawartość w tym katalogu», 301/302/307); Edge клиента показывает содержимое цели (на том же сервере) либо страницу с адресом и кодом |
+| **IIS: Autoryzacja adresów URL** | служба роли `Web-Url-Auth`; список правил, «Dodaj regułę zezwalania/odmowy…» (wszyscy / anonimowi / role / użytkownicy); Edge без логина получает **401.2** при правиле «Odmów — anonimowi» |
+| **IIS: Dodaj publikację FTP…** | на существующем сайте (2 страницы мастера), привязка ftp + раздел FTP (Uwierzytelnianie FTP / Reguły autoryzacji FTP) на странице сайта |
+| Служба ролей в мастере Add Roles | «Dostęp zdalny → Routing», IIS «Przekierowanie HTTP», «Autoryzacja adresów URL» — **требуются** для соответствующих функций |
+
+## Что осталось
 
 1. Роутер: скриншотное сравнение при реальных данных школы (какой именно WR840N — V4/V5/V6/V7 — и какой DrayTek).
 2. Коммутатор: подтвердить по реальному железу школы модель (см. выше), при необходимости — отдельный стиль.
-3. Windows: сверить расположение элементов с реальными скриншотами (ZSE-страницы содержат 30–60 картинок на урок — их можно открывать вручную по ссылкам); добавить недостающие экраны (RRAS, Computer Management → Shared Folders, IIS Redirect/URL Authorization).
-4. Прогон 3 листов на реальном оборудовании (пункт 3 фазы C) — не выполнялся.
+3. Windows: сверка остальных диалогов школы (NTFS «Zaawansowane ustawienia zabezpieczeń» вкладки Inspekcja / Dostęp czynny, FSRM-мастера «zaawansowany», серверы печати/lekcja 11, MMC-RDP/lekcja 12) — по скриншотам из `https://zse.rzeszow.pl/windows/2022/…`.
+4. FTP-клиент (`ftp 192.168…`, браузер `ftp://`) в симуляторе клиента отсутствует: FTP-сайты и публикации только настраиваются.
+5. Прогон 3 листов на реальном оборудовании (пункт 3 фазы C) — не выполнялся.
