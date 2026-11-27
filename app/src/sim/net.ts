@@ -30,6 +30,7 @@ export function prefixToMask(p: number): string {
 export interface Addr {
   ip: string
   prefix: number
+  dynamic?: boolean
 }
 
 export function parseCidr(cidr: string): Addr | null {
@@ -783,7 +784,7 @@ export function endpoints(m: NetworkModel): Endpoint[] {
   }
   for (const i of isOn(m, 'linux') ? (m.linuxIfaces ?? []) : []) {
     if (!i.up) continue
-    const addrs = i.addresses.map(parseCidr).filter((x): x is Addr => !!x)
+    const addrs = i.addresses.map((x) => parseCidr(x)).filter((x): x is Addr => !!x).map((x) => ({ ...x, ...(i.dynamicAddresses?.includes(`${x.ip}/${x.prefix}`) ? { dynamic: true } : {}) }))
     if (addrs.length) {
       const routes = i.routes ?? (m.linuxRoutes ?? []).filter((r) => r.dev === i.name)
       eps.push({ device: 'linux', label: `Linux ${i.name}`, port: `linux:${i.name}`, addrs, gateway: i.gateway ?? m.linuxGateway ?? null, icmp: true, ...(routes.length ? { routes } : {}) })
@@ -884,7 +885,7 @@ function linuxNextHop(ifs: Endpoint[], target: string): { out: Endpoint; via?: s
     for (const a of out.addrs) {
       order++
       if (sameSubnet(a.ip, target, a.prefix)) {
-        const cand = { out, direct: true, prefix: a.prefix, metric: 0, order }
+        const cand = { out, direct: true, prefix: a.prefix, metric: a.dynamic ? 100 : 0, order }
         if (!best || a.prefix > best.prefix || (a.prefix === best.prefix && order < best.order)) best = cand
       }
     }

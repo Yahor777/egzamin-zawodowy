@@ -154,6 +154,8 @@ export interface LinuxIface {
   dns: string[]
   /** static/DHCP routes of this interface (missing in older test doubles = no extra routes) */
   routes?: LinuxRouteLite[]
+  /** CIDRs obtained by DHCP (they use metric 100 in the Linux route table) */
+  dynamicAddresses?: string[]
 }
 
 export interface LinuxUser {

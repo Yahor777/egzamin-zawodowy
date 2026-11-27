@@ -23,6 +23,8 @@ export function toApiIfaces(st: LinuxState): LinuxIface[] {
     const out: LinuxIface = { name: i.name, mac: i.mac, addresses: i.addrs.map((a) => a.cidr), up: i.up, dns: [...i.dns] }
     if (gw?.via) out.gateway = gw.via
     if (routes.length) out.routes = routes
+    const dyn = i.addrs.filter((a) => a.dynamic).map((a) => a.cidr)
+    if (dyn.length) out.dynamicAddresses = dyn
     return out
   })
 }
