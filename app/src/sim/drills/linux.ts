@@ -205,7 +205,7 @@ export const LINUX_DRILLS: DrillDef[] = [
               const del = ev.findIndex((e, i) => i > add && e.op === 'del' && e.to === temporary)
               return add >= 0 && del > add && !c.linux?.routes().some((x) => x.to === temporary)
             }, 2),
-            ck('show', 'Таблица показана через ip r/ip route show и route -n', 'ip r i route -n', (c) => hist(c, /(^|\s)ip (r|route( show)?)$/) && hist(c, /\broute -n\b/)),
+            ck('show', 'Таблица показана через ip r/ip route show и route -n', 'ip r i route -n', (c) => hist(c, /(^|\s)ip (r|route( show)?)(?=\s*(;|&&|\|\||$))/) && hist(c, /\broute -n\b/)),
             ck('apply', 'netplan apply выполнен', 'netplan apply', (c) => hist(c, /\bnetplan apply\b/)),
           ], `netplan: routes: - to: default via: ${gw} и второй блок - to: ${persistent} via: ${gw}. Временный маршрут: sudo ip route add ${temporary} via ${gw}; удалить — sudo ip route del ${temporary} via ${gw}. Проверка: ip r, route -n.`),
         ],
