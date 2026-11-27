@@ -110,6 +110,8 @@ function switchLines(a: LabSave['switch'], b: LabSave['switch']): SolLine[] {
   if (off.length) line(`Port Setting: ${off.join(', ')}`)
   if (JSON.stringify(a.mirror) !== JSON.stringify(b.mirror) && b.mirror?.enabled)
     line(`Port Mirror: зеркало на порт ${b.mirror.destination}, источники ${b.mirror.sources.join(', ')}, ${b.mirror.direction}`)
+  const startup = (x: NonNullable<LabSave['switch']>) => JSON.stringify(((x.extra as Record<string, { startup?: unknown }> | undefined)?.js ?? {}).startup ?? null)
+  if (startup(a) !== startup(b)) line('Save Config: сохранить running configuration в startup configuration')
   return out
 }
 

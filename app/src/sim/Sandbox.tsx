@@ -13,17 +13,18 @@ import { WIN_SERVER_NAME } from './pc/server'
 import { defaultRouterState } from './router'
 import { defaultSwitchState } from './switch'
 import { preferredModels } from './models'
+import { sealJetstreamStartup } from './jetstream/map'
 
 // Free practice with a single device; state is kept per device in this browser.
-function useSaved<T>(key: string, init: () => T): [T, Dispatch<SetStateAction<T>>] {
+function useSaved<T>(key: string, init: () => T, migrate: (x: T) => T = (x) => x): [T, Dispatch<SetStateAction<T>>] {
   const [v, setV] = useState<T>(() => {
     try {
       const raw = localStorage.getItem(key)
-      if (raw) return JSON.parse(raw) as T
+      if (raw) return migrate(JSON.parse(raw) as T)
     } catch {
       /* ignore */
     }
-    return init()
+    return migrate(init())
   })
   useEffect(() => {
     try {
@@ -171,7 +172,8 @@ function NetSandbox({ domain = false }: { domain?: boolean }) {
   const NET = domain ? DOMAIN_LAB : NET_LAB
   const fresh = domain ? freshDomain : freshNet
   const sid = domain ? 'sandbox.domain' : 'sandbox.net'
-  const [s, setS] = useSaved<LabSave>(`inf02.${sid}`, fresh)
+  const migrateNet = (x: LabSave): LabSave => (x.switch ? { ...x, switch: sealJetstreamStartup(x.switch) } : x)
+  const [s, setS] = useSaved<LabSave>(`inf02.${sid}`, fresh, migrateNet)
   const [srvView, setSrvView] = useState<PcView>('adapters')
   const [tab, setTab] = useState<NetTab>('bench')
   const [pcView, setPcView] = useState<PcView>('adapters')

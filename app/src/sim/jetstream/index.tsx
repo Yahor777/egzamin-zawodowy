@@ -4,6 +4,7 @@ import { useState, type ReactNode } from 'react'
 import type { SwitchSimProps } from '../switch'
 import { DeviceShell } from '../router/shell'
 import { JS_HELP } from './help'
+import { commitJetstreamChange, jsHasUnsaved } from './map'
 import { HelpCtx, JsPage } from './pages'
 import './jetstream.css'
 
@@ -37,6 +38,7 @@ export interface JetStreamSimProps extends SwitchSimProps {
 
 export function JetStreamSim({ state, onChange, embedded, onLogout, onReboot, onFactoryReset, linked }: JetStreamSimProps) {
   const [page, setPage] = useState('sys-info')
+  const change = (next: typeof state) => onChange(commitJetstreamChange(state, next))
   return (
     <DeviceShell
       theme="dv-theme-jetstream"
@@ -56,13 +58,14 @@ export function JetStreamSim({ state, onChange, embedded, onLogout, onReboot, on
       renderApp={(api) => (
         <Layout
           page={page}
+          dirty={jsHasUnsaved(state)}
           onNavigate={setPage}
           onLogout={() => {
             setPage('sys-info')
             api.logout()
           }}
         >
-          <JsPage key={page} page={page} state={state} onChange={onChange} api={api} go={setPage} linked={linked} />
+          <JsPage key={page} page={page} state={state} onChange={change} api={api} go={setPage} linked={linked} />
         </Layout>
       )}
     />
@@ -121,7 +124,7 @@ function Login({ username, password, onLogin }: { username: string; password: st
   )
 }
 
-function Layout({ page, onNavigate, onLogout, children }: { page: string; onNavigate: (p: string) => void; onLogout: () => void; children: ReactNode }) {
+function Layout({ page, dirty, onNavigate, onLogout, children }: { page: string; dirty: boolean; onNavigate: (p: string) => void; onLogout: () => void; children: ReactNode }) {
   const [open, setOpen] = useState(false)
   const [helpOpen, setHelpOpen] = useState(false)
   const group = JS_MENU.find((m) => m.id === page || m.kids?.some((c) => c.id === page))
@@ -139,6 +142,11 @@ function Layout({ page, onNavigate, onLogout, children }: { page: string; onNavi
       <header className="js-top">
         <span className="js-top-brand">JetStream</span>
         <span className="js-top-sub">L2 Managed Switch</span>
+        {dirty ? (
+          <button type="button" className="js-save-alert" title="There are unsaved changes" onClick={() => go('save')}>
+            Save Config
+          </button>
+        ) : null}
       </header>
       <div className="js-body">
         <button type="button" className="js-menu-btn" aria-expanded={open} aria-controls="js-nav" onClick={() => setOpen((o) => !o)}>
@@ -164,6 +172,11 @@ function Layout({ page, onNavigate, onLogout, children }: { page: string; onNavi
                     }}
                   >
                     {m.label}
+                    {m.id === 'save' && dirty ? (
+                      <span className="js-unsaved" title="There are unsaved changes" aria-label="There are unsaved changes">
+                        *
+                      </span>
+                    ) : null}
                   </button>
                   {isOpen ? (
                     <ul className="js-sub">

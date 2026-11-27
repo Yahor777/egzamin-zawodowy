@@ -14,6 +14,7 @@ import { PcSim, type PcView } from '../pc/PcSim'
 import { defaultRouterState } from '../router'
 import { defaultSwitchState } from '../switch'
 import { preferredModels } from '../models'
+import { sealJetstreamStartup } from '../jetstream/map'
 import type { DocRef } from '../drills/kit'
 import { D } from '../drills/docs'
 import { lKey, markSolution, markStarted, recordCheck, statusOf, SHEETS, usePractice } from '../drills/progress'
@@ -49,7 +50,9 @@ export function freshState(lab: Lab): LabSave {
     startedAt: null,
     checked: null,
   }
-  return lab.prepare ? lab.prepare(s) : s
+  const out = lab.prepare ? lab.prepare(s) : s
+  if (out.switch) out.switch = sealJetstreamStartup(out.switch)
+  return out
 }
 
 function load(lab: Lab): LabSave {
@@ -57,7 +60,11 @@ function load(lab: Lab): LabSave {
     const raw = localStorage.getItem(key(lab.id))
     if (raw) {
       const s = JSON.parse(raw) as LabSave
-      if (s.v === 1) return !lab.devices.pc && (lab.devices.router || lab.devices.switch) && !s.laptop ? { ...s, laptop: serviceLaptop() } : s
+      if (s.v === 1) {
+        const out = !lab.devices.pc && (lab.devices.router || lab.devices.switch) && !s.laptop ? { ...s, laptop: serviceLaptop() } : s
+        if (out.switch) out.switch = sealJetstreamStartup(out.switch)
+        return out
+      }
     }
   } catch {
     /* ignore */

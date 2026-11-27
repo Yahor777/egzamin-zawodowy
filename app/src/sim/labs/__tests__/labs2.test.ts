@@ -176,6 +176,35 @@ const ping = (s: LabSave, L: Lab, from: 'pc' | 'server', ip: string) => {
   // isc-dhcp-server on another bench device would work the same; here: Windows DHCP scope is covered by domain tests
 }
 
+// ---------- Linux static routes + ip_forward as a router
+{
+  const L = lab('inf02-26-01-01')
+  const s = fresh(L)
+  const t = term(s, L)
+  await solve(L, s, ['cabling', 'router', 'switch', 'linux', 'pc'])
+  const pcPort = 'pc:eth0'
+  const target = '10.90.0.1' // router LAN, behind the router WAN address
+  s.router!.staticRoutes = [{ enabled: true, dest: '10.80.0.0', mask: '255.255.255.0', gateway: '90.90.0.3' }]
+  await t.edit('/etc/sysctl.conf', 'net.ipv4.ip_forward=1\n')
+  await t.run('sudo ip route del default')
+  expect('Linux connected subnet: router WAN is directly reachable', canPing(buildModel(L, s), ['linux:enp0s3'], '90.90.0.1').ok)
+  await t.run('sudo ip route add 90.90.0.1/32 via 90.90.0.6 dev enp0s3')
+  expect('Linux host route overrides the connected subnet', !canPing(buildModel(L, s), ['linux:enp0s3'], '90.90.0.1').ok)
+  await t.run('sudo ip route del 90.90.0.1')
+  expect('Linux host route deletion by destination restores direct delivery', canPing(buildModel(L, s), ['linux:enp0s3'], '90.90.0.1').ok)
+  expect('Linux route table: no static route yet → no transit ping', !ping(s, L, 'pc', target))
+  await t.run('sudo ip route add 10.90.0.0/24 via 90.90.0.1 dev enp0s3')
+  expect('Linux route table: static route + ip_forward → transit ping works', ping(s, L, 'pc', target), canPing(buildModel(L, s), [pcPort], target).reason)
+  await t.run('sudo ip route del 10.90.0.0/24 via 90.90.0.1 dev enp0s3')
+  expect('Linux route table: deleted static route stops transit', !ping(s, L, 'pc', target))
+  await t.run('sudo ip route add 10.90.0.0/24 via 90.90.0.6 dev enp0s3')
+  expect('Linux route table: unreachable next hop does not fall back to default', !ping(s, L, 'pc', target))
+  await t.run('sudo ip route replace 10.90.0.0/24 via 90.90.0.1 dev enp0s3')
+  expect('Linux route table: replace restores the working next hop', ping(s, L, 'pc', target))
+  await t.edit('/etc/sysctl.conf', '# net.ipv4.ip_forward=1\n')
+  expect('Linux ip_forward off → the same route is not used for transit', !ping(s, L, 'pc', target))
+}
+
 // ---------- Wi-Fi link
 {
   const L = lab('inf02-24-06-06')

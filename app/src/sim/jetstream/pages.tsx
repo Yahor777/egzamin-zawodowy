@@ -3,7 +3,7 @@ import type { SwitchState } from '../types'
 import { defaultSwitchState } from '../switch/defaults'
 import { isHostIn, isIp, isUnset, isValidMask } from '../router/ip'
 import type { ShellApi } from '../router/shell'
-import { LT_LABEL, applyPortConfig, applySystemIp, applyVlan, deleteVlans, jsx, linkTypes, membersOf, parsePorts, rangeText, vlansOfPort, withJs, type LinkType, type VlanForm } from './map'
+import { LT_LABEL, applyPortConfig, applySystemIp, applyVlan, commitJetstreamChange, deleteVlans, jsHasUnsaved, jsx, linkTypes, membersOf, parsePorts, rangeText, revertJetstreamConfig, saveJetstreamConfig, sealJetstreamStartup, vlansOfPort, withJs, type LinkType, type VlanForm } from './map'
 
 export interface JsPageProps {
   page: string
@@ -421,7 +421,15 @@ function SystemTools({ state, onChange, api }: JsPageProps) {
             <div className="js-confirm" role="alertdialog" aria-label="Confirm reboot">
               <p>Are you sure to reboot the device?</p>
               <div className="js-actions">
-                <Btn onClick={() => api.reboot('The switch is rebooting…')}>OK</Btn>
+                <Btn
+                  onClick={() => {
+                    const next = save ? saveJetstreamConfig(state) : revertJetstreamConfig(state)
+                    if (next !== state) onChange(commitJetstreamChange(state, next))
+                    api.reboot('The switch is rebooting…')
+                  }}
+                >
+                  OK
+                </Btn>
                 <Btn onClick={() => setAsk(false)}>Cancel</Btn>
               </div>
             </div>
@@ -440,7 +448,7 @@ function SystemTools({ state, onChange, api }: JsPageProps) {
               <div className="js-actions">
                 <Btn
                   onClick={() => {
-                    onChange(defaultSwitchState({ model: state.model, ports: state.ports }))
+                    onChange(sealJetstreamStartup(defaultSwitchState({ model: state.model, ports: state.ports })))
                     api.reboot('Restoring the factory defaults, the switch is rebooting…', 'factory')
                   }}
                 >
@@ -483,10 +491,11 @@ function SaveConfig({ state, onChange }: JsPageProps) {
       <Notice m={msg} />
       <Panel title="Save Config">
         <p>Save the running configuration to the startup configuration file.</p>
+        <p className={jsHasUnsaved(state) ? 'js-dirty-text' : undefined}>{jsHasUnsaved(state) ? 'There are unsaved changes. They will be lost after a reboot.' : 'The running configuration matches the startup configuration.'}</p>
         <div className="js-actions">
           <Btn
             onClick={() => {
-              onChange(withJs(state, { saved: true }))
+              onChange(saveJetstreamConfig(state))
               setMsg({ kind: 'ok', text: 'Operation successful. The configuration was saved.' })
             }}
           >

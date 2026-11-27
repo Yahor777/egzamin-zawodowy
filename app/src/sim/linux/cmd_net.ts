@@ -227,18 +227,24 @@ register('ip', (c) => {
       if (!needRoot()) return 2
       if (cmd === 'flush') {
         st.routes = []
+        st.routeEvents = [...(st.routeEvents ?? []), { op: 'flush' as const, to: 'all' }].slice(-200)
         return 0
       }
       const to = args[1] === '0.0.0.0/0' ? 'default' : args[1]
+      const toNorm = to !== 'default' && isIp(to) ? `${to}/32` : to
       const via = args.indexOf('via') >= 0 ? args[args.indexOf('via') + 1] : undefined
       let dev = args.indexOf('dev') >= 0 ? args[args.indexOf('dev') + 1] : undefined
+      const logRoute = (e: { op: 'add' | 'del' | 'replace' | 'flush'; to: string; via?: string; dev?: string }) => {
+        st.routeEvents = [...(st.routeEvents ?? []), e].slice(-200)
+      }
       if (cmd === 'del' || cmd === 'delete') {
         const before = st.routes.length
-        st.routes = st.routes.filter((r) => !(r.to === to && (!via || r.via === via) && (!dev || r.dev === dev)))
+        st.routes = st.routes.filter((r) => !(r.to === toNorm && (!via || r.via === via) && (!dev || r.dev === dev)))
         if (before === st.routes.length) {
           c.err('RTNETLINK answers: No such process\n')
           return 2
         }
+        logRoute({ op: 'del', to: toNorm, ...(via ? { via } : {}), ...(dev ? { dev } : {}) })
         return 0
       }
       if (to !== 'default' && !parseCidr(to) && !isIp(to)) {
@@ -260,13 +266,14 @@ register('ip', (c) => {
         c.err('Error: Device for nexthop is not up.\n')
         return 2
       }
-      if (cmd === 'add' && st.routes.some((r) => r.to === to && r.metric === undefined)) {
+      if (cmd === 'add' && st.routes.some((r) => r.to === toNorm && r.metric === undefined)) {
         c.err('RTNETLINK answers: File exists\n')
         return 2
       }
-      if (cmd === 'replace') st.routes = st.routes.filter((r) => r.to !== to)
-      const route: Route = { to: isIp(to) ? to + '/32' : to, via, dev, proto: 'boot', temp: true }
+      if (cmd === 'replace') st.routes = st.routes.filter((r) => r.to !== toNorm)
+      const route: Route = { to: toNorm, via, dev, proto: 'boot', temp: true }
       st.routes.push(route)
+      st.routeEvents = [...(st.routeEvents ?? []), { op: cmd as 'add' | 'replace', to: toNorm, ...(via ? { via } : {}), ...(dev ? { dev } : {}) }].slice(-200)
       return 0
     }
     c.err(`Command "${cmd}" is unknown, try "ip route help".\n`)
@@ -285,30 +292,30 @@ register('ip', (c) => {
   return 1
 })
 
-/** route lookup for a target ip */
+/** route lookup for a target ip: longest prefix first, then the lowest metric */
 export function routeFor(st: LinuxState, target: string): { dev: string; via?: string; src: string } | null {
   if (!isIp(target)) return null
+  const cand: { dev: string; via?: string; src: string; prefix: number; metric: number; order: number }[] = []
+  let order = 0
   for (const i of st.ifaces) {
     if (!i.up) continue
     for (const a of i.addrs) {
       const p = parseCidr(a.cidr)!
-      if (inSubnet(target, p.ip, p.prefix)) return { dev: i.name, src: p.ip }
+      order++
+      if (inSubnet(target, intToIp(p.net), p.prefix)) cand.push({ dev: i.name, src: p.ip, prefix: p.prefix, metric: a.dynamic ? 100 : 0, order })
     }
   }
   for (const r of st.routes) {
-    if (r.to === 'default') continue
-    const p = parseCidr(r.to)
-    if (p && inSubnet(target, intToIp(p.net), p.prefix)) {
-      const i = findIface(st, r.dev)
-      if (i?.up) return { dev: r.dev, via: r.via, src: i.addrs[0]?.cidr.split('/')[0] || '' }
-    }
+    const i = findIface(st, r.dev)
+    if (!i?.up) continue
+    const p = r.to === 'default' || r.to === '0.0.0.0/0' ? { prefix: 0, net: 0 } : parseCidr(r.to)
+    if (!p) continue
+    order++
+    if (p.prefix === 0 || inSubnet(target, intToIp(p.net), p.prefix)) cand.push({ dev: r.dev, ...(r.via ? { via: r.via } : {}), src: i.addrs[0]?.cidr.split('/')[0] || '', prefix: p.prefix, metric: r.metric ?? 0, order })
   }
-  const d = defaultRoute(st)
-  if (d) {
-    const i = findIface(st, d.dev)!
-    return { dev: d.dev, via: d.via, src: i.addrs[0]?.cidr.split('/')[0] || '' }
-  }
-  return null
+  cand.sort((a, b) => b.prefix - a.prefix || a.metric - b.metric || a.order - b.order)
+  const r = cand[0]
+  return r ? { dev: r.dev, ...(r.via ? { via: r.via } : {}), src: r.src } : null
 }
 
 function resolveName(c: Ctx, name: string): string | null {

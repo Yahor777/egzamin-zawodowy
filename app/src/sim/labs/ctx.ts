@@ -39,6 +39,7 @@ export function buildModel(lab: Pick<Lab, 'devices'>, s: LabSave, booting?: Part
     switch: s.switch,
     linuxIfaces: api?.interfaces(),
     linuxGateway: api?.defaultGateway() ?? null,
+    linuxRoutes: api?.routes(),
     pc: s.pc,
     printer: lab.devices.printer,
     laptop: s.laptop,
