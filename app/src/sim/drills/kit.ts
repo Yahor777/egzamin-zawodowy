@@ -6,6 +6,7 @@ import type { LabSave } from '../labs/ctx'
 import type { Link, PcAdapter } from '../net'
 import { maskToPrefix } from '../net'
 import { checkPassword } from '../linux/users'
+import type { RouterState } from '../types'
 
 export type DrillTopic = 'linux' | 'router' | 'switch' | 'windows' | 'winserver' | 'net'
 
@@ -94,6 +95,12 @@ export const HOME = '/home/administrator'
 export const ADMIN = { name: 'administrator', password: PASS, sudo: true }
 export const RT_PORTS = ['wan', 'lan1', 'lan2', 'lan3', 'lan4']
 export const SW_PORTS = ['1', '2', '3', '4', '5', '6', '7', '8']
+/** the router of these drills works in 192.168.0.0/24 whatever its model (DrayTek's own factory network is 192.168.1.0/24) */
+export const LAN_0: Partial<RouterState> = {
+  lan: { ip: '192.168.0.1', mask: '255.255.255.0', mac: '02-1A-2B-4F-2A-28' },
+  dhcp: { enabled: true, start: '192.168.0.100', end: '192.168.0.199', leaseMinutes: 120, gateway: '192.168.0.1', dns1: '', dns2: '', domain: '' },
+}
+
 
 export function linuxSetup(over: Partial<LinuxSetupLite> = {}): LinuxSetupLite {
   return {

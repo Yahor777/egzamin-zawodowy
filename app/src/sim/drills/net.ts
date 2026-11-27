@@ -2,19 +2,12 @@
 // it is done at the exam: cable the PC to the device, type its address in the browser.
 import { D } from './docs'
 import {
-  RT_PORTS, SW_PORTS, WEB_HINT, ck, ethYaml, ifaceHas, ip4, ipn, lanIs, linked, linksOk, linuxSetup, lping, maskOf, netplanYaml, pcA, pcAd, pcHist,
+  LAN_0, RT_PORTS, SW_PORTS, WEB_HINT, ck, ethYaml, ifaceHas, ip4, ipn, lanIs, linked, linksOk, linuxSetup, lping, maskOf, netplanYaml, pcA, pcAd, pcHist,
   pcStatic, poolIs, pping, resv, swIs, task, vlanAccess, vlanTagged, wanIs, type DrillDef,
 } from './kit'
 import { maskToPrefix, sameSubnet } from '../net'
 import type { LabCtx } from '../labs/labs'
 import { ROUTER_MODEL, SWITCH_MODEL } from '../models'
-import type { RouterState } from '../types'
-
-/** the router of these drills works in 192.168.0.0/24 whatever its model (DrayTek's own factory network is 192.168.1.0/24) */
-const LAN_0: Partial<RouterState> = {
-  lan: { ip: '192.168.0.1', mask: '255.255.255.0', mac: '02-1A-2B-4F-2A-28' },
-  dhcp: { enabled: true, start: '192.168.0.100', end: '192.168.0.199', leaseMinutes: 120, gateway: '192.168.0.1', dns1: '', dns2: '', domain: '' },
-}
 
 const X = (r: { int: (a: number, b: number) => number }) => r.int(2, 19)
 const PC_PORTS = { pc: ['eth0'] }
@@ -489,7 +482,7 @@ export const NET_DRILLS: DrillDef[] = [
     build: (p) => {
       const links: [string, string][] = [[`router:${p.pr}`, `switch:${p.c}`], ['linux:enp0s3', `switch:${p.a}`], ['printer:eth0', `switch:${p.b}`]]
       return {
-        devices: { router: {}, switch: { ip: { dhcp: false, ip: '192.168.0.2', mask: '255.255.255.0', gateway: '192.168.0.1' } }, linux: linuxSetup({ netplan: netplanYaml(ethYaml('enp0s3', '192.168.0.10/24', '192.168.0.1')) }), printer: { ip: '192.168.0.200', prefix: 24 } },
+        devices: { router: LAN_0, switch: { ip: { dhcp: false, ip: '192.168.0.2', mask: '255.255.255.0', gateway: '192.168.0.1' } }, linux: linuxSetup({ netplan: netplanYaml(ethYaml('enp0s3', '192.168.0.10/24', '192.168.0.1')) }), printer: { ip: '192.168.0.200', prefix: 24 } },
         ports: { router: RT_PORTS, switch: SW_PORTS, linux: ['enp0s3'], printer: ['eth0'] },
         requiredLinks: links,
         schema_ru: [`Ruter ${String(p.pr).toUpperCase()} ↔ przełącznik port ${p.c}`, `Serwer Linux ↔ przełącznik port ${p.a}`, `Drukarka ↔ przełącznik port ${p.b}`],

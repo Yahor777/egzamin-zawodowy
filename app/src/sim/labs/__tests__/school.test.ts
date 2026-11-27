@@ -1,6 +1,6 @@
 // The school's equipment (ZSE Rzeszow): DrayTek Vigor2927 + TP-Link JetStream T2500G-10TS.
 //  1. lesson scenarios (PSK lessons 1-8) on the network model: Management VLAN, ACCESS/GENERAL/TRUNK, DrayTek DHCP/VLAN/trunk
-//  2. the lab reference solutions of the router/switch labs run on the school models as well as on the TP-Link ones
+//  2. the reference solutions of every lab and every drill run on the school models as well as on the TP-Link ones
 // Run: node --import ./src/sim/labs/__tests__/register.mjs src/sim/labs/__tests__/school.test.ts
 import { canPing, defaultPcState, leaseFor, syncPcDhcp, wifiCheck, wifiScan, type NetworkModel } from '../../net'
 import { browse } from '../../bench/diagnose'
@@ -11,10 +11,12 @@ import { applyPortConfig, applySystemIp, applyVlan, deleteVlans } from '../../je
 import { poolCount, poolEnd, rowsToVlan, emptyRow, checkRows, vlanRowsOf, withDt, dtx } from '../../draytek/map'
 import { LABS, labScore, type Lab } from '../labs'
 import { LAB_SOLVE } from '../solutions'
-import { buildCtx, buildDhcpServers, buildModel, type LabSave } from '../ctx'
+import { taskHint } from '../hints'
+import { buildCtx, buildDhcpServers, buildModel, defaultServerState, type LabSave } from '../ctx'
 import type { RouterState, SwitchState } from '../../types'
 import { DRILLS, makeDrillLab } from '../../drills/index'
-import { SOLVE, type H, type P } from '../../drills/solutions'
+import { SOLVE, type H, type P, type T } from '../../drills/solutions'
+import { createLinuxState, createShell, Interrupt, type TermIO, type EditRequest, type LinuxState } from '../../linux/engine'
 
 let failures = 0
 const expect = (name: string, ok: boolean, extra = '') => {
@@ -186,85 +188,176 @@ function bench(router: RouterState | undefined, sw: SwitchState | undefined, lin
   expect('lesson 8: the switch is NOT reachable from VLAN 222 ports (not the Management VLAN)', !browse({ ...model, pc: { ...model.pc!, adapters: [{ ...model.pc!.adapters[0], dhcp: false, ip: '192.168.10.51', mask: '255.255.255.0', gateway: '', lease: null }] } }, 'pc', '192.168.10.12').ok)
 }
 
-// ---------------------------------------------------------------- the lab reference solutions on both equipment profiles
-function fresh(lab: Lab, school: boolean): LabSave {
+// ---------------------------------------------------------------- every lab and every drill on both equipment profiles
+// The reference solutions of ALL labs (LAB_SOLVE) and drills (SOLVE) run with the TP-Link and with the school
+// models (DrayTek Vigor2927 + JetStream T2500G), Linux terminal and Windows Server included: a solution or a
+// check that relies on the TP-Link factory address (192.168.0.1) or on TP-Link port numbers fails here.
+const PASS = 'ZAQ!2wsx'
+function freshSave(lab: Lab, school: boolean): LabSave {
   const d = lab.devices
-  return {
+  const s: LabSave = {
     v: 1,
     router: d.router ? defaultRouterState({ model: school ? ROUTER_MODEL.draytek : ROUTER_MODEL.tplink, ...d.router }) : undefined,
     switch: d.switch ? defaultSwitchState({ model: school ? SWITCH_MODEL.jetstream : SWITCH_MODEL.tplink, ...d.switch }) : undefined,
+    linux: d.linux ? createLinuxState(d.linux) : undefined,
     pc: d.pc ? defaultPcState(d.pc) : undefined,
+    server: d.server ? defaultServerState(d.server) : undefined,
     links: [],
     startedAt: null,
     checked: null,
   }
+  return lab.prepare ? lab.prepare(s) : s
 }
+/** headless Linux terminal on the bench (the same as in labs.test.ts / drills.test.ts) */
+function term(s: LabSave, lab: Lab): T {
+  let out = ''
+  const inputs: string[] = []
+  const edits: string[] = []
+  const io: TermIO = {
+    write: (x) => void (out += x),
+    readLine: async (p) => {
+      out += p
+      const v = inputs.shift()
+      if (v === undefined) throw new Interrupt()
+      return v
+    },
+    edit: async (req: EditRequest) => {
+      const t = edits.shift()
+      if (t !== undefined) out += req.save(t).msg + '\n'
+    },
+    sleep: async () => {},
+    aborted: () => false,
+    clear: () => {},
+  }
+  const model = (): NetworkModel => buildModel(lab, s)
+  const sh = createShell(s.linux as LinuxState, io, (st) => (s.linux = JSON.parse(JSON.stringify(st))), {
+    ping: (from, gw, target) => canPing({ ...model(), linuxIfaces: from, linuxGateway: gw }, from.map((i) => `linux:${i.name}`), target),
+    dhcp: (i) => leaseFor(model(), `linux:${i.name}`, i.mac, buildDhcpServers(s)) ?? null,
+  })
+  const t: T = {
+    async run(cmd, ...inp) {
+      out = ''
+      inputs.push(...inp)
+      await sh.runLine(cmd)
+      return out
+    },
+    edit: (path, text, sudo = true) => {
+      edits.push(text)
+      return sudo ? t.run(`sudo nano ${path}`, PASS) : t.run(`nano ${path}`)
+    },
+    editWith: (cmd, text, ...inp) => {
+      edits.push(text)
+      return t.run(cmd, ...inp)
+    },
+    append: (path, text) => t.edit(path, ((s.linux as LinuxState).fs[path]?.c ?? '') + text),
+  }
+  return t
+}
+/** ipconfig /renew on the station or on the server */
+function renewOf(s: LabSave, lab: Lab) {
+  return (id = 'eth0') => {
+    const key = s.pc?.adapters.some((a) => a.id === id) ? 'pc' : 'server'
+    const a = s[key]!.adapters.find((x) => x.id === id)!
+    a.lease = leaseFor(buildModel(lab, s), `${key}:${id}`, a.mac, buildDhcpServers(s))
+  }
+}
+const failedChecks = (lab: Lab, s: LabSave) => {
+  const r = labScore(lab, buildCtx(s, buildModel(lab, s)))
+  return { pct: r.pct, failed: lab.tasks.flatMap((t) => t.checks.filter((c) => !r.results[`${t.id}.${c.id}`]).map((c) => `${t.id}.${c.id}: ${c.ru}`)) }
+}
+const PROFILES = [
+  { school: false, name: 'TP-Link' },
+  { school: true, name: 'DrayTek + T2500G' },
+]
+
 let ran = 0
 for (const L of LABS) {
-  const d = L.devices
-  if ((!d.router && !d.switch) || d.linux || d.server) continue
   const steps = LAB_SOLVE[L.id]
   if (!steps) continue
-  for (const school of [false, true]) {
-    const s = fresh(L, school)
-    const renew = (id: string) => {
-      const a = s.pc!.adapters.find((x) => x.id === id)!
-      a.lease = leaseFor(buildModel(L, s), `pc:${id}`, a.mac, buildDhcpServers(s))
+  for (const { school, name } of PROFILES) {
+    const s = freshSave(L, school)
+    const t = s.linux ? term(s, L) : (undefined as never)
+    try {
+      for (const step of Object.values(steps)) await step({ s, t, lab: L, renew: renewOf(s, L) })
+    } catch (e) {
+      console.log('   error', e)
     }
-    for (const step of Object.values(steps)) await step({ s, t: undefined as never, lab: L, renew })
-    const r = labScore(L, buildCtx(s, buildModel(L, s)))
-    const failed = L.tasks.flatMap((t) => t.checks.filter((c) => !r.results[`${t.id}.${c.id}`]).map((c) => `${t.id}.${c.id}: ${c.ru}`))
-    expect(`lab ${L.id} on ${school ? 'DrayTek + T2500G' : 'TP-Link'}: reference solution ${r.pct}%`, r.pct === 100, failed.join(' | '))
+    const r = failedChecks(L, s)
+    expect(`lab ${L.id} on ${name}: reference solution ${r.pct}%`, r.pct === 100, r.failed.join(' | '))
+    if (school) {
+      const f = freshSave(L, true)
+      const r0 = failedChecks(L, f)
+      expect(`lab ${L.id} on ${name}: fresh ${r0.pct}% < 75%`, r0.pct < 75)
+    }
     ran++
   }
 }
-expect('router/switch labs were run', ran >= 2, String(ran))
+expect('every lab with a reference solution was run on both profiles', ran === 2 * LABS.filter((l) => LAB_SOLVE[l.id]).length && ran >= 40, String(ran))
 
-// ---------------------------------------------------------------- the router / switch drills (no Linux terminal needed) on both profiles
 let drillRuns = 0
 for (const def of DRILLS) {
   const solve = SOLVE[def.id]
-  for (const seed of [1, 42]) {
-    const lab0 = makeDrillLab(def, seed)
-    const d0 = lab0.devices
-    if ((!d0.router && !d0.switch) || d0.linux || d0.server || !solve) continue
-    for (const school of [false, true]) {
+  if (!solve) continue
+  for (const seed of [1, 7, 42]) {
+    for (const { school, name } of PROFILES) {
       const lab = makeDrillLab(def, seed)
-      const d = lab.devices
-      const s: LabSave = {
-        v: 1,
-        router: d.router ? defaultRouterState({ model: school ? ROUTER_MODEL.draytek : ROUTER_MODEL.tplink, ...d.router }) : undefined,
-        switch: d.switch ? defaultSwitchState({ model: school ? SWITCH_MODEL.jetstream : SWITCH_MODEL.tplink, ...d.switch }) : undefined,
-        pc: d.pc ? defaultPcState(d.pc) : undefined,
-        links: [],
-        startedAt: null,
-        checked: null,
-      }
-      const s2 = lab.prepare ? lab.prepare(s) : s
+      const s = freshSave(lab, school)
+      const t = s.linux ? term(s, lab) : (null as never)
       const h: H = {
-        s: s2,
-        t: null as never,
+        s,
+        t,
         lab,
-        renew: (id = 'eth0') => {
-          const a = s2.pc!.adapters.find((x) => x.id === id)!
-          a.lease = leaseFor(buildModel(lab, s2), `pc:${id}`, a.mac, buildDhcpServers(s2))
-        },
-        pc: (v, id = 'eth0') => Object.assign(s2.pc!.adapters.find((x) => x.id === id)!, v),
-        cmd: (...c) => s2.pc!.history.push(...c),
+        renew: renewOf(s, lab),
+        pc: (v, id = 'eth0') => Object.assign(s.pc!.adapters.find((x) => x.id === id)!, v),
+        cmd: (...c) => s.pc!.history.push(...c),
       }
       try {
         await solve(lab.params as P, h)
       } catch (e) {
         console.log('   error', e)
       }
-      const r = labScore(lab, buildCtx(s2, buildModel(lab, s2)))
-      const failed = lab.tasks.flatMap((tk) => tk.checks.filter((c) => !r.results[`${tk.id}.${c.id}`]).map((c) => `${tk.id}.${c.id}: ${c.ru}`))
-      expect(`drill ${def.id} #${seed} on ${school ? 'DrayTek + T2500G' : 'TP-Link'}: ${r.pct}%`, r.pct === 100, failed.join(' | '))
+      const r = failedChecks(lab, s)
+      expect(`drill ${def.id} #${seed} on ${name}: ${r.pct}%`, r.pct === 100, r.failed.join(' | '))
+      if (school) {
+        const r0 = failedChecks(lab, freshSave(makeDrillLab(def, seed), true))
+        expect(`drill ${def.id} #${seed} on ${name}: fresh ${r0.pct}% < 75%`, r0.pct < 75)
+      }
       drillRuns++
     }
   }
 }
-expect('router/switch drills were run', drillRuns >= 10, String(drillRuns))
+expect('every drill was run on both profiles', drillRuns === 2 * 3 * DRILLS.filter((d) => SOLVE[d.id]).length, String(drillRuns))
+
+// ---------------------------------------------------------------- hints and diagnostics follow the saved model
+{
+  const dt = { router: { model: ROUTER_MODEL.draytek }, switch: { model: SWITCH_MODEL.jetstream } }
+  const tp = { router: { model: ROUTER_MODEL.tplink }, switch: { model: SWITCH_MODEL.tplink } }
+  const TPLINK_MENU = /Network → |DHCP → |Wireless → |Wireless Settings|Forwarding → |Advanced Routing|System Tools|Remote Management|IP Setting|802\.1Q PVID Setting|Port Setting|User Account|VLAN Interfaces/
+  const bad: string[] = []
+  let changed = 0
+  for (const lab of [...LABS, ...DRILLS.map((d) => makeDrillLab(d, 1))])
+    for (const t of lab.tasks) {
+      if (!t.hint_ru) continue
+      if (taskHint(t, tp) !== t.hint_ru) bad.push(`${lab.id}/${t.id}: TP-Link hint changed`)
+      const forced = lab.devices.router?.model || lab.devices.switch?.model
+      const h = taskHint(t, forced ? { router: lab.devices.router ?? dt.router, switch: lab.devices.switch ?? dt.switch } : dt)!
+      if (h !== t.hint_ru) changed++
+      if (!forced && t.device !== 'pc' && t.device !== 'linux' && t.device !== 'server' && TPLINK_MENU.test(h)) bad.push(`${lab.id}/${t.id}: ${h.match(TPLINK_MENU)![0]}`)
+    }
+  expect('hints: no TP-Link menu path left in a hint shown on DrayTek + T2500G', !bad.length, bad.slice(0, 5).join(' | '))
+  expect('hints: the school variants exist', changed > 30, String(changed))
+  expect('hints: DrayTek lease time in seconds', taskHint({ device: 'router', hint_ru: '12 часов = 720 минут.' }, dt) === '12 ч = 43200 с (Lease Time у DrayTek в секундах).')
+
+  const onWan = (model: string) => bench(defaultRouterState({ model }), undefined, [['pc:eth0', 'router:wan']])
+  const whyText = (m: NetworkModel, host: string) => browse(m, 'pc', host).why?.map((w) => `${w.text} ${w.fix ?? ''}`).join(' ') ?? ''
+  const dtWhy = whyText(onWan(ROUTER_MODEL.draytek), '192.168.1.1')
+  expect('diagnose: DrayTek ports are WAN1 / P1–P6, not "LAN N"', /WAN1/.test(dtWhy) && /P1–P6/.test(dtWhy) && !/LAN \d/.test(dtWhy), /WAN1/.test(dtWhy) ? '' : dtWhy)
+  const tpWhy = whyText(onWan(ROUTER_MODEL.tplink), '192.168.0.1')
+  expect('diagnose: TP-Link keeps WAN / LAN', /порт WAN роутера/.test(tpWhy) && !/P1/.test(tpWhy), /порт WAN роутера/.test(tpWhy) ? '' : tpWhy)
+  const offRt = { ...bench(defaultRouterState({ model: ROUTER_MODEL.draytek }), undefined, [['pc:eth0', 'router:lan2']]), power: { router: false } } as NetworkModel
+  const offWhy = whyText(offRt, '192.168.1.1')
+  expect('diagnose: cable into a DrayTek port is named P2', /\(P2\)/.test(offWhy), /\(P2\)/.test(offWhy) ? '' : offWhy)
+}
 
 if (failures) {
   console.log(`\n${failures} FAILED`)

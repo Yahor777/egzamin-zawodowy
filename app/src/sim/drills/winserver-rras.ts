@@ -2,7 +2,7 @@
 // ws-rras (role Dostęp zdalny → Routing, "Konfiguruj i włącz routing i dostęp zdalny": NAT to the router, or LAN routing + a route on the router).
 // Reference solution: solutions-srv.ts.
 import { D } from './docs'
-import { RT_PORTS, ck, pcAd, task, type DrillDef } from './kit'
+import { LAN_0, RT_PORTS, ck, pcAd, task, type DrillDef } from './kit'
 import type { LabSave } from '../labs/ctx'
 import type { LabCtx } from '../labs/labs'
 import { maskToPrefix } from '../net'
@@ -39,7 +39,7 @@ export const WS_RRAS_DRILLS: DrillDef[] = [
       ]
       return {
         devices: {
-          router: {},
+          router: LAN_0,
           pc: { hostname: 'DESKTOP-STACJA', adapters: [pcAd('eth0', 'Ethernet', '08-00-27-26-77-03')] },
           server: { hostname: 'WIN-SERWER', adapters: [pcAd('eth0', 'Ethernet', '08-00-27-26-77-01'), pcAd('eth1', 'Ethernet 2', '08-00-27-26-77-02')] },
         },
@@ -47,7 +47,7 @@ export const WS_RRAS_DRILLS: DrillDef[] = [
         requiredLinks: CABLES,
         schema_ru: ['Ruter LAN1 ↔ serwer „Ethernet 2” (strona zewnętrzna)', 'Serwer „Ethernet” ↔ stacja Windows 11 (sieć wewnętrzna)'],
         intro_pl: [
-          `Serwer ma dwie karty: „Ethernet” (${lanIp}/24, sieć wewnętrzna, kabel do stacji) i „Ethernet 2” (${wanIp}/24, brama ${router}, kabel do rutera). Stacja Windows 11: 192.168.${X}.20/24, brama ${lanIp}. Ruter ma ustawienia fabryczne (192.168.0.1/24).`,
+          `Serwer ma dwie karty: „Ethernet” (${lanIp}/24, sieć wewnętrzna, kabel do stacji) i „Ethernet 2” (${wanIp}/24, brama ${router}, kabel do rutera). Stacja Windows 11: 192.168.${X}.20/24, brama ${lanIp}. Ruter pracuje w sieci 192.168.0.0/24 (adres 192.168.0.1).`,
           kind === 'nat' ? 'Zadanie: stacja ma się komunikować z ruterem (stroną zewnętrzną) przez serwer — translacja adresów (NAT).' : `Zadanie: stacja ma się komunikować z ruterem przez serwer — routing LAN; ruter musi znać drogę powrotną do sieci 192.168.${X}.0/24.`,
         ],
         prepare: (s) => ({

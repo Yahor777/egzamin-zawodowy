@@ -21,6 +21,7 @@ import { drillSolution, linesForTask, type SolLine } from '../drills/solutionTex
 import type { DrillLab } from '../drills/kit'
 import { HintLadder, SolutionView } from '../../path/HintLadder'
 import { LABS, labScore, type Lab } from './labs'
+import { taskHint } from './hints'
 import { labSolutions, type TaskSolutions } from './labSolutionText'
 import { buildCtx, buildDhcpServers, defaultServerState, serviceLaptop, type LabSave } from './ctx'
 import { ReportButton } from '../../components/ReportIssue'
@@ -392,7 +393,7 @@ export function LabRun({ lab, progressKey, back, timer, docs: docsIn, intro_pl, 
         taskId={t.id}
         docs={taskDocs(t)}
         onDoc={openDoc}
-        hint={t.hint_ru}
+        hint={taskHint(t, s)}
         solution={
           isDrill ? (
             sol === undefined ? (

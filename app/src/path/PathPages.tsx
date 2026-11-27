@@ -17,6 +17,8 @@ import { dKey, drillSeed, getPractice, lKey, newDrillSeed, parseDay, usePractice
 import { drillSolution, type SolLine } from '../sim/drills/solutionText'
 import { clearLabState, DocsView, freshState, LabRun, labDocs } from '../sim/labs/LabPage'
 import type { Lab } from '../sim/labs/labs'
+import { taskHint } from '../sim/labs/hints'
+import { preferredModels } from '../sim/models'
 import { usePathData, type PathData } from './data'
 import { HintLadder, SolutionView } from './HintLadder'
 import { daysUntil, useExam } from '../lib/settings'
@@ -1067,6 +1069,12 @@ function MissingAct({ a, step, st }: { a: Extract<Activity, { kind: 'missing' }>
   )
 }
 
+/** device models a not-yet-started lab will get (the lab's own model, else the chosen equipment profile) */
+const hwDefaults = (lab: Lab) => {
+  const m = preferredModels()
+  return { router: { model: lab.devices.router?.model ?? m.router }, switch: { model: lab.devices.switch?.model ?? m.switch } }
+}
+
 /** "Застрял?" under a drill / lab that did not reach the threshold: docs → failed checks with hints → solution */
 function StuckLadder({ a, docs, onDoc }: { a: Extract<Activity, { kind: 'drill' | 'lab' }>; docs: DocRef[]; onDoc: (d: DocRef) => void }) {
   const ru = useLang() === 'ru'
@@ -1075,7 +1083,7 @@ function StuckLadder({ a, docs, onDoc }: { a: Extract<Activity, { kind: 'drill' 
   const saved = (() => {
     try {
       const raw = localStorage.getItem(`inf02.lab.${lab.id}`)
-      return raw ? (JSON.parse(raw) as { checked: Record<string, boolean> | null }) : null
+      return raw ? (JSON.parse(raw) as { checked: Record<string, boolean> | null; router?: { model?: string }; switch?: { model?: string } }) : null
     } catch {
       return null
     }
@@ -1093,8 +1101,8 @@ function StuckLadder({ a, docs, onDoc }: { a: Extract<Activity, { kind: 'drill' 
   }, [a])
   const allDocs = [...docs, ...(a.kind === 'drill' ? a.def.docs : labDocs(a.lab))].filter((d, i, arr) => arr.findIndex((x) => x.to === d.to && (x.section === d.section || !d.section)) === i)
   const hintText = failed.length
-    ? failed.map((t) => `${t.title_ru}: ${t.checks.filter((c) => !saved!.checked![`${t.id}.${c.id}`]).map((c) => c.ru).join('; ')}${t.hint_ru ? ` — ${t.hint_ru}` : ''}`).join('\n')
-    : lab.tasks.map((t) => t.hint_ru).filter(Boolean).join('\n')
+    ? failed.map((t) => `${t.title_ru}: ${t.checks.filter((c) => !saved!.checked![`${t.id}.${c.id}`]).map((c) => c.ru).join('; ')}${taskHint(t, saved) ? ` — ${taskHint(t, saved)}` : ''}`).join('\n')
+    : lab.tasks.map((t) => taskHint(t, saved ?? hwDefaults(lab))).filter(Boolean).join('\n')
   return (
     <div className="stuck">
       <p className="stuck-t">{ru ? 'Не дотянул до 75%?' : 'Poniżej 75%?'}</p>

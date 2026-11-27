@@ -22,6 +22,19 @@ import {
   type PortId,
 } from '../net'
 import { dnsLookup, parseUrl, serveHttp, type HttpOutcome } from '../domain'
+import { routerKind, switchKind } from '../models'
+
+const isDraytek = (m: NetworkModel) => !!m.router && routerKind(m.router.model) === 'draytek'
+const isJetstream = (m: NetworkModel) => !!m.switch && switchKind(m.switch.model) === 'jetstream'
+/** "LAN роутера" with the port names of the model: DrayTek has P1…P6 (P6 = WAN2), TP-Link LAN 1…4 */
+const rtLan = (m: NetworkModel) => (isDraytek(m) ? 'LAN роутера (порты P1–P6)' : 'LAN роутера')
+/** port name as printed on the device: router "P1" / "WAN1" (DrayTek) or "LAN 1" / "WAN" (TP-Link), switch "3" */
+function portName(m: NetworkModel, p: string): string {
+  const [d, port] = p.split(':')
+  if (d !== 'router') return port
+  if (isDraytek(m)) return port === 'wan' ? 'WAN1' : port.replace('lan', 'P')
+  return port === 'wan' ? 'WAN' : port.replace('lan', 'LAN ')
+}
 
 /** Hosts that sit in the router's LAN segment (what its ARP / DHCP tables list): { ip, mac, name } */
 export function routerHosts(m: NetworkModel): { ip: string; mac: string; name: string }[] {
@@ -174,14 +187,14 @@ function pcSide(m: NetworkModel, key: PcKey, pc: PcState, booting: Set<DeviceKey
       why.push({
         short: 'кабель в ПК не вставлен',
         text: `В сетевую карту ${adapterLabel(a)} не вставлен кабель — Windows пишет «Kabel sieciowy odłączony».`,
-        fix: 'На Столе нажми порт ПК, потом свободный порт LAN роутера или порт свитча.',
+        fix: `На Столе нажми порт ПК, потом свободный порт ${rtLan(m)} или порт свитча.`,
       })
     else {
       const d = devOf(peer)
       if (!isOn(m, d))
-        why.push({ short: `${DEV_RU_ACC[d]} на другом конце кабеля не работает`, text: `Кабель от ПК идёт в ${DEV_RU_ACC[d]} (${peer.split(':')[1]}). ${bootLabel(d, booting)} Пока он не работает, на порту нет линка (диод не горит).` })
+        why.push({ short: `${DEV_RU_ACC[d]} на другом конце кабеля не работает`, text: `Кабель от ПК идёт в ${DEV_RU_ACC[d]} (${portName(m, peer)}). ${bootLabel(d, booting)} Пока он не работает, на порту нет линка (диод не горит).` })
       else
-        why.push({ short: 'порт свитча выключен', text: `Порт ${peer.split(':')[1]} свитча, в который воткнут ПК, выключен в настройках свитча (Port Setting → Disable).`, fix: 'Переткни кабель в другой порт.' })
+        why.push({ short: 'порт свитча выключен', text: `Порт ${peer.split(':')[1]} свитча, в который воткнут ПК, выключен в настройках свитча (${isJetstream(m) ? 'Switching → Port → Port Config: Status Disable' : 'Port Setting → Disable'}).`, fix: 'Переткни кабель в другой порт.' })
     }
     return { why, adapter: a }
   }
@@ -193,7 +206,7 @@ function pcSide(m: NetworkModel, key: PcKey, pc: PcState, booting: Set<DeviceKey
       why.push({
         short: `ПК без DHCP-адреса (${a.autoconf ?? '169.254.x.x'})`,
         text: `ПК настроен «Uzyskaj adres IP automatycznie», но DHCP-сервер не ответил, поэтому Windows сама выдала себе адрес ${a.autoconf ?? '169.254.x.x'} (APIPA, 169.254.0.0/16). С ним ни до одного устройства не достучаться.${dhcpWhy(m, key, a)}`,
-        fix: 'Подключи ПК туда, где работает DHCP (порт LAN роутера с включённым DHCP), или задай статический адрес из подсети устройства.',
+        fix: `Подключи ПК туда, где работает DHCP (порт ${rtLan(m)} с включённым DHCP), или задай статический адрес из подсети устройства.`,
       })
   } else if (!pcAddress(a)) {
     why.push({ short: 'у ПК не задан IP', text: 'У сетевой карты не задан правильный статический адрес.', fix: 'Połączenia sieciowe → Właściwości → IPv4.' })
@@ -205,7 +218,7 @@ function dhcpWhy(m: NetworkModel, key: PcKey, a: PcAdapter): string {
   const peer = peerOf(m, `${key}:${a.id}`)
   if (!peer) return ''
   const d = devOf(peer)
-  if (d === 'router' && peer === 'router:wan') return ' Кабель воткнут в порт WAN роутера — DHCP раздаётся только на портах LAN.'
+  if (d === 'router' && peer === 'router:wan') return ` Кабель воткнут в порт ${portName(m, 'router:wan')} роутера — DHCP раздаётся только на портах ${isDraytek(m) ? 'P1–P6' : 'LAN'}.`
   if (d === 'router' && m.router && !m.router.dhcp.enabled) return ' На роутере выключен DHCP-сервер.'
   if (d === 'switch') {
     const rtrOnSwitch = m.links.some(([x, y]) => [x, y].some((p) => p.startsWith('router:lan')) && [x, y].some((p) => p.startsWith('switch:')))
@@ -281,7 +294,7 @@ export function browse(m: NetworkModel, key: PcKey, input: string, opts: { booti
           ok: false,
           host,
           error: 'nxdomain',
-          why: [{ short: 'имя не найдено', text: `Имя ${host} знает только DNS самого роутера TP-Link — оно работает, когда ПК получил адрес и DNS от роутера по DHCP.`, fix: `Надёжнее вписать IP роутера: ${m.router.lan.ip}.` }],
+          why: [{ short: 'имя не найдено', text: `Имя ${host} знает только DNS самого роутера (${isDraytek(m) ? 'DrayTek' : 'TP-Link'}) — оно работает, когда ПК получил адрес и DNS от роутера по DHCP.`, fix: `Надёжнее вписать IP роутера: ${m.router.lan.ip}.` }],
         }
     } else
       return {
@@ -390,7 +403,7 @@ export function browse(m: NetworkModel, key: PcKey, input: string, opts: { booti
       why.push({
         short: 'нет кабеля до устройства',
         text: `Между ПК и устройством «${DEV_RU[o.key]}» нет кабельного пути.`,
-        fix: `На Столе соедини ПК с ${o.key === 'router' ? 'портом LAN роутера (не WAN)' : DEV_RU_ACC[o.key]} — напрямую или через свитч.`,
+        fix: `На Столе соедини ПК с ${o.key === 'router' ? `портом ${rtLan(m)} (не ${isDraytek(m) ? 'WAN1' : 'WAN'})` : DEV_RU_ACC[o.key]} — напрямую или через свитч.`,
       })
     return { ok: false, host, error: 'timeout', why }
   }
@@ -408,7 +421,7 @@ export function browse(m: NetworkModel, key: PcKey, input: string, opts: { booti
     }
   }
   if (cfg && side.why.length && o.prefix !== null && side.why.some((w) => w.short.startsWith('ПК без DHCP'))) {
-    side.why[side.why.length - 1].fix = `Поставь ПК статический адрес ${suggestIp(m, host, o.prefix)}, маска ${maskFromPrefix(o.prefix)} — или подключи ПК в LAN роутера с включённым DHCP.`
+    side.why[side.why.length - 1].fix = `Поставь ПК статический адрес ${suggestIp(m, host, o.prefix)}, маска ${maskFromPrefix(o.prefix)} — или подключи ПК в ${rtLan(m)} с включённым DHCP.`
   }
   if (!why.length) why.push({ short: 'нет ответа', text: 'Устройство не ответило. Проверь кабели, питание и адреса.' })
   return { ok: false, host, error: 'timeout', why }
