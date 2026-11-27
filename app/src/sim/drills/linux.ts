@@ -549,7 +549,7 @@ export const LINUX_DRILLS: DrillDef[] = [
           ck('on', `${p.on}: active + enabled`, 'usługa włączona', (c) => svcOn(c, p.on as string)),
           ck('off', `${p.off}: inactive + disabled`, 'usługa wyłączona', (c) => !!c.linux && !c.linux.serviceActive(p.off as string) && !c.linux.serviceEnabled(p.off as string)),
           ck('st', `systemctl status ${p.on}`, 'status', (c) => hist(c, new RegExp(`systemctl (status|is-active|is-enabled) ${p.on}`))),
-        ], 'sudo systemctl enable --now служба; sudo systemctl disable --now служба; systemctl status служба', `sudo systemctl włącz usługę --now; sudo systemctl wyłącz usługę --now; usługa statusu systemctl`),
+        ], 'sudo systemctl enable --now служба; sudo systemctl disable --now служба; systemctl status служба', `sudo systemctl enable --now usługa; sudo systemctl disable --now usługa; systemctl status usługa`),
       ],
     }),
   },
