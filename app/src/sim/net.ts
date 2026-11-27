@@ -868,7 +868,7 @@ function linuxNextHop(ifs: Endpoint[], target: string): { out: Endpoint; via?: s
       order++
       if (sameSubnet(a.ip, target, a.prefix)) {
         const cand = { out, direct: true, prefix: a.prefix, metric: a.dynamic ? 100 : 0, order }
-        if (!best || a.prefix > best.prefix || (a.prefix === best.prefix && order < best.order)) best = cand
+        if (!best || a.prefix > best.prefix || (a.prefix === best.prefix && (cand.metric < best.metric || (cand.metric === best.metric && order < best.order)))) best = cand
       }
     }
   for (const out of ifs)
