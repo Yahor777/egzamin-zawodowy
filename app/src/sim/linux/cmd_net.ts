@@ -226,18 +226,24 @@ register('ip', (c) => {
       if (!needRoot()) return 2
       if (cmd === 'flush') {
         st.routes = []
+        st.routeEvents = [...(st.routeEvents ?? []), { op: 'flush' as const, to: 'all' }].slice(-200)
         return 0
       }
       const to = args[1] === '0.0.0.0/0' ? 'default' : args[1]
+      const toNorm = to !== 'default' && isIp(to) ? `${to}/32` : to
       const via = args.indexOf('via') >= 0 ? args[args.indexOf('via') + 1] : undefined
       let dev = args.indexOf('dev') >= 0 ? args[args.indexOf('dev') + 1] : undefined
+      const logRoute = (e: { op: 'add' | 'del' | 'replace' | 'flush'; to: string; via?: string; dev?: string }) => {
+        st.routeEvents = [...(st.routeEvents ?? []), e].slice(-200)
+      }
       if (cmd === 'del' || cmd === 'delete') {
         const before = st.routes.length
-        st.routes = st.routes.filter((r) => !(r.to === to && (!via || r.via === via) && (!dev || r.dev === dev)))
+        st.routes = st.routes.filter((r) => !(r.to === toNorm && (!via || r.via === via) && (!dev || r.dev === dev)))
         if (before === st.routes.length) {
           c.err('RTNETLINK answers: No such process\n')
           return 2
         }
+        logRoute({ op: 'del', to: toNorm, ...(via ? { via } : {}), ...(dev ? { dev } : {}) })
         return 0
       }
       if (to !== 'default' && !parseCidr(to) && !isIp(to)) {
@@ -259,13 +265,14 @@ register('ip', (c) => {
         c.err('Error: Device for nexthop is not up.\n')
         return 2
       }
-      if (cmd === 'add' && st.routes.some((r) => r.to === to && r.metric === undefined)) {
+      if (cmd === 'add' && st.routes.some((r) => r.to === toNorm && r.metric === undefined)) {
         c.err('RTNETLINK answers: File exists\n')
         return 2
       }
-      if (cmd === 'replace') st.routes = st.routes.filter((r) => r.to !== to)
-      const route: Route = { to: isIp(to) ? to + '/32' : to, via, dev, proto: 'boot', temp: true }
+      if (cmd === 'replace') st.routes = st.routes.filter((r) => r.to !== toNorm)
+      const route: Route = { to: toNorm, via, dev, proto: 'boot', temp: true }
       st.routes.push(route)
+      st.routeEvents = [...(st.routeEvents ?? []), { op: cmd as 'add' | 'replace', to: toNorm, ...(via ? { via } : {}), ...(dev ? { dev } : {}) }].slice(-200)
       return 0
     }
     c.err(`Command "${cmd}" is unknown, try "ip route help".\n`)

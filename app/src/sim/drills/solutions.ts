@@ -91,7 +91,7 @@ export const SOLVE: Record<string, (p: P, h: H) => Promise<void> | void> = {
     await t.run(`sudo ip route add ${temporary} via ${gw}`)
     await t.run('ip r')
     await t.run('route -n')
-    await t.run(`sudo ip route del ${temporary} via ${gw}`)
+    await t.run(`sudo ip route del ${temporary}`)
     await t.run('ip route show')
   },
   async 'lx-hostname-user'(p, { t }) {

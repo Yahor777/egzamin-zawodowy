@@ -138,6 +138,13 @@ export interface LinuxRouteLite {
   proto?: string
 }
 
+export interface LinuxRouteEvent {
+  op: 'add' | 'del' | 'replace' | 'flush'
+  to: string
+  via?: string
+  dev?: string
+}
+
 export interface LinuxIface {
   name: string // enp0s3
   mac: string
@@ -174,6 +181,7 @@ export interface LinuxApi {
   defaultGateway(): string | null
   /** kernel static/DHCP routes (runtime `ip route` plus netplan routes) */
   routes(): LinuxRouteLite[]
+  routeEvents(): LinuxRouteEvent[]
   file(path: string): LinuxFileInfo | null
   listDir(path: string): string[] | null
   users(): LinuxUser[]

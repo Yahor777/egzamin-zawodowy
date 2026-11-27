@@ -88,6 +88,7 @@ export function linuxApi(st: LinuxState): LinuxApi {
     serviceActive: (name) => st.services[unitName(name)]?.active === 'active',
     serviceEnabled: (name) => !!st.services[unitName(name)]?.enabled,
     history: () => [...st.history],
+    routeEvents: () => (st.routeEvents ?? []).map((e) => ({ ...e })),
     mounts: () => st.mounts.map((m) => ({ device: m.device, mountpoint: m.mountpoint, fstype: m.fstype })),
     dhcpSubnets() {
       if (st.services['isc-dhcp-server']?.active !== 'active' || !st.dhcp) return null
