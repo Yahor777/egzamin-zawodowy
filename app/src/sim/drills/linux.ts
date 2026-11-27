@@ -207,7 +207,8 @@ export const LINUX_DRILLS: DrillDef[] = [
             }, 2),
             ck('show', 'Таблица показана через ip r/ip route show и route -n', 'ip r i route -n', (c) => hist(c, /(^|\s)ip (r|route( show)?)(?=\s*(;|&&|\|\||$))/) && !!c.linux?.history().some((h) => {
               const x = h.replace(/\s+/g, ' ').trim()
-              const at = x.indexOf('route -n')
+              const m = /(^|[^a-z])route -n\b/.exec(x)
+              const at = m ? m.index + m[1].length : -1
               return at >= 0 && !/\|\|\s*$/.test(x.slice(0, at))
             })),
             ck('apply', 'netplan apply выполнен', 'netplan apply', (c) => hist(c, /\bnetplan apply\b/)),
