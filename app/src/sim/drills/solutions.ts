@@ -9,6 +9,7 @@ import { ethYaml, netplanYaml, ip4, ipn, maskOf } from './kit'
 import { EXTRA_SOLVE } from './solutions-extra'
 import { SRV_SOLVE } from './solutions-srv'
 import { SHARE_SOLVE } from './solutions-shares'
+import { saveJetstreamConfig } from '../jetstream/map'
 
 const PASS = 'ZAQ!2wsx'
 
@@ -43,8 +44,10 @@ const vlan = (s: LabSave, id: number, untagged: number[], tagged: number[] = [])
     if (id !== 1) sw.vlans[0].members[p - 1] = 'none'
   }
   for (const p of tagged) v.members[p - 1] = 'tagged'
+  saveSw(s)
 }
 const permDigits = (m: number) => m.toString(8)
+const saveSw = (s: LabSave) => void (s.switch = saveJetstreamConfig(s.switch!))
 
 export const SOLVE: Record<string, (p: P, h: H) => Promise<void> | void> = {
   async 'lx-users-groups'(p, { t }) {
@@ -76,6 +79,20 @@ export const SOLVE: Record<string, (p: P, h: H) => Promise<void> | void> = {
   async 'lx-netplan-two'(p, { t }) {
     await t.edit('/etc/netplan/50-cloud-init.yaml', netplanYaml(`    enp0s3:\n      dhcp4: true\n` + ethYaml('enp0s8', `10.${p.X}.0.${p.host}/24`, undefined, ['127.0.0.1'])))
     await t.run('sudo netplan apply')
+  },
+  async 'linux-routes'(p, { t }) {
+    const lan = `10.${p.X}.0`
+    const gw = `${lan}.1`
+    const persistent = `172.${p.X}.0.0/16`
+    const temporary = `192.168.${p.X}.0/24`
+    const yaml = netplanYaml(`    enp0s3:\n      addresses: [${lan}.10/24]\n      routes:\n        - to: default\n          via: ${gw}\n        - to: ${persistent}\n          via: ${gw}\n`)
+    await t.edit('/etc/netplan/50-cloud-init.yaml', yaml)
+    await t.run('sudo netplan apply')
+    await t.run(`sudo ip route add ${temporary} via ${gw}`)
+    await t.run('ip r')
+    await t.run('route -n')
+    await t.run(`sudo ip route del ${temporary} via ${gw}`)
+    await t.run('ip route show')
   },
   async 'lx-hostname-user'(p, { t }) {
     const login = `${String(p.first)[0]}${p.last}`.toLowerCase()
@@ -215,6 +232,7 @@ export const SOLVE: Record<string, (p: P, h: H) => Promise<void> | void> = {
     const ip = `${p.net}.${p.X}.${p.host}`
     s.links = [['pc:eth0', 'switch:1']]
     s.switch!.ip = { dhcp: false, ip, mask: '255.255.255.0', gateway: `${p.net}.${p.X}.1` }
+    saveSw(s)
     pc(st(`${p.net}.${p.X}.10`, '255.255.255.0'))
     cmd(`ping ${ip}`)
   },
@@ -230,6 +248,7 @@ export const SOLVE: Record<string, (p: P, h: H) => Promise<void> | void> = {
     Object.assign(s.switch!, { adminPassword: p.pw, passwordChanged: true })
     for (const x of p.off as number[]) s.switch!.portEnabled[x - 1] = false
     s.switch!.mirror = { enabled: true, destination: 8, sources: [p.src as number], direction: 'both' }
+    saveSw(s)
   },
   // ---------------- windows
   'win-static'(p, { pc }) {
@@ -260,6 +279,7 @@ export const SOLVE: Record<string, (p: P, h: H) => Promise<void> | void> = {
   // ---------------- network
   'net-conflict'(p, { s, renew, cmd }) {
     s.switch!.ip = { dhcp: false, ip: `192.168.0.${p.sw}`, mask: '255.255.255.0', gateway: '192.168.0.1' }
+    saveSw(s)
     s.links = [['router:lan1', 'switch:1'], ['pc:eth0', 'switch:2']]
     renew()
     cmd('ping 192.168.0.1', `ping 192.168.0.${p.sw}`)

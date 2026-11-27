@@ -284,30 +284,30 @@ register('ip', (c) => {
   return 1
 })
 
-/** route lookup for a target ip */
+/** route lookup for a target ip: longest prefix first, then the lowest metric */
 export function routeFor(st: LinuxState, target: string): { dev: string; via?: string; src: string } | null {
   if (!isIp(target)) return null
+  const cand: { dev: string; via?: string; src: string; prefix: number; metric: number; order: number }[] = []
+  let order = 0
   for (const i of st.ifaces) {
     if (!i.up) continue
     for (const a of i.addrs) {
       const p = parseCidr(a.cidr)!
-      if (inSubnet(target, p.ip, p.prefix)) return { dev: i.name, src: p.ip }
+      order++
+      if (inSubnet(target, intToIp(p.net), p.prefix)) cand.push({ dev: i.name, src: p.ip, prefix: p.prefix, metric: a.dynamic ? 100 : 0, order })
     }
   }
   for (const r of st.routes) {
-    if (r.to === 'default') continue
-    const p = parseCidr(r.to)
-    if (p && inSubnet(target, intToIp(p.net), p.prefix)) {
-      const i = findIface(st, r.dev)
-      if (i?.up) return { dev: r.dev, via: r.via, src: i.addrs[0]?.cidr.split('/')[0] || '' }
-    }
+    const i = findIface(st, r.dev)
+    if (!i?.up) continue
+    const p = r.to === 'default' || r.to === '0.0.0.0/0' ? { prefix: 0, net: 0 } : parseCidr(r.to)
+    if (!p) continue
+    order++
+    if (p.prefix === 0 || inSubnet(target, intToIp(p.net), p.prefix)) cand.push({ dev: r.dev, ...(r.via ? { via: r.via } : {}), src: i.addrs[0]?.cidr.split('/')[0] || '', prefix: p.prefix, metric: r.metric ?? 0, order })
   }
-  const d = defaultRoute(st)
-  if (d) {
-    const i = findIface(st, d.dev)!
-    return { dev: d.dev, via: d.via, src: i.addrs[0]?.cidr.split('/')[0] || '' }
-  }
-  return null
+  cand.sort((a, b) => b.prefix - a.prefix || a.metric - b.metric || a.order - b.order)
+  const r = cand[0]
+  return r ? { dev: r.dev, ...(r.via ? { via: r.via } : {}), src: r.src } : null
 }
 
 function resolveName(c: Ctx, name: string): string | null {

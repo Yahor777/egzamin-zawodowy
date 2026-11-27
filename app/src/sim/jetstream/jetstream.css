@@ -35,6 +35,17 @@
 .js-top-sub {
   opacity: 0.8;
 }
+.js-save-alert {
+  margin-left: auto;
+  min-height: 44px;
+  padding: 4px 12px;
+  border: 1px solid #f2c14e;
+  border-radius: 2px;
+  background: #ffb020;
+  color: #231a00;
+  font-weight: 700;
+  cursor: pointer;
+}
 .js-body {
   display: grid;
   grid-template-columns: 170px minmax(0, 1fr);
@@ -571,4 +582,14 @@
   padding-top: 0;
   border-bottom: 1px solid #e0e0e0;
   word-break: break-word;
+}
+
+.js-unsaved {
+  color: #ffb020;
+  font-weight: 700;
+  margin-left: 0.35rem;
+}
+.js-dirty-text {
+  color: #8a5400;
+  font-weight: 600;
 }

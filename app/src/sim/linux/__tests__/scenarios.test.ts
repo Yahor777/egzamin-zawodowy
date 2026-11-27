@@ -10,7 +10,7 @@ function check(name: string, cond: boolean, extra = '') {
   }
 }
 
-function setup() {
+function setup(extraPackages: string[] = []) {
   return createLinuxState({
     hostname: 'serwer',
     users: [
@@ -23,7 +23,7 @@ function setup() {
       { name: 'enp0s8', mac: '08:00:27:aa:bb:02' },
     ],
     extraDisks: [{ dev: 'sdb', sizeMB: 10240 }],
-    packages: ['isc-dhcp-server'],
+    packages: ['isc-dhcp-server', ...extraPackages],
   })
 }
 
@@ -127,6 +127,44 @@ h.edits.push(NETPLAN)
 await h.run('sudo nano /etc/netplan/50-cloud-init.yaml')
 o = await h.run('sudo netplan apply')
 check('netplan apply ok again', !/Error|Invalid/.test(o), o)
+
+// static routes: netplan is persistent, runtime `ip route` is not
+const NP_STATIC = NETPLAN.replace('          via: 90.90.0.1\n', '          via: 90.90.0.1\n        - to: 192.168.77.0/24\n          via: 90.90.0.1\n')
+h.edits.push(NP_STATIC)
+await h.run('sudo nano /etc/netplan/50-cloud-init.yaml')
+o = await h.run('sudo netplan apply')
+check('netplan static route apply', !/Error|Invalid/.test(o), o)
+o = await h.run('ip r')
+check('ip r shows netplan static route', o.includes('192.168.77.0/24 via 90.90.0.1 dev enp0s3 proto static'), o)
+o = await h.run('sudo ip route add 172.31.0.0/16 via 90.90.0.1')
+check('ip route add silent', o.trim() === '', o)
+o = await h.run('ip route show')
+check('ip route show shows runtime route', o.includes('172.31.0.0/16 via 90.90.0.1 dev enp0s3 proto boot'), o)
+o = await h.run('sudo ip route del 172.31.0.0/16 via 90.90.0.1')
+check('ip route del silent', o.trim() === '', o)
+check('runtime route deleted', !(await h.run('ip r')).includes('172.31.0.0/16'))
+await h.run('sudo ip route add 172.31.0.0/16 via 90.90.0.1')
+await h.run('sudo reboot')
+h.inputs.push('zaq1@WSX')
+o = await h.run('ip r')
+check('netplan route survives reboot', o.includes('192.168.77.0/24 via 90.90.0.1 dev enp0s3 proto static'), o)
+check('runtime route is lost after reboot', !o.includes('172.31.0.0/16'), o)
+h.edits.push(NP_STATIC.replace('        - to: 192.168.77.0/24\n          via: 90.90.0.1\n', '        - to: 192.168.77.0/24\n'))
+await h.run('sudo nano /etc/netplan/50-cloud-init.yaml')
+o = await h.run('sudo netplan generate')
+check('netplan route without via is a validation error', o.includes("route must include both a 'to' and 'via' IP"), o)
+h.edits.push(NP_STATIC.replace('via: 90.90.0.1\n        - to:', 'via: 90.90.0.999\n        - to:'))
+await h.run('sudo nano /etc/netplan/50-cloud-init.yaml')
+o = await h.run('sudo netplan generate')
+check('netplan invalid via is a validation error', o.includes("invalid IPv4 address '90.90.0.999'"), o)
+h.edits.push(NETPLAN.replace('      routes:\n        - to: default\n          via: 90.90.0.1\n', '      gateway4: 90.90.0.1\n'))
+await h.run('sudo nano /etc/netplan/50-cloud-init.yaml')
+o = await h.run('sudo netplan apply')
+check('legacy gateway4 accepted with deprecation warning', o.includes('`gateway4` has been deprecated') && !/Error in network definition/.test(o), o)
+check('legacy gateway4 becomes the default route', (await h.run('ip r')).includes('default via 90.90.0.1 dev enp0s3 proto static'))
+h.edits.push(NP_STATIC)
+await h.run('sudo nano /etc/netplan/50-cloud-init.yaml')
+await h.run('sudo netplan apply')
 
 // ---------------------------------------------------------------- scenario 2
 console.log('Scenario 2: isc-dhcp-server')
@@ -465,6 +503,18 @@ console.log('Session resume (cwd, su stack, variables)')
   check('no resume → fresh login', sh3.sessions.length === 1 && sh3.cur.user === 'administrator' && sh3.cur.cwd === '/home/administrator' && sh3.sessionId !== r.state.session?.id)
   const sh4 = createShell(JSON.parse(JSON.stringify(r.state)), io2, () => {}, undefined, 'uczen', true)
   check('other login user → fresh login', sh4.sessions.length === 1 && sh4.cur.user === 'uczen')
+}
+
+// ---------------------------------------------------------------- net-tools route(8)
+console.log('net-tools route')
+{
+  const r = harness(setup(['net-tools']))
+  r.edits.push(NETPLAN.replace('          via: 90.90.0.1\n', '          via: 90.90.0.1\n        - to: 192.168.77.0/24\n          via: 90.90.0.1\n'))
+  await r.run('sudo nano /etc/netplan/50-cloud-init.yaml', 'zaq1@WSX')
+  await r.run('sudo netplan apply')
+  await r.run('sudo ip route add 172.31.0.0/16 via 90.90.0.1')
+  const ro = await r.run('route -n')
+  check('route -n shows numeric static routes', ro.includes('Kernel IP routing table') && /192\.168\.77\.0\s+90\.90\.0\.1\s+255\.255\.255\.0\s+UG/.test(ro) && /172\.31\.0\.0\s+90\.90\.0\.1\s+255\.255\.0\.0\s+UG/.test(ro), ro)
 }
 
 console.log(failures ? `\n${failures} FAILED` : '\nALL PASSED')

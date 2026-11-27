@@ -129,6 +129,15 @@ export interface SwitchState {
 
 // ---------------- Linux server ----------------
 // The Linux simulator owns its state shape; the lab layer only uses this API.
+export interface LinuxRouteLite {
+  /** 'default' or an IPv4 CIDR */
+  to: string
+  via?: string
+  dev: string
+  metric?: number
+  proto?: string
+}
+
 export interface LinuxIface {
   name: string // enp0s3
   mac: string
@@ -136,6 +145,8 @@ export interface LinuxIface {
   up: boolean
   gateway?: string
   dns: string[]
+  /** static/DHCP routes of this interface (missing in older test doubles = no extra routes) */
+  routes?: LinuxRouteLite[]
 }
 
 export interface LinuxUser {
@@ -161,6 +172,8 @@ export interface LinuxApi {
   /** interfaces as currently applied (after `netplan apply`) */
   interfaces(): LinuxIface[]
   defaultGateway(): string | null
+  /** kernel static/DHCP routes (runtime `ip route` plus netplan routes) */
+  routes(): LinuxRouteLite[]
   file(path: string): LinuxFileInfo | null
   listDir(path: string): string[] | null
   users(): LinuxUser[]

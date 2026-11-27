@@ -1,5 +1,5 @@
 // IPv4 helpers and a small L2/L3 reachability model for the labs.
-import type { LinuxIface, RouterState, SwitchState } from './types'
+import type { LinuxIface, LinuxRouteLite, RouterState, SwitchState } from './types'
 
 export function ipToInt(ip: string): number | null {
   const m = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/.exec(ip.trim())
@@ -540,6 +540,8 @@ export interface Endpoint {
   addrs: Addr[]
   gateway: string | null
   icmp: boolean // answers ping
+  /** static/DHCP routes of a Linux interface (dev is part of each route) */
+  routes?: LinuxRouteLite[]
 }
 
 export interface NetworkModel {
@@ -547,6 +549,8 @@ export interface NetworkModel {
   switch?: SwitchState
   linuxIfaces?: LinuxIface[]
   linuxGateway?: string | null
+  /** Linux kernel routes when the caller does not pass interfaces from linuxApi (missing = only default gateways) */
+  linuxRoutes?: LinuxRouteLite[]
   pc?: PcState
   printer?: { ip: string; prefix: number }
   /** service laptop on the bench (Windows, port prefix "laptop:") */
@@ -762,7 +766,10 @@ export function endpoints(m: NetworkModel): Endpoint[] {
   for (const i of isOn(m, 'linux') ? (m.linuxIfaces ?? []) : []) {
     if (!i.up) continue
     const addrs = i.addresses.map(parseCidr).filter((x): x is Addr => !!x)
-    if (addrs.length) eps.push({ device: 'linux', label: `Linux ${i.name}`, port: `linux:${i.name}`, addrs, gateway: m.linuxGateway ?? null, icmp: true })
+    if (addrs.length) {
+      const routes = i.routes ?? (m.linuxRoutes ?? []).filter((r) => r.dev === i.name)
+      eps.push({ device: 'linux', label: `Linux ${i.name}`, port: `linux:${i.name}`, addrs, gateway: i.gateway ?? m.linuxGateway ?? null, icmp: true, ...(routes.length ? { routes } : {}) })
+    }
   }
   for (const [key, pc] of [['pc', m.pc], ['laptop', m.laptop], ['server', m.server]] as const) {
     if (!pc || !isOn(m, key)) continue
@@ -843,6 +850,29 @@ function mayForward(n: Net, dev: DeviceKey, inIf: Endpoint | null, outIf: Endpoi
   return !!n.m.forwarders?.[dev]
 }
 
+function linuxRoutePrefix(r: LinuxRouteLite, target: string): number | null {
+  if (r.to === 'default' || r.to === '0.0.0.0/0') return 0
+  const p = parseCidr(r.to)
+  if (!p) return null
+  return sameSubnet(networkOf(p.ip, p.prefix), target, p.prefix) ? p.prefix : null
+}
+
+/** Best Linux route for `target`: longest prefix first, then the lowest metric. */
+function linuxNextHop(ifs: Endpoint[], target: string): { out: Endpoint; via?: string; direct: boolean; prefix: number } | null {
+  let best: { out: Endpoint; via?: string; direct: boolean; prefix: number; metric: number; order: number } | null = null
+  let order = 0
+  for (const out of ifs)
+    for (const r of out.routes ?? []) {
+      order++
+      if (r.dev && out.port !== `linux:${r.dev}`) continue
+      const prefix = linuxRoutePrefix(r, target)
+      if (prefix === null) continue
+      const cand = { out, via: r.via, direct: !r.via, prefix, metric: r.metric ?? 0, order }
+      if (!best || prefix > best.prefix || (prefix === best.prefix && (cand.metric < best.metric || (cand.metric === best.metric && order < best.order)))) best = cand
+    }
+  return best ? { out: best.out, ...(best.via ? { via: best.via } : {}), direct: best.direct, prefix: best.prefix } : null
+}
+
 /** Longest-prefix static route of the router for `target` (enabled routes only). */
 function staticNextHop(n: Net, target: string): string | null {
   let best: { gw: string; prefix: number } | null = null
@@ -890,9 +920,18 @@ function walk(n: Net, origin: Endpoint[], target: string): { dst: Endpoint; src:
     for (const i of ifs)
       for (const e of n.eps)
         if (e.device !== dev && e.addrs.some((a) => a.ip === target) && direct(n, i, e, target) && mayForward(n, dev, arrived, i)) return { dst: e, src: src ?? i, nat: nat ?? natOut(n, dev, arrived, i) }
-    // 2) next hop: static route (router), else default gateway
+    // 2) next hop: the best static route, else the default gateway. Linux uses its own kernel table
+    // (netplan routes and runtime `ip route` entries) and never falls back to a less specific route
+    // when the selected next hop is unreachable.
     const cand: { via: Endpoint; ip: string; out: Endpoint }[] = []
     const hopIps: { ip: string; from: Endpoint[] }[] = []
+    const lx = dev === 'linux' ? linuxNextHop(ifs, target) : null
+    if (lx?.direct) {
+      for (const e of n.eps)
+        if (e.device !== dev && e.addrs.some((a) => a.ip === target) && l2(n.domains, lx.out.port, e.port) && mayForward(n, dev, arrived, lx.out)) return { dst: e, src: src ?? lx.out, nat: nat ?? natOut(n, dev, arrived, lx.out) }
+      return null
+    }
+    if (lx?.via) hopIps.push({ ip: lx.via, from: [lx.out] })
     if (dev === 'router') {
       const gw = staticNextHop(n, target)
       if (gw) hopIps.push({ ip: gw, from: ifs })
@@ -901,7 +940,7 @@ function walk(n: Net, origin: Endpoint[], target: string): { dst: Endpoint; src:
       const gw = serverNextHop(n.m.server, target)
       if (gw) hopIps.push({ ip: gw, from: ifs })
     }
-    for (const i of ifs) if (i.gateway && !(dev === 'router' && i.port !== 'router:wan')) hopIps.push({ ip: i.gateway, from: [i] })
+    if (!lx?.via) for (const i of ifs) if (i.gateway && !(dev === 'router' && i.port !== 'router:wan')) hopIps.push({ ip: i.gateway, from: [i] })
     for (const h of hopIps)
       for (const i of h.from)
         for (const e of n.eps)

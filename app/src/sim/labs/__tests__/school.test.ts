@@ -7,7 +7,7 @@ import { browse } from '../../bench/diagnose'
 import { defaultRouterState } from '../../router/defaults'
 import { defaultSwitchState } from '../../switch/defaults'
 import { ROUTER_MODEL, SWITCH_MODEL, routerKind, switchKind } from '../../models'
-import { applyPortConfig, applySystemIp, applyVlan, deleteVlans } from '../../jetstream/map'
+import { applyPortConfig, applySystemIp, applyVlan, commitJetstreamChange, deleteVlans, jsHasUnsaved, revertJetstreamConfig, saveJetstreamConfig, sealJetstreamStartup } from '../../jetstream/map'
 import { poolCount, poolEnd, rowsToVlan, emptyRow, checkRows, vlanRowsOf, withDt, dtx } from '../../draytek/map'
 import { LABS, labScore, type Lab } from '../labs'
 import { LAB_SOLVE } from '../solutions'
@@ -84,6 +84,23 @@ function bench(router: RouterState | undefined, sw: SwitchState | undefined, lin
   sw = must(applyPortConfig(sw, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 'general', null)).state
   expect('after GENERAL every port is in VLAN 1 again, PVIDs unchanged', sw.vlans[0].members.every((x) => x === 'untagged') && sw.pvid[0] === 11 && sw.pvid[2] === 22)
   // Internet: port 8 -> router WAN side (switch uplink to a router with DHCP) is exercised in the trunk test below
+}
+
+// ---------------------------------------------------------------- JetStream running vs startup configuration
+{
+  const factory = sealJetstreamStartup(defaultSwitchState({ model: SWITCH_MODEL.jetstream }))
+  expect('JetStream save: factory startup has no unsaved changes', !jsHasUnsaved(factory))
+  const changed = commitJetstreamChange(factory, must(applyVlan(factory, { id: 77, name: 'Test', ports: [3], egress: {} }, 'create')).state)
+  expect('JetStream save: a web-UI VLAN change applies immediately', changed.vlans.some((v) => v.id === 77))
+  expect('JetStream save: unsaved-changes indicator is active', jsHasUnsaved(changed))
+  const lost = revertJetstreamConfig(changed)
+  expect('JetStream save: reboot without Save Config loses the VLAN', !lost.vlans.some((v) => v.id === 77) && !jsHasUnsaved(lost))
+  const saved = saveJetstreamConfig(changed)
+  expect('JetStream save: Save Config clears the unsaved indicator', !jsHasUnsaved(saved))
+  const kept = revertJetstreamConfig(saved)
+  expect('JetStream save: reboot after Save Config keeps the VLAN', kept.vlans.some((v) => v.id === 77) && !jsHasUnsaved(kept))
+  const reset = defaultSwitchState({ model: SWITCH_MODEL.jetstream, ports: saved.ports })
+  expect('JetStream save: Reset to factory removes saved VLANs', !reset.vlans.some((v) => v.id === 77) && reset.vlans.length === 1)
 }
 
 // ---------------------------------------------------------------- lesson 4: DrayTek LAN/DHCP/Bind IP to MAC
@@ -206,7 +223,9 @@ function freshSave(lab: Lab, school: boolean): LabSave {
     startedAt: null,
     checked: null,
   }
-  return lab.prepare ? lab.prepare(s) : s
+  const out = lab.prepare ? lab.prepare(s) : s
+  if (out.switch) out.switch = sealJetstreamStartup(out.switch)
+  return out
 }
 /** headless Linux terminal on the bench (the same as in labs.test.ts / drills.test.ts) */
 function term(s: LabSave, lab: Lab): T {
@@ -284,6 +303,11 @@ for (const L of LABS) {
     }
     const r = failedChecks(L, s)
     expect(`lab ${L.id} on ${name}: reference solution ${r.pct}%`, r.pct === 100, r.failed.join(' | '))
+    if (school && s.switch) {
+      s.switch = revertJetstreamConfig(s.switch)
+      const rb = failedChecks(L, s)
+      expect(`lab ${L.id} on ${name}: solution survives a T2500G reboot`, rb.pct === 100, rb.failed.join(' | '))
+    }
     if (school) {
       const f = freshSave(L, true)
       const r0 = failedChecks(L, f)
@@ -318,6 +342,11 @@ for (const def of DRILLS) {
       }
       const r = failedChecks(lab, s)
       expect(`drill ${def.id} #${seed} on ${name}: ${r.pct}%`, r.pct === 100, r.failed.join(' | '))
+      if (school && s.switch) {
+        s.switch = revertJetstreamConfig(s.switch)
+        const rb = failedChecks(lab, s)
+        expect(`drill ${def.id} #${seed} on ${name}: solution survives a T2500G reboot`, rb.pct === 100, rb.failed.join(' | '))
+      }
       if (school) {
         const r0 = failedChecks(lab, freshSave(makeDrillLab(def, seed), true))
         expect(`drill ${def.id} #${seed} on ${name}: fresh ${r0.pct}% < 75%`, r0.pct < 75)

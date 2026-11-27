@@ -6,6 +6,7 @@ import { defaultRouterState } from '../router/defaults'
 import { defaultSwitchState } from '../switch/defaults'
 import type { RouterState, SwitchState } from '../types'
 import { buildDhcpServers, buildModel, type LabSave } from '../labs/ctx'
+import { revertJetstreamConfig } from '../jetstream/map'
 import type { Lab } from '../labs/labs'
 
 export type BootReason = 'power' | 'reboot' | 'reset' | 'ui'
@@ -50,6 +51,8 @@ export function useStation(lab: BenchLab, s: LabSave, apply: (p: Partial<LabSave
   const [boot, setBoot] = useState<Partial<Record<DeviceKey, BootInfo>>>({})
   const [epoch, setEpoch] = useState<Partial<Record<DeviceKey, number>>>({})
   const timers = useRef<Partial<Record<DeviceKey, number>>>({})
+  const latest = useRef({ s, applyAuto })
+  latest.current = { s, applyAuto }
   useEffect(() => {
     const t = timers.current
     return () => Object.values(t).forEach((x) => window.clearTimeout(x))
@@ -83,6 +86,13 @@ export function useStation(lab: BenchLab, s: LabSave, apply: (p: Partial<LabSave
         delete n[d]
         return n
       })
+      if (d === 'switch') {
+        const cur = latest.current.s.switch
+        if (cur) {
+          const reverted = revertJetstreamConfig(cur)
+          if (reverted !== cur) latest.current.applyAuto({ switch: reverted })
+        }
+      }
     }, ms)
   }, [])
 
