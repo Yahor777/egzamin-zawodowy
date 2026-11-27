@@ -109,7 +109,7 @@ export const WS_FTP_DRILLS: DrillDef[] = [
               ck('down', `На Windows 11 есть скачанный файл ${download} с тем же текстом`, 'plik pobrany na stację', (c) => !!c.pc && Object.keys(c.pc.files ?? {}).some((k) => k.toLowerCase().endsWith(`\\${download.toLowerCase()}`) && (c.pc!.files?.[k] ?? '').includes(String(p.text))), 2),
             ],
             `cmd на stacji: echo ${p.text}> ${upload} ; ftp ${ip}. В ftp: пользователь ${login}, пароль ${FTP_PW}, затем binary, put ${upload}, get ${upload} ${download}, ls, bye. 530 — неверный логин/выключено uwierzytelnianie podstawowe; 550 Access is denied — нет reguły autoryzacji или прав NTFS.`,
-            `cmd na stacji: echo ${p.text}> ${upload} ; ftp ${ip}. W ftp: użytkownik ${login}, hasło ${FTP_PW}, następnie binary, put ${upload}, get ${upload} ${download}, ls, bye. 530 — zły login lub wyłączone uwierzytelnianie podstawowe; 550 Access is denied — brak reguły autoryzacji albo uprawnień NTFS.`,
+            `W cmd na stacji wykonaj osobno: echo ${p.text} > ${upload} i Enter, potem ftp ${ip}. W ftp: użytkownik ${login}, hasło ${FTP_PW}, następnie binary, put ${upload}, get ${upload} ${download}, ls, bye. 530 — zły login lub wyłączone uwierzytelnianie podstawowe; 550 Access is denied — brak reguły autoryzacji albo uprawnień NTFS.`,
           ),
         ],
       }
