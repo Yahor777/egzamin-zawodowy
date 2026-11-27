@@ -1,5 +1,5 @@
 // IPv4 helpers and a small L2/L3 reachability model for the labs.
-import type { LinuxIface, RouterState, SwitchState } from './types'
+import type { LinuxIface, LinuxRouteLite, RouterState, SwitchState } from './types'
 
 export function ipToInt(ip: string): number | null {
   const m = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/.exec(ip.trim())
@@ -30,6 +30,7 @@ export function prefixToMask(p: number): string {
 export interface Addr {
   ip: string
   prefix: number
+  dynamic?: boolean
 }
 
 export function parseCidr(cidr: string): Addr | null {
@@ -439,6 +440,22 @@ export interface IisState {
   next: number
 }
 
+/** Interactive ftp.exe session of a Command Prompt window. Optional: old saves have none. */
+export interface PcFtpSession {
+  host: string
+  ip: string
+  port: number
+  phase: 'offline' | 'user' | 'pass' | 'connected' | 'ready'
+  user?: string
+  /** the access token established by USER/PASS (no password material) */
+  token?: { name: string; who: string[]; admin: boolean }
+  /** anonymous FTP login (IUSR) */
+  anonymous?: boolean
+  /** current remote directory, / is the FTP root */
+  cwd: string
+  binary: boolean
+}
+
 export interface PcState {
   /** operating system of the machine; missing = Windows 11 */
   os?: 'win11' | 'server2022'
@@ -478,6 +495,8 @@ export interface PcState {
   sizes?: Record<string, number>
   /** shared printers connected on this client; missing = none */
   printers?: PcPrinter[]
+  /** interactive ftp.exe session; missing = the normal shell prompt */
+  ftp?: PcFtpSession
 }
 
 /** What Group Policy did to a domain client (computed by domain.applyGpo, cached on the client like a real one). */
@@ -540,6 +559,8 @@ export interface Endpoint {
   addrs: Addr[]
   gateway: string | null
   icmp: boolean // answers ping
+  /** static/DHCP routes of a Linux interface (dev is part of each route) */
+  routes?: LinuxRouteLite[]
 }
 
 export interface NetworkModel {
@@ -547,6 +568,8 @@ export interface NetworkModel {
   switch?: SwitchState
   linuxIfaces?: LinuxIface[]
   linuxGateway?: string | null
+  /** Linux kernel routes when the caller does not pass interfaces from linuxApi (missing = only default gateways) */
+  linuxRoutes?: LinuxRouteLite[]
   pc?: PcState
   printer?: { ip: string; prefix: number }
   /** service laptop on the bench (Windows, port prefix "laptop:") */
@@ -761,8 +784,11 @@ export function endpoints(m: NetworkModel): Endpoint[] {
   }
   for (const i of isOn(m, 'linux') ? (m.linuxIfaces ?? []) : []) {
     if (!i.up) continue
-    const addrs = i.addresses.map(parseCidr).filter((x): x is Addr => !!x)
-    if (addrs.length) eps.push({ device: 'linux', label: `Linux ${i.name}`, port: `linux:${i.name}`, addrs, gateway: m.linuxGateway ?? null, icmp: true })
+    const addrs = i.addresses.map((x) => parseCidr(x)).filter((x): x is Addr => !!x).map((x) => ({ ...x, ...(i.dynamicAddresses?.includes(`${x.ip}/${x.prefix}`) ? { dynamic: true } : {}) }))
+    if (addrs.length) {
+      const routes = i.routes ?? (m.linuxRoutes ?? []).filter((r) => r.dev === i.name)
+      eps.push({ device: 'linux', label: `Linux ${i.name}`, port: `linux:${i.name}`, addrs, gateway: i.gateway ?? m.linuxGateway ?? null, icmp: true, ...(routes.length ? { routes } : {}) })
+    }
   }
   for (const [key, pc] of [['pc', m.pc], ['laptop', m.laptop], ['server', m.server]] as const) {
     if (!pc || !isOn(m, key)) continue
@@ -843,6 +869,38 @@ function mayForward(n: Net, dev: DeviceKey, inIf: Endpoint | null, outIf: Endpoi
   return !!n.m.forwarders?.[dev]
 }
 
+function linuxRoutePrefix(r: LinuxRouteLite, target: string): number | null {
+  if (r.to === 'default' || r.to === '0.0.0.0/0') return 0
+  const p = parseCidr(r.to)
+  if (!p) return null
+  return sameSubnet(networkOf(p.ip, p.prefix), target, p.prefix) ? p.prefix : null
+}
+
+/** Best Linux route for `target`: longest prefix first, then the lowest metric. */
+function linuxNextHop(ifs: Endpoint[], target: string): { out: Endpoint; via?: string; direct: boolean; prefix: number } | null {
+  let best: { out: Endpoint; via?: string; direct: boolean; prefix: number; metric: number; order: number } | null = null
+  let order = 0
+  // Like routeFor in the terminal model: every connected subnet is considered before static routes.
+  for (const out of ifs)
+    for (const a of out.addrs) {
+      order++
+      if (sameSubnet(a.ip, target, a.prefix)) {
+        const cand = { out, direct: true, prefix: a.prefix, metric: a.dynamic ? 100 : 0, order }
+        if (!best || a.prefix > best.prefix || (a.prefix === best.prefix && order < best.order)) best = cand
+      }
+    }
+  for (const out of ifs)
+    for (const r of out.routes ?? []) {
+      order++
+      if (r.dev && out.port !== `linux:${r.dev}`) continue
+      const prefix = linuxRoutePrefix(r, target)
+      if (prefix === null) continue
+      const cand = { out, via: r.via, direct: !r.via, prefix, metric: r.metric ?? 0, order }
+      if (!best || prefix > best.prefix || (prefix === best.prefix && (cand.metric < best.metric || (cand.metric === best.metric && order < best.order)))) best = cand
+    }
+  return best ? { out: best.out, ...(best.via ? { via: best.via } : {}), direct: best.direct, prefix: best.prefix } : null
+}
+
 /** Longest-prefix static route of the router for `target` (enabled routes only). */
 function staticNextHop(n: Net, target: string): string | null {
   let best: { gw: string; prefix: number } | null = null
@@ -886,13 +944,24 @@ function walk(n: Net, origin: Endpoint[], target: string): { dst: Endpoint; src:
       const own = ifs.find((e) => e.addrs.some((a) => a.ip === target))
       if (own) return { dst: own, src: src!, nat }
     }
-    // 1) on-link delivery
-    for (const i of ifs)
-      for (const e of n.eps)
-        if (e.device !== dev && e.addrs.some((a) => a.ip === target) && direct(n, i, e, target) && mayForward(n, dev, arrived, i)) return { dst: e, src: src ?? i, nat: nat ?? natOut(n, dev, arrived, i) }
-    // 2) next hop: static route (router), else default gateway
+    const lx = dev === 'linux' ? linuxNextHop(ifs, target) : null
+    // 1) on-link delivery. Linux first selects the winning kernel route; a more specific host route
+    // may therefore override delivery through the connected subnet.
+    if (!lx)
+      for (const i of ifs)
+        for (const e of n.eps)
+          if (e.device !== dev && e.addrs.some((a) => a.ip === target) && direct(n, i, e, target) && mayForward(n, dev, arrived, i)) return { dst: e, src: src ?? i, nat: nat ?? natOut(n, dev, arrived, i) }
+    // 2) next hop: the best static route, else the default gateway. Linux uses its own kernel table
+    // (netplan routes and runtime `ip route` entries) and never falls back to a less specific route
+    // when the selected next hop is unreachable.
     const cand: { via: Endpoint; ip: string; out: Endpoint }[] = []
     const hopIps: { ip: string; from: Endpoint[] }[] = []
+    if (lx?.direct) {
+      for (const e of n.eps)
+        if (e.device !== dev && e.addrs.some((a) => a.ip === target) && l2(n.domains, lx.out.port, e.port) && mayForward(n, dev, arrived, lx.out)) return { dst: e, src: src ?? lx.out, nat: nat ?? natOut(n, dev, arrived, lx.out) }
+      return null
+    }
+    if (lx?.via) hopIps.push({ ip: lx.via, from: [lx.out] })
     if (dev === 'router') {
       const gw = staticNextHop(n, target)
       if (gw) hopIps.push({ ip: gw, from: ifs })
@@ -901,7 +970,7 @@ function walk(n: Net, origin: Endpoint[], target: string): { dst: Endpoint; src:
       const gw = serverNextHop(n.m.server, target)
       if (gw) hopIps.push({ ip: gw, from: ifs })
     }
-    for (const i of ifs) if (i.gateway && !(dev === 'router' && i.port !== 'router:wan')) hopIps.push({ ip: i.gateway, from: [i] })
+    if (!lx?.via) for (const i of ifs) if (i.gateway && !(dev === 'router' && i.port !== 'router:wan')) hopIps.push({ ip: i.gateway, from: [i] })
     for (const h of hopIps)
       for (const i of h.from)
         for (const e of n.eps)

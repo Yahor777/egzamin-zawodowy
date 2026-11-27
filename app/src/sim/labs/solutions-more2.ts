@@ -2,6 +2,7 @@
 // SOLVE_MORE2 into LAB_SOLVE, so nothing here may touch solutions.ts exports while the module is being evaluated.
 import type { LabSave } from './ctx'
 import { configureRras } from '../pc/rras'
+import { saveJetstreamConfig } from '../jetstream/map'
 import type { LH, LabSteps } from './solutions'
 
 type Pc = NonNullable<LabSave['pc']>
@@ -28,6 +29,7 @@ function rif(s: LabSave, id: number, ip: string, mask: string, dhcp?: { start: s
   if (id === 1) return void Object.assign(s.router!.lan, { ip, mask })
   s.router!.vlan!.ifaces.push({ id, ip, mask, ...(dhcp ? { dhcp: { enabled: true, gateway: '', dns1: '', dns2: '', ...dhcp } } : {}) })
 }
+const saveSw = (s: LabSave) => void (s.switch = saveJetstreamConfig(s.switch!))
 function swVlan(s: LabSave, id: number, untagged: number[], tagged: number[] = []) {
   const sw = s.switch!
   sw.dot1q = true
@@ -39,8 +41,12 @@ function swVlan(s: LabSave, id: number, untagged: number[], tagged: number[] = [
     if (id !== 1) sw.vlans[0].members[p - 1] = 'none'
   }
   for (const p of tagged) v.members[p - 1] = 'tagged'
+  saveSw(s)
 }
-const swIp = (s: LabSave, ip: string, mask: string, gateway: string) => (s.switch!.ip = { dhcp: false, ip, mask, gateway })
+const swIp = (s: LabSave, ip: string, mask: string, gateway: string) => {
+  s.switch!.ip = { dhcp: false, ip, mask, gateway }
+  saveSw(s)
+}
 const wan = (s: LabSave, ip: string, mask: string, gateway: string, dns1: string, dns2 = '') => Object.assign(s.router!.wan, { type: 'static', ip, mask, gateway, dns1, dns2 })
 const srvAd = (s: LabSave, id: string, v: Partial<Pc['adapters'][number]>) => setAd(s.server, id, v)
 

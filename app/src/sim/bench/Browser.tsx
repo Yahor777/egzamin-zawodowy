@@ -9,7 +9,7 @@ import { RouterSim } from '../router'
 import { SwitchSim } from '../switch'
 import type { RouterState, SwitchState } from '../types'
 import { SitePage, titleOf } from './SitePage'
-import { addressBook, browse, DEV_PL, DEV_RU, routerHosts, type BrowseResult, type PcKey, type WebDevice } from './diagnose'
+import { addressBook, browse, DEV_PL, DEV_RU, routerHosts, type BrowseResult, type FtpOutcome, type PcKey, type WebDevice } from './diagnose'
 import type { Station } from './station'
 import { useCompact } from './useCompact'
 import { useLang } from '../../lib/store'
@@ -47,6 +47,7 @@ export function Browser({ st, pcKey, pc, router, switch: sw, printer, onRouter, 
   const [loading, setLoading] = useState(false)
   const [hint, setHint] = useState(false)
   const [shown, setShown] = useState<WebDevice | null>(null)
+  const [ftpCreds, setFtpCreds] = useState<Record<string, { user: string; pw: string }>>({})
   const routerIp = router?.lan.ip
 
   // After a LAN change the router's page redirects to the new address (as TP-Link does).
@@ -60,7 +61,7 @@ export function Browser({ st, pcKey, pc, router, switch: sw, printer, onRouter, 
     }
   }, [routerIp, nav, shown])
 
-  const r: BrowseResult | null = nav ? browse(st.model, pcKey, nav, { booting: st.booting, pick: attempt }) : null
+  const r: BrowseResult | null = nav ? browse(st.model, pcKey, nav, { booting: st.booting, pick: attempt, ftpCred: ftpCreds[nav] }) : null
   const kind = r && !r.ok ? errKind(r, pc, st.model, pcKey) : null
 
   useEffect(() => {
@@ -89,6 +90,7 @@ export function Browser({ st, pcKey, pc, router, switch: sw, printer, onRouter, 
   const keepUi = shown && st.uiRestart(shown) ? shown : null
   const device: WebDevice | null = keepUi ?? (r?.ok && r.device ? r.device : null)
   const site = r?.ok && r.site && !loading ? r.site : null
+  const ftp = r?.ok && r.ftp && !loading ? r.ftp : null
   // remember which device page is on screen (adjusting state during render, React-style)
   if (!loading && device !== shown) setShown(device)
 
@@ -98,6 +100,7 @@ export function Browser({ st, pcKey, pc, router, switch: sw, printer, onRouter, 
   else if (device === 'switch') title = switchTitle(sw?.model)
   else if (device === 'printer') title = 'Drukarka — stan'
   else if (site) title = titleOf(site, r?.host ?? '')
+  else if (ftp) title = ftp.url.replace(/^ftp:\/\//, '')
   else if (r) title = r.host
 
   const ep = (d: WebDevice) => `${d}-${st.epoch[d] ?? 0}-${attempt}`
@@ -233,6 +236,8 @@ export function Browser({ st, pcKey, pc, router, switch: sw, printer, onRouter, 
           <PrinterPage ip={printer.ip} prefix={printer.prefix} />
         ) : site ? (
           <SitePage o={site} local={pcKey === 'server'} host={nav ? nav.replace(/^[a-z]+:\/\//i, '').split('/')[0] : ''} />
+        ) : ftp && nav ? (
+          <FtpPage o={ftp} onAuth={(user, pw) => setFtpCreds((cur) => ({ ...cur, [nav]: { user, pw } }))} />
         ) : r && kind ? (
           <ErrorPage r={r} kind={kind} onRetry={() => show(nav)} />
         ) : null}
@@ -394,6 +399,54 @@ function HintPanel({ r, st, pcKey, pc, lang, onOpen, onClose }: { r: BrowseResul
         </div>
       )}
       <AddressHelper st={st} pcKey={pcKey} pc={pc} lang={lang} onOpen={onOpen} />
+    </div>
+  )
+}
+
+function FtpPage({ o, onAuth }: { o: FtpOutcome; onAuth: (user: string, pw: string) => void }) {
+  const [user, setUser] = useState('')
+  const [pw, setPw] = useState('')
+  if (o.needAuth)
+    return (
+      <div className="ftp-login">
+        <h2>Logowanie do serwera FTP</h2>
+        <p>Serwer {o.ip} wymaga nazwy użytkownika i hasła.</p>
+        {o.badCreds && <p className="ftp-err">530 Login incorrect.</p>}
+        {o.denied && <p className="ftp-err">550 Access is denied.</p>}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            onAuth(user, pw)
+          }}
+        >
+          <label>
+            Nazwa użytkownika
+            <input value={user} onChange={(e) => setUser(e.target.value)} autoCapitalize="off" autoComplete="username" />
+          </label>
+          <label>
+            Hasło
+            <input type="password" value={pw} onChange={(e) => setPw(e.target.value)} autoComplete="current-password" />
+          </label>
+          <button className="btn primary" type="submit">
+            Zaloguj
+          </button>
+        </form>
+      </div>
+    )
+  return (
+    <div className="site-dir ftp-dir">
+      <h1>{o.url.replace(/^ftp:\/\//, '')}</h1>
+      <hr />
+      <pre>
+        {o.entries.map((e) => (
+          <span key={e.name}>
+            {e.dir ? '         <dir> ' : `${String(e.size).padStart(14)} `}
+            {e.name}
+            {'\n'}
+          </span>
+        ))}
+      </pre>
+      <hr />
     </div>
   )
 }

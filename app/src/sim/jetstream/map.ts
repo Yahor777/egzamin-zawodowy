@@ -4,6 +4,7 @@
 //  TRUNK   : tagged member of the VLANs it was added to
 // Everything else the UI shows (device description, …) lives in `state.extra.js`.
 import type { PortMembership, SwitchState } from '../types'
+import { defaultSwitchState } from '../switch/defaults'
 
 export type LinkType = 'access' | 'general' | 'trunk'
 export const LT_LABEL: Record<LinkType, string> = { access: 'ACCESS', general: 'GENERAL', trunk: 'TRUNK' }
@@ -13,12 +14,72 @@ export interface JsExtra {
   location?: string
   contact?: string
   ipMode?: 'static' | 'dhcp' | 'bootp'
-  /** last time "Save Config" was pressed */
+  /** last time "Save Config" was pressed (display only; the snapshot below is authoritative) */
   saved?: boolean
+  /** startup configuration saved by Save Config (a SwitchState without the runtime startup/saved fields) */
+  startup?: unknown
 }
 export const jsx = (s: SwitchState): JsExtra => ((s.extra as { js?: JsExtra } | undefined)?.js ?? {}) as JsExtra
 export function withJs(s: SwitchState, patch: Partial<JsExtra>): SwitchState {
   return { ...s, extra: { ...((s.extra ?? {}) as Record<string, unknown>), js: { ...jsx(s), ...patch } } }
+}
+
+
+// ---------------------------------------------------------------- running vs startup configuration
+const cloneJson = <T,>(x: T): T => JSON.parse(JSON.stringify(x)) as T
+const jetstream = (s: SwitchState) => /t2500g|jetstream/i.test(s.model ?? '')
+
+/** The configurable running state, without the bookkeeping fields of the startup snapshot itself. */
+export function jsRunningConfig(s: SwitchState): SwitchState {
+  const c = cloneJson(s)
+  const js = (((c.extra ?? {}) as Record<string, unknown>).js ?? {}) as Record<string, unknown>
+  delete js.saved
+  delete js.startup
+  c.extra = { ...((c.extra ?? {}) as Record<string, unknown>), js }
+  return c
+}
+const sortJson = (x: unknown): unknown => {
+  if (Array.isArray(x)) return x.map(sortJson)
+  if (x && typeof x === 'object') return Object.fromEntries(Object.keys(x as Record<string, unknown>).sort().map((k) => [k, sortJson((x as Record<string, unknown>)[k])]))
+  return x
+}
+const sameConfig = (a: SwitchState, b: SwitchState) => JSON.stringify(sortJson(jsRunningConfig(a))) === JSON.stringify(sortJson(jsRunningConfig(b)))
+
+/** Factory startup configuration when an old/generated state has no explicit snapshot. */
+export function jsStartupConfig(s: SwitchState): SwitchState {
+  const x = jsx(s).startup
+  return x && typeof x === 'object' ? (cloneJson(x) as SwitchState) : defaultSwitchState({ model: s.model, ports: s.ports })
+}
+
+/** Does the running configuration differ from what the switch will load after reboot? */
+export function jsHasUnsaved(s: SwitchState): boolean {
+  return jetstream(s) && !sameConfig(s, jsStartupConfig(s))
+}
+
+/** Save Config: copy the running configuration into the startup configuration. */
+export function saveJetstreamConfig(s: SwitchState): SwitchState {
+  if (!jetstream(s)) return s
+  return withJs(s, { startup: jsRunningConfig(s), saved: true })
+}
+
+/** Initial state / legacy save migration: the current configuration is also the startup one. */
+export function sealJetstreamStartup(s: SwitchState): SwitchState {
+  return jetstream(s) && !jsx(s).startup ? saveJetstreamConfig(s) : s
+}
+
+/** A configuration change made through the web UI keeps the previous startup snapshot. */
+export function commitJetstreamChange(prev: SwitchState, next: SwitchState): SwitchState {
+  if (!jetstream(next)) return next
+  if (jsx(next).startup) return next
+  return withJs(next, { startup: cloneJson(jsx(prev).startup ?? jsRunningConfig(prev)) })
+}
+
+/** What is loaded when the switch reboots or power-cycles without a factory reset. */
+export function revertJetstreamConfig(s: SwitchState): SwitchState {
+  if (!jetstream(s)) return s
+  const startup = jsStartupConfig(s)
+  if (sameConfig(s, startup)) return s
+  return withJs(cloneJson(startup), { startup, saved: true })
 }
 
 export const linkTypes = (s: SwitchState): LinkType[] => Array.from({ length: s.ports }, (_, i) => s.linkType?.[i] ?? 'access')

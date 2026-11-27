@@ -1,5 +1,5 @@
 // Read-only API for the lab/checker layer.
-import type { LinuxApi, LinuxIface, LinuxUser, LinuxFileInfo } from '../types.ts'
+import type { LinuxApi, LinuxIface, LinuxUser, LinuxFileInfo, LinuxRouteLite } from '../types.ts'
 import type { LinuxState } from './model.ts'
 import { resolve, children } from './vfs.ts'
 import { readPasswd, readGroup, readShadow, userGroups } from './users.ts'
@@ -12,11 +12,19 @@ export function defaultRoute(st: LinuxState) {
   return defs[0] || null
 }
 
+export function toApiRoutes(st: LinuxState): LinuxRouteLite[] {
+  return st.routes.map((r) => ({ to: r.to, ...(r.via ? { via: r.via } : {}), dev: r.dev, ...(r.metric !== undefined ? { metric: r.metric } : {}), proto: r.proto }))
+}
+
 export function toApiIfaces(st: LinuxState): LinuxIface[] {
   return st.ifaces.map((i) => {
     const gw = st.routes.find((r) => r.to === 'default' && r.dev === i.name)
+    const routes = toApiRoutes(st).filter((r) => r.dev === i.name)
     const out: LinuxIface = { name: i.name, mac: i.mac, addresses: i.addrs.map((a) => a.cidr), up: i.up, dns: [...i.dns] }
     if (gw?.via) out.gateway = gw.via
+    if (routes.length) out.routes = routes
+    const dyn = i.addrs.filter((a) => a.dynamic).map((a) => a.cidr)
+    if (dyn.length) out.dynamicAddresses = dyn
     return out
   })
 }
@@ -31,6 +39,7 @@ export function linuxApi(st: LinuxState): LinuxApi {
     hostname: () => st.hostname,
     interfaces: () => toApiIfaces(st),
     defaultGateway: () => defaultRoute(st)?.via ?? null,
+    routes: () => toApiRoutes(st),
     file(path: string): LinuxFileInfo | null {
       try {
         const r = resolve(st, path, null, true)
@@ -81,6 +90,7 @@ export function linuxApi(st: LinuxState): LinuxApi {
     serviceActive: (name) => st.services[unitName(name)]?.active === 'active',
     serviceEnabled: (name) => !!st.services[unitName(name)]?.enabled,
     history: () => [...st.history],
+    routeEvents: () => (st.routeEvents ?? []).map((e) => ({ ...e })),
     mounts: () => st.mounts.map((m) => ({ device: m.device, mountpoint: m.mountpoint, fstype: m.fstype })),
     dhcpSubnets() {
       if (st.services['isc-dhcp-server']?.active !== 'active' || !st.dhcp) return null

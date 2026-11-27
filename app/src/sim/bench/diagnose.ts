@@ -21,8 +21,10 @@ import {
   type PcState,
   type PortId,
 } from '../net'
-import { dnsLookup, parseUrl, serveHttp, type HttpOutcome } from '../domain'
+import { dnsLookup, fwAllows, parseUrl, serveHttp, type HttpOutcome } from '../domain'
 import { routerKind, switchKind } from '../models'
+import { hasRole } from '../pc/server'
+import { ftpAnonymousEntries, ftpEntriesFor, ftpLogin, ftpSiteAt } from '../pc/ftp'
 
 const isDraytek = (m: NetworkModel) => !!m.router && routerKind(m.router.model) === 'draytek'
 const isJetstream = (m: NetworkModel) => !!m.switch && switchKind(m.switch.model) === 'jetstream'
@@ -160,6 +162,7 @@ export function parseHost(input: string): string {
   let s = input.trim().toLowerCase()
   s = s.replace(/^[a-z]+:\/\//, '')
   s = s.split(/[/?#]/)[0]
+  if (s.includes('@')) s = s.slice(s.lastIndexOf('@') + 1)
   s = s.replace(/:\d+$/, '')
   return s
 }
@@ -277,6 +280,16 @@ function switchPortFor(m: NetworkModel, port: PortId): PortId | null {
   return peer && devOf(peer) === 'switch' ? peer : null
 }
 
+export interface FtpOutcome {
+  url: string
+  ip: string
+  port: number
+  entries: { name: string; dir: boolean; size: number }[]
+  needAuth: boolean
+  badCreds?: boolean
+  denied?: boolean
+}
+
 export interface BrowseResult {
   ok: boolean
   host: string
@@ -286,6 +299,8 @@ export interface BrowseResult {
   conflict?: DeviceKey[]
   /** an IIS site answered (a page, a directory listing or an IIS error page) */
   site?: HttpOutcome
+  /** an IIS FTP site answered ftp:// */
+  ftp?: FtpOutcome
   why: Why[]
 }
 
@@ -293,7 +308,7 @@ export interface BrowseResult {
  * Try to open `input` in the browser of the PC/laptop. `pick` selects which device "wins"
  * the ARP race when two devices share the address (it changes from one attempt to another).
  */
-export function browse(m: NetworkModel, key: PcKey, input: string, opts: { booting?: Iterable<DeviceKey>; pick?: number } = {}): BrowseResult {
+export function browse(m: NetworkModel, key: PcKey, input: string, opts: { booting?: Iterable<DeviceKey>; pick?: number; ftpCred?: { user: string; pw: string } } = {}): BrowseResult {
   const booting = new Set(opts.booting ?? [])
   const pc = m[key]
   let host = parseHost(input)
@@ -301,7 +316,11 @@ export function browse(m: NetworkModel, key: PcKey, input: string, opts: { booti
   if (!pc) return { ok: false, host, error: 'timeout', why: [] }
   const ports = pc.adapters.map((a) => `${key}:${a.id}`)
 
+  const isFtp = /^ftp:\/\//i.test(input.trim())
   const url = parseUrl(input)
+  const fm = /^ftp:\/\/(?:[^@/]*@)?([^/:]+)(?::(\d+))?/i.exec(input.trim())
+  const ftpPort = fm?.[2] ? Number(fm[2]) : 21
+  const port = isFtp ? ftpPort : url.port
   let typed = ''
   if (ipToInt(host) === null && host === 'localhost' && key === 'server') host = '127.0.0.1'
   // a name: the DNS server of a Windows Server on the bench answers (zones, A / CNAME records)
@@ -343,12 +362,30 @@ export function browse(m: NetworkModel, key: PcKey, input: string, opts: { booti
 
   const mine = pc.adapters.map(pcAddress).find((c) => c?.addr.ip === host)
   const asSite = (o: HttpOutcome): BrowseResult => {
-    if (o.kind === 'refused') return { ok: false, host, error: 'refused', why: [{ short: `порт ${url.port} закрыт`, short_pl: `port ${url.port} jest zamknięty`, text: `Сервер отвечает, но на порту ${url.port} никто не слушает: роль IIS не установлена, сайт остановлен или сайт работает на другом порту.`, text_pl: `Serwer odpowiada, ale nikt nie nasłuchuje na porcie ${url.port}: rola IIS nie jest zainstalowana, witryna jest zatrzymana lub witryna działa na innym porcie.`, fix: 'inetmgr → Witryny → проверь Powiązania (порт) и что сайт Uruchomiony.',  fix_pl: `inetmgr → Witryny → sprawdź Powiązania (port) i czy strona jest Uruchomiony.`,}] }
-    if (o.kind === 'timeout') return { ok: false, host, error: 'timeout', why: [{ short: `брандмауэр блокирует порт ${url.port}`, short_pl: `zapora sieciowa blokuje port ${url.port}`, text: `Брандмауэр Windows Server пропускает только порты, открытые ролями (для IIS — 80 и 443). Порт ${url.port} закрыт: пакеты молча отбрасываются.`, text_pl: `Zapora systemu Windows Server zezwala tylko na porty otwierane przez role (dla IIS, 80 i 443). Port ${url.port} jest zamknięty: pakiety są odrzucane w trybie cichym.`, fix: `wf.msc → Reguły przychodzące → Nowa reguła → Port → TCP ${url.port} → Zezwalaj na połączenie.` }] }
+    if (o.kind === 'refused') return { ok: false, host, error: 'refused', why: [{ short: `порт ${port} закрыт`, short_pl: `port ${port} jest zamknięty`, text: `Сервер отвечает, но на порту ${port} никто не слушает: роль IIS не установлена, сайт остановлен или сайт работает на другом порту.`, text_pl: `Serwer odpowiada, ale nikt nie nasłuchuje na porcie ${port}: rola IIS nie jest zainstalowana, witryna jest zatrzymana lub witryna działa na innym porcie.`, fix: 'inetmgr → Witryny → проверь Powiązania (порт) и что сайт Uruchomiony.',  fix_pl: `inetmgr → Witryny → sprawdź Powiązania (port) i czy strona jest Uruchomiony.`,}] }
+    if (o.kind === 'timeout') return { ok: false, host, error: 'timeout', why: [{ short: `брандмауэр блокирует порт ${port}`, short_pl: `zapora sieciowa blokuje port ${port}`, text: `Брандмауэр Windows Server пропускает только порты, открытые ролями (для IIS — 80 и 443). Порт ${port} закрыт: пакеты молча отбрасываются.`, text_pl: `Zapora systemu Windows Server zezwala tylko na porty otwierane przez role (dla IIS, 80 i 443). Port ${port} jest zamknięty: pakiety są odrzucane w trybie cichym.`, fix: `wf.msc → Reguły przychodzące → Nowa reguła → Port → TCP ${port} → Zezwalaj na połączenie.` }] }
     return { ok: true, host, site: o, why: [] }
   }
-  if (key === 'server' && m.server && (host.startsWith('127.') || mine)) return asSite(serveHttp(m.server, { ip: host, port: url.port, host: typed || host, path: url.path, https: url.scheme === 'https', local: true }))
-  if (mine) return { ok: false, host, error: 'self', why: [{ short: 'это адрес самого ПК', short_pl: `to jest adres samego stanowiska`, text: `${host} — это адрес самого компьютера, на нём нет панели управления.`,  text_pl: `${host} to adres samego stanowiska; nie ma panelu sterowania.`,}] }
+  const asFtp = (server: PcState, local: boolean): BrowseResult => {
+    const hit = ftpSiteAt(server, host, port, local)
+    if (!hit) return { ok: false, host, error: 'refused', why: [{ short: `FTP-порт ${port} закрыт`, short_pl: `port FTP ${port} jest zamknięty`, text: `Сервер отвечает, но на порту ${port} нет запущенной witryny FTP: usługa FTP не установлена, сайт остановлен или powiązanie настроено на другой адрес/порт.`, text_pl: `Serwer odpowiada, ale na porcie ${port} nie działa witryna FTP: usługa FTP nie jest zainstalowana, witryna jest zatrzymana albo powiązanie jest ustawione na inny adres/port.`, fix: 'inetmgr → Witryny → Dodaj witrynę FTP / powiązание ftp, затем Uruchom.' }] }
+    if (!local && !fwAllows(server, 'tcp', port, port === 21 && hasRole(server, 'Web-Ftp-Service')))
+      return { ok: false, host, error: 'timeout', why: [{ short: `брандмауэр блокирует FTP-порт ${port}`, short_pl: `zapora blokuje port FTP ${port}`, text: `Порт ${port} закрыт Zaporą systemu Windows: пакеты молча отбрасываются.`, text_pl: `Port ${port} jest zamknięty przez Zaporę systemu Windows: pakiety są dyskretnie odrzucane.`, fix: `wf.msc → Reguły przychodzące → Nowa reguła → Port → TCP ${port} → Zezwalaj na połączenie.` }] }
+    const url = `ftp://${typed || host}${port === 21 ? '' : `:${port}`}/`
+    const anon = ftpAnonymousEntries(hit)
+    if (anon !== null) return { ok: true, host, ftp: { url, ip: host, port, entries: anon, needAuth: false }, why: [] }
+    if (opts.ftpCred) {
+      const r = ftpLogin(server, hit.site, opts.ftpCred.user, opts.ftpCred.pw, /^anonymous$/i.test(opts.ftpCred.user))
+      if (r.ok && r.token) {
+        const entries = ftpEntriesFor({ ...hit, server }, r.token, /^anonymous$/i.test(opts.ftpCred.user))
+        return { ok: true, host, ftp: { url, ip: host, port, entries: entries ?? [], needAuth: entries === null, denied: entries === null }, why: [] }
+      }
+      return { ok: true, host, ftp: { url, ip: host, port, entries: [], needAuth: true, badCreds: true }, why: [] }
+    }
+    return { ok: true, host, ftp: { url, ip: host, port, entries: [], needAuth: true }, why: [] }
+  }
+  if (key === 'server' && m.server && (host.startsWith('127.') || mine)) return isFtp ? asFtp(m.server, true) : asSite(serveHttp(m.server, { ip: host, port, host: typed || host, path: url.path, https: url.scheme === 'https', local: true }))
+  if (mine) return { ok: false, host, error: 'self', why: [{ short: 'это адрес самого ПК', short_pl: `to jest adres samego stanowiska`, text: `${host} — это адрес самого компьютера, на нём нет панели управления.`, text_pl: `${host} to adres samego stanowiska; nie ma panelu sterowania.` }] }
 
   const reach = reachableEndpoints(m, ports, host)
   const web = reach.filter((e) => e.device === 'router' || e.device === 'switch' || e.device === 'printer')
@@ -365,7 +402,7 @@ export function browse(m: NetworkModel, key: PcKey, input: string, opts: { booti
     return { ok: true, host, device, conflict: devs.length > 1 ? devs : undefined, why }
   }
   const srvEp = reach.find((e) => e.device === 'server')
-  if (srvEp && m.server) return asSite(serveHttp(m.server, { ip: host, port: url.port, host: typed || host, path: url.path, https: url.scheme === 'https', local: false }))
+  if (srvEp && m.server) return isFtp ? asFtp(m.server, false) : asSite(serveHttp(m.server, { ip: host, port, host: typed || host, path: url.path, https: url.scheme === 'https', local: false }))
   if (reach.length) {
     return {
       ok: false,

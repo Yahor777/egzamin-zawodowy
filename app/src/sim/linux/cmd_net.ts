@@ -1,5 +1,6 @@
 // Networking: ip, netplan, ping, traceroute, ss, resolvectl, dhcpd, net-tools, curl
 import { register, type Ctx, Interrupt } from './shell.ts'
+import type { PcFtpSession } from '../net.ts'
 import type { NetIface, Route, LinuxState } from './model.ts'
 import { parseCidr, intToIp, isIp, inSubnet, macToLinkLocal, prefixToMask } from './netutil.ts'
 import { loadNetplan, applyNetplan, netplanFiles, leaseFnOf, takeLease } from './netplan.ts'
@@ -226,18 +227,24 @@ register('ip', (c) => {
       if (!needRoot()) return 2
       if (cmd === 'flush') {
         st.routes = []
+        st.routeEvents = [...(st.routeEvents ?? []), { op: 'flush' as const, to: 'all' }].slice(-200)
         return 0
       }
       const to = args[1] === '0.0.0.0/0' ? 'default' : args[1]
+      const toNorm = to !== 'default' && isIp(to) ? `${to}/32` : to
       const via = args.indexOf('via') >= 0 ? args[args.indexOf('via') + 1] : undefined
       let dev = args.indexOf('dev') >= 0 ? args[args.indexOf('dev') + 1] : undefined
+      const logRoute = (e: { op: 'add' | 'del' | 'replace' | 'flush'; to: string; via?: string; dev?: string }) => {
+        st.routeEvents = [...(st.routeEvents ?? []), e].slice(-200)
+      }
       if (cmd === 'del' || cmd === 'delete') {
         const before = st.routes.length
-        st.routes = st.routes.filter((r) => !(r.to === to && (!via || r.via === via) && (!dev || r.dev === dev)))
+        st.routes = st.routes.filter((r) => !(r.to === toNorm && (!via || r.via === via) && (!dev || r.dev === dev)))
         if (before === st.routes.length) {
           c.err('RTNETLINK answers: No such process\n')
           return 2
         }
+        logRoute({ op: 'del', to: toNorm, ...(via ? { via } : {}), ...(dev ? { dev } : {}) })
         return 0
       }
       if (to !== 'default' && !parseCidr(to) && !isIp(to)) {
@@ -259,13 +266,14 @@ register('ip', (c) => {
         c.err('Error: Device for nexthop is not up.\n')
         return 2
       }
-      if (cmd === 'add' && st.routes.some((r) => r.to === to && r.metric === undefined)) {
+      if (cmd === 'add' && st.routes.some((r) => r.to === toNorm && r.metric === undefined)) {
         c.err('RTNETLINK answers: File exists\n')
         return 2
       }
-      if (cmd === 'replace') st.routes = st.routes.filter((r) => r.to !== to)
-      const route: Route = { to: isIp(to) ? to + '/32' : to, via, dev, proto: 'boot', temp: true }
+      if (cmd === 'replace') st.routes = st.routes.filter((r) => r.to !== toNorm)
+      const route: Route = { to: toNorm, via, dev, proto: 'boot', temp: true }
       st.routes.push(route)
+      st.routeEvents = [...(st.routeEvents ?? []), { op: cmd as 'add' | 'replace', to: toNorm, ...(via ? { via } : {}), ...(dev ? { dev } : {}) }].slice(-200)
       return 0
     }
     c.err(`Command "${cmd}" is unknown, try "ip route help".\n`)
@@ -284,30 +292,30 @@ register('ip', (c) => {
   return 1
 })
 
-/** route lookup for a target ip */
+/** route lookup for a target ip: longest prefix first, then the lowest metric */
 export function routeFor(st: LinuxState, target: string): { dev: string; via?: string; src: string } | null {
   if (!isIp(target)) return null
+  const cand: { dev: string; via?: string; src: string; prefix: number; metric: number; order: number }[] = []
+  let order = 0
   for (const i of st.ifaces) {
     if (!i.up) continue
     for (const a of i.addrs) {
       const p = parseCidr(a.cidr)!
-      if (inSubnet(target, p.ip, p.prefix)) return { dev: i.name, src: p.ip }
+      order++
+      if (inSubnet(target, intToIp(p.net), p.prefix)) cand.push({ dev: i.name, src: p.ip, prefix: p.prefix, metric: a.dynamic ? 100 : 0, order })
     }
   }
   for (const r of st.routes) {
-    if (r.to === 'default') continue
-    const p = parseCidr(r.to)
-    if (p && inSubnet(target, intToIp(p.net), p.prefix)) {
-      const i = findIface(st, r.dev)
-      if (i?.up) return { dev: r.dev, via: r.via, src: i.addrs[0]?.cidr.split('/')[0] || '' }
-    }
+    const i = findIface(st, r.dev)
+    if (!i?.up) continue
+    const p = r.to === 'default' || r.to === '0.0.0.0/0' ? { prefix: 0, net: 0 } : parseCidr(r.to)
+    if (!p) continue
+    order++
+    if (p.prefix === 0 || inSubnet(target, intToIp(p.net), p.prefix)) cand.push({ dev: r.dev, ...(r.via ? { via: r.via } : {}), src: i.addrs[0]?.cidr.split('/')[0] || '', prefix: p.prefix, metric: r.metric ?? 0, order })
   }
-  const d = defaultRoute(st)
-  if (d) {
-    const i = findIface(st, d.dev)!
-    return { dev: d.dev, via: d.via, src: i.addrs[0]?.cidr.split('/')[0] || '' }
-  }
-  return null
+  cand.sort((a, b) => b.prefix - a.prefix || a.metric - b.metric || a.order - b.order)
+  const r = cand[0]
+  return r ? { dev: r.dev, ...(r.via ? { via: r.via } : {}), src: r.src } : null
 }
 
 function resolveName(c: Ctx, name: string): string | null {
@@ -953,3 +961,202 @@ register(
   },
   '/usr/sbin',
 )
+
+
+// ------------------------------------------------------------------ ftp client (IIS FTP on the bench)
+register('ftp', async (c) => {
+  const backend = c.sh.network?.ftp
+  if (!backend) {
+    c.err('ftp: connect: Network is unreachable\n')
+    return 1
+  }
+  const print = (lines: string[]) => {
+    if (lines.length) c.out(lines.join('\n') + '\n')
+  }
+  let sess: PcFtpSession = { host: '', ip: '', port: 21, phase: 'offline', cwd: '/', binary: false }
+  const host = c.args[0]
+  if (host) {
+    const r = backend.open(host, Number(c.args[1] ?? 21) || 21)
+    print(r.lines)
+    if (!r.session) return 1
+    sess = r.session
+  }
+
+  const remoteOp = (op: { lines: string[]; session?: PcFtpSession; file?: { name: string; text: string; size: number }; server?: unknown }) => {
+    print(op.lines)
+    if (op.session) sess = op.session
+    return op
+  }
+
+  for (;;) {
+    try {
+      if (sess.phase === 'user') {
+        const name = await c.ask(`Name (${sess.ip || sess.host}:${c.p.user}): `)
+        if (name === null) break
+        const r = backend.user(sess, name.trim())
+        print(r.lines)
+        sess = r.session
+        continue
+      }
+      if (sess.phase === 'pass') {
+        const pw = await c.ask('Password: ', true)
+        if (pw === null) break
+        const r = backend.login(sess, sess.user ?? '', pw)
+        print(r.lines)
+        sess = r.session
+        continue
+      }
+      const raw = await c.ask('ftp> ')
+      if (raw === null) break
+      const line = raw.trim()
+      if (!line) continue
+      const parts = line.split(/\s+/)
+      const cmd = parts[0].toLowerCase()
+      const args = parts.slice(1)
+      const rest = line.slice(parts[0].length).trim()
+
+      if (sess.phase === 'offline') {
+        if (cmd === 'open') {
+          const r = backend.open(args[0] ?? '', Number(args[1] ?? 21) || 21)
+          print(r.lines)
+          if (r.session) sess = r.session
+        } else if (cmd === 'quit' || cmd === 'bye') break
+        else if (cmd === 'help' || cmd === '?') c.out('open user pass ls dir cd pwd get put mkdir delete binary ascii close quit\n')
+        else c.out('Not connected.\n')
+        continue
+      }
+
+      if (cmd === 'quit' || cmd === 'bye') {
+        c.out('221 Goodbye.\n')
+        break
+      }
+      if (cmd === 'open') {
+        const r = backend.open(args[0] ?? '', Number(args[1] ?? 21) || 21)
+        print(r.lines)
+        if (r.session) sess = r.session
+        continue
+      }
+      if (cmd === 'close') {
+        sess = { ...sess, phase: 'offline', token: undefined, user: undefined }
+        c.out('221 Goodbye.\n')
+        continue
+      }
+      if (cmd === 'user') {
+        if (!args[0]) {
+          c.out('Usage: user username [password]\n')
+          continue
+        }
+        const r = backend.user(sess, args[0])
+        print(r.lines)
+        sess = r.session
+        if (args[1] !== undefined) {
+          const l = backend.login(sess, args[0], args.slice(1).join(' '))
+          print(l.lines)
+          sess = l.session
+        }
+        continue
+      }
+      if (cmd === 'pass') {
+        if (!sess.user) c.out('Please login with USER first.\n')
+        else {
+          const r = backend.login(sess, sess.user, args.join(' '))
+          print(r.lines)
+          sess = r.session
+        }
+        continue
+      }
+      if (cmd === 'binary' || cmd === 'type') {
+        if (sess.phase !== 'ready') c.out('530 Please login with USER and PASS.\n')
+        else {
+          sess = { ...sess, binary: true }
+          c.out('200 Type set to I.\n')
+        }
+        continue
+      }
+      if (cmd === 'ascii') {
+        if (sess.phase !== 'ready') c.out('530 Please login with USER and PASS.\n')
+        else {
+          sess = { ...sess, binary: false }
+          c.out('200 Type set to A.\n')
+        }
+        continue
+      }
+      if (cmd === 'help' || cmd === '?') {
+        c.out('open user pass ls dir cd pwd get put mkdir delete rmdir binary ascii close quit\n')
+        continue
+      }
+      if (sess.phase !== 'ready') {
+        c.out('530 Please login with USER and PASS.\n')
+        continue
+      }
+      if (cmd === 'pwd') {
+        c.out(`257 "${sess.cwd}" is current directory.\n`)
+        continue
+      }
+      if (cmd === 'cd') {
+        remoteOp(backend.cd(sess, rest || '/'))
+        continue
+      }
+      if (cmd === 'ls' || cmd === 'dir') {
+        remoteOp(backend.list(sess, args[0] ?? '', cmd === 'dir'))
+        continue
+      }
+      if (cmd === 'get') {
+        if (!args[0]) {
+          c.out('Usage: get remote-file [local-file]\n')
+          continue
+        }
+        const r = remoteOp(backend.get(sess, args[0]))
+        if (r.file) {
+          const target = c.abs(args[1] ?? r.file.name)
+          try {
+            writeFile(c.st, target, r.file.text, c.cred, { umask: c.p.umask })
+            c.commit()
+            c.out(`ftp: ${r.file.size} bytes received in 0.01 seconds.\n`)
+          } catch (e) {
+            c.errln(c.fsMsg(e))
+          }
+        }
+        continue
+      }
+      if (cmd === 'put') {
+        if (!args[0]) {
+          c.out('Usage: put local-file [remote-file]\n')
+          continue
+        }
+        const src = c.abs(args[0])
+        let text = ''
+        try {
+          text = readFile(c.st, src, c.cred)
+        } catch (e) {
+          c.errln(`${args[0]}: ${c.fsMsg(e)}`)
+          continue
+        }
+        const name = args[1] ?? src.slice(src.lastIndexOf('/') + 1)
+        const r = remoteOp(backend.put(sess, name, text, new TextEncoder().encode(text).length))
+        if (r.server) c.out(`ftp: ${new TextEncoder().encode(text).length} bytes sent in 0.01 seconds.\n`)
+        continue
+      }
+      if (cmd === 'mkdir') {
+        if (!rest) c.out('Usage: mkdir directory\n')
+        else remoteOp(backend.mkdir(sess, rest))
+        continue
+      }
+      if (cmd === 'delete' || cmd === 'del') {
+        if (!rest) c.out('Usage: delete file\n')
+        else remoteOp(backend.delete(sess, rest))
+        continue
+      }
+      if (cmd === 'rmdir' || cmd === 'rd') {
+        if (!rest) c.out('Usage: rmdir directory\n')
+        else remoteOp(backend.delete(sess, rest, true))
+        continue
+      }
+      c.out('Invalid command.\n')
+    } catch (e) {
+      if (e instanceof Interrupt) throw e
+      throw e
+    }
+  }
+  return 0
+}, '/usr/bin')

@@ -15,6 +15,7 @@ export const HOWTO: DocRef[] = [
   h('linux-users', 'Linux: пользователи и группы', 'Linux: konta i grupy'),
   h('linux-perms', 'Linux: права и владельцы', 'Linux: uprawnienia'),
   h('linux-netplan', 'Linux: сеть через netplan', 'Linux: sieć (netplan)'),
+  h('linux-routes', 'Linux: статические маршруты', 'Linux: trasy statyczne'),
   h('linux-dhcp', 'Linux: DHCP-сервер', 'Linux: serwer DHCP'),
   h('linux-script', 'Linux: скрипты bash', 'Linux: skrypty bash'),
   h('linux-disk', 'Linux: диски, разделы, fstab', 'Linux: dyski i montowanie'),
@@ -36,6 +37,7 @@ export const HOWTO: DocRef[] = [
   h('winserver-gpo', 'Windows Server: GPO — обои, диски, ограничения', 'Windows Server: GPO — tapeta, dyski, ograniczenia'),
   h('winserver-shares', 'Windows Server: общие папки — udział, NTFS, net use, FSRM', 'Windows Server: udziały, uprawnienia NTFS, net use, FSRM'),
   h('winserver-iis', 'Windows Server: IIS — сайт, порт, привязка, брандмауэр', 'Windows Server: IIS — witryna, port, powiązanie, zapora'),
+  h('winserver-ftp', 'Windows Server: FTP — witryna FTP, права, ftp.exe', 'Windows Server: FTP — witryna FTP, uprawnienia, ftp.exe'),
 ]
 const by = (slug: string) => HOWTO.find((x) => x.to === `doc/${slug}`)!
 
@@ -51,6 +53,7 @@ export const D = {
   linuxUsers: by('linux-users'),
   linuxPerms: by('linux-perms'),
   linuxNetplan: by('linux-netplan'),
+  linuxRoutes: by('linux-routes'),
   linuxDhcp: by('linux-dhcp'),
   linuxScript: by('linux-script'),
   linuxDisk: by('linux-disk'),
@@ -66,6 +69,7 @@ export const D = {
   winserverDomain: by('winserver-domain'),
   winserverGpo: by('winserver-gpo'),
   winserverIis: by('winserver-iis'),
+  winserverFtp: by('winserver-ftp'),
   winserverShares: by('winserver-shares'),
   winserverRras: by('winserver-rras'),
   winserverPrint: by('winserver-print'),

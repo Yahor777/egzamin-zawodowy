@@ -18,6 +18,7 @@ import type { LabSave } from './ctx'
 import type { Lab } from './labs'
 import type { T } from '../drills/solutions'
 import { SOLVE_MORE2 } from './solutions-more2'
+import { saveJetstreamConfig } from '../jetstream/map'
 
 export const PASS = 'ZAQ!2wsx'
 
@@ -39,6 +40,7 @@ export const staticIp = (ip: string, mask: string, gateway = '', dns1 = '', dns2
 export const netplan = (body: string) => `network:\n  version: 2\n  ethernets:\n${body}`
 export const eth = (name: string, addr: string, gw?: string, dns?: string[]) =>
   `    ${name}:\n      addresses: [${addr}]\n` + (gw ? `      routes:\n        - to: default\n          via: ${gw}\n` : '') + (dns ? `      nameservers:\n        addresses: [${dns.join(', ')}]\n` : '')
+export const saveSw = (s: LabSave) => void (s.switch = saveJetstreamConfig(s.switch!))
 export function vlan(s: LabSave, id: number, untagged: number[], tagged: number[] = []) {
   const sw = s.switch!
   sw.dot1q = true
@@ -50,12 +52,16 @@ export function vlan(s: LabSave, id: number, untagged: number[], tagged: number[
     if (id !== 1) sw.vlans[0].members[p - 1] = 'none'
   }
   for (const p of tagged) v.members[p - 1] = 'tagged'
+  saveSw(s)
 }
 export const wan = (s: LabSave, ip: string, mask: string, gateway: string, dns1: string, dns2 = '') => Object.assign(s.router!.wan, { type: 'static', ip, mask, gateway, dns1, dns2 })
 export const lan = (s: LabSave, ip: string, mask = '255.255.255.0') => Object.assign(s.router!.lan, { ip, mask })
 export const pool = (s: LabSave, start: string, end: string, extra: Partial<NonNullable<LabSave['router']>['dhcp']> = {}) => Object.assign(s.router!.dhcp, { enabled: true, start, end, ...extra })
 export const resv = (s: LabSave, mac: string, ip: string) => s.router!.reservations.push({ mac, ip, enabled: true, description: '' })
-export const sw = (s: LabSave, ip: string, mask: string, gateway: string) => (s.switch!.ip = { dhcp: false, ip, mask, gateway })
+export const sw = (s: LabSave, ip: string, mask: string, gateway: string) => {
+  s.switch!.ip = { dhcp: false, ip, mask, gateway }
+  saveSw(s)
+}
 export const wifi = (s: LabSave, ssid: string, password: string, channel: number) => Object.assign(s.router!.wifi24, { enabled: true, ssid, password, channel, security: 'wpa2-psk', encryption: 'aes' })
 /** ping from the Linux terminal (2 packets each) */
 export async function pings(t: T, ...ips: string[]) {

@@ -118,6 +118,8 @@ export interface LinuxState {
   fs: Record<string, FsNode>
   ifaces: NetIface[]
   routes: Route[]
+  /** successful runtime `ip route` mutations (assessment of temporary routes); missing in older saves */
+  routeEvents?: { op: 'add' | 'del' | 'replace' | 'flush'; to: string; via?: string; dev?: string }[]
   services: Record<string, ServiceState>
   packages: string[]
   history: string[]

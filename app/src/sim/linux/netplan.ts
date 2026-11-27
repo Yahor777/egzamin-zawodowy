@@ -163,7 +163,7 @@ function parseIface(id: string, n: YNode, out: NpIface, warnings: string[]) {
                 throw new NpError(`Error in network definition: unknown key '${re.key}'`, re.l, re.c)
             }
           }
-          if (!route.to) throw new NpError("Error in network definition: route must include both a 'to' and 'via' IP", rm.l, rm.c)
+          if (!route.to || !route.via) throw new NpError("Error in network definition: route must include both a 'to' and 'via' IP", rm.l, rm.c)
           out.routes.push(route)
         }
         break

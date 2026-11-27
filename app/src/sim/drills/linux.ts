@@ -177,6 +177,51 @@ export const LINUX_DRILLS: DrillDef[] = [
     },
   },
   {
+    id: 'linux-routes',
+    topic: 'linux',
+    title_ru: 'Linux: статические маршруты',
+    title_pl: 'Linux: trasy statyczne',
+    goal_ru: 'Постоянный маршрут в netplan и временный маршрут через ip route: добавить, показать и удалить.',
+    minutes: 15,
+    docs: [D.linuxRoutes, D.linuxNetplan, D.cheatLinux],
+    params: (r) => ({ X: X(r) }),
+    build: (p) => {
+      const lan = `10.${p.X}.0`
+      const ip = `${lan}.10`
+      const gw = `${lan}.1`
+      const persistent = `172.${p.X}.0.0/16`
+      const temporary = `192.168.${p.X}.0/24`
+      return {
+        devices: { linux: linuxSetup({ packages: ['net-tools'] }) },
+        tasks: [
+          task('net', 'linux', 'Trasy statyczne', [
+            `interfejs enp0s3: adres IP ${ip}/24, brama domyślna ${gw}; konfigurację zapisz w netplan`,
+            `w netplan dodaj trasę statyczną do sieci ${persistent} przez ${gw}`,
+            `poleceniem ip route dodaj trasę czasową do sieci ${temporary} przez ${gw}`,
+            'wyświetl tablicę tras poleceniami ip r oraz route -n',
+            'usuń trasę czasową; trasa zapisana w netplan ma pozostać',
+          ], [
+            ck('ip', `enp0s3 = ${ip}/24`, 'adres IP', (c) => ifaceHas(c, 'enp0s3', `${ip}/24`)),
+            ck('gw', `Шлюз ${gw}`, 'brama', (c) => c.linux?.defaultGateway() === gw),
+            ck('persistent', `В netplan маршрут ${persistent}`, 'trasa w netplan', (c) => !!c.linux?.routes().some((x) => x.to === persistent && x.via === gw && x.proto === 'static'), 2),
+            ck('runtime', `Временный маршрут ${temporary} добавлен и удалён`, 'trasa czasowa', (c) => {
+              const ev = c.linux?.routeEvents() ?? []
+              const add = ev.findIndex((e) => e.op === 'add' && e.to === temporary && e.via === gw)
+              const del = ev.findIndex((e, i) => i > add && e.op === 'del' && e.to === temporary)
+              return add >= 0 && del > add && !c.linux?.routes().some((x) => x.to === temporary)
+            }, 2),
+            ck('show', 'Таблица показана через ip r/ip route show и route -n', 'ip r i route -n', (c) => hist(c, /(^|\s)ip (r|route( show)?)(?=\s*(;|&&|\|\||$))/) && !!c.linux?.history().some((h) => {
+              const x = h.replace(/\s+/g, ' ').trim()
+              const at = x.indexOf('route -n')
+              return at >= 0 && !/\|\|\s*$/.test(x.slice(0, at))
+            })),
+            ck('apply', 'netplan apply выполнен', 'netplan apply', (c) => hist(c, /\bnetplan apply\b/)),
+          ], `netplan: routes: - to: default via: ${gw} и второй блок - to: ${persistent} via: ${gw}. Временный маршрут: sudo ip route add ${temporary} via ${gw}; удалить — sudo ip route del ${temporary} via ${gw}. Проверка: ip r, route -n.`),
+        ],
+      }
+    },
+  },
+  {
     id: 'lx-hostname-user',
     topic: 'linux',
     title_ru: 'Linux: имя сервера и учётка с описанием',
