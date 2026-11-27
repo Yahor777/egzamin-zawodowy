@@ -861,7 +861,8 @@ function linuxRoutePrefix(r: LinuxRouteLite, target: string): number | null {
 function linuxNextHop(ifs: Endpoint[], target: string): { out: Endpoint; via?: string; direct: boolean; prefix: number } | null {
   let best: { out: Endpoint; via?: string; direct: boolean; prefix: number; metric: number; order: number } | null = null
   let order = 0
-  for (const out of ifs) {
+  // Like routeFor in the terminal model: every connected subnet is considered before static routes.
+  for (const out of ifs)
     for (const a of out.addrs) {
       order++
       if (sameSubnet(a.ip, target, a.prefix)) {
@@ -869,6 +870,7 @@ function linuxNextHop(ifs: Endpoint[], target: string): { out: Endpoint; via?: s
         if (!best || a.prefix > best.prefix || (a.prefix === best.prefix && order < best.order)) best = cand
       }
     }
+  for (const out of ifs)
     for (const r of out.routes ?? []) {
       order++
       if (r.dev && out.port !== `linux:${r.dev}`) continue
@@ -877,7 +879,6 @@ function linuxNextHop(ifs: Endpoint[], target: string): { out: Endpoint; via?: s
       const cand = { out, via: r.via, direct: !r.via, prefix, metric: r.metric ?? 0, order }
       if (!best || prefix > best.prefix || (prefix === best.prefix && (cand.metric < best.metric || (cand.metric === best.metric && order < best.order)))) best = cand
     }
-  }
   return best ? { out: best.out, ...(best.via ? { via: best.via } : {}), direct: best.direct, prefix: best.prefix } : null
 }
 
