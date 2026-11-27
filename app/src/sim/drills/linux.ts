@@ -217,7 +217,7 @@ export const LINUX_DRILLS: DrillDef[] = [
               return at >= 0 && !/\|\|\s*$/.test(x.slice(0, at))
             })),
             ck('apply', 'netplan apply выполнен', 'netplan apply', (c) => hist(c, /\bnetplan apply\b/)),
-          ], `netplan: routes: - to: default via: ${gw} и второй блок - to: ${persistent} via: ${gw}. Временный маршрут: sudo ip route add ${temporary} via ${gw}; удалить — sudo ip route del ${temporary} via ${gw}. Проверка: ip r, route -n.`, `netplan: routes: - to: default via: ${gw} i drugi blok - to: ${persistent} via: ${gw}. Trasa czasowa: sudo ip route add ${temporary} via ${gw}; usuń — sudo ip route del ${temporary} via ${gw}. Sprawdzenie: ip r, route -n.`),
+          ], `netplan: routes: - to: default via: ${gw} и второй блок - to: ${persistent} via: ${gw}. Временный маршрут: sudo ip route add ${temporary} via ${gw}; удалить — sudo ip route del ${temporary} via ${gw}. Проверка: ip r, route -n.`, `W netplan zapisz jako listę tras:\n  routes:\n    - to: default\n      via: ${gw}\n    - to: ${persistent}\n      via: ${gw}\nTrasa czasowa: sudo ip route add ${temporary} via ${gw}; usuń — sudo ip route del ${temporary} via ${gw}. Sprawdzenie: ip r, route -n.`),
         ],
       }
     },
