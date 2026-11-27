@@ -6,7 +6,7 @@ import { mkdirs, writeFile } from '../pc/fs'
 import { EVERYONE, FULL, MODIFY, ADMINS, SYSTEM } from '../pc/smb'
 import { configureRras } from '../pc/rras'
 import { P_DOCS, addPrinter, addTcpPort, grantPrint } from '../pc/print'
-import { addAdUser, addGpo, addOu, addRoles, addScope, addSite, allowPort, clientTestPrint, connectClientPrinter, finishDhcp, gpupdateClient, joinClient, promote, setNtfsOnly, setStaticIp, shareFolder, signInClient, clientRun } from './srvkit'
+import { addAdUser, addGpo, addOu, addRoles, addScope, addSite, allowPort, clientRun, clientTestPrint, connectClientPrinter, connectClientVpn, finishDhcp, gpupdateClient, joinClient, promote, saveClientVpn, setNtfsOnly, setStaticIp, shareFolder, signInClient } from './srvkit'
 
 const NB = (p: P) => `${p.dom}${p.X}`.toUpperCase()
 
@@ -129,5 +129,16 @@ export const SRV_SOLVE: Record<string, (p: P, h: H) => Promise<void> | void> = {
     s.server = configureRras(s.server, p.kind === 'nat' ? { lan: true, natPub: 'eth1' } : { lan: true })
     if (p.kind === 'route') s.router!.staticRoutes = [{ dest: `192.168.${X}.0`, mask: '255.255.255.0', gateway: `192.168.0.${100 + X}`, enabled: true }]
     h.cmd('ping 192.168.0.1')
+  },
+  'ws-vpn'(p, h) {
+    const { s } = h
+    const X = p.X
+    const ip = `192.168.${X}.1`
+    s.server = addRoles(s.server!, ['RAS', 'DirectAccess-VPN'])
+    s.server = configureRras(s.server, { lan: true, vpn: { iface: 'eth0', dhcp: false, start: `10.${X}.0.10`, end: `10.${X}.0.20` } })
+    const b = { s, lab: h.lab }
+    saveClientVpn(b, 'pc', { name: `VPN-${X}`, server: ip, protocol: String(p.proto) as 'Automatycznie' | 'PPTP' | 'SSTP', username: String(p.login), password: String(p.pw) })
+    const e = connectClientVpn(b, 'pc', `VPN-${X}`)
+    if (e) throw new Error(`ws-vpn: ${e}`)
   },
 }

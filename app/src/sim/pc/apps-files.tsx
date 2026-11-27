@@ -18,7 +18,7 @@ import { IcChevron, IcDrive, IcFolder, IcGroup, IcPc, IcSearch, IcUser } from '.
 import { Act, ListView, Mmc } from './apps-sys'
 import { useNoteSmb } from './apps-shared'
 import { isServer, srv } from './server'
-import { Btn, Chk, OkCancel, Radio, Sel, SvModal, type Node } from './sv-common'
+import { Btn, Chk, OkCancel, Radio, Sel, SvModal, TabbedBody, type Node } from './sv-common'
 import { Buttons, Tabs, useLongPress, useMsg, usePc, type MenuItem, type WinProps } from './ui'
 
 const low = (s: string) => s.toLowerCase()
@@ -609,7 +609,7 @@ export function AdvSec({ path, onClose }: { path: string; onClose: () => void })
         <p>
           <b>Właściciel:</b> {whoLabel(st, owner)} <Btn onClick={() => setDlg({ k: 'owner' })}>Zmień</Btn>
         </p>
-        <Tabs tabs={['Uprawnienia', 'Dostęp efektywny']} cur={tab} onChange={setTab} />
+        <Tabs tabs={['Uprawnienia', 'Inspekcja', 'Dostęp czynny']} cur={tab} onChange={setTab} />
         {tab === 0 && (
           <>
             <p className="sv-sub">Aby uzyskać dodatkowe informacje, kliknij dwukrotnie wpis uprawnień. Aby zmodyfikować wpis uprawnień, zaznacz wpis i kliknij przycisk Edytuj (jeśli jest dostępny).</p>
@@ -657,10 +657,29 @@ export function AdvSec({ path, onClose }: { path: string; onClose: () => void })
         )}
         {tab === 1 && (
           <>
+            <p className="sv-sub">Aby uzyskać dodatkowe informacje, kliknij dwukrotnie wpis inspekcji. Aby zmodyfikować wpis inspekcji, zaznacz wpis i kliknij przycisk Edytuj (jeśli jest dostępny).</p>
+            <table className="fw-table adv-table" aria-label="Wpisy inspekcji">
+              <thead>
+                <tr><th>Typ</th><th>Podmiot</th><th>Dostęp</th><th>Odziedziczone po</th><th>Dotyczy</th></tr>
+              </thead>
+              <tbody>
+                <tr><td colSpan={5}>Brak wpisów inspekcji.</td></tr>
+              </tbody>
+            </table>
+            <div className="sv-btnrow">
+              <Btn disabled>Dodaj</Btn>
+              <Btn disabled>Usuń</Btn>
+              <Btn disabled>Edytuj</Btn>
+            </div>
+            <p className="sv-sub">Inspekcja jest konfigurowana dla tego obiektu, ale wpisy nie są jeszcze zdefiniowane.</p>
+          </>
+        )}
+        {tab === 2 && (
+          <>
             <p>
               Użytkownik/grupa: <b>{effWho ? whoLabel(st, effWho) : '—'}</b> <Btn onClick={() => setPickEff(true)}>Wybierz użytkownika</Btn>
             </p>
-            <table className="fw-table" aria-label="Dostęp efektywny">
+            <table className="fw-table" aria-label="Dostęp czynny">
               <tbody>
                 {RIGHTS.map((r) => (
                   <tr key={r.key}>
@@ -1068,7 +1087,7 @@ export function Fsrm(_p: WinProps) {
     { id: 'quota', label: 'Zarządzanie przydziałami', icon: <IcFolder size={14} />, depth: 1 },
     { id: 'q', label: 'Przydziały', icon: <IcFolder size={14} />, depth: 2 },
     { id: 'qt', label: 'Szablony przydziałów', icon: <IcFolder size={14} />, depth: 2 },
-    { id: 'screen', label: 'Zarządzanie osłanianiem plików', icon: <IcFolder size={14} />, depth: 1 },
+    { id: 'screen', label: 'Zarządzanie osłonami plików', icon: <IcFolder size={14} />, depth: 1 },
     { id: 's', label: 'Osłony plików', icon: <IcFolder size={14} />, depth: 2 },
     { id: 'st', label: 'Szablony osłon plików', icon: <IcFolder size={14} />, depth: 2 },
     { id: 'sg', label: 'Grupy plików', icon: <IcFolder size={14} />, depth: 2 },
@@ -1201,7 +1220,7 @@ function QuotaDlg({ edit, onClose }: { edit?: string; onClose: () => void }) {
     onClose()
   }
   return (
-    <SvModal wide title={edit ? `Edytuj właściwości przydziału: ${edit}` : 'Utwórz przydział'} buttons={<OkCancel onOk={submit} onCancel={onClose} okLabel={edit ? 'OK' : 'Utwórz'} />}>
+    <SvModal wide title={edit ? `Edytuj właściwości przydziału: ${edit}` : 'Tworzenie limitu przydziału'} buttons={<OkCancel onOk={submit} onCancel={onClose} okLabel={edit ? 'OK' : 'Utwórz'} />}>
       <label className="w-field row sv-f">
         Ścieżka przydziału:
         <input className="w-input" id="q-path" list="q-dirs" disabled={!!edit} value={path} onChange={(e) => setPath(e.target.value)} autoCapitalize="off" spellCheck={false} />
@@ -1219,11 +1238,11 @@ function QuotaDlg({ edit, onClose }: { edit?: string; onClose: () => void }) {
       )}
       <p>Jak chcesz skonfigurować właściwości przydziału?</p>
       <Radio name="qs" on={useTpl} onChange={() => setUseTpl(true)}>
-        Pochodzi od tego szablonu przydziału (zalecane):
+        Wyprowadź właściwości z tego szablonu przydziału (zalecane):
       </Radio>
       <Sel id="q-tpl" value={tpl} onChange={setTpl} options={f.templates.map((x) => x.name)} />
       <Radio name="qs" on={!useTpl} onChange={() => setUseTpl(false)}>
-        Zdefiniuj niestandardowe właściwości przydziału
+        Zdefiniuj właściwości przydziału niestandardowego
       </Radio>
       {!useTpl && (
         <div className="sv-sub-dlg">
@@ -1269,34 +1288,44 @@ function ScreenDlg({ onClose }: { onClose: () => void }) {
     onClose()
   }
   return (
-    <SvModal wide title="Utwórz osłonę pliku" buttons={<OkCancel onOk={submit} onCancel={onClose} okLabel="Utwórz" />}>
+    <SvModal wide title="Tworzenie osłony plików" buttons={<OkCancel onOk={submit} onCancel={onClose} okLabel="Utwórz" />}>
       <label className="w-field row sv-f">
-        Ścieżka osłony pliku:
+        Ścieżka osłony plików:
         <input className="w-input" id="s-path" list="s-dirs" value={path} onChange={(e) => setPath(e.target.value)} autoCapitalize="off" spellCheck={false} />
         <datalist id="s-dirs">{(st.dirs ?? []).map((d) => <option key={d} value={d} />)}</datalist>
       </label>
       <p>Jak chcesz skonfigurować właściwości osłony pliku?</p>
       <Radio name="ss" on={useTpl} onChange={() => setUseTpl(true)}>
-        Pochodzi od tego szablonu osłony pliku (zalecane):
+        Wyprowadź właściwości z tego szablonu osłony plików (zalecane):
       </Radio>
       <Sel id="s-tpl" value={tpl} onChange={setTpl} options={SCREEN_TEMPLATES.map((x) => x.name)} />
       <Radio name="ss" on={!useTpl} onChange={() => setUseTpl(false)}>
-        Zdefiniuj niestandardowe właściwości osłony pliku
+        Zdefiniuj właściwości osłony plików niestandardowych
       </Radio>
       {!useTpl && (
         <div className="sv-sub-dlg">
-          <Radio name="sa" on={active} onChange={() => setActive(true)}>
-            Osłanianie aktywne: Uniemożliwia użytkownikom zapisywanie niedozwolonych plików
-          </Radio>
-          <Radio name="sa" on={!active} onChange={() => setActive(false)}>
-            Osłanianie pasywne: Zezwala użytkownikom na zapisywanie plików (używane do monitorowania)
-          </Radio>
-          <p>Zablokuj grupy plików:</p>
-          {FILE_GROUPS.map((g) => (
-            <Chk key={g.name} on={groups.includes(g.name)} onChange={(v) => setGroups((a) => (v ? [...a, g.name] : a.filter((x) => x !== g.name)))}>
-              {g.name}
-            </Chk>
-          ))}
+          <TabbedBody tabs={['Osłona plików', 'Wiadomość e-mail', 'Dziennik zdarzeń', 'Polecenie', 'Raport']}>
+            {(ti) =>
+              ti === 0 ? (
+                <>
+                  <Radio name="sa" on={active} onChange={() => setActive(true)}>
+                    Aktywne przesiewowe: uniemożliwia użytkownikom zapisywanie niedozwolonych plików
+                  </Radio>
+                  <Radio name="sa" on={!active} onChange={() => setActive(false)}>
+                    Pasywne przesiewowe: zezwala użytkownikom na zapisywanie plików (używane do monitorowania)
+                  </Radio>
+                  <p>Zablokuj grupy plików:</p>
+                  {FILE_GROUPS.map((g) => (
+                    <Chk key={g.name} on={groups.includes(g.name)} onChange={(v) => setGroups((a) => (v ? [...a, g.name] : a.filter((x) => x !== g.name)))}>
+                      {g.name}
+                    </Chk>
+                  ))}
+                </>
+              ) : (
+                <p className="sv-sub">Powiadomienia i akcje osłony są pokazane jak w oryginalnym FSRM; symulator nie wysyła wiadomości ani nie uruchamia poleceń.</p>
+              )
+            }
+          </TabbedBody>
         </div>
       )}
       {err && <p className="sv-err">{err}</p>}
@@ -1321,19 +1350,30 @@ function TplDlg({ onClose }: { onClose: () => void }) {
   }
   return (
     <SvModal title="Utwórz szablon przydziału" buttons={<OkCancel onOk={submit} onCancel={onClose} okLabel="OK" />}>
-      <label className="w-field row sv-f">
-        Nazwa szablonu:
-        <input className="w-input" id="t-name" value={name} onChange={(e) => setName(e.target.value)} />
-      </label>
-      <label className="w-field row sv-f">
-        Limit: <SizeInput n={n} unit={unit} onN={setN} onUnit={setUnit} />
-      </label>
-      <Radio name="th" on={hard} onChange={() => setHard(true)}>
-        Limit twardy
-      </Radio>
-      <Radio name="th" on={!hard} onChange={() => setHard(false)}>
-        Limit miękki
-      </Radio>
+      <TabbedBody tabs={['Ustawienia', 'Wiadomość e-mail', 'Dziennik zdarzeń', 'Polecenie', 'Raport']}>
+        {(ti) =>
+          ti === 0 ? (
+            <>
+              <label className="w-field row sv-f">
+                Nazwa szablonu:
+                <input className="w-input" id="t-name" value={name} onChange={(e) => setName(e.target.value)} />
+              </label>
+              <label className="w-field row sv-f">
+                Limit: <SizeInput n={n} unit={unit} onN={setN} onUnit={setUnit} />
+              </label>
+              <Radio name="th" on={hard} onChange={() => setHard(true)}>
+                Limit twardy
+              </Radio>
+              <Radio name="th" on={!hard} onChange={() => setHard(false)}>
+                Limit miękki
+              </Radio>
+              <p className="sv-sub">Próg powiadamiania: 85% — powiadomienie dostępne na pozostałych kartach.</p>
+            </>
+          ) : (
+            <p className="sv-sub">Konfiguracja powiadomień progowych jest przechowywana jako część szablonu w oryginalnym FSRM; w symulatorze karta pokazuje strukturę bez osobnego modelu zdarzeń.</p>
+          )
+        }
+      </TabbedBody>
       {err && <p className="sv-err">{err}</p>}
     </SvModal>
   )
@@ -1411,12 +1451,21 @@ export function NewShareWizard({ onClose }: { onClose: () => void }) {
   const [cache, setCache] = useState(true)
   const [branch, setBranch] = useState(false)
   const [enc, setEnc] = useState(false)
+  const [quotaOn, setQuotaOn] = useState(false)
+  const [quotaTpl, setQuotaTpl] = useState('')
+  const [classOn, setClassOn] = useState(false)
+  const [classVal, setClassVal] = useState('')
   const [err, setErr] = useState('')
   const [sec, setSec] = useState(false)
   const [pick, setPick] = useState(false)
   const host = st.hostname.toUpperCase()
   const folderPath = byVol ? `C:\\Shares\\${name || '…'}` : resolvePath('C:\\', path.trim() || 'C:\\')
   const abs = folderPath
+  const adv = profile === 1
+  const steps = adv ? [...WSTEPS.slice(0, 5), 'Właściwości zarządzania udziałami', 'Klasyfikacja udziału', ...WSTEPS.slice(5)] : WSTEPS
+  const titles = adv ? [...WTITLES.slice(0, 5), 'Określanie właściwości zarządzania udziałami', 'Stosowanie właściwości klasyfikacji do folderu udziału', ...WTITLES.slice(5)] : WTITLES
+  const confirmStep = adv ? 7 : 5
+  const resultsStep = adv ? 8 : 6
   const next = () => {
     setErr('')
     if (step === 0 && profile > 2) return setErr('Nie można utworzyć udziału NFS: na tym serwerze nie jest zainstalowana rola Serwer NFS (Usługi plików i magazynowania → Serwer NFS).')
@@ -1434,8 +1483,16 @@ export function NewShareWizard({ onClose }: { onClose: () => void }) {
     setStep(step + 1)
   }
   const create = () => {
-    api.update((s) => createShare(s, { name: name.trim(), path: abs, ...(desc ? { desc } : {}), abe, cache, encrypt: enc, perms: [{ who: EVERYONE, type: 'allow', level: 'full' }] }))
-    setStep(6)
+    if (adv && quotaOn && quotaTpl && quotaInstances(st).some((q) => low(q.path) === low(abs))) return setErr('Na tej ścieżce już istnieje przydział. Usuń istniejący przydział albo wyłącz zarządzanie przydziałem dla tego udziału.')
+    api.update((s) => {
+      let x = createShare(s, { name: name.trim(), path: abs, ...(desc ? { desc } : {}), abe, cache, encrypt: enc, perms: [{ who: EVERYONE, type: 'allow', level: 'full' }] })
+      if (adv && quotaOn && quotaTpl) {
+        const tpl = fsrmOf(x).templates.find((t) => t.name === quotaTpl)
+        if (tpl) x = addQuota(x, { path: abs, limit: tpl.limit, hard: tpl.hard, template: tpl.name })
+      }
+      return x
+    })
+    setStep(resultsStep)
   }
   const aces = step >= 4 && isDir(st, abs) ? effAcl(st, abs) : []
   const T = 'Kreator nowego udziału'
@@ -1444,7 +1501,7 @@ export function NewShareWizard({ onClose }: { onClose: () => void }) {
       wide
       title={T}
       buttons={
-        step === 6 ? (
+        step === resultsStep ? (
           <Btn primary onClick={onClose}>
             Zamknij
           </Btn>
@@ -1453,10 +1510,10 @@ export function NewShareWizard({ onClose }: { onClose: () => void }) {
             <Btn disabled={step === 0} onClick={() => setStep(step - 1)}>
               &lt; Wstecz
             </Btn>
-            <Btn disabled={step === 5} onClick={next}>
+            <Btn disabled={step === confirmStep} onClick={next}>
               Dalej &gt;
             </Btn>
-            <Btn primary disabled={step !== 5} onClick={create}>
+            <Btn primary disabled={step !== confirmStep} onClick={create}>
               Utwórz
             </Btn>
             <Btn onClick={onClose}>Anuluj</Btn>
@@ -1466,14 +1523,14 @@ export function NewShareWizard({ onClose }: { onClose: () => void }) {
     >
       <div className="sv-split">
         <ol className="sv-wiz-nav" aria-label="Kroki kreatora" style={{ minWidth: 120 }}>
-          {WSTEPS.map((t, i) => (
+          {steps.map((t, i) => (
             <li key={t} className={i === step ? 'on' : i < step ? 'done' : ''}>
               {t}
             </li>
           ))}
         </ol>
         <div className="sv-text">
-          <h3 className="sv-mh">{WTITLES[step]}</h3>
+          <h3 className="sv-mh">{titles[step]}</h3>
           {step === 0 && (
             <div className="sv-split">
               <div>
@@ -1610,7 +1667,40 @@ export function NewShareWizard({ onClose }: { onClose: () => void }) {
               <Btn onClick={() => setSec(true)}>Dostosowywanie uprawnień…</Btn>
             </>
           )}
-          {step === 5 && (
+          {adv && step === 5 && (
+            <>
+              <p>Możesz ustawić przydział dla folderu udziału i wybrać właściwości klasyfikacji. Te ustawienia są stosowane przez Menedżera zasobów serwera plików.</p>
+              <Chk on={quotaOn} onChange={setQuotaOn}>
+                Zastosuj przydział do folderu udziału
+              </Chk>
+              <label className="w-field row sv-f">
+                Szablon przydziału:
+                <select className="w-input" aria-label="Szablon przydziału" disabled={!quotaOn} value={quotaTpl} onChange={(e) => setQuotaTpl(e.target.value)}>
+                  <option value="">(brak)</option>
+                  {fsrmOf(st).templates.map((t) => <option key={t.name}>{t.name}</option>)}
+                </select>
+              </label>
+            </>
+          )}
+          {adv && step === 6 && (
+            <>
+              <p>Klasyfikacja pomaga zarządzać plikami według właściwości folderu. Wartości są dziedziczone przez pliki w udziale.</p>
+              <Chk on={classOn} onChange={setClassOn}>
+                Zastosuj właściwość klasyfikacji do folderu udziału
+              </Chk>
+              <label className="w-field row sv-f">
+                Właściwość klasyfikacji:
+                <select className="w-input" aria-label="Właściwość klasyfikacji" disabled={!classOn} value={classVal} onChange={(e) => setClassVal(e.target.value)}>
+                  <option value="">(brak)</option>
+                  <option>Dane osobowe</option>
+                  <option>Dane poufne</option>
+                  <option>Projekt</option>
+                </select>
+              </label>
+              <p className="sv-sub">Wartość: {classVal || '(nie wybrano)'}</p>
+            </>
+          )}
+          {step === confirmStep && (
             <>
               <p>Potwierdź poprawność następujących ustawień, a następnie kliknij przycisk Utwórz.</p>
               <div className="rras-sum" style={{ maxHeight: 220 }}>
@@ -1619,10 +1709,11 @@ export function NewShareWizard({ onClose }: { onClose: () => void }) {
                 <b>WŁAŚCIWOŚCI UDZIAŁU</b>
                 <p>Nazwa udziału: {name} • Opis: {desc} • Protokół: SMB</p>
                 <p>Wyliczanie oparte na dostępie: {abe ? 'Włączone' : 'Wyłączone'} • Buforowanie: {cache ? 'Włączone' : 'Wyłączone'} • BranchCache: {branch ? 'Włączone' : 'Wyłączone'} • Zaszyfruj dane: {enc ? 'Włączone' : 'Wyłączone'}</p>
+                {adv && <p>Właściwości zarządzania: przydział {quotaOn && quotaTpl ? quotaTpl : 'nie zastosowano'} • klasyfikacja {classOn && classVal ? classVal : 'nie zastosowano'}</p>}
               </div>
             </>
           )}
-          {step === 6 && (
+          {step === resultsStep && (
             <>
               <p>Pomyślnie utworzono udział.</p>
               <table className="fw-table" aria-label="Wyniki">

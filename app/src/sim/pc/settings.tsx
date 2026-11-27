@@ -1,10 +1,11 @@
 // "Ustawienia" (Windows 11 Settings): System › Informacje (rename PC), Sieć i Internet › Ethernet (Edytuj przypisanie IP), Konta.
 import { useState, type ReactNode } from 'react'
-import { ipToInt, type PcAdapter } from '../net'
+import { ipToInt, type PcAdapter, type PcVpnConnection } from '../net'
 import { IcChevron, IcEthernet, IcGlobe, IcPc, IcSearch, IcSettings, IcUser, IcUsers } from './icons'
 import { adapterState, curIp, linked, linkLocal6, networkName, nicDesc, setDhcp, setStatic, trayState, validateStatic } from './model'
 import { Toggle, useMsg, usePc, type WinProps } from './ui'
 import { addJob, clientPrinters, disconnectPrinter, openPrinter, printerErrText, setDefaultPrinter } from './print'
+import { connectVpn, disconnectVpn, saveVpn, vpnConnections } from './vpn'
 import { gib, plNum, ramTotalGB } from '../hw'
 import { hwOf } from './hwcmd'
 
@@ -20,14 +21,14 @@ const NAV: [string, string, ReactNode][] = [
   ['update', 'Windows Update', <IcSettings key="k9" size={18} />],
 ]
 
-export const SETTINGS_PAGES: Record<string, string> = { system: 'System', about: 'Informacje', net: 'Sieć i Internet', eth: 'Ethernet', adv: 'Zaawansowane ustawienia sieci', accounts: 'Konta', bt: 'Bluetooth i urządzenia', printers: 'Drukarki i skanery' }
+export const SETTINGS_PAGES: Record<string, string> = { system: 'System', about: 'Informacje', net: 'Sieć i Internet', eth: 'Ethernet', adv: 'Zaawansowane ustawienia sieci', accounts: 'Konta', bt: 'Bluetooth i urządzenia', printers: 'Drukarki i skanery', vpn: 'VPN' }
 
 export function SettingsApp({ arg = 'system', setArg }: WinProps) {
   const api = usePc()
   const [page, sub] = arg.split(':')
   // on a phone the left menu is its own page ("home")
   const showNav = !api.compact || page === 'home'
-  const top = page === 'printers' || page === 'printer' ? 'bt' : page === 'about' ? 'system' : page === 'eth' || page === 'adv' ? 'net' : page
+  const top = page === 'printers' || page === 'printer' ? 'bt' : page === 'about' ? 'system' : page === 'eth' || page === 'adv' || page === 'vpn' ? 'net' : page
   return (
     <div className={`set ${api.compact ? 'compact' : ''}`}>
       {showNav && (
@@ -56,7 +57,7 @@ export function SettingsApp({ arg = 'system', setArg }: WinProps) {
       {!(api.compact && page === 'home') && (
         <main className="set-main">
           {api.compact && (
-            <button className="set-back" onClick={() => setArg(page === 'printers' ? 'bt' : page === 'printer' ? 'printers' : page === 'about' ? 'system' : page === 'eth' && sub ? 'eth' : page === 'eth' || page === 'adv' ? 'net' : 'home')}>
+            <button className="set-back" onClick={() => setArg(page === 'printers' ? 'bt' : page === 'printer' ? 'printers' : page === 'about' ? 'system' : page === 'eth' && sub ? 'eth' : page === 'eth' || page === 'adv' || page === 'vpn' ? 'net' : 'home')}>
               <IcChevron dir="left" size={14} /> Wstecz
             </button>
           )}
@@ -65,12 +66,13 @@ export function SettingsApp({ arg = 'system', setArg }: WinProps) {
           {page === 'net' && <NetPage go={setArg} />}
           {page === 'eth' && <EthPage go={setArg} id={sub} />}
           {page === 'adv' && <AdvPage go={setArg} />}
+          {page === 'vpn' && <VpnPage />}
           {page === 'accounts' && <AccountsPage />}
           {page === 'person' && <PersonPage />}
           {page === 'bt' && <BtPage go={setArg} />}
           {page === 'printers' && <PrintersPage go={setArg} />}
           {page === 'printer' && <PrinterPage go={setArg} idx={Number(sub)} />}
-          {!['system', 'about', 'net', 'eth', 'adv', 'accounts', 'person', 'bt', 'printers', 'printer'].includes(page) && (
+          {!['system', 'about', 'net', 'eth', 'adv', 'vpn', 'accounts', 'person', 'bt', 'printers', 'printer'].includes(page) && (
             <>
               <h1 className="set-h">{NAV.find((n) => n[0] === page)?.[1] ?? 'Ustawienia'}</h1>
               <p className="set-muted">Ta sekcja nie jest potrzebna na egzaminie i nie jest dostępna w symulatorze.</p>
@@ -400,9 +402,148 @@ function NetPage({ go }: { go: (a: string) => void }) {
         )}
       </div>
       <Row icon={<IcEthernet size={20} />} title="Ethernet" sub="Uwierzytelnianie, ustawienia IP i DNS, sieć taryfowa" onClick={() => go(state.adapters.length === 1 ? `eth:${state.adapters[0].id}` : 'eth')} />
-      <Row icon={<IcGlobe size={20} />} title="VPN" sub="Dodawanie, łączenie, zarządzanie" onClick={() => {}} />
+      <Row icon={<IcGlobe size={20} />} title="VPN" sub="Dodawanie, łączenie, zarządzanie" onClick={() => go('vpn')} />
       <Row icon={<IcGlobe size={20} />} title="Serwer proxy" sub="Serwer proxy dla sieci Wi-Fi i Ethernet" onClick={() => {}} />
       <Row icon={<IcSettings size={20} />} title="Zaawansowane ustawienia sieci" sub="Wyświetl wszystkie karty sieciowe, resetowanie sieci" onClick={() => go('adv')} />
+    </>
+  )
+}
+
+function VpnPage() {
+  const api = usePc()
+  const list = vpnConnections(api.state)
+  const [adding, setAdding] = useState(false)
+  const [sel, setSel] = useState<string | null>(null)
+  const [form, setForm] = useState<PcVpnConnection>({ name: '', server: '', protocol: 'Automatycznie', username: '', password: '', remember: true })
+  const [user, setUser] = useState('')
+  const [pw, setPw] = useState('')
+  const [err, setErr] = useState('')
+  const cur = list.find((x) => x.name === sel) ?? list[0]
+  const save = () => {
+    if (!form.name.trim()) return setErr('Wprowadź nazwę połączenia.')
+    if (!form.server.trim()) return setErr('Wprowadź nazwę lub adres serwera.')
+    api.update((s) => saveVpn(s, { ...form, connected: false }))
+    setErr('')
+    setAdding(false)
+    setSel(form.name.trim())
+  }
+  const connect = (c: PcVpnConnection) => {
+    setErr('')
+    const b = api.network.bench
+    if (!b) return setErr('Brak serwera na stanowisku — nie można połączyć.')
+    const cred = user || pw ? { user, pw } : undefined
+    const r = connectVpn(b, api.state, c.name, cred)
+    if (!r.ok) return setErr(r.err.msg)
+    api.update(() => r.next)
+    b.setServer?.(r.applyServer)
+    setSel(c.name)
+  }
+  const disconnect = (c: PcVpnConnection) => {
+    const r = disconnectVpn(api.state, c.name)
+    api.update(() => r.next)
+    api.network.bench?.setServer?.(r.applyServer)
+  }
+  return (
+    <>
+      <h1 className="set-h">Sieć i Internet › VPN</h1>
+      <Row
+        icon={<IcGlobe size={20} />}
+        title="Dodaj połączenie VPN"
+        right={
+          <button className="w-btn primary" id="vpn-add" onClick={() => (setAdding(!adding), setErr(''))}>
+            {adding ? 'Anuluj' : 'Dodaj połączenie VPN'}
+          </button>
+        }
+      />
+      {adding && (
+        <div className="set-card" id="vpn-add-form">
+          <label className="w-field">
+            Dostawca usługi VPN
+            <select className="w-input" aria-label="Dostawca usługi VPN" value="Windows (wbudowana)" onChange={() => {}}>
+              <option>Windows (wbudowana)</option>
+            </select>
+          </label>
+          <label className="w-field">
+            Nazwa połączenia
+            <input id="vpn-name" className="w-input" autoFocus value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+          </label>
+          <label className="w-field">
+            Nazwa lub adres serwera
+            <input id="vpn-server" className="w-input" autoCapitalize="off" spellCheck={false} value={form.server} onChange={(e) => setForm({ ...form, server: e.target.value })} />
+          </label>
+          <label className="w-field">
+            Typ sieci VPN
+            <select id="vpn-type" className="w-input" value={form.protocol} onChange={(e) => setForm({ ...form, protocol: e.target.value as PcVpnConnection['protocol'] })}>
+              {['Automatycznie', 'PPTP', 'SSTP'].map((x) => (
+                <option key={x}>{x}</option>
+              ))}
+            </select>
+          </label>
+          <label className="w-field">
+            Typ informacji logowania
+            <select className="w-input" aria-label="Typ informacji logowania" value="Nazwa użytkownika i hasło" onChange={() => {}}>
+              <option>Nazwa użytkownika i hasło</option>
+            </select>
+          </label>
+          <label className="w-field">
+            Nazwa użytkownika (opcjonalnie)
+            <input id="vpn-user" className="w-input" autoCapitalize="off" spellCheck={false} value={form.username ?? ''} onChange={(e) => setForm({ ...form, username: e.target.value })} />
+          </label>
+          <label className="w-field">
+            Hasło (opcjonalnie)
+            <input id="vpn-password" className="w-input" type="password" value={form.password ?? ''} onChange={(e) => setForm({ ...form, password: e.target.value })} />
+          </label>
+          <label className="set-check">
+            <input id="vpn-remember" type="checkbox" checked={!!form.remember} onChange={(e) => setForm({ ...form, remember: e.target.checked })} /> Zapamiętaj moje informacje logowania
+          </label>
+          <div className="set-btns">
+            <button className="w-btn primary" id="vpn-save" onClick={save}>
+              Zapisz
+            </button>
+          </div>
+        </div>
+      )}
+      {list.map((c) => (
+        <div key={c.name} className={`set-card vpn-card ${cur?.name === c.name ? 'sel' : ''}`}>
+          <button className="set-row click" onClick={() => setSel(c.name)}>
+            <span className="set-row-ic"><IcGlobe size={20} /></span>
+            <span className="set-row-t">
+              <strong>{c.name}</strong>
+              <span>{c.connected ? `Połączono · ${c.assignedIp ?? ''}` : 'Rozłączono'}</span>
+            </span>
+          </button>
+          {cur?.name === c.name && (
+            <div className="vpn-detail">
+              <p className="set-muted">Serwer: {c.server} · Typ sieci VPN: {c.protocol}</p>
+              {!c.username && !c.connected && (
+                <>
+                  <label className="w-field">
+                    Nazwa użytkownika
+                    <input id="vpn-login-user" className="w-input" autoCapitalize="off" value={user} onChange={(e) => setUser(e.target.value)} />
+                  </label>
+                  <label className="w-field">
+                    Hasło
+                    <input id="vpn-login-pw" className="w-input" type="password" value={pw} onChange={(e) => setPw(e.target.value)} />
+                  </label>
+                </>
+              )}
+              <div className="set-btns">
+                {c.connected ? (
+                  <button className="w-btn" id="vpn-disconnect" onClick={() => disconnect(c)}>
+                    Rozłącz
+                  </button>
+                ) : (
+                  <button className="w-btn primary" id="vpn-connect" onClick={() => connect(c)}>
+                    Połącz
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      ))}
+      {!list.length && !adding && <p className="set-muted">Nie dodano żadnych połączeń VPN.</p>}
+      {err && <p className="sv-err">{err}</p>}
     </>
   )
 }

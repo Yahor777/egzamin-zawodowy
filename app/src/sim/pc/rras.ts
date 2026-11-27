@@ -10,13 +10,14 @@ export const setRras = (st: PcState, f: (r: RrasState) => RrasState): PcState =>
 export const hasRouting = (st: PcState) => srv(st).roles.includes('Routing')
 
 /** Kreator instalacji serwera routingu i dostępu zdalnego → Zakończ (the service starts) */
-export function configureRras(st: PcState, o: { lan: boolean; natPub?: string; natPriv?: string[] }): PcState {
+export function configureRras(st: PcState, o: { lan: boolean; natPub?: string; natPriv?: string[]; vpn?: { iface?: string; dhcp: boolean; start?: string; end?: string } }): PcState {
   const priv = o.natPub ? (o.natPriv ?? st.adapters.map((a) => a.id).filter((id) => id !== o.natPub)) : o.natPriv
-  return withSrv(setRras(st, (r) => ({ ...r, configured: true, running: true, lan: o.lan || !!o.natPub, natPub: o.natPub, natPriv: priv, routes: r.routes })), (x) => ({ ...x, pending: x.pending.filter((p) => p !== 'RAS') }))
+  const vpn = o.vpn ? { enabled: true, ...(o.vpn.iface ? { iface: o.vpn.iface } : {}), dhcp: o.vpn.dhcp, ...(o.vpn.dhcp ? {} : { start: o.vpn.start, end: o.vpn.end }), clients: [] } : undefined
+  return withSrv(setRras(st, (r) => ({ ...r, configured: true, running: true, lan: o.lan || !!o.natPub, natPub: o.natPub, natPriv: priv, routes: r.routes, vpn })), (x) => ({ ...x, pending: x.pending.filter((p) => p !== 'RAS') }))
 }
 /** "Wyłącz routing i dostęp zdalny" */
 export const disableRras = (st: PcState): PcState => setRras(st, () => ({ configured: false, running: false, lan: false, routes: [] }))
-export const setRrasRunning = (st: PcState, running: boolean): PcState => setRras(st, (r) => ({ ...r, running: r.configured && running }))
+export const setRrasRunning = (st: PcState, running: boolean): PcState => setRras(st, (r) => ({ ...r, running: r.configured && running, ...(r.vpn ? { vpn: { ...r.vpn, clients: running ? r.vpn.clients : [] } } : {}) }))
 export const addRrasRoute = (st: PcState, route: RrasState['routes'][number]): PcState => setRras(st, (r) => ({ ...r, routes: [...r.routes, route] }))
 
 /** text of the adapter in the interface lists: the Windows adapter name, its address */

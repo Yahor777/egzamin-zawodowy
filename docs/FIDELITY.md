@@ -70,7 +70,7 @@
 
 Оставлено / не проверено:
 - Скриншоты Microsoft Learn почти отсутствуют; сверка по картинкам ZSE (30–60 на урок) выполнена для ключевых диалогов — см. раздел ниже.
-- Не воспроизведено (не нужно для листов): Dostęp zdalny → «Wdróż DirectAccess», VPN-клиенты, IPv6 в RRAS, профили NFS/«Udział SMB — aplikacje» в мастере нового udziału (выбор возможен, поведение как у «szybki»), Kreator interfejsu wybierania numeru, фильтры/DFS/FSRM-страницы мастера «zaawansowany», пользователи-списки «Rola»/«Czasowniki» в URL Authorization.
+- Не воспроизведено (не нужно для листов): Dostęp zdalny → «Wdróż DirectAccess», реальное прохождение VPN-трафика по туннелю (PPTP/SSTP — симуляция по состоянию), IPv6 в RRAS, профили NFS/«Udział SMB — aplikacje» в мастере нового udziału (выбор возможен, поведение как у «szybki»), Kreator interfejsu wybierania numeru, DFS, пользователи-списки «Rola»/«Czasowniki» в URL Authorization.
 
 ## Школа (ZSE Rzeszów) — ключевые находки
 
@@ -105,13 +105,14 @@
 | GPMC | см. таблицу выше | «umieść tu link…», «Połącz z istniejącym obiektem zasad grupy…», «Źródłowy początkowy obiekt zasad grupy:» (тексты в quiz/howto/drill обновлены) |
 | ADUC → новый пользователь | заголовок «Nowy obiekt — Użytkownik», не было «Inicjały» | **«Nowy obiekt - Użytkownik»**, поле **Inicjały** (в «Pełna nazwa»: «James JB. Bond») |
 | IIS: «Dodawanie witryny sieci Web» | «Uruchom witrynę sieci Web natychmiast», не было подписей | **«Natychmiast uruchom witrynę sieci Web»**, «Uwierzytelnianie przekazywane», «Przykład: www.contoso.com lub marketing.contoso.com», пункты «Zarządzanie witryną sieci Web › Zatrzymaj/Uruchom/Ustawienia zaawansowane…»; FTP-мастер: «Bez protokołu SSL» |
-| Nowy udział (Menedżer serwera) | трёхшаговый мини-мастер | **«Kreator nowego udziału»**: Wybieranie profilu → Lokalizacja udziału (wolumin / ścieżka niestandardowa, Przeglądaj…) → Nazwa udziału → Inne ustawienia (4 флажка) → Uprawnienia (+ «Dostosowywanie uprawnień…» = Zaawansowane ustawienia zabezpieczeń) → Potwierdzenie → Wyniki |
+| Nowy udział (Menedżer serwera) | трёхшаговый мини-мастер | **«Kreator nowego udziału»**: Wybieranie profilu → Lokalizacja udziału (wolumin / ścieżka niestandardowa, Przeglądaj…) → Nazwa udziału → Inne ustawienia (4 флажка) → Uprawnienia (+ «Dostosowywanie uprawnień…» = Zaawansowane ustawienia zabezpieczeń) → Potwierdzenie → Wyniki; профиль **Udział SMB — zaawansowany** добавляет страницы **Właściwości zarządzania udziałami** и **Klasyfikacja udziału** (FSRM-прототипы) |
 
 ## Закрыто в Фазе C2 (бывший список «кандидатов»)
 
 | Экран | Что сделано |
 |---|---|
 | **Routing i dostęp zdalny** | роль **Dostęp zdalny** → служба ролей **Routing**; флаг «Otwórz kreatora Wprowadzenie» («Wdróż tylko sieć VPN» → консоль); консоль `rrasmgmt.msc` (Narzędzia): ПКМ на сервере → «Konfiguruj i włącz routing i dostęp zdalny», «Kreator instalacji serwera routingu i dostępu zdalnego» (Dostęp zdalny / **Translator adresów sieciowych** / VPN+NAT / Bezpieczne połączenie / **Konfiguracja niestandardowa**; «Połączenie internetowe NAT» с выбором публичного интерфейса; «Kończenie pracy…», «Uruchamianie Routing i dostęp zdalny»), IPv4 → Ogólne / **Trasy statyczne** («Nowa trasa statyczna»: Interfejs, Miejsce docelowe, Maska sieci, Brama, Metryka) / IGMP / **NAT** (Nowy interfejs…, Właściwości: prywatny/publiczny), «Wyłącz…», Uruchom/Zatrzymaj, Właściwości. **Маршрутизация в `net.ts` требует настроенного и запущенного RRAS** (роль + служба Routing + мастер + Routing LAN); статические маршруты сервера участвуют в `canPing`; NAT: клиенты за сервером достигают «внешней» стороны (ответ идёт на публичный адрес). Лаба 26-06-10 и её эталонное решение обновлены |
+| **RRAS: dostęp zdalny VPN** | вариант мастера **«Dostęp zdalny (połączenie telefoniczne lub sieć VPN)»**, страницы **Sieć** и **Przypisywanie adresów IP** (Automatycznie / Z określonego zakresu adresów), узел **Klienci dostępu zdalnego** (Nazwa / Użytkownik / Adres IP / Protokół / Czas trwania), вкладка IPv4 со статическим пулом; Windows 11: **Ustawienia → Sieć i Internet → VPN → Dodaj połączenie VPN**, поля Dostawca usługi VPN / Nazwa połączenia / Nazwa lub adres serwera / Typ sieci VPN / Typ informacji logowania / Zapamiętaj moje informacje logowania; подключение PPTP/SSTP по состоянию с проверкой сервера, роли, RRAS, логина и свободного адреса пула |
 | **Zarządzanie komputerem → Foldery udostępnione** | Udziały (ADMIN$, C$, IPC$ + свои, «Liczba połączeń klienta»; Nowy udział…, Zatrzymaj udostępnianie, Właściwości: Ogólne/limit, Publikowanie, Uprawnienia udziału, Zabezpieczenia), **Kreator tworzenia folderu udostępnionego** (4 пресета разрешений), **Sesje** и **Otwarte pliki** — реальные сессии клиентов из SMB-модели (Проводник на `\\сервер\udział`/сетевой диск, Notatnik с файлом на udziale) |
 | **IIS: Przekierowanie HTTP** | служба роли `Web-Http-Redirect`; плитка и форма (adres docelowy, «dokładne miejsce docelowe», «tylko zawartość w tym katalogu», 301/302/307); Edge клиента показывает содержимое цели (на том же сервере) либо страницу с адресом и кодом |
 | **IIS: Autoryzacja adresów URL** | служба роли `Web-Url-Auth`; список правил, «Dodaj regułę zezwalania/odmowy…» (wszyscy / anonimowi / role / użytkownicy); Edge без логина получает **401.2** при правиле «Odmów — anonimowi» |
@@ -122,6 +123,6 @@
 
 1. Роутер: скриншотное сравнение при реальных данных школы (какой именно WR840N — V4/V5/V6/V7 — и какой DrayTek).
 2. Коммутатор: подтвердить по реальному железу школы модель (см. выше), при необходимости — отдельный стиль.
-3. Windows: сверка остальных диалогов школы (NTFS «Zaawansowane ustawienia zabezpieczeń» вкладки Inspekcja / Dostęp czynny, FSRM-мастера «zaawansowany», серверы печати/lekcja 11, MMC-RDP/lekcja 12) — по скриншотам из `https://zse.rzeszow.pl/windows/2022/…`.
+3. Windows: сверка остальных диалогов школы (точные записи на вкладке Inspekcja и редактирование аудита, FSRM-уведомления/правила классификации, серверы печати/lekcja 11, MMC-RDP/lekcja 12) — по скриншотам из `https://zse.rzeszow.pl/windows/2022/…`.
 4. FTP-клиент (`ftp 192.168…`, браузер `ftp://`) в симуляторе клиента отсутствует: FTP-сайты и публикации только настраиваются.
 5. Прогон 3 листов на реальном оборудовании (пункт 3 фазы C) — не выполнялся.

@@ -5,6 +5,8 @@ import { Act, ListView, Mmc } from './apps-sys'
 import { IcFolder, IcMgmt, IcWarn } from './icons'
 import { addRrasRoute, configureRras, disableRras, hasRouting, ifaceIp, routeError, rrasOf, setRras, setRrasRunning } from './rras'
 import { srv } from './server'
+import { vpnPoolError } from './vpn'
+import { ipToInt } from '../net'
 import { Btn, Chk, Field, OkCancel, Radio, Sel, SvModal, TabbedBody, type Node } from './sv-common'
 import { IpInput, useMsg, usePc, type MenuItem, type WinProps } from './ui'
 
@@ -67,7 +69,7 @@ export function RrasConsole(_p: WinProps) {
   const [sel, setSel] = useState<string | null>(null)
   const [dlg, setDlg] = useState<Dlg | null>(null)
   const [msg, show] = useMsg()
-  const ready = hasRouting(st)
+  const ready = srv(st).roles.includes('RAS') || hasRouting(st)
   const up = r.configured && r.running
   const upd = (f: (s: typeof st) => typeof st) => api.update(f)
 
@@ -78,6 +80,7 @@ export function RrasConsole(_p: WinProps) {
     ...(r.configured
       ? ([
           { id: 'ifaces', label: 'Interfejsy sieciowe', icon: <IcFolder size={14} />, depth: 2 },
+          ...(r.vpn?.enabled ? [{ id: 'clients', label: 'Klienci dostępu zdalnego', icon: <IcFolder size={14} />, depth: 2 }] : []),
           { id: 'log', label: 'Rejestrowanie i zasady dostępu zdalnego', icon: <IcFolder size={14} />, depth: 2 },
           { id: 'ipv4', label: 'IPv4', icon: <IcFolder size={14} />, depth: 2 },
           { id: 'ipv4:gen', label: 'Ogólne', icon: <IcFolder size={14} />, depth: 3 },
@@ -233,6 +236,16 @@ export function RrasConsole(_p: WinProps) {
         />
       )}
       {node === 'log' && <p className="mmc-empty">Rejestrowanie i zasady dostępu zdalnego: brak zasad (nie skonfigurowano dostępu zdalnego).</p>}
+      {node === 'clients' && (
+        <ListView
+          cols={['Nazwa', 'Użytkownik', 'Adres IP', 'Protokół', 'Czas trwania']}
+          rows={(r.vpn?.clients ?? []).map((c) => ({ key: c.computer, icon: <IcMgmt size={16} />, cells: [c.computer, c.user, c.ip, c.protocol, '0:00:12'], menu: [] }))}
+          sel={sel}
+          onSel={setSel}
+          onOpen={() => {}}
+          onBlankMenu={[]}
+        />
+      )}
       {node === 'ipv4' && <p className="mmc-empty">IPv4: Ogólne, Trasy statyczne, IGMP{r.natPub || r.natPriv ? ', Translator adresów sieciowych (NAT)' : ''}.</p>}
       {node === 'ipv4:gen' && (
         <ListView
@@ -289,26 +302,40 @@ function Wizard({ onClose }: { onClose: () => void }) {
   const [mode, setMode] = useState('access')
   const [custom, setCustom] = useState<string[]>([])
   const [pub, setPub] = useState<string | null>((st.adapters.find((a) => a.enabled && a.gateway) ?? st.adapters[0])?.id ?? null)
+  const [vpnIf, setVpnIf] = useState<string | null>(st.adapters[0]?.id ?? null)
+  const [poolAuto, setPoolAuto] = useState(true)
+  const [poolStart, setPoolStart] = useState('')
+  const [poolEnd, setPoolEnd] = useState('')
   const [dial, setDial] = useState(false)
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState('')
   const needNat = mode === 'nat' || mode === 'vpnnat'
   const customNat = mode === 'custom' && custom.includes('nat')
-  // pages: 0 welcome, 1 Konfiguracja, [2 Połączenie internetowe NAT | 2 Konfiguracja niestandardowa], last = Kończenie pracy
-  const seq = ['welcome', 'conf', ...(needNat ? ['natif'] : mode === 'custom' ? ['custom'] : []), 'done']
+  const vpnMode = mode === 'access' || mode === 'vpnnat'
+  // pages: 0 welcome, 1 Konfiguracja, then the option-specific pages, last = Kończenie pracy
+  const seq = ['welcome', 'conf', ...(needNat ? ['natif'] : mode === 'custom' ? ['custom'] : []), ...(vpnMode ? ['vpnnet', 'ippool'] : []), 'done']
   const cur = seq[step]
   const next = () => {
     setErr('')
-    if (cur === 'conf' && mode === 'access') return setErr('Ten wariant (dostęp zdalny VPN) nie jest dostępny w symulatorze — wybierz „Translator adresów sieciowych” lub „Konfiguracja niestandardowa”.')
-    if (cur === 'conf' && mode === 'secure') return setErr('Ten wariant (połączenie między dwiema sieciami) nie jest dostępny w symulatorze — wybierz „Translator adresów sieciowych” lub „Konfiguracja niestandardowa”.')
+    if (cur === 'conf' && mode === 'secure') return setErr('Ten wariant (połączenie między dwiema sieciami) nie jest dostępny w symulatorze — wybierz „Dostęp zdalny”, „Translator adresów sieciowych” lub „Konfiguracja niestandardowa”.')
     if (cur === 'custom' && !custom.length) return setErr('Wybierz co najmniej jedną usługę.')
     if (cur === 'natif' && !dial && !pub) return setErr('Wybierz interfejs publiczny.')
+    if (cur === 'vpnnet' && !vpnIf) return setErr('Wybierz interfejs sieciowy.')
+    if (cur === 'ippool' && !poolAuto) {
+      const e = vpnPoolError(poolStart, poolEnd)
+      if (e) return setErr(e)
+    }
     setStep(step + 1)
   }
   const finish = () => {
+    setErr('')
+    const roles = srv(st).roles
+    if ((vpnMode || custom.includes('vpn')) && (!roles.includes('RAS') || !roles.includes('DirectAccess-VPN'))) return setErr('Dostęp zdalny VPN wymaga roli Dostęp zdalny z usługą roli DirectAccess i VPN (RAS).')
+    if ((needNat || customNat || custom.includes('lan')) && !roles.includes('Routing')) return setErr('Routing i translator adresów sieciowych (NAT) wymagają usługi roli Routing.')
     setBusy(true)
     window.setTimeout(() => {
-      api.update((s) => configureRras(s, needNat ? { lan: true, natPub: dial ? undefined : (pub ?? undefined) } : { lan: custom.includes('lan') || customNat }))
+      const vpn = vpnMode ? { iface: vpnIf ?? undefined, dhcp: poolAuto, ...(poolAuto ? {} : { start: poolStart.trim(), end: poolEnd.trim() }) } : custom.includes('vpn') ? { dhcp: true } : undefined
+      api.update((s) => configureRras(s, { lan: needNat || custom.includes('lan') || customNat || vpnMode, ...(needNat ? { natPub: dial ? undefined : (pub ?? undefined) } : {}), ...(vpn ? { vpn } : {}) }))
       setBusy(false)
       onClose()
     }, 900)
@@ -392,6 +419,56 @@ function Wizard({ onClose }: { onClose: () => void }) {
           <p className="sv-sub">Interfejs wybierania numeru na żądanie jest aktywowany, gdy klient używa Internetu. Wybierz tę opcję, jeśli ten serwer łączy się za pomocą modemu lub przy użyciu protokołu Point-to-Point Protocol w sieci Ethernet.</p>
         </>
       )}
+      {cur === 'vpnnet' && (
+        <>
+          <h3 className="sv-mh">Sieć</h3>
+          <p>Wybierz interfejs sieciowy, który jest podłączony do sieci, do której klienci zdalni powinni uzyskać dostęp.</p>
+          <p>Interfejsy sieciowe:</p>
+          <table className="fw-table" aria-label="Interfejsy sieciowe">
+            <thead>
+              <tr>
+                <th>Nazwa</th>
+                <th>Opis</th>
+                <th>Adres IP</th>
+              </tr>
+            </thead>
+            <tbody>
+              {st.adapters.map((a) => (
+                <tr key={a.id} className={vpnIf === a.id ? 'sel' : ''} onClick={() => setVpnIf(a.id)}>
+                  <td>{a.name}</td>
+                  <td>Intel(R) 82574L Gigabit Network Connection</td>
+                  <td>{ifaceIp(st, a.id)}{a.dhcp ? ' (DHCP)' : ''}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
+      {cur === 'ippool' && (
+        <>
+          <h3 className="sv-mh">Przypisywanie adresów IP</h3>
+          <p>Wybierz sposób, w jaki adresy IP mają być przypisywane klientom zdalnym.</p>
+          <Radio name="pool" on={poolAuto} onChange={() => setPoolAuto(true)}>
+            Automatycznie
+          </Radio>
+          <Radio name="pool" on={!poolAuto} onChange={() => setPoolAuto(false)}>
+            Z określonego zakresu adresów
+          </Radio>
+          {!poolAuto && (
+            <div className="sv-sub-dlg">
+              <label className="w-field row sv-f">
+                Początkowy adres IP:
+                <IpInput id="vpn-pool-start" label="Początkowy adres IP" value={poolStart} onChange={setPoolStart} />
+              </label>
+              <label className="w-field row sv-f">
+                Końcowy adres IP:
+                <IpInput id="vpn-pool-end" label="Końcowy adres IP" value={poolEnd} onChange={setPoolEnd} />
+              </label>
+              <p className="sv-sub">Liczba adresów: {poolStart && poolEnd && !vpnPoolError(poolStart, poolEnd) ? ((ipToInt(poolEnd) ?? 0) - (ipToInt(poolStart) ?? 0) + 1) : 0}</p>
+            </div>
+          )}
+        </>
+      )}
       {cur === 'custom' && (
         <>
           <h3 className="sv-mh">Konfiguracja niestandardowa</h3>
@@ -413,6 +490,11 @@ function Wizard({ onClose }: { onClose: () => void }) {
               <>
                 <p>Skonfigurowano translację NAT następującego interfejsu internetowego: {dial ? '(nowy interfejs wybierania numeru)' : pubName}</p>
                 <p>Translacja NAT jest zależna od zewnętrznych serwerów DNS i DHCP. Sprawdź, czy te usługi są prawidłowo skonfigurowane.</p>
+              </>
+            ) : vpnMode ? (
+              <>
+                <p>Włączono: Dostęp zdalny (połączenie telefoniczne lub sieć VPN).</p>
+                <p>Adresy klientów: {poolAuto ? 'przypisywane automatycznie (DHCP)' : `z zakresu ${poolStart}–${poolEnd}`}.</p>
               </>
             ) : (
               <p>Włączono: {custom.map((c) => CUSTOM.find((x) => x[0] === c)?.[1]).join(', ')}.</p>
@@ -583,8 +665,26 @@ function SrvProps({ onClose }: { onClose: () => void }) {
                 Serwer dostępu zdalnego IPv4
               </Chk>
             </>
+          ) : i === 2 ? (
+            <>
+              <p>Przypisanie adresów IPv4:</p>
+              <Radio name="rpool" on={r.vpn?.dhcp ?? true} disabled onChange={() => {}}>
+                Protokół DHCP (Dynamic Host Configuration Protocol)
+              </Radio>
+              <Radio name="rpool" on={!!r.vpn && !r.vpn.dhcp} disabled onChange={() => {}}>
+                Pula adresów statycznych
+              </Radio>
+              <table className="fw-table" aria-label="Pula adresów statycznych">
+                <thead>
+                  <tr><th>Początek</th><th>Koniec</th><th>Liczba adresów</th></tr>
+                </thead>
+                <tbody>
+                  {r.vpn && !r.vpn.dhcp ? <tr><td>{r.vpn.start}</td><td>{r.vpn.end}</td><td>{r.vpn.start && r.vpn.end ? (ipToInt(r.vpn.end) ?? 0) - (ipToInt(r.vpn.start) ?? 0) + 1 : 0}</td></tr> : <tr><td colSpan={3}>Brak zakresów.</td></tr>}
+                </tbody>
+              </table>
+            </>
           ) : (
-            <p className="sv-sub">{['', 'Zabezpieczenia: uwierzytelnianie systemu Windows.', 'IPv4: pula adresów statycznych nie jest używana.', 'IPv6: routing wyłączony.', 'Rejestrowanie: tylko błędy i ostrzeżenia.'][i]}</p>
+            <p className="sv-sub">{['', 'Zabezpieczenia: uwierzytelnianie systemu Windows.', '', 'IPv6: routing wyłączony.', 'Rejestrowanie: tylko błędy i ostrzeżenia.'][i]}</p>
           )
         }
       </TabbedBody>

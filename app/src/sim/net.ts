@@ -280,6 +280,31 @@ export interface RrasState {
   natPriv?: string[]
   /** IPv4 → Trasy statyczne (adapter id of the interface, destination, mask, gateway, metric) */
   routes: { iface: string; dest: string; mask: string; gw: string; metric: number }[]
+  /** Dostęp zdalny (VPN): address assignment and active clients; missing = VPN not configured */
+  vpn?: RrasVpnState
+}
+export interface RrasVpnState {
+  enabled: boolean
+  /** adapter chosen on the wizard page "Sieć" */
+  iface?: string
+  /** true = addresses from DHCP; false = the static pool below */
+  dhcp: boolean
+  start?: string
+  end?: string
+  /** clients connected now (Klienci dostępu zdalnego) */
+  clients: { computer: string; user: string; ip: string; protocol: 'PPTP' | 'SSTP'; since: number }[]
+}
+/** a connection saved in Windows 11: Ustawienia → Sieć i Internet → VPN */
+export interface PcVpnConnection {
+  name: string
+  /** IP address or host name as typed in "Nazwa lub adres serwera" */
+  server: string
+  protocol: 'Automatycznie' | 'PPTP' | 'SSTP'
+  username?: string
+  password?: string
+  remember?: boolean
+  connected?: boolean
+  assignedIp?: string
 }
 
 /** NTFS access mask bits: read data (RD), write/create (WR), list folder (LS), delete (DEL), change permissions (ACL) */
@@ -495,6 +520,8 @@ export interface PcState {
   sizes?: Record<string, number>
   /** shared printers connected on this client; missing = none */
   printers?: PcPrinter[]
+  /** VPN connections saved in Ustawienia → Sieć i Internet → VPN; missing = none */
+  vpnConnections?: PcVpnConnection[]
   /** interactive ftp.exe session; missing = the normal shell prompt */
   ftp?: PcFtpSession
 }
