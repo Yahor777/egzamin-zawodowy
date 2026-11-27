@@ -85,6 +85,7 @@ export const WS_VPN_DRILLS: DrillDef[] = [
             [`utwórz połączenie VPN „${name}” (serwer ${ip}, typ ${proto})`, `połącz się jako ${login} — stacja ma otrzymać adres z zakresu`, 'на сервере клиент должен быть виден в Klienci dostępu zdalnego'],
             [
               ck('conn', `На станции есть подключённый VPN „${name}”`, `połączenie VPN ${name} — połączono`, (c) => !!conn(c)?.connected),
+              ck('type', `В соединении выбран тип VPN ${proto}`, `typ sieci VPN: ${proto}`, (c) => conn(c)?.protocol === proto),
               ck('assigned', `Клиент получил адрес из пула ${start}–${end}`, 'adres klienta z zakresu', (c) => inPool(conn(c)?.assignedIp)),
               ck('serverlist', 'Клиент виден на сервере в Klienci dostępu zdalnego', 'klient na liście Klienci dostępu zdalnego', (c) => {
                 const v = c.server ? rrasOf(c.server).vpn : undefined
