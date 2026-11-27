@@ -820,6 +820,10 @@ export function LinuxTab({
   const off = !st.isPowered('linux') || !!st.boot.linux
   // after a power cycle the server boots into a fresh login, not into the saved shell session
   const [cycled, setCycled] = useState(false)
+  const serverRef = useRef(s.server)
+  useEffect(() => {
+    serverRef.current = s.server
+  }, [s.server])
   if (off && !cycled) setCycled(true)
   if (!s.linux) return null
   if (off) return <DeviceOff d="linux" st={st} text={st.boot.linux ? (ru ? 'Сервер загружается…' : 'Serwer się uruchamia…') : ru ? 'Сервер Linux выключен.' : 'Serwer Linux jest wyłączony.'} />
@@ -841,14 +845,18 @@ export function LinuxTab({
             if (!ip) return { ok: false as const, line: `ftp: ${host}: Name or service not known` }
             const ifs = s.linux?.ifaces ?? []
             const ports = ifs.map((i) => `linux:${i.name}`)
+            const server = serverRef.current
             const srvEp = reachableEndpoints(model, ports, ip).find((e) => e.device === 'server')
-            if (!srvEp || !s.server) return { ok: false as const, line: 'ftp: connect: Connection timed out' }
-            if (!fwAllows(s.server, 'tcp', port, port === 21 && hasRole(s.server, 'Web-Ftp-Service'))) return { ok: false as const, line: 'ftp: connect: Connection timed out' }
-            const hit = ftpSiteAt(s.server, ip, port, false)
+            if (!srvEp || !server) return { ok: false as const, line: 'ftp: connect: Connection timed out' }
+            if (!fwAllows(server, 'tcp', port, port === 21 && hasRole(server, 'Web-Ftp-Service'))) return { ok: false as const, line: 'ftp: connect: Connection timed out' }
+            const hit = ftpSiteAt(server, ip, port, false)
             if (!hit) return { ok: false as const, line: 'ftp: connect: Connection refused' }
             return { ok: true as const, ip, hit }
           },
-          (next) => update({ server: next }),
+          (next) => {
+            serverRef.current = next
+            update({ server: next })
+          },
         ),
       }}
     />
