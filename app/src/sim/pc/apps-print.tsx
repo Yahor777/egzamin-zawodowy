@@ -11,7 +11,7 @@ import {
   driversOf, findPrinter, jobState, jobsOf, openPrinter, printAcl, printBits, printerErrText, printerNameError, printerOnline, printersOf,
   printShareError, queueTitle, removePrinter, serverTestPage, tcpPortError, updatePrinter, addJob,
 } from './print'
-import { parseUnc, whoLabel, type Cred } from './smb'
+import { parseUnc, resolveHost, whoLabel, type Cred } from './smb'
 import { Btn, Chk, Field, OkCancel, Radio, Sel, SvModal, TabbedBody, type Node } from './sv-common'
 import { useMsg, usePc, type MenuItem, type WinProps } from './ui'
 
@@ -590,6 +590,11 @@ export function AddPrinter({ close }: WinProps) {
     if (!b) return setErr(printerErrText({ kind: 'net', code: 53, msg: '' }))
     const r = connectPrinter(b, api.state, unc, c)
     if (!r.ok) {
+      // the credentials dialog already saved the login: if the add failed, forget it so working printers keep their account
+      if (c) {
+        const ip = resolveHost(b, host)
+        if (ip) api.update((s) => { const cr = { ...(s.smbCreds ?? {}) }; delete cr[ip]; return { ...s, smbCreds: cr } })
+      }
       if (r.err.kind === 'login' || ((r.err.kind === 'badcreds' || r.err.kind === 'denied') && !c)) return setCred(true)
       return void show('Drukarki', printerErrText(r.err), 'warn')
     }
