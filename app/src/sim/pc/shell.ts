@@ -922,6 +922,7 @@ function ftpCommand(ctx: ShellCtx, raw: string): ExecResult {
   const serverChanged = (next: PcState | undefined) => {
     if (next && ctx.network.bench?.setServer) ctx.network.bench.setServer(() => next)
   }
+  const withServer = (next: PcState | undefined, hit: FtpSiteHit | null, base = st) => (next && hit?.server === st ? next : base)
 
   switch (c) {
     case 'open':
@@ -995,25 +996,25 @@ function ftpCommand(ctx: ShellCtx, raw: string): ExecResult {
     serverChanged(r.server)
     const out = [...r.lines]
     if (r.server) out.push(`ftp: ${size} bajtów wysłanych w 0,01 s.`)
-    return ok(L(...out))
+    return ok(L(...out), withServer(r.server, h))
   }
   if (c === 'mkdir' || c === 'makedirs') {
     if (!args[0]) return ok(L('Użycie: mkdir katalog'))
     const r = ftpMkdir(h, sess, args.join(' '))
     serverChanged(r.server)
-    return ok(L(...r.lines))
+    return ok(L(...r.lines), withServer(r.server, h))
   }
   if (c === 'delete' || c === 'del') {
     if (!args[0]) return ok(L('Użycie: delete plik'))
     const r = ftpDelete(h, sess, args.join(' '))
     serverChanged(r.server)
-    return ok(L(...r.lines))
+    return ok(L(...r.lines), withServer(r.server, h))
   }
   if (c === 'rmdir' || c === 'rd') {
     if (!args[0]) return ok(L('Użycie: rmdir katalog'))
     const r = ftpDelete(h, sess, args.join(' '), true)
     serverChanged(r.server)
-    return ok(L(...r.lines))
+    return ok(L(...r.lines), withServer(r.server, h))
   }
   return ok(L('Nieprawidłowe polecenie.'))
 }
