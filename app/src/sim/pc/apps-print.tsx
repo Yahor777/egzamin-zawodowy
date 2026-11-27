@@ -590,7 +590,7 @@ export function AddPrinter({ close }: WinProps) {
     if (!b) return setErr(printerErrText({ kind: 'net', code: 53, msg: '' }))
     const r = connectPrinter(b, api.state, unc, c)
     if (!r.ok) {
-      if (r.err.kind === 'login' || (r.err.kind === 'badcreds' && !c)) return setCred(true)
+      if (r.err.kind === 'login' || ((r.err.kind === 'badcreds' || r.err.kind === 'denied') && !c)) return setCred(true)
       return void show('Drukarki', printerErrText(r.err), 'warn')
     }
     api.update(() => r.next)
