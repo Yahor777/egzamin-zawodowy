@@ -367,7 +367,14 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
     [mem, setWins],
   )
 
-  const closeWin = useCallback((id: number) => setWins((ws) => ws.filter((w) => w.id !== id)), [setWins])
+  const closeWin = useCallback(
+    (id: number) => {
+      const closing = mem.wins.find((w) => w.id === id)
+      if (closing?.app === 'cmd') update((cur) => (cur.ftp ? { ...cur, ftp: undefined } : cur))
+      setWins((ws) => ws.filter((w) => w.id !== id))
+    },
+    [mem, setWins, update],
+  )
   const closeApp = useCallback((app: string, arg?: string) => setWins((ws) => ws.filter((w) => !(w.app === app && (arg === undefined || w.arg === arg)))), [setWins])
   const focus = (id: number) =>
     setWins((ws) => {

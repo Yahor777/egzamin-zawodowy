@@ -8,7 +8,7 @@ import { labScore, type Lab } from '../../labs/labs'
 import { buildCtx, buildDhcpServers, buildModel, defaultServerState, type LabSave } from '../../labs/ctx'
 import { DRILLS, makeDrillLab } from '../index'
 import { SOLVE, type H, type P, type T } from '../solutions'
-import { addRoles } from '../srvkit'
+import { addRoles, clientRun } from '../srvkit'
 import { EVERYONE } from '../../pc/smb'
 import { P_PRINT, addPrinter, addTcpPort, clientPrinters, clientTestPage, connectPrinter, findPrinter, grantPrint, jobsOf, printerOnline, sharePrinter } from '../../pc/print'
 
@@ -186,6 +186,40 @@ for (const def of DRILLS) {
   ok('test page → a job from DESKTOP-STACJA in the server queue', t.ok && jobsOf(findPrinter(t.server, name)!).some((j) => j.computer === 'DESKTOP-STACJA'))
   s.links = s.links.filter((l) => !l.includes('printer:eth0'))
   ok('printer cable out → queue offline', !printerOnline(buildModel(lab, s), s.server, findPrinter(s.server, name)!))
+}
+
+
+// ---------- FTP: realistic IIS authentication and transfer replies through ftp.exe
+{
+  const def = DRILLS.find((d) => d.id === 'ws-ftp')!
+  const lab = makeDrillLab(def, 7)
+  const s = fresh(lab)
+  const p = lab.params as P
+  const h = { s, lab, cmd: (...c: string[]) => s.pc!.history.push(...c) } as unknown as H
+  await SOLVE['ws-ftp'](p, h)
+  const b = { s, lab }
+  const ip = `192.168.${p.X}.1`
+  const login = String(p.login)
+  const upload = `raport${p.X}.txt`
+  const ok = (what: string, v: boolean) => {
+    if (!v) failures++
+    console.log(`${v ? 'ok  ' : 'FAIL'} ftp: ${what}`)
+  }
+  ok('open → 220 Microsoft FTP Service', clientRun(b, 'pc', `ftp ${ip}`).includes('220 Microsoft FTP Service'))
+  ok('USER → 331 Password required', clientRun(b, 'pc', login).includes('331 Password required'))
+  ok('wrong PASS → 530 Login incorrect', clientRun(b, 'pc', 'wrong').includes('530 Login incorrect'))
+  ok('USER again → 331', clientRun(b, 'pc', `user ${login}`).includes('331 Password required'))
+  ok('PASS → 230 User logged in', clientRun(b, 'pc', 'Ftp!2024').includes('230 User logged in'))
+  const ls = clientRun(b, 'pc', 'ls')
+  ok('ls → 150/226 and uploaded file', ls.includes('150 Opening') && ls.includes(upload) && ls.includes('226 Transfer complete'))
+  ok('missing file → 550', clientRun(b, 'pc', 'get brak.txt').includes('550'))
+  ok('mkdir → 257', clientRun(b, 'pc', 'mkdir testftp').includes('257 "/testftp" directory created'))
+  ok('cd → 250', clientRun(b, 'pc', 'cd testftp').includes('250 CWD command successful'))
+  ok('pwd → virtual FTP path', clientRun(b, 'pc', 'pwd').includes('257 "/testftp" is current directory'))
+  ok('delete missing → 550', clientRun(b, 'pc', 'delete brak.txt').includes('550'))
+  ok('binary → 200 Type set to I', clientRun(b, 'pc', 'binary').includes('200 Type set to I'))
+  ok('ascii → 200 Type set to A', clientRun(b, 'pc', 'ascii').includes('200 Type set to A'))
+  ok('bye → 221', clientRun(b, 'pc', 'bye').includes('221 Goodbye'))
 }
 
 console.log(`\n${DRILLS.length} drills`)

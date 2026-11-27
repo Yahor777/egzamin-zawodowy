@@ -3,10 +3,10 @@
 // simulator make — and the client side through the same domain functions the GUI calls.
 import type { H, P } from './solutions'
 import { mkdirs, writeFile } from '../pc/fs'
-import { EVERYONE } from '../pc/smb'
+import { EVERYONE, FULL, MODIFY, ADMINS, SYSTEM } from '../pc/smb'
 import { configureRras } from '../pc/rras'
 import { P_DOCS, addPrinter, addTcpPort, grantPrint } from '../pc/print'
-import { addAdUser, addGpo, addOu, addRoles, addScope, addSite, allowPort, clientTestPrint, connectClientPrinter, connectClientVpn, finishDhcp, gpupdateClient, joinClient, promote, setStaticIp, shareFolder, signInClient, saveClientVpn } from './srvkit'
+import { addAdUser, addGpo, addOu, addRoles, addScope, addSite, allowPort, clientRun, clientTestPrint, connectClientPrinter, connectClientVpn, finishDhcp, gpupdateClient, joinClient, promote, saveClientVpn, setNtfsOnly, setStaticIp, shareFolder, signInClient } from './srvkit'
 
 const NB = (p: P) => `${p.dom}${p.X}`.toUpperCase()
 
@@ -71,6 +71,42 @@ export const SRV_SOLVE: Record<string, (p: P, h: H) => Promise<void> | void> = {
     s.server = writeFile(mkdirs(s.server, folder), `${folder}\\index.html`, `<h1>${p.text}</h1>\r\n`)
     s.server = addSite(s.server, { name: `Witryna${p.X}`, path: folder, bindings: [{ type: 'http', ip: '*', port: p.port as number, host: '' }] })
     s.server = allowPort(s.server, `WWW ${p.port}`, 'tcp', String(p.port))
+  },
+
+  'ws-ftp'(p, h) {
+    const { s } = h
+    const X = p.X
+    const folder = `C:\\${p.dir}${X}`
+    const login = String(p.login)
+    const upload = `raport${X}.txt`
+    const download = `pobrany${X}.txt`
+    const home = 'C:\\Users\\Administrator'
+    const host = 'WIN-SERWER'
+    s.server = addRoles(s.server!, ['IIS', 'Web-Ftp-Server', 'Web-Ftp-Service'])
+    s.server = mkdirs(s.server!, folder)
+    s.server = setNtfsOnly(s.server, folder, [
+      { who: SYSTEM, bits: FULL },
+      { who: ADMINS, bits: FULL },
+      { who: `${host}\\${login}`, bits: MODIFY },
+    ])
+    s.server = addSite(s.server, {
+      name: `${p.site} ${X}`,
+      kind: 'ftp',
+      pool: '',
+      path: folder,
+      bindings: [{ type: 'ftp', ip: '*', port: 21, host: '' }],
+      auth: { anonymous: false, basic: true, windows: false },
+      rules: [{ who: login, perm: 'Odczyt, Zapis' }],
+      docs: [],
+      dirBrowse: false,
+    })
+    s.pc = writeFile(s.pc!, `${home}\\${upload}`, `${p.text}\r\n`)
+    const b = { s, lab: h.lab }
+    const ip = `192.168.${X}.1`
+    for (const line of [`ftp ${ip}`, login, 'Ftp!2024', 'binary', `put ${upload}`, `get ${upload} ${download}`, 'ls', 'bye']) {
+      const out = clientRun(b, 'pc', line)
+      if (/530|550|Not connected|refused|odrzucone/i.test(out)) throw new Error(`ws-ftp ${line}: ${out}`)
+    }
   },
   'ws-print'(p, h) {
     const { s } = h

@@ -464,6 +464,22 @@ export interface IisState {
   next: number
 }
 
+/** Interactive ftp.exe session of a Command Prompt window. Optional: old saves have none. */
+export interface PcFtpSession {
+  host: string
+  ip: string
+  port: number
+  phase: 'offline' | 'user' | 'pass' | 'connected' | 'ready'
+  user?: string
+  /** the access token established by USER/PASS (no password material) */
+  token?: { name: string; who: string[]; admin: boolean }
+  /** anonymous FTP login (IUSR) */
+  anonymous?: boolean
+  /** current remote directory, / is the FTP root */
+  cwd: string
+  binary: boolean
+}
+
 export interface PcState {
   /** operating system of the machine; missing = Windows 11 */
   os?: 'win11' | 'server2022'
@@ -505,6 +521,8 @@ export interface PcState {
   printers?: PcPrinter[]
   /** VPN connections saved in Ustawienia → Sieć i Internet → VPN; missing = none */
   vpnConnections?: PcVpnConnection[]
+  /** interactive ftp.exe session; missing = the normal shell prompt */
+  ftp?: PcFtpSession
 }
 
 /** What Group Policy did to a domain client (computed by domain.applyGpo, cached on the client like a real one). */

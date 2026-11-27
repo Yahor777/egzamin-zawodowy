@@ -37,6 +37,7 @@ export const HOWTO: DocRef[] = [
   h('winserver-gpo', 'Windows Server: GPO — обои, диски, ограничения', 'Windows Server: GPO — tapeta, dyski, ograniczenia'),
   h('winserver-shares', 'Windows Server: общие папки — udział, NTFS, net use, FSRM', 'Windows Server: udziały, uprawnienia NTFS, net use, FSRM'),
   h('winserver-iis', 'Windows Server: IIS — сайт, порт, привязка, брандмауэр', 'Windows Server: IIS — witryna, port, powiązanie, zapora'),
+  h('winserver-ftp', 'Windows Server: FTP — witryna FTP, права, ftp.exe', 'Windows Server: FTP — witryna FTP, uprawnienia, ftp.exe'),
 ]
 const by = (slug: string) => HOWTO.find((x) => x.to === `doc/${slug}`)!
 
@@ -67,6 +68,7 @@ export const D = {
   winserverDomain: by('winserver-domain'),
   winserverGpo: by('winserver-gpo'),
   winserverIis: by('winserver-iis'),
+  winserverFtp: by('winserver-ftp'),
   winserverShares: by('winserver-shares'),
   winserverRras: by('winserver-rras'),
   winserverVpn: by('winserver-vpn'),

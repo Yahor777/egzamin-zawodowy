@@ -39,7 +39,8 @@ function TerminalInner({ arg, close, setArg, data }: WinProps) {
   const [hist, setHist] = useState(0)
   const [job, setJob] = useState<Job | null>(null)
   const kind = td.stack[td.stack.length - 1]
-  const prompt = promptOf(kind, td.cwd)
+  const ftp = api.state.ftp
+  const prompt = ftp ? (ftp.phase === 'user' ? `Użytkownik (${ftp.ip || ftp.host}:(none)): ` : ftp.phase === 'pass' ? 'Hasło: ' : 'ftp> ') : promptOf(kind, td.cwd)
   // a running .bat waiting for input (set /p, pause); kept with the window data
   const [batch, setBatch] = useState<BatchRun | null>(() => (data.batch as BatchRun | undefined) ?? null)
   useEffect(() => {
@@ -127,10 +128,11 @@ function TerminalInner({ arg, close, setArg, data }: WinProps) {
       return
     }
     const cmd = raw.trim()
-    const echo: Line = { t: prompt + raw }
     const st = apiRef.current.state
+    const secret = !!st.ftp && st.ftp.phase === 'pass'
+    const echo: Line = { t: secret ? prompt : prompt + raw }
     const r = exec({ state: st, network: api.network, kind, arp, cwd: td.cwd ?? HOME, env: td.env }, raw)
-    const next = cmd ? { ...r.state, history: [...r.state.history, cmd].slice(-200) } : r.state
+    const next = cmd && !secret ? { ...r.state, history: [...r.state.history, cmd].slice(-200) } : r.state
     if (next !== st) api.update(() => next)
     setHist(0)
     setInput('')
@@ -197,6 +199,7 @@ function TerminalInner({ arg, close, setArg, data }: WinProps) {
             <input
               ref={inputRef}
               id="pc-cmd"
+              type={ftp?.phase === 'pass' ? 'password' : 'text'}
               aria-label={kind === 'ps' ? 'Windows PowerShell' : 'Wiersz polecenia'}
               value={input}
               onChange={(e) => setInput(e.target.value)}
