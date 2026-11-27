@@ -199,6 +199,7 @@ function TerminalInner({ arg, close, setArg, data }: WinProps) {
             <input
               ref={inputRef}
               id="pc-cmd"
+              type={ftp?.phase === 'pass' ? 'password' : 'text'}
               aria-label={kind === 'ps' ? 'Windows PowerShell' : 'Wiersz polecenia'}
               value={input}
               onChange={(e) => setInput(e.target.value)}
