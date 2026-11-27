@@ -128,10 +128,11 @@ function TerminalInner({ arg, close, setArg, data }: WinProps) {
       return
     }
     const cmd = raw.trim()
-    const echo: Line = { t: prompt + raw }
     const st = apiRef.current.state
+    const secret = !!st.ftp && st.ftp.phase === 'pass'
+    const echo: Line = { t: secret ? prompt : prompt + raw }
     const r = exec({ state: st, network: api.network, kind, arp, cwd: td.cwd ?? HOME, env: td.env }, raw)
-    const next = cmd ? { ...r.state, history: [...r.state.history, cmd].slice(-200) } : r.state
+    const next = cmd && !secret ? { ...r.state, history: [...r.state.history, cmd].slice(-200) } : r.state
     if (next !== st) api.update(() => next)
     setHist(0)
     setInput('')
