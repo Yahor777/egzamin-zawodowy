@@ -225,12 +225,17 @@ export function ftpDelete(hit: FtpSiteHit, sess: PcFtpSession, input: string, di
   const key = fileKey(hit.server, full)
   const isd = isDir(hit.server, full)
   if (!key && !isd) return notFound()
-  if (!ntfs(hit, a.token, full, DEL) && !ntfs(hit, a.token, parentOf(full), DEL)) return denied()
+  if (virt === '/') return denied()
+  if (!dir && isd) return denied()
+  if (dir && key) return notFound()
   const lt = low(full)
-  const inside = (x: string) => low(x) === lt || low(x).startsWith(lt + '\\')
-  const files = Object.fromEntries(Object.entries(hit.server.files ?? {}).filter(([k]) => !inside(k)))
-  const sizes = Object.fromEntries(Object.entries(hit.server.sizes ?? {}).filter(([k]) => !inside(k)))
-  const next: PcState = { ...hit.server, files, ...(hit.server.sizes ? { sizes } : {}), dirs: (hit.server.dirs ?? []).filter((d) => !inside(d)) }
+  const inside = (x: string) => low(x).startsWith(lt + '\\')
+  if (dir && (Object.keys(hit.server.files ?? {}).some(inside) || (hit.server.dirs ?? []).some(inside))) return { lines: ['550 Directory not empty.'] }
+  if (!ntfs(hit, a.token, full, DEL) && !ntfs(hit, a.token, parentOf(full), DEL)) return denied()
+  const selfOrInside = (x: string) => low(x) === lt || inside(x)
+  const files = Object.fromEntries(Object.entries(hit.server.files ?? {}).filter(([k]) => !selfOrInside(k)))
+  const sizes = Object.fromEntries(Object.entries(hit.server.sizes ?? {}).filter(([k]) => !selfOrInside(k)))
+  const next: PcState = { ...hit.server, files, ...(hit.server.sizes ? { sizes } : {}), dirs: (hit.server.dirs ?? []).filter((d) => !selfOrInside(d)) }
   return { lines: [dir ? '250 RMD command successful.' : '250 DELE command successful.'], server: next }
 }
 
@@ -245,7 +250,7 @@ export function ftpEntriesFor(hit: FtpSiteHit, token: Token, anonymous: boolean)
 export function ftpAnonymousEntries(hit: FtpSiteHit): { name: string; dir: boolean; size: number }[] | null {
   const auth = ftpAuthOf(hit.site)
   if (!auth.anonymous) return null
-  return ftpEntriesFor(hit, FTP_ANON, true) ?? []
+  return ftpEntriesFor(hit, FTP_ANON, true)
 }
 
 export const ftpBaseName = baseName
