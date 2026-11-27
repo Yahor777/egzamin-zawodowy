@@ -182,6 +182,7 @@ export const LINUX_DRILLS: DrillDef[] = [
     title_ru: 'Linux: статические маршруты',
     title_pl: 'Linux: trasy statyczne',
     goal_ru: 'Постоянный маршрут в netplan и временный маршрут через ip route: добавить, показать и удалить.',
+    goal_pl: 'Stała trasa w netplan i trasa czasowa przez ip route: dodaj, wyświetl i usuń.',
     minutes: 15,
     docs: [D.linuxRoutes, D.linuxNetplan, D.cheatLinux],
     params: (r) => ({ X: X(r) }),
@@ -216,7 +217,7 @@ export const LINUX_DRILLS: DrillDef[] = [
               return at >= 0 && !/\|\|\s*$/.test(x.slice(0, at))
             })),
             ck('apply', 'netplan apply выполнен', 'netplan apply', (c) => hist(c, /\bnetplan apply\b/)),
-          ], `netplan: routes: - to: default via: ${gw} и второй блок - to: ${persistent} via: ${gw}. Временный маршрут: sudo ip route add ${temporary} via ${gw}; удалить — sudo ip route del ${temporary} via ${gw}. Проверка: ip r, route -n.`),
+          ], `netplan: routes: - to: default via: ${gw} и второй блок - to: ${persistent} via: ${gw}. Временный маршрут: sudo ip route add ${temporary} via ${gw}; удалить — sudo ip route del ${temporary} via ${gw}. Проверка: ip r, route -n.`, `netplan: routes: - to: default via: ${gw} i drugi blok - to: ${persistent} via: ${gw}. Trasa czasowa: sudo ip route add ${temporary} via ${gw}; usuń — sudo ip route del ${temporary} via ${gw}. Sprawdzenie: ip r, route -n.`),
         ],
       }
     },

@@ -24,6 +24,7 @@ export const WS_FTP_DRILLS: DrillDef[] = [
     title_ru: 'Windows Server: FTP — сайт IIS, права пользователя, upload/download с Windows 11',
     title_pl: 'Windows Server: witryna FTP i klient ftp.exe',
     goal_ru: 'Установить IIS + Usługa FTP, создать папку и witrynę FTP с uwierzytelnianiem podstawowym, regułą autoryzacji и правами NTFS — затем с Windows 11 через ftp.exe передать файл на сервер и скачать его обратно.',
+    goal_pl: 'Zainstaluj IIS i Usługę FTP, utwórz folder oraz witrynę FTP z uwierzytelnianiem podstawowym, regułą autoryzacji i uprawnieniami NTFS, a następnie prześlij plik ze stacji Windows 11 przez ftp.exe i pobierz go z powrotem.',
     minutes: 30,
     docs: [D.winserverFtp, D.winserverIis, D.winserverRoles],
     params: (r) => ({ X: r.int(2, 19), dir: r.pick(['ftpfiles', 'pubftp', 'dokumenty', 'upload']), site: r.pick(['Publikacja FTP', 'Pliki FTP', 'Serwer FTP']), login: r.pick(['jnowak', 'akowalska', 'pwisniewski']), text: r.pick(['Raport miesięczny', 'Zadanie domowe', 'Dane projektu', 'Lista obecności']) }),
@@ -91,6 +92,7 @@ export const WS_FTP_DRILLS: DrillDef[] = [
               }),
             ],
             'Dodaj role → Serwer sieci Web (IIS) → Serwer FTP → Usługa FTP. inetmgr → Witryny → Dodaj witrynę FTP: nazwa, ścieżka fizyczna, ftp/*:21. Na trzecim шаге мастера включи Podstawowe, выключи Anonimowe, в Autoryzacja выбери Określeni użytkownicy и впиши логин. Права NTFS — Właściwości папки → Zabezpieczenia → Edytuj → Dodaj.',
+            'Dodaj role → Serwer sieci Web (IIS) → Serwer FTP → Usługa FTP. inetmgr → Witryny → Dodaj witrynę FTP: nazwa, ścieżka fizyczna, ftp/*:21. W kreatorze włącz Podstawowe, wyłącz Anonimowe, a w Autoryzacja wybierz Określeni użytkownicy i wpisz login. Uprawnienia NTFS — Właściwości folderu → Zabezpieczenia → Edytuj → Dodaj.',
           ),
           task(
             'transfer',
@@ -107,6 +109,7 @@ export const WS_FTP_DRILLS: DrillDef[] = [
               ck('down', `На Windows 11 есть скачанный файл ${download} с тем же текстом`, 'plik pobrany na stację', (c) => !!c.pc && Object.keys(c.pc.files ?? {}).some((k) => k.toLowerCase().endsWith(`\\${download.toLowerCase()}`) && (c.pc!.files?.[k] ?? '').includes(String(p.text))), 2),
             ],
             `cmd на stacji: echo ${p.text}> ${upload} ; ftp ${ip}. В ftp: пользователь ${login}, пароль ${FTP_PW}, затем binary, put ${upload}, get ${upload} ${download}, ls, bye. 530 — неверный логин/выключено uwierzytelnianie podstawowe; 550 Access is denied — нет reguły autoryzacji или прав NTFS.`,
+            `cmd na stacji: echo ${p.text}> ${upload} ; ftp ${ip}. W ftp: użytkownik ${login}, hasło ${FTP_PW}, następnie binary, put ${upload}, get ${upload} ${download}, ls, bye. 530 — zły login lub wyłączone uwierzytelnianie podstawowe; 550 Access is denied — brak reguły autoryzacji albo uprawnień NTFS.`,
           ),
         ],
       }
