@@ -346,6 +346,9 @@ expect('every drill was run on both profiles', drillRuns === 2 * 3 * DRILLS.filt
     }
   expect('hints: no TP-Link menu path left in a hint shown on DrayTek + T2500G', !bad.length, bad.slice(0, 5).join(' | '))
   expect('hints: the school variants exist', changed > 30, String(changed))
+  const vlanSheet = LABS.find((l) => l.id === 'inf02-26-06-06')!
+  const vlanHint = taskHint(vlanSheet.tasks.find((t) => t.device === 'router')!, dt)!
+  expect('hints: DrayTek VLAN hint uses fixed rows, not Add New', !/Add New|VLAN Interfaces|Enable, Save/.test(vlanHint) && /строка VLANx/.test(vlanHint) && /VID 10/.test(vlanHint), /строка VLANx/.test(vlanHint) ? '' : vlanHint)
   expect('hints: DrayTek lease time in seconds', taskHint({ device: 'router', hint_ru: '12 часов = 720 минут.' }, dt) === '12 ч = 43200 с (Lease Time у DrayTek в секундах).')
 
   const onWan = (model: string) => bench(defaultRouterState({ model }), undefined, [['pc:eth0', 'router:wan']])

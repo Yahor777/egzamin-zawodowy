@@ -8,6 +8,7 @@ type Rule = [RegExp, string | ((...m: string[]) => string)]
 const SEC = (h: string) => String(Number(h) * 3600)
 
 const DRAYTEK: Rule[] = [
+  [/Enable, Save; Add New: ID (\d+), имя \S+, Port (\d) = Tagged/g, 'Enable; для каждого VLAN — своя строка VLANx: отметь порт P$2, включи VLAN Tag и впиши VID $1; в той же строке выбери подсеть LANx'],
   [/Network → WAN(?::| →) Static IP/g, 'WAN → Internet Access → Details Page (WAN1) → Static or Dynamic IP: Specify an IP address'],
   [/Network → WAN/g, 'WAN → Internet Access → Details Page (WAN1)'],
   [/\(?Network → LAN:? ([\d.]+\/[\d.]+)\)?/g, '(LAN → General Setup → LAN1: $1)'],
