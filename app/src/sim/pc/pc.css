@@ -3924,10 +3924,12 @@ textarea.w-input {
 .prq { display: flex; flex-direction: column; height: 100%; min-height: 0 }
 .prq .lv { flex: 1; min-height: 0 }
 .prq-status { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 4px 8px; border-top: 1px solid #e5e5e5; font-size: 12px }
-.addpr { display: flex; flex-direction: column; height: 100%; min-height: 0 }
+.addpr { display: flex; flex-direction: column; height: 100%; min-height: 340px }
 .addpr-b { flex: 1; overflow: auto; padding: 12px 18px }
 .addpr-f { display: flex; justify-content: flex-end; gap: 8px; padding: 10px 14px; background: #f0f0f0; border-top: 1px solid #ddd }
 .addpr-unc { display: flex; gap: 8px; align-items: center }
 .addpr-unc .w-input { flex: 1; min-width: 0; font-size: 16px }
 .set-btns { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px }
 html.phone .addpr-f .w-btn, html.phone .set-btns .w-btn { min-height: 44px }
+.compact .set-row { flex-wrap: wrap }
+.compact .set-row > .w-btn { flex: 1 1 100% }

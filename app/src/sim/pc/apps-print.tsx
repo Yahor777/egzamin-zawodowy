@@ -8,7 +8,7 @@ import { CredDlg, Picker } from './apps-files'
 import { IcFolder, IcGroup, IcMgmt, IcUser } from './icons'
 import {
   BUILTIN_PRINTERS, CREATOR_OWNER, DETECTED_DRIVER, DRIVER_CATALOG, P_DOCS, PRINT_RIGHTS, addPrinter, addTcpPort, allPorts, cancelJob, clientPrinters, connectPrinter,
-  driversOf, findPrinter, jobState, jobsOf, openPrinter, printAcl, printBits, printerErrText, printerIp, printerNameError, printerOnline, printersOf,
+  driversOf, findPrinter, jobState, jobsOf, openPrinter, printAcl, printBits, printerErrText, printerNameError, printerOnline, printersOf,
   printShareError, queueTitle, removePrinter, serverTestPage, tcpPortError, updatePrinter, addJob,
 } from './print'
 import { parseUnc, whoLabel, type Cred } from './smb'
@@ -563,7 +563,7 @@ export function PrintQueueWin({ arg = '' }: WinProps) {
         onBlankMenu={[]}
       />
       <div className="prq-status">
-        {jobsOf(p).length} dokument(y) w kolejce{remote ? '' : ` · Port: ${p.ports.join(', ')}${printerIp(server, p) ? ` (${printerIp(server, p)})` : ''}`}
+        {jobsOf(p).length} dokument(y) w kolejce{remote ? '' : ` · Port: ${p.ports.join(', ')}`}
         {sel !== null && <Btn onClick={() => cancel(sel)}>Anuluj</Btn>}
       </div>
       {msg}
