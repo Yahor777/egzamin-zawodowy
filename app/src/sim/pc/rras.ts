@@ -17,7 +17,7 @@ export function configureRras(st: PcState, o: { lan: boolean; natPub?: string; n
 }
 /** "Wyłącz routing i dostęp zdalny" */
 export const disableRras = (st: PcState): PcState => setRras(st, () => ({ configured: false, running: false, lan: false, routes: [] }))
-export const setRrasRunning = (st: PcState, running: boolean): PcState => setRras(st, (r) => ({ ...r, running: r.configured && running }))
+export const setRrasRunning = (st: PcState, running: boolean): PcState => setRras(st, (r) => ({ ...r, running: r.configured && running, ...(r.vpn ? { vpn: { ...r.vpn, clients: running ? r.vpn.clients : [] } } : {}) }))
 export const addRrasRoute = (st: PcState, route: RrasState['routes'][number]): PcState => setRras(st, (r) => ({ ...r, routes: [...r.routes, route] }))
 
 /** text of the adapter in the interface lists: the Windows adapter name, its address */
