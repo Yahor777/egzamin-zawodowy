@@ -1,5 +1,6 @@
 // Networking: ip, netplan, ping, traceroute, ss, resolvectl, dhcpd, net-tools, curl
 import { register, type Ctx, Interrupt } from './shell.ts'
+import type { PcFtpSession } from '../net.ts'
 import type { NetIface, Route, LinuxState } from './model.ts'
 import { parseCidr, intToIp, isIp, inSubnet, macToLinkLocal, prefixToMask } from './netutil.ts'
 import { loadNetplan, applyNetplan, netplanFiles, leaseFnOf, takeLease } from './netplan.ts'
@@ -953,3 +954,202 @@ register(
   },
   '/usr/sbin',
 )
+
+
+// ------------------------------------------------------------------ ftp client (IIS FTP on the bench)
+register('ftp', async (c) => {
+  const backend = c.sh.network?.ftp
+  if (!backend) {
+    c.err('ftp: connect: Network is unreachable\n')
+    return 1
+  }
+  const print = (lines: string[]) => {
+    if (lines.length) c.out(lines.join('\n') + '\n')
+  }
+  let sess: PcFtpSession = { host: '', ip: '', port: 21, phase: 'offline', cwd: '/', binary: false }
+  const host = c.args[0]
+  if (host) {
+    const r = backend.open(host, Number(c.args[1] ?? 21) || 21)
+    print(r.lines)
+    if (!r.session) return 1
+    sess = r.session
+  }
+
+  const remoteOp = (op: { lines: string[]; session?: PcFtpSession; file?: { name: string; text: string; size: number }; server?: unknown }) => {
+    print(op.lines)
+    if (op.session) sess = op.session
+    return op
+  }
+
+  for (;;) {
+    try {
+      if (sess.phase === 'user') {
+        const name = await c.ask(`Name (${sess.ip || sess.host}:${c.p.user}): `)
+        if (name === null) break
+        const r = backend.user(sess, name.trim())
+        print(r.lines)
+        sess = r.session
+        continue
+      }
+      if (sess.phase === 'pass') {
+        const pw = await c.ask('Password: ', true)
+        if (pw === null) break
+        const r = backend.login(sess, sess.user ?? '', pw)
+        print(r.lines)
+        sess = r.session
+        continue
+      }
+      const raw = await c.ask('ftp> ')
+      if (raw === null) break
+      const line = raw.trim()
+      if (!line) continue
+      const parts = line.split(/\s+/)
+      const cmd = parts[0].toLowerCase()
+      const args = parts.slice(1)
+      const rest = line.slice(parts[0].length).trim()
+
+      if (sess.phase === 'offline') {
+        if (cmd === 'open') {
+          const r = backend.open(args[0] ?? '', Number(args[1] ?? 21) || 21)
+          print(r.lines)
+          if (r.session) sess = r.session
+        } else if (cmd === 'quit' || cmd === 'bye') break
+        else if (cmd === 'help' || cmd === '?') c.out('open user pass ls dir cd pwd get put mkdir delete binary ascii close quit\n')
+        else c.out('Not connected.\n')
+        continue
+      }
+
+      if (cmd === 'quit' || cmd === 'bye') {
+        c.out('221 Goodbye.\n')
+        break
+      }
+      if (cmd === 'open') {
+        const r = backend.open(args[0] ?? '', Number(args[1] ?? 21) || 21)
+        print(r.lines)
+        if (r.session) sess = r.session
+        continue
+      }
+      if (cmd === 'close') {
+        sess = { ...sess, phase: 'offline', token: undefined, user: undefined }
+        c.out('221 Goodbye.\n')
+        continue
+      }
+      if (cmd === 'user') {
+        if (!args[0]) {
+          c.out('Usage: user username [password]\n')
+          continue
+        }
+        const r = backend.user(sess, args[0])
+        print(r.lines)
+        sess = r.session
+        if (args[1] !== undefined) {
+          const l = backend.login(sess, args[0], args.slice(1).join(' '))
+          print(l.lines)
+          sess = l.session
+        }
+        continue
+      }
+      if (cmd === 'pass') {
+        if (!sess.user) c.out('Please login with USER first.\n')
+        else {
+          const r = backend.login(sess, sess.user, args.join(' '))
+          print(r.lines)
+          sess = r.session
+        }
+        continue
+      }
+      if (cmd === 'binary' || cmd === 'type') {
+        if (sess.phase !== 'ready') c.out('530 Please login with USER and PASS.\n')
+        else {
+          sess = { ...sess, binary: true }
+          c.out('200 Type set to I.\n')
+        }
+        continue
+      }
+      if (cmd === 'ascii') {
+        if (sess.phase !== 'ready') c.out('530 Please login with USER and PASS.\n')
+        else {
+          sess = { ...sess, binary: false }
+          c.out('200 Type set to A.\n')
+        }
+        continue
+      }
+      if (cmd === 'help' || cmd === '?') {
+        c.out('open user pass ls dir cd pwd get put mkdir delete rmdir binary ascii close quit\n')
+        continue
+      }
+      if (sess.phase !== 'ready') {
+        c.out('530 Please login with USER and PASS.\n')
+        continue
+      }
+      if (cmd === 'pwd') {
+        c.out(`257 "${sess.cwd}" is current directory.\n`)
+        continue
+      }
+      if (cmd === 'cd') {
+        remoteOp(backend.cd(sess, rest || '/'))
+        continue
+      }
+      if (cmd === 'ls' || cmd === 'dir') {
+        remoteOp(backend.list(sess, args[0] ?? '', cmd === 'dir'))
+        continue
+      }
+      if (cmd === 'get') {
+        if (!args[0]) {
+          c.out('Usage: get remote-file [local-file]\n')
+          continue
+        }
+        const r = remoteOp(backend.get(sess, args[0]))
+        if (r.file) {
+          const target = c.abs(args[1] ?? r.file.name)
+          try {
+            writeFile(c.st, target, r.file.text, c.cred, { umask: c.p.umask })
+            c.commit()
+            c.out(`ftp: ${r.file.size} bytes received in 0.01 seconds.\n`)
+          } catch (e) {
+            c.errln(c.fsMsg(e))
+          }
+        }
+        continue
+      }
+      if (cmd === 'put') {
+        if (!args[0]) {
+          c.out('Usage: put local-file [remote-file]\n')
+          continue
+        }
+        const src = c.abs(args[0])
+        let text = ''
+        try {
+          text = readFile(c.st, src, c.cred)
+        } catch (e) {
+          c.errln(`${args[0]}: ${c.fsMsg(e)}`)
+          continue
+        }
+        const name = args[1] ?? src.slice(src.lastIndexOf('/') + 1)
+        const r = remoteOp(backend.put(sess, name, text, new TextEncoder().encode(text).length))
+        if (r.server) c.out(`ftp: ${new TextEncoder().encode(text).length} bytes sent in 0.01 seconds.\n`)
+        continue
+      }
+      if (cmd === 'mkdir') {
+        if (!rest) c.out('Usage: mkdir directory\n')
+        else remoteOp(backend.mkdir(sess, rest))
+        continue
+      }
+      if (cmd === 'delete' || cmd === 'del') {
+        if (!rest) c.out('Usage: delete file\n')
+        else remoteOp(backend.delete(sess, rest))
+        continue
+      }
+      if (cmd === 'rmdir' || cmd === 'rd') {
+        if (!rest) c.out('Usage: rmdir directory\n')
+        else remoteOp(backend.delete(sess, rest, true))
+        continue
+      }
+      c.out('Invalid command.\n')
+    } catch (e) {
+      if (e instanceof Interrupt) throw e
+      throw e
+    }
+  }
+  return 0
+}, '/usr/bin')

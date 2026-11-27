@@ -39,7 +39,8 @@ function TerminalInner({ arg, close, setArg, data }: WinProps) {
   const [hist, setHist] = useState(0)
   const [job, setJob] = useState<Job | null>(null)
   const kind = td.stack[td.stack.length - 1]
-  const prompt = promptOf(kind, td.cwd)
+  const ftp = api.state.ftp
+  const prompt = ftp ? (ftp.phase === 'user' ? `Użytkownik (${ftp.ip || ftp.host}:(none)): ` : ftp.phase === 'pass' ? 'Hasło: ' : 'ftp> ') : promptOf(kind, td.cwd)
   // a running .bat waiting for input (set /p, pause); kept with the window data
   const [batch, setBatch] = useState<BatchRun | null>(() => (data.batch as BatchRun | undefined) ?? null)
   useEffect(() => {

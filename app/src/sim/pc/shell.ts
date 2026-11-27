@@ -30,8 +30,11 @@ import { cim, systeminfo, wlan, wmic } from './hwcmd'
 import { cmdFiles, cwdOf, expandVars, type BatchRun } from './batch'
 import { serverCmd, clientCmd } from './shell-srv'
 import { smbCmd } from './smb-cmd'
-import { addAdUser, dnsLookup, dnsReverse, domainPasswordPolicy, policyOn, pwViolation } from '../domain'
-import { isServer, srv } from './server'
+import { addAdUser, dnsLookup, dnsReverse, domainPasswordPolicy, fwAllows, policyOn, pwViolation, serverAt } from '../domain'
+import { isServer, srv, hasRole } from './server'
+import { resolveHost } from './smb'
+import { ftpCd, ftpDelete, ftpGet, ftpList, ftpLogin, ftpMkdir, ftpPut, ftpSiteAt, ftpUser } from './ftp'
+import { fileKey, isDir, parentOf, readFile, resolvePath, writeFile } from './fs'
 
 export type ShellKind = 'cmd' | 'ps'
 export interface Line {
@@ -839,11 +842,188 @@ export const GUI_CMDS: Record<string, string> = {
   'printmanagement.msc': 'printmgmt',
 }
 
+
+// ---------- ftp.exe ----------
+function withoutFtp(st: PcState): PcState {
+  const next = { ...st }
+  delete next.ftp
+  return next
+}
+
+function ftpBenchHit(ctx: ShellCtx, sess: NonNullable<PcState['ftp']>) {
+  const b = ctx.network.bench
+  if (!b) return null
+  const server = serverAt(b.model, b.key, sess.ip)
+  if (!server) return null
+  return ftpSiteAt(server, sess.ip, sess.port, b.key === 'server' || sess.ip.startsWith('127.'))
+}
+
+function ftpConnect(ctx: ShellCtx, host: string, port = 21): ExecResult {
+  const st = ctx.state
+  const fail = (msg: string): ExecResult => ({ out: L(msg), state: st })
+  if (!host.trim()) return fail('Użycie: open nazwa_komputera [port]')
+  const b = ctx.network.bench
+  if (!b) return fail('ftp: connect :Połączenie odrzucone.')
+  const ip = resolveHost(b, host)
+  if (!ip) return fail(`ftp: ${host}: Nieznany host`)
+  const server = serverAt(b.model, b.key, ip)
+  if (!server) return fail('ftp: connect :Upłynął limit czasu połączenia.')
+  if (!fwAllows(server, 'tcp', port, port === 21 && hasRole(server, 'Web-Ftp-Service'))) return fail('ftp: connect :Upłynął limit czasu połączenia.')
+  const hit = ftpSiteAt(server, ip, port, b.key === 'server' || ip.startsWith('127.'))
+  if (!hit) return fail('ftp: connect :Połączenie odrzucone.')
+  const ftp: PcState['ftp'] = { host, ip, port, phase: 'user', cwd: '/', binary: false }
+  return { out: L(`Połączenie z ${ip}.`, '220 Microsoft FTP Service'), state: { ...withoutFtp(st), ftp } }
+}
+
+function ftpLoginNow(ctx: ShellCtx, user: string, pw: string): ExecResult {
+  const st = ctx.state
+  const sess = st.ftp!
+  const hit = ftpBenchHit(ctx, sess)
+  if (!hit) return { out: L('Not connected.'), state: { ...st, ftp: { ...sess, phase: 'offline', token: undefined, user: undefined } } }
+  const r = ftpLogin(hit.server, hit.site, user, pw, /^anonymous$/i.test(user.trim()) || /^ftp$/i.test(user.trim()))
+  const ftp: PcState['ftp'] = r.ok
+    ? { ...sess, phase: 'ready', user, token: r.token, anonymous: /^anonymous$/i.test(user.trim()) || /^ftp$/i.test(user.trim()) }
+    : { ...sess, phase: 'connected', user, token: undefined, anonymous: undefined }
+  return { out: L(r.line), state: { ...st, ftp } }
+}
+
+function ftpCommand(ctx: ShellCtx, raw: string): ExecResult {
+  const st = ctx.state
+  const sess = st.ftp!
+  const ok = (out: Line[], state = st): ExecResult => ({ out, state })
+  const input = raw.trim()
+
+  if (sess.phase === 'user') {
+    if (!input) return ok(L('Nazwa użytkownika jest wymagana.'))
+    const hit = ftpBenchHit(ctx, sess)
+    if (!hit) return ok(L('Not connected.'), { ...st, ftp: { ...sess, phase: 'offline' } })
+    const r = ftpUser(hit.site, input)
+    return ok(L(r.line), { ...st, ftp: { ...sess, user: input, phase: r.possible ? 'pass' : 'connected', anonymous: r.anonymous } })
+  }
+  if (sess.phase === 'pass') return ftpLoginNow(ctx, sess.user ?? '', raw)
+
+  if (!input) return ok([])
+  const t = tokenize(input)
+  const c = (t[0] ?? '').toLowerCase()
+  const args = t.slice(1)
+
+  if (sess.phase === 'offline') {
+    if (c === 'open') return ftpConnect(ctx, args[0] ?? '', Number(args[1] ?? 21) || 21)
+    if (c === 'bye' || c === 'quit') return { out: [], state: withoutFtp(st) }
+    if (c === 'help' || c === '?') return ok(L('open, user, pass, ls, dir, cd, pwd, get, put, mkdir, delete, binary, ascii, close, bye'))
+    return ok(L('Not connected.'))
+  }
+
+  const hit = ftpBenchHit(ctx, sess)
+  const needHit = (): NonNullable<ReturnType<typeof ftpBenchHit>> | null => {
+    if (!hit) return null
+    return hit
+  }
+  const serverChanged = (next: PcState | undefined) => {
+    if (next && ctx.network.bench?.setServer) ctx.network.bench.setServer(() => next)
+  }
+
+  switch (c) {
+    case 'open':
+      return ftpConnect(ctx, args[0] ?? '', Number(args[1] ?? 21) || 21)
+    case 'close':
+      return ok(L('221 Goodbye.'), { ...st, ftp: { ...sess, phase: 'offline', token: undefined, user: undefined } })
+    case 'bye':
+    case 'quit':
+      return { out: L('221 Goodbye.'), state: withoutFtp(st) }
+    case 'user': {
+      const user = args[0] ?? ''
+      if (!user) return ok(L('Użycie: user nazwa_użytkownika [hasło]'))
+      if (!hit) return ok(L('Not connected.'), { ...st, ftp: { ...sess, phase: 'offline' } })
+      const r = ftpUser(hit.site, user)
+      if (args[1] !== undefined) {
+        const login = ftpLoginNow({ ...ctx, state: { ...st, ftp: { ...sess, phase: 'pass', user } } }, user, args[1])
+        return login
+      }
+      return ok(L(r.line), { ...st, ftp: { ...sess, user, phase: 'pass', anonymous: r.anonymous, token: undefined } })
+    }
+    case 'pass': {
+      if (!sess.user) return ok(L('Najpierw użyj polecenia USER.'))
+      return ftpLoginNow(ctx, sess.user, args.join(' '))
+    }
+    case 'binary':
+      return sess.phase === 'ready' ? ok(L('200 Type set to I.'), { ...st, ftp: { ...sess, binary: true } }) : ok(L('530 Please login with USER and PASS.'))
+    case 'ascii':
+      return sess.phase === 'ready' ? ok(L('200 Type set to A.'), { ...st, ftp: { ...sess, binary: false } }) : ok(L('530 Please login with USER and PASS.'))
+    case 'status':
+      return ok(L(`Połączono z ${sess.ip}.`, `Typ: ${sess.binary ? 'binary' : 'ascii'}`, `Katalog zdalny: ${sess.cwd}`))
+    case 'help':
+    case '?':
+      return ok(L('open, user, pass, ls, dir, cd, pwd, get, put, mkdir, delete, rmdir, binary, ascii, close, bye'))
+  }
+
+  if (sess.phase !== 'ready') return ok(L('530 Please login with USER and PASS.'))
+  const h = needHit()
+  if (!h) return ok(L('Not connected.'), { ...st, ftp: { ...sess, phase: 'offline', token: undefined } })
+
+  if (c === 'pwd') return ok(L(`257 "${sess.cwd}" is current directory.`))
+  if (c === 'cd') {
+    const r = ftpCd(h, sess, args.join(' ') || '/')
+    return ok(L(...r.lines), { ...st, ftp: r.session ?? sess })
+  }
+  if (c === 'ls' || c === 'dir') {
+    const r = ftpList(h, sess, args[0] ?? '', c === 'dir')
+    return ok(L(...r.lines))
+  }
+  if (c === 'get') {
+    if (!args[0]) return ok(L('Użycie: get plik_zdalny [plik_lokalny]'))
+    const r = ftpGet(h, sess, args[0])
+    let next = st
+    const out = [...r.lines]
+    if (r.file) {
+      const local = resolvePath(cwdOf(ctx), args[1] ?? r.file.name)
+      if (isDir(st, parentOf(local))) {
+        next = writeFile(st, local, r.file.text, false, r.file.size)
+        out.push(`ftp: ${r.file.size} bajtów odebranych w 0,01 s.`)
+      } else out.push(`${args[1] ?? r.file.name}: Nie można odnaleźć określonej ścieżki.`)
+    }
+    return ok(L(...out), { ...next, ftp: sess })
+  }
+  if (c === 'put') {
+    if (!args[0]) return ok(L('Użycie: put plik_lokalny [plik_zdalny]'))
+    const local = resolvePath(cwdOf(ctx), args[0])
+    const text = readFile(st, local)
+    if (text === null) return ok(L(`${args[0]}: Nie można odnaleźć określonego pliku.`))
+    const remote = args[1] ?? local.slice(local.lastIndexOf('\\') + 1)
+    const size = st.sizes?.[fileKey(st, local) ?? ''] ?? new TextEncoder().encode(text).length
+    const r = ftpPut(h, sess, remote, text, size)
+    serverChanged(r.server)
+    const out = [...r.lines]
+    if (r.server) out.push(`ftp: ${size} bajtów wysłanych w 0,01 s.`)
+    return ok(L(...out))
+  }
+  if (c === 'mkdir' || c === 'makedirs') {
+    if (!args[0]) return ok(L('Użycie: mkdir katalog'))
+    const r = ftpMkdir(h, sess, args.join(' '))
+    serverChanged(r.server)
+    return ok(L(...r.lines))
+  }
+  if (c === 'delete' || c === 'del') {
+    if (!args[0]) return ok(L('Użycie: delete plik'))
+    const r = ftpDelete(h, sess, args.join(' '))
+    serverChanged(r.server)
+    return ok(L(...r.lines))
+  }
+  if (c === 'rmdir' || c === 'rd') {
+    if (!args[0]) return ok(L('Użycie: rmdir katalog'))
+    const r = ftpDelete(h, sess, args.join(' '), true)
+    serverChanged(r.server)
+    return ok(L(...r.lines))
+  }
+  return ok(L('Nieprawidłowe polecenie.'))
+}
+
 // ---------- the main entry ----------
 export function exec(ctx: ShellCtx, raw: string): ExecResult {
   const line = (raw.includes('%') && ctx.kind === 'cmd' ? expandVars(ctx, raw) : raw).trim()
   const st = ctx.state
   if (!line) return { out: [], state: st }
+  if (st.ftp) return ftpCommand(ctx, raw)
   // files, folders, variables, redirection, running .bat
   const fr = cmdFiles(ctx, line, exec)
   if (fr) return fr
@@ -870,6 +1050,11 @@ export function exec(ctx: ShellCtx, raw: string): ExecResult {
   if (cimOut) return ok(L(...cimOut))
 
   switch (c) {
+    case 'ftp': {
+      if (!args.length) return ok([], { ...st, ftp: { host: '', ip: '', port: 21, phase: 'offline', cwd: '/', binary: false } })
+      if (args[0] === '-?' || args[0] === '/?') return ok(L('ftp [-v] [-n] [-i] [-d] [-g] [-s:plik] [-a] [-A] [host [port]]'))
+      return ftpConnect(ctx, args[0], Number(args[1] ?? 21) || 21)
+    }
     case 'ipconfig': {
       const opt = (args[0] ?? '').toLowerCase()
       const filt = args[1] ? st.adapters.filter((a) => a.name.toLowerCase() === args[1].toLowerCase().replace(/\*/g, '')) : undefined

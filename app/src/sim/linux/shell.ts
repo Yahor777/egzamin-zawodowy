@@ -40,6 +40,8 @@ export interface TermIO {
 export interface LinuxNetworkLike {
   ping(fromIfaces: { name: string; mac: string; addresses: string[]; up: boolean; gateway?: string; dns: string[] }[], gateway: string | null, target: string): { ok: boolean; reason?: string }
   dhcp?(iface: { name: string; mac: string }): { ip: string; mask: string; gateway: string; dns: string[]; server: string; domain?: string } | null
+  /** IIS FTP backend when the bench network model is available (labs); absent in the standalone sandbox */
+  ftp?: import('../pc/ftp.ts').FtpBackend
 }
 
 export interface StdinBuf {
