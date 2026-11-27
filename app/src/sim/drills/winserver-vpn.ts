@@ -24,6 +24,7 @@ export const WS_VPN_DRILLS: DrillDef[] = [
     title_ru: 'Windows Server: RRAS VPN — пул адресов, Windows 11 подключается по PPTP/SSTP',
     title_pl: 'Windows Server: dostęp zdalny VPN (RRAS)',
     goal_ru: 'Настроить «Dostęp zdalny (połączenie telefoniczne lub sieć VPN)» в RRAS со статическим пулом адресов, создать на Windows 11 соединение в Ustawieniach → Sieć i Internet → VPN и подключиться — клиент должен получить адрес из пула и появиться в «Klienci dostępu zdalnego».',
+    goal_pl: 'Skonfiguruj w RRAS „Dostęp zdalny (połączenie telefoniczne lub sieć VPN)” ze statyczną pulą adresów, utwórz na Windows 11 połączenie w Ustawienia → Sieć i Internet → VPN i połącz się — klient ma otrzymać adres z puli i pojawić się na liście „Klienci dostępu zdalnego”.',
     minutes: 20,
     docs: [D.winserverVpn, D.winserverRoles, D.windowsNet],
     params: (r) => ({ X: r.int(2, 19), login: r.pick(['jnowak', 'akowalska', 'pwisniewski']), proto: r.pick(['Automatycznie', 'PPTP', 'SSTP'] as const), pw: `VPN${r.int(10, 99)}!` }),
@@ -77,6 +78,7 @@ export const WS_VPN_DRILLS: DrillDef[] = [
               }),
             ],
             'Menedżer serwera → Dodaj role i funkcje → Dostęp zdalny → DirectAccess i VPN (RAS). Затем Narzędzia → Routing i dostęp zdalny → ПКМ по серверу → Konfiguruj i włącz routing i dostęp zdalny. На странице Przypisywanie adresów IP выбери «Z określonego zakresu adresów».',
+            'Menedżer serwera → Dodaj role i funkcje → Dostęp zdalny → DirectAccess i VPN (RAS). Następnie Narzędzia → Routing i dostęp zdalny → PPM na serwerze → Konfiguruj i włącz routing i dostęp zdalny. Na stronie Przypisywanie adresów IP wybierz „Z określonego zakresu adresów”.',
           ),
           task(
             'pc',
@@ -93,6 +95,7 @@ export const WS_VPN_DRILLS: DrillDef[] = [
               }),
             ],
             'Ustawienia → Sieć i Internet → VPN → Dodaj połączenie VPN. Если соединение отвечает «Nie można połączyć», проверь адрес сервера, роль RAS, мастер RRAS и пароль пользователя.',
+            'Ustawienia → Sieć i Internet → VPN → Dodaj połączenie VPN. Jeśli połączenie zwraca „Nie można połączyć”, sprawdź adres serwera, rolę RAS, kreator RRAS i hasło użytkownika.',
           ),
         ],
       }
