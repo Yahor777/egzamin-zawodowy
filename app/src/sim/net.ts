@@ -194,6 +194,63 @@ export interface ServerState {
   rras?: RrasState
   /** SMB sessions of the clients that have connected to this server (Zarządzanie komputerem → Foldery udostępnione → Sesje / Otwarte pliki) */
   smbSessions?: SmbSession[]
+  /** Usługi drukowania i zarządzania dokumentami (printmanagement.msc): ports, printers, queues; missing = nothing configured */
+  print?: PrintState
+}
+
+/** Zarządzanie drukowaniem: what the print server holds */
+export interface PrintState {
+  ports: PrintPort[]
+  printers: Printer[]
+  /** drivers installed on the server besides the inbox ones */
+  drivers?: string[]
+}
+/** a printer port: "Standardowy port TCP/IP" to a network printer, or a local one (LPT1:, FILE: …) */
+export interface PrintPort {
+  name: string
+  kind: 'tcp' | 'local'
+  ip?: string
+}
+/** printer permissions (Zabezpieczenia), bits: 1 Drukuj · 2 Zarządzaj dokumentami · 4 Zarządzaj tą drukarką */
+export interface PrintAce {
+  who: string
+  allow: number
+  deny: number
+}
+export interface PrintJob {
+  id: number
+  doc: string
+  /** account that printed (NETBIOS\login) and the client computer */
+  owner: string
+  computer: string
+  pages: number
+  at: number
+}
+export interface Printer {
+  name: string
+  driver: string
+  /** port names; more than one = printer pool */
+  ports: string[]
+  shared: boolean
+  shareName?: string
+  location?: string
+  comment?: string
+  /** Zaawansowane: priority 1–99 (missing = 1), "Dostępna od/do" HH:MM (missing = always) */
+  priority?: number
+  from?: string
+  until?: string
+  /** missing = the default ACL of a new printer */
+  acl?: PrintAce[]
+  jobs?: PrintJob[]
+}
+/** a shared printer a Windows client has connected to (Ustawienia → Drukarki i skanery) */
+export interface PcPrinter {
+  /** \\server\share as typed */
+  unc: string
+  /** printer name on the server, shown as "name na server" */
+  name: string
+  host: string
+  isDefault?: boolean
 }
 
 export interface SmbSession {
@@ -419,6 +476,8 @@ export interface PcState {
   smbCreds?: Record<string, { user: string; pw: string }>
   /** logical size in bytes of files created with fsutil (the content stays empty); path → size */
   sizes?: Record<string, number>
+  /** shared printers connected on this client; missing = none */
+  printers?: PcPrinter[]
 }
 
 /** What Group Policy did to a domain client (computed by domain.applyGpo, cached on the client like a real one). */

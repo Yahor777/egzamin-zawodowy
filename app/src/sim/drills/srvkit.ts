@@ -11,6 +11,7 @@ import { mkdirs, writeFile } from '../pc/fs'
 import { initialAd, netbiosOf, srv, withSrv } from '../pc/server'
 import { withFw } from '../pc/model'
 import { exec } from '../pc/shell'
+import { clientTestPage, connectPrinter } from '../pc/print'
 import { addAutoQuota, addQuota, addScreen, createShare, disableInheritance, setExplicitRows } from '../pc/smb'
 
 const uniq = <T,>(a: T[]) => [...new Set(a)]
@@ -151,4 +152,19 @@ export function clientRun(b: Bench, key: NetKey, line: string, kind: 'cmd' | 'ps
   )
   b.s[key] = { ...r.state, history: [...r.state.history, line] }
   return r.out.map((x) => x.t).join('\n')
+}
+
+/** Ustawienia → Drukarki i skanery → Dodaj nowe urządzenie ręcznie → Wybierz drukarkę udostępnioną według nazwy */
+export function connectClientPrinter(b: Bench, key: NetKey, unc: string): string | null {
+  const r = connectPrinter({ model: model(b), key }, b.s[key]!, unc)
+  if (!r.ok) return r.err.msg
+  b.s[key] = r.next
+  return null
+}
+/** "Drukuj stronę testową" on the client: the job lands in the server queue */
+export function clientTestPrint(b: Bench, key: NetKey, unc: string): string | null {
+  const r = clientTestPage({ model: model(b), key }, b.s[key]!, unc)
+  if (!r.ok) return r.err.msg
+  b.s.server = r.server
+  return null
 }

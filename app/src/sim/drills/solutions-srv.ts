@@ -5,7 +5,8 @@ import type { H, P } from './solutions'
 import { mkdirs, writeFile } from '../pc/fs'
 import { EVERYONE } from '../pc/smb'
 import { configureRras } from '../pc/rras'
-import { addAdUser, addGpo, addOu, addRoles, addScope, addSite, allowPort, finishDhcp, gpupdateClient, joinClient, promote, setStaticIp, shareFolder, signInClient } from './srvkit'
+import { P_DOCS, addPrinter, addTcpPort, grantPrint } from '../pc/print'
+import { addAdUser, addGpo, addOu, addRoles, addScope, addSite, allowPort, clientTestPrint, connectClientPrinter, finishDhcp, gpupdateClient, joinClient, promote, setStaticIp, shareFolder, signInClient } from './srvkit'
 
 const NB = (p: P) => `${p.dom}${p.X}`.toUpperCase()
 
@@ -70,7 +71,22 @@ export const SRV_SOLVE: Record<string, (p: P, h: H) => Promise<void> | void> = {
     s.server = writeFile(mkdirs(s.server, folder), `${folder}\\index.html`, `<h1>${p.text}</h1>\r\n`)
     s.server = addSite(s.server, { name: `Witryna${p.X}`, path: folder, bindings: [{ type: 'http', ip: '*', port: p.port as number, host: '' }] })
     s.server = allowPort(s.server, `WWW ${p.port}`, 'tcp', String(p.port))
-  },  'ws-rras'(p, h) {
+  },
+  'ws-print'(p, h) {
+    const { s } = h
+    const X = p.X
+    const name = `${p.name} ${X}`
+    const share = `${p.share}${X}`
+    const pip = `192.168.${X}.200`
+    s.server = addRoles(s.server!, ['PRINT'])
+    s.server = addTcpPort(s.server, pip)
+    s.server = addPrinter(s.server, { name, driver: 'HP Universal Printing PCL 6', ports: [pip], shared: true, shareName: share })
+    s.server = grantPrint(s.server, name, `WIN-SERWER\\${p.login}`, P_DOCS)
+    const b = { s, lab: h.lab }
+    const e = connectClientPrinter(b, 'pc', `\\\\WIN-SERWER\\${share}`) ?? clientTestPrint(b, 'pc', `\\\\WIN-SERWER\\${share}`)
+    if (e) throw new Error(`ws-print: ${e}`)
+  },
+  'ws-rras'(p, h) {
     const { s } = h
     const X = p.X
     s.server = addRoles(s.server!, ['RAS', 'DirectAccess-VPN', 'Routing'])

@@ -315,7 +315,7 @@ const TOOLS: ToolDef[] = [
   { label: 'Windows PowerShell', app: 'cmd', arg: 'ps' },
   { label: 'Witryny i usługi usługi Active Directory', req: 'ADDS' },
   { label: 'Zapora Windows Defender z zabezpieczeniami zaawansowanymi', app: 'wf' },
-  { label: 'Zarządzanie drukowaniem', req: 'PRINT' },
+  { label: 'Zarządzanie drukowaniem', req: 'PRINT', app: 'printmgmt' },
   { label: 'Zarządzanie komputerem', app: 'compmgmt' },
   { label: 'Zarządzanie zasadami grupy', req: 'GPMC', app: 'gpmc' },
   { label: 'Zasady zabezpieczeń lokalnych' },
