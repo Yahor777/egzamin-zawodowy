@@ -861,7 +861,14 @@ function linuxRoutePrefix(r: LinuxRouteLite, target: string): number | null {
 function linuxNextHop(ifs: Endpoint[], target: string): { out: Endpoint; via?: string; direct: boolean; prefix: number } | null {
   let best: { out: Endpoint; via?: string; direct: boolean; prefix: number; metric: number; order: number } | null = null
   let order = 0
-  for (const out of ifs)
+  for (const out of ifs) {
+    for (const a of out.addrs) {
+      order++
+      if (sameSubnet(a.ip, target, a.prefix)) {
+        const cand = { out, direct: true, prefix: a.prefix, metric: 0, order }
+        if (!best || a.prefix > best.prefix || (a.prefix === best.prefix && order < best.order)) best = cand
+      }
+    }
     for (const r of out.routes ?? []) {
       order++
       if (r.dev && out.port !== `linux:${r.dev}`) continue
@@ -870,6 +877,7 @@ function linuxNextHop(ifs: Endpoint[], target: string): { out: Endpoint; via?: s
       const cand = { out, via: r.via, direct: !r.via, prefix, metric: r.metric ?? 0, order }
       if (!best || prefix > best.prefix || (prefix === best.prefix && (cand.metric < best.metric || (cand.metric === best.metric && order < best.order)))) best = cand
     }
+  }
   return best ? { out: best.out, ...(best.via ? { via: best.via } : {}), direct: best.direct, prefix: best.prefix } : null
 }
 
@@ -916,16 +924,18 @@ function walk(n: Net, origin: Endpoint[], target: string): { dst: Endpoint; src:
       const own = ifs.find((e) => e.addrs.some((a) => a.ip === target))
       if (own) return { dst: own, src: src!, nat }
     }
-    // 1) on-link delivery
-    for (const i of ifs)
-      for (const e of n.eps)
-        if (e.device !== dev && e.addrs.some((a) => a.ip === target) && direct(n, i, e, target) && mayForward(n, dev, arrived, i)) return { dst: e, src: src ?? i, nat: nat ?? natOut(n, dev, arrived, i) }
+    const lx = dev === 'linux' ? linuxNextHop(ifs, target) : null
+    // 1) on-link delivery. Linux first selects the winning kernel route; a more specific host route
+    // may therefore override delivery through the connected subnet.
+    if (!lx)
+      for (const i of ifs)
+        for (const e of n.eps)
+          if (e.device !== dev && e.addrs.some((a) => a.ip === target) && direct(n, i, e, target) && mayForward(n, dev, arrived, i)) return { dst: e, src: src ?? i, nat: nat ?? natOut(n, dev, arrived, i) }
     // 2) next hop: the best static route, else the default gateway. Linux uses its own kernel table
     // (netplan routes and runtime `ip route` entries) and never falls back to a less specific route
     // when the selected next hop is unreachable.
     const cand: { via: Endpoint; ip: string; out: Endpoint }[] = []
     const hopIps: { ip: string; from: Endpoint[] }[] = []
-    const lx = dev === 'linux' ? linuxNextHop(ifs, target) : null
     if (lx?.direct) {
       for (const e of n.eps)
         if (e.device !== dev && e.addrs.some((a) => a.ip === target) && l2(n.domains, lx.out.port, e.port) && mayForward(n, dev, arrived, lx.out)) return { dst: e, src: src ?? lx.out, nat: nat ?? natOut(n, dev, arrived, lx.out) }
