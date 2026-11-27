@@ -33,7 +33,7 @@ import { smbCmd } from './smb-cmd'
 import { addAdUser, dnsLookup, dnsReverse, domainPasswordPolicy, fwAllows, policyOn, pwViolation, serverAt } from '../domain'
 import { isServer, srv, hasRole } from './server'
 import { resolveHost } from './smb'
-import { ftpCd, ftpDelete, ftpGet, ftpList, ftpLogin, ftpMkdir, ftpPut, ftpSiteAt, ftpUser } from './ftp'
+import { ftpCd, ftpDelete, ftpGet, ftpList, ftpLogin, ftpMkdir, ftpPut, ftpSiteAt, ftpUser, type FtpSiteHit } from './ftp'
 import { fileKey, isDir, parentOf, readFile, resolvePath, writeFile } from './fs'
 
 export type ShellKind = 'cmd' | 'ps'
