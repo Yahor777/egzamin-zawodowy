@@ -1483,6 +1483,7 @@ export function NewShareWizard({ onClose }: { onClose: () => void }) {
     setStep(step + 1)
   }
   const create = () => {
+    if (adv && quotaOn && quotaTpl && quotaInstances(st).some((q) => low(q.path) === low(abs))) return setErr('Na tej ścieżce już istnieje przydział. Usuń istniejący przydział albo wyłącz zarządzanie przydziałem dla tego udziału.')
     api.update((s) => {
       let x = createShare(s, { name: name.trim(), path: abs, ...(desc ? { desc } : {}), abe, cache, encrypt: enc, perms: [{ who: EVERYONE, type: 'allow', level: 'full' }] })
       if (adv && quotaOn && quotaTpl) {
