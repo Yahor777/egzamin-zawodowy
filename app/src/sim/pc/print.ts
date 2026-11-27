@@ -141,10 +141,10 @@ export const serverTestPage = (st: PcState, printer: string) => addJob(st, print
 
 /** does the network printer answer the server (cable, address, power)? local ports never do */
 export function printerOnline(m: NetworkModel, server: PcState, p: Printer): boolean {
-  const ip = printerIp(server, p)
-  if (!ip) return false
+  const ips = p.ports.map((n) => findPort(server, n)?.ip).filter((x): x is string => !!x)
+  if (!ips.length) return false
   const ports = server.adapters.filter((a) => a.enabled && pcAddress(a)).map((a) => `server:${a.id}`)
-  return reachableEndpoints(m, ports, ip).some((e) => e.device === 'printer')
+  return ips.some((ip) => reachableEndpoints(m, ports, ip).some((e) => e.device === 'printer'))
 }
 /** Stan column of the queue */
 export const jobState = (online: boolean) => (online ? 'Drukowanie' : 'Błąd — drukarka w trybie offline')
