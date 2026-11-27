@@ -8,6 +8,9 @@ import { labScore, type Lab } from '../../labs/labs'
 import { buildCtx, buildDhcpServers, buildModel, defaultServerState, type LabSave } from '../../labs/ctx'
 import { DRILLS, makeDrillLab } from '../index'
 import { SOLVE, type H, type P, type T } from '../solutions'
+import { addRoles } from '../srvkit'
+import { EVERYONE } from '../../pc/smb'
+import { P_PRINT, addPrinter, addTcpPort, clientPrinters, clientTestPage, connectPrinter, findPrinter, grantPrint, jobsOf, printerOnline, sharePrinter } from '../../pc/print'
 
 const PASS = 'ZAQ!2wsx'
 let failures = 0
@@ -150,6 +153,39 @@ for (const def of DRILLS) {
       ok('route restored → ping', ping())
     }
   }
+}
+
+// ---------- print server: the client connects only to a shared printer it may print on; the test page lands in the server queue
+{
+  const def = DRILLS.find((d) => d.id === 'ws-print')!
+  const lab = makeDrillLab(def, 7)
+  const s = fresh(lab)
+  const p = lab.params as P
+  const name = `${p.name} ${p.X}`
+  const unc = `\\\\WIN-SERWER\\${p.share}${p.X}`
+  const ok = (what: string, v: boolean) => {
+    if (!v) failures++
+    console.log(`${v ? 'ok  ' : 'FAIL'} print: ${what}`)
+  }
+  s.server = addRoles(s.server!, ['PRINT'])
+  s.server = addTcpPort(s.server, `192.168.${p.X}.200`)
+  s.server = addPrinter(s.server, { name, driver: 'Microsoft PCL6 Class Driver', ports: [`192.168.${p.X}.200`], shared: false })
+  const b = () => ({ model: buildModel(lab, s), key: 'pc' as const })
+  ok('not shared → cannot connect', !connectPrinter(b(), s.pc!, unc).ok)
+  s.server = sharePrinter(s.server, name, `${p.share}${p.X}`)
+  ok('sharing turns on file and printer sharing', s.server.server!.fps === true)
+  ok('wrong share name → not found', (() => { const r = connectPrinter(b(), s.pc!, `\\\\WIN-SERWER\\nope`); return !r.ok && r.err.kind === 'share' })())
+  s.server = grantPrint(s.server, name, EVERYONE, 0, P_PRINT)
+  ok('Odmów: Drukuj for Wszyscy → access denied', (() => { const r = connectPrinter(b(), s.pc!, unc); return !r.ok && r.err.kind === 'denied' })())
+  s.server = grantPrint(s.server, name, EVERYONE, P_PRINT)
+  const c = connectPrinter(b(), s.pc!, unc)
+  ok('Drukuj restored → printer added on the client', c.ok && clientPrinters(c.next).length === 1 && !!clientPrinters(c.next)[0].isDefault)
+  if (c.ok) s.pc = c.next
+  ok('the bench printer answers the server', printerOnline(buildModel(lab, s), s.server, findPrinter(s.server, name)!))
+  const t = clientTestPage(b(), s.pc!, unc)
+  ok('test page → a job from DESKTOP-STACJA in the server queue', t.ok && jobsOf(findPrinter(t.server, name)!).some((j) => j.computer === 'DESKTOP-STACJA'))
+  s.links = s.links.filter((l) => !l.includes('printer:eth0'))
+  ok('printer cable out → queue offline', !printerOnline(buildModel(lab, s), s.server, findPrinter(s.server, name)!))
 }
 
 console.log(`\n${DRILLS.length} drills`)

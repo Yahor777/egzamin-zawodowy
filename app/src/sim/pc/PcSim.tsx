@@ -46,6 +46,8 @@ import { DnsManager } from './apps-server-dns'
 import { GpEditor, Gpmc } from './apps-server-gpo'
 import { IisManager } from './apps-server-iis'
 import { RrasConsole, RrasGettingStarted } from './apps-server-rras'
+import { AddPrinter, PrintMgmt, PrintQueueWin } from './apps-print'
+import { queueTitle } from './print'
 import { hasRole, isServer, srv } from './server'
 import { Terminal } from './Terminal'
 import { ContextMenu, Frame, PcCtx, useLongPress, usePc, type MenuItem, type PcApi, type WinProps } from './ui'
@@ -133,13 +135,16 @@ const APPS: Record<string, AppDef> = {
   gpedit: { title: () => 'Edytor zarządzania zasadami grupy', icon: () => <IcMgmt size={16} />, size: [900, 540], single: 'arg', render: (p) => <GpEditor {...p} /> },
   inetmgr: { title: () => 'Menedżer internetowych usług informacyjnych (IIS)', icon: () => <IcMgmt size={16} />, size: [940, 540], single: true, render: (p) => <IisManager {...p} /> },
   rras: { title: () => 'Routing i dostęp zdalny', icon: () => <IcMgmt size={16} />, size: [900, 520], single: true, render: (p) => <RrasConsole {...p} /> },
+  printmgmt: { title: () => 'Zarządzanie drukowaniem', icon: () => <IcMgmt size={16} />, size: [940, 540], single: true, render: (p) => <PrintMgmt {...p} /> },
+  printq: { title: (a) => queueTitle(a), icon: () => <IcMgmt size={16} />, size: [760, 380], single: 'arg', render: (p) => <PrintQueueWin {...p} /> },
+  addprinter: { title: () => 'Dodawanie drukarki', icon: () => <IcSettings size={16} />, size: [640, 520], dialog: true, single: true, render: (p) => <AddPrinter {...p} /> },
   rrasgs: { title: () => 'Konfiguruj dostęp zdalny', icon: () => <IcMgmt size={16} />, size: [560, 480], dialog: true, single: true, render: (p) => <RrasGettingStarted {...p} /> },
   mmcstub: { title: (a) => `${a ?? 'Konsola'} — [Konsola główna]`, icon: () => <IcMgmt size={16} />, size: [820, 480], single: 'arg', render: (p) => <MmcStub {...p} /> },
   restricted: { title: () => 'Ograniczenia', icon: () => <IcSystem size={16} />, size: [400, 170], dialog: true, small: true, single: true, render: (p) => <RestrictedDlg {...p} /> },
   run: { title: () => 'Uruchom', icon: () => <IcRun size={16} />, size: [420, 230], dialog: true, small: true, single: true, render: (p) => <RunDialog {...p} /> },
 }
 
-const SERVER_KEYS = ['srvmgr', 'aduc', 'dhcpmgmt', 'dnsmgmt', 'gpmc', 'inetmgr', 'fsrm', 'rras']
+const SERVER_KEYS = ['srvmgr', 'aduc', 'dhcpmgmt', 'dnsmgmt', 'gpmc', 'inetmgr', 'fsrm', 'rras', 'printmgmt']
 const viewOf = (w: WinRec): PcView | null => (w.app === 'control' && w.arg === 'ncpa' ? 'adapters' : w.app === 'edge' ? 'browser' : w.app === 'wf' ? 'firewall' : w.app === 'cmd' ? 'cmd' : null)
 
 // ---------------- Start menu content ----------------
@@ -160,6 +165,7 @@ const START_APPS: StartApp[] = [
   { key: 'gpmc', os: 'server', role: 'GPMC', label: 'Zarządzanie zasadami grupy', icon: <IcMgmt size={30} />, run: 'gpmc.msc' },
   { key: 'fsrm', os: 'server', role: 'FS-Resource-Manager', label: 'Menedżer zasobów serwera plików', icon: <IcMgmt size={30} />, run: 'fsrm.msc' },
   { key: 'rras', os: 'server', role: 'Routing', label: 'Routing i dostęp zdalny', icon: <IcMgmt size={30} />, run: 'rrasmgmt.msc' },
+  { key: 'printmgmt', os: 'server', role: 'PRINT', label: 'Zarządzanie drukowaniem', icon: <IcMgmt size={30} />, run: 'printmanagement.msc' },
   { key: 'inetmgr', os: 'server', role: 'IIS', label: 'Menedżer internetowych usług informacyjnych (IIS)', icon: <IcMgmt size={30} />, run: 'inetmgr' },
   { key: 'edge', label: 'Microsoft Edge', icon: <IcEdge size={30} />, run: 'msedge' },
   { key: 'explorer', label: 'Eksplorator plików', icon: <IcFolder size={30} />, run: 'explorer' },
@@ -409,6 +415,8 @@ export function PcSim({ state, onChange, network, browser, powered = true, booti
         inetmgr: ['inetmgr'],
         fsrm: ['fsrm'],
         rras: ['rras'],
+        printmgmt: ['printmgmt'],
+        'settings-printers': ['settings', 'printers'],
       }
       if (key === 'restart') return restart()
       if (SERVER_KEYS.includes(key) && !isServer(stateRef.current)) return

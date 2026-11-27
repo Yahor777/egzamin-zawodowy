@@ -55,7 +55,7 @@ const errPane = (e: VErr, path: string): { title: string; text: string } => {
 let clipboard: { paths: string[]; cut: boolean } = { paths: [], cut: false }
 
 // ================================================================== credentials prompt
-function CredDlg({ host, onClose, onDone, hint }: { host: string; onClose: () => void; onDone: (c: Cred) => void; hint?: string }) {
+export function CredDlg({ host, onClose, onDone, hint }: { host: string; onClose: () => void; onDone: (c: Cred) => void; hint?: string }) {
   const api = usePc()
   const [user, setUser] = useState('')
   const [pw, setPw] = useState('')

@@ -3,7 +3,8 @@ import { useState, type ReactNode } from 'react'
 import { ipToInt, type PcAdapter } from '../net'
 import { IcChevron, IcEthernet, IcGlobe, IcPc, IcSearch, IcSettings, IcUser, IcUsers } from './icons'
 import { adapterState, curIp, linked, linkLocal6, networkName, nicDesc, setDhcp, setStatic, trayState, validateStatic } from './model'
-import { Toggle, usePc, type WinProps } from './ui'
+import { Toggle, useMsg, usePc, type WinProps } from './ui'
+import { addJob, clientPrinters, disconnectPrinter, openPrinter, printerErrText, setDefaultPrinter } from './print'
 import { gib, plNum, ramTotalGB } from '../hw'
 import { hwOf } from './hwcmd'
 
@@ -19,14 +20,14 @@ const NAV: [string, string, ReactNode][] = [
   ['update', 'Windows Update', <IcSettings key="k9" size={18} />],
 ]
 
-export const SETTINGS_PAGES: Record<string, string> = { system: 'System', about: 'Informacje', net: 'Sieć i Internet', eth: 'Ethernet', adv: 'Zaawansowane ustawienia sieci', accounts: 'Konta' }
+export const SETTINGS_PAGES: Record<string, string> = { system: 'System', about: 'Informacje', net: 'Sieć i Internet', eth: 'Ethernet', adv: 'Zaawansowane ustawienia sieci', accounts: 'Konta', bt: 'Bluetooth i urządzenia', printers: 'Drukarki i skanery' }
 
 export function SettingsApp({ arg = 'system', setArg }: WinProps) {
   const api = usePc()
   const [page, sub] = arg.split(':')
   // on a phone the left menu is its own page ("home")
   const showNav = !api.compact || page === 'home'
-  const top = page === 'about' ? 'system' : page === 'eth' || page === 'adv' ? 'net' : page
+  const top = page === 'printers' || page === 'printer' ? 'bt' : page === 'about' ? 'system' : page === 'eth' || page === 'adv' ? 'net' : page
   return (
     <div className={`set ${api.compact ? 'compact' : ''}`}>
       {showNav && (
@@ -55,7 +56,7 @@ export function SettingsApp({ arg = 'system', setArg }: WinProps) {
       {!(api.compact && page === 'home') && (
         <main className="set-main">
           {api.compact && (
-            <button className="set-back" onClick={() => setArg(page === 'about' ? 'system' : page === 'eth' && sub ? 'eth' : page === 'eth' || page === 'adv' ? 'net' : 'home')}>
+            <button className="set-back" onClick={() => setArg(page === 'printers' ? 'bt' : page === 'printer' ? 'printers' : page === 'about' ? 'system' : page === 'eth' && sub ? 'eth' : page === 'eth' || page === 'adv' ? 'net' : 'home')}>
               <IcChevron dir="left" size={14} /> Wstecz
             </button>
           )}
@@ -66,7 +67,10 @@ export function SettingsApp({ arg = 'system', setArg }: WinProps) {
           {page === 'adv' && <AdvPage go={setArg} />}
           {page === 'accounts' && <AccountsPage />}
           {page === 'person' && <PersonPage />}
-          {!['system', 'about', 'net', 'eth', 'adv', 'accounts', 'person'].includes(page) && (
+          {page === 'bt' && <BtPage go={setArg} />}
+          {page === 'printers' && <PrintersPage go={setArg} />}
+          {page === 'printer' && <PrinterPage go={setArg} idx={Number(sub)} />}
+          {!['system', 'about', 'net', 'eth', 'adv', 'accounts', 'person', 'bt', 'printers', 'printer'].includes(page) && (
             <>
               <h1 className="set-h">{NAV.find((n) => n[0] === page)?.[1] ?? 'Ustawienia'}</h1>
               <p className="set-muted">Ta sekcja nie jest potrzebna na egzaminie i nie jest dostępna w symulatorze.</p>
@@ -98,6 +102,91 @@ function PersonPage() {
       <button className="w-btn" disabled={!!wall || locked}>
         Przeglądaj zdjęcia
       </button>
+    </>
+  )
+}
+
+// ---------------- Bluetooth i urządzenia › Drukarki i skanery ----------------
+function BtPage({ go }: { go: (a: string) => void }) {
+  return (
+    <>
+      <h1 className="set-h">Bluetooth i urządzenia</h1>
+      <Row icon={<IcSettings size={20} />} title="Urządzenia" sub="Mysz, klawiatura, pióro, audio, wyświetlacze i stacje dokujące, inne urządzenia" />
+      <Row icon={<IcSettings size={20} />} title="Drukarki i skanery" sub="Preferencje, rozwiązywanie problemów" onClick={() => go('printers')} />
+      <Row icon={<IcSettings size={20} />} title="Mysz" sub="Przyciski, szybkość wskaźnika myszy, przewijanie" />
+    </>
+  )
+}
+
+function PrintersPage({ go }: { go: (a: string) => void }) {
+  const api = usePc()
+  const list = clientPrinters(api.state)
+  const [adding, setAdding] = useState(false)
+  return (
+    <>
+      <Crumbs items={[['Bluetooth i urządzenia', 'bt'], ['Drukarki i skanery']]} go={go} />
+      <Row
+        icon={<IcSettings size={20} />}
+        title="Dodaj drukarkę lub skaner"
+        right={
+          <button className="w-btn primary" id="set-add-printer" onClick={() => setAdding(true)}>
+            Dodaj urządzenie
+          </button>
+        }
+      />
+      {adding && (
+        <div className="set-card" id="set-printer-search">
+          <p className="set-muted">Nie znaleziono drukarek ani skanerów.</p>
+          <Row
+            title="Drukarki, której szukam, nie ma na liście"
+            right={
+              <button className="w-btn" id="set-add-manual" onClick={() => api.open('addprinter')}>
+                Dodaj nowe urządzenie ręcznie
+              </button>
+            }
+          />
+        </div>
+      )}
+      {list.map((p, i) => (
+        <Row key={p.unc} icon={<IcSettings size={20} />} title={`${p.name} na ${p.host}`} sub={p.isDefault ? 'Domyślne' : undefined} onClick={() => go(`printer:${i}`)} />
+      ))}
+      <Row icon={<IcSettings size={20} />} title="Microsoft Print to PDF" />
+      <h2 className="set-sub">Preferencje drukarki</h2>
+      <Row title="Zezwalaj systemowi Windows na zarządzanie moją drukarką domyślną" right={<Toggle on={false} onChange={() => {}} label="Zezwalaj systemowi Windows na zarządzanie moją drukarką domyślną" />} />
+    </>
+  )
+}
+
+function PrinterPage({ go, idx }: { go: (a: string) => void; idx: number }) {
+  const api = usePc()
+  const p = clientPrinters(api.state)[idx]
+  const [msg, show] = useMsg()
+  if (!p) return <Crumbs items={[['Bluetooth i urządzenia', 'bt'], ['Drukarki i skanery', 'printers']]} go={go} />
+  const title = `${p.name} na ${p.host}`
+  const test = () => {
+    const b = api.network.bench
+    const r = b ? openPrinter(b, api.state, p.unc) : null
+    if (!b || !r) return void show(title, printerErrText({ kind: 'net', code: 53, msg: '' }), 'warn')
+    if (!r.ok) return void show(title, printerErrText(r.err), 'warn')
+    b.setServer?.((s) => addJob(s, r.printer.name, { doc: 'Strona testowa', owner: r.s.as, computer: api.state.hostname, pages: 1 }).next)
+    void show(title, `Strona testowa została wysłana do drukarki ${title}.`, 'info')
+  }
+  return (
+    <>
+      <Crumbs items={[['Bluetooth i urządzenia', 'bt'], ['Drukarki i skanery', 'printers'], [title]]} go={go} />
+      <div className="set-btns">
+        <button className="w-btn" disabled={p.isDefault} onClick={() => api.update((s) => setDefaultPrinter(s, p.unc))}>
+          Ustaw jako domyślne
+        </button>
+        <button className="w-btn" onClick={() => (api.update((s) => disconnectPrinter(s, p.unc)), go('printers'))}>
+          Usuń
+        </button>
+      </div>
+      <h2 className="set-sub">Ustawienia drukarki</h2>
+      <Row title="Otwórz kolejkę wydruku" onClick={() => api.open('printq', p.unc)} />
+      <Row title="Drukuj stronę testową" onClick={test} />
+      <Row title="Właściwości drukarki" sub={`Udostępniona: ${p.unc}`} />
+      {msg}
     </>
   )
 }

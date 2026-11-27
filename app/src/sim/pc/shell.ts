@@ -836,6 +836,7 @@ export const GUI_CMDS: Record<string, string> = {
   'inetmgr.exe': 'inetmgr',
   'fsrm.msc': 'fsrm',
   'rrasmgmt.msc': 'rras',
+  'printmanagement.msc': 'printmgmt',
 }
 
 // ---------- the main entry ----------
