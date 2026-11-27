@@ -53,6 +53,7 @@ export const SHARE_DRILLS: DrillDef[] = [
     title_ru: 'Windows Server: общая папка — udział + права NTFS для группы, клиент читает и пишет',
     title_pl: 'Windows Server: udostępnianie folderu i uprawnienia NTFS',
     goal_ru: 'Создать папку, расшарить её (права на доступ по сети), настроить NTFS для доменной группы с отключённым наследованием — и с клиента (\\\\сервер\\udział, net use) убедиться, что читает/пишет только группа.',
+    goal_pl: "Utwórz folder, udostępnij go (prawa dostępu przez sieć), skonfiguruj NTFS dla grupy domenowej z wyłączonym dziedziczeniem - i od klienta (\\\\\\\\serwer\\\\udział, net use) upewnij się, że tylko grupa ma możliwość odczytu/zapisu.",
     minutes: 30,
     docs: [D.winserverShares, D.winserverDomain, D.winserverRoles],
     params: (r) => params(r) as unknown as { X: number } & Record<string, unknown>,
@@ -91,7 +92,7 @@ export const SHARE_DRILLS: DrillDef[] = [
             ck('adm', 'NTFS: Administratorzy — Pełna kontrola', 'Administratorzy', (c) => aces(c).some((a) => a.who === ADMINS && a.type === 'allow' && a.bits === FULL)),
             ck('grp', `NTFS: ${grpW} — Modyfikacja`, 'grupa — modyfikacja', (c) => aces(c).some((a) => a.who === grpW && a.type === 'allow' && a.bits === MODIFY)),
             ck('only', 'В списке только эти две записи (SYSTEM, Users и Authenticated Users удалены)', 'tylko dwa wpisy', (c) => aces(c).length === 2 && aces(c).every((a) => a.type === 'allow' && (a.who === ADMINS || a.who === grpW))),
-          ], `Eksplorator → C:\\ → ПКМ → Nowy → Folder. Notatnik → Zapisz jako → C:\\папка\\informacje.txt. Właściwości папки → Udostępnianie → «Udostępnianie zaawansowane…» → «Udostępnij ten folder», имя → Uprawnienia: оставь/задай Wszyscy → Pełna kontrola. Zabezpieczenia → Zaawansowane → «Wyłącz dziedziczenie» → «Usuń wszystkie odziedziczone uprawnienia…» → Dodaj/Edytuj: Administratorzy — Pełna kontrola; группа (Wybierz podmiot → ${p.grp}) — Modyfikacja. Либо net share / icacls (см. howto).`),
+          ], `Eksplorator → C:\\ → ПКМ → Nowy → Folder. Notatnik → Zapisz jako → C:\\папка\\informacje.txt. Właściwości папки → Udostępnianie → «Udostępnianie zaawansowane…» → «Udostępnij ten folder», имя → Uprawnienia: оставь/задай Wszyscy → Pełna kontrola. Zabezpieczenia → Zaawansowane → «Wyłącz dziedziczenie» → «Usuń wszystkie odziedziczone uprawnienia…» → Dodaj/Edytuj: Administratorzy — Pełna kontrola; группа (Wybierz podmiot → ${p.grp}) — Modyfikacja. Либо net share / icacls (см. howto).`, `Eksplorator → C:\\ → RMB → Nowy → Folder. Notatnik → Zapisz jako → C:\\folder\\informacje.txt. foldery → Udostępnianie → „Udostępnianie zaawansowane...” → „Udostępnij dziesięć folderów”, nazwa → Uprawnienia: zostaw/ustaw Wszyscy → Pełna kontrola. Zabezpieczenia → Zaawansowane → „Wyłącz dziedziczenie” → „Usuń wszystkie odziedziczone prawa…” → Dodaj/Edytuj: Administratorzy — Pełna kontrola; group (Wybierz podmiot → ${p.grp}) - Modyfikacja. Lub udział netto/icacls (zobacz jak).`),
           task('client', 'pc', 'Stacja: dostęp przez sieć', [
             `na stacji połącz dysk ${p.letter}: z zasobem ${unc} (net use ${p.letter}: ${unc} /user:${nb}\\${l1} ...), wyświetl zawartość dysku (dir), utwórz na dysku plik z stacji: echo test > ${p.letter}:\\klient.txt`,
             `sprawdź, że konto ${nb}\\${l2} (spoza grupy ${p.grp}) nie ma dostępu do udziału (komunikat „Odmowa dostępu”)`,
@@ -101,7 +102,7 @@ export const SHARE_DRILLS: DrillDef[] = [
             ck('dir', `Выполнен dir ${p.letter}:`, 'dir', (c) => pcHist(c, new RegExp(`^dir\\s+${p.letter}:`, 'i'))),
             ck('write', `Файл ${folder}\\klient.txt создан с клиента`, 'zapis z klienta', (c) => !!c.server && readFile(c.server, `${folder}\\klient.txt`) !== null),
             ck('deny', `Проверено, что ${nb}\\${l2} получает отказ`, 'odmowa dostępu', (c) => pcHist(c, new RegExp(`^net use .*/user:${esc(nb)}\\\\${l2}`, 'i')) && !!c.server && !!c.pc && !(tokenFor(c.server, `${nb}\\${l2}`).who.includes(grpW.toLowerCase())) && ntfsBits(c.server, folder, tokenFor(c.server, `${nb}\\${l2}`)) === 0),
-          ], `cmd: net use P: ${unc} /user:${nb}\\${l1} ${p.pw}; dir P:\\; echo test > P:\\klient.txt. Второй пользователь: net use \\\\${ip}\\${share} /user:${nb}\\${l2} ${p.pw} → «Wystąpił błąd systemowy 5. Odmowa dostępu» (его нет в группе — NTFS не даёт доступ). Или Eksplorator → адрес ${unc} → окно «Wprowadź poświadczenia».`),
+          ], `cmd: net use P: ${unc} /user:${nb}\\${l1} ${p.pw}; dir P:\\; echo test > P:\\klient.txt. Второй пользователь: net use \\\\${ip}\\${share} /user:${nb}\\${l2} ${p.pw} → «Wystąpił błąd systemowy 5. Odmowa dostępu» (его нет в группе — NTFS не даёт доступ). Или Eksplorator → адрес ${unc} → окно «Wprowadź poświadczenia».`, `cmd: wykorzystanie sieci P: ${unc} /user:${nb}\\${l1} ${p.pw}; katalog P:\\; test echa > P:\\klient.txt. Drugi użytkownik: net use \\\\${ip}\\${share} /user:${nb}\\${l2} ${p.pw} → „Wystąpił błąd systemowy 5. Odmowa dostępu” (nie ma go w grupie - NTFS nie zapewnia dostępu). Lub Eksplorator → adres ${unc} → okno „Wprowadź doświadczenia”.`),
         ],
       }
     },
@@ -113,6 +114,7 @@ export const SHARE_DRILLS: DrillDef[] = [
     title_ru: 'Windows Server: FSRM — квота на папку и блокировка файлов, клиент превышает лимит',
     title_pl: 'Windows Server: przydział FSRM i osłona plików',
     goal_ru: 'Поставить роль «Menedżer zasobów serwera plików», расшарить папку, создать жёсткую квоту и экран блокировки типов файлов; с клиента убедиться, что превышение лимита и запрещённый тип файла отклоняются.',
+    goal_pl: "Ustaw rolę „Menedżer zasobów serwera plików”, udostępnij folder, utwórz sztywny limit i ekran blokowania typu pliku; od klienta, upewnij się, że przekroczenie limitu i zabroniony typ pliku są odrzucane.",
     minutes: 35,
     docs: [D.winserverShares, D.winserverRoles],
     params: (r) => ({ ...params(r), limit: r.pick([5, 10, 20]) }) as unknown as { X: number } & Record<string, unknown>,
@@ -154,7 +156,7 @@ export const SHARE_DRILLS: DrillDef[] = [
             ck('quota', `Квота на ${folder}: ${p.limit} MB`, 'przydział', (c) => quota(c)?.limit === limit),
             ck('hard', 'Квота жёсткая (Twardy)', 'limit twardy', (c) => quota(c)?.hard === true),
             ck('screen', 'Экран блокировки активен, группа «Pliki audio i wideo»', 'osłona pliku', (c) => !!screen(c)?.active && !!screen(c)?.groups.includes('Pliki audio i wideo')),
-          ], 'Dodaj role → Usługi plików i magazynowania → Usługi plików i iSCSI → «Menedżer zasobów serwera plików». Папка и udział — как в ws-share. Потом Narzędzia → Menedżer zasobów serwera plików (fsrm.msc) → Zarządzanie przydziałami → Przydziały → «Utwórz przydział…»: ścieżka, «Utwórz przydział na ścieżce», «Zdefiniuj niestandardowe właściwości przydziału» → Limit N MB, «Limit twardy». Zarządzanie osłanianiem plików → Osłony plików → «Utwórz osłonę pliku…» → niestandardowe: Osłanianie aktywne + «Pliki audio i wideo».'),
+          ], 'Dodaj role → Usługi plików i magazynowania → Usługi plików i iSCSI → «Menedżer zasobów serwera plików». Папка и udział — как в ws-share. Потом Narzędzia → Menedżer zasobów serwera plików (fsrm.msc) → Zarządzanie przydziałami → Przydziały → «Utwórz przydział…»: ścieżka, «Utwórz przydział na ścieżce», «Zdefiniuj niestandardowe właściwości przydziału» → Limit N MB, «Limit twardy». Zarządzanie osłanianiem plików → Osłony plików → «Utwórz osłonę pliku…» → niestandardowe: Osłanianie aktywne + «Pliki audio i wideo».', `Dodaj rolę → Usługi plików i magazynowania → Usługi plików i iSCSI → „Menedżer zasobów serwera plików”. Folder i udział - jak w ws-share. Następnie Narzędzia → Menedżer zasobów serwera plików (fsrm.msc) → Zarządzanie przydziałami → Przydziały → „Utwórz przydział…”: ścieżki, „Utwórz przydział na ścieżce”, „Zdefiniuj zastosowania przydziału” → Limit N MB, „Limit twardy”. Zarządzanie osłanianiem plików → Osłony plików → „Utwórz osłonę pliku...” → udostępnione: Osłanianie mobilne + „Pliki audio i wideo”.`),
           task('client', 'pc', 'Stacja: przekroczenie limitu', [
             `na stacji połącz dysk ${p.letter}: z zasobem ${unc} (konto ${nb}\\${l1}, hasło ${p.pw})`,
             `utwórz na dysku plik ok.dat o rozmiarze ${p.limit - 1} MB (fsutil file createnew ${p.letter}:\\ok.dat ${ok1}) — operacja ma się udać`,
@@ -165,7 +167,7 @@ export const SHARE_DRILLS: DrillDef[] = [
             ck('ok', `ok.dat (${p.limit - 1} MB) записан`, 'plik w limicie', (c) => exists(c, 'ok.dat') && c.server?.sizes?.[`${folder}\\ok.dat`] === ok1),
             ck('big', 'duzy.dat отклонён квотой (файла нет, попытка была)', 'przekroczenie limitu', (c) => pcHist(c, /fsutil file createnew .*duzy\.dat/i) && !exists(c, 'duzy.dat')),
             ck('mp3', 'muzyka.mp3 отклонён экраном (файла нет, попытка была)', 'osłona plików', (c) => pcHist(c, /muzyka\.mp3/i) && !exists(c, 'muzyka.mp3')),
-          ], `cmd: net use ${p.letter}: ${unc} /user:${nb}\\${l1} ${p.pw}; fsutil file createnew ${p.letter}:\\ok.dat ${ok1}; fsutil file createnew ${p.letter}:\\duzy.dat ${2 * MB} → «Brak wystarczającej ilości miejsca na dysku» (квота); echo x > ${p.letter}:\\muzyka.mp3 → «Odmowa dostępu» (экран). Если ok.dat не создаётся — проверь, что квота ${p.limit} MB, а не меньше.`),
+          ], `cmd: net use ${p.letter}: ${unc} /user:${nb}\\${l1} ${p.pw}; fsutil file createnew ${p.letter}:\\ok.dat ${ok1}; fsutil file createnew ${p.letter}:\\duzy.dat ${2 * MB} → «Brak wystarczającej ilości miejsca na dysku» (квота); echo x > ${p.letter}:\\muzyka.mp3 → «Odmowa dostępu» (экран). Если ok.dat не создаётся — проверь, что квота ${p.limit} MB, а не меньше.`, `cmd: użycie sieci ${p.letter}: ${unc} /user:${nb}\\${l1} ${p.pw}; plik fsutil utwórz nowy ${p.letter}:\\ok.dat ${ok1}; fsutil plik createnew ${p.letter}:\\duzy.dat ${2 * MB} → „Brak ilości miejsca na dysku” (quota); echo x > ${p.letter}:\\muzyka.mp3 → „Odmowa dostępu” (ekran). Jeśli plik ok.dat nie zostanie utworzony, sprawdź, czy przydział wynosi ${p.limit} MB i nie mniej.`),
         ],
       }
     },

@@ -30,7 +30,7 @@ export type Activity =
   | { kind: 'cmd'; key: string; groups: string[] }
   | { kind: 'exam'; key: string; pass: number }
   | { kind: 'quiz'; key: string; id: string; entry: QuizEntry }
-  | { kind: 'link'; key: string; id: string; title: string; href: string; external: boolean }
+  | { kind: 'link'; key: string; id: string; title: string; title_pl?: string; href: string; external: boolean }
   | { kind: 'missing'; key: string; ref: Ref }
   | { kind: 'ack'; key: string }
   /** paper run of a sheet the simulator does not cover: the student enters the % from self-assessment */
@@ -97,18 +97,19 @@ export function resolveNew(ref: Ref, step: Step): Activity | null {
 }
 
 // ------------------------------------------------------------------ activities
-const TOOL_TITLE: Record<string, string> = {
-  mistakes: 'Режим «Мои ошибки»: повторить неверные ответы',
-  glossary: 'Словарь PL–RU: просмотреть термины',
-  vm: 'Настоящий Linux в браузере (виртуальная машина)',
-  'check-winserver.ps1': 'Скрипт самопроверки Windows Server (check-winserver.ps1)',
-  'check-linux.sh': 'Скрипт самопроверки Linux (check-linux.sh)',
+const TOOL_TITLE: Record<string, { ru: string; pl: string }> = {
+  mistakes: { ru: 'Режим «Мои ошибки»: повторить неверные ответы', pl: 'Tryb „Moje błędy”: powtórz błędne odpowiedzi' },
+  glossary: { ru: 'Словарь PL–RU: просмотреть термины', pl: 'Słowniczek PL–RU: przejrzyj terminy' },
+  vm: { ru: 'Настоящий Linux в браузере (виртуальная машина)', pl: 'Prawdziwy Linux w przeglądarce (maszyna wirtualna)' },
+  'check-winserver.ps1': { ru: 'Скрипт самопроверки Windows Server (check-winserver.ps1)', pl: 'Skrypt sprawdzający Windows Server (check-winserver.ps1)' },
+  'check-linux.sh': { ru: 'Скрипт самопроверки Linux (check-linux.sh)', pl: 'Skrypt sprawdzający Linux (check-linux.sh)' },
 }
 
 function toolLink(id: string, key: string): Activity {
   const base = import.meta.env.BASE_URL
   const href = id === 'mistakes' ? '#/mistakes' : id === 'glossary' ? '#/glossary' : id === 'vm' ? `${base}vm/` : `${base}tools/${id}`
-  return { kind: 'link', key, id, title: TOOL_TITLE[id] ?? id, href, external: id === 'vm' || id.startsWith('check-') }
+  const title = TOOL_TITLE[id]
+  return { kind: 'link', key, id, title: title?.ru ?? id, title_pl: title?.pl, href, external: id === 'vm' || id.startsWith('check-') }
 }
 
 /** Activities of a step, in the order the student does them. */

@@ -63,20 +63,24 @@ export const fmtDay = (d: string, lang: Lang, weekday = true) =>
   parseDay(d).toLocaleDateString(lang === 'ru' ? 'ru-RU' : 'pl-PL', weekday ? { weekday: 'short', day: 'numeric', month: 'short' } : { day: 'numeric', month: 'short' })
 
 const title = (x: { title_ru: string; title_pl: string }, lang: Lang) => (lang === 'ru' ? x.title_ru : x.title_pl)
+const localized = (ruText: string | undefined, plText: string | undefined, lang: Lang) => (lang === 'ru' ? ruText : plText ?? ruText)
 const mins = (n: number, ru: boolean) => (n >= 90 ? `${Math.floor(n / 60)} ${ru ? 'ч' : 'h'}${n % 60 ? ` ${n % 60} ${ru ? 'мин' : 'min'}` : ''}` : `${n} ${ru ? 'мин' : 'min'}`)
 
-/** "Почему важно": from exam_value */
-function whyText(s: Step): string | null {
+/** Exam frequency note under the objective. */
+function whyText(s: Step, ru: boolean): string | null {
   const pr = s.exam_value?.practical
   if (pr) {
     const best = Object.values(pr).sort((a, b) => b.sheets_pct - a.sheets_pct)[0]
-    if (best) return `Есть в ${best.sheets_pct} % экзаменационных листов, в среднем ${String(best.avg_points_when_present).replace('.', ',')} балла, ≈ ${String(best.share_of_all_points_pct).replace('.', ',')} % всех баллов практики.`
+    if (best)
+      return ru
+        ? `Есть в ${best.sheets_pct} % экзаменационных листов, в среднем ${String(best.avg_points_when_present).replace('.', ',')} балла, ≈ ${String(best.share_of_all_points_pct).replace('.', ',')} % всех баллов практики.`
+        : `Występuje w ${best.sheets_pct}% arkuszy egzaminacyjnych, średnio ${String(best.avg_points_when_present).replace('.', ',')} pkt, ≈ ${String(best.share_of_all_points_pct).replace('.', ',')}% wszystkich punktów części praktycznej.`
   }
   const wr = s.exam_value?.written
   if (wr) {
     const v = Object.values(wr)[0]
     const pct = v?.written_primary_share_ee08_2021_24_pct ?? v?.written_primary_share_all_pct
-    if (pct) return `≈ ${String(pct).replace('.', ',')} % вопросов письменной части.`
+    if (pct) return ru ? `≈ ${String(pct).replace('.', ',')} % вопросов письменной части.` : `≈ ${String(pct).replace('.', ',')}% pytań części pisemnej.`
   }
   return null
 }
@@ -203,11 +207,11 @@ export function PathToday() {
             {proposal.levels.map((lv) => (
               <li key={lv.ids.join()}>
                 <span>{lv.ids.filter((id) => proposal.ids.includes(id)).map((id) => title(d.byId.get(id)!, lang)).join('; ')}</span>
-                <small>{lv.why_ru}</small>
+                <small>{ru ? lv.why_ru : lv.why_pl}</small>
               </li>
             ))}
           </ul>
-          <p className="hint">{ru ? 'Сеть, роутер/свитч/VLAN, кабели, идентификация, Linux до netplan, Windows Server как знание, смета и полные листы не трогаем.' : ''}</p>
+          <p className="hint">{ru ? 'Сеть, роутер/свитч/VLAN, кабели, идентификация, Linux до netplan, Windows Server как знание, смета и полные листы не трогаем.' : 'Sieć, ruter/przełącznik/VLAN, okablowanie, identyfikacja, Linux do netplan, Windows Server jako wiedza, kosztorys i pełne arkusze zostawiamy.'}</p>
           <div className="row">
             <button
               className="btn primary"
@@ -523,7 +527,7 @@ export function ModulePage({ id }: { id: string }) {
           {st.done}/{st.total}
         </span>
       </div>
-      {ru && <p className="lead">{m.why_ru}</p>}
+      <p className="lead">{localized(m.why_ru, m.why_pl, lang)}</p>
       <ol className="tp-steps card mod-steps">
         {steps.map((s) => {
           const when = plan.when.get(s.id)
@@ -641,9 +645,9 @@ function actTitle(a: Activity, ru: boolean): string {
     case 'exam':
       return ru ? 'Пробный письменный экзамен: 40 вопросов за 60 минут' : 'Egzamin próbny 40/60'
     case 'quiz':
-      return a.entry.title_ru
+      return ru ? a.entry.title_ru : a.entry.title_pl
     case 'link':
-      return a.title
+      return ru ? a.title : (a.title_pl ?? a.title)
     case 'missing':
       return a.ref.id
     case 'ack':
@@ -656,9 +660,9 @@ function actTitle(a: Activity, ru: boolean): string {
 function actSub(a: Activity, ru: boolean, step: Step): string {
   switch (a.kind) {
     case 'drill':
-      return `${a.def.goal_ru} · ${mins(a.def.minutes, ru)}${a.fresh ? (ru ? ' · новый вариант, без справки' : '') : ''}`
+      return `${ru ? a.def.goal_ru : (a.def.goal_pl ?? a.def.goal_ru)} · ${mins(a.def.minutes, ru)}${a.fresh ? (ru ? ' · новый вариант, без справки' : ' · nowy wariant, bez pomocy') : ''}`
     case 'lab':
-      return a.timer ? (ru ? `Под таймером ${a.timer} мин${a.fresh ? ', без справки' : ''}` : `Na czas ${a.timer} min`) : ru ? 'Сетевая часть листа' : ''
+      return a.timer ? (ru ? `Под таймером ${a.timer} мин${a.fresh ? ', без справки' : ''}` : `Na czas ${a.timer} min${a.fresh ? ', bez pomocy' : ''}`) : ru ? 'Сетевая часть листа' : 'Część sieciowa arkusza'
     case 'topics': {
       const n = a.topics.reduce((x, t) => x + t.count, 0)
       return ru ? `${n} вопросов из банка CKE, порог ${step.kind === 'checkpoint' ? 75 : 70}%` : `${n} pytań`
@@ -670,11 +674,11 @@ function actSub(a: Activity, ru: boolean, step: Step): string {
     case 'cmd':
       return ru ? 'Набери команду по описанию, порог 70%' : 'Wpisz polecenie'
     case 'exam':
-      return a.pass ? (ru ? `Порог ${a.pass}%. Потом — разбор ошибок в «Мои ошибки».` : `Próg ${a.pass}%`) : ru ? 'Без порога: исходный уровень по темам.' : ''
+      return a.pass ? (ru ? `Порог ${a.pass}%. Потом — разбор ошибок в «Мои ошибки».` : `Próg ${a.pass}%. Potem — analiza błędów w „Moje błędy”.`) : ru ? 'Без порога: исходный уровень по темам.' : 'Bez progu: poziom wyjściowy z tematów.'
     case 'quiz':
       return ru ? 'Интерактивный тест' : 'Test'
     case 'link':
-      return a.external ? (ru ? 'Откроется отдельно; когда сделаешь — отметь' : 'Otwiera się osobno') : ru ? 'Когда сделаешь — отметь' : ''
+      return a.external ? (ru ? 'Откроется отдельно; когда сделаешь — отметь' : 'Otwiera się osobno; po wykonaniu — oznacz') : ru ? 'Когда сделаешь — отметь' : 'Po wykonaniu — oznacz'
     case 'missing':
       return ''
     case 'ack':
@@ -730,7 +734,7 @@ export function StepPage({ id }: { id: string }) {
   const done = rec?.s === 'done' || rec?.s === 'skipped'
   const idx = mod.steps.findIndex((s) => s.id === step.id)
   const showReadingsInline = step.kind === 'theory' || step.kind === 'demo' || step.kind === 'quiz'
-  const why = whyText(step)
+  const why = whyText(step, ru)
   const missing = acts.filter((a) => a.kind === 'missing')
 
   const nextStep = (() => {
@@ -793,9 +797,9 @@ export function StepPage({ id }: { id: string }) {
 
       <section className="step-goal">
         <h2>{ru ? 'Цель' : 'Cel'}</h2>
-        <p>{step.objective_ru}</p>
+        <p>{localized(step.objective_ru, step.objective_pl, lang)}</p>
         {why && <p className="step-why">{why}</p>}
-        {step.adaptive_ru && <p className="hint">{step.adaptive_ru}</p>}
+        {(ru ? step.adaptive_ru : step.adaptive_pl) && <p className="hint">{localized(step.adaptive_ru, step.adaptive_pl, lang)}</p>}
       </section>
 
       {prereqLeft.length > 0 && !done && (
@@ -827,10 +831,10 @@ export function StepPage({ id }: { id: string }) {
         </section>
       )}
 
-      {step.offline_task_ru && (
+      {(ru ? step.offline_task_ru : step.offline_task_pl) && (
         <section className="step-offline">
           <h2>{ru ? 'Руками, в школе' : 'W szkole'}</h2>
-          <p>{step.offline_task_ru}</p>
+          <p>{localized(step.offline_task_ru, step.offline_task_pl, lang)}</p>
         </section>
       )}
 
@@ -845,8 +849,8 @@ export function StepPage({ id }: { id: string }) {
           {step.missing_spec && (
             <details className="spec">
               <summary>{ru ? 'Что будет в задании' : 'Opis'}</summary>
-              <p>{step.missing_spec.spec_ru}</p>
-              {step.missing_spec.acceptance && <p className="hint">{step.missing_spec.acceptance}</p>}
+              <p>{localized(step.missing_spec.spec_ru, step.missing_spec.spec_pl, lang)}</p>
+              {(ru ? step.missing_spec.acceptance : step.missing_spec.acceptance_pl) && <p className="hint">{localized(step.missing_spec.acceptance, step.missing_spec.acceptance_pl, lang)}</p>}
             </details>
           )}
         </section>
@@ -1034,7 +1038,7 @@ function MissingAct({ a, step, st }: { a: Extract<Activity, { kind: 'missing' }>
           {st.ok && <Icon name="check" size={16} />}
         </span>
         <span className="act-text">
-          <span className="act-title">{step.title_ru}</span>
+          <span className="act-title">{ru ? step.title_ru : step.title_pl}</span>
           <span className="act-sub">{ru ? 'Задание в разработке. Замена: вопросы по теме из банка CKE.' : 'W przygotowaniu.'}</span>
         </span>
         <span className="status-tag">{ru ? 'скоро' : 'wkrótce'}</span>
@@ -1101,8 +1105,8 @@ function StuckLadder({ a, docs, onDoc }: { a: Extract<Activity, { kind: 'drill' 
   }, [a])
   const allDocs = [...docs, ...(a.kind === 'drill' ? a.def.docs : labDocs(a.lab))].filter((d, i, arr) => arr.findIndex((x) => x.to === d.to && (x.section === d.section || !d.section)) === i)
   const hintText = failed.length
-    ? failed.map((t) => `${t.title_ru}: ${t.checks.filter((c) => !saved!.checked![`${t.id}.${c.id}`]).map((c) => c.ru).join('; ')}${taskHint(t, saved) ? ` — ${taskHint(t, saved)}` : ''}`).join('\n')
-    : lab.tasks.map((t) => taskHint(t, saved ?? hwDefaults(lab))).filter(Boolean).join('\n')
+    ? failed.map((t) => `${ru ? t.title_ru : (t.title_pl ?? t.title_ru)}: ${t.checks.filter((c) => !saved!.checked![`${t.id}.${c.id}`]).map((c) => (ru ? c.ru : c.pl)).join('; ')}${taskHint(t, saved, ru ? 'ru' : 'pl') ? ` — ${taskHint(t, saved, ru ? 'ru' : 'pl')}` : ''}`).join('\n')
+    : lab.tasks.map((t) => taskHint(t, saved ?? hwDefaults(lab), ru ? 'ru' : 'pl')).filter(Boolean).join('\n')
   return (
     <div className="stuck">
       <p className="stuck-t">{ru ? 'Не дотянул до 75%?' : 'Poniżej 75%?'}</p>
@@ -1176,12 +1180,12 @@ function StepResult({
             {rec?.pct !== undefined && ` · ${rec.pct}%`}
             {rec?.s === 'done' && !rec.manual && ` · ${hintWord(rec.hint ?? 0)}`}
           </p>
-          {step.after_ru && <p className="hint">{step.after_ru}</p>}
+          {(ru ? step.after_ru : step.after_pl) && <p className="hint">{localized(step.after_ru, step.after_pl, lang)}</p>}
           {lost.length > 0 && repeatDrills.length > 0 && (
             <div className="row">
               <span className="hint">
                 {ru ? 'Потеряны баллы в: ' : 'Stracone punkty: '}
-                {lost.map((t) => t.title_ru).join('; ')}
+                {lost.map((t) => (ru ? t.title_ru : (t.title_pl ?? t.title_ru))).join('; ')}
               </span>
               <button className="btn small" disabled={planned} onClick={() => addExtra(tomorrow, repeatDrills as string[])}>
                 {planned ? (ru ? 'Поставлено на завтра' : 'Jutro') : ru ? 'Повторить эти навыки завтра' : 'Powtórz jutro'}

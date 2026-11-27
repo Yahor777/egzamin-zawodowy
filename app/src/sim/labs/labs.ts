@@ -43,8 +43,10 @@ export interface LabTask {
   id: string
   device: 'router' | 'switch' | 'linux' | 'pc' | 'server' | 'cabling' | 'tests'
   title_ru: string
+  title_pl?: string
   text_pl: string[]
   hint_ru?: string
+  hint_pl?: string
   checks: LabCheck[]
 }
 
@@ -54,6 +56,7 @@ export interface Lab {
   title_ru: string
   title_pl: string
   summary_ru: string
+  summary_pl?: string
   station: number
   guide?: string // slug of the matching step-by-step guide
   devices: {
@@ -120,7 +123,7 @@ export const LABS: Lab[] = [
     code: 'INF.02-01-26.01-SG',
     title_ru: 'Роутер с WAN, свитч, Linux-сервер: netplan, DHCP и скрипт',
     title_pl: 'Ruter, przełącznik, serwer Linux: netplan, DHCP i skrypt',
-    summary_ru: 'Настоящий лист января 2026. Linux-сервер раздаёт адреса по DHCP, Windows-станция получает адрес от него, скрипт создаёт 5 пользователей.',
+    summary_ru: 'Настоящий лист января 2026. Linux-сервер раздаёт адреса по DHCP, Windows-станция получает адрес от него, скрипт создаёт 5 пользователей.', summary_pl: `Ten arkusz pochodzi ze stycznia 2026 r. Serwer Linux rozsyła adresy poprzez DHCP, stacja Windows otrzymuje od niego adres, skrypt tworzy 5 użytkowników.`,
     station: 5,
     guide: 'inf02-2026-01-01',
     devices: {
@@ -149,14 +152,14 @@ export const LABS: Lab[] = [
       {
         id: 'router',
         device: 'router',
-        title_ru: 'Роутер',
+        title_ru: 'Роутер', title_pl: `rutera`,
         text_pl: [
           'adres IP interfejsu WAN: 90.90.0.1/29, brama domyślna: 90.90.0.2',
           'serwer DNS dla interfejsu WAN: 208.67.222.222 oraz drugi: 208.67.220.220, jeśli jest wymagany',
           'adres IP interfejsu LAN: 10.90.0.1/24',
           'serwer DHCP: wyłączony',
         ],
-        hint_ru: 'Network → WAN: Static IP. Network → LAN. DHCP → DHCP Settings: Disable. Маска /29 = 255.255.255.248.',
+        hint_ru: 'Network → WAN: Static IP. Network → LAN. DHCP → DHCP Settings: Disable. Маска /29 = 255.255.255.248.', hint_pl: `Network → WAN: Statyczny adres IP. Network → LAN. DHCP → DHCP Settings: Wyłącz. Maska /29 = 255.255.255.248.`,
         checks: [
           { id: 'wan', ru: 'WAN: статический 90.90.0.1, маска 255.255.255.248', pl: 'WAN 90.90.0.1/29', points: 1, test: (c) => c.router?.wan.type === 'static' && c.router.wan.ip === '90.90.0.1' && c.router.wan.mask === '255.255.255.248' },
           { id: 'wangw', ru: 'WAN: шлюз 90.90.0.2 и DNS 208.67.222.222', pl: 'brama 90.90.0.2, DNS 208.67.222.222', points: 1, test: (c) => c.router?.wan.gateway === '90.90.0.2' && c.router.wan.dns1 === '208.67.222.222' },
@@ -167,9 +170,9 @@ export const LABS: Lab[] = [
       {
         id: 'switch',
         device: 'switch',
-        title_ru: 'Свитч',
+        title_ru: 'Свитч', title_pl: `Przełącznik`,
         text_pl: ['adres IP: 10.80.0.3/24', 'brama domyślna: 10.80.0.2'],
-        hint_ru: 'System → IP Setting: DHCP Disable, IP 10.80.0.3, маска 255.255.255.0, шлюз 10.80.0.2. После сохранения зайди по новому адресу.',
+        hint_ru: 'System → IP Setting: DHCP Disable, IP 10.80.0.3, маска 255.255.255.0, шлюз 10.80.0.2. После сохранения зайди по новому адресу.', hint_pl: `System → IP Setting: Wyłącz DHCP, IP 10.80.0.3, maska ​​255.255.255.0, brama 10.80.0.2. Po zapisaniu przejdź pod nowy adres.`,
         checks: [
           { id: 'ip', ru: 'IP свитча 10.80.0.3/24, DHCP выключен', pl: 'IP 10.80.0.3/24', points: 1, test: (c) => !!c.switch && !c.switch.ip.dhcp && c.switch.ip.ip === '10.80.0.3' && c.switch.ip.mask === '255.255.255.0' },
           { id: 'gw', ru: 'Шлюз свитча 10.80.0.2', pl: 'brama 10.80.0.2', points: 1, test: (c) => c.switch?.ip.gateway === '10.80.0.2' },
@@ -178,14 +181,14 @@ export const LABS: Lab[] = [
       {
         id: 'cabling',
         device: 'cabling',
-        title_ru: 'Подключение по схеме',
+        title_ru: 'Подключение по схеме', title_pl: `Podłączenie zgodnie ze schematem`,
         text_pl: ['Za pomocą kabli połączeniowych połącz urządzenia zgodnie ze schematem.'],
         checks: [{ id: 'links', ru: 'Устройства соединены по схеме', pl: 'połączenie zgodne ze schematem', points: 1, test: (c) => linksMatch(LABS[0].requiredLinks, c.links) }],
       },
       {
         id: 'linux',
         device: 'linux',
-        title_ru: 'Linux-сервер: сеть, DHCP, права',
+        title_ru: 'Linux-сервер: сеть, DHCP, права', title_pl: `Serwer Linux: sieć, DHCP, uprawnienia`,
         text_pl: [
           'interfejs podłączony do rutera (enp0s3): adres IP 90.90.0.3/29, brama domyślna 90.90.0.1, DNS: brak',
           'interfejs podłączony do przełącznika (enp0s8): adres IP 10.80.0.2/24, brama domyślna: brak, DNS: 10.80.0.2',
@@ -193,7 +196,7 @@ export const LABS: Lab[] = [
           'w katalogu domowym użytkownika administrator utwórz katalog skrypty_admina, w nim skrypt powłoki konta.sh',
           'nadaj prawa do pliku konta.sh notacją liczbową: odczyt, zapis i wykonanie dla właściciela oraz jedynie uruchomienie dla grupy',
         ],
-        hint_ru: 'sudo nano /etc/netplan/50-cloud-init.yaml → sudo netplan apply. Затем /etc/dhcp/dhcpd.conf и INTERFACESv4="enp0s8" в /etc/default/isc-dhcp-server → sudo systemctl restart isc-dhcp-server. Права: rwx для владельца = 7, только x для группы = 1, остальные = 0 → chmod 710.',
+        hint_ru: 'sudo nano /etc/netplan/50-cloud-init.yaml → sudo netplan apply. Затем /etc/dhcp/dhcpd.conf и INTERFACESv4="enp0s8" в /etc/default/isc-dhcp-server → sudo systemctl restart isc-dhcp-server. Права: rwx для владельца = 7, только x для группы = 1, остальные = 0 → chmod 710.', hint_pl: `sudo nano /etc/netplan/50-cloud-init.yaml → sudo netplan apply. Następnie /etc/dhcp/dhcpd.conf i INTERFACESv4="enp0s8" w /etc/default/isc-dhcp-server → sudo systemctl restart isc-dhcp-server. Uprawnienia: rwx dla właściciela = 7, tylko x dla grupy = 1, inni = 0 → chmod 710.`,
         checks: [
           { id: 'e3', ru: 'enp0s3 = 90.90.0.3/29', pl: 'enp0s3 90.90.0.3/29', points: 1, test: (c) => ifaceHas(c, 'enp0s3', '90.90.0.3/29') },
           { id: 'gw', ru: 'Шлюз по умолчанию 90.90.0.1', pl: 'brama 90.90.0.1', points: 1, test: (c) => c.linux?.defaultGateway() === '90.90.0.1' },
@@ -227,13 +230,13 @@ export const LABS: Lab[] = [
       {
         id: 'script',
         device: 'linux',
-        title_ru: 'Скрипт konta.sh',
+        title_ru: 'Скрипт konta.sh', title_pl: `Skrypt konto.sh`,
         text_pl: [
           'skrypt wywoływany z dwoma parametrami: pierwszy – nazwa bazowa użytkownika, drugi – nazwa bazowa katalogu domowego',
           'tworzy 5 kont wraz z katalogami domowymi, przy użyciu pętli; np. dla parametrów uczen i 3TI: konta uczen1…uczen5 i katalogi /home/3TI1…/home/3TI5',
           'uruchom skrypt z parametrami: uczen, 3TI',
         ],
-        hint_ru: 'for i in {1..5}; do useradd -m -d /home/$2$i $1$i; done — запуск: sudo ./konta.sh uczen 3TI (из каталога со скриптом).',
+        hint_ru: 'for i in {1..5}; do useradd -m -d /home/$2$i $1$i; done — запуск: sudo ./konta.sh uczen 3TI (из каталога со скриптом).', hint_pl: `for i in {1..5}; do useradd -m -d /home/$2$i $1$i; done — uruchom: sudo ./konta.sh uczen 3TI (z katalogu ze skryptem).`,
         checks: [
           { id: 'loop', ru: 'В скрипте есть цикл и параметры $1/$2', pl: 'pętla i parametry', points: 1, test: (c) => /\b(for|while)\b/.test(c.linux?.file('/home/administrator/skrypty_admina/konta.sh')?.content ?? '') && /\$\{?1/.test(c.linux?.file('/home/administrator/skrypty_admina/konta.sh')?.content ?? '') && /\$\{?2/.test(c.linux?.file('/home/administrator/skrypty_admina/konta.sh')?.content ?? '') },
           { id: 'users', ru: 'Созданы uczen1…uczen5', pl: 'konta uczen1–uczen5', points: 2, test: (c) => [1, 2, 3, 4, 5].every((i) => !!user(c, `uczen${i}`)) },
@@ -244,12 +247,12 @@ export const LABS: Lab[] = [
       {
         id: 'pc',
         device: 'pc',
-        title_ru: 'Windows-станция',
+        title_ru: 'Windows-станция', title_pl: `Stacja Windows`,
         text_pl: [
           'przewodowy interfejs podłączony do przełącznika: nazwa połączenia LAN_S, adres IP oraz pozostałe parametry uzyskiwane automatycznie',
           'w razie potrzeby zmień ustawienia zapory sieciowej (odpowiedź na ping)',
         ],
-        hint_ru: 'Połączenia sieciowe → Zmień nazwę → LAN_S. Właściwości → IPv4: automatycznie. В cmd: ipconfig /renew. Брандмауэр: правило «Żądanie echa — ICMPv4 — ruch przychodzący».',
+        hint_ru: 'Połączenia sieciowe → Zmień nazwę → LAN_S. Właściwości → IPv4: automatycznie. В cmd: ipconfig /renew. Брандмауэр: правило «Żądanie echa — ICMPv4 — ruch przychodzący».', hint_pl: `Połączenie sieciowe → Zmień istniejące → LAN_S. właściwości → IPv4: automatycznie. W cmd: ipconfig /renew. Firewall: reguła "Żądanie echa - ICMPv4 - ruch przychodzący".`,
         checks: [
           { id: 'name', ru: 'Подключение называется LAN_S', pl: 'nazwa LAN_S', points: 1, test: (c) => !!pcAdapter(c, 'LAN_S') },
           { id: 'lease', ru: 'LAN_S получил адрес от DHCP Linux (10.80.0.10–30)', pl: 'adres z DHCP serwera', points: 1, test: (c) => { const a = pcAdapter(c, 'LAN_S'); return !!a?.dhcp && !!a.lease && sameSubnet(a.lease.ip, '10.80.0.0', 24) } },
@@ -259,9 +262,9 @@ export const LABS: Lab[] = [
       {
         id: 'tests',
         device: 'tests',
-        title_ru: 'Проверка связи с сервера',
+        title_ru: 'Проверка связи с сервера', title_pl: `Sprawdzanie połączenia z serwera`,
         text_pl: ['Na serwerze za pomocą poleceń systemowych wykonaj test komunikacji serwera ze stacją roboczą, przełącznikiem oraz interfejsem WAN rutera.'],
-        hint_ru: 'На сервере: ping -c 4 <адрес станции>, ping -c 4 10.80.0.3, ping -c 4 90.90.0.1. Адрес станции посмотри в cmd: ipconfig.',
+        hint_ru: 'На сервере: ping -c 4 <адрес станции>, ping -c 4 10.80.0.3, ping -c 4 90.90.0.1. Адрес станции посмотри в cmd: ipconfig.', hint_pl: `Na serwerze: ping -c 4 <adres stacji>, ping -c 4 10.80.0.3, ping -c 4 90.90.0.1. Spójrz na adres stacji w cmd: ipconfig.`,
         checks: [
           { id: 'pc', ru: 'Сервер пингует станцию', pl: 'ping do stacji', points: 1, test: (c) => { const a = pcAdapter(c, 'LAN_S'); return !!a?.lease && c.ping('linux', a.lease.ip) && histHas(c, new RegExp(`ping .*${a.lease.ip.replace(/\./g, '\\.')}`)) } },
           { id: 'sw', ru: 'Сервер пингует свитч 10.80.0.3', pl: 'ping do przełącznika', points: 1, test: (c) => c.ping('linux', '10.80.0.3') && histHas(c, /ping .*10\.80\.0\.3\b/) },
@@ -275,7 +278,7 @@ export const LABS: Lab[] = [
     code: 'INF.02-02-26.01-SG',
     title_ru: 'DHCP с резервированием, VLAN 2, диск в Linux',
     title_pl: 'DHCP z rezerwacją, VLAN 2, dysk w Linuksie',
-    summary_ru: 'Роутер раздаёт адреса с резервированием по MAC, свитч с VLAN 802.1Q, на Linux — новый раздел ext4 и монтирование в /dane.',
+    summary_ru: 'Роутер раздаёт адреса с резервированием по MAC, свитч с VLAN 802.1Q, на Linux — новый раздел ext4 и монтирование в /dane.', summary_pl: `ruter dystrybuuje adresy z rezerwacją przez MAC, przełącznik z VLAN 802.1Q, na Linuksie - nowa partycja ext4 i montaż w /dane.`,
     station: 5,
     guide: 'inf02-2026-01-02',
     devices: {
@@ -307,7 +310,7 @@ export const LABS: Lab[] = [
       {
         id: 'router',
         device: 'router',
-        title_ru: 'Роутер',
+        title_ru: 'Роутер', title_pl: `rutera`,
         text_pl: [
           'adres IP interfejsu LAN: 192.168.1.1/24',
           'serwer DHCP włączony: zakres 192.168.1.101 ÷ 192.168.1.150',
@@ -315,7 +318,7 @@ export const LABS: Lab[] = [
           'rezerwacja 192.168.1.102 dla interfejsu stacji roboczej (MAC 08-00-27-5B-20-03)',
           'czas dzierżawy: 12 godzin; serwer DNS: 192.168.1.101',
         ],
-        hint_ru: 'Сначала поменяй LAN и войди по новому адресу 192.168.1.1. 12 часов = 720 минут. Резервирование: DHCP → Address Reservation.',
+        hint_ru: 'Сначала поменяй LAN и войди по новому адресу 192.168.1.1. 12 часов = 720 минут. Резервирование: DHCP → Address Reservation.', hint_pl: `Najpierw zmień sieć LAN i zaloguj się pod nowym adresem 192.168.1.1. 12 godzin = 720 minut. Rezerwacja: DHCP → Address Reservation.`,
         checks: [
           { id: 'lan', ru: 'LAN 192.168.1.1/24', pl: 'LAN 192.168.1.1/24', points: 1, test: (c) => c.router?.lan.ip === '192.168.1.1' && c.router.lan.mask === '255.255.255.0' },
           { id: 'pool', ru: 'DHCP включён, пул .101–.150', pl: 'zakres DHCP', points: 1, test: (c) => !!c.router?.dhcp.enabled && c.router.dhcp.start === '192.168.1.101' && c.router.dhcp.end === '192.168.1.150' },
@@ -327,13 +330,13 @@ export const LABS: Lab[] = [
       {
         id: 'switch',
         device: 'switch',
-        title_ru: 'Свитч и VLAN',
+        title_ru: 'Свитч и VLAN', title_pl: `Przełącznik i VLAN`,
         text_pl: [
           'adres IP: 192.168.1.2/24, brama domyślna: adres IP interfejsu LAN rutera',
           'włączona obsługa VLAN 802.1Q, utworzony VLAN o ID = 2',
           'porty 1, 2, 3 przypisane do VLAN o ID = 2 bez tagowania (w trybie dostępu)',
         ],
-        hint_ru: 'VLAN → 802.1Q VLAN: Enable, VLAN ID 2, порты 1–3 Untagged. Затем 802.1Q PVID Setting: порты 1–3 → PVID 2 (иначе кадры с порта уйдут в VLAN 1).',
+        hint_ru: 'VLAN → 802.1Q VLAN: Enable, VLAN ID 2, порты 1–3 Untagged. Затем 802.1Q PVID Setting: порты 1–3 → PVID 2 (иначе кадры с порта уйдут в VLAN 1).', hint_pl: `VLAN → 802.1Q VLAN: Włącz, VLAN ID 2, porty 1–3 Nieoznaczone. Następnie 802.1Q PVID Setting: porty 1–3 → PVID 2 (w przeciwnym razie ramki z portu będą kierowane do VLAN 1).`,
         checks: [
           { id: 'ip', ru: 'IP 192.168.1.2/24, шлюз 192.168.1.1', pl: 'adresacja przełącznika', points: 1, test: (c) => !!c.switch && !c.switch.ip.dhcp && c.switch.ip.ip === '192.168.1.2' && c.switch.ip.mask === '255.255.255.0' && c.switch.ip.gateway === '192.168.1.1' },
           { id: 'dot1q', ru: '802.1Q включён, VLAN 2 создан', pl: '802.1Q i VLAN 2', points: 1, test: (c) => !!c.switch?.dot1q && !!c.switch.vlans.find((v) => v.id === 2) },
@@ -344,19 +347,19 @@ export const LABS: Lab[] = [
       {
         id: 'cabling',
         device: 'cabling',
-        title_ru: 'Подключение по схеме',
+        title_ru: 'Подключение по схеме', title_pl: `Podłączenie zgodnie ze schematem`,
         text_pl: ['Połącz urządzenia zgodnie ze schematem.'],
         checks: [{ id: 'links', ru: 'Соединено по схеме', pl: 'połączenie zgodne ze schematem', points: 1, test: (c) => linksMatch(LABS[1].requiredLinks, c.links) }],
       },
       {
         id: 'pc',
         device: 'pc',
-        title_ru: 'Windows-сервер: интерфейсы',
+        title_ru: 'Windows-сервер: интерфейсы', title_pl: `Serwer Windows: interfejsy`,
         text_pl: [
           'interfejs „Ethernet”: nazwa LAN1, adres 192.168.0.5/24 (X = 5), brama: brak, DNS: localhost (127.0.0.1)',
           'interfejs podłączony do portu 1 przełącznika: nazwa LAN2, adres IP i DNS uzyskiwane automatycznie; odśwież dzierżawę DHCP',
         ],
-        hint_ru: 'Переименуй оба подключения. LAN1 — вручную, DNS 127.0.0.1. LAN2 — автоматически, затем ipconfig /renew.',
+        hint_ru: 'Переименуй оба подключения. LAN1 — вручную, DNS 127.0.0.1. LAN2 — автоматически, затем ipconfig /renew.', hint_pl: `Zmień nazwę obu połączeń. LAN1 - ręcznie, DNS 127.0.0.1. LAN2 - automatycznie, następnie ipconfig /renew.`,
         checks: [
           { id: 'lan1', ru: 'LAN1 = 192.168.0.5/24, DNS 127.0.0.1', pl: 'LAN1', points: 1, test: (c) => { const a = pcAdapter(c, 'LAN1'); return !!a && !a.dhcp && a.ip === '192.168.0.5' && a.mask === '255.255.255.0' && !a.gateway && a.dns1 === '127.0.0.1' } },
           { id: 'lan2', ru: 'LAN2 получил 192.168.1.101 (резерв)', pl: 'LAN2 z DHCP', points: 2, test: (c) => pcAdapter(c, 'LAN2')?.lease?.ip === '192.168.1.101' },
@@ -365,12 +368,12 @@ export const LABS: Lab[] = [
       {
         id: 'linux',
         device: 'linux',
-        title_ru: 'Linux: новый диск',
+        title_ru: 'Linux: новый диск', title_pl: `Linux: nowy dysk`,
         text_pl: [
           'na zapasowym dysku (/dev/sdb) utwórz nową partycję o pełnej pojemności dysku i sformatuj ją z systemem plików ext4',
           'utwórz katalog /dane i podmontuj pod niego utworzoną partycję',
         ],
-        hint_ru: 'sudo fdisk /dev/sdb → n, p, 1, Enter, Enter, w. Затем sudo mkfs.ext4 /dev/sdb1, sudo mkdir /dane, sudo mount /dev/sdb1 /dane. Проверка: lsblk, df -h.',
+        hint_ru: 'sudo fdisk /dev/sdb → n, p, 1, Enter, Enter, w. Затем sudo mkfs.ext4 /dev/sdb1, sudo mkdir /dane, sudo mount /dev/sdb1 /dane. Проверка: lsblk, df -h.', hint_pl: `sudo fdisk /dev/sdb → n, p, 1, Enter, Enter, w. Następnie sudo mkfs.ext4 /dev/sdb1, sudo mkdir /dane, sudo mount /dev/sdb1 /dane. Sprawdź: lsblk, df -h.`,
         checks: [
           { id: 'mkfs', ru: 'Раздел /dev/sdb1 отформатирован в ext4 и смонтирован в /dane', pl: 'partycja ext4 w /dane', points: 2, test: (c) => !!c.linux?.mounts().some((m) => m.device === '/dev/sdb1' && m.mountpoint === '/dane' && m.fstype === 'ext4') },
           { id: 'dir', ru: 'Каталог /dane существует', pl: 'katalog /dane', points: 1, test: (c) => c.linux?.file('/dane')?.type === 'dir' },
@@ -383,7 +386,7 @@ export const LABS: Lab[] = [
     code: 'INF.02-09-25.06-SG',
     title_ru: 'WAN /27, DHCP с резервом, пользователь с sudo и архив tar',
     title_pl: 'WAN /27, DHCP z rezerwacją, konto z sudo i archiwum tar',
-    summary_ru: 'Роутер с маской /27 и резервированием, в Linux — пользователь с правом sudo и оболочкой sh, копирование файлов и архив.',
+    summary_ru: 'Роутер с маской /27 и резервированием, в Linux — пользователь с правом sudo и оболочкой sh, копирование файлов и архив.', summary_pl: `ruter z maską /27 i redundancją, w systemie Linux - użytkownik z uprawnieniami sudo i powłoką sh, kopiujący pliki i archiwum.`,
     station: 5,
     guide: undefined,
     devices: {
@@ -407,7 +410,7 @@ export const LABS: Lab[] = [
       {
         id: 'router',
         device: 'router',
-        title_ru: 'Роутер',
+        title_ru: 'Роутер', title_pl: `rutera`,
         text_pl: [
           'adres IP interfejsu WAN: 200.20.200.20/27, brama domyślna: 200.20.200.1',
           'serwer DNS dla interfejsu WAN: 7.7.7.7 oraz drugi: 6.6.6.6',
@@ -415,7 +418,7 @@ export const LABS: Lab[] = [
           'serwer DHCP włączony, zakres 192.168.7.11 ÷ 192.168.7.20',
           'zarezerwowany adres 192.168.7.11 dla interfejsu stacji roboczej (MAC 08:00:27:7A:11:03)',
         ],
-        hint_ru: '/27 = 255.255.255.224. Сначала WAN, потом LAN (после смены LAN перейди на 192.168.7.1).',
+        hint_ru: '/27 = 255.255.255.224. Сначала WAN, потом LAN (после смены LAN перейди на 192.168.7.1).', hint_pl: `/27 = 255.255.255.224. Najpierw WAN, potem LAN (po zmianie LAN przejdź do 192.168.7.1).`,
         checks: [
           { id: 'wan', ru: 'WAN 200.20.200.20 / 255.255.255.224, шлюз .1', pl: 'WAN', points: 1, test: (c) => c.router?.wan.type === 'static' && c.router.wan.ip === '200.20.200.20' && c.router.wan.mask === '255.255.255.224' && c.router.wan.gateway === '200.20.200.1' },
           { id: 'dns', ru: 'DNS 7.7.7.7 и 6.6.6.6', pl: 'DNS', points: 1, test: (c) => c.router?.wan.dns1 === '7.7.7.7' && c.router.wan.dns2 === '6.6.6.6' },
@@ -427,14 +430,14 @@ export const LABS: Lab[] = [
       {
         id: 'cabling',
         device: 'cabling',
-        title_ru: 'Подключение',
+        title_ru: 'Подключение', title_pl: `Połączenie`,
         text_pl: ['Podłącz stację roboczą do portu LAN rutera.'],
         checks: [{ id: 'links', ru: 'Станция подключена к LAN роутера', pl: 'połączenie', points: 1, test: (c) => c.links.some(([a, b]) => [a, b].includes('linux:enp0s3') && [a, b].some((x) => x.startsWith('router:lan'))) }],
       },
       {
         id: 'linux',
         device: 'linux',
-        title_ru: 'Linux: сеть, пользователь, архив',
+        title_ru: 'Linux: сеть, пользователь, архив', title_pl: `Linux: sieć, użytkownik, archiwum`,
         text_pl: [
           'interfejs przewodowy: adres IP uzyskiwany automatycznie (dhcp4) — w netplan',
           'utwórz konto asystent chronione hasłem Syst@my1! z uprawnieniem uruchamiania wszystkich poleceń jako root oraz ustaw powłokę sh jako domyślną',
@@ -459,7 +462,7 @@ export const LABS: Lab[] = [
     code: 'INF.02-04-26.06-SG',
     title_ru: 'Linux-сервер: имя, пользователь, права, службы, ping',
     title_pl: 'Serwer Linux: nazwa, konto, prawa, usługi, ping',
-    summary_ru: 'Чистый Linux: hostname, пользователь с описанием, каталог /dane только для него, автозапуск DNS (bind9) и Samba, проверка связи.',
+    summary_ru: 'Чистый Linux: hostname, пользователь с описанием, каталог /dane только для него, автозапуск DNS (bind9) и Samba, проверка связи.', summary_pl: `Czysty Linux: nazwa hosta, użytkownik z opisem, katalog /dane tylko dla niego, autostart DNS (bind9) i Samba, sprawdzenie połączenia.`,
     station: 5,
     guide: 'inf02-2026-06-04',
     devices: {
@@ -485,16 +488,16 @@ export const LABS: Lab[] = [
       {
         id: 'cabling',
         device: 'cabling',
-        title_ru: 'Подключение',
+        title_ru: 'Подключение', title_pl: `Połączenie`,
         text_pl: ['Połącz urządzenia zgodnie ze schematem.'],
         checks: [{ id: 'links', ru: 'Соединено по схеме', pl: 'połączenie', points: 1, test: (c) => linksMatch(LABS[3].requiredLinks, c.links) }],
       },
       {
         id: 'net',
         device: 'linux',
-        title_ru: 'Сеть сервера (tabela 1)',
+        title_ru: 'Сеть сервера (tabela 1)', title_pl: `Sieć serwerów (tabela 1)`,
         text_pl: ['interfejs enp0s3: adres IP 192.168.0.15/24 (X = 5), brama 192.168.0.1, DNS 192.168.0.1'],
-        hint_ru: 'netplan: addresses: [192.168.0.15/24], routes: - to: default via: 192.168.0.1, nameservers: addresses: [192.168.0.1]. Затем sudo netplan apply.',
+        hint_ru: 'netplan: addresses: [192.168.0.15/24], routes: - to: default via: 192.168.0.1, nameservers: addresses: [192.168.0.1]. Затем sudo netplan apply.', hint_pl: `netplan: adresy: [192.168.0.15/24], trasy: - do: domyślnie przez: 192.168.0.1, serwery nazw: adresy: [192.168.0.1]. Następnie sudo netplan apply.`,
         checks: [
           { id: 'ip', ru: 'enp0s3 = 192.168.0.15/24', pl: 'adres IP', points: 1, test: (c) => ifaceHas(c, 'enp0s3', '192.168.0.15/24') },
           { id: 'gw', ru: 'Шлюз 192.168.0.1, DNS 192.168.0.1', pl: 'brama i DNS', points: 1, test: (c) => c.linux?.defaultGateway() === '192.168.0.1' && !!c.linux.interfaces().find((i) => i.name === 'enp0s3')?.dns.includes('192.168.0.1') },
@@ -503,7 +506,7 @@ export const LABS: Lab[] = [
       {
         id: 'linux',
         device: 'linux',
-        title_ru: 'Имя, пользователь, права',
+        title_ru: 'Имя, пользователь, права', title_pl: `Imię i nazwisko, użytkownik, uprawnienia`,
         text_pl: [
           'ustaw nazwę serwera na serwer-5',
           'utwórz konto z katalogiem domowym: login jkowalski, hasło XSW@3edc, opis: Jan Kowalski',
@@ -520,12 +523,12 @@ export const LABS: Lab[] = [
       {
         id: 'svc',
         device: 'linux',
-        title_ru: 'Службы',
+        title_ru: 'Службы', title_pl: `Usługi`,
         text_pl: [
           'ustaw automatyczne uruchamianie usługi DNS (bind9/named) po starcie systemu, uruchom usługę',
           'ustaw automatyczne uruchamianie usługi Samba (smbd) po starcie systemu, uruchom usługę',
         ],
-        hint_ru: 'sudo systemctl enable --now named (или bind9); sudo systemctl enable --now smbd. Проверка: systemctl status smbd.',
+        hint_ru: 'sudo systemctl enable --now named (или bind9); sudo systemctl enable --now smbd. Проверка: systemctl status smbd.', hint_pl: `sudo systemctl enable --now named (lub bind9); sudo systemctl enable --now smbd. Sprawdź: systemctl status smbd.`,
         checks: [
           { id: 'dns', ru: 'DNS (bind9/named) включён и запущен', pl: 'usługa DNS', points: 1, test: (c) => !!c.linux && ((c.linux.serviceActive('named') && c.linux.serviceEnabled('named')) || (c.linux.serviceActive('bind9') && c.linux.serviceEnabled('bind9'))) },
           { id: 'smb', ru: 'Samba (smbd) включена и запущена', pl: 'usługa Samba', points: 1, test: (c) => !!c.linux?.serviceActive('smbd') && c.linux.serviceEnabled('smbd') },
@@ -534,7 +537,7 @@ export const LABS: Lab[] = [
       {
         id: 'tests',
         device: 'tests',
-        title_ru: 'Проверка связи',
+        title_ru: 'Проверка связи', title_pl: `Sprawdzanie połączenia`,
         text_pl: ['Za pomocą poleceń systemowych wykonaj test komunikacji serwera z ruterem, przełącznikiem i drukarką o adresie 192.168.0.200.'],
         checks: [
           { id: 'r', ru: 'Пинг роутера 192.168.0.1', pl: 'ping rutera', points: 1, test: (c) => c.ping('linux', '192.168.0.1') && histHas(c, /ping .*192\.168\.0\.1\b/) },
@@ -568,3 +571,4 @@ export function labScore(lab: Lab, ctx: LabCtx) {
 // labs generated from further CKE sheets (newest first), see labs-more.ts
 LABS.push(...MORE_LABS)
 LABS.push(...MORE_LABS_2)
+for (const lab of LABS) for (const t of lab.tasks) if (t.hint_ru && !t.hint_pl && !/[А-Яа-яЁё]/.test(t.hint_ru)) t.hint_pl = t.hint_ru

@@ -85,12 +85,24 @@ const DEV_RU_ACC: Record<DeviceKey, string> = {
   server: 'Windows Server',
   printer: 'принтер',
 }
+const DEV_PL_ACC: Record<DeviceKey, string> = {
+  router: 'ruter',
+  switch: 'przełącznik',
+  linux: 'serwer Linux',
+  pc: 'stacja Windows',
+  laptop: 'laptop serwisowy',
+  server: 'serwer Windows',
+  printer: 'drukarka',
+}
 
 export interface Why {
   /** one-line summary for the "Какой адрес вписать?" list */
   short: string
+  short_pl?: string
   text: string
+  text_pl?: string
   fix?: string
+  fix_pl?: string
 }
 
 export interface MgmtTarget {
@@ -99,6 +111,7 @@ export interface MgmtTarget {
   prefix: number | null
   port: PortId
   login: string
+  login_pl?: string
 }
 
 /** Management addresses of the devices that have a web UI (as configured, regardless of power). */
@@ -111,6 +124,7 @@ export function mgmtTargets(m: NetworkModel): MgmtTarget[] {
       prefix: maskToPrefix(m.router.lan.mask),
       port: 'router:lan-if',
       login: m.router.passwordChanged ? 'admin / (твой новый пароль)' : 'admin / admin',
+      login_pl: m.router.passwordChanged ? 'admin / (twoje nowe hasło)' : 'admin / admin',
     })
   if (m.switch)
     out.push({
@@ -119,6 +133,7 @@ export function mgmtTargets(m: NetworkModel): MgmtTarget[] {
       prefix: maskToPrefix(m.switch.ip.mask),
       port: 'switch:mgmt',
       login: m.switch.passwordChanged ? `${m.switch.adminUser} / (твой новый пароль)` : `${m.switch.adminUser} / ${m.switch.adminPassword}`,
+      login_pl: m.switch.passwordChanged ? `${m.switch.adminUser} / (twoje nowe hasło)` : `${m.switch.adminUser} / ${m.switch.adminPassword}`,
     })
   if (m.printer) out.push({ key: 'printer', ip: m.printer.ip, prefix: m.printer.prefix, port: 'printer:eth0', login: 'bez logowania' })
   return out
@@ -169,13 +184,19 @@ function adapterLabel(a: PcAdapter) {
 function bootLabel(d: DeviceKey, booting: Set<DeviceKey>) {
   return booting.has(d) ? `${DEV_RU[d]} сейчас загружается — подожди несколько секунд.` : `${DEV_RU[d]} выключен — включи его кнопкой питания на Столе.`
 }
+function rtLanPl(m: NetworkModel) {
+  return isDraytek(m) ? 'LAN rutera (porty P1–P6)' : 'LAN rutera'
+}
+function bootLabelPl(d: DeviceKey, booting: Set<DeviceKey>) {
+  return booting.has(d) ? `${DEV_PL[d]} uruchamia się — poczekaj kilka sekund.` : `${DEV_PL[d]} jest wyłączone — włącz je przyciskiem zasilania na Stanowisku.`
+}
 
 /** Problems on the PC side (cable, link, address). */
 function pcSide(m: NetworkModel, key: PcKey, pc: PcState, booting: Set<DeviceKey>): { why: Why[]; adapter: PcAdapter | null } {
   const why: Why[] = []
   const enabled = pc.adapters.filter((a) => a.enabled)
   if (!enabled.length) {
-    why.push({ short: 'сетевая карта ПК выключена', text: 'Сетевая карта ПК отключена в Windows.', fix: 'Połączenia sieciowe → Włącz.' })
+    why.push({ short: 'сетевая карта ПК выключена', short_pl: `Karta sieciowa stanowiska jest wyłączona`, text: 'Сетевая карта ПК отключена в Windows.', text_pl: `Karta sieciowa stanowiska jest wyłączona w systemie Windows.`, fix: 'Połączenia sieciowe → Włącz.' })
     return { why, adapter: null }
   }
   const linked = enabled.filter((a) => linkUp(m, `${key}:${a.id}`))
@@ -185,31 +206,31 @@ function pcSide(m: NetworkModel, key: PcKey, pc: PcState, booting: Set<DeviceKey
     const peer = peerOf(m, port)
     if (!peer)
       why.push({
-        short: 'кабель в ПК не вставлен',
-        text: `В сетевую карту ${adapterLabel(a)} не вставлен кабель — Windows пишет «Kabel sieciowy odłączony».`,
-        fix: `На Столе нажми порт ПК, потом свободный порт ${rtLan(m)} или порт свитча.`,
+        short: 'кабель в ПК не вставлен', short_pl: `kabel nie jest podłączony do stanowiska`,
+        text: `В сетевую карту ${adapterLabel(a)} не вставлен кабель — Windows пишет «Kabel sieciowy odłączony».`, text_pl: `Do karty sieciowej ${adapterLabel(a)} nie jest podłączony żaden kabel - Windows pisze „Kabel sieciowy odłączony”.`,
+        fix: `На Столе нажми порт ПК, потом свободный порт ${rtLan(m)} или порт свитча.`, fix_pl: `Na stanowisku kliknij port karty sieciowej, następnie wolny port ${rtLanPl(m)} lub port przełącznika.`,
       })
     else {
       const d = devOf(peer)
       if (!isOn(m, d))
-        why.push({ short: `${DEV_RU_ACC[d]} на другом конце кабеля не работает`, text: `Кабель от ПК идёт в ${DEV_RU_ACC[d]} (${portName(m, peer)}). ${bootLabel(d, booting)} Пока он не работает, на порту нет линка (диод не горит).` })
+        why.push({ short: `${DEV_RU_ACC[d]} на другом конце кабеля не работает`, short_pl: `${DEV_PL_ACC[d]} na drugim końcu kabla nie działa`, text: `Кабель от ПК идёт в ${DEV_RU_ACC[d]} (${portName(m, peer)}). ${bootLabel(d, booting)} Пока он не работает, на порту нет линка (диод не горит).`,  text_pl: `Kabel z stanowiska idzie do ${DEV_PL_ACC[d]} (${portName(m, peer)}). ${bootLabelPl(d, booting)} Podczas gdy nie działa, na porcie nie ma łącza (dioda nie świeci).`,})
       else
-        why.push({ short: 'порт свитча выключен', text: `Порт ${peer.split(':')[1]} свитча, в который воткнут ПК, выключен в настройках свитча (${isJetstream(m) ? 'Switching → Port → Port Config: Status Disable' : 'Port Setting → Disable'}).`, fix: 'Переткни кабель в другой порт.' })
+        why.push({ short: 'порт свитча выключен', short_pl: `port przełącznika jest wyłączony`, text: `Порт ${peer.split(':')[1]} свитча, в который воткнут ПК, выключен в настройках свитча (${isJetstream(m) ? 'Switching → Port → Port Config: Status Disable' : 'Port Setting → Disable'}).`, text_pl: `Port ${peer.split(':')[1]} przełącznika, do którego podłączony jest stanowisko, jest wyłączony w ustawieniach przełącznika (${isJetstream(m) ? 'Switching → Port → Port Config: Status Disable' : 'Port Setting → Disable'}).`, fix: 'Переткни кабель в другой порт.',  fix_pl: `Podłącz kabel do innego portu.`,})
     }
     return { why, adapter: a }
   }
   const a = linked.find((x) => pcAddress(x) && !pcAddress(x)!.addr.ip.startsWith('169.254.')) ?? linked[0]
   if (a.dhcp && !a.lease) {
     if (a.released)
-      why.push({ short: 'адрес освобождён (/release)', text: 'Адрес освобождён командой ipconfig /release — у ПК сейчас нет IPv4.', fix: 'Wiersz polecenia → ipconfig /renew.' })
+      why.push({ short: 'адрес освобождён (/release)', short_pl: `adres zwolniony (/release)`, text: 'Адрес освобождён командой ipconfig /release — у ПК сейчас нет IPv4.', text_pl: `Adres został wydany za pomocą polecenia ipconfig /release - stanowisko nie ma obecnie protokołu IPv4.`, fix: 'Wiersz polecenia → ipconfig /renew.' })
     else
       why.push({
-        short: `ПК без DHCP-адреса (${a.autoconf ?? '169.254.x.x'})`,
-        text: `ПК настроен «Uzyskaj adres IP automatycznie», но DHCP-сервер не ответил, поэтому Windows сама выдала себе адрес ${a.autoconf ?? '169.254.x.x'} (APIPA, 169.254.0.0/16). С ним ни до одного устройства не достучаться.${dhcpWhy(m, key, a)}`,
-        fix: `Подключи ПК туда, где работает DHCP (порт ${rtLan(m)} с включённым DHCP), или задай статический адрес из подсети устройства.`,
+        short: `ПК без DHCP-адреса (${a.autoconf ?? '169.254.x.x'})`, short_pl: `Stanowisko bez adresu DHCP (${a.autoconf ?? '169.254.x.x'})`,
+        text: `ПК настроен «Uzyskaj adres IP automatycznie», но DHCP-сервер не ответил, поэтому Windows сама выдала себе адрес ${a.autoconf ?? '169.254.x.x'} (APIPA, 169.254.0.0/16). С ним ни до одного устройства не достучаться.${dhcpWhy(m, key, a)}`, text_pl: `Stanowisko jest skonfigurowany z „Uzyskaj adres IP automatycznie”, ale serwer DHCP nie odpowiedział, więc sam Windows nadał sobie adres ${a.autoconf ?? '169.254.x.x'} (APIPA, 169.254.0.0/16). Nie można się za jego pomocą połączyć z żadnym urządzeniem.${dhcpWhyPl(m, key, a)}`,
+        fix: `Подключи ПК туда, где работает DHCP (порт ${rtLan(m)} с включённым DHCP), или задай статический адрес из подсети устройства.`, fix_pl: `Podłącz stanowisko do miejsca, w którym działa DHCP (port ${rtLanPl(m)} z włączonym DHCP) lub ustaw adres statyczny z podsieci urządzenia.`,
       })
   } else if (!pcAddress(a)) {
-    why.push({ short: 'у ПК не задан IP', text: 'У сетевой карты не задан правильный статический адрес.', fix: 'Połączenia sieciowe → Właściwości → IPv4.' })
+    why.push({ short: 'у ПК не задан IP', short_pl: `Stanowisko nie ma ustawionego adresu IP`, text: 'У сетевой карты не задан правильный статический адрес.', text_pl: `Karta sieciowa nie ma ustawionego prawidłowego adresu statycznego.`, fix: 'Połączenia sieciowe → Właściwości → IPv4.' })
   }
   return { why, adapter: a }
 }
@@ -226,6 +247,21 @@ function dhcpWhy(m: NetworkModel, key: PcKey, a: PcAdapter): string {
     return ' Роутер подключён к свитчу, но DHCP до ПК не доходит (DHCP выключен, роутер не работает или порты в разных VLAN).'
   }
   if (d === 'linux') return ' Сервер Linux не раздаёт адреса на этом интерфейсе (isc-dhcp-server не запущен или не слушает этот интерфейс).'
+  return ''
+}
+
+function dhcpWhyPl(m: NetworkModel, key: PcKey, a: PcAdapter): string {
+  const peer = peerOf(m, `${key}:${a.id}`)
+  if (!peer) return ''
+  const d = devOf(peer)
+  if (d === 'router' && peer === 'router:wan') return ` Kabel jest podłączony do portu ${portName(m, 'router:wan')} rutera — DHCP jest udostępniane tylko na portach ${isDraytek(m) ? 'P1–P6' : 'LAN'}.`
+  if (d === 'router' && m.router && !m.router.dhcp.enabled) return ' Serwer DHCP na ruterze jest wyłączony.'
+  if (d === 'switch') {
+    const rtrOnSwitch = m.links.some(([x, y]) => [x, y].some((p) => p.startsWith('router:lan')) && [x, y].some((p) => p.startsWith('switch:')))
+    if (!rtrOnSwitch) return ' Przełącznik sam nie przydziela adresów, a ruter (DHCP) nie jest do niego podłączony.'
+    return ' Ruter jest podłączony do przełącznika, ale DHCP nie dociera do stanowiska (DHCP wyłączone, ruter nie działa albo porty są w różnych VLAN).'
+  }
+  if (d === 'linux') return ' Serwer Linux nie przydziela adresów na tym interfejsie (isc-dhcp-server nie działa albo nie nasłuchuje na tym interfejsie).'
   return ''
 }
 
@@ -280,8 +316,8 @@ export function browse(m: NetworkModel, key: PcKey, input: string, opts: { booti
       error: 'nxdomain',
       why: [
         ans.reason === 'timeout'
-          ? { short: 'DNS не отвечает', text: `Сервер DNS ${ans.server}, указанный в настройках карты, не отвечает (выключен, нет кабеля, не установлена роль DNS или адрес неверный). Имя ${host} не удалось превратить в IP.`, fix: 'Проверь DNS в ncpa.cpl и службу DNS на сервере; для проверки впиши IP-адрес.' }
-          : { short: 'имени нет в DNS', text: `Сервер DNS ${ans.server} ответил, что имени ${host} не существует: нет записи A/CNAME в зоне.`, fix: 'На сервере: dnsmgmt.msc → зона → Nowy host (A). Проверь и написание имени.' },
+          ? { short: 'DNS не отвечает', short_pl: `DNS nie odpowiada`, text: `Сервер DNS ${ans.server}, указанный в настройках карты, не отвечает (выключен, нет кабеля, не установлена роль DNS или адрес неверный). Имя ${host} не удалось превратить в IP.`, text_pl: `Serwer DNS ${ans.server} określony w ustawieniach karty nie odpowiada (wyłączony, brak kabla, niezainstalowana rola DNS lub nieprawidłowy adres). Nie można przekonwertować nazwy ${host} na adres IP.`, fix: 'Проверь DNS в ncpa.cpl и службу DNS на сервере; для проверки впиши IP-адрес.',  fix_pl: `Sprawdź DNS w ncpa.cpl i usługę DNS na serwerze; Aby to sprawdzić wpisz adres IP.`,}
+          : { short: 'имени нет в DNS', short_pl: `nazwy nie ma w DNS`, text: `Сервер DNS ${ans.server} ответил, что имени ${host} не существует: нет записи A/CNAME в зоне.`, text_pl: `Serwer DNS ${ans.server} odpowiedział, że nazwa ${host} nie istnieje: w strefie nie ma rekordu A/CNAME.`, fix: 'На сервере: dnsmgmt.msc → зона → Nowy host (A). Проверь и написание имени.',  fix_pl: `Na serwerze: dnsmgmt.msc → strefa → Nowy host (A). Sprawdź także pisownię nazwiska.`,},
       ],
     }
   }
@@ -294,25 +330,25 @@ export function browse(m: NetworkModel, key: PcKey, input: string, opts: { booti
           ok: false,
           host,
           error: 'nxdomain',
-          why: [{ short: 'имя не найдено', text: `Имя ${host} знает только DNS самого роутера (${isDraytek(m) ? 'DrayTek' : 'TP-Link'}) — оно работает, когда ПК получил адрес и DNS от роутера по DHCP.`, fix: `Надёжнее вписать IP роутера: ${m.router.lan.ip}.` }],
+          why: [{ short: 'имя не найдено', short_pl: `nie znaleziono nazwy`, text: `Имя ${host} знает только DNS самого роутера (${isDraytek(m) ? 'DrayTek' : 'TP-Link'}) — оно работает, когда ПК получил адрес и DNS от роутера по DHCP.`, text_pl: `Nazwa ${host} zna tylko DNS samego rutera (${isDraytek(m) ? 'DrayTek' : 'TP-Link'}) - działa gdy PC otrzymał adres i DNS z rutera poprzez DHCP.`, fix: `Надёжнее вписать IP роутера: ${m.router.lan.ip}.`,  fix_pl: `Bardziej niezawodne jest wprowadzenie adresu IP rutera: ${m.router.lan.ip}.`,}],
         }
     } else
       return {
         ok: false,
         host,
         error: 'nxdomain',
-        why: [{ short: 'это не IP', text: 'На стоянке нет Интернета и DNS, имена не работают. Устройства открываются по IP-адресу, например http://192.168.0.1.' }],
+        why: [{ short: 'это не IP', short_pl: `to nie jest IP`, text: 'На стоянке нет Интернета и DNS, имена не работают. Устройства открываются по IP-адресу, например http://192.168.0.1.',  text_pl: `Na parkingu nie ma Internetu i DNS, nazwy nie działają. Urządzenia otwierają się według adresu IP, na przykład http://192.168.0.1.`,}],
       }
   }
 
   const mine = pc.adapters.map(pcAddress).find((c) => c?.addr.ip === host)
   const asSite = (o: HttpOutcome): BrowseResult => {
-    if (o.kind === 'refused') return { ok: false, host, error: 'refused', why: [{ short: `порт ${url.port} закрыт`, text: `Сервер отвечает, но на порту ${url.port} никто не слушает: роль IIS не установлена, сайт остановлен или сайт работает на другом порту.`, fix: 'inetmgr → Witryny → проверь Powiązania (порт) и что сайт Uruchomiony.' }] }
-    if (o.kind === 'timeout') return { ok: false, host, error: 'timeout', why: [{ short: `брандмауэр блокирует порт ${url.port}`, text: `Брандмауэр Windows Server пропускает только порты, открытые ролями (для IIS — 80 и 443). Порт ${url.port} закрыт: пакеты молча отбрасываются.`, fix: `wf.msc → Reguły przychodzące → Nowa reguła → Port → TCP ${url.port} → Zezwalaj na połączenie.` }] }
+    if (o.kind === 'refused') return { ok: false, host, error: 'refused', why: [{ short: `порт ${url.port} закрыт`, short_pl: `port ${url.port} jest zamknięty`, text: `Сервер отвечает, но на порту ${url.port} никто не слушает: роль IIS не установлена, сайт остановлен или сайт работает на другом порту.`, text_pl: `Serwer odpowiada, ale nikt nie nasłuchuje na porcie ${url.port}: rola IIS nie jest zainstalowana, witryna jest zatrzymana lub witryna działa na innym porcie.`, fix: 'inetmgr → Witryny → проверь Powiązania (порт) и что сайт Uruchomiony.',  fix_pl: `inetmgr → Witryny → sprawdź Powiązania (port) i czy strona jest Uruchomiony.`,}] }
+    if (o.kind === 'timeout') return { ok: false, host, error: 'timeout', why: [{ short: `брандмауэр блокирует порт ${url.port}`, short_pl: `zapora sieciowa blokuje port ${url.port}`, text: `Брандмауэр Windows Server пропускает только порты, открытые ролями (для IIS — 80 и 443). Порт ${url.port} закрыт: пакеты молча отбрасываются.`, text_pl: `Zapora systemu Windows Server zezwala tylko na porty otwierane przez role (dla IIS, 80 i 443). Port ${url.port} jest zamknięty: pakiety są odrzucane w trybie cichym.`, fix: `wf.msc → Reguły przychodzące → Nowa reguła → Port → TCP ${url.port} → Zezwalaj na połączenie.` }] }
     return { ok: true, host, site: o, why: [] }
   }
   if (key === 'server' && m.server && (host.startsWith('127.') || mine)) return asSite(serveHttp(m.server, { ip: host, port: url.port, host: typed || host, path: url.path, https: url.scheme === 'https', local: true }))
-  if (mine) return { ok: false, host, error: 'self', why: [{ short: 'это адрес самого ПК', text: `${host} — это адрес самого компьютера, на нём нет панели управления.` }] }
+  if (mine) return { ok: false, host, error: 'self', why: [{ short: 'это адрес самого ПК', short_pl: `to jest adres samego stanowiska`, text: `${host} — это адрес самого компьютера, на нём нет панели управления.`,  text_pl: `${host} to adres samego stanowiska; nie ma panelu sterowania.`,}] }
 
   const reach = reachableEndpoints(m, ports, host)
   const web = reach.filter((e) => e.device === 'router' || e.device === 'switch' || e.device === 'printer')
@@ -322,9 +358,9 @@ export function browse(m: NetworkModel, key: PcKey, input: string, opts: { booti
     const why: Why[] = []
     if (devs.length > 1)
       why.push({
-        short: `конфликт адресов: ${devs.map((d) => DEV_RU_ACC[d]).join(' и ')}`,
-        text: `Адрес ${host} одновременно у устройств: ${devs.map((d) => DEV_RU_ACC[d]).join(' и ')}. Кто первым ответит на ARP, того страница и откроется — при следующей попытке это может быть другое устройство, а сохранённые настройки уйдут не туда.`,
-        fix: 'Настраивай устройства по одному: подключи к ПК только свитч, смени ему адрес (например на .2), потом подключай роутер. Или временно отключи кабель/питание одного из них.',
+        short: `конфликт адресов: ${devs.map((d) => DEV_RU_ACC[d]).join(' и ')}`, short_pl: `konflikt adresów: ${devs.map((d) => DEV_PL_ACC[d]).join(' i ')}`,
+        text: `Адрес ${host} одновременно у устройств: ${devs.map((d) => DEV_RU_ACC[d]).join(' и ')}. Кто первым ответит на ARP, того страница и откроется — при следующей попытке это может быть другое устройство, а сохранённые настройки уйдут не туда.`, text_pl: `Adresuj ${host} jednocześnie dla urządzeń: ${devs.map((d) => DEV_PL_ACC[d]).join(' i ')}. Kto pierwszy odpowie na ARP, ten otworzy stronę – przy kolejnej próbie może to być inne urządzenie i zapisane ustawienia trafią w niewłaściwe miejsce.`,
+        fix: 'Настраивай устройства по одному: подключи к ПК только свитч, смени ему адрес (например на .2), потом подключай роутер. Или временно отключи кабель/питание одного из них.', fix_pl: `Konfiguruj urządzenia pojedynczo: podłącz do stanowiska sam przełącznik, zmień jego adres (np. na .2), a następnie podłącz ruter. Lub tymczasowo odłącz kabel/zasilanie jednego z nich.`,
       })
     return { ok: true, host, device, conflict: devs.length > 1 ? devs : undefined, why }
   }
@@ -335,7 +371,7 @@ export function browse(m: NetworkModel, key: PcKey, input: string, opts: { booti
       ok: false,
       host,
       error: 'refused',
-      why: [{ short: `это ${DEV_RU_ACC[reach[0].device]}, у него нет веб-панели`, text: `Адрес ${host} принадлежит устройству «${DEV_RU[reach[0].device]}». Оно отвечает на ping, но веб-панели управления у него нет (ERR_CONNECTION_REFUSED).`, fix: reach[0].device === 'linux' ? 'Сервер Linux настраивается в его терминале (вкладка Linux).' : undefined }],
+      why: [{ short: `это ${DEV_RU_ACC[reach[0].device]}, у него нет веб-панели`, short_pl: `to jest ${DEV_PL_ACC[reach[0].device]}, nie ma panelu WWW`, text: `Адрес ${host} принадлежит устройству «${DEV_RU[reach[0].device]}». Оно отвечает на ping, но веб-панели управления у него нет (ERR_CONNECTION_REFUSED).`, text_pl: `Adres ${host} należy do urządzenia „${DEV_PL[reach[0].device]}”. Odpowiada na polecenia ping, ale nie ma internetowego panelu sterowania (ERR_CONNECTION_REFUSED).`, fix: reach[0].device === 'linux' ? 'Сервер Linux настраивается в его терминале (вкладка Linux).' : undefined,  fix_pl: reach[0].device === 'linux' ? `Serwer Linux konfiguruje się w swoim terminalu (zakładka Linux).` : undefined,}],
     }
   }
 
@@ -349,7 +385,7 @@ export function browse(m: NetworkModel, key: PcKey, input: string, opts: { booti
       .filter((t) => t.ip)
       .map((t) => `${DEV_RU_ACC[t.key]} — ${t.ip}`)
       .join(', ')
-    why.push({ short: 'нет устройства с таким адресом', text: `Ни у одного устройства на столе нет адреса ${host}.${list ? ` Сейчас: ${list}.` : ''}`, fix: 'Проверь адрес по списку «Какой адрес вписать?».' })
+    why.push({ short: 'нет устройства с таким адресом', short_pl: `nie ma urządzenia o tym adresie`, text: `Ни у одного устройства на столе нет адреса ${host}.${list ? ` Сейчас: ${list}.` : ''}`, text_pl: `Żadne urządzenie na stole nie ma adresu ${host}.${list ? ` Сейчас: ${list}.` : ''}`, fix: 'Проверь адрес по списку «Какой адрес вписать?».',  fix_pl: `Sprawdź adres na liście „Jaki adres mam wpisać?”`,})
     return { ok: false, host, error: 'timeout', why }
   }
   // with several owners (e.g. factory router and switch), explain the one the PC is closest to
@@ -365,14 +401,14 @@ export function browse(m: NetworkModel, key: PcKey, input: string, opts: { booti
     own[0]
   if (!isOn(m, o.key)) {
     if (side.why.some((w) => w.short.startsWith(DEV_RU_ACC[o.key]))) return { ok: false, host, error: 'timeout', why }
-    why.push({ short: booting.has(o.key) ? `${DEV_RU_ACC[o.key]} загружается` : `${DEV_RU_ACC[o.key]} выключен`, text: bootLabel(o.key, booting) })
+    why.push({ short: booting.has(o.key) ? `${DEV_RU_ACC[o.key]} загружается` : `${DEV_RU_ACC[o.key]} выключен`, short_pl: booting.has(o.key) ? `Trwa ładowanie ${DEV_PL_ACC[o.key]}` : `${DEV_PL_ACC[o.key]} wyłączony`, text: bootLabel(o.key, booting), text_pl: bootLabelPl(o.key, booting) })
     return { ok: false, host, error: 'timeout', why }
   }
   if (side.why.length && !side.adapter) return { ok: false, host, error: 'timeout', why }
   const a = side.adapter
   const cfg = a ? pcAddress(a) : null
   if (o.port === 'router:wan' && !m.links.some((l) => l.includes('router:wan'))) {
-    why.push({ short: 'WAN роутера никуда не подключён', text: `${host} — адрес порта WAN роутера, а в WAN не воткнут кабель. Настраивай роутер через LAN: ${m.router?.lan.ip}.` })
+    why.push({ short: 'WAN роутера никуда не подключён', short_pl: `Sieć WAN rutera nie jest nigdzie podłączona`, text: `${host} — адрес порта WAN роутера, а в WAN не воткнут кабель. Настраивай роутер через LAN: ${m.router?.lan.ip}.`,  text_pl: `${host} to adres portu WAN rutera, a do sieci WAN nie jest podłączony żaden kabel. Skonfiguruj ruter przez sieć LAN: ${m.router?.lan.ip}.`,})
     return { ok: false, host, error: 'timeout', why }
   }
   // physical path (ignoring addresses)
@@ -391,19 +427,23 @@ export function browse(m: NetworkModel, key: PcKey, input: string, opts: { booti
         const tsp = m.links.map(([x, y]) => (devOf(x) === o.key && devOf(y) === 'switch' ? y : devOf(y) === o.key && devOf(x) === 'switch' ? x : null)).find(Boolean)
         return tsp ? `${DEV_RU_ACC[o.key]} подключён к порту ${tsp.split(':')[1]} (VLAN ${vlanOfSwitchPort(m, tsp)})` : `${DEV_RU_ACC[o.key]} в другом VLAN`
       })()
+      const targetPl = o.key === 'switch' ? `interfejs zarządzania przełącznika jest w VLAN ${m.switch?.dot1q ? (m.switch.mgmtVlan ?? 1) : 1}${m.switch?.mgmtVlan && m.switch.mgmtVlan !== 1 ? ' (Management VLAN)' : ''}` : (() => {
+        const tsp = m.links.map(([x, y]) => (devOf(x) === o.key && devOf(y) === 'switch' ? y : devOf(y) === o.key && devOf(x) === 'switch' ? x : null)).find(Boolean)
+        return tsp ? `${DEV_PL_ACC[o.key]} jest podłączony do portu ${tsp.split(':')[1]} (VLAN ${vlanOfSwitchPort(m, tsp)})` : `${DEV_PL_ACC[o.key]} jest w innym VLAN`
+      })()
       why.push({
-        short: 'ПК и устройство в разных VLAN',
-        text: `Кабели есть, но ПК стоит в порту ${sp?.split(':')[1] ?? '?'} свитча с PVID ${pv ?? '?'} (VLAN ${pv ?? '?'}), а ${target}. Свитч не пропускает кадры между VLAN.`,
-        fix: o.key === 'switch' && m.switch?.mgmtVlan && m.switch.mgmtVlan !== 1 ? `Переткни ПК в порт Management VLAN (${m.switch.mgmtVlan}) — System → System Info → System IP.` : 'Переткни ПК в порт того же VLAN, что и устройство (или настраивай свитч до того, как разнёс порты по VLAN).',
+        short: 'ПК и устройство в разных VLAN', short_pl: `Stanowisko i urządzenie w różnych sieciach VLAN`,
+        text: `Кабели есть, но ПК стоит в порту ${sp?.split(':')[1] ?? '?'} свитча с PVID ${pv ?? '?'} (VLAN ${pv ?? '?'}), а ${target}. Свитч не пропускает кадры между VLAN.`, text_pl: `Są kable, ale PC jest w porcie ${sp?.split(':')[1] ?? '?'} przełącznika z PVID ${pv ?? '?'} (VLAN ${pv ?? '?'}) i ${targetPl}. Przełącznik nie przekazuje ramek pomiędzy sieciami VLAN.`,
+        fix: o.key === 'switch' && m.switch?.mgmtVlan && m.switch.mgmtVlan !== 1 ? `Переткни ПК в порт Management VLAN (${m.switch.mgmtVlan}) — System → System Info → System IP.` : 'Переткни ПК в порт того же VLAN, что и устройство (или настраивай свитч до того, как разнёс порты по VLAN).', fix_pl: o.key === 'switch' && m.switch?.mgmtVlan && m.switch.mgmtVlan !== 1 ? `Podłącz stanowisko do portu zarządzania VLAN (${m.switch.mgmtVlan}) - System → Informacje o systemie → IP systemu.` : `Podłącz stanowisko do portu tej samej sieci VLAN co urządzenie (lub skonfiguruj przełącznik przed rozdzieleniem portów przez sieć VLAN).`,
       })
     } else if (allOn.get(pcPort) && allOn.get(pcPort) === allOn.get(o.port)) {
       const off = (['switch', 'router'] as DeviceKey[]).filter((d) => !isOn(m, d))
-      why.push({ short: `по пути не работает ${off.map((d) => DEV_RU_ACC[d]).join(', ') || 'устройство'}`, text: `Кабельный путь до устройства идёт через ${off.map((d) => DEV_RU_ACC[d]).join(', ')}. ${off.map((d) => bootLabel(d, booting)).join(' ')}` })
+      why.push({ short: `по пути не работает ${off.map((d) => DEV_RU_ACC[d]).join(', ') || 'устройство'}`, short_pl: `${off.map((d) => DEV_PL_ACC[d]).join(', ') || 'urządzenie'} nie działa po drodze`, text: `Кабельный путь до устройства идёт через ${off.map((d) => DEV_RU_ACC[d]).join(', ')}. ${off.map((d) => bootLabel(d, booting)).join(' ')}`,  text_pl: `Ścieżka kablowa do urządzenia przechodzi przez ${off.map((d) => DEV_PL_ACC[d]).join(', ')}. ${off.map((d) => bootLabelPl(d, booting)).join(' ')}`,})
     } else
       why.push({
-        short: 'нет кабеля до устройства',
-        text: `Между ПК и устройством «${DEV_RU[o.key]}» нет кабельного пути.`,
-        fix: `На Столе соедини ПК с ${o.key === 'router' ? `портом ${rtLan(m)} (не ${isDraytek(m) ? 'WAN1' : 'WAN'})` : DEV_RU_ACC[o.key]} — напрямую или через свитч.`,
+        short: 'нет кабеля до устройства', short_pl: `brak kabla do urządzenia`,
+        text: `Между ПК и устройством «${DEV_RU[o.key]}» нет кабельного пути.`, text_pl: `Pomiędzy stanowiskiem a urządzeniem ${DEV_PL[o.key]} nie ma ścieżki kablowej.`,
+        fix: `На Столе соедини ПК с ${o.key === 'router' ? `портом ${rtLan(m)} (не ${isDraytek(m) ? 'WAN1' : 'WAN'})` : DEV_RU_ACC[o.key]} — напрямую или через свитч.`, fix_pl: `Na stanowisku podłącz stanowisko do ${o.key === 'router' ? `портом ${rtLanPl(m)} (не ${isDraytek(m) ? 'WAN1' : 'WAN'})` : DEV_PL_ACC[o.key]} - bezpośrednio lub za pomocą przełącznika.`,
       })
     return { ok: false, host, error: 'timeout', why }
   }
@@ -412,18 +452,18 @@ export function browse(m: NetworkModel, key: PcKey, input: string, opts: { booti
     const pcNet = `${cfg.addr.ip}/${cfg.addr.prefix}`
     if (!sameSubnet(cfg.addr.ip, host, cfg.addr.prefix) || !sameSubnet(cfg.addr.ip, host, o.prefix)) {
       why.push({
-        short: 'разные подсети',
-        text: `ПК: ${pcNet} (сеть ${networkOf(cfg.addr.ip, cfg.addr.prefix)}), ${DEV_RU_ACC[o.key]}: ${host}/${o.prefix} (сеть ${networkOf(host, o.prefix)}). Это разные подсети, а без маршрутизатора компьютер не может «говорить» с устройством из чужой подсети.${a?.dhcp && a.lease ? ' Похоже, адрес ПК остался от старой аренды DHCP — сделай ipconfig /renew или переподключи кабель.' : ''}`,
-        fix: `Временно поставь ПК статический адрес ${suggestIp(m, host, o.prefix)}, маска ${maskFromPrefix(o.prefix)} (шлюз можно не указывать).`,
+        short: 'разные подсети', short_pl: `różne podsieci`,
+        text: `ПК: ${pcNet} (сеть ${networkOf(cfg.addr.ip, cfg.addr.prefix)}), ${DEV_RU_ACC[o.key]}: ${host}/${o.prefix} (сеть ${networkOf(host, o.prefix)}). Это разные подсети, а без маршрутизатора компьютер не может «говорить» с устройством из чужой подсети.${a?.dhcp && a.lease ? ' Похоже, адрес ПК остался от старой аренды DHCP — сделай ipconfig /renew или переподключи кабель.' : ''}`, text_pl: `PC: ${pcNet} (sieć ${networkOf(cfg.addr.ip, cfg.addr.prefix)}), ${DEV_PL_ACC[o.key]}: ${host}/${o.prefix} (sieć ${networkOf(host, o.prefix)}). Są to różne podsieci i bez rutera stanowisko nie może „rozmawiać” z urządzeniem z obcej podsieci.${a?.dhcp && a.lease ? ' Wygląda na to, że adres stanowiska pochodzi ze starej dzierżawy DHCP — wykonaj ipconfig /renew albo podłącz kabel ponownie.' : ''}`,
+        fix: `Временно поставь ПК статический адрес ${suggestIp(m, host, o.prefix)}, маска ${maskFromPrefix(o.prefix)} (шлюз можно не указывать).`, fix_pl: `Tymczasowo ustaw stanowisko na adres statyczny ${suggestIp(m, host, o.prefix)}, maskę ${maskFromPrefix(o.prefix)} (brama może nie być określona).`,
       })
     } else if (o.key === 'router' && o.port === 'router:lan-if') {
-      why.push({ short: 'нет ответа', text: 'Адреса в одной подсети, но устройство не отвечает.' })
+      why.push({ short: 'нет ответа', short_pl: `brak odpowiedzi`, text: 'Адреса в одной подсети, но устройство не отвечает.',  text_pl: `Adresy znajdują się w tej samej podsieci, ale urządzenie nie odpowiada.`,})
     }
   }
   if (cfg && side.why.length && o.prefix !== null && side.why.some((w) => w.short.startsWith('ПК без DHCP'))) {
     side.why[side.why.length - 1].fix = `Поставь ПК статический адрес ${suggestIp(m, host, o.prefix)}, маска ${maskFromPrefix(o.prefix)} — или подключи ПК в ${rtLan(m)} с включённым DHCP.`
   }
-  if (!why.length) why.push({ short: 'нет ответа', text: 'Устройство не ответило. Проверь кабели, питание и адреса.' })
+  if (!why.length) why.push({ short: 'нет ответа', short_pl: `brak odpowiedzi`, text: 'Устройство не ответило. Проверь кабели, питание и адреса.',  text_pl: `Urządzenie nie odpowiedziało. Sprawdź kable, zasilanie i adresy.`,})
   return { ok: false, host, error: 'timeout', why }
 }
 
@@ -432,17 +472,25 @@ function maskFromPrefix(p: number) {
 }
 
 /** Status line for each device in the "Какой адрес вписать?" helper. */
-export function addressBook(m: NetworkModel, key: PcKey, booting?: Iterable<DeviceKey>): (MgmtTarget & { ok: boolean; note: string; conflict: boolean })[] {
+export function addressBook(m: NetworkModel, key: PcKey, booting?: Iterable<DeviceKey>): (MgmtTarget & { ok: boolean; note: string; note_pl?: string; conflict: boolean })[] {
   const conf = ipConflicts(m)
   return mgmtTargets(m).map((t) => {
-    if (!t.ip) return { ...t, ok: false, note: 'адрес выдаётся по DHCP — смотри список клиентов DHCP роутера', conflict: false }
+    if (!t.ip) return { ...t, ok: false, note: 'адрес выдаётся по DHCP — смотри список клиентов DHCP роутера', note_pl: 'adres przydzielany przez DHCP — zobacz listę klientów DHCP rutera', conflict: false }
     const r = browse(m, key, t.ip, { booting })
     const conflict = conf.some((c) => c.ip === t.ip && c.devices.includes(t.key))
     const mine = r.ok && (r.device === t.key || !!r.conflict?.includes(t.key))
     let note: string
-    if (mine) note = r.conflict ? r.why[0].short : 'открывается с этого компьютера'
-    else if (r.ok) note = `по адресу ${t.ip} сейчас отвечает ${DEV_RU_ACC[r.device!]}, а ${DEV_RU_ACC[t.key]} с этого ПК не виден (нет кабеля или другая сеть)`
-    else note = r.why[0]?.short ?? 'недоступен'
-    return { ...t, ok: mine, note, conflict }
+    let note_pl: string
+    if (mine) {
+      note = r.conflict ? r.why[0].short : 'открывается с этого компьютера'
+      note_pl = r.conflict ? (r.why[0].short_pl ?? r.why[0].short) : 'otwiera się z tej stacji'
+    } else if (r.ok) {
+      note = `по адресу ${t.ip} сейчас отвечает ${DEV_RU_ACC[r.device!]}, а ${DEV_RU_ACC[t.key]} с этого ПК не виден (нет кабеля или другая сеть)`
+      note_pl = `pod adresem ${t.ip} odpowiada teraz ${DEV_PL_ACC[r.device!]}, a ${DEV_PL_ACC[t.key]} nie jest widoczny z tej stacji (brak kabla albo inna sieć)`
+    } else {
+      note = r.why[0]?.short ?? 'недоступен'
+      note_pl = r.why[0]?.short_pl ?? r.why[0]?.short ?? 'niedostępny'
+    }
+    return { ...t, ok: mine, note, note_pl, conflict }
   })
 }

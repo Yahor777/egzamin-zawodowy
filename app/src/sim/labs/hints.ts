@@ -61,17 +61,43 @@ function apply(text: string, rules: Rule[]): string {
   return rules.reduce((t, [re, to]) => t.replace(re, to as string), text)
 }
 
+const DRAYTEK_PL: Rule[] = [
+  [/Network → WAN(?::| →) Static IP/g, 'WAN → Internet Access → Details Page (WAN1) → Static or Dynamic IP'],
+  [/Network → WAN/g, 'WAN → Internet Access → Details Page (WAN1)'],
+  [/Network → LAN/g, 'LAN → General Setup → Details Page (LAN1)'],
+  [/DHCP → DHCP Settings/g, 'LAN → General Setup → LAN1: DHCP Server Configuration'],
+  [/DHCP → Address Reservation(?: → Add New)?/g, 'LAN → Bind IP to MAC'],
+  [/Wireless → Wireless Settings/g, 'Wireless LAN (2.4 GHz) → General Setup'],
+  [/Wireless Security/g, 'Wireless LAN (2.4 GHz) → Security'],
+  [/Forwarding → Virtual Servers(?: → Add(?: New)?)?/g, 'NAT → Port Redirection'],
+  [/Service Port/g, 'Public Port'],
+  [/Internal Port/g, 'Private Port'],
+  [/Advanced Routing → Static Routing(?: List)?(?: → Add New)?/g, 'Routing → Static Route'],
+  [/Security → Remote Management/g, 'System Maintenance → Management'],
+  [/System Tools → Password/g, 'System Maintenance → Administrator Password'],
+  [/(?:VLAN → )?802\.1Q VLAN(?: Configuration)?/g, 'LAN → VLAN'],
+]
+
+const JETSTREAM_PL: Rule[] = [
+  [/System → IP Setting/g, 'System → System Info → System IP'],
+  [/System → User Account/g, 'System → User Management'],
+  [/Switching → Port Setting/g, 'Switching → Port → Port Config'],
+  [/Monitoring → Port Mirror/g, 'Switching → Port → Port Mirror'],
+  [/(?:VLAN → )?802\.1Q VLAN(?: Configuration)?/g, 'VLAN → 802.1Q VLAN → VLAN Config'],
+]
+
 /** the hint of a task for the devices of the current save (TP-Link text when the save has TP-Link devices) */
-export function taskHint(t: Pick<LabTask, 'hint_ru' | 'device'>, s?: { router?: { model?: string }; switch?: { model?: string } } | null): string | undefined {
-  if (!t.hint_ru) return t.hint_ru
+export function taskHint(t: Pick<LabTask, 'hint_ru' | 'hint_pl' | 'device'>, s?: { router?: { model?: string }; switch?: { model?: string } } | null, lang: 'ru' | 'pl' = 'ru'): string | undefined {
+  const base = lang === 'pl' ? t.hint_pl : t.hint_ru
+  if (!base) return base
   const dt = !!s?.router && routerKind(s.router.model) === 'draytek'
   const js = !!s?.switch && switchKind(s.switch.model) === 'jetstream'
-  let h = t.hint_ru
-  if (dt && t.device !== 'switch') h = apply(h, DRAYTEK)
+  let h = base
+  if (dt && t.device !== 'switch') h = apply(h, lang === 'pl' ? DRAYTEK_PL : DRAYTEK)
   if (js && t.device !== 'router') {
     const before = h
-    h = apply(h, JETSTREAM)
-    if (h !== before && t.device === 'switch') h += ' Потом Save Config.'
+    h = apply(h, lang === 'pl' ? JETSTREAM_PL : JETSTREAM)
+    if (h !== before && t.device === 'switch') h += lang === 'pl' ? ' Potem Save Config.' : ' Потом Save Config.'
   }
   return h
 }

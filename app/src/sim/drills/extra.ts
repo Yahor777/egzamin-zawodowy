@@ -37,6 +37,7 @@ export const EXTRA_DRILLS: DrillDef[] = [
     title_ru: 'Windows: локальные пользователи и группы',
     title_pl: 'Windows: konta i grupy lokalne',
     goal_ru: 'Создать учётки и группы, членство, флажки пароля и срок действия — в lusrmgr.msc или командой net user.',
+    goal_pl: "Twórz konta i grupy, członkostwo, flagi haseł i daty wygaśnięcia - w lusrmgr.msc lub za pomocą polecenia net user.",
     minutes: 15,
     docs: [D.windowsUsers, D.cheatWindows],
     params: (r) => {
@@ -70,7 +71,7 @@ export const EXTRA_DRILLS: DrillDef[] = [
               ck('pw', 'Пароль задан как в листе', 'hasło', (c) => u(c, L)?.password === pw),
               ck('adm', 'Член группы Administratorzy', 'Administratorzy', (c) => inG(c, L, 'Administratorzy')),
               ck('must', 'Флажок «Użytkownik musi zmienić hasło przy następnym logowaniu»', 'zmiana hasła', (c) => !!u(c, L)?.mustChange && !u(c, L)?.cannotChange),
-            ], 'lusrmgr.msc → Użytkownicy → Nowy użytkownik (флажок «musi zmienić hasło» по умолчанию включён) → свойства → Członek grupy → Dodaj → Administratorzy. Или: net user LOGIN HASŁO /add /fullname:"Imię Nazwisko" /logonpasswordchg:yes; net localgroup Administratorzy LOGIN /add.'),
+            ], 'lusrmgr.msc → Użytkownicy → Nowy użytkownik (флажок «musi zmienić hasło» по умолчанию включён) → свойства → Członek grupy → Dodaj → Administratorzy. Или: net user LOGIN HASŁO /add /fullname:"Imię Nazwisko" /logonpasswordchg:yes; net localgroup Administratorzy LOGIN /add.', `lusrmgr.msc → Użytkownicy → Nowy użytkownik (domyślnie pole wyboru „musi zmienić hasło” jest włączone) → właściwości → Grupa członkostwa → Dodaj → Administratorzy. Lub: użytkownik sieci LOGIN HASŁO /add /fullname:"Imię Nazwisko" /logonpasswordchg:yes; net grupa lokalna Administratorzy LOGOWANIE /add.`),
           ],
         }
       if (p.v === 1)
@@ -84,7 +85,7 @@ export const EXTRA_DRILLS: DrillDef[] = [
               ck('flags', `${L}: «nie może zmienić hasła» + «hasło nigdy nie wygasa»`, 'opcje hasła', (c) => !!u(c, L)?.cannotChange && !!u(c, L)?.neverExpires),
               ck('off', `${L2}: «Konto jest wyłączone»`, 'konto wyłączone', (c) => !!u(c, L2)?.disabled && !u(c, L)?.disabled),
               ck('pw', 'Пароли заданы', 'hasła', (c) => u(c, L)?.password === pw && u(c, L2)?.password === pw),
-            ], 'lusrmgr.msc → Grupy → Nowa grupa (Opis, Dodaj członków). Флажки — свойства пользователя (вкладка Ogólne). Через команды: net localgroup G /add /comment:"…", net user L2 /active:no, Set-LocalUser L -PasswordNeverExpires $true.'),
+            ], 'lusrmgr.msc → Grupy → Nowa grupa (Opis, Dodaj członków). Флажки — свойства пользователя (вкладка Ogólne). Через команды: net localgroup G /add /comment:"…", net user L2 /active:no, Set-LocalUser L -PasswordNeverExpires $true.', `lusrmgr.msc → Grupy → Nowa grupa (Opis, Dodaj członka). Checkboxy - właściwości użytkownika (zakładka Ogólne). Za pomocą poleceń: net localgroup G /add /comment:"...", net user L2 /active:no, Set-LocalUser L -PasswordNeverExpires $true.`),
           ],
         }
       return {
@@ -96,7 +97,7 @@ export const EXTRA_DRILLS: DrillDef[] = [
             ck('exp', `Срок действия учётки ${p.date} (net user … /expires:${p.date})`, 'wygaśnięcie', (c) => (u(c, L)?.accountExpires ?? '').replace(/[-/]/g, '.') === String(p.date)),
             ck('chg', '«Użytkownik nie może zmienić hasła» (/passwordchg:no)', 'zmiana hasła', (c) => !!u(c, L)?.cannotChange),
             ck('rdp', 'Член группы Użytkownicy pulpitu zdalnego', 'grupa', (c) => inG(c, L, 'Użytkownicy pulpitu zdalnego')),
-          ], `net user ${L} ${pw} /add /expires:${p.date} /passwordchg:no; net localgroup "Użytkownicy pulpitu zdalnego" ${L} /add. Проверка: net user ${L}.`),
+          ], `net user ${L} ${pw} /add /expires:${p.date} /passwordchg:no; net localgroup "Użytkownicy pulpitu zdalnego" ${L} /add. Проверка: net user ${L}.`, `użytkownik sieci ${L} ${pw} /add /expires:${p.date} /passwordchg:no; net localgroup "Użytkownicy pulpitu zdalnego" ${L} /add. Weryfikacja: użytkownik sieci ${L}.`),
         ],
       }
     },
@@ -107,6 +108,7 @@ export const EXTRA_DRILLS: DrillDef[] = [
     title_ru: 'Windows: пакетный файл .bat',
     title_pl: 'Windows: plik wsadowy',
     goal_ru: 'Написать .bat в Notatniku (или echo > plik), сохранить в нужном месте и запустить.',
+    goal_pl: "Napisz .bat w Notatniku (lub echo > plik), zapisz w odpowiednim miejscu i uruchom.",
     minutes: 20,
     docs: [D.windowsBat, D.cheatWindows],
     params: (r) => ({ X: X(r), v: r.int(0, 3), n: r.int(5, 12), dir: r.pick(['TEST', 'KLASA', 'EGZAMIN']), sub: r.pick(['STUDENT', 'UCZEN', 'GRUPA']), name: r.pick(['imię', 'nazwisko']), user: r.pick(['tester', 'serwis', 'operator']), grp: r.pick(['testerzy', 'serwisanci', 'operatorzy']), ext: r.pick(['txt', 'docx']) }),
@@ -128,7 +130,7 @@ export const EXTRA_DRILLS: DrillDef[] = [
                 return names.length === n && Array.from({ length: n }, (_, i) => `${String(p.sub)}${i + 1}`).every((x) => names.includes(x))
               })()),
               ck('ran', 'Файл запущен (папки есть на диске)', 'uruchomiony', (c) => !!c.pc && isDir(c.pc, `C:\\${p.dir}\\${p.sub}${n}`)),
-            ], `@echo off / echo tworzenie folderów dla studentów / mkdir C:\\${p.dir} / for /L %%i in (1,1,${n}) do mkdir C:\\${p.dir}\\${p.sub}%%i. Сохрани как C:\\plik1.bat (тип «Wszystkie pliki»), запусти в cmd: C:\\plik1.bat.`),
+            ], `@echo off / echo tworzenie folderów dla studentów / mkdir C:\\${p.dir} / for /L %%i in (1,1,${n}) do mkdir C:\\${p.dir}\\${p.sub}%%i. Сохрани как C:\\plik1.bat (тип «Wszystkie pliki»), запусти в cmd: C:\\plik1.bat.`, `@echo off / echo tworzenie folderów dla studentów / mkdir C:\\${p.dir} / for /L %%i in (1,1,${n}) do mkdir C:\\${p.dir}\\${p.sub}%%i. Zapisz jako C:\\plik1.bat (wpisz „Wszystkie pliki”), uruchom w cmd: C:\\plik1.bat.`),
           ],
         }
       }
@@ -162,7 +164,7 @@ export const EXTRA_DRILLS: DrillDef[] = [
               ck('cmds', 'В скрипте net user … /add и net localgroup … /add', 'polecenia', (c) => /net\s+user\s+\S+.*\/add/i.test(code(c, f)) && /net\s+localgroup\s+\S+\s+\/add/i.test(code(c, f)) && /net\s+localgroup\s+\S+\s+\S+\s+\/add/i.test(code(c, f))),
               ck('user', `Учётка ${p.user} создана`, 'konto', (c) => !!u(c, String(p.user))),
               ck('grp', `${p.user} в группе ${p.grp}`, 'grupa', (c) => inG(c, String(p.user), String(p.grp))),
-            ], `net user ${p.user} /add (можно с паролем) / net localgroup ${p.grp} /add / net localgroup ${p.grp} ${p.user} /add. Запуск: двойной щелчок или в cmd: %USERPROFILE%\\Desktop\\konto.bat.`),
+            ], `net user ${p.user} /add (можно с паролем) / net localgroup ${p.grp} /add / net localgroup ${p.grp} ${p.user} /add. Запуск: двойной щелчок или в cmd: %USERPROFILE%\\Desktop\\konto.bat.`, `użytkownik sieci ${p.user} /add (możliwe hasło) / grupa lokalna net ${p.grp} /add / grupa lokalna net ${p.grp} ${p.user} /add. Uruchom: kliknij dwukrotnie lub w cmd: %USERPROFILE%\\Desktop\\konto.bat.`),
           ],
         }
       }
@@ -197,7 +199,7 @@ export const EXTRA_DRILLS: DrillDef[] = [
               const got = c.pc ? children(c.pc, 'C:\\archiwum2').map((x) => x.name.toLowerCase()) : []
               return got.length === 2 && got.every((x) => x.endsWith('.' + p.ext))
             }),
-          ], 'copy C:\\dane\\*.%1 C:\\archiwum2\\ ; запуск: C:\\plik2.bat ' + p.ext),
+          ], 'copy C:\\dane\\*.%1 C:\\archiwum2\\ ; запуск: C:\\plik2.bat ' + p.ext, `skopiuj C:\\dane\\*.%1 C:\\archiwum2\\ ; uruchom: C:\\plik2.bat ${p.ext}`),
         ],
       }
     },
@@ -208,6 +210,7 @@ export const EXTRA_DRILLS: DrillDef[] = [
     title_ru: 'Linux Desktop: соединение IP_PC через NetworkManager',
     title_pl: 'Linux Desktop: NetworkManager (nmcli)',
     goal_ru: 'Переименовать проводное соединение и задать статический адрес, шлюз и DNS командой nmcli.',
+    goal_pl: "Zmień nazwę połączenia przewodowego i ustaw adres statyczny, bramę i DNS za pomocą polecenia nmcli.",
     minutes: 15,
     docs: [D.linuxNmcli, D.cheatLinux],
     params: (r) => ({ X: X(r), name: r.pick(['IP_PC', 'LAN_K', 'PC_LAN', 'IP_STACJA']), net: r.pick(['192.168', '172.16', '10.10']), host: r.pick([15, 20, 25]), dns2: r.pick(['8.8.4.4', '1.1.1.1', '']) }),

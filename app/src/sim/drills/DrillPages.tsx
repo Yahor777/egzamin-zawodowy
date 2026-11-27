@@ -73,7 +73,7 @@ export function DrillList() {
                   <span className="lr-main">
                     <span className="lr-title">{ru ? d.title_ru : d.title_pl}</span>
                     <span className="lr-sub">
-                      {d.goal_ru} · {d.minutes} {ru ? 'мин' : 'min'}
+                      {ru ? d.goal_ru : (d.goal_pl ?? d.goal_ru)} · {d.minutes} {ru ? 'мин' : 'min'}
                     </span>
                   </span>
                   <StatusTag k={dKey(d.id)} />

@@ -393,7 +393,7 @@ export function LabRun({ lab, progressKey, back, timer, docs: docsIn, intro_pl, 
         taskId={t.id}
         docs={taskDocs(t)}
         onDoc={openDoc}
-        hint={taskHint(t, s)}
+        hint={taskHint(t, s, ru ? 'ru' : 'pl')}
         solution={
           isDrill ? (
             sol === undefined ? (
@@ -526,7 +526,7 @@ export function LabRun({ lab, progressKey, back, timer, docs: docsIn, intro_pl, 
                 <section key={t.id} className="lab-task">
                   <div className="lt-head">
                     <h2>
-                      <span className="lt-num">{i + 1}.</span> {t.title_ru}
+                      <span className="lt-num">{i + 1}.</span> {ru ? t.title_ru : (t.title_pl ?? t.title_ru)}
                     </h2>
                     {t.device !== 'tests' || s.linux || pcKey || s.server ? (
                       <button className="text-btn" onClick={() => openTask(t.device)}>
@@ -727,7 +727,7 @@ function TaskPanel(p: TaskPanelProps) {
                   <li key={t.id} className={`lp-task${open ? ' open' : ''}${res ? ' ' + res : ''}`}>
                     <button className="lp-task-head" aria-expanded={open} onClick={() => p.onTask(t.id)}>
                       <span className="lt-num">{i + 1}.</span>
-                      <span className="lp-task-title">{t.title_ru}</span>
+                      <span className="lp-task-title">{ru ? t.title_ru : (t.title_pl ?? t.title_ru)}</span>
                       {res && <Icon name={res === 'ok' ? 'check' : 'x'} size={16} />}
                       <Icon name="chevron" size={16} />
                     </button>

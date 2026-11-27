@@ -47,6 +47,7 @@ export interface DrillDef<P extends { X: number } = { X: number } & Record<strin
   title_pl: string
   /** one line: what the student will be able to do */
   goal_ru: string
+  goal_pl?: string
   minutes: number
   docs: DocRef[]
   params: (r: Rng) => P
@@ -128,7 +129,11 @@ export function svcOff(s: LabSave, ...units: string[]): LabSave {
 
 // ---------------------------------------------------------------- checks
 export const ck = (id: string, ru: string, pl: string, test: LabCheck['test'], points = 1): LabCheck => ({ id, ru, pl, points, test })
-export const task = (id: string, device: LabTask['device'], title_ru: string, text_pl: string[], checks: LabCheck[], hint_ru?: string): LabTask => ({ id, device, title_ru, text_pl, checks, hint_ru })
+export const task = (id: string, device: LabTask['device'], title_ru: string, text_pl: string[], checks: LabCheck[], hint_ru?: string, hint_pl?: string): LabTask => {
+  const webPl = hint_ru?.includes(WEB_HINT) && !/[А-Яа-яЁё]/.test(hint_ru.replace(WEB_HINT, '')) ? hint_ru.replace(WEB_HINT, WEB_HINT_PL) : undefined
+  const directPl = hint_pl?.includes(WEB_HINT) ? hint_pl.replace(WEB_HINT, WEB_HINT_PL) : hint_pl
+  return { id, device, title_ru, text_pl, checks, hint_ru, hint_pl: directPl ?? webPl ?? (hint_ru && !/[А-Яа-яЁё]/.test(hint_ru) ? hint_ru : undefined) }
+}
 
 const norm = (s: string) => s.replace(/\s+/g, ' ').trim()
 const normMac = (m: string) => m.replace(/[-:.]/g, '').toUpperCase()
@@ -222,3 +227,5 @@ export const maskOf = (p: number) => ip4(p === 0 ? 0 : (0xffffffff << (32 - p)) 
 /** Hint for drills on the router/switch: how to reach the web page (shown only on demand). */
 export const WEB_HINT =
   'Соедини кабелем ПК с LAN-портом устройства (вкладка «Стол»), открой Windows → Przeglądarka и впиши адрес устройства. Заводской адрес и логин написаны на наклейке снизу устройства («Перевернуть»).'
+export const WEB_HINT_PL =
+  'Połącz stanowisko kablem z portem LAN urządzenia (zakładka „Stanowisko”), otwórz Windows → Przeglądarka i wpisz adres urządzenia. Fabryczny adres i login są na naklejce pod urządzeniem („Odwróć”).'

@@ -26,17 +26,21 @@ export interface Step {
   prerequisites: string[]
   refs: Ref[]
   objective_ru: string
+  objective_pl?: string
   scheduled_date?: string
   exam_value?: ExamValue
-  review?: { drills_new_seed: string[] | null; quiz_topics: string[] | null; pass_threshold_pct: number; rule_ru?: string } | null
+  review?: { drills_new_seed: string[] | null; quiz_topics: string[] | null; pass_threshold_pct: number; rule_ru?: string; rule_pl?: string } | null
   timer_minutes?: number
   pass_threshold_pct?: number
   after_ru?: string
+  after_pl?: string
   missing?: boolean
-  missing_spec?: { type: string; priority: number; create: string; spec_ru: string; acceptance?: string }
+  missing_spec?: { type: string; priority: number; create: string; spec_ru: string; spec_pl?: string; acceptance?: string; acceptance_pl?: string }
   offline_task_ru?: string
+  offline_task_pl?: string
   optional?: boolean
   adaptive_ru?: string
+  adaptive_pl?: string
   repeatable?: boolean
 }
 
@@ -45,6 +49,7 @@ export interface Module {
   title_ru: string
   title_pl: string
   why_ru: string
+  why_pl?: string
   scheduled?: { from: string; to: string }
   est_minutes_total?: number
   steps: Step[]
@@ -58,11 +63,14 @@ export interface CalendarDay {
   steps: string[]
   planned_minutes: number
   note_ru?: string
+  note_pl?: string
+  buffer_ru?: string
+  buffer_pl?: string
 }
 
 export interface Curriculum {
   version: number
   exam: { written: { from: string; to: string; pass_pct: number }; practical: { from: string; to: string; pass_pct: number } }
   modules: Module[]
-  calendar: { start: string; end: string; assumptions_ru: string; optional_if_time: string[]; days: CalendarDay[] }
+  calendar: { start: string; end: string; assumptions_ru: string; assumptions_pl?: string; optional_if_time: string[]; days: CalendarDay[] }
 }

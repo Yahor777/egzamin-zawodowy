@@ -20,6 +20,7 @@ export const WS_RRAS_DRILLS: DrillDef[] = [
     title_ru: 'Windows Server: RRAS — маршрутизация LAN или NAT, станция за сервером выходит в «внешнюю» сеть',
     title_pl: 'Windows Server: Routing i dostęp zdalny (NAT / routing LAN)',
     goal_ru: 'Поставить роль «Dostęp zdalny» со службой Routing, в консоли «Routing i dostęp zdalny» запустить мастер (NAT к роутеру — или маршрутизация LAN + маршрут на роутере) — и пропинговать роутер со станции, стоящей за сервером.',
+    goal_pl: "Ustaw rolę „Dostęp dostęp” z usługą Routing, uruchom kreator w konsoli „Routing i dostęp” (NAT do rutera - lub routing LAN + trasa na ruterze) - i pinguj ruter ze stacji za serwerem.",
     minutes: 25,
     docs: [D.winserverRras, D.winserverRoles, D.windowsNet],
     params: (r) => ({ X: r.int(2, 19), kind: r.pick(['nat', 'route']) }),
@@ -68,11 +69,11 @@ export const WS_RRAS_DRILLS: DrillDef[] = [
             ],
             srvChecks,
             'Dodaj role → Dostęp zdalny → (Funkcje) → Usługi ról: zaznacz Routing → Dodaj funkcje. Potem flaga w Menedżerze serwera → «Otwórz kreatora Wprowadzenie» → «Wdróż tylko sieć VPN» (otworzy się konsola). ПКМ по серверу → «Konfiguruj i włącz routing i dostęp zdalny».',
-          ),
+          `Dodaj rolę → Dostępność odłączalna → (Funkcje) → Usługi funkcji: zaznacz Routing → Dodaj funkcje. Potem flaga w Menedżerze serwera → „Otwór kreatora Wprowadzenie” → „Wdróż tylko sieć VPN” (otworzy się konsola). RMB na serwerze → „Konfiguruj i włączaj routing i dostęp do Internetu”.`),
           ...(kind === 'route'
-            ? [task('router', 'router', 'Ruter: trasa powrotna', [`trasa statyczna do sieci 192.168.${X}.0/24 przez serwer (${wanIp})`], [ck('route', `Маршрут 192.168.${X}.0/24 через ${wanIp} (включён)`, 'trasa statyczna', route)], 'Advanced Routing → Static Routing → Add New: сеть, маска 255.255.255.0, шлюз = IP «Ethernet 2» сервера, Enabled.')]
+            ? [task('router', 'router', 'Ruter: trasa powrotna', [`trasa statyczna do sieci 192.168.${X}.0/24 przez serwer (${wanIp})`], [ck('route', `Маршрут 192.168.${X}.0/24 через ${wanIp} (включён)`, 'trasa statyczna', route)], 'Advanced Routing → Static Routing → Add New: сеть, маска 255.255.255.0, шлюз = IP «Ethernet 2» сервера, Enabled.', `Zaawansowany routing → Statyczny routing → Dodaj nową: sieć, maska ​​255.255.255.0, brama = serwer IP „Ethernet 2”, Włączone.`)]
             : []),
-          task('pc', 'pc', 'Stacja: test komunikacji', [`z wiersza poleceń wykonaj ping ${router} (ruter, strona zewnętrzna) — odpowiedzi mają wrócić`], [ck('ping', `ping ${router} со станции`, `ping ${router}`, (c) => c.ping('pc', router) && !!c.pc?.history.some((h) => new RegExp(`\\bping\\b.*${router.replace(/\./g, '\\.')}`, 'i').test(h)))], 'cmd → ping 192.168.0.1. Не отвечает: RRAS не запущен / нет NAT (ruter nie zna sieci wewnętrznej) / нет маршрута обратно на роутере.'),
+          task('pc', 'pc', 'Stacja: test komunikacji', [`z wiersza poleceń wykonaj ping ${router} (ruter, strona zewnętrzna) — odpowiedzi mają wrócić`], [ck('ping', `ping ${router} со станции`, `ping ${router}`, (c) => c.ping('pc', router) && !!c.pc?.history.some((h) => new RegExp(`\\bping\\b.*${router.replace(/\./g, '\\.')}`, 'i').test(h)))], 'cmd → ping 192.168.0.1. Не отвечает: RRAS не запущен / нет NAT (ruter nie zna sieci wewnętrznej) / нет маршрута обратно на роутере.', `cmd → ping 192.168.0.1. Nie odpowiada: RRAS nie działa / brak NAT (ruter nie zna sieci wewnętrznej) / brak trasy zwrotnej na ruterze.`),
         ],
       }
     },

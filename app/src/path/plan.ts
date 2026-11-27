@@ -24,11 +24,11 @@ export const isDone = (p: PathState, id: string) => {
 }
 
 /** Steps the compressed plan may drop, in the order to drop them (README §4 "Что резать"). */
-export const CUT_LEVELS: { ids: string[]; why_ru: string }[] = [
-  { ids: ['m03-extra', 'm09-realvm'], why_ru: 'Проброс порта и port security встречались только в листах 2022–23; повтор на настоящей VM — по желанию.' },
-  { ids: ['m08-rare'], why_ru: 'RRAS, квоты, NIC Teaming, RDP, бэкап вместе ≈ 1 % баллов — хватит шпаргалки.' },
-  { ids: ['m11-english', 'm05-periph-print'], why_ru: 'Английский и периферию заменит режим «Мои ошибки».' },
-  { ids: ['m12-written-6', 'm12-written-7'], why_ru: 'Последние пробные письменные заменит режим «Мои ошибки».' },
+export const CUT_LEVELS: { ids: string[]; why_ru: string; why_pl: string }[] = [
+  { ids: ['m03-extra', 'm09-realvm'], why_ru: 'Проброс порта и port security встречались только в листах 2022–23; повтор на настоящей VM — по желанию.', why_pl: 'Przekierowanie portu i port security występowały tylko w arkuszach 2022–23; powtórka na prawdziwej VM jest opcjonalna.' },
+  { ids: ['m08-rare'], why_ru: 'RRAS, квоты, NIC Teaming, RDP, бэкап вместе ≈ 1 % баллов — хватит шпаргалки.', why_pl: 'RRAS, przydziały, NIC Teaming, RDP i kopie to razem ok. 1% punktów — wystarczy ściąga.' },
+  { ids: ['m11-english', 'm05-periph-print'], why_ru: 'Английский и периферию заменит режим «Мои ошибки».', why_pl: 'Angielski i peryferia zastąpi tryb „Moje błędy”.' },
+  { ids: ['m12-written-6', 'm12-written-7'], why_ru: 'Последние пробные письменные заменит режим «Мои ошибки».', why_pl: 'Ostatnie próbne testy pisemne zastąpi tryb „Moje błędy”.' },
 ]
 
 export type DayKind = 'learn' | 'cycle' | 'sim' | 'light' | 'written' | 'off'

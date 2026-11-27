@@ -28,6 +28,7 @@ export function makeDrillLab(def: DrillDef, seed: number): DrillLab {
     title_ru: def.title_ru,
     title_pl: def.title_pl,
     summary_ru: def.goal_ru,
+    summary_pl: def.goal_pl,
     station: p.X,
     devices: b.devices,
     ports,

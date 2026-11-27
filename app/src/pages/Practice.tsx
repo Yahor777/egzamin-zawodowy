@@ -36,6 +36,34 @@ const TAG_RU: Record<string, string> = {
   backup: 'бэкап',
 }
 
+const TAG_PL: Record<string, string> = {
+  hardware: 'sprzęt',
+  cabling: 'okablowanie',
+  router: 'ruter',
+  switch: 'przełącznik',
+  vlan: 'VLAN',
+  wifi: 'Wi‑Fi',
+  winserver: 'Windows Server',
+  ad: 'AD',
+  dns: 'DNS',
+  dhcp: 'DHCP',
+  iis: 'IIS',
+  gpo: 'GPO',
+  printing: 'drukarka',
+  shares: 'udostępnione foldery',
+  quotas: 'przydziały',
+  'linux-net': 'Linux sieć',
+  'linux-dhcp': 'Linux DHCP',
+  'linux-users': 'Linux użytkownicy',
+  'linux-script': 'skrypt',
+  'linux-disk': 'Linux dyski',
+  'linux-samba': 'Samba',
+  'linux-web': 'Apache',
+  'windows-client': 'Windows klient',
+  diagnostics: 'diagnostyka',
+  backup: 'kopia zapasowa',
+}
+
 export function Practice() {
   const t = useT()
   const lang = useLang()
@@ -143,7 +171,7 @@ export function Practice() {
               </button>
               {tags.map((tg) => (
                 <button key={tg} className={`chip-btn ${tag === tg ? 'on' : ''}`} onClick={() => setTag(tg)}>
-                  {lang === 'ru' ? (TAG_RU[tg] ?? tg) : tg}
+                  {lang === 'ru' ? (TAG_RU[tg] ?? tg) : (TAG_PL[tg] ?? tg)}
                 </button>
               ))}
             </div>

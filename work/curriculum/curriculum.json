@@ -103,7 +103,8 @@
       }
      ],
      "objective_ru": "Знает: письменная — 40 вопросов/60 мин/порог 50 %; практика — 150 мин (+10 мин чтения), 31–51 критериев T/N по 1 баллу, порог 75 %; 5 rezultatów + przebieg.",
-     "scheduled_date": "2026-11-24"
+     "scheduled_date": "2026-11-24",
+     "objective_pl": "Zna: pisemnie – 40 pytań/60 min/próg 50%; praktyka - 150 min (+10 min czytania), 31–51 kryteriów T/N po 1 pkt każde, próg 75%; 5 wynik + przebieg."
     },
     {
      "id": "m00-read-sheet",
@@ -128,7 +129,8 @@
       }
      ],
      "objective_ru": "Умеет прочитать лист: таблица адресов, X = номер места, «zgłoś gotowość», папка для скриншотов на Egzamin-x; сопоставляет пункт задания с критериями оценки.",
-     "scheduled_date": "2026-11-24"
+     "scheduled_date": "2026-11-24",
+     "objective_pl": "Potrafi odczytać arkusz: tabelę adresów, X = numer stanowiska, „zgłoś gotowość”, folder zrzutów ekranu na Egzamin-x; porównuje zadanie z kryteriami oceny."
     },
     {
      "id": "m00-diag-written",
@@ -147,7 +149,9 @@
      ],
      "objective_ru": "Получен исходный % по темам (статистика по темам в приложении) — план усиливает темы < 50 %.",
      "adaptive_ru": "Темы с результатом < 50 % получают +50 % вопросов в quiz-шагах; темы > 80 % — квизы сокращаются вдвое.",
-     "scheduled_date": "2026-11-25"
+     "scheduled_date": "2026-11-25",
+     "objective_pl": "Uzyskano początkowy % tematyczny (statystyka tematyczna w załączniku) - plan wzmacnia tematy < 50%.",
+     "adaptive_pl": "Tematy z wynikiem <50% otrzymują +50% pytań w etapach quizu; tematy > 80% - quizy są zmniejszone o połowę."
     },
     {
      "id": "m00-diag-practical",
@@ -187,7 +191,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-25"
+     "scheduled_date": "2026-11-25",
+     "objective_pl": "Sprawdzane jest, czy może łączyć urządzenia zgodnie z obwodem i pingiem; zapoznanie się z interfejsem stoiska."
     }
    ],
    "scheduled": {
@@ -197,7 +202,8 @@
      1
     ]
    },
-   "est_minutes_total": 90
+   "est_minutes_total": 90,
+   "why_pl": "Najpierw zrozum, za co przyznawane są punkty (1 kryterium = 1 punkt T/N, próg 75%) i zmierz poziom wyjściowy, aby można było dostosować plan."
   },
   {
    "id": "m01-numbers-ipv4",
@@ -236,7 +242,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-25"
+     "scheduled_date": "2026-11-25",
+     "objective_pl": "Konwertuje liczbę 8-bitową z zakresu 2/10/16 bez kalkulatora; zna potęgi dwójki do 2^10."
     },
     {
      "id": "m01-bin-hex-gen",
@@ -269,7 +276,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-26"
+     "scheduled_date": "2026-11-26",
+     "objective_pl": "Rozwiązuje 8 z 10 wygenerowanych problemów bez monitowania."
     },
     {
      "id": "m01-ipv4-basics",
@@ -315,7 +323,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-26"
+     "scheduled_date": "2026-11-26",
+     "objective_pl": "Tłumaczy /24–/30 ↔ maska; wyróżnia prywatny (RFC 1918), APIPA 169.254, pętlę zwrotną; wie, że brama domyślna znajduje się w tej samej podsieci."
     },
     {
      "id": "m01-subnet-method",
@@ -348,7 +357,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-26"
+     "scheduled_date": "2026-11-26",
+     "objective_pl": "Korzystając z adresu/prefiksu, w ciągu 1 minuty znajduje sieć, transmisję, zakres hostów i liczbę hostów."
     },
     {
      "id": "m01-subnet-gen",
@@ -375,7 +385,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-27"
+     "scheduled_date": "2026-11-27",
+     "objective_pl": "Wynik poprawny 8/10, średni czas wykonania zadania < 90 s."
     },
     {
      "id": "m01-subnet-hosts",
@@ -404,7 +415,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-28"
+     "scheduled_date": "2026-11-28",
+     "objective_pl": "Zlicza N-tą podsieć /26–/29 i konfiguruje w niej urządzenia (jak w arkuszach 2024-06-02, 2026-06-09)."
     },
     {
      "id": "m01-subnet-router",
@@ -439,7 +451,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-28"
+     "scheduled_date": "2026-11-28",
+     "objective_pl": "Z adresu sieciowego i maski wyświetla adres rutera i dozwolony zakres DHCP."
     },
     {
      "id": "m01-quiz",
@@ -466,7 +479,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-28"
+     "scheduled_date": "2026-11-28",
+     "objective_pl": "≥ 70% na odpowiadanie na pytania tematyczne; błędy przejdź do „Moje błędy”."
     },
     {
      "id": "m01-ipv6-nat",
@@ -512,7 +526,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-28"
+     "scheduled_date": "2026-11-28",
+     "objective_pl": "Zmniejsza/rozszerza IPv6, zna typy adresów IPv6 (fe80::, ::1, 2000::/3) i dlaczego NAT - w części pisemnej."
     }
    ],
    "scheduled": {
@@ -522,7 +537,8 @@
      1
     ]
    },
-   "est_minutes_total": 165
+   "est_minutes_total": 165,
+   "why_pl": "Maski /25–/30 i zliczanie adresów są potrzebne w ruterze/przełączniku/DHCP niemal każdego arkusza (WAN /26–/30 w 69% arkuszy) i ~10% pytań pisemnych (adresowanie) + podstawy."
   },
   {
    "id": "m02-win-net",
@@ -571,7 +587,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-28"
+     "scheduled_date": "2026-11-28",
+     "objective_pl": "Znajduje wymaganą kartę według adresu MAC/nazwy, zmienia nazwę połączenia, odczytuje ipconfig /all."
     },
     {
      "id": "m02-static",
@@ -600,7 +617,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-28"
+     "scheduled_date": "2026-11-28",
+     "objective_pl": "Bez podpowiedzi: nazwa, adres IP, maska, brama domyślna, 2 DNS."
     },
     {
      "id": "m02-dhcp",
@@ -629,7 +647,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-28"
+     "scheduled_date": "2026-11-28",
+     "objective_pl": "Przełącza na tryb automatyczny, wykonuje polecenie ipconfig /release /renew i wyświetla wynikowy adres egzaminatorowi."
     },
     {
      "id": "m02-two",
@@ -658,7 +677,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-28"
+     "scheduled_date": "2026-11-28",
+     "objective_pl": "Identyfikuje kartę według MAC/portu, konfiguruje dwie karty; wie, dlaczego jest tylko jedna brama domyślna."
     },
     {
      "id": "m02-firewall",
@@ -705,7 +725,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-28"
+     "scheduled_date": "2026-11-28",
+     "objective_pl": "Zawiera regułę „Udostępnianie plików i drukarek (Żądanie echa - ICMPv4-In)” lub tworzy własną; sprawdza ping w obu kierunkach."
     },
     {
      "id": "m02-netsh",
@@ -738,7 +759,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-28"
+     "scheduled_date": "2026-11-28",
+     "objective_pl": "Można ustawić adres i zmienić nazwę połączenia za pomocą polecenia – rozwiązanie awaryjne, jeśli GUI „nie nasłuchuje”."
     },
     {
      "id": "m02-cmd-quiz",
@@ -774,7 +796,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-29"
+     "scheduled_date": "2026-11-29",
+     "objective_pl": "Zna cel i klucze poleceń sieciowych (często w formie pisemnej)."
     }
    ],
    "scheduled": {
@@ -784,7 +807,8 @@
      1
     ]
    },
-   "est_minutes_total": 87
+   "est_minutes_total": 87,
+   "why_pl": "Konfigurowanie interfejsów systemu operacyjnego + ping - w 96–100% arkuszy, łącznie ~18% wszystkich punktów ćwiczeń. „Najtańsze” punkty naliczane są automatycznie."
   },
   {
    "id": "m03-router-switch",
@@ -831,7 +855,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-28"
+     "scheduled_date": "2026-11-28",
+     "objective_pl": "Wyjaśnia, do czego służy ruter (WAN/LAN/NAT/DHCP) i przełącznik zarządzany (adres IP zarządzania, VLAN), jak zalogować się do urządzenia przy użyciu adresu z naklejki."
     },
     {
      "id": "m03-rt-lan",
@@ -866,7 +891,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-28"
+     "scheduled_date": "2026-11-28",
+     "objective_pl": "Loguje się do rutera z ustawieniami fabrycznymi, zmienia LAN i hasło i wraca pod nowy adres."
     },
     {
      "id": "m03-rt-wan",
@@ -902,7 +928,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-29"
+     "scheduled_date": "2026-11-29",
+     "objective_pl": "Ustaw statyczny adres IP: IP, maska ​​prefiksu, brama domyślna, 1–2 DNS."
     },
     {
      "id": "m03-rt-dhcp",
@@ -937,7 +964,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-29"
+     "scheduled_date": "2026-11-29",
+     "objective_pl": "Konfiguruje zasięg, czas dzierżawy w minutach, DNS; można również wyłączyć DHCP, jeśli jest na liście."
     },
     {
      "id": "m03-rt-reserv",
@@ -973,7 +1001,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-29"
+     "scheduled_date": "2026-11-29",
+     "objective_pl": "Znajduje MAC żądanej karty (ipconfig /all, ip link) i przypisuje adres; wie, że zgodnie z dokumentacją rezerwa może znajdować się na zewnątrz/wewnątrz basenu."
     },
     {
      "id": "m03-sw-ip",
@@ -1008,7 +1037,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-29"
+     "scheduled_date": "2026-11-29",
+     "objective_pl": "Nadaje stanowiskoowi tymczasowy adres z sieci przełącznika, loguje się, zmienia adres IP/maskę/bramę."
     },
     {
      "id": "m03-conflict",
@@ -1044,7 +1074,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-29"
+     "scheduled_date": "2026-11-29",
+     "objective_pl": "Rozumie kolejność: konfiguruj urządzenia pojedynczo, w przeciwnym razie wystąpi konflikt; przywraca dostęp."
     },
     {
      "id": "m03-vlan-theory",
@@ -1078,7 +1109,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-30"
+     "scheduled_date": "2026-11-30",
+     "objective_pl": "Wyjaśnia dostęp (nieoznaczony) w porównaniu do łącza trunkingowego (oznakowany), dlaczego PVID i sieć VLAN zarządzania."
     },
     {
      "id": "m03-sw-vlan",
@@ -1107,7 +1139,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-30"
+     "scheduled_date": "2026-11-30",
+     "objective_pl": "Tworzy sieć VLAN, dodaje nieoznaczone porty, ustawia PVID bez utraty dostępu do przełącznika."
     },
     {
      "id": "m03-sw-trunk",
@@ -1142,7 +1175,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-01"
+     "scheduled_date": "2026-12-01",
+     "objective_pl": "Konfiguruje oznaczony port w kilku sieciach VLAN (ruter na patyku – trend 2025–26)."
     },
     {
      "id": "m03-rt-route",
@@ -1177,7 +1211,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-01"
+     "scheduled_date": "2026-12-01",
+     "objective_pl": "Dodaje trasę statyczną (sieć/maskę/bramę) - przykładowe arkusze 2026-06-09/10."
     },
     {
      "id": "m03-wifi-theory",
@@ -1211,7 +1246,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-01"
+     "scheduled_date": "2026-12-01",
+     "objective_pl": "Zna pary „standardowa częstotliwość”, kanały 1–13 (częstotliwości środkowe, 2442 MHz = 7), dlaczego WPA2-PSK AES."
     },
     {
      "id": "m03-rt-wifi",
@@ -1246,7 +1282,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-01"
+     "scheduled_date": "2026-12-01",
+     "objective_pl": "Dostosowuje 2,4 GHz i wyłącza 5 GHz, jeśli to konieczne."
     },
     {
      "id": "m03-troubleshoot",
@@ -1282,7 +1319,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-02"
+     "scheduled_date": "2026-12-02",
+     "objective_pl": "Systematycznie sprawdza kabel → adres/maska ​​→ brama domyślna → firewall → VLAN."
     },
     {
      "id": "m03-extra",
@@ -1311,7 +1349,8 @@
       "practical": {}
      },
      "optional": true,
-     "scheduled_date": "2026-12-03"
+     "scheduled_date": "2026-12-03",
+     "objective_pl": "Wie, gdzie w latach 2022–2023 napotkano serwer wirtualny/DMZ i zabezpieczenia portów, ale obecnie są to rzadkie przypadki."
     },
     {
      "id": "m03-quiz",
@@ -1339,7 +1378,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-02"
+     "scheduled_date": "2026-12-02",
+     "objective_pl": "≥ 70% w temacie urządzeń sieciowych."
     },
     {
      "id": "m03-checkpoint",
@@ -1365,9 +1405,11 @@
       "drills_new_seed": [],
       "quiz_topics": [],
       "pass_threshold_pct": 75,
-      "rule_ru": "Каждый дрилл — с НОВЫМ seed (newDrillSeed), без открытия доков. <75 % → дрилл возвращается в план через 1 день, ≥75 % → через 7 дней."
+      "rule_ru": "Каждый дрилл — с НОВЫМ seed (newDrillSeed), без открытия доков. <75 % → дрилл возвращается в план через 1 день, ≥75 % → через 7 дней.",
+      "rule_pl": "Do każdego siewnika dołączone jest NOWE ziarno (newDrillSeed), bez konieczności otwierania doków. <75% → wiertło wraca do planu po 1 dniu, ≥75% → po 7 dniach."
      },
-     "scheduled_date": "2026-12-03"
+     "scheduled_date": "2026-12-03",
+     "objective_pl": "Wypełnij arkusz „sieci” z automatyczną kontrolą ≥ 75% w 40 minut."
     }
    ],
    "scheduled": {
@@ -1378,7 +1420,8 @@
      2
     ]
    },
-   "est_minutes_total": 291
+   "est_minutes_total": 291,
+   "why_pl": "Ruter (96% arkuszy, ~4,5 punktu) + przełącznik (96%, ~3,5 punktu) = ~18% wszystkich punktów. VLAN – 50% liści, pień rośnie (22% w latach 2025–26)."
   },
   {
    "id": "m04-protocols",
@@ -1425,7 +1468,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-29"
+     "scheduled_date": "2026-11-29",
+     "objective_pl": "Umieszcza protokół/urządzenie na poziomie OSI i TCP/IP; rozróżnia TCP i UDP."
     },
     {
      "id": "m04-ports",
@@ -1453,7 +1497,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-29"
+     "scheduled_date": "2026-11-29",
+     "objective_pl": "Zna na pamięć 20, 21, 22, 23, 25, 53, 67/68, 69, 80, 110, 143, 161, 389, 443, 445, 3389."
     },
     {
      "id": "m04-port-cards",
@@ -1485,9 +1530,12 @@
       "priority": 10,
       "create": "app/src/lib/generators.ts: genPorts() + GENERATORS.ports",
       "spec_ru": "Генератор вопросов с 4 вариантами: «Порт 53 → ?», «SMTP → порт?», «Какой протокол на транспортном уровне использует DHCP? (UDP 67/68)», «Уровень OSI для ARP/ICMP/HTTP». Пул ≥ 30 пар из note:protocols. Пояснение RU/PL к каждой генерации. Без нового UI — тот же компонент Generator.",
-      "acceptance": "gen:ports появляется в «Тренажёрах», 30+ уникальных пар, unit-тест на однозначность ответа."
+      "acceptance": "gen:ports появляется в «Тренажёрах», 30+ уникальных пар, unit-тест на однозначность ответа.",
+      "spec_pl": "Generator pytań z 4 opcjami: „Port 53 → ?”, „SMTP → port?”, „Jakiego protokołu warstwy transportowej używa DHCP? (UDP 67/68)”, „Warstwa OSI dla ARP/ICMP/HTTP”. Pula ≥ 30 par z notatki:protokoły. Wyjaśnienie RU/PL dla każdej generacji. Bez nowego interfejsu użytkownika – ten sam komponent Generatora.",
+      "acceptance_pl": "gen:ports pojawia się w „Trenerach”, ponad 30 unikalnych par, test jednostkowy w celu uzyskania jednoznacznej odpowiedzi."
      },
-     "scheduled_date": "2026-11-30"
+     "scheduled_date": "2026-11-30",
+     "objective_pl": "Odpowiada na 20 kart z rzędu bez błędów."
     },
     {
      "id": "m04-services",
@@ -1545,7 +1593,8 @@
        }
       }
      },
-     "scheduled_date": "2026-11-30"
+     "scheduled_date": "2026-11-30",
+     "objective_pl": "Opisuje działanie protokołu DHCP (DORA), typów rekordów DNS (A, AAAA, CNAME, MX, PTR, NS, SOA), protokołów pocztowych, dostępu zdalnego, RIP/OSPF."
     },
     {
      "id": "m04-quiz",
@@ -1572,7 +1621,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-02"
+     "scheduled_date": "2026-12-02",
+     "objective_pl": "≥ 70% w zakresie protokołów tematycznych."
     }
    ],
    "scheduled": {
@@ -1583,7 +1633,8 @@
      2
     ]
    },
-   "est_minutes_total": 100
+   "est_minutes_total": 100,
+   "why_pl": "Temat niemal czysto pisany: protokoły – 9,8% pytań bankowych; porty/protokoły pojawiają się w ~13% pytań. W praktyce pomaga zrozumieć DNS/DHCP/FTP/HTTP."
   },
   {
    "id": "m05-cabling-hardware",
@@ -1640,7 +1691,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-05"
+     "scheduled_date": "2026-12-05",
+     "objective_pl": "Zna kolejność kolorów T568A i T568B przy skrzyżowaniu, kategorie (5e/6/6A/7) i 100BASE-TX/1000BASE-T/…, długość 100 m."
     },
     {
      "id": "m05-t568-drill",
@@ -1680,9 +1732,12 @@
       "priority": 7,
       "create": "app/src/sim/drills/cable.ts (+ простой drag&drop компонент)",
       "spec_ru": "Режимы: (1) вилка 8P8C — расставить 8 цветных жил по пинам 1–8 по T568A или T568B (рандом); (2) кросс-кабель — второй конец; (3) Keystone/патч-панель — на модуле нарисованы метки A/B, нужно выбрать нужный ряд цветов; (4) вопросы-критерии CKE: «≤ 25 mm poza płaszcz», «≤ 13 mm rozkręcenia», «zatrzask na izolacji», «kabel typu drut dla panelu/Keystone, linka dla patchcordu». Проверка — сразу, с подсветкой ошибочного пина.",
-      "acceptance": "drill-id cable-t568, рандом A/B, засчитывается в progress как d:cable-t568."
+      "acceptance": "drill-id cable-t568, рандом A/B, засчитывается в progress как d:cable-t568.",
+      "spec_pl": "Tryby: (1) wtyczka 8P8C – ułóż 8 kolorowych przewodów wzdłuż styków 1–8 w T568A lub T568B (losowo); (2) kabel krosowany – drugi koniec; (3) Keystone/patch panel - na module narysowane są znaczniki A/B, należy wybrać żądany zakres kolorów; (4) Pytania kryterialne CKE: „≤ 25 mm poza płaszczem”, „≤ 13 mm rozkręcenia”, „zatrzask na montażu”, „kabel typu drut dla panelu/Keystone, linka dla patchcordu”. Sprawdź - natychmiast, z podświetleniem błędnego pinu.",
+      "acceptance_pl": "Drill-id kabel-t568, losowe A/B, liczone w toku jako d:kabel-t568."
      },
-     "scheduled_date": "2026-12-05"
+     "scheduled_date": "2026-12-05",
+     "objective_pl": "Dokładnie układa przewody dla wtyczek 8P8C i oznaczonych kolorami Keystone/Patch Panel (A/B) w <60 sekund."
     },
     {
      "id": "m05-cabling-demo",
@@ -1737,7 +1792,9 @@
       }
      },
      "offline_task_ru": "В школе: 2 патчкорда (T568B прямой, кросс) + 1 Keystone+патч-панель с проверкой тестером. Засечь время (цель ≤ 15 мин на линию).",
-     "scheduled_date": "2026-12-05"
+     "scheduled_date": "2026-12-05",
+     "objective_pl": "Zna kolejność prac i wszystkie kryteria (średnio 5,1 pkt. + 2–3 pkt. przebytego BHP); osobiście – na stoisku szkoły 2 razy do 20.12.",
+     "offline_task_pl": "W szkole: 2 patchcordy (T568B direct, cross) + 1 Keystone + patch panel sprawdzony przez testera. Mierz czas (cel ≤ 15 minut na linię)."
     },
     {
      "id": "m05-hw-cpu-ram",
@@ -1781,7 +1838,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-05"
+     "scheduled_date": "2026-12-05",
+     "objective_pl": "Rozwiązuje typowe problemy: procesor Socket ↔, DDR4 vs DDR5, obliczanie przepustowości, PCIe/SATA/M.2."
     },
     {
      "id": "m05-hw-disk-bios",
@@ -1827,7 +1885,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-05"
+     "scheduled_date": "2026-12-05",
+     "objective_pl": "Rozróżnia sygnały RAID 0/1/5/10, MBR/GPT, POST i oblicza moc zasilacza."
     },
     {
      "id": "m05-mount-demo",
@@ -1854,7 +1913,7 @@
       {
        "type": "note",
        "id": "law_bhp",
-       "section": "Безопасность работ в сервисе (BHP w serwisie komputerowym)",
+       "section": "Безопасность работ в сервисе (BHP w serwisie stanowiskoowym)",
        "route": "notes/law_bhp"
       }
      ],
@@ -1876,7 +1935,9 @@
       }
      },
      "offline_task_ru": "В школе: 1 раз заменить RAM и добавить диск, запустить систему.",
-     "scheduled_date": "2026-12-06"
+     "scheduled_date": "2026-12-06",
+     "objective_pl": "Zna kolejność: odłączyć zasilanie → zagrożenie ESD → instalacja → sprawdzenie obciążenia; co oceniamy (stabilnie, bez uszkodzeń, system uruchamia się).",
+     "offline_task_pl": "W szkole: wymień 1 raz RAM i dodaj dysk, uruchom system."
     },
     {
      "id": "m05-ident",
@@ -1934,9 +1995,12 @@
       "priority": 1,
       "create": "app/src/sim/drills/ident.ts + окна msinfo32/dxdiag/CPU-Z-подобное в sim/pc; в Linux — lshw -short, lspci, dmidecode -t memory, inxi (lscpu/free/lsblk/uname уже есть)",
       "spec_ru": "Рандомная конфигурация ПК (CPU модель/ядра/потоки/частота/кэш, RAM объём/тип/частота/каналы/серийный номер, GPU производитель/модель/VRAM, диск модель/объём/SMART-атрибуты, NIC MAC/модель, ОС версия/сборка/ядро, разрешение/частота монитора). Задание как в листе: Tabela с 6–10 параметрами + требования программы (напр. «≥ 6 ядер, ≥ 3 ГГц, ≥ 16 GB»). Студент вводит значения и ставит оценку; проверка по модели + требование «есть скриншот» (кнопка «zrzut ekranu» в сим-окне сохраняет файл в Egzamin-x/Identyfikacja). Варианты ОС: Windows (70 %) и Linux (30 %).",
-      "acceptance": "Минимум 3 разных шаблона таблиц из реальных листов (2026-06-03 CPU/GPU/ядро, 2025-06-01 RAM через dmidecode, 2022-06-01 SMART), оценка «spełnia» проверяется."
+      "acceptance": "Минимум 3 разных шаблона таблиц из реальных листов (2026-06-03 CPU/GPU/ядро, 2025-06-01 RAM через dmidecode, 2022-06-01 SMART), оценка «spełnia» проверяется.",
+      "spec_pl": "Losowa konfiguracja stanowiskoa (model procesora/rdzenie/wątki/częstotliwość/pamięć podręczna, wolumen/typ/częstotliwość pamięci RAM/kanały/numer seryjny, producent/model procesora graficznego/VRAM, model dysku/wolumin/atrybuty SMART, MAC/model karty sieciowej, wersja systemu operacyjnego/kompilacja/jądro, rozdzielczość/częstotliwość monitora). Zadanie jak w arkuszu: Tabela z 6–10 parametrami + wymagania programu (np. „≥ 6 rdzeni, ≥ 3 GHz, ≥ 16 GB”). Uczeń wprowadza wartości i wystawia ocenę; weryfikacja po modelu + wymaganie „jest zrzut ekranu” (przycisk „zrzut ekranu” w oknie SIM zapisuje plik w Egzamin-x/Identyfikacja). Opcje systemu operacyjnego: Windows (70%) i Linux (30%).",
+      "acceptance_pl": "Co najmniej 3 różne szablony tabel z rzeczywistych arkuszy (2026-06-03 CPU/GPU/jądro, 2025-06-01 RAM poprzez dmidecode, 2022-06-01 SMART), sprawdzana jest ocena \"spełnia\"."
      },
-     "scheduled_date": "2026-12-06"
+     "scheduled_date": "2026-12-06",
+     "objective_pl": "Zgodnie z zadaniem „Tabela N” wyszukuje każdy parametr za pomocą niezbędnego narzędzia, pobiera zrzut ekranu do folderu na Egzamin-x i wystawia ocenę „spełnia/nie spełnia wymagań”."
     },
     {
      "id": "m05-periph-print",
@@ -2004,7 +2068,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-08"
+     "scheduled_date": "2026-12-08",
+     "objective_pl": "Odpowiada na typowe pytania dotyczące USB/HDMI/DP, matryc, obliczeń monitorów, drukarek laserowych/atramentowych/igłowych."
     },
     {
      "id": "m05-quiz-hw",
@@ -2031,7 +2096,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-06"
+     "scheduled_date": "2026-12-06",
+     "objective_pl": "≥ 65% w sprzęcie (największy temat w części pisemnej)."
     },
     {
      "id": "m05-quiz-cab-per",
@@ -2077,7 +2143,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-09"
+     "scheduled_date": "2026-12-09",
+     "objective_pl": "≥ 70% dla okablowania, ≥ 60% dla urządzeń peryferyjnych/drukarek."
     }
    ],
    "scheduled": {
@@ -2088,7 +2155,8 @@
      3
     ]
    },
-   "est_minutes_total": 240
+   "est_minutes_total": 240,
+   "why_pl": "Kabel+podłączenie+montaż+BHP - 22% wszystkich punktów ćwiczeń (100% arkuszy); identyfikacja parametrów - 87% arkuszy, ~5 pkt. Na piśmie: sprzęt 12,8%, okablowanie 10,4%, urządzenia peryferyjne+drukarki 8,4%."
   },
   {
    "id": "m06-linux-basics",
@@ -2131,7 +2199,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-05"
+     "scheduled_date": "2026-12-05",
+     "objective_pl": "Zorientowany na /etc, /home, /var, /dev; rozumie podpowiedzi $ vs #, sudo; brzmi ls -l."
     },
     {
      "id": "m06-cmd-files",
@@ -2161,7 +2230,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-05"
+     "scheduled_date": "2026-12-05",
+     "objective_pl": "10 poleceń z rzędu bez monitowania (mkdir -p, cp -r, mv, rm -r, touch, cat, nano)."
     },
     {
      "id": "m06-links-redirect",
@@ -2200,7 +2270,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-05"
+     "scheduled_date": "2026-12-05",
+     "objective_pl": "ln -s, cp -r, mv; „df -h > plik”, „free >> plik” - kryteria „wynika zapisanego w pliku” (arkusze 2023–24)."
     },
     {
      "id": "m06-perms-theory",
@@ -2246,7 +2317,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-06"
+     "scheduled_date": "2026-12-06",
+     "objective_pl": "Tłumaczy „właściciel pełne, grupa odczyt...” ↔ 740; zmienia właściciela/grupę."
     },
     {
      "id": "m06-chmod",
@@ -2280,7 +2352,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-06"
+     "scheduled_date": "2026-12-06",
+     "objective_pl": "Obydwa odwierty ≥ 75% bez doków."
     },
     {
      "id": "m06-users-theory",
@@ -2321,7 +2394,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-06"
+     "scheduled_date": "2026-12-06",
+     "objective_pl": "Zna klucze useradd i miejsce ich przechowywania; rozumie grupę główną/wtórną."
     },
     {
      "id": "m06-users",
@@ -2361,7 +2435,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-06"
+     "scheduled_date": "2026-12-06",
+     "objective_pl": "Tworzy grupę z GID, użytkownik z UID/shell/katalog domowy, dodaje do grupy, zmienia nazwę hosta."
     },
     {
      "id": "m06-users2",
@@ -2400,7 +2475,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-07"
+     "scheduled_date": "2026-12-07",
+     "objective_pl": "zmień -E/-M/-m, usermod -aG sudo, usermod -s /bin/sh, groupmod -n, userdel -r."
     },
     {
      "id": "m06-netplan",
@@ -2440,7 +2516,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-07"
+     "scheduled_date": "2026-12-07",
+     "objective_pl": "Zapisuje YAML bez błędów wcięć, stosuje netplan, sprawdza ip a / ip r."
     },
     {
      "id": "m06-nm",
@@ -2480,9 +2557,12 @@
       "priority": 5,
       "create": "app/src/sim/linux/cmd_nmcli.ts (register(\"nmcli\")) + drill lx-nmcli в drills/linux.ts",
       "spec_ru": "Поддержать nmcli connection show | modify \"<имя>\" connection.id NEW | ipv4.method manual|auto ipv4.addresses A/P ipv4.gateway G ipv4.dns \"D1 D2\" | up/down; nmcli device status. Дрилл: «Nazwa przewodowego połączenia: IP_PC, adres 192.168.X.15/24, brama, DNS» (критерии 5.1–5.2 листов 2026-06-02/03). Проверка по модели соединения.",
-      "acceptance": "Задание из 2026-06-03 решается только nmcli; netplan-дриллы не ломаются."
+      "acceptance": "Задание из 2026-06-03 решается только nmcli; netplan-дриллы не ломаются.",
+      "spec_pl": "Obsługa pokazu połączenia nmcli | zmodyfikuj „<nazwa>” Connection.id NOWOŚĆ | ipv4.method manual|auto ipv4.addresses A/P ipv4.gateway G ipv4.dns \"D1 D2\" | góra/dół; stan urządzenia nmcli. Wiertło: „Nazwa przewodowego połączenia: IP_PC, adres 192.168.X.15/24, brama domyślna, DNS” (kryteria 5.1–5.2 arkusze 2026-06-02/03). Sprawdzanie według modelu połączenia.",
+      "acceptance_pl": "Zadanie z dnia 2026-06-03 może rozwiązać tylko nmcli; Wiertła Netplan nie psują się."
      },
-     "scheduled_date": "2026-12-08"
+     "scheduled_date": "2026-12-08",
+     "objective_pl": "Zmienia nazwę połączenia (IP_PC, LAN_K...) i ustawia statyczne/DHCP poprzez nmcli lub GUI; pokazuje wynik nmcli con show / ip a."
     },
     {
      "id": "m06-tar",
@@ -2517,7 +2597,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-08"
+     "scheduled_date": "2026-12-08",
+     "objective_pl": "tar -cvf / -czvf / -xvf / -tf bez podpowiedzi (15% arkuszy, rośnie)."
     },
     {
      "id": "m06-cmd-users",
@@ -2556,7 +2637,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-09"
+     "scheduled_date": "2026-12-09",
+     "objective_pl": "≥ 80% poprawnych wyników przy pierwszej próbie."
     },
     {
      "id": "m06-quiz",
@@ -2583,7 +2665,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-09"
+     "scheduled_date": "2026-12-09",
+     "objective_pl": "≥ 70% w temacie Linux."
     },
     {
      "id": "m06-checkpoint",
@@ -2627,9 +2710,11 @@
       ],
       "quiz_topics": [],
       "pass_threshold_pct": 75,
-      "rule_ru": "Каждый дрилл — с НОВЫМ seed (newDrillSeed), без открытия доков. <75 % → дрилл возвращается в план через 1 день, ≥75 % → через 7 дней."
+      "rule_ru": "Каждый дрилл — с НОВЫМ seed (newDrillSeed), без открытия доков. <75 % → дрилл возвращается в план через 1 день, ≥75 % → через 7 дней.",
+      "rule_pl": "Do każdego siewnika dołączone jest NOWE ziarno (newDrillSeed), bez konieczności otwierania doków. <75% → wiertło wraca do planu po 1 dniu, ≥75% → po 7 dniach."
      },
-     "scheduled_date": "2026-12-10"
+     "scheduled_date": "2026-12-10",
+     "objective_pl": "Skrzydło ≥ 75% bez otwierania doków (--pomoc/tylko człowiek)."
     }
    ],
    "scheduled": {
@@ -2640,7 +2725,8 @@
      3
     ]
    },
-   "est_minutes_total": 324
+   "est_minutes_total": 324,
+   "why_pl": "Linux występuje w 31 z 52 arkuszy (60%); Sieć Linux 44%, użytkownicy/grupy 37% (~2,4 punktu), prawa 31%. Napisany Linux - 16,5% pytań EE.08 2021-24 (temat nr 1). Słabym punktem ucznia jest to, że → idziemy powoli, od zera."
   },
   {
    "id": "m07-win-client",
@@ -2695,7 +2781,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-12"
+     "scheduled_date": "2026-12-12",
+     "objective_pl": "Zna opcje „Użytkownik musi zmienić hasło...”, „nie może zmienić hasła”, „hasło nigdy nie wygasa”, „konto zmiany”."
     },
     {
      "id": "m07-accounts-drill",
@@ -2737,14 +2824,17 @@
       "priority": 6,
       "create": "drills/net.ts → win-users (topic windows)",
       "spec_ru": "Параметры: имя/полное имя/пароль, группа (Użytkownicy/Administratorzy/новая), флаги: нельзя менять пароль, пароль не истекает, учётка истекает (net user /expires), отключена. Вариант «za pomocą polecenia systemowego + zapisz polecenie w tabeli» (лист 2023-06-01). Проверка по модели пользователей sim/pc.",
-      "acceptance": "drill win-users в списке Windows, 3 варианта задания, проверка всех флагов."
+      "acceptance": "drill win-users в списке Windows, 3 варианта задания, проверка всех флагов.",
+      "spec_pl": "Parametry: nazwa/imię i nazwisko/hasło, grupa (Użytkownicy/Administratorzy/nowy), flagi: hasło nie można zmienić, hasło nie wygasa, konto wygasa (użytkownik sieciowy /wygasa), wyłączone. Opcja „za pomoc polecenia systemowego + zapisz polecenie w tabeli” (arkusz 2023-06-01). Sprawdź według modelu użytkownika karty SIM/stanowiskoa.",
+      "acceptance_pl": "wierć użytkowników win na liście Windows, 3 opcje zadań, sprawdzanie wszystkich flag."
      },
-     "scheduled_date": "2026-12-12"
+     "scheduled_date": "2026-12-12",
+     "objective_pl": "Tworzy użytkownika/grupę, członkostwo i opcje haseł; zespół i przez lusrmgr."
     },
     {
      "id": "m07-hostname",
      "title_ru": "Имя компьютера, рабочая группа, описание, перезагрузка",
-     "title_pl": "Nazwa komputera",
+     "title_pl": "Nazwa stanowiskoa",
      "kind": "drill",
      "est_minutes": 10,
      "prerequisites": [
@@ -2773,7 +2863,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-12"
+     "scheduled_date": "2026-12-12",
+     "objective_pl": "Zmienia nazwę (sysdm.cpl / Rename-Computer) i wie, że potrzebny jest restart - zrób to PRZED AD DS i dołączeniem do domeny."
     },
     {
      "id": "m07-policies",
@@ -2809,7 +2900,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-12"
+     "scheduled_date": "2026-12-12",
+     "objective_pl": "Zna ścieżkę do każdego ustawienia: Zasady konta → Zasady haseł / blokady; Zasady lokalne → Opcje zabezpieczeń / Zasady inspekcji; Szablony administracyjne → Panel sterowania / System."
     },
     {
      "id": "m07-policy-quiz",
@@ -2849,9 +2941,12 @@
       "priority": 9,
       "create": "app/public/content/practice/settings-paths.json + режим в Test",
       "spec_ru": "40–60 карточек «требование из листа (PL) → путь в консоли (PL-интерфейс)»: сложность паролей, мин. длина, блокировка после N попыток, Ctrl+Alt+Del, аудит входа, запрет Panelu sterowania, запрет regedit, запрет смены обоев, запрет установки MSI, отключение диспетчера задач, перемещаемый профиль, квоты, «nie może zmienić hasła». Формат — 4 варианта пути или сборка пути из 3–4 шагов.",
-      "acceptance": "Каждая карточка ссылается на лист CKE, где встречалась."
+      "acceptance": "Каждая карточка ссылается на лист CKE, где встречалась.",
+      "spec_pl": "40–60 kart „wymaganie z arkusza (PL) → ścieżka w konsoli (interfejs PL)”: złożoność hasła, min. długość, blokowanie po N próbach, Ctrl+Alt+Del, audyt logowania, zakaz panelu sterowania, zakaz regedit, zakaz zmiany tapety, zakaz instalacji MSI, wyłączenie menedżera zadań, profil roamingowy, limity, „nie może zmienić haseł”. Format - 4 opcje ścieżki lub montaż ścieżki 3-4 kroków.",
+      "acceptance_pl": "Każda karta łączy się z arkuszem CKE, w którym została napotkana."
      },
-     "scheduled_date": "2026-12-12"
+     "scheduled_date": "2026-12-12",
+     "objective_pl": "Dopasowuje 15 wymagań z arkuszy ze ścieżką w secpol/gpedit/console (bez zapamiętywania wszystkich ścieżek - zrozumienia struktury)."
     },
     {
      "id": "m07-shares-ntfs",
@@ -2905,7 +3000,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-12"
+     "scheduled_date": "2026-12-12",
+     "objective_pl": "Wyjaśnia „total = minimum z zasobu i NTFS”, wyłącza dziedziczenie „konwertuj na jawne”, tworzy DANE$, łączy dysk M:."
     },
     {
      "id": "m07-bat",
@@ -2951,9 +3047,12 @@
       "priority": 8,
       "create": "sim/pc/batch.ts + drills/net.ts → win-bat",
       "spec_ru": "Редактор (Notatnik) + запуск .bat в симуляторе cmd: поддержать @echo off, echo, cls, pause, set, set /p, %1..%9, for /L %%i in (a,1,b) do, if exist/if ==, mkdir/md, cd, net user /add, net localgroup /add, rem. Проверка: и по коду (наличие конструкций, как в критериях CKE «użyte polecenie cls»), и по результату (папки/учётки созданы).",
-      "acceptance": "3 задания из реальных листов (2025-06-09, 2026-01-01-SD, 2026-01-04) проходят проверку."
+      "acceptance": "3 задания из реальных листов (2025-06-09, 2026-01-01-SD, 2026-01-04) проходят проверку.",
+      "spec_pl": "Edytor (Notatnik) + uruchom .bat w symulatorze cmd: obsługa @echo off, echo, cls, pauza, set, set /p, %1..%9, dla /L %%i w (a,1,b) wykonaj, jeśli istnieje/if ==, mkdir/md, cd, użytkownik sieciowy /add, grupa lokalna netto /add, rem. Weryfikacja: zarówno po kodzie (obecność struktur jak w kryteriach CKE „użyte polecenie cls”), jak i po wyniku (utworzone foldery/konta).",
+      "acceptance_pl": "Sprawdzane są 3 zadania z prawdziwych arkuszy (2025-06-09, 2026-01-01-SD, 2026-01-04)."
      },
-     "scheduled_date": "2026-12-12"
+     "scheduled_date": "2026-12-12",
+     "objective_pl": "Zapisuje skrypt jak w arkuszach 2025-06-09/2026-01-04 (foldery STUDENT1...10, „Podaj imię”, parametry) i sprawdza uruchamiając."
     },
     {
      "id": "m07-disks",
@@ -3019,7 +3118,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-12"
+     "scheduled_date": "2026-12-12",
+     "objective_pl": "Zna ścieżkę do każdej operacji i kryteria (litera X:, etykieta Dane, kontyngent 1 GB/poziom ochrony, klucz śmierci na Egzamin-x)."
     },
     {
      "id": "m07-win-theory",
@@ -3071,7 +3171,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-12"
+     "scheduled_date": "2026-12-12",
+     "objective_pl": "Odpowiada na typowe pytania dotyczące HKLM/HKCU, *.msc, FAT32/NTFS/exFAT, trybu awaryjnego, sfc/chkdsk."
     },
     {
      "id": "m07-quiz",
@@ -3106,7 +3207,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-13"
+     "scheduled_date": "2026-12-13",
+     "objective_pl": "≥ 70% w temacie okien."
     }
    ],
    "scheduled": {
@@ -3116,7 +3218,8 @@
      3
     ]
    },
-   "est_minutes_total": 185
+   "est_minutes_total": 185,
+   "why_pl": "Konta Windows - 54% arkuszy; nazwa stanowiskoa 38%; polityki lokalne 13% (wzrost: 19% w latach 2025–2026); .bat - 12% arkuszy, ~3 punkty. Pisemne okna - 12,3% pytań."
   },
   {
    "id": "m08-winserver",
@@ -3178,7 +3281,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-13"
+     "scheduled_date": "2026-12-13",
+     "objective_pl": "Dodaje rolę/funkcję master; konfiguruje LAN1/LAN2, DNS 127.0.0.1 przed AD DS; zmienia nazwę przed awansem."
     },
     {
      "id": "m08-adds",
@@ -3226,7 +3330,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-13"
+     "scheduled_date": "2026-12-13",
+     "objective_pl": "Wie, jakie kroki musi wykonać master (Dodaj nowy las → nazwa domeny → poziom funkcjonalny → hasło DSRM) i co należy zrobić podczas restartu."
     },
     {
      "id": "m08-ou-users",
@@ -3286,7 +3391,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-13"
+     "scheduled_date": "2026-12-13",
+     "objective_pl": "W dsa.msc tworzy się OU → użytkownik → grupa (globalna/zabezpieczenia) → członkostwo; na stacji DNS = IP DC → dołącz do domeny → zaloguj się."
     },
     {
      "id": "m08-shares-profile",
@@ -3341,7 +3447,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-13"
+     "scheduled_date": "2026-12-13",
+     "objective_pl": "Krok po kroku: folder → Udostępnianie zaawansowane (nazwa$, uprawnienia) → Zabezpieczenia → w profilu użytkownika ścieżki profilu → logowanie do stacji tworzy folder."
     },
     {
      "id": "m08-gpo",
@@ -3373,7 +3480,7 @@
        "route": "practice/inf02-2026-06-09"
       }
      ],
-     "objective_ru": "В gpmc.msc создаёт GPO, связывает с OU/корнем домена, находит настройку в Konfiguracja użytkownika/komputera; gpupdate /force.",
+     "objective_ru": "В gpmc.msc создаёт GPO, связывает с OU/корнем домена, находит настройку в Konfiguracja użytkownika/stanowiskoa; gpupdate /force.",
      "exam_value": {
       "practical": {
        "gpo": {
@@ -3390,7 +3497,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-13"
+     "scheduled_date": "2026-12-13",
+     "objective_pl": "W gpmc.msc tworzy obiekt GPO, kojarzy go z jednostką organizacyjną/rootem domeny, znajduje ustawienie w Konfiguracji użytkownika/stanowiskoa; gpupdate /force."
     },
     {
      "id": "m08-dns",
@@ -3438,7 +3546,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-13"
+     "scheduled_date": "2026-12-13",
+     "objective_pl": "Tworzy strefę wyszukiwania do przodu/wstecz, rekord A (www), alias, PTR; sprawdza nslookup."
     },
     {
      "id": "m08-iis",
@@ -3492,7 +3601,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-14"
+     "scheduled_date": "2026-12-14",
+     "objective_pl": "Krok po kroku tworzy stronę internetową i FTP, sprawdza za pomocą przeglądarki/FileZilla ze stacji - jeden z najbardziej rozwijających się bloków."
     },
     {
      "id": "m08-print",
@@ -3528,7 +3638,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-14"
+     "scheduled_date": "2026-12-14",
+     "objective_pl": "Dodaje drukarkę poprzez port TCP/IP (RAW 9100), instaluje sterownik z DRUKARKI, udostępnienia (drukarka_XX), drukuje z podniesioną ręką."
     },
     {
      "id": "m08-rare",
@@ -3618,7 +3729,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-14"
+     "scheduled_date": "2026-12-14",
+     "objective_pl": "Dla każdej roli wie: gdzie dodać, 2-3 kluczowe ekrany, jak sprawdzić; do celów pisemnych WSUS/WDS/Hyper-V."
     },
     {
      "id": "m08-steps-quiz",
@@ -3666,9 +3778,12 @@
       "priority": 2,
       "create": "app/src/sim/winsrv/ (лёгкие «скриншот-мастера») или app/public/content/practice/winserver-steps.json + режим упорядочивания",
       "spec_ru": "Минимум: для каждой роли (AD DS, OU+user+group, join domain, share+NTFS+$, roaming profile, GPO, DNS A/PTR/CNAME, IIS WWW, IIS FTP, print TCP/IP RAW, квоты, RRAS LAN routing/NAT, DHCP scope) 5–9 шагов с польскими названиями кнопок; режимы «упорядочи», «выбери правильную опцию в диалоге» (напр. «Zarejestruj adresy tego połączenia w DNS», «Użytkownik nie może zmienić hasła»), «что проверит экзаминатор». Максимум (позже): кликабельные мастера в стиле sim/pc с проверкой состояния, чтобы шаги m08 стали drill.",
-      "acceptance": "13 сценариев, каждый привязан к критериям из ≥ 2 реальных листов; результат пишется в progress как d:ws-*."
+      "acceptance": "13 сценариев, каждый привязан к критериям из ≥ 2 реальных листов; результат пишется в progress как d:ws-*.",
+      "spec_pl": "Minimum: dla każdej roli (AD DS, jednostka organizacyjna+użytkownik+grupa, domena dołączenia, udział+NTFS+$, profil roamingowy, GPO, DNS A/PTR/CNAME, IIS WWW, IIS FTP, drukowanie TCP/IP RAW, przydziały, RRAS LAN routing/NAT, zakres DHCP) 5–9 kroków z polskimi nazwami przycisków; Tryby „Zamów”, „wybierz właściwą opcję w oknie dialogowym” (np. „Zarejestruj adres tego połączenia w DNS”, „Użytkownik nie może zmienić hasła”), „którą sprawdzi egzaminator”. Maksymalnie (później): klikalne kreatory w stylu karty SIM/stanowisko ze sprawdzaniem stanu, dzięki czemu kroki m08 stają się ćwiczeniami.",
+      "acceptance_pl": "13 scenariuszy, każdy powiązany z kryteriami ≥ 2 arkuszy rzeczywistych; wynik jest zapisywany w toku jako d:ws-*."
      },
-     "scheduled_date": "2026-12-15"
+     "scheduled_date": "2026-12-15",
+     "objective_pl": "Dla 8 ról poprawnie porządkuje kroki i wybiera żądaną opcję dialogową (bez faktycznego serwera)."
     },
     {
      "id": "m08-vm",
@@ -3733,7 +3848,9 @@
       }
      },
      "offline_task_ru": "В школе или на домашней VM (Hyper-V/VirtualBox, ознакомительная версия Windows Server 2022). Если нет доступа — заменить на «бумажный прогон»: выписать клики по разбору листа и сверить.",
-     "scheduled_date": "2026-12-17"
+     "scheduled_date": "2026-12-17",
+     "objective_pl": "Przynajmniej raz ręcznie na prawdziwym serwerze; check-winserver.ps1 z require.json pokazuje wszystko ✔.",
+     "offline_task_pl": "W szkole lub na domowej maszynie wirtualnej (Hyper-V/VirtualBox, wersja próbna Windows Server 2022). Jeśli nie ma dostępu, zastąp go „przebiegiem papieru”: zapisz kliknięcia w celu analizy arkusza i sprawdź."
     },
     {
      "id": "m08-quiz",
@@ -3760,7 +3877,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-15"
+     "scheduled_date": "2026-12-15",
+     "objective_pl": "≥ 70% na temat winserver."
     }
    ],
    "scheduled": {
@@ -3771,7 +3889,8 @@
      4
     ]
    },
-   "est_minutes_total": 305
+   "est_minutes_total": 305,
+   "why_pl": "Kontekst systemu Windows Server znajduje się w 40 z 52 arkuszy; role ≈ 13% punktów. IIS 42% (63% w latach 2025–26), AD DS 38%, jednostka organizacyjna/użytkownicy 31%, współdzielone 27%, drukarka 27%, NTFS 23%, DNS/dołączenie do domeny/GPO 15–17% (rośnie). Celem ucznia jest zrozumienie i umiejętność wykonania poszczególnych kroków, a nie „klikanie losowo”."
   },
   {
    "id": "m09-linux-server",
@@ -3817,7 +3936,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-18"
+     "scheduled_date": "2026-12-18",
+     "objective_pl": "Włącza autostart, zatrzymuje/wyłącza usługę, zapisuje linię crontab."
     },
     {
      "id": "m09-ssh",
@@ -3851,7 +3971,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-18"
+     "scheduled_date": "2026-12-18",
+     "objective_pl": "Edytuje sshd_config, restartuje, łączy ssh user@IP."
     },
     {
      "id": "m09-apache",
@@ -3892,7 +4013,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-19"
+     "scheduled_date": "2026-12-19",
+     "objective_pl": "Index.html w /var/www/html lub w katalogu DocumentRoot, chown www-data:www-data, curl localhost."
     },
     {
      "id": "m09-dhcp",
@@ -3933,7 +4055,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-19"
+     "scheduled_date": "2026-12-19",
+     "objective_pl": "Zapisuje dhcpd.conf, określa interfejs, uruchamia; Klient otrzymuje adres."
     },
     {
      "id": "m09-samba",
@@ -3974,7 +4097,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-19"
+     "scheduled_date": "2026-12-19",
+     "objective_pl": "Zasób danych jest dostępny z systemu Windows (\\\\IP\\dane) tylko dla wymaganego użytkownika."
     },
     {
      "id": "m09-disk",
@@ -4014,7 +4138,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-19"
+     "scheduled_date": "2026-12-19",
+     "objective_pl": "Partycja na cały dysk → ext4 → /dane → fstab; zna test prędkości (Dyski/hdparm) dla tabeli."
     },
     {
      "id": "m09-script",
@@ -4048,7 +4173,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-20"
+     "scheduled_date": "2026-12-20",
+     "objective_pl": "Zapisuje konto.sh jak w dniu 2026-01-01 (5 użytkowników + katalogi z parametrów) i uruchamia się z parametrami."
     },
     {
      "id": "m09-realvm",
@@ -4081,7 +4207,8 @@
       }
      },
      "optional": true,
-     "scheduled_date": "2026-12-21"
+     "scheduled_date": "2026-12-21",
+     "objective_pl": "Działa na prawdziwej maszynie wirtualnej Debiana, gdzie błędy nie są podświetlane; autotest ze skryptem."
     },
     {
      "id": "m09-checkpoint",
@@ -4125,9 +4252,11 @@
       ],
       "quiz_topics": [],
       "pass_threshold_pct": 75,
-      "rule_ru": "Каждый дрилл — с НОВЫМ seed (newDrillSeed), без открытия доков. <75 % → дрилл возвращается в план через 1 день, ≥75 % → через 7 дней."
+      "rule_ru": "Каждый дрилл — с НОВЫМ seed (newDrillSeed), без открытия доков. <75 % → дрилл возвращается в план через 1 день, ≥75 % → через 7 дней.",
+      "rule_pl": "Do każdego siewnika dołączone jest NOWE ziarno (newDrillSeed), bez konieczności otwierania doków. <75% → wiertło wraca do planu po 1 dniu, ≥75% → po 7 dniach."
      },
-     "scheduled_date": "2026-12-20"
+     "scheduled_date": "2026-12-20",
+     "objective_pl": "≥ 75% w 60 minut, doki - tylko przy użyciu drabinki końcówek."
     }
    ],
    "scheduled": {
@@ -4138,7 +4267,8 @@
      5
     ]
    },
-   "est_minutes_total": 227
+   "est_minutes_total": 227,
+   "why_pl": "Usługi Linux - 21% arkuszy (Apache/SSH/Samba/isc-dhcp), skrypty/dyski - po 2-4%, ale wzrost w 2026 (2026-01-01 DHCP + skrypt = ~12 punktów, 2026-01-02 dysk, 2026-06-04 Samba)."
   },
   {
    "id": "m10-docs",
@@ -4185,7 +4315,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-19"
+     "scheduled_date": "2026-12-19",
+     "objective_pl": "Wie, jakie są ustalane kryteria: „obliczenia elektroniczne się automatycznie”, SUMA, ŚREDNIA, JEŻELI, ZAOKR, format walutowy, formatovanie warunkowe."
     },
     {
      "id": "m10-calc-drill",
@@ -4225,9 +4356,12 @@
       "priority": 3,
       "create": "app/src/sim/sheet/ (сетка 10×8 + парсер формул: =, + - * /, SUMA/SUM, ŚREDNIA/AVERAGE, JEŻELI/IF, ZAOKR/ROUND, ссылки A1, $A$1, диапазоны) + drills/docs-kosztorys.ts",
       "spec_ru": "Генерировать условие как в листах (услуги/детали, цены netto, VAT 23 % или 8 %, rabat X % при сумме > Y, harmonogram ≤ 150 min → цвет). Проверка: в нужных ячейках формулы (не числа!), значения верны при изменении входных цен (пересчёт со случайными ценами), формат «zł» (флаг формата), условное форматирование (правило). Плюс шпаргалка PL/EN имён функций (Excel PL vs Calc).",
-      "acceptance": "5 шаблонов из листов (2024-01-02, 2023-06-03 rabat, 2025-06-01 harmonogram с цветом, 2026-06-07, 2026-06-05), проверка «формула, а не число»."
+      "acceptance": "5 шаблонов из листов (2024-01-02, 2023-06-03 rabat, 2025-06-01 harmonogram с цветом, 2026-06-07, 2026-06-05), проверка «формула, а не число».",
+      "spec_pl": "Wygeneruj warunek jak w arkuszach (usługi/szczegóły, ceny netto, VAT 23% lub 8%, rabat X% dla kwoty > Y, harmonogram ≤ 150 min → kolor). Walidacja: formuły w wymaganych komórkach (nie liczby!), wartości są prawidłowe przy zmianie cen wejściowych (przeliczenie z cenami losowymi), format „zł” (flaga formatu), formatowanie warunkowe (reguła). Plus ściągawka z nazwami funkcji PL/EN (Excel PL vs Calc).",
+      "acceptance_pl": "5 szablonów z arkuszy (2024-01-02, 2023-06-03 rabat, 2025-06-01 harmonogram z kolorem, 2026-06-07, 2026-06-05), zaznacz „formuła, a nie liczba”."
      },
-     "scheduled_date": "2026-12-19"
+     "scheduled_date": "2026-12-19",
+     "objective_pl": "Na podstawie tekstu z prawdziwego arkusza buduje tabelę zawierającą formuły, które przechodzą autotest."
     },
     {
      "id": "m10-wskazania",
@@ -4261,7 +4395,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-20"
+     "scheduled_date": "2026-12-20",
+     "objective_pl": "Pisze 5 krótkich rekomendacji w języku polskim: antywirus, konto bez uprawnień administratora, polityka haseł, ochrona z kontrolą (arkusz 2023-06-02)."
     }
    ],
    "scheduled": {
@@ -4271,7 +4406,8 @@
      4
     ]
    },
-   "est_minutes_total": 55
+   "est_minutes_total": 55,
+   "why_pl": "Oszacowanie - w 37% arkuszy i daje średnio 8 punktów (≈ 7% wszystkich punktów ćwiczeń) - najdroższy blok w jednostce czasu; jednak nie ma tego w żadnym ćwiczeniu."
   },
   {
    "id": "m11-security-written",
@@ -4322,7 +4458,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-19"
+     "scheduled_date": "2026-12-19",
+     "objective_pl": "Rozróżnia rodzaje złośliwego oprogramowania/ataków, zna schematy rotacji kopii i typy kopii zapasowych (pełna/przyrostowa/różnicowa)."
     },
     {
      "id": "m11-law",
@@ -4366,7 +4503,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-20"
+     "scheduled_date": "2026-12-20",
+     "objective_pl": "GPL/freeware/shareware/OEM/BOX, wymagania dotyczące stanowiska pracy z monitorem, zasady pierwszej pomocy w przypadku porażenia prądem."
     },
     {
      "id": "m11-english",
@@ -4402,7 +4540,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-20"
+     "scheduled_date": "2026-12-20",
+     "objective_pl": "Rozszyfrowuje 30 popularnych skrótów i rozumie język angielski. komunikaty z interfejsu rutera/przełącznika."
     },
     {
      "id": "m11-quiz",
@@ -4439,7 +4578,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-20"
+     "scheduled_date": "2026-12-20",
+     "objective_pl": "≥ 70%."
     },
     {
      "id": "m11-mistakes",
@@ -4457,7 +4597,8 @@
       }
      ],
      "objective_ru": "Список ошибок сокращён вдвое; каждая ошибка прочитана с объяснением RU/PL.",
-     "scheduled_date": "2026-12-21"
+     "scheduled_date": "2026-12-21",
+     "objective_pl": "Lista błędów została zmniejszona o połowę; każdy błąd jest odczytywany z wyjaśnieniem RU/PL."
     }
    ],
    "scheduled": {
@@ -4468,7 +4609,8 @@
      5
     ]
    },
-   "est_minutes_total": 120
+   "est_minutes_total": 120,
+   "why_pl": "security+law_bhp+other ≈ 8% pytań, angielski - terminy w pytaniach; to jest „dotarcie” do progu 50% w części pisemnej i odpowiedzi na wskazań."
   },
   {
    "id": "m12-exam-sim",
@@ -4507,7 +4649,8 @@
       }
      ],
      "objective_ru": "Может по памяти рассказать тайминг (физика 0–20, сеть 25–50, сервер 50–100, станция 100–125, идентификация/смета, ping 135–150) и 10 частых потерь баллов.",
-     "scheduled_date": "2026-12-22"
+     "scheduled_date": "2026-12-22",
+     "objective_pl": "Potrafi podać czasy z pamięci (fizyka 0–20, sieć 25–50, serwer 50–100, stacja 100–125, identyfikacja/szacowanie, ping 135–150) i 10 częstych strat punktów."
     },
     {
      "id": "m12-sheet-01",
@@ -4535,7 +4678,9 @@
      "timer_minutes": 150,
      "pass_threshold_pct": 75,
      "after_ru": "Каждый потерянный критерий → соответствующий дрилл/шаг ставится в план на завтра (кнопка «повторить навык»).",
-     "scheduled_date": "2026-12-27"
+     "scheduled_date": "2026-12-27",
+     "objective_pl": "Część sieciowa/Linux - w symulatorze z autotestem; część serwerowa - na maszynie wirtualnej lub „przebiegu papieru” do analizy; następnie samoocena według kryteriów zo i analiza utraconych punktów (20–30 min).",
+     "after_pl": "Każde utracone kryterium → odpowiadające mu ćwiczenie/krok jest umieszczane w planie na jutro (przycisk „Powtórz umiejętność”)."
     },
     {
      "id": "m12-sheet-02",
@@ -4563,7 +4708,9 @@
      "timer_minutes": 150,
      "pass_threshold_pct": 75,
      "after_ru": "Каждый потерянный критерий → соответствующий дрилл/шаг ставится в план на завтра (кнопка «повторить навык»).",
-     "scheduled_date": "2026-12-28"
+     "scheduled_date": "2026-12-28",
+     "objective_pl": "Część sieciowa/Linux - w symulatorze z autotestem; część serwerowa - na maszynie wirtualnej lub „przebiegu papieru” do analizy; następnie samoocena według kryteriów zo i analiza utraconych punktów (20–30 min).",
+     "after_pl": "Każde utracone kryterium → odpowiadające mu ćwiczenie/krok jest umieszczane w planie na jutro (przycisk „Powtórz umiejętność”)."
     },
     {
      "id": "m12-sheet-03",
@@ -4591,7 +4738,9 @@
      "timer_minutes": 150,
      "pass_threshold_pct": 75,
      "after_ru": "Каждый потерянный критерий → соответствующий дрилл/шаг ставится в план на завтра (кнопка «повторить навык»).",
-     "scheduled_date": "2026-12-29"
+     "scheduled_date": "2026-12-29",
+     "objective_pl": "Część sieciowa/Linux - w symulatorze z autotestem; część serwerowa - na maszynie wirtualnej lub „przebiegu papieru” do analizy; następnie samoocena według kryteriów zo i analiza utraconych punktów (20–30 min).",
+     "after_pl": "Każde utracone kryterium → odpowiadające mu ćwiczenie/krok jest umieszczane w planie na jutro (przycisk „Powtórz umiejętność”)."
     },
     {
      "id": "m12-sheet-04",
@@ -4619,7 +4768,9 @@
      "timer_minutes": 150,
      "pass_threshold_pct": 75,
      "after_ru": "Каждый потерянный критерий → соответствующий дрилл/шаг ставится в план на завтра (кнопка «повторить навык»).",
-     "scheduled_date": "2026-12-31"
+     "scheduled_date": "2026-12-31",
+     "objective_pl": "Część sieciowa/Linux - w symulatorze z autotestem; część serwerowa - na maszynie wirtualnej lub „przebiegu papieru” do analizy; następnie samoocena według kryteriów zo i analiza utraconych punktów (20–30 min).",
+     "after_pl": "Każde utracone kryterium → odpowiadające mu ćwiczenie/krok jest umieszczane w planie na jutro (przycisk „Powtórz umiejętność”)."
     },
     {
      "id": "m12-sheet-05",
@@ -4647,7 +4798,9 @@
      "timer_minutes": 150,
      "pass_threshold_pct": 75,
      "after_ru": "Каждый потерянный критерий → соответствующий дрилл/шаг ставится в план на завтра (кнопка «повторить навык»).",
-     "scheduled_date": "2027-01-02"
+     "scheduled_date": "2027-01-02",
+     "objective_pl": "Część sieciowa/Linux - w symulatorze z autotestem; część serwerowa - na maszynie wirtualnej lub „przebiegu papieru” do analizy; następnie samoocena według kryteriów zo i analiza utraconych punktów (20–30 min).",
+     "after_pl": "Każde utracone kryterium → odpowiadające mu ćwiczenie/krok jest umieszczane w planie na jutro (przycisk „Powtórz umiejętność”)."
     },
     {
      "id": "m12-sheet-06",
@@ -4675,7 +4828,9 @@
      "timer_minutes": 150,
      "pass_threshold_pct": 75,
      "after_ru": "Каждый потерянный критерий → соответствующий дрилл/шаг ставится в план на завтра (кнопка «повторить навык»).",
-     "scheduled_date": "2027-01-03"
+     "scheduled_date": "2027-01-03",
+     "objective_pl": "Część sieciowa/Linux - w symulatorze z autotestem; część serwerowa - na maszynie wirtualnej lub „przebiegu papieru” do analizy; następnie samoocena według kryteriów zo i analiza utraconych punktów (20–30 min).",
+     "after_pl": "Każde utracone kryterium → odpowiadające mu ćwiczenie/krok jest umieszczane w planie na jutro (przycisk „Powtórz umiejętność”)."
     },
     {
      "id": "m12-sheet-07",
@@ -4703,7 +4858,9 @@
      "timer_minutes": 150,
      "pass_threshold_pct": 75,
      "after_ru": "Каждый потерянный критерий → соответствующий дрилл/шаг ставится в план на завтра (кнопка «повторить навык»).",
-     "scheduled_date": "2027-01-06"
+     "scheduled_date": "2027-01-06",
+     "objective_pl": "Część sieciowa/Linux - w symulatorze z autotestem; część serwerowa - na maszynie wirtualnej lub „przebiegu papieru” do analizy; następnie samoocena według kryteriów zo i analiza utraconych punktów (20–30 min).",
+     "after_pl": "Każde utracone kryterium → odpowiadające mu ćwiczenie/krok jest umieszczane w planie na jutro (przycisk „Powtórz umiejętność”)."
     },
     {
      "id": "m12-sheet-08",
@@ -4731,7 +4888,9 @@
      "timer_minutes": 150,
      "pass_threshold_pct": 75,
      "after_ru": "Каждый потерянный критерий → соответствующий дрилл/шаг ставится в план на завтра (кнопка «повторить навык»).",
-     "scheduled_date": "2027-01-09"
+     "scheduled_date": "2027-01-09",
+     "objective_pl": "Część sieciowa/Linux - w symulatorze z autotestem; część serwerowa - na maszynie wirtualnej lub „przebiegu papieru” do analizy; następnie samoocena według kryteriów zo i analiza utraconych punktów (20–30 min).",
+     "after_pl": "Każde utracone kryterium → odpowiadające mu ćwiczenie/krok jest umieszczane w planie na jutro (przycisk „Powtórz umiejętność”)."
     },
     {
      "id": "m12-sheet-09",
@@ -4759,7 +4918,9 @@
      "timer_minutes": 150,
      "pass_threshold_pct": 75,
      "after_ru": "Каждый потерянный критерий → соответствующий дрилл/шаг ставится в план на завтра (кнопка «повторить навык»).",
-     "scheduled_date": "2027-01-10"
+     "scheduled_date": "2027-01-10",
+     "objective_pl": "Część sieciowa/Linux - w symulatorze z autotestem; część serwerowa - na maszynie wirtualnej lub „przebiegu papieru” do analizy; następnie samoocena według kryteriów zo i analiza utraconych punktów (20–30 min).",
+     "after_pl": "Każde utracone kryterium → odpowiadające mu ćwiczenie/krok jest umieszczane w planie na jutro (przycisk „Powtórz umiejętność”)."
     },
     {
      "id": "m12-sheet-10",
@@ -4786,7 +4947,9 @@
      "objective_ru": "Сетевая/Linux-часть — в симуляторе с автопроверкой; серверная часть — на VM или «бумажный прогон» по разбору; затем самооценка по критериям zo и разбор потерянных баллов (20–30 мин).",
      "timer_minutes": 150,
      "pass_threshold_pct": 75,
-     "after_ru": "Каждый потерянный критерий → соответствующий дрилл/шаг ставится в план на завтра (кнопка «повторить навык»)."
+     "after_ru": "Каждый потерянный критерий → соответствующий дрилл/шаг ставится в план на завтра (кнопка «повторить навык»).",
+     "objective_pl": "Część sieciowa/Linux - w symulatorze z autotestem; część serwerowa - na maszynie wirtualnej lub „przebiegu papieru” do analizy; następnie samoocena według kryteriów zo i analiza utraconych punktów (20–30 min).",
+     "after_pl": "Każde utracone kryterium → odpowiadające mu ćwiczenie/krok jest umieszczane w planie na jutro (przycisk „Powtórz umiejętność”)."
     },
     {
      "id": "m12-sheet-11",
@@ -4807,7 +4970,9 @@
      "objective_ru": "Сетевая/Linux-часть — в симуляторе с автопроверкой; серверная часть — на VM или «бумажный прогон» по разбору; затем самооценка по критериям zo и разбор потерянных баллов (20–30 мин).",
      "timer_minutes": 150,
      "pass_threshold_pct": 75,
-     "after_ru": "Каждый потерянный критерий → соответствующий дрилл/шаг ставится в план на завтра (кнопка «повторить навык»)."
+     "after_ru": "Каждый потерянный критерий → соответствующий дрилл/шаг ставится в план на завтра (кнопка «повторить навык»).",
+     "objective_pl": "Część sieciowa/Linux - w symulatorze z autotestem; część serwerowa - na maszynie wirtualnej lub „przebiegu papieru” do analizy; następnie samoocena według kryteriów zo i analiza utraconych punktów (20–30 min).",
+     "after_pl": "Każde utracone kryterium → odpowiadające mu ćwiczenie/krok jest umieszczane w planie na jutro (przycisk „Powtórz umiejętność”)."
     },
     {
      "id": "m12-sheet-12",
@@ -4828,7 +4993,9 @@
      "objective_ru": "Сетевая/Linux-часть — в симуляторе с автопроверкой; серверная часть — на VM или «бумажный прогон» по разбору; затем самооценка по критериям zo и разбор потерянных баллов (20–30 мин).",
      "timer_minutes": 150,
      "pass_threshold_pct": 75,
-     "after_ru": "Каждый потерянный критерий → соответствующий дрилл/шаг ставится в план на завтра (кнопка «повторить навык»)."
+     "after_ru": "Каждый потерянный критерий → соответствующий дрилл/шаг ставится в план на завтра (кнопка «повторить навык»).",
+     "objective_pl": "Część sieciowa/Linux - w symulatorze z autotestem; część serwerowa - na maszynie wirtualnej lub „przebiegu papieru” do analizy; następnie samoocena według kryteriów zo i analiza utraconych punktów (20–30 min).",
+     "after_pl": "Każde utracone kryterium → odpowiadające mu ćwiczenie/krok jest umieszczane w planie na jutro (przycisk „Powtórz umiejętność”)."
     },
     {
      "id": "m12-written-1",
@@ -4850,7 +5017,8 @@
       }
      ],
      "objective_ru": "Результат ≥ 60 % стабильно (запас над порогом 50 %); после — 15 мин разбора ошибок.",
-     "scheduled_date": "2026-12-30"
+     "scheduled_date": "2026-12-30",
+     "objective_pl": "Wynik ≥ 60% stabilny (marża powyżej progu 50%); po - 15 minutach analizy błędów."
     },
     {
      "id": "m12-written-2",
@@ -4872,7 +5040,8 @@
       }
      ],
      "objective_ru": "Результат ≥ 60 % стабильно (запас над порогом 50 %); после — 15 мин разбора ошибок.",
-     "scheduled_date": "2027-01-04"
+     "scheduled_date": "2027-01-04",
+     "objective_pl": "Wynik ≥ 60% stabilny (marża powyżej progu 50%); po - 15 minutach analizy błędów."
     },
     {
      "id": "m12-written-3",
@@ -4894,7 +5063,8 @@
       }
      ],
      "objective_ru": "Результат ≥ 60 % стабильно (запас над порогом 50 %); после — 15 мин разбора ошибок.",
-     "scheduled_date": "2027-01-05"
+     "scheduled_date": "2027-01-05",
+     "objective_pl": "Wynik ≥ 60% stabilny (marża powyżej progu 50%); po - 15 minutach analizy błędów."
     },
     {
      "id": "m12-written-4",
@@ -4916,7 +5086,8 @@
       }
      ],
      "objective_ru": "Результат ≥ 60 % стабильно (запас над порогом 50 %); после — 15 мин разбора ошибок.",
-     "scheduled_date": "2027-01-07"
+     "scheduled_date": "2027-01-07",
+     "objective_pl": "Wynik ≥ 60% stabilny (marża powyżej progu 50%); po - 15 minutach analizy błędów."
     },
     {
      "id": "m12-written-5",
@@ -4938,7 +5109,8 @@
       }
      ],
      "objective_ru": "Результат ≥ 60 % стабильно (запас над порогом 50 %); после — 15 мин разбора ошибок.",
-     "scheduled_date": "2027-01-08"
+     "scheduled_date": "2027-01-08",
+     "objective_pl": "Wynik ≥ 60% stabilny (marża powyżej progu 50%); po - 15 minutach analizy błędów."
     },
     {
      "id": "m12-written-6",
@@ -4960,7 +5132,8 @@
       }
      ],
      "objective_ru": "Результат ≥ 60 % стабильно (запас над порогом 50 %); после — 15 мин разбора ошибок.",
-     "scheduled_date": "2027-01-11"
+     "scheduled_date": "2027-01-11",
+     "objective_pl": "Wynik ≥ 60% stabilny (marża powyżej progu 50%); po - 15 minutach analizy błędów."
     },
     {
      "id": "m12-written-7",
@@ -4982,7 +5155,8 @@
       }
      ],
      "objective_ru": "Результат ≥ 60 % стабильно (запас над порогом 50 %); после — 15 мин разбора ошибок.",
-     "scheduled_date": "2027-01-12"
+     "scheduled_date": "2027-01-12",
+     "objective_pl": "Wynik ≥ 60% stabilny (marża powyżej progu 50%); po - 15 minutach analizy błędów."
     },
     {
      "id": "m12-speedrun",
@@ -5015,7 +5189,8 @@
      ],
      "objective_ru": "Сетевые ~25 % баллов набираются за 30 минут без ошибок.",
      "repeatable": true,
-     "scheduled_date": "2026-12-30"
+     "scheduled_date": "2026-12-30",
+     "objective_pl": "Sieć ~25% punktów zdobywa się w 30 minut bez błędów."
     },
     {
      "id": "m12-final-review",
@@ -5059,7 +5234,8 @@
       }
      ],
      "objective_ru": "Пролистаны 5 шпаргалок; повторены 3 самых слабых дрилла; собран «план 150 минут» на листке.",
-     "scheduled_date": "2027-01-14"
+     "scheduled_date": "2027-01-14",
+     "objective_pl": "Przewinąłem 5 ściągawek; Powtórzono 3 najsłabsze ćwiczenia; sporządził „150-minutowy plan” na kartce papieru."
     },
     {
      "id": "m12-lab-1",
@@ -5085,7 +5261,8 @@
       ],
       "pass_threshold_pct": 75
      },
-     "scheduled_date": "2026-12-23"
+     "scheduled_date": "2026-12-23",
+     "objective_pl": "Zaliczony ≥ 75%; dokumentacja - tylko poprzez drabinę wskazówek. Jest to zarówno powtarzanie interwałowe ćwiczeń sieciowych, jak i linuksowych."
     },
     {
      "id": "m12-lab-2",
@@ -5111,7 +5288,8 @@
       ],
       "pass_threshold_pct": 75
      },
-     "scheduled_date": "2026-12-23"
+     "scheduled_date": "2026-12-23",
+     "objective_pl": "Zaliczony ≥ 75%; dokumentacja - tylko poprzez drabinę wskazówek. Jest to zarówno powtarzanie interwałowe ćwiczeń sieciowych, jak i linuksowych."
     },
     {
      "id": "m12-lab-3",
@@ -5136,7 +5314,8 @@
        "inf02-24-06-02"
       ],
       "pass_threshold_pct": 75
-     }
+     },
+     "objective_pl": "Zaliczony ≥ 75%; dokumentacja - tylko poprzez drabinę wskazówek. Jest to zarówno powtarzanie interwałowe ćwiczeń sieciowych, jak i linuksowych."
     },
     {
      "id": "m12-lab-4",
@@ -5161,7 +5340,8 @@
        "inf02-22-06-02"
       ],
       "pass_threshold_pct": 75
-     }
+     },
+     "objective_pl": "Zaliczony ≥ 75%; dokumentacja - tylko poprzez drabinę wskazówek. Jest to zarówno powtarzanie interwałowe ćwiczeń sieciowych, jak i linuksowych."
     },
     {
      "id": "m12-lab-5",
@@ -5186,7 +5366,8 @@
        "inf02-25-01-02"
       ],
       "pass_threshold_pct": 75
-     }
+     },
+     "objective_pl": "Zaliczony ≥ 75%; dokumentacja - tylko poprzez drabinę wskazówek. Jest to zarówno powtarzanie interwałowe ćwiczeń sieciowych, jak i linuksowych."
     },
     {
      "id": "m12-lab-6",
@@ -5211,7 +5392,8 @@
        "inf02-24-01-01"
       ],
       "pass_threshold_pct": 75
-     }
+     },
+     "objective_pl": "Zaliczony ≥ 75%; dokumentacja - tylko poprzez drabinę wskazówek. Jest to zarówno powtarzanie interwałowe ćwiczeń sieciowych, jak i linuksowych."
     },
     {
      "id": "m12-lab-7",
@@ -5236,7 +5418,8 @@
        "inf02-23-01-01"
       ],
       "pass_threshold_pct": 75
-     }
+     },
+     "objective_pl": "Zaliczony ≥ 75%; dokumentacja - tylko poprzez drabinę wskazówek. Jest to zarówno powtarzanie interwałowe ćwiczeń sieciowych, jak i linuksowych."
     },
     {
      "id": "m12-lab-8",
@@ -5261,7 +5444,8 @@
        "inf02-25-06-09"
       ],
       "pass_threshold_pct": 75
-     }
+     },
+     "objective_pl": "Zaliczony ≥ 75%; dokumentacja - tylko poprzez drabinę wskazówek. Jest to zarówno powtarzanie interwałowe ćwiczeń sieciowych, jak i linuksowych."
     },
     {
      "id": "m12-ws-run2",
@@ -5306,7 +5490,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-26"
+     "scheduled_date": "2026-12-26",
+     "objective_pl": "Część serwerowa arkusza rzeczywistego w całości na VM (lub na papierze z pamięci, następnie sprawdzenie poprzez parsowanie) ≤ 50 min."
     },
     {
      "id": "m12-calc-2",
@@ -5334,7 +5519,8 @@
        }
       }
      },
-     "scheduled_date": "2026-12-30"
+     "scheduled_date": "2026-12-30",
+     "objective_pl": "Tabela z formułami i formatowaniem warunkowym — już za pierwszym razem."
     },
     {
      "id": "m12-speedrun-2",
@@ -5360,7 +5546,8 @@
       }
      ],
      "objective_ru": "Стабильно ≤ 30 мин.",
-     "scheduled_date": "2027-01-13"
+     "scheduled_date": "2027-01-13",
+     "objective_pl": "Stabilny ≤ 30 min."
     }
    ],
    "scheduled": {
@@ -5373,7 +5560,8 @@
      8
     ]
    },
-   "est_minutes_total": 3330
+   "est_minutes_total": 3330,
+   "why_pl": "Last 2.5 weeks: each block of skills has already been completed, now speed (150 min), order of work and “hands up” in the right places. Tydzień pisania – lekka praktyka."
   },
   {
    "id": "sr-reviews",
@@ -5429,9 +5617,11 @@
        "addressing"
       ],
       "pass_threshold_pct": 75,
-      "rule_ru": "Каждый дрилл — с НОВЫМ seed (newDrillSeed), без открытия доков. <75 % → дрилл возвращается в план через 1 день, ≥75 % → через 7 дней."
+      "rule_ru": "Каждый дрилл — с НОВЫМ seed (newDrillSeed), без открытия доков. <75 % → дрилл возвращается в план через 1 день, ≥75 % → через 7 дней.",
+      "rule_pl": "Do każdego siewnika dołączone jest NOWE ziarno (newDrillSeed), bez konieczności otwierania doków. <75% → wiertło wraca do planu po 1 dniu, ≥75% → po 7 dniach."
      },
-     "scheduled_date": "2026-11-29"
+     "scheduled_date": "2026-11-29",
+     "objective_pl": "Wszystkie siewniki ≥ 75% z nowym materiałem siewnym."
     },
     {
      "id": "sr-w2",
@@ -5491,9 +5681,11 @@
        "netdevices"
       ],
       "pass_threshold_pct": 75,
-      "rule_ru": "Каждый дрилл — с НОВЫМ seed (newDrillSeed), без открытия доков. <75 % → дрилл возвращается в план через 1 день, ≥75 % → через 7 дней."
+      "rule_ru": "Каждый дрилл — с НОВЫМ seed (newDrillSeed), без открытия доков. <75 % → дрилл возвращается в план через 1 день, ≥75 % → через 7 дней.",
+      "rule_pl": "Do każdego siewnika dołączone jest NOWE ziarno (newDrillSeed), bez konieczności otwierania doków. <75% → wiertło wraca do planu po 1 dniu, ≥75% → po 7 dniach."
      },
-     "scheduled_date": "2026-12-04"
+     "scheduled_date": "2026-12-04",
+     "objective_pl": "Wszyscy ≥ 75%; quiz ≥ 70%."
     },
     {
      "id": "sr-w3",
@@ -5559,9 +5751,11 @@
        "cabling"
       ],
       "pass_threshold_pct": 75,
-      "rule_ru": "Каждый дрилл — с НОВЫМ seed (newDrillSeed), без открытия доков. <75 % → дрилл возвращается в план через 1 день, ≥75 % → через 7 дней."
+      "rule_ru": "Каждый дрилл — с НОВЫМ seed (newDrillSeed), без открытия доков. <75 % → дрилл возвращается в план через 1 день, ≥75 % → через 7 дней.",
+      "rule_pl": "Do każdego siewnika dołączone jest NOWE ziarno (newDrillSeed), bez konieczności otwierania doków. <75% → wiertło wraca do planu po 1 dniu, ≥75% → po 7 dniach."
      },
-     "scheduled_date": "2026-12-11"
+     "scheduled_date": "2026-12-11",
+     "objective_pl": "Wszystkie ≥ 75%."
     },
     {
      "id": "sr-w4",
@@ -5627,9 +5821,11 @@
        "winserver"
       ],
       "pass_threshold_pct": 75,
-      "rule_ru": "Каждый дрилл — с НОВЫМ seed (newDrillSeed), без открытия доков. <75 % → дрилл возвращается в план через 1 день, ≥75 % → через 7 дней."
+      "rule_ru": "Каждый дрилл — с НОВЫМ seed (newDrillSeed), без открытия доков. <75 % → дрилл возвращается в план через 1 день, ≥75 % → через 7 дней.",
+      "rule_pl": "Do każdego siewnika dołączone jest NOWE ziarno (newDrillSeed), bez konieczności otwierania doków. <75% → wiertło wraca do planu po 1 dniu, ≥75% → po 7 dniach."
      },
-     "scheduled_date": "2026-12-16"
+     "scheduled_date": "2026-12-16",
+     "objective_pl": "Wszystkie ≥ 75%."
     },
     {
      "id": "sr-w5",
@@ -5689,9 +5885,11 @@
        "security"
       ],
       "pass_threshold_pct": 75,
-      "rule_ru": "Каждый дрилл — с НОВЫМ seed (newDrillSeed), без открытия доков. <75 % → дрилл возвращается в план через 1 день, ≥75 % → через 7 дней."
+      "rule_ru": "Каждый дрилл — с НОВЫМ seed (newDrillSeed), без открытия доков. <75 % → дрилл возвращается в план через 1 день, ≥75 % → через 7 дней.",
+      "rule_pl": "Do każdego siewnika dołączone jest NOWE ziarno (newDrillSeed), bez konieczności otwierania doków. <75% → wiertło wraca do planu po 1 dniu, ≥75% → po 7 dniach."
      },
-     "scheduled_date": "2026-12-22"
+     "scheduled_date": "2026-12-22",
+     "objective_pl": "Wszystkie ≥ 75%; zadania ze statusem failed są obowiązkowe."
     }
    ],
    "scheduled": {
@@ -5705,7 +5903,8 @@
      5
     ]
    },
-   "est_minutes_total": 240
+   "est_minutes_total": 240,
+   "why_pl": "Raz nabyta umiejętność zostanie zapomniana przed egzaminem. Powtórzenie po 1-3-7-14 dniach z nowym nasionem naprawia problem; quizy dotyczące dotychczasowych tematów obejmują część pisemną."
   }
  ],
  "calendar": {
@@ -5769,7 +5968,8 @@
     ],
     "buffer_minutes": 40,
     "buffer_ru": "Буфер: доделать незавершённое за неделю / повторить дриллы со статусом failed.",
-    "planned_minutes": 75
+    "planned_minutes": 75,
+    "buffer_pl": "Bufor: zakończ niedokończoną pracę w ciągu tygodnia / powtórz ćwiczenia ze statusem niepowodzenia."
    },
    {
     "date": "2026-11-28",
@@ -5869,7 +6069,8 @@
     ],
     "buffer_minutes": 40,
     "buffer_ru": "Буфер: доделать незавершённое за неделю / повторить дриллы со статусом failed.",
-    "planned_minutes": 105
+    "planned_minutes": 105,
+    "buffer_pl": "Bufor: zakończ niedokończoną pracę w ciągu tygodnia / powtórz ćwiczenia ze statusem niepowodzenia."
    },
    {
     "date": "2026-12-05",
@@ -5959,7 +6160,8 @@
     ],
     "buffer_minutes": 40,
     "buffer_ru": "Буфер: доделать незавершённое за неделю / повторить дриллы со статусом failed.",
-    "planned_minutes": 105
+    "planned_minutes": 105,
+    "buffer_pl": "Bufor: zakończ niedokończoną pracę w ciągu tygodnia / powtórz ćwiczenia ze statusem niepowodzenia."
    },
    {
     "date": "2026-12-12",
@@ -6049,7 +6251,8 @@
     ],
     "buffer_minutes": 40,
     "buffer_ru": "Буфер: доделать незавершённое за неделю / повторить дриллы со статусом failed.",
-    "planned_minutes": 87
+    "planned_minutes": 87,
+    "buffer_pl": "Bufor: zakończ niedokończoną pracę w ciągu tygodnia / powtórz ćwiczenia ze statusem niepowodzenia."
    },
    {
     "date": "2026-12-19",
@@ -6331,7 +6534,8 @@
     ],
     "planned_minutes": 75
    }
-  ]
+  ],
+  "assumptions_pl": "dni powszednie 80 minut (60–90), weekendy i święta 23–31 grudnia — 180 minut, 24–25 grudnia i 1 stycznia — weekendy, 6 stycznia (święto) — 150 minut; 7–13.01 (okno pisemne) – 90 minut z naciskiem na kolokwia pisemne; 14.01 - dopiero przegląd końcowy. Jeśli znana jest zapisana data, nie należy podejmować w tym dniu żadnych kroków."
  },
  "gaps": [
   {

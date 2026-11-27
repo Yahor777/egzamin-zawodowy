@@ -93,7 +93,7 @@ export function HintLadder({
               else open(nextLevel)
             }}>
             {label}
-            {nextLevel === 2 && <span className="ladder-cost">{ru ? ' · оценка ×0,75' : ''}</span>}
+            {nextLevel === 2 && <span className="ladder-cost">{ru ? ' · оценка ×0,75' : ' · wynik ×0,75'}</span>}
           </button>
         ))}
     </div>

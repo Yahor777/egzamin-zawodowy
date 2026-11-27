@@ -26,6 +26,7 @@ export const WS_PRINT_DRILLS: DrillDef[] = [
     title_ru: 'Windows Server: сервер печати — сетевой принтер по TCP/IP, общий доступ, права, подключение с Windows 11',
     title_pl: 'Windows Server: serwer wydruku (Zarządzanie drukowaniem)',
     goal_ru: 'Поставить роль «Usługi drukowania i zarządzania dokumentami», в «Zarządzanie drukowaniem» добавить сетевой принтер через порт TCP/IP, расшарить его, выдать права — и с Windows 11 подключить \\\\SERWER\\udział и напечатать пробную страницу (задание должно появиться в очереди сервера).',
+    goal_pl: "Ustaw rolę „Usługi zarządzania i zarządzania dokumentami”, w „Zarządzaniu drukowaniem” dodaj drukarkę sieciową przez port TCP/IP, udostępnij ją, nadaj uprawnienia - a z Windows 11 podłącz \\\\\\\\SERWER\\\\udział i wydrukuj stronę testową (zadanie powinno pojawić się w kolejce serwera).",
     minutes: 25,
     docs: [D.winserverPrint, D.winserverRoles, D.winserverShares],
     params: (r) => ({ X: r.int(2, 19), name: r.pick(['Sekretariat', 'Pracownia', 'Biblioteka', 'Biuro']), share: r.pick(['drukarka', 'laser', 'hp']), login: r.pick(['jnowak', 'akowalska', 'pwisniewski']) }),
@@ -88,7 +89,7 @@ export const WS_PRINT_DRILLS: DrillDef[] = [
               }),
             ],
             'Menedżer serwera → Dodaj role i funkcje → Usługi drukowania i zarządzania dokumentami. Narzędzia → Zarządzanie drukowaniem → Serwery wydruku → (serwer) → Drukarki: ПКМ → «Dodaj drukarkę…» → «Dodaj drukarkę TCP/IP…». Права — Właściwości → Zabezpieczenia → Dodaj… (имя пользователя → Sprawdź nazwy).',
-          ),
+          `Menedżer → serwer Dodaj rolę i funkcje → Usługi monitorowania i zarządzania dokumentami. Narzędzia → Zarządzanie drukowaniem → Serwery drukowania → (serwer) → Drukarki: RMB → „Dodaj drukarkę...” → „Dodaj drukarkę TCP/IP...”. Prawa - właściwości → Zabezpieczenia → Dodaj... (nazwa użytkownika → Sprawdź nazwę).`),
           task(
             'pc',
             'pc',
@@ -99,7 +100,7 @@ export const WS_PRINT_DRILLS: DrillDef[] = [
               ck('job', 'В очереди сервера есть задание со станции DESKTOP-STACJA', 'zadanie w kolejce serwera', (c) => !!pr(c) && !!c.pc && jobsOf(pr(c)!).some((j) => j.computer === c.pc!.hostname)),
             ],
             'Ustawienia → Bluetooth i urządzenia → Drukarki i skanery → «Dodaj urządzenie» → «Dodaj nowe urządzenie ręcznie» → «Wybierz drukarkę udostępnioną według nazwy». «Odmowa dostępu» — нет права Drukuj; «nie można połączyć» — неверное имя ресурса или выключено udostępnianie.',
-          ),
+          `Urządzenia → Bluetooth i urządzenia → Drukarki i skanery → „Dodaj urządzenie” → „Dodaj nowe urządzenie urządzenia” → „Wybierz drukarkę udostępnioną według nazwy”. „Odmowa dostępu” - brak prawa Drukuj; „nie można połączyć” - nieprawidłowa nazwa zasobu lub wyłączenie udostępniania.`),
         ],
       }
     },

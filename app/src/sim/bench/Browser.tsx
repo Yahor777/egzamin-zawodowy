@@ -9,9 +9,10 @@ import { RouterSim } from '../router'
 import { SwitchSim } from '../switch'
 import type { RouterState, SwitchState } from '../types'
 import { SitePage, titleOf } from './SitePage'
-import { addressBook, browse, DEV_RU, routerHosts, type BrowseResult, type PcKey, type WebDevice } from './diagnose'
+import { addressBook, browse, DEV_PL, DEV_RU, routerHosts, type BrowseResult, type PcKey, type WebDevice } from './diagnose'
 import type { Station } from './station'
 import { useCompact } from './useCompact'
+import { useLang } from '../../lib/store'
 import './browser.css'
 export interface BrowserProps {
   st: Station
@@ -33,6 +34,8 @@ export function Browser({ st, pcKey, pc, router, switch: sw, printer, onRouter, 
   const mk = `${memKey}:${pcKey}`
   const rootRef = useRef<HTMLDivElement>(null)
   const compact = useCompact(rootRef, 560)
+  const lang = useLang()
+  const ru = lang === 'ru'
   const [input, setInput] = useState(() => memory.get(mk)?.input ?? '')
   const [nav, setNav] = useState<string | null>(() => memory.get(mk)?.nav ?? null)
   useEffect(() => {
@@ -192,12 +195,12 @@ export function Browser({ st, pcKey, pc, router, switch: sw, printer, onRouter, 
             enterKeyHint="go"
           />
         </div>
-        <button type="button" className={`edge-hintbtn ${hint ? 'on' : ''}`} aria-expanded={hint} onClick={() => setHint(!hint)} lang="ru" title="Подсказка тренажёра (на экзамене её нет)">
+        <button type="button" className={`edge-hintbtn ${hint ? 'on' : ''}`} aria-expanded={hint} onClick={() => setHint(!hint)} lang={lang} title={ru ? 'Подсказка тренажёра (на экзамене её нет)' : 'Wskazówka treningowa (na egzaminie jej nie ma)'}>
           <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
             <path d="M8 1.5a4.5 4.5 0 0 0-2.6 8.2c.4.3.6.7.6 1.1V12h4v-1.2c0-.4.2-.8.6-1.1A4.5 4.5 0 0 0 8 1.5z" fill="none" stroke="currentColor" strokeWidth="1.2" />
             <path d="M6.2 14h3.6" stroke="currentColor" strokeWidth="1.2" />
           </svg>
-          {!compact && <span>Подсказка</span>}
+          {!compact && <span>{ru ? 'Подсказка' : 'Wskazówka'}</span>}
         </button>
         {!compact && (
           <button type="button" className="edge-ic" aria-label="Ustawienia i nie tylko">
@@ -210,7 +213,7 @@ export function Browser({ st, pcKey, pc, router, switch: sw, printer, onRouter, 
         )}
       </form>
       {loading && <div className="edge-progress" aria-hidden="true" />}
-      {hint && <HintPanel r={loading ? null : r} st={st} pcKey={pcKey} pc={pc} onOpen={(a) => (setHint(false), go(a))} onClose={() => setHint(false)} />}
+      {hint && <HintPanel r={loading ? null : r} st={st} pcKey={pcKey} pc={pc} lang={lang} onOpen={(a) => (setHint(false), go(a))} onClose={() => setHint(false)} />}
       <div className="edge-page">
         {!nav ? (
           <NewTab onGo={go} />
@@ -363,14 +366,15 @@ function ErrorPage({ r, kind, onRetry }: { r: BrowseResult; kind: ErrKind; onRet
   )
 }
 
-function HintPanel({ r, st, pcKey, pc, onOpen, onClose }: { r: BrowseResult | null; st: Station; pcKey: PcKey; pc: PcState; onOpen: (ip: string) => void; onClose: () => void }) {
+function HintPanel({ r, st, pcKey, pc, lang, onOpen, onClose }: { r: BrowseResult | null; st: Station; pcKey: PcKey; pc: PcState; lang: 'ru' | 'pl'; onOpen: (ip: string) => void; onClose: () => void }) {
+  const ru = lang === 'ru'
   const why = r && !r.ok ? r.why : []
   return (
-    <div className="edge-hint" lang="ru" role="region" aria-label="Подсказка тренажёра">
+    <div className="edge-hint" lang={lang} role="region" aria-label={ru ? 'Подсказка тренажёра' : 'Wskazówka treningowa'}>
       <div className="edge-hint-h">
-        <strong>Подсказка тренажёра</strong>
-        <span>на экзамене её не будет</span>
-        <button className="edge-hint-x" onClick={onClose} aria-label="Закрыть подсказку">
+        <strong>{ru ? 'Подсказка тренажёра' : 'Wskazówka treningowa'}</strong>
+        <span>{ru ? 'на экзамене её не будет' : 'na egzaminie jej nie będzie'}</span>
+        <button className="edge-hint-x" onClick={onClose} aria-label={ru ? 'Закрыть подсказку' : 'Zamknij wskazówkę'}>
           <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
             <path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="1.3" />
           </svg>
@@ -378,18 +382,18 @@ function HintPanel({ r, st, pcKey, pc, onOpen, onClose }: { r: BrowseResult | nu
       </div>
       {why.length > 0 && (
         <div className="edge-why">
-          <strong>Почему не открывается?</strong>
+          <strong>{ru ? 'Почему не открывается?' : 'Dlaczego się nie otwiera?'}</strong>
           <ul>
             {why.map((w, i) => (
               <li key={i}>
-                {w.text}
-                {w.fix && <span className="fix">{w.fix}</span>}
+                {ru ? w.text : (w.text_pl ?? w.text)}
+                {(ru ? w.fix : (w.fix_pl ?? w.fix)) && <span className="fix">{ru ? w.fix : (w.fix_pl ?? w.fix)}</span>}
               </li>
             ))}
           </ul>
         </div>
       )}
-      <AddressHelper st={st} pcKey={pcKey} pc={pc} onOpen={onOpen} />
+      <AddressHelper st={st} pcKey={pcKey} pc={pc} lang={lang} onOpen={onOpen} />
     </div>
   )
 }
@@ -439,19 +443,20 @@ function PrinterPage({ ip, prefix }: { ip: string; prefix: number }) {
   )
 }
 
-function AddressHelper({ st, pcKey, pc, onOpen }: { st: Station; pcKey: PcKey; pc: PcState; onOpen: (ip: string) => void }) {
+function AddressHelper({ st, pcKey, pc, lang, onOpen }: { st: Station; pcKey: PcKey; pc: PcState; lang: 'ru' | 'pl'; onOpen: (ip: string) => void }) {
+  const ru = lang === 'ru'
   const book = addressBook(st.model, pcKey, st.booting)
   return (
     <details className="addr-help">
-      <summary>Какой адрес вписать?</summary>
+      <summary>{ru ? 'Какой адрес вписать?' : 'Jaki adres wpisać?'}</summary>
       <div className="ah-me">
-        Этот компьютер:{' '}
+        {ru ? 'Этот компьютер:' : 'Ta stacja:'}{' '}
         {pc.adapters.map((a) => {
           const c = pcAddress(a)
           return (
             <span key={a.id}>
-              {a.name} — {c ? <code>{`${c.addr.ip}/${c.addr.prefix}`}</code> : 'нет адреса'}
-              {a.dhcp && a.lease ? ` (DHCP от ${a.lease.server})` : c?.addr.ip.startsWith('169.254.') ? ' (APIPA — DHCP не ответил)' : a.dhcp ? '' : ' (вручную)'}{' '}
+              {a.name} — {c ? <code>{`${c.addr.ip}/${c.addr.prefix}`}</code> : (ru ? 'нет адреса' : 'brak adresu')}
+              {a.dhcp && a.lease ? ` (DHCP ${ru ? 'от' : 'z'} ${a.lease.server})` : c?.addr.ip.startsWith('169.254.') ? (ru ? ' (APIPA — DHCP не ответил)' : ' (APIPA — DHCP nie odpowiedział)') : a.dhcp ? '' : (ru ? ' (вручную)' : ' (ręcznie)')}{' '}
             </span>
           )
         })}
@@ -459,24 +464,24 @@ function AddressHelper({ st, pcKey, pc, onOpen }: { st: Station; pcKey: PcKey; p
       {book.map((b) => (
         <div key={b.key} className={`ah-row ${b.ok ? 'ok' : ''}`}>
           <div className="ah-main">
-            <strong>{DEV_RU[b.key]}</strong>
+            <strong>{(ru ? DEV_RU : DEV_PL)[b.key]}</strong>
             <span>
-              {b.ip ? <code>http://{b.ip}</code> : '—'} · {b.login}
+              {b.ip ? <code>http://{b.ip}</code> : '—'} · {ru ? b.login : (b.login_pl ?? b.login)}
             </span>
             <small>
-              {b.ok ? '' : 'Сейчас не откроется: '}
-              {b.note}
+              {b.ok ? '' : (ru ? 'Сейчас не откроется: ' : 'Teraz się nie otworzy: ')}
+              {ru ? b.note : (b.note_pl ?? b.note)}
             </small>
           </div>
           {b.ip && (
             <button className="ah-open" onClick={() => onOpen(b.ip)}>
-              Открыть
+              {ru ? 'Открыть' : 'Otwórz'}
             </button>
           )}
         </div>
       ))}
       <p className="ah-foot">
-        Адрес управления = адрес LAN роутера или IP свитча (с завода у обоих 192.168.0.1, логин admin / admin). Компьютер должен быть в той же подсети: например, для 192.168.0.1/24 — адрес 192.168.0.10, маска 255.255.255.0.
+        {ru ? 'Адрес управления = адрес LAN роутера или IP свитча (с завода у обоих 192.168.0.1, логин admin / admin). Компьютер должен быть в той же подсети: например, для 192.168.0.1/24 — адрес 192.168.0.10, маска 255.255.255.0.' : 'Adres zarządzania = adres LAN rutera albo IP przełącznika (fabrycznie u obu 192.168.0.1, login admin / admin). Stanowisko musi być w tej samej podsieci: na przykład dla 192.168.0.1/24 — adres 192.168.0.10, maska podsieci 255.255.255.0.'}
       </p>
     </details>
   )
