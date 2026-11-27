@@ -9,7 +9,7 @@ import type { LabCtx } from '../labs/labs'
 import { pcAddress, type Printer } from '../net'
 import { hasRole } from '../pc/server'
 import { EVERYONE } from '../pc/smb'
-import { P_DOCS, P_PRINT, clientPrinters, findPrinter, jobsOf, printBits, printerIp } from '../pc/print'
+import { P_DOCS, P_PRINT, aceOf, clientPrinters, findPrinter, jobsOf, printBits, printerIp } from '../pc/print'
 import { parseUnc } from '../pc/smb'
 import { addUser } from '../pc/model'
 import { setStaticIp } from './srvkit'
@@ -82,8 +82,9 @@ export const WS_PRINT_DRILLS: DrillDef[] = [
               ck('perm', `Права: Wszyscy — Drukuj, ${login} — Zarządzaj dokumentami`, `uprawnienia Drukuj / Zarządzaj dokumentami`, (c) => {
                 const p = pr(c)
                 const bits = (ids: string[]) => (p ? printBits(p, { name: ids[ids.length - 1], who: ids.map((x) => x.toLowerCase()), admin: false }) : 0)
-                // deny wins across all matching ACEs: an "Odmów" on Wszyscy also strips the user's grant
-                return !!(bits([EVERYONE]) & P_PRINT) && !!(bits([EVERYONE, `${HOST}\\${login}`]) & P_DOCS)
+                const u = p && aceOf(p, `${HOST}\\${login}`)
+                // Zarządzaj dokumentami must be granted to the user himself (not just to Wszyscy), and no Odmów may strip it
+                return !!(bits([EVERYONE]) & P_PRINT) && !!u && !!(u.allow & P_DOCS) && !(u.deny & P_DOCS) && !!(bits([EVERYONE, `${HOST}\\${login}`]) & P_DOCS)
               }),
             ],
             'Menedżer serwera → Dodaj role i funkcje → Usługi drukowania i zarządzania dokumentami. Narzędzia → Zarządzanie drukowaniem → Serwery wydruku → (serwer) → Drukarki: ПКМ → «Dodaj drukarkę…» → «Dodaj drukarkę TCP/IP…». Права — Właściwości → Zabezpieczenia → Dodaj… (имя пользователя → Sprawdź nazwy).',
