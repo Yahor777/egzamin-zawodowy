@@ -308,7 +308,7 @@ const TOOLS: ToolDef[] = [
   { label: 'Menedżer zasobów serwera plików', req: 'FS-Resource-Manager', app: 'fsrm' },
   { label: 'Monitor wydajności' },
   { label: 'Podgląd zdarzeń' },
-  { label: 'Routing i dostęp zdalny', req: 'Routing', app: 'rras' },
+  { label: 'Routing i dostęp zdalny', req: 'RAS', app: 'rras' },
   { label: 'Usługi' },
   { label: 'Usługi składowe' },
   { label: 'Użytkownicy i komputery usługi Active Directory', req: 'ADDS', app: 'aduc' },

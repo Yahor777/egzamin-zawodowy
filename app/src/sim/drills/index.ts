@@ -7,10 +7,11 @@ import { WS_DRILLS } from './winserver'
 import { SHARE_DRILLS } from './winserver-shares'
 import { WS_RRAS_DRILLS } from './winserver-rras'
 import { WS_PRINT_DRILLS } from './winserver-print'
+import { WS_VPN_DRILLS } from './winserver-vpn'
 
 export { TOPICS, type DrillDef, type DrillLab, type DrillTopic }
 
-export const DRILLS: DrillDef[] = [...LINUX_DRILLS, ...NET_DRILLS, ...EXTRA_DRILLS, ...WS_DRILLS, ...SHARE_DRILLS, ...WS_RRAS_DRILLS, ...WS_PRINT_DRILLS]
+export const DRILLS: DrillDef[] = [...LINUX_DRILLS, ...NET_DRILLS, ...EXTRA_DRILLS, ...WS_DRILLS, ...SHARE_DRILLS, ...WS_RRAS_DRILLS, ...WS_PRINT_DRILLS, ...WS_VPN_DRILLS]
 
 export const drillById = (id: string) => DRILLS.find((d) => d.id === id)
 

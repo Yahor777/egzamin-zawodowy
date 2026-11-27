@@ -12,6 +12,7 @@ import { initialAd, netbiosOf, srv, withSrv } from '../pc/server'
 import { withFw } from '../pc/model'
 import { exec } from '../pc/shell'
 import { clientTestPage, connectPrinter } from '../pc/print'
+import { connectVpn, saveVpn } from '../pc/vpn'
 import { addAutoQuota, addQuota, addScreen, createShare, disableInheritance, setExplicitRows } from '../pc/smb'
 
 const uniq = <T,>(a: T[]) => [...new Set(a)]
@@ -166,5 +167,19 @@ export function clientTestPrint(b: Bench, key: NetKey, unc: string): string | nu
   const r = clientTestPage({ model: model(b), key }, b.s[key]!, unc)
   if (!r.ok) return r.err.msg
   b.s.server = r.server
+  return null
+}
+
+/** Ustawienia → Sieć i Internet → VPN → Dodaj połączenie VPN */
+export function saveClientVpn(b: Bench, key: NetKey, c: { name: string; server: string; protocol?: 'Automatycznie' | 'PPTP' | 'SSTP'; username?: string; password?: string }): void {
+  b.s[key] = saveVpn(b.s[key]!, { name: c.name, server: c.server, protocol: c.protocol ?? 'Automatycznie', username: c.username, password: c.password, remember: true })
+}
+
+/** Ustawienia → VPN → Połącz: the same state transition as the Windows 11 settings page */
+export function connectClientVpn(b: Bench, key: NetKey, name: string): string | null {
+  const r = connectVpn({ model: model(b), key, setServer: (f) => (b.s.server = f(b.s.server!)) }, b.s[key]!, name)
+  if (!r.ok) return r.err.msg
+  b.s[key] = r.next
+  b.s.server = r.applyServer(b.s.server!)
   return null
 }
