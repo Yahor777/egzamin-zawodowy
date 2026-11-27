@@ -9,7 +9,7 @@ import { Browser } from '../bench/Browser'
 import { useStation, type BenchLab, type Station } from '../bench/station'
 import { isPhone } from '../bench/useCompact'
 import { createLinuxState, LinuxTerminal } from '../linux'
-import { canPing, defaultPcState, leaseFor, linkUp, wifiCheck, wifiScan, type DeviceKey } from '../net'
+import { canPing, defaultPcState, ipToInt, leaseFor, linkUp, pcAddress, reachableEndpoints, wifiCheck, wifiScan, type DeviceKey } from '../net'
 import { PcSim, type PcView } from '../pc/PcSim'
 import { defaultRouterState } from '../router'
 import { defaultSwitchState } from '../switch'
@@ -24,6 +24,9 @@ import { LABS, labScore, type Lab } from './labs'
 import { taskHint } from './hints'
 import { labSolutions, type TaskSolutions } from './labSolutionText'
 import { buildCtx, buildDhcpServers, defaultServerState, serviceLaptop, type LabSave } from './ctx'
+import { fwAllows } from '../domain'
+import { createFtpBackend, ftpSiteAt } from '../pc/ftp'
+import { hasRole } from '../pc/server'
 import { ReportButton } from '../../components/ReportIssue'
 import { PaperSheets, SheetBanner, SheetBest } from '../../sheets/SheetPage'
 import '../bench/bench.css'
@@ -817,6 +820,10 @@ export function LinuxTab({
   const off = !st.isPowered('linux') || !!st.boot.linux
   // after a power cycle the server boots into a fresh login, not into the saved shell session
   const [cycled, setCycled] = useState(false)
+  const serverRef = useRef(s.server)
+  useEffect(() => {
+    serverRef.current = s.server
+  }, [s.server])
   if (off && !cycled) setCycled(true)
   if (!s.linux) return null
   if (off) return <DeviceOff d="linux" st={st} text={st.boot.linux ? (ru ? 'Сервер загружается…' : 'Serwer się uruchamia…') : ru ? 'Сервер Linux выключен.' : 'Serwer Linux jest wyłączony.'} />
@@ -831,6 +838,26 @@ export function LinuxTab({
       network={{
         ping: (from, gw, target) => canPing({ ...model, linuxIfaces: from, linuxGateway: gw }, from.map((i) => `linux:${i.name}`), target),
         dhcp: (i) => leaseFor(model, `linux:${i.name}`, i.mac, buildDhcpServers(s)) ?? null,
+        ftp: createFtpBackend(
+          (host, port) => {
+            let ip = ipToInt(host) !== null ? host : ''
+            if (!ip && s.server && host.toLowerCase().split('.')[0] === s.server.hostname.toLowerCase()) ip = s.server.adapters.map((a) => pcAddress(a)?.addr.ip).find(Boolean) ?? ''
+            if (!ip) return { ok: false as const, line: `ftp: ${host}: Name or service not known` }
+            const ifs = s.linux?.ifaces ?? []
+            const ports = ifs.map((i) => `linux:${i.name}`)
+            const server = serverRef.current
+            const srvEp = reachableEndpoints(model, ports, ip).find((e) => e.device === 'server')
+            if (!srvEp || !server) return { ok: false as const, line: 'ftp: connect: Connection timed out' }
+            if (!fwAllows(server, 'tcp', port, port === 21 && hasRole(server, 'Web-Ftp-Service'))) return { ok: false as const, line: 'ftp: connect: Connection timed out' }
+            const hit = ftpSiteAt(server, ip, port, false)
+            if (!hit) return { ok: false as const, line: 'ftp: connect: Connection refused' }
+            return { ok: true as const, ip, hit }
+          },
+          (next) => {
+            serverRef.current = next
+            update({ server: next })
+          },
+        ),
       }}
     />
   )
