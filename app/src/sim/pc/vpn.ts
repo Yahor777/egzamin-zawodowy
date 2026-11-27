@@ -71,13 +71,14 @@ export function nextVpnAddress(server: PcState): string | null {
   return null
 }
 
-export type VpnErr = { kind: 'net' | 'server' | 'auth' | 'pool' | 'name'; msg: string }
+export type VpnErr = { kind: 'net' | 'server' | 'auth' | 'pool' | 'name' | 'state'; msg: string }
 export type VpnConnectOut = { ok: true; next: PcState; applyServer: (s: PcState) => PcState; ip: string; protocol: 'PPTP' | 'SSTP' } | { ok: false; err: VpnErr }
 
 /** "Połącz" in Ustawienia → VPN: reachability, RRAS state, credentials and address assignment are evaluated; the tunnel itself is state-based. */
 export function connectVpn(b: BenchLink, client: PcState, name: string, cred?: { user: string; pw: string }): VpnConnectOut {
   const c = findVpn(client, name)
   if (!c) return { ok: false, err: { kind: 'name', msg: 'Nie znaleziono połączenia VPN.' } }
+  if (vpnConnections(client).some((x) => x.connected && x.name.toLowerCase() !== c.name.toLowerCase())) return { ok: false, err: { kind: 'state', msg: 'Najpierw rozłącz aktywne połączenie VPN.' } }
   const target = resolveTarget(b.model, b.key, c.server)
   if (!target) return { ok: false, err: { kind: 'net', msg: 'Nie można rozpoznać nazwy lub adresu serwera.' } }
   const server = serverAt(b.model, b.key, target)
