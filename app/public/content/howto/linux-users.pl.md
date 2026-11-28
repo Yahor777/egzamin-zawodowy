@@ -3,13 +3,15 @@
 ## Jak czytać polecenie
 
 ```
-sudo usermod -aG ksiegowiec anowak
-│    │       │   │          └─ KOGO zmieniamy (użytkownik) — zawsze na końcu
-│    │       │   └─ wartość opcji -G (nazwa grupy)
-│    │       └─ opcje: -a i -G pisane razem (to samo co -a -G)
-│    └─ program: usermod = „modyfikuj użytkownika”
-└─ uruchom jako administrator (poprosi o hasło administratora)
+sudo  usermod  -aG  ksiegowiec  anowak
+ 1       2      3       4         5
 ```
+
+1. `sudo` — uruchom jako administrator (poprosi o hasło administratora).
+2. `usermod` — program: „modyfikuj użytkownika”.
+3. `-aG` — opcje `-a` i `-G` pisane razem (to samo co `-a -G`).
+4. `ksiegowiec` — wartość opcji `-G` (nazwa grupy).
+5. `anowak` — KOGO zmieniamy (użytkownik), zawsze na końcu.
 
 - **Minus i litera** (`-m`, `-G`) to **opcja** programu. Znaczenie liter jest w tabelach niżej.
 - Kilka opcji bez wartości można połączyć: `-a -G` = `-aG`.
