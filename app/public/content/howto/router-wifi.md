@@ -31,7 +31,7 @@
 - **VLAN** — отдельная логическая сеть. На роутере trunk-порт помечается **Tagged**, а доступ-порт — **Untagged**; PVID важен на свитче.
 - **Management IP** — адрес, по которому открывается панель устройства. У роутера это его LAN-адрес.
 
-## 2. TP-Link WR840N: Wi‑Fi
+## 2. Wi‑Fi — Wireless
 
 ### 2.1. Wireless → Wireless Settings
 
@@ -103,7 +103,7 @@ Status:          Enabled
 
 Список **Virtual Servers** показывает `Service Port`, `Internal Port`, `IP Address`, `Protocol`, `Status`.
 
-## 4. TP-Link: статический маршрут — Advanced Routing → Static Routing List
+## 4. Статический маршрут — Advanced Routing → Static Routing List
 
 Путь: **Advanced Routing → Static Routing List → Add New…**.
 
