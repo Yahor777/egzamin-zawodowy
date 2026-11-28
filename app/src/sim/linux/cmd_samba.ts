@@ -1,6 +1,6 @@
 // Samba client utilities: testparm and smbpasswd (small but stateful subset).
 import { register, type Ctx } from './shell.ts'
-import { tryLookup, writeFile } from './vfs.ts'
+import { canAccess, normPath, resolve, writeFile } from './vfs.ts'
 import { userByName, hashPassword } from './users.ts'
 
 export function parseSmbConf(src: string): { errors: string[]; shares: Record<string, Record<string, string>> } {
@@ -33,9 +33,11 @@ export function parseSmbConf(src: string): { errors: string[]; shares: Record<st
 }
 
 function readConf(c: Ctx, path: string) {
-  const n = tryLookup(c.st, path)
-  if (!n || n.t !== 'f') return null
-  return n.c || ''
+  const abs = normPath(path, c.p.cwd)
+  const r = resolve(c.st, abs, c.cred)
+  if (!r.node || r.node.t !== 'f') return { missing: true as const, abs }
+  if (!canAccess(r.node, c.cred, 4)) return { denied: true as const, abs }
+  return { text: r.node.c || '', abs }
 }
 
 function passdb(c: Ctx): Record<string, string> {
@@ -62,15 +64,19 @@ function savePassdb(c: Ctx, db: Record<string, string>) {
 register('testparm', async (c) => {
   const silent = c.args.includes('-s') || c.args.includes('--suppress-prompt')
   const path = c.args.filter((a) => !a.startsWith('-'))[0] || '/etc/samba/smb.conf'
-  const src = readConf(c, path)
-  if (src === null) {
+  const cf = readConf(c, path)
+  if ('missing' in cf) {
     c.err(`testparm: unable to open configuration file '${path}'\n`)
     return 1
   }
-  const r = parseSmbConf(src)
-  c.outln(`Load smb config files from ${path}`)
+  if ('denied' in cf) {
+    c.err(`testparm: unable to open configuration file '${path}': Permission denied\n`)
+    return 1
+  }
+  const r = parseSmbConf(cf.text)
+  c.outln(`Load smb config files from ${cf.abs}`)
   if (r.errors.length) {
-    for (const e of r.errors) c.err(e.replaceAll('/etc/samba/smb.conf', path) + '\n')
+    for (const e of r.errors) c.err(e.replaceAll('/etc/samba/smb.conf', cf.abs) + '\n')
     return 1
   }
   c.outln('Loaded services file OK.')

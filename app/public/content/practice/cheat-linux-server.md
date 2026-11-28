@@ -210,9 +210,8 @@ df -hT /dane                                     # sprawdź system plików i mie
 sudo systemctl restart ssh                       # zrestartuj usługę SSH
 sudo systemctl enable --now cron                 # włącz i uruchom cron
 systemctl is-active cron                         # sprawdź, czy cron działa
-printf '30 2 * * 1 /sbin/reboot\n' | sudo tee /tmp/crontab-root  # przygotuj zadanie roota
-sudo crontab /tmp/crontab-root                   # zainstaluj zadanie roota
-sudo crontab -l                                  # wypisz crontab roota
+printf '30 2 * * 1 root /sbin/reboot\n' | sudo tee /etc/cron.d/reboot-test  # dodaj osobne zadanie roota bez kasowania crontab
+sudo cat /etc/cron.d/reboot-test                 # sprawdź zawartość pliku zadania roota
 sudo journalctl -u ssh -n 20                     # pokaż ostatnie logi SSH
 ```
 

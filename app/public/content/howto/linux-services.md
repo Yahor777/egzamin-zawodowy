@@ -106,9 +106,13 @@ W `/etc/crontab` jest jeszcze dodatkowe pole **user** między czasem a polecenie
 mkdir -p ~/skrypty                               # utwórz katalog na skrypty użytkownika
 printf '#!/bin/bash\n/bin/date >> /home/administrator/cron-test.log\n' > ~/skrypty/cron-test.sh  # utwórz prosty skrypt testowy
 chmod 700 ~/skrypty/cron-test.sh                 # nadaj skryptowi prawo wykonania tylko dla właściciela
-printf '30 2 * * 1 /home/administrator/skrypty/cron-test.sh\n' | crontab -  # zainstaluj jedno zadanie crontab ze standardowego wejścia
+crontab -l > ~/cron-backup 2>/dev/null || true   # zachowaj istniejące zadania; pusty plik też jest poprawny
+cp ~/cron-backup ~/cron-nowe                     # skopiuj stare zadania do nowej wersji crontab
+printf '30 2 * * 1 /home/administrator/skrypty/cron-test.sh\n' >> ~/cron-nowe  # dopisz ćwiczeniowe zadanie bez kasowania starych
+crontab ~/cron-nowe                              # zainstaluj połączoną wersję crontab
 crontab -l                                       # pokaż zainstalowane zadania crontab
-crontab -r                                       # usuń crontab po ćwiczeniu
+crontab ~/cron-backup                            # przywróć poprzednie zadania po ćwiczeniu
+rm ~/cron-backup ~/cron-nowe                     # usuń pliki tymczasowe ćwiczenia
 ```
 
 ## Частые ошибки
@@ -118,7 +122,7 @@ crontab -r                                       # usuń crontab po ćwiczeniu
 | `Unit ssh.service could not be found.` | pakiet/usługa nie jest zainstalowany albo literówka | sprawdź `apt list --installed` i nazwę usługi |
 | `Failed to restart ssh.service: Access denied` | brak uprawnień administratora | użyj `sudo` |
 | `ssh.service is not active, cannot reload.` | reload działa tylko na aktywnej usłudze | użyj `start` albo `restart` |
-| `no crontab for administrator` | użytkownik nie ma jeszcze zadań | dodaj przez `crontab -e` albo `crontab -` |
+| `no crontab for administrator` | użytkownik nie ma jeszcze zadań | dodaj przez `crontab -e` albo zainstaluj plik przez `crontab plik` |
 | `bad minute` | pierwsze pole crona ma złą wartość | minuta musi być 0–59 albo `*` |
 | `bad command` | za mało pól; cron nie widzi polecenia | po 5 polach czasu dopisz polecenie |
 | `errors in crontab file, can't install.` | plik ma błąd składni | popraw wskazaną linię i zainstaluj ponownie |

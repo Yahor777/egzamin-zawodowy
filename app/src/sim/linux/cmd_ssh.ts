@@ -3,22 +3,28 @@ import { register, Proc } from './shell.ts'
 import type { Ctx } from './shell.ts'
 import { userByName, readShadow, checkPassword, credFor } from './users.ts'
 import { writeFile, tryLookup } from './vfs.ts'
+import type { LinuxState } from './model.ts'
 
-function sshdPort(c: Ctx): number {
-  const conf = c.st.fs['/etc/ssh/sshd_config']?.c || ''
+export function sshdPortFromState(st: LinuxState): number {
+  const conf = st.fs['/etc/ssh/sshd_config']?.c || ''
   for (const line of conf.split('\n')) {
     const m = /^\s*Port\s+(\d+)\s*(?:#.*)?$/i.exec(line)
     if (m) return +m[1]
   }
   return 22
 }
+function sshdPort(c: Ctx): number {
+  return sshdPortFromState(c.st)
+}
 function sshdAllows(c: Ctx, user: string): string | null {
   const conf = c.st.fs['/etc/ssh/sshd_config']?.c || ''
   const vals = (key: string) => conf.split('\n').map((l) => new RegExp(`^\\s*${key}\\s+(.+?)\\s*(?:#.*)?$`, 'i').exec(l)?.[1]).filter(Boolean) as string[]
   const allow = vals('AllowUsers').flatMap((x) => x.split(/\s+/))
   if (allow.length && !allow.includes(user)) return `Permission denied, please try again.`
+  const pass = vals('PasswordAuthentication')[0] || 'yes'
+  if (/^(no|false)$/i.test(pass)) return 'Permission denied, please try again.'
   const root = vals('PermitRootLogin')[0] || 'prohibit-password'
-  if (user === 'root' && /^(no|false)$/i.test(root)) return 'Permission denied, please try again.'
+  if (user === 'root' && !/^(yes|true)$/i.test(root)) return 'Permission denied, please try again.'
   return null
 }
 function own(c: Ctx, host: string): boolean {
@@ -62,7 +68,8 @@ register('ssh', async (c) => {
     return 255
   }
   const home = target.home
-  const known = `${home}/.ssh/known_hosts`
+  const clientHome = c.p.vars.HOME || `/home/${c.p.user}`
+  const known = `${clientHome}/.ssh/known_hosts`
   if (!tryLookup(c.st, known)) {
     c.err(`The authenticity of host '${host} (${host})' can't be established.\nED25519 key fingerprint is SHA256:SIMULATEDubuntuexamkey0123456789.\nThis key is not known by any other names\n`)
     const yes = await c.ask('Are you sure you want to continue connecting (yes/no/[fingerprint])? ')
@@ -70,8 +77,12 @@ register('ssh', async (c) => {
       c.err('Host key verification failed.\n')
       return 255
     }
-    c.st.fs[`${home}/.ssh`] = c.st.fs[`${home}/.ssh`] || { t: 'd', mode: 0o700, uid: target.uid, gid: target.gid, mtime: Date.now() }
-    writeFile(c.st, known, `${host} ssh-ed25519 SIMULATEDKEY\n`, { uid: target.uid, gid: target.gid, groups: [target.gid] }, { mode: 0o600 })
+    c.st.fs[`${clientHome}/.ssh`] = c.st.fs[`${clientHome}/.ssh`] || { t: 'd', mode: 0o700, uid: c.cred.uid, gid: c.cred.gid, mtime: Date.now() }
+    try {
+      writeFile(c.st, known, `${host} ssh-ed25519 SIMULATEDKEY\n`, c.cred, { mode: 0o600 })
+    } catch {
+      c.err('Failed to add the host to the list of known hosts.\n')
+    }
   }
   const deny = sshdAllows(c, login)
   if (deny) {
@@ -100,5 +111,5 @@ register('ssh', async (c) => {
   p.cred = credFor(c.st, login)
   p.cwd = home
   p.vars = { ...p.vars, HOME: home, USER: login, LOGNAME: login }
-  return c.sh.runCommand(rest, p, c.io, true)
+  return c.sh.runScriptText(rest.join(' '), 'sh', [], p, c.io, { viaShell: true })
 }, '/usr/bin')

@@ -682,6 +682,10 @@ register('findmnt', (c) => {
         bad++
       }
       if (!e.dev || !e.type) bad++
+      else if ((e.dev.startsWith('UUID=') || e.dev.startsWith('/dev/sd')) && !findDev(c, e.dev)) {
+        c.err(`findmnt: can't find device ${e.dev}\n`)
+        bad++
+      }
     }
     if (!bad) c.outln('Success, no errors or warnings detected')
     return bad ? 1 : 0

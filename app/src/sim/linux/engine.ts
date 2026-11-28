@@ -11,6 +11,7 @@ import './cmd_samba.ts'
 import './cmd_ssh.ts'
 import type { LinuxState } from './model.ts'
 import type { LinuxIface } from '../types.ts'
+import { installBins } from './services.ts'
 import { Shell, type TermIO } from './shell.ts'
 
 export type { LinuxState } from './model.ts'
@@ -29,6 +30,7 @@ export interface LinuxNetwork {
 
 /** `resume`: continue the session saved in `st.session` (cwd, su stack…) instead of a fresh login. */
 export function createShell(st: LinuxState, io: TermIO, onCommit: (st: LinuxState) => void, network?: LinuxNetwork, user?: string, resume = false): Shell {
+  installBins(st)
   const sh = new Shell(st, io, onCommit)
   sh.network = network
   if (resume) sh.resumeOrLogin(user || st.loginUser)

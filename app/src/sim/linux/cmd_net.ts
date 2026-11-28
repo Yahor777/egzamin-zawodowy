@@ -10,6 +10,7 @@ import { journal } from './services.ts'
 import { delay } from './cmdutil.ts'
 import { readFile, FsError, writeFile } from './vfs.ts'
 import { apacheServe, apacheRuntime } from './apache.ts'
+import { sshdPortFromState } from './cmd_ssh.ts'
 
 function idx(st: LinuxState, i: NetIface) {
   return st.ifaces.indexOf(i) + 2
@@ -493,7 +494,7 @@ function sockets(st: LinuxState): Sock[] {
   const on = (u: string) => s(u)?.active === 'active'
   if (st.ifaces[0]?.addrs.some((a) => a.dynamic)) out.push({ proto: 'udp', local: st.ifaces[0].addrs.find((a) => a.dynamic)!.cidr.split('/')[0] + '%' + st.ifaces[0].name, port: 68, proc: 'systemd-network', pid: 512 })
   if (on('isc-dhcp-server')) out.push({ proto: 'udp', local: '0.0.0.0', port: 67, proc: 'dhcpd', pid: s('isc-dhcp-server').pid })
-  if (on('ssh')) out.push({ proto: 'tcp', local: '0.0.0.0', port: 22, proc: 'sshd', pid: s('ssh').pid }, { proto: 'tcp', local: '[::]', port: 22, proc: 'sshd', pid: s('ssh').pid, v6: true })
+  if (on('ssh')) out.push({ proto: 'tcp', local: '0.0.0.0', port: sshdPortFromState(st), proc: 'sshd', pid: s('ssh').pid }, { proto: 'tcp', local: '[::]', port: sshdPortFromState(st), proc: 'sshd', pid: s('ssh').pid, v6: true })
   if (on('apache2')) for (const port of apacheRuntime(st)?.listen ?? [80]) out.push({ proto: 'tcp', local: '*', port, proc: 'apache2', pid: s('apache2').pid })
   if (on('smbd')) out.push({ proto: 'tcp', local: '0.0.0.0', port: 445, proc: 'smbd', pid: s('smbd').pid }, { proto: 'tcp', local: '0.0.0.0', port: 139, proc: 'smbd', pid: s('smbd').pid })
   if (on('nmbd')) out.push({ proto: 'udp', local: '0.0.0.0', port: 137, proc: 'nmbd', pid: s('nmbd').pid }, { proto: 'udp', local: '0.0.0.0', port: 138, proc: 'nmbd', pid: s('nmbd').pid })
@@ -524,7 +525,7 @@ register('ss', (c) => {
   }
   if (!flags.has('l') && tcp && c.st.services.ssh?.active === 'active') {
     const ip = ownAddrs(c.st)[0] || '10.0.2.15'
-    rows.push(['tcp', 'ESTAB', '0', '0', `${ip}:${numeric ? 22 : 'ssh'}`, '192.168.56.1:51234', showP && c.root ? 'users:(("sshd",pid=1201,fd=4),("sshd",pid=1288,fd=4))' : ''])
+    rows.push(['tcp', 'ESTAB', '0', '0', `${ip}:${numeric ? sshdPortFromState(c.st) : 'ssh'}`, '192.168.56.1:51234', showP && c.root ? 'users:(("sshd",pid=1201,fd=4),("sshd",pid=1288,fd=4))' : ''])
   }
   const w = [5, 6, 6, 6, Math.max(18, ...rows.map((r) => r[4].length)), Math.max(17, ...rows.map((r) => r[5].length))]
   c.outln(`${'Netid'.padEnd(w[0])} ${'State'.padEnd(w[1])} ${'Recv-Q'.padEnd(w[2])} ${'Send-Q'.padEnd(w[3])} ${'Local Address:Port'.padStart(w[4])} ${'Peer Address:Port'.padStart(w[5])}${showP ? 'Process' : ''}`)
