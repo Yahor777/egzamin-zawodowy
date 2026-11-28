@@ -6,14 +6,16 @@ Ta strona pomaga w sytuacji, gdy w arkuszu CKE widzisz `DDR4-3200`, `SATA III`, 
 
 ```
 Pamięć RAM Kingston 16GB, 1x16GB, 3200MHz, DDR4
-│         │   │        │     │       │        └─ typ pamięci: DDR4
-│         │   │        │     │       └─ szybkość modułu
-│         │   │        │     └─ jeden moduł 16 GB
-│         │   │        └─ łączna pojemność zestawu
-│         │   └─ producent
-│         └─ rodzaj podzespołu: pamięć operacyjna
-└─ pozycja w cenniku
+1      2   3        4     5       6        7
 ```
+
+1. pozycja w cenniku
+2. rodzaj podzespołu: pamięć operacyjna
+3. producent
+4. łączna pojemność zestawu
+5. jeden moduł 16 GB
+6. szybkość modułu
+7. typ pamięci: DDR4
 
 W nawiasach bywa krócej: `(DIMM DDR4, 2666 MHz)` albo `DDR4-2666 (PC4-21333)`. To ten sam parametr, tylko zapisany inaczej.
 

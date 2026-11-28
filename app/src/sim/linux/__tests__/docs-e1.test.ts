@@ -133,19 +133,19 @@ function harness(st: LinuxState, edits: string[]) {
 
 const root = join(process.cwd(), 'public', 'content')
 const docs = [
-  'howto/linux-netplan.md',
-  'howto/linux-routes.md',
-  'howto/linux-dhcp.md',
-  'howto/linux-apache.md',
-  'howto/linux-disk.md',
-  'howto/linux-files.md',
-  'howto/linux-perms.md',
-  'howto/linux-nmcli.md',
-  'howto/linux-services.md',
-  'howto/linux-script.md',
-  'howto/linux-samba.md',
-  'howto/linux-ssh.md',
-  'practice/cheat-linux-server.md',
+  'howto/linux-netplan.pl.md',
+  'howto/linux-routes.pl.md',
+  'howto/linux-dhcp.pl.md',
+  'howto/linux-apache.pl.md',
+  'howto/linux-disk.pl.md',
+  'howto/linux-files.pl.md',
+  'howto/linux-perms.pl.md',
+  'howto/linux-nmcli.pl.md',
+  'howto/linux-services.pl.md',
+  'howto/linux-script.pl.md',
+  'howto/linux-samba.pl.md',
+  'howto/linux-ssh.pl.md',
+  'practice/cheat-linux-server.pl.md',
 ]
 
 const BAD = [

@@ -134,7 +134,7 @@ ftp://192.168.7.1/
 1. `ping` до сервера работает.
 2. Роль **Serwer FTP → Usługa FTP** установлена.
 3. Witryna FTP запущена, binding `ftp`, port `21`.
-4. Ścieżka fizyczна указывает на нужную папку.
+4. Ścieżka fizyczna указывает на нужную папку.
 5. Podstawowe включено, если вход должен быть по логину.
 6. Reguła autoryzacji даёт пользователю **Odczyt** и **Zapis**.
 7. NTFS на папке даёт пользователю **Modyfikacja** или хотя бы Odczyt + Zapis.
