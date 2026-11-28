@@ -1,38 +1,289 @@
-# Свитч (przełącznik zarządzalny): IP управления и VLAN 802.1Q
+# Свитч TP-Link SG108E: IP управления и сети VLAN
 
-> В школе ZSE Rzeszów стоит **TP-Link JetStream T2500G-10TS** (System IP → Management VLAN, VLAN → Port config ACCESS/GENERAL/TRUNK). См. страницу «Свитч T2500G-10TS» (`switch-t2500g`). Тренажёр переключается в *Настройки → Оборудование*.
+Эта страница — про **TP-Link TL-SG108E / Easy Smart**. В школе ZSE Rzeszów стоит **TP-Link JetStream T2500G-10TS**; он описан в `switch-t2500g`. Меню и логика VLAN у них разные.
 
-Интерфейс как у TP-Link Easy Smart (TL-SG108E). С завода: `192.168.0.1`, `admin`/`admin`, **DHCP-сервера нет** — ПК нужен статический адрес `192.168.0.x/24`.
+Переключение: **Настройки → Оборудование в тренажёрах** → **«TP-Link: WR840N + SG108E»** или **«Как в моей школе: DrayTek + TP-Link T2500G»**. Выбор действует на новые попытки; начатое задание нужно начать заново.
 
-## IP управления — System → IP Setting
+## 1. Что такое VLAN и адрес управления
 
-- *DHCP Setting*: **Disable**.
-- *IP Address*, *Subnet Mask*, *Default Gateway* (обычно адрес LAN роутера).
-- После **Apply** страница по старому адресу пропадёт: поменяй адрес ПК на сеть свитча (если сеть другая) и впиши новый адрес.
+```
+                    ┌────────────┐
+                    │   RUTER    │
+                    └────────────┘
+                          │ trunk: VLAN 10+20 tagged
+                          │
+                    ┌────────────┐
+       management   │  PRZEŁĄCZNIK │
+       192.168.16.2 └────────────┘
+                     │           │
+             access VLAN10   access VLAN20
+             PVID 10         PVID 20
+                     │           │
+                    PC1         PC2
+```
 
-## Пароль — System → User Account
+Объяснение без «сетевой магии»:
 
-Старый пароль, новое имя, новый пароль ×2.
+- **VLAN** — способ разделить один физический свитч на несколько отдельных сетей. ПК из VLAN 10 не видит напрямую ПК из VLAN 20.
+- **Untagged** — порт доступа (*access*) для обычного компьютера. Компьютер ничего не знает о VLAN; свитч сам относит его кадры к одной VLAN.
+- **Tagged** — порт транка (*trunk*) к роутеру или другому свитчу. По одному кабелю идут кадры нескольких VLAN, каждая с меткой 802.1Q.
+- **Not Member** — порт вообще не входит в эту VLAN.
+- **PVID** — «VLAN по умолчанию» для входящих кадров без метки. Для access-порта правило простое: **PVID = ID его VLAN**.
+- **Management IP** — адрес веб-страницы свитча. Он не раздаёт Интернет и не является шлюзом для компьютеров.
+- **DHCP pool** — пул адресов, но у SG108E DHCP-сервера нет: он сам ничего не раздаёт.
+- **WAN/NAT** — функции роутера, не свитча. SG108E работает на втором уровне и не делает NAT.
+- **Статический маршрут** — тоже обычно дело роутера, а не этого свитча.
+- **SSID/WPA2** — параметры Wi‑Fi роутера/точки доступа, не SG108E.
 
-## Порты — Switching → Port Setting
+С завода SG108E: адрес `192.168.0.1`, логин и пароль `admin` / `admin`, все порты в VLAN 1. DHCP-сервера нет, поэтому ПК нужно временно дать статический адрес, например `192.168.0.10/24`.
 
-*Status*: Disable — выключить порт. *Speed/Duplex* — скорость.
+## 2. System → System Info — только проверка
 
-## Зеркалирование — Monitoring → Port Mirror
+Путь: **System → System Info**.
 
-*Port Mirror*: Enable; *Mirroring Port* — куда копировать (порт анализатора); *Mirrored Port* — откуда, *Ingress/Egress* (*both* — обе галочки).
+Таблица показывает:
 
-## VLAN 802.1Q
+| Поле | Что это |
+|---|---|
+| **Device Description** | модель свитча |
+| **MAC Address** | физический адрес свитча |
+| **IP Address** | текущий адрес управления |
+| **Subnet Mask** | маска адреса управления |
+| **Default Gateway** | шлюз управления |
+| **Firmware Version** | версия прошивки |
+| **Hardware Version** | версия железа |
 
-Термины:
-- **untagged** (*bez tagowania, tryb dostępowy, access*) — порт для компьютера; кадры уходят без метки.
-- **tagged** (*tagowany, trunk*) — порт к роутеру/другому свитчу, несёт несколько VLAN с метками.
-- **PVID** — в какой VLAN попадает кадр **без метки**, пришедший на порт. Для access-порта PVID = номер его VLAN.
+Сюда заходишь после настройки, чтобы проверить, что адрес действительно изменился.
 
-Порядок (**VLAN → 802.1Q VLAN**):
-1. *802.1Q VLAN Configuration*: **Enable** → Apply.
-2. *VLAN ID* (например 2), *VLAN Name*, для каждого порта выбрать **Untagged / Tagged / Not Member** → Add/Apply.
-3. Убрать эти access-порты из VLAN 1 (в VLAN 1 отметить их *Not Member*). Порт, через который ты сам подключён, оставь в VLAN 1.
-4. **VLAN → 802.1Q PVID Setting**: выбрать порты → *PVID* = номер VLAN → Apply. Без этого кадры с порта всё равно уйдут в VLAN 1.
+## 3. IP управления — System → IP Setting
 
-Проверка: в таблице VLAN видно, какие порты Untagged/Tagged; ПК в порту VLAN 2 больше **не** открывает страницу свитча (управление во VLAN 1) — это нормально.
+Путь: **System → IP Setting**.
+
+| Поле | Что значит | Что вводить в типичном задании | Типичная ошибка |
+|---|---|---|---|
+| **DHCP Setting** | брать ли адрес автоматически | обычно **Disable** | включить DHCP там, где DHCP-сервера нет |
+| **IP Address** | адрес управления свитча | например `192.168.16.2` | оставить заводской `192.168.0.1` |
+| **Subnet Mask** | маска управления | например `255.255.255.0` | не перевести префикс `/24` |
+| **Default Gateway** | шлюз свитча | обычно LAN-адрес роутера, например `192.168.16.1` | вписать адрес самого свитча |
+
+После **Apply** старая страница «зависает» — это нормально. Открой новый адрес. Компьютер должен быть в той же подсети и в правильной VLAN.
+
+Пример: в листе «przełącznikowi należy przypisać adres `192.168.16.2/24`, bramę `192.168.16.1`»:
+
+```
+DHCP Setting:      Disable
+IP Address:        192.168.16.2
+Subnet Mask:       255.255.255.0
+Default Gateway:   192.168.16.1
+```
+
+## 4. System → User Account — пароль администратора
+
+| Поле | Что вводить | Ограничение/ошибка |
+|---|---|---|
+| **New Username** | обычно `admin` | 1–16 символов: буквы, цифры, `_` |
+| **Current Password** | текущий пароль | с завода `admin` |
+| **New Password** | новый пароль из задания | 6–16 символов, без пробелов |
+| **Confirm Password** | повтор нового пароля | должен совпадать |
+
+После **Apply** свитч выходит на страницу входа. Войди новыми данными и только потом продолжай.
+
+## 5. Switching → Port Setting — включение портов
+
+Путь: **Switching → Port Setting**.
+
+Таблица по каждому порту:
+
+| Колонка | Что значит | Что делать |
+|---|---|---|
+| **Port** | номер порта | сверить с кабелем на схеме |
+| **Status** | включён ли порт | **Enable**; **Disable** только если требуется |
+| **Speed/Duplex** | скорость и дуплекс | в симуляторе `Auto` |
+| **Flow Control** | управление потоком | в симуляторе `Off` |
+| **Link Status** | есть ли линк | `1000M Full`/`100M Full` — подключено; `Link Down` — нет |
+
+Выключенный порт не передаёт кадры. Если на столе «не открывается» устройство, проверь, что порт не выключен.
+
+## 6. VLAN 802.1Q — главная страница экзамена
+
+### 6.1. Правильный порядок
+
+Не начинай с PVID. Порядок такой:
+
+1. **VLAN → 802.1Q VLAN**.
+2. В блоке **802.1Q VLAN Configuration** выбери **Enable** → **Apply**.
+3. В блоке **Create / Modify VLAN** впиши VLAN ID, имя и назначь порты.
+4. Нажми **Add/Modify**.
+5. Повтори для каждого VLAN.
+6. Затем открой **VLAN → 802.1Q PVID Setting** и задай PVID access-портам.
+7. Проверь таблицу.
+
+### 6.2. Поля блока 802.1Q VLAN Configuration
+
+| Поле | Что значит |
+|---|---|
+| **802.1Q VLAN Configuration** | режим тегированных VLAN; **Enable** включает, **Disable** выключает |
+
+### 6.3. Поля блока Create / Modify VLAN
+
+| Поле | Что значит | Что вводить | Типичная ошибка |
+|---|---|---|---|
+| **VLAN ID** | номер VLAN | число из листа, 1–4094 | опечатка в номере |
+| **VLAN Name** | имя VLAN | например `pracownicy`; можно любое, если лист не задаёт | специальные символы `< > " ' &` |
+| **Untagged** | порт доступа | ПК/сервер/точка доступа без поддержки VLAN | сделать untagged порт к роутеру |
+| **Tagged** | порт транка | порт к роутеру или другому свитчу | сделать tagged порт обычного ПК |
+| **Not Member** | порт не входит в VLAN | все лишние порты | оставить access-порт членом VLAN 1 и нового VLAN одновременно |
+
+Кнопки строки **Select All** ставят выбранное значение всем портам — опасно, легко задеть лишнее. Лучше отмечать порты вручную по схеме.
+
+### 6.4. VLAN Table
+
+Колонки:
+
+| Колонка | Как читать |
+|---|---|
+| **VLAN ID** | номер VLAN |
+| **VLAN Name** | имя |
+| **Member Ports** | все порты, которые входят в VLAN |
+| **Tagged Ports** | trunk-порты |
+| **Untagged Ports** | access-порты |
+| **Operation** | `Edit` — загрузить в форму; `Delete` — удалить VLAN, кроме VLAN 1 |
+
+Пример. Задание: «porty 1–3 w VLAN 10 bez tagowania, port 8 z tagowaniem»:
+
+```
+802.1Q VLAN Configuration: Enable → Apply
+VLAN ID: 10
+VLAN Name: vlan10
+Port 1: Untagged
+Port 2: Untagged
+Port 3: Untagged
+Port 8: Tagged
+остальные: Not Member
+→ Add/Modify
+```
+
+Затем порты 1–3 убери из VLAN 1: открой VLAN 1 через **Edit**, для портов 1–3 выбери **Not Member**, **Add/Modify**. Иначе легко получить неверные PVID/членства.
+
+## 7. VLAN → 802.1Q PVID Setting
+
+Путь: **VLAN → 802.1Q PVID Setting**.
+
+| Поле/колонка | Что значит | Что делать |
+|---|---|---|
+| **PVID** | VLAN входящих нетегированных кадров | для access-порта — ID его VLAN |
+| **Select** | какие порты меняем | отметь нужные порты |
+| **Port** | номер порта | проверка по схеме |
+| **PVID** (в таблице) | текущее значение | после Apply должно стать нужным |
+| **Untagged in VLAN** | где порт является access | должно совпадать с PVID |
+| **Select All** / **Unselect All** | выбрать/снять все порты | осторожно, не меняй trunk без необходимости |
+
+Для примера выше: выбери порты 1–3, впиши PVID `10`, нажми **Apply**. Trunk-порт 8 обычно оставь PVID `1`.
+
+Простое правило:
+
+```
+access-порт: Untagged в VLAN X  +  PVID X
+trunk-порт:  Tagged в нужных VLAN, PVID обычно 1
+```
+
+## 8. Monitoring — проверка кабелей и зеркалирование
+
+### 8.1. Monitoring → Port Statistics
+
+Счётчики `TxGoodPkt`, `TxBadPkt`, `RxGoodPkt`, `RxBadPkt`. Используется, чтобы понять, идёт ли вообще трафик через порт.
+
+### 8.2. Monitoring → Cable Test
+
+Результат:
+
+| Результат | Что значит |
+|---|---|
+| **Normal** | кабель в порядке |
+| **Open** | обрыв или кабель не подключён |
+| **Short** | замыкание пар |
+
+### 8.3. Monitoring → Port Mirror
+
+Поля:
+
+| Поле | Что значит |
+|---|---|
+| **Port Mirror Status** | включено ли зеркалирование |
+| **Mirroring Port** | порт, куда приходит копия трафика (анализатор/Wireshark) |
+| **Direction** | **Ingress** — входящий, **Egress** — исходящий, **Ingress and Egress** — оба |
+| **Mirrored Port** | порты, за которыми наблюдаем |
+
+Mirroring Port не может быть одновременно Mirrored Port.
+
+### 8.4. Monitoring → Loop Prevention
+
+Защита от петель: если кабели случайно соединили свитч сам с собой, порт может быть заблокирован. На экзамене не используй без требования.
+
+## 9. Другие страницы меню — что это и нужно ли
+
+- **System → Backup and Restore** — сохранение и восстановление конфигурации файлом.
+- **System → System Reboot** — перезагрузка.
+- **System → System Reset** — заводские настройки: `192.168.0.1/24`, `admin/admin`, все порты VLAN 1.
+- **System → Firmware Upgrade** — прошивка, на экзамене не обновлять.
+- **Switching → IGMP Snooping** — multicast только к подписчикам, например IPTV.
+- **Switching → LAG** — объединение портов в один логический канал.
+- **VLAN → MTU VLAN** и **Port Based VLAN** — простые альтернативы VLAN; их нельзя использовать одновременно с 802.1Q. В листах с tagged/untagged нужен именно 802.1Q.
+- **QoS** — приоритеты и скорость, обычно не требуется.
+
+## 10. Частые ошибки и точные сообщения симулятора
+
+| Сообщение | Почему | Как исправить |
+|---|---|---|
+| `Invalid IP address.` | адрес не IPv4 | четыре числа 0–255 через точки |
+| `Invalid subnet mask.` | неверная маска | переведи префикс правильно |
+| `The IP address is not a valid host address for this subnet mask.` | адрес сети или broadcast | выбери host address |
+| `Invalid default gateway.` | шлюз не IPv4 | проверь адрес роутера |
+| `The default gateway must be in the same subnet as the IP address.` | шлюз из другой сети | шлюз и management IP должны быть в одной подсети |
+| `The default gateway cannot be the same as the IP address.` | шлюз равен адресу свитча | шлюз — это роутер, не свитч |
+| `The user name must be 1–16 characters (letters, digits, underscore).` | недопустимое имя | только латиница/цифры/`_` |
+| `The old password is incorrect.` | неверный текущий пароль | заводской `admin` или твой новый |
+| `Please enter the new password.` | имя не менялось и новый пароль пуст | введи новый пароль |
+| `Please enable 802.1Q VLAN first.` | VLAN создаётся до включения режима | Enable → Apply наверху страницы |
+| `Invalid VLAN ID. The valid range is 1–4094.` | неверный номер | 1–4094 |
+| `Invalid VLAN name (max. 32 characters, no special characters < > " ' &).` | недопустимое имя | короткое имя без спецсимволов |
+| `The maximum number of VLANs (32) has been reached.` | слишком много VLAN | удали лишние |
+| `Please select at least one port.` | в PVID не отмечен порт | отметь checkbox Select |
+| `Invalid PVID. The valid range is 1–4094.` | неверный PVID | 1–4094 |
+| `VLAN N does not exist. Please create it first (VLAN → 802.1Q VLAN).` | PVID указывает на несуществующую VLAN | сначала создай VLAN |
+| `Please select at least one mirrored port.` | в Port Mirror нет источника | выбери Mirrored Port |
+| `The mirroring port cannot be a mirrored port at the same time.` | один и тот же порт источник и назначение | выбери разные порты |
+
+Симулятор также показывает жёлтые подсказки, если конфигурация подозрительная:
+
+- `Port N is not a member of any VLAN.` — порт вообще никуда не входит;
+- `Port N is an untagged member of more than one VLAN (...)` — access-порт сразу в нескольких VLAN;
+- `Port N: PVID X refers to a VLAN that does not exist.` — PVID без созданной VLAN;
+- `Port N: PVID is X, but the port is an untagged member of VLAN Y.` — PVID и untagged не совпадают.
+
+Это не всегда «ошибка сохранения», но на экзамене почти всегда означает неправильную конфигурацию.
+
+## 11. Как проверить и что смотрит экзаменатор
+
+На ПК:
+
+```powershell
+ipconfig /all
+ping 192.168.16.2
+```
+
+Перед `ping` убедись, что ПК:
+
+1. стоит в порту нужной VLAN;
+2. имеет адрес из той же подсети, что management IP;
+3. физически подключен кабелем.
+
+Экзаменатор обычно проверяет:
+
+- **System → System Info** — адрес, маска, шлюз;
+- **VLAN → 802.1Q VLAN → VLAN Table** — tagged/untagged порты;
+- **VLAN → 802.1Q PVID Setting** — PVID каждого access-порта;
+- фактическую связь между устройствами в разных VLAN через роутер;
+- умеешь ли ты быстро зайти в интерфейс после смены адреса.
+
+Самая частая цепочка ошибки: создал VLAN → забыл включить 802.1Q → забыл PVID → потерял доступ к свитчу. Поэтому настройку начинай с порта, в котором стоит твой ПК, только когда понимаешь, как вернёшься в Management VLAN.
