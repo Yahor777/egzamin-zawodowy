@@ -9,6 +9,8 @@ function load<T>(path: string, kind: 'json' | 'text'): Promise<T> {
       key,
       fetch(import.meta.env.BASE_URL + path).then((r) => {
         if (!r.ok) throw new Error(String(r.status))
+        // Vite's dev server answers missing paths with index.html; a Markdown file must never be HTML.
+        if (path.endsWith('.md') && r.headers.get('content-type')?.includes('text/html')) throw new Error('404')
         return kind === 'json' ? r.json() : r.text()
       }),
     )
@@ -30,6 +32,28 @@ export function useContent<T>(path: string | null, kind: 'json' | 'text' = 'json
     }
   }, [path, kind])
   return state.path === path ? [state.data, state.err] : [null, false]
+}
+
+/** Fetch a Markdown document, preferring the Polish translation in PL mode. */
+export function useLocalizedMarkdown(path: string, polish: boolean): [string | null, boolean] {
+  const plPath = path.replace(/\.md$/, '.pl.md')
+  const [state, setState] = useState<{ path: string; data: string | null; err: boolean }>({ path: '', data: null, err: false })
+  useEffect(() => {
+    let alive = true
+    const wanted = polish ? plPath : path
+    load<string>(wanted, 'text')
+      .catch(() => {
+        if (!polish) throw new Error('missing')
+        return load<string>(path, 'text')
+      })
+      .then((d) => alive && setState({ path: wanted, data: d, err: false }))
+      .catch(() => alive && setState({ path: wanted, data: null, err: true }))
+    return () => {
+      alive = false
+    }
+  }, [path, plPath, polish])
+  const wanted = polish ? plPath : path
+  return state.path === wanted ? [state.data, state.err] : [null, false]
 }
 
 /** Load several JSON files, ignoring the missing ones. */
