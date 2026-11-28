@@ -12,6 +12,7 @@ import { writeFile } from '../fs'
 import { addAdUser, addOu, addRoles, addScope, addSite, finishDhcp, makeFolder, promote, setStaticIp, shareFolder, setNtfsOnly } from '../../drills/srvkit'
 import { ADMINS, FULL, MODIFY, EVERYONE } from '../smb'
 import type { PcNetwork } from '../model'
+import { extractSection } from '../../../path/sections'
 
 let failures = 0
 const ok = (name: string, cond: unknown, extra = '') => {
@@ -161,6 +162,33 @@ for (const b of blocks()) {
     ok(`${b.file}: ${line}`, !banned.some((x) => x.test(text)) && (icaclsSuccess || intendedQuotaFailure || !runtimeError), text.split('\n').filter(Boolean).slice(-3).join(' | '))
   }
 }
+
+function checkLinkedSections() {
+  const cheats: Record<string, string> = {
+    'cheat-windows-client': readFileSync(join(root, 'practice', 'cheat-windows-client.md'), 'utf8'),
+    'cheat-windows-server': readFileSync(join(root, 'practice', 'cheat-windows-server.md'), 'utf8'),
+  }
+  const missing: string[] = []
+  const need = (id: string, section: string, where: string) => {
+    if (!extractSection(cheats[id] ?? '', section)) missing.push(`${where}: ${id} / ${section}`)
+  }
+  const curriculum = JSON.parse(readFileSync(join(root, 'path', 'curriculum.json'), 'utf8'))
+  const walk = (v: unknown) => {
+    if (Array.isArray(v)) return v.forEach(walk)
+    if (!v || typeof v !== 'object') return
+    const r = v as Record<string, unknown>
+    if (typeof r.id === 'string' && typeof r.section === 'string' && r.id in cheats) need(r.id, r.section, 'curriculum')
+    Object.values(r).forEach(walk)
+  }
+  walk(curriculum)
+  const data = readFileSync(join(process.cwd(), 'src', 'quiz', 'winserver', 'data.ts'), 'utf8')
+  for (const m of data.matchAll(/doc: '([^']+)'/g)) need('cheat-windows-server', m[1], 'winserver quiz')
+  const quizLinks = readFileSync(join(process.cwd(), 'src', 'quiz', 'winserver', 'quizzes.tsx'), 'utf8')
+  for (const m of quizLinks.matchAll(/to: 'practice\/(cheat-windows-(?:client|server))', section: '([^']+)'/g)) need(m[1], m[2], 'quiz link')
+  ok('linked cheat-sheet sections exist', missing.length === 0, missing.join(' | '))
+}
+
+checkLinkedSections()
 
 const found = blocks()
 ok('tagged examples found', found.length >= 15, String(found.length))

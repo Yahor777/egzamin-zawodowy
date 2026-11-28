@@ -1,19 +1,30 @@
-# Шпаргалка INF.02: Windows 11 klient
+# Шпаргалка INF.02: Windows 11 — рабочая станция
 
-Краткая карта типичных формулировок CKE. Названия окон и checkboxów оставляй по-польски, объяснения читай по-русски.
+Краткая карта типичных формулировок CKE. Польские названия окон, флажков и сообщений не переводи: на экзамене интерфейс будет именно таким. Комментарии после `#` в командах — только объяснение, в терминал их не вводи.
+
+| Win+R | Что открывает |
+|---|---|
+| `ncpa.cpl` | **Połączenia sieciowe** — сетевые адаптеры |
+| `sysdm.cpl` | **Właściwości systemu** — имя ПК, группа, домен, RDP |
+| `lusrmgr.msc` | **Użytkownicy i grupy lokalne** |
+| `gpedit.msc` / `secpol.msc` | локальные политики |
+| `wf.msc` | брандмауэр в расширенном режиме |
+| `diskmgmt.msc` | **Zarządzanie dyskami** |
 
 ## 1. Сеть
 
+Путь в GUI: **Win+R → `ncpa.cpl` → Połączenia sieciowe → ПКМ по карте → Właściwości → Protokół internetowy w wersji 4 (TCP/IPv4)**. Для статического адреса выбери **Użyj następującego adresu IP**, для DHCP — **Uzyskaj adres IP automatycznie** и **Uzyskaj adres serwera DNS automatycznie**.
+
 | CKE пишет | Что сделать |
 |---|---|
-| `zmień nazwę połączenia Ethernet na LAN_S` | `ncpa.cpl` → PPM karta → **Zmień nazwę** |
-| `wyłącz interfejs` | `ncpa.cpl` → PPM → **Wyłącz** |
-| `skonfiguruj statyczny adres IP` | karta → **Właściwości → Protokół internetowy w wersji 4 (TCP/IPv4)** |
-| `adres ma być pobierany automatycznie` | **Uzyskaj adres IP automatycznie** + **Uzyskaj adres serwera DNS automatycznie** |
-| `wyświetl konfigurację TCP/IP` | `ipconfig` / `ipconfig /all` |
-| `wyświetl adres fizyczny` | `getmac` lub **Adres fizyczny** |
+| `zmień nazwę połączenia Ethernet na LAN_S` | `ncpa.cpl` → ПКМ карта → **Zmień nazwę** |
+| `wyłącz interfejs` | `ncpa.cpl` → ПКМ → **Wyłącz** |
+| `skonfiguruj statyczny adres IP` | IPv4 → **Użyj następującego adresu IP** |
+| `adres ma być pobierany automatycznie` | обе опции **automatycznie**, затем `ipconfig /renew` |
+| `wyświetl konfigurację TCP/IP` | `ipconfig` или `ipconfig /all` |
+| `wyświetl adres fizyczny` | `getmac` или поле **Adres fizyczny** |
 
-`/24` = `255.255.255.0`; `DNS: localhost` = `127.0.0.1`; `brama: brak` = пустое поле.
+Помни: `/24` = `255.255.255.0`; `DNS: localhost` = `127.0.0.1`; `brama: brak` = поле шлюза пустое.
 
 <!-- e2:cmd:client -->
 ```cmd
@@ -50,19 +61,27 @@ Set-DnsClientServerAddress -InterfaceAlias "LAN" -ResetServerAddresses # авт�
 Test-NetConnection 192.168.1.1 # проверка связи
 ```
 
-## 2. Брандмауэр
+## 2. Имя ПК, рабочая группа, домен
 
-Чтобы компьютер отвечал на ping: `wf.msc` → **Reguły przychodzące** → włącz **Udostępnianie plików i drukarek (Żądanie echa — ruch przychodzący ICMPv4)**.
+`sysdm.cpl` → вкладка **Nazwa komputera** → **Zmień…**. Там же меняются **Nazwa komputera**, **Grupa robocza** и **Domena**. Перед присоединением к домену DNS клиента обязан указывать на контроллер домена; иначе будет **Nie można skontaktować się z kontrolerem domeny Active Directory**.
 
-<!-- e2:cmd:client -->
+<!-- e2:cmd:domain -->
 ```cmd
-netsh advfirewall firewall add rule name="HTTP" dir=in action=allow protocol=TCP localport=80 # правило TCP 80
-netsh advfirewall firewall show rule name="HTTP" # просмотр правила
-netsh advfirewall firewall delete rule name="HTTP" # удаление правила
-netsh advfirewall show allprofiles # состояние брандмауэра
+netdom join %computername% /domain:firma01.local /userd:FIRMA01\Administrator /passwordd:ZAQ!2wsx # присоединение к домену
+gpupdate /force # обновление GPO
+gpresult /r # применённые политики
 ```
 
-## 3. Учётные записи и группы
+После перезагрузки вход доменным пользователем: **Inny użytkownik** → `FIRMA01\login` или `login@firma01.local`.
+
+## 3. Пользователи и группы
+
+GUI: `lusrmgr.msc` → **Użytkownicy** → ПКМ → **Nowy użytkownik…**. Поле **Nazwa użytkownika** — логин; **Pełna nazwa** — отображаемое имя. Флажки:
+
+- **Użytkownik musi zmienić hasło przy następnym logowaniu** — при первом входе Windows попросит новый пароль;
+- **Użytkownik nie może zmienić hasła** — пользователь сам не сменит пароль;
+- **Hasło nigdy nie wygasa** — пароль не устаревает;
+- **Konto jest wyłączone** — учётная запись отключена.
 
 | CKE пишет | Минимальная команда |
 |---|---|
@@ -91,30 +110,36 @@ net user jkowalski /delete # удаление учётной записи
 net localgroup Biuro /delete # удаление группы
 ```
 
-## 4. Pliki `.bat`
+## 4. Локальные политики (`gpedit.msc` / `secpol.msc`)
 
-| Требование | Строка |
-|---|---|
-| ukryć echo | `@echo off` |
-| komentarz | `rem tekst` |
-| pytanie | `set /p imie=Podaj imię: ` |
-| arytmetyka | `set /a x=2+3` |
-| pętla 1–10 | `for /L %%i in (1,1,10) do …` |
-| parametr | `%1` |
-| zapis wyniku | `polecenie > plik.txt` |
+Локальная политика действует только на этот компьютер; доменная GPO может её переопределить. Пароли и блокировка находятся в `secpol.msc` → **Zasady konta**:
 
-Имя должно быть `C:\plik1.bat`, а не `plik1.bat.txt`.
+- **Zasady haseł** — минимальная длина, сложность, срок действия пароля;
+- **Zasady blokady konta** — порог и время блокировки;
+- **Zasady lokalne → Opcje zabezpieczeń** — Ctrl+Alt+Del, сообщение при входе, переименование Administrator/Gość;
+- **Zasady lokalne → Zasady inspekcji** — аудит входа и событий.
 
-## 5. Domena i zasoby
+Проверка результата: выйди/войди или выполни `gpupdate /force`, затем проверь поведение системы.
 
-<!-- e2:cmd:domain -->
+## 5. Брандмауэр — ответ на ping
+
+По умолчанию клиент может не отвечать на ICMP. Чтобы разрешить проверку связи: `wf.msc` → **Reguły przychodzące** → включи **Udostępnianie plików i drukarek (Żądanie echa — ruch przychodzący ICMPv4)**.
+
+<!-- e2:cmd:client -->
 ```cmd
-netdom join %computername% /domain:firma01.local /userd:FIRMA01\Administrator /passwordd:ZAQ!2wsx # присоединение к домену
-gpupdate /force # обновление GPO
-gpresult /r # применённые политики
+netsh advfirewall firewall add rule name="HTTP" dir=in action=allow protocol=TCP localport=80 # правило TCP 80
+netsh advfirewall firewall show rule name="HTTP" # просмотр правила
+netsh advfirewall firewall delete rule name="HTTP" # удаление правила
+netsh advfirewall show allprofiles # состояние брандмауэра
 ```
 
-Вход после перезагрузки: **Inny użytkownik** → `FIRMA01\login`.
+## 6. Диски, квоты, шифрование
+
+`diskmgmt.msc` показывает диски, разделы, буквы и файловые системы. В типовом листе чаще всего требуются только проверка буквы/ФС и форматирование нового тома. Если в задании есть квота на профиль пользователя, смотри также раздел про FSRM на сервере — на клиенте она обычно не настраивается.
+
+## 7. Общие папки и сетевые диски
+
+Сетевой диск — это буква, подключённая к UNC-пути `\\serwer\udział`. Для скрытого ресурса имя заканчивается на `$`. После `net use` с логином и паролем Windows сохраняет poświadczenia, поэтому следующий `net view` уже не должен давать ошибку доступа.
 
 <!-- e2:cmd:shareclient -->
 ```cmd
@@ -125,25 +150,43 @@ echo test > P:\test.txt # проверка записи
 net use P: /delete # отключение
 ```
 
-## 6. Принтер
+## 8. Принтер
 
-**Ustawienia → Bluetooth i urządzenia → Drukarki i skanery → Dodaj drukarkę lub skaner**. Если не найден: **Drukarki, której szukam, nie ma na liście** → **Wybierz drukarkę udostępnioną według nazwy** → `\\serwer\nazwa`.
+**Ustawienia → Bluetooth i urządzenia → Drukarki i skanery → Dodaj drukarkę lub skaner**. Если принтер не найден автоматически: **Drukarki, której szukam, nie ma na liście** → **Wybierz drukarkę udostępnioną według nazwy** → `\\serwer\nazwa`.
 
-## 7. Типичные ошибки
+## 9. Пакетные файлы (.bat)
 
-| Сообщение | Значение |
+| Требование | Строка |
 |---|---|
-| `Adres IPv4 autokonfiguracji 169.254…` | brak odpowiedzi DHCP |
-| `Nazwa pliku, nazwa katalogu lub składnia etykiety woluminu jest niepoprawna.` | zła nazwa karty |
-| `Parametr jest niepoprawny.` | zła składnia/maska/IP |
-| `Wystąpił błąd systemowy 53.` | nie znaleziono ścieżki |
-| `Wystąpił błąd systemowy 1326.` | złe poświadczenia |
-| `Wystąpił błąd systemowy 5.` | brak uprawnień |
+| скрыть echo | `@echo off` |
+| комментарий | `rem tekst` |
+| вопрос пользователю | `set /p imie=Podaj imię: ` |
+| арифметика | `set /a x=2+3` |
+| цикл 1–10 | `for /L %%i in (1,1,10) do …` |
+| параметр запуска | `%1` |
+| записать вывод в файл | `polecenie > plik.txt` |
 
-## 8. Test końcowy
+Файл должен называться например `C:\plik1.bat`, а не `plik1.bat.txt`. В **Eksplorator plików → Widok** включи **Rozszerzenia nazw plików**, чтобы видеть настоящее расширение.
 
-1. `ipconfig /all` — adres/maska/brama/DNS.
-2. `ping` bramy i serwera.
-3. Domena: `whoami`, `gpresult /r`.
-4. Zasób: `dir`, test zapisu.
-5. Konto: `net user login` i `lusrmgr.msc`.
+## 10. Идентификация и диагностика
+
+Для ответа «какая карта/порт/параметр» используй `msinfo32`, `devmgmt.msc`, `diskmgmt.msc`, `dxdiag` и `ipconfig /all`. Если в задании просят показать физический адрес, достаточно `getmac` или строки **Adres fizyczny** в `ipconfig /all`.
+
+## 11. Типичные ошибки
+
+| Сообщение | Что оно значит |
+|---|---|
+| `Adres IPv4 autokonfiguracji 169.254…` | DHCP не ответил, Windows выдал адрес APIPA |
+| `Nazwa pliku, nazwa katalogu lub składnia etykiety woluminu jest niepoprawna.` | неправильное имя карты или пути |
+| `Parametr jest niepoprawny.` | ошибка в IP, маске или синтаксисе |
+| `Wystąpił błąd systemowy 53.` | сетевой путь не найден |
+| `Wystąpił błąd systemowy 1326.` | неправильный логин или пароль |
+| `Wystąpił błąd systemowy 5.` | недостаточно прав |
+
+## 12. Финальная проверка
+
+1. `ipconfig /all` — адрес, маска, шлюз и DNS соответствуют таблице листа.
+2. `ping` шлюза и сервера успешен.
+3. Для домена: `whoami` и `gpresult /r`.
+4. Для сетевого диска: чтение и запись проверены файлом.
+5. Для учётной записи: `net user login` и **Członek grupy** показывают требуемые параметры.
