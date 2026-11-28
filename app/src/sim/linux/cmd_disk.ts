@@ -682,9 +682,14 @@ register('findmnt', (c) => {
         bad++
       }
       if (!e.dev || !e.type) bad++
-      else if (mp !== '/' && (e.dev.startsWith('UUID=') || e.dev.startsWith('/dev/sd')) && !findDev(c, e.dev)) {
-        c.err(`findmnt: can't find device ${e.dev}\n`)
-        bad++
+      else {
+        const rootUuid = 'f3a9c0de-6b1e-4c2a-9a55-0c7d8e1f2a3b'
+        const rootOk = mp === '/' && (e.dev.includes('ubuntu--vg-ubuntu--lv') || e.dev.includes('dm-uuid-LVM-') || e.dev === `UUID=${rootUuid}` || e.dev === `/dev/disk/by-uuid/${rootUuid}`)
+        const missing = mp === '/' ? !rootOk : (e.dev.startsWith('UUID=') || e.dev.startsWith('/dev/sd')) && !findDev(c, e.dev)
+        if (missing) {
+          c.err(`findmnt: can't find device ${e.dev}\n`)
+          bad++
+        }
       }
     }
     if (!bad) c.outln('Success, no errors or warnings detected')
