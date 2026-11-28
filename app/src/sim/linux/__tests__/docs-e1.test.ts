@@ -1,7 +1,5 @@
 // Runs every executable command documented in the INF.02 E1 Linux docs.
-// @ts-expect-error Node built-in module; this file is executed only by Node
 import { readFileSync } from 'node:fs'
-// @ts-expect-error Node built-in module; this file is executed only by Node
 import { join } from 'node:path'
 declare const process: { cwd(): string; exit(code?: number): never }
 import { createLinuxState, createShell, Interrupt, type TermIO, type EditRequest, type LinuxState } from '../engine.ts'

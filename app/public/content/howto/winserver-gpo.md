@@ -35,3 +35,27 @@ gpresult /r
 - рабочий стол: обои меняются; Проводник → *Ten komputer* → **Lokalizacje sieciowe** — подключённый диск;
 - Панель управления: «Ta operacja została anulowana z powodu ograniczeń obowiązujących na tym komputerze»;
 - cmd: «Wiersz polecenia został wyłączony przez administratora».
+
+<!-- pack-e2 -->
+## Проверенные команды клиента
+
+<!-- e2:cmd:domain -->
+```cmd
+gpupdate /force # принудительное обновление политик
+gpresult /r # список применённых GPO
+```
+
+## Проверка перед сдачей
+
+1. GPO ma link do właściwej domeny/OU — zakładka **Zakres**.
+2. W zakładce **Ustawienia** widać skonfigurowane opcje.
+3. Klient domenowy wykonał `gpupdate /force`.
+4. `gpresult /r` pokazuje nazwę GPO.
+5. Efekt końcowy działa: tapeta, dysk, blokada albo zasada haseł.
+
+| Typowe sformułowanie | Ścieżka |
+|---|---|
+| `minimalna długość hasła` | komputer → zabezpieczenia → **Zasady haseł** |
+| `próg blokady konta` | komputer → zabezpieczenia → **Zasady blokady konta** |
+| `zablokuj dostęp do Panelu sterowania` | użytkownik → **Panel sterowania → Zabroń dostępu…** |
+| `zamapuj dysk` | użytkownik → preferencje → **Mapowania dysków** |

@@ -62,3 +62,20 @@
 | «Odmowa dostępu» | нет права **Drukuj** (или стоит «Odmów») |
 | «Nie odnaleziono ścieżki sieciowej» | нет связи с сервером, неверное имя/IP, брандмауэр блокирует SMB |
 | Очередь «w trybie offline» | сервер не достаёт принтер по IP (кабель, адрес, другая сеть) |
+
+<!-- pack-e2 -->
+## Проверенные команды связи
+
+<!-- e2:cmd:printclient -->
+```cmd
+ping 192.168.5.1 # проверка сервера
+ipconfig # адрес клиента
+```
+
+## Проверка перед сдачей
+
+1. Rola **Usługi drukowania i zarządzania dokumentami** jest zainstalowana.
+2. W `printmanagement.msc → Drukarki` drukarka istnieje.
+3. We **Właściwości → Udostępnianie** zaznaczono udostępnienie i nazwa udziału zgadza się z zadaniem.
+4. W **Zabezpieczenia** użytkownicy mają **Drukowanie**.
+5. Na kliencie drukarka jest w **Bluetooth i urządzenia → Drukarki i skanery**.
