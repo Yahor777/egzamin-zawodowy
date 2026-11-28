@@ -131,3 +131,52 @@ Get-FsrmQuota ; Get-FsrmFileScreen
 * **Udziały** — список: администрати­вные **ADMIN$**, **C$**, **IPC$** (и ваши), колонка *Liczba połączeń klienta*. ПКМ → **Nowy udział…** (мастер *Kreator tworzenia folderu udostępnionego*: **Ścieżka folderu** → если папки нет, «Czy chcesz ją utworzyć?» → **Nazwa, opis i ustawienia** → **Uprawnienia do folderu udostępnionego**: 4 готовых варианта + *Dostosowywanie uprawnień*). ПКМ на udziale → **Właściwości**: *Ogólne* (**Limit użytkowników**: *Zezwalaj tylu użytkownikom*), *Publikowanie* (*Publikuj ten udział w usłudze Active Directory*), *Uprawnienia udziału*, *Zabezpieczenia* (NTFS). **Zatrzymaj udostępnianie** — снять общий доступ.
 * **Sesje** — кто сейчас подключён (*Użytkownik, Komputer, Typ, Liczba otwartych plików, Czas połączenia*). Сессия появляется, когда клиент открыл `\\сервер\udział` в Проводнике (или диск подключён по `net use`). **Otwarte pliki** — какие файлы открыты (например, файл открыт в Notatniku через udział).
 
+<!-- pack-e2 -->
+## Проверенные команды общих ресурсов
+
+<!-- e2:cmd:shares -->
+```cmd
+mkdir C:\Dane # папка
+net share Dane=C:\Dane /grant:Wszyscy,FULL /remark:"Dane firmowe" # открытие общего доступа
+net share # список общих ресурсов
+icacls C:\Dane # проверка NTFS
+icacls C:\Dane /grant "FIRMA01\jkowalski:M" # разрешение modyfikacja пользователю
+icacls C:\Dane /inheritance:d # отключение наследования
+net share Dane /delete # удаление общего ресурса
+```
+
+<!-- e2:ps:shares -->
+```powershell
+Get-SmbShare # список общих ресурсов
+mkdir C:\Raporty # физическая папка
+New-SmbShare -Name Raporty -Path C:\Raporty -FullAccess Wszyscy # новый общий ресурс
+Get-SmbShareAccess -Name Raporty # разрешения общего ресурса
+Revoke-SmbShareAccess -Name Raporty -AccountName Wszyscy -Force # удаление доступа
+Remove-SmbShare -Name Raporty -Force # удаление общего ресурса
+```
+
+<!-- e2:cmd:shareclient -->
+```cmd
+net use P: \\192.168.5.1\Dane /user:FIRMA01\jkowalski Start#1234 /persistent:no # подключение диска
+net view \\192.168.5.1 # список ресурсов после сохранения учётных данных
+dir P:\ # проверка чтения
+echo test > P:\klient.txt # проверка записи
+type P:\klient.txt # проверка файла
+net use P: /delete # отключение
+```
+
+<!-- e2:cmd:fsrm -->
+```cmd
+dirquota quota add /Path:C:\Dane /Limit:10MB /Type:Hard # лимит 10 МБ
+dirquota quota list # список лимитов
+fsutil file createnew C:\Dane\duzy.dat 20971520 # намеренно слишком большой тестовый файл
+dirquota quota delete /Path:C:\Dane # удаление лимита
+```
+
+## Проверка перед сдачей
+
+1. `net share` показывает имя и путь общего ресурса.
+2. `icacls` показывает точные учётные записи/группы и уровни NTFS.
+3. Клиент выполняет проверку чтения/записи по заданию.
+4. Имя скрытого ресурса заканчивается на `$`.
+5. Лимит/осłона FSRM видна в `fsrm.msc` или `dirquota quota list`.

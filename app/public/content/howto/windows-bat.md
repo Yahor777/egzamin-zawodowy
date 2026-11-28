@@ -73,3 +73,55 @@ copy C:\dane\*.%1 C:\archiwum2\
 - В листе «za pomocą pętli» — без `for` критерий не засчитают, даже если папки созданы.
 - «Uruchom plik» — тоже критерий: папки/учётки должны реально существовать.
 - Польские буквы в `echo` в cmd могут отображаться криво (кодовая страница 852) — это не ошибка оценки.
+
+<!-- pack-e2 -->
+## Проверенные шаблоны симулятора
+
+<!-- e2:bat:client:C:\plik1.bat -->
+```bat
+@echo off
+rem отключает echo команд
+echo tworzenie folderow dla studentow
+rem выводит сообщение
+mkdir C:\TEST
+rem создаёт родительскую папку
+for /L %%i in (1,1,10) do mkdir C:\TEST\STUDENT%%i
+rem создаёт STUDENT1…STUDENT10
+```
+
+<!-- e2:bat:client:C:\konto.bat -->
+```bat
+@echo off
+net user tester ZAQ!2wsx /add
+rem создаёт учётную запись tester
+net localgroup testerzy /add
+rem создаёт группу testerzy
+net localgroup testerzy tester /add
+rem добавляет tester в testerzy
+```
+
+<!-- e2:cmd:client -->
+```cmd
+mkdir C:\TEST # создаст каталог
+echo test > C:\TEST\plik.txt # запишет файл
+dir C:\TEST # покажет содержимое
+type C:\TEST\plik.txt # покажет файл
+copy C:\TEST\plik.txt C:\TEST\kopia.txt # скопирует файл
+del C:\TEST\kopia.txt # удалит копию
+rmdir /s C:\TEST # удалит каталог с содержимым
+set nazwa=TEST # установит переменную
+echo %nazwa% # выведет переменную
+set /a wynik=2+3*4 # вычисление
+```
+
+## Типичные формулировки CKE → что делать
+
+| Treść zadania | Kroki |
+|---|---|
+| `utwórz plik wsadowy w folderze głównym dysku systemowego` | zapisz jako `C:\nazwa.bat` |
+| `za pomocą pętli utwórz 10 folderów` | `for /L %%i in (1,1,10) do …` |
+| `skrypt ma pytać o imię` | `set /p imie=…` |
+| `parametr skryptu` | użyj `%1` |
+| `uruchom plik` | wykonaj go w cmd; samo zapisanie nie wystarczy |
+
+Проверка: `dir C:\` подтверждает расширение `.bat`, а итоговый результат проверяется по заданию (`dir`, `net user`, `type`).

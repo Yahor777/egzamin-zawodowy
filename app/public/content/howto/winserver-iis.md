@@ -52,3 +52,20 @@
 
 Нужна служба роли *Serwer FTP → Usługa FTP*. ПКМ на сайте (например *Default Web Site*) → **Dodaj publikację FTP…** — мастер из двух страниц (без «Informacje o witrynie»): *Powiązanie i ustawienia protokołu SSL* (адрес, порт 21, «Bez SSL») → *Informacje o uwierzytelnianiu i autoryzacji* (Anonimowe / Podstawowe, *Zezwalaj na dostęp dla*, *Odczyt / Zapis*). К сайту добавляется привязка **ftp** (папка та же, что у сайта: `%SystemDrive%\inetpub\wwwroot`), а на странице сайта появляется раздел **FTP** (*Uwierzytelnianie FTP*, *Reguły autoryzacji FTP* …). Сначала права NTFS на папку, потом правила FTP.
 
+<!-- pack-e2 -->
+## Проверенные команды брандмауэра
+
+<!-- e2:cmd:iis -->
+```cmd
+netsh advfirewall firewall add rule name="HTTP" dir=in action=allow protocol=TCP localport=80 # разрешение HTTP
+netsh advfirewall firewall add rule name="FTP" dir=in action=allow protocol=TCP localport=21 # разрешение FTP
+netsh advfirewall firewall show rule name="HTTP" # проверка правила
+ipconfig # адрес сервера
+```
+
+## Проверка перед сдачей
+
+1. `inetmgr → Witryny` — witryna istnieje i jest uruchomiona.
+2. **Ścieżka fizyczna** wskazuje folder z plikiem strony.
+3. Jeśli jest nazwa `www.domena.local`, istnieje rekord `A` w DNS, a klient używa tego serwera DNS.
+4. Edge na kliencie otwiera dokładnie adres z zadania.

@@ -139,3 +139,22 @@ ftp://192.168.7.1/
 6. Reguła autoryzacji даёт пользователю **Odczyt** и **Zapis**.
 7. NTFS на папке даёт пользователю **Modyfikacja** или хотя бы Odczyt + Zapis.
 8. На клиенте файл лежит в текущем каталоге `cmd`, иначе `put` его не найдёт.
+
+<!-- pack-e2 -->
+## Проверенная команда клиента
+
+<!-- e2:cmd:ftpclient -->
+```cmd
+echo test > C:\klient.txt # подготовка файла
+ftp 192.168.5.1 # запуск FTP-клиента
+```
+
+После запуска `ftp` интерактивно введи login, hasło, затем `put`, `ls`, `get` и `bye` — как в диалоге выше.
+
+## Проверка перед сдачей
+
+1. W IIS zainstalowano **Serwer FTP → Usługa FTP**.
+2. Witryna FTP jest uruchomiona, port `21`, właściwa **Ścieżka fizyczna**.
+3. **Uwierzytelnianie FTP** i **Reguły autoryzacji FTP** są zgodne z zadaniem.
+4. NTFS folderu pozwala na zapis, jeśli zadanie wymaga zapisu.
+5. Z klienta `put` kończy się bez `530`/`550`, a `ls` pokazuje plik.

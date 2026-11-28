@@ -45,3 +45,21 @@
 | У сервера нет шлюза «наружу» | в «внешней» карте сервера нужна **Brama domyślna** = IP роутера |
 
 Проверка на станции: `ipconfig /all`, `ping` адреса роутера (например `192.168.0.1`), `tracert`. Отметь в sprawozdaniu: адреса обеих карт сервера, мастер (скриншот), результат ping.
+
+<!-- pack-e2 -->
+## Проверенные команды диагностики
+
+<!-- e2:cmd:rras -->
+```cmd
+ipconfig /all # адреса карт и шлюзов
+route print # таблица маршрутизации
+ping 192.168.10.1 # проверка одной стороны маршрутизатора
+tracert 192.168.20.10 # проверка пути
+```
+
+## Проверка перед сдачей
+
+1. W kreatorze ról wybrano **Routing** albo **DirectAccess i VPN (RAS)** — zgodnie z zadaniem.
+2. W `rrasmgmt.msc` uruchomiono **Konfiguruj i włącz routing i dostęp zdalny**.
+3. Klienci obu sieci mają bramę na odpowiedni adres serwera.
+4. `tracert` z klienta przechodzi przez router.

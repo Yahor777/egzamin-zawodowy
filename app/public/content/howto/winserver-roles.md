@@ -6,7 +6,7 @@
 
 1. **Подготовка**: статический IP, имя сервера, нужные папки/файлы.
 2. **Установка роли**: *Menedżer serwera → Zarządzaj → Dodaj role i funkcje* → роль (или функция) → *Zainstaluj*.
-3. **Пост-конфигурация** (жёлтый флажок): DC — *Podnieś poziom…*, DHCP — *Ukończ konfigurację DHCP*.
+3. **Пост-конфигурация** (жёлтый флажок): DC — *Podnieś poziom…*, DHCP — *Dokończ konfigurację funkcji DHCP*.
 4. **Консоль роли** (`.msc`) → объект (зона, область, сайт, принтер, GPO…).
 5. **Связи**: GPO → OU, DHCP → интерфейс, IIS → IP/порт, принтер → общий доступ.
 6. **Проверка со станции** + скриншот: `nslookup`, `ipconfig /all`, браузер, `\\SERWER\udział`, `gpresult /r`.
@@ -48,3 +48,28 @@
 ## Страницы мастера «Kreator dodawania ról i funkcji» (WS 2022)
 
 *Zanim rozpoczniesz* → *Wybieranie typu instalacji* → *Wybieranie serwera docelowego* → *Wybieranie ról serwera* → *Wybieranie funkcji* → страница роли (описание) → **Wybieranie usług ról** (только у ролей с «службами ролей») → *Potwierdzanie opcji instalacji* → *Postęp instalacji*. Службы ролей: **Dostęp zdalny** → *DirectAccess i VPN (RAS)*, **Routing**, *Serwer proxy aplikacji sieci Web*; **Serwer sieci Web (IIS)** → *Wspólne funkcje HTTP* (в т. ч. **Przekierowanie HTTP**), *Zabezpieczenia* (в т. ч. **Autoryzacja adresów URL**), *Serwer FTP → Usługa FTP*. Окно «Czy dodać funkcje wymagane przez funkcję …?» → **Dodaj funkcje**. Если после установки в Menedżerze serwera жёлтый треугольник — открой флажок (⚑): *Dokończ konfigurację funkcji DHCP*, *Podnieś poziom tego serwera do kontrolera domeny*, *Otwórz kreatora Wprowadzenie* (Dostęp zdalny → RRAS, см. «Windows Server: RRAS»).
+
+<!-- pack-e2 -->
+## Проверенные команды открытия консолей
+
+<!-- e2:cmd:server -->
+```cmd
+servermanager # диспетчер сервера
+dsa.msc # пользователи и компьютеры AD
+dnsmgmt.msc # диспетчер DNS
+dhcpmgmt.msc # DHCP
+gpmc.msc # управление групповыми политиками
+inetmgr # диспетчер IIS
+printmanagement.msc # управление печатью
+fsrm.msc # диспетчер ресурсов файлового сервера
+rrasmgmt.msc # маршрутизация и удалённый доступ
+```
+
+## Проверка перед сдачей
+
+1. В **Pulpit nawigacyjny** видны установленные роли.
+2. В **Narzędzia** есть нужная консоль.
+3. Не осталось жёлтого уведомления о незавершённой настройке.
+4. Проверка выполнена с клиента.
+
+Типичная формулировка `zainstaluj rolę …` всегда означает полный мастер ролей, а не только открытие консоли.
