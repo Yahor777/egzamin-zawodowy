@@ -2,7 +2,7 @@
 
 Ta strona odpowiada na pytanie: **co zrobić najpierw, co później i jak nie stracić punktów**. Nie ucz się jej jak teorii — używaj jako planu podczas każdego treningu.
 
-## 1. Najważniejsza zasada punktów
+## 1. Jak liczone są punkty
 
 - Praktyka trwa **150 minut**, zwykle jest też czas na przeczytanie arkusza.
 - Arkusz jest podzielony na rezultaty: kabel/montaż, identyfikacja, ruter, przełącznik, serwer, stacja, tabela, test komunikacji.
@@ -13,7 +13,9 @@ Ta strona odpowiada na pytanie: **co zrobić najpierw, co później i jak nie st
 
 Niestandardowe, ale poprawne rozwiązanie jest zaliczane. Można konfigurować przez GUI albo PowerShell — liczy się stan końcowy.
 
-## 2. Pierwsze 10 minut: co czytać w arkuszu
+## 2. Rozplanowanie czasu (150 min + 10 min na zapoznanie się z arkuszem)
+
+### Pierwsze 10 minut: co czytać w arkuszu
 
 Nie zaczynaj od razu klikać. Wypisz albo zakreśl:
 
@@ -27,7 +29,7 @@ Nie zaczynaj od razu klikać. Wypisz albo zakreśl:
 
 `X` najczęściej oznacza numer stanowiska. Jeżeli wzór to `192.168.0.10+X`, a stanowisko jest numer 5, adres będzie `192.168.0.15`. Jeżeli w przykładzie jest `firma05.local`, zero wiodące jest ważne.
 
-## 3. Plan na 150 minut
+### Plan na 150 minut
 
 | Czas | Co robić | Dlaczego |
 |---|---|---|
@@ -41,21 +43,7 @@ Nie zaczynaj od razu klikać. Wypisz albo zakreśl:
 
 To nie jest sztywny przepis. Jeżeli arkusz zaczyna się od identyfikacji „przed wymianą”, najpierw zapisz parametry **przed demontażem**.
 
-## 4. Kiedy podnosić rękę
-
-Podnoś rękę tylko tam, gdzie arkusz wyraźnie pisze `zgłoś gotowość` / `przez podniesienie ręki`. Zwykle są to:
-
-1. test kabla testerem;
-2. sprawdzenie montażu podzespołu przed zamknięciem obudowy;
-3. konfiguracja rutera;
-4. konfiguracja przełącznika;
-5. wydruk strony testowej;
-6. powtórny test ping przy egzaminatorze;
-7. pokazanie strony, FTP albo adresu otrzymanego przez DHCP.
-
-Gdy egzaminator jest zajęty, nie stój. Rób kolejny niezależny punkt.
-
-## 5. Kolejność w bloku serwerowym
+### Kolejność w bloku serwerowym
 
 Często działająca kolejność:
 
@@ -74,7 +62,21 @@ Dlaczego tak:
 
 Jeżeli instalacja roli AD DS trwa długo i będzie restart, uruchom proces i wykorzystaj oczekiwanie na inne niezależne zadanie.
 
-## 6. Najczęstsze utraty punktów
+## 3. Kiedy podnosić rękę
+
+Podnoś rękę tylko tam, gdzie arkusz wyraźnie pisze `zgłoś gotowość` / `przez podniesienie ręki`. Zwykle są to:
+
+1. test kabla testerem;
+2. sprawdzenie montażu podzespołu przed zamknięciem obudowy;
+3. konfiguracja rutera;
+4. konfiguracja przełącznika;
+5. wydruk strony testowej;
+6. powtórny test ping przy egzaminatorze;
+7. pokazanie strony, FTP albo adresu otrzymanego przez DHCP.
+
+Gdy egzaminator jest zajęty, nie stój. Rób kolejny niezależny punkt.
+
+## 4. Lista kontrolna najczęstszych utrat punktów
 
 Sprawdź tę listę pod koniec arkusza.
 
@@ -97,7 +99,7 @@ Sprawdź tę listę pod koniec arkusza.
 - [ ] Użyte hasła są zapisane w arkuszu, jeżeli jest to wymagane.
 - [ ] Na końcu komputery i urządzenia sieciowe **nie są wyłączone**.
 
-## 7. Jeżeli utkniesz
+## 5. Jeżeli coś nie wychodzi
 
 - Więcej niż 5 minut nad jednym punktem → zaznacz go i przejdź dalej.
 - Każde kryterium jest warte mniej więcej tyle samo. Nie poświęcaj dziesięciu prostych punktów dla jednego trudnego.
@@ -106,7 +108,7 @@ Sprawdź tę listę pod koniec arkusza.
 - Domena nie jest gotowa? Zrób lokalne ustawienia stacji i wróć później do przyłączenia.
 - Usługa w Linuksie nie startuje? `systemctl status nazwa` i `journalctl -u nazwa -n 20` najczęściej pokazują literówkę.
 
-## 8. Arkusz kalkulacyjny / kosztorys
+## 6. Arkusz kalkulacyjny (kosztorys/wykres, 37 % arkuszy)
 
 W polskim Excelu/LibreOffice Calc funkcje są polskie, separator argumentów to `;`, separator dziesiętny to przecinek.
 
@@ -123,7 +125,7 @@ W polskim Excelu/LibreOffice Calc funkcje są polskie, separator argumentów to 
 
 Prosty test: zmień jedną cenę wejściową. Jeżeli suma sama się nie przeliczyła — gdzieś jest liczba zamiast formuły.
 
-## 9. Wskazania — pisemne zalecenia
+## 7. „Wskazania” (pisemne zalecenia, ok. 10 %)
 
 Jeżeli proszą o kilka zaleceń, pisz krótko i z różnych obszarów:
 
@@ -139,7 +141,7 @@ Jeżeli proszą o kilka zaleceń, pisz krótko i z różnych obszarów:
 
 Nie pisz pięć razy tego samego innymi słowami.
 
-## 10. Jak używać tej strategii w domu
+## 8. Samodzielna kontrola w domu / w szkole
 
 1. Weź dowolny arkusz SG 2024–2026.
 2. Ustaw timer na 150 minut.

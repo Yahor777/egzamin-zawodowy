@@ -7,7 +7,7 @@ To są dwie różne umiejętności, które CKE często łączy w jednym zadaniu:
 
 Najpierw przeczytaj w arkuszu: jaki typ kabla, jaka sekwencja `T568A/T568B`, połączenie proste czy skrosowane oraz numer portu panelu.
 
-## 1. Kolory T568A i T568B
+## 1. Schematy kolorów RJ45 (8P8C)
 
 Trzymaj wtyk `8P8C` zatrzaskiem w dół, stykami do siebie. **Pin 1 jest po lewej, pin 8 po prawej.**
 
@@ -26,7 +26,9 @@ Różnica między A i B dotyczy tylko pary zielonej i pomarańczowej. Para niebi
 
 Jeżeli w arkuszu jest napisane `T586B`, to typowa literówka; chodzi o `T568B`.
 
-## 2. Kabel prosty albo skrosowany
+## 2. Zarobienie patchcordu (wtyk 8P8C)
+
+### Kabel prosty albo skrosowany
 
 | Typ | Końce | Kiedy używany |
 |---|---|---|
@@ -35,7 +37,7 @@ Jeżeli w arkuszu jest napisane `T586B`, to typowa literówka; chodzi o `T568B`.
 
 We współczesnych sieciach Auto-MDI/X często poprawia zły typ kabla, ale na egzaminie wykonaj dokładnie to, co jest zapisane w zadaniu.
 
-## 3. Zarobienie patchcordu krok po kroku
+### Zarobienie patchcordu krok po kroku
 
 Narzędzia: `zaciskarka`, `ściągacz izolacji` albo ostrożnie nóż, nożyczki/przecinak, tester kabli.
 
@@ -54,22 +56,7 @@ Narzędzia: `zaciskarka`, `ściągacz izolacji` albo ostrożnie nóż, nożyczki
 
 Przed sprawdzeniem u egzaminatora nie ciągnij kabla za żyły i nie zginaj go pod ostrym kątem.
 
-## 4. Jak odczytać wynik testera
-
-Tester zwykle ma dwie części: master i remote. Lampki powinny zapalać się parami w poprawnej kolejności.
-
-| Wskazania | Co oznacza | Co zrobić |
-|---|---|---|
-| 1–1, 2–2, 3–3, 4–4, 5–5, 6–6, 7–7, 8–8 | poprawny kabel prosty | zaakceptuj |
-| 1–3, 2–6, 3–1, 6–2, 4–4, 5–5, 7–7, 8–8 | poprawny crossover | zaakceptuj, jeśli wymagano crossover |
-| jedna lampka nie świeci | przerwa żyły albo żyła nie doszła do styku | zacisnij końcówkę ponownie |
-| dwie lampki świecą razem | zwarcie żył | sprawdź kolejność i zacisk |
-| lampki świecą w losowej kolejności | pomylone kolory | odetnij wtyk i zaciśnij ponownie |
-| 3 i 6 świecą poprawnie, ale pary są rozdzielone | możliwy split pair | zaciśnij ponownie; dla szybkości jest to błąd nawet jeśli tester „piszczy” |
-
-Do sprawdzenia panelu i Keystone używa się dwóch sprawnych fabrycznych patchcordów: jeden do portu panelu krosowego, drugi do gniazda.
-
-## 5. Keystone i panel krosowy
+## 3. Panel krosowy + Keystone (gniazdo naścienne)
 
 Na module Keystone i na panelu jest kolorowa naklejka z dwoma rzędami: `A` i `B`. Najczęstszy błąd to patrzenie na zły rząd.
 
@@ -97,7 +84,22 @@ Na module Keystone i na panelu jest kolorowa naklejka z dwoma rzędami: `A` i `B
 - wybrano właściwy port, jeżeli numer był podany;
 - tester pokazuje 1–8 bez błędów.
 
-## 6. BHP i ESD: obowiązkowe nawyki
+## 4. Tester
+
+Tester zwykle ma dwie części: master i remote. Lampki powinny zapalać się parami w poprawnej kolejności.
+
+| Wskazania | Co oznacza | Co zrobić |
+|---|---|---|
+| 1–1, 2–2, 3–3, 4–4, 5–5, 6–6, 7–7, 8–8 | poprawny kabel prosty | zaakceptuj |
+| 1–3, 2–6, 3–1, 6–2, 4–4, 5–5, 7–7, 8–8 | poprawny crossover | zaakceptuj, jeśli wymagano crossover |
+| jedna lampka nie świeci | przerwa żyły albo żyła nie doszła do styku | zacisnij końcówkę ponownie |
+| dwie lampki świecą razem | zwarcie żył | sprawdź kolejność i zacisk |
+| lampki świecą w losowej kolejności | pomylone kolory | odetnij wtyk i zaciśnij ponownie |
+| 3 i 6 świecą poprawnie, ale pary są rozdzielone | możliwy split pair | zaciśnij ponownie; dla szybkości jest to błąd nawet jeśli tester „piszczy” |
+
+Do sprawdzenia panelu i Keystone używa się dwóch sprawnych fabrycznych patchcordów: jeden do portu panelu krosowego, drugi do gniazda.
+
+## 5. Montaż podzespołów + BHP/ESD
 
 `BHP` to bezpieczeństwo pracy, `ESD` to ochrona przed wyładowaniem elektrostatycznym. Jest to oceniane w `przebiegu pracy`, nawet jeśli nie ma osobnego pytania.
 
@@ -125,7 +127,7 @@ Na module Keystone i na panelu jest kolorowa naklejka z dwoma rzędami: `A` i `B
 - Sprawdź podzespół w systemie.
 - Posprzątaj narzędzia, obcięte kawałki kabla i opakowania: kryterium często brzmi `pozostawił uporządkowane stanowisko`.
 
-## 7. Montaż typowych podzespołów
+### Montaż typowych podzespołów
 
 | Podzespół | Jak montować | Jak sprawdzić |
 |---|---|---|
@@ -137,7 +139,23 @@ Na module Keystone i na panelu jest kolorowa naklejka z dwoma rzędami: `A` i `B
 
 Po instalacji karty czasem trzeba zainstalować sterownik albo wyłączyć urządzenie zintegrowane. Rób to tylko wtedy, gdy wymaga tego zadanie.
 
-## 8. Krótka kolejność na egzaminie
+## 6. Identyfikacja parametrów — które narzędzie co pokazuje
+
+Pełny opis oznaczeń jest w dokumencie „Jak rozpoznać sprzęt, porty i oznaczenia”. Tutaj — szybki wybór narzędzia podczas montażu.
+
+| Co jest wymagane | Windows | Linux |
+|---|---|---|
+| procesor CPU: model, rdzenie, procesory logiczne | `Menedżer zadań → Wydajność → Procesor CPU`, `msinfo32` | `lscpu` |
+| częstotliwość podstawowa CPU | `Szybkość podstawowa` w Menedżerze zadań | `sudo dmidecode -t processor` |
+| RAM: rozmiar, szybkość, gniazda | `Menedżer zadań → Pamięć` | `free -h`, `sudo dmidecode -t memory` |
+| płyta główna, BIOS | `msinfo32` | `sudo dmidecode -t baseboard` |
+| karta graficzna, VRAM | `dxdiag → Ekran` | `lspci \| grep -i vga` |
+| dysk: model, pojemność, typ | `Menedżer zadań → Dysk`, `diskmgmt.msc` | `lsblk -d -o NAME,MODEL,SIZE,ROTA` |
+| karta sieciowa, MAC | `ipconfig /all` | `ip link` |
+
+Zasada odpowiedzi: najpierw pokaż wartość w systemie albo na zrzucie ekranu, potem porównaj ją z wymaganiem. Jeżeli wszystkie wymagania są spełnione — `spełnia wymagania`; jeżeli choć jedno nie — `nie spełnia wymagań`.
+
+## 7. Krótka kolejność na egzaminie
 
 1. Przeczytaj zadanie → wybierz właściwy kabel i narzędzie.
 2. Wykonaj montaż starannie.
