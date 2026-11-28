@@ -1,385 +1,320 @@
-# Шпаргалка: Linux (Ubuntu 24.04 Server/Desktop, кратко openSUSE)
+# Шпаргалка: Linux Server INF.02
 
-Логин: `administrator` / `ZAQ!2wsx`, root через `sudo` (или `su -` с тем же паролем). В листе часто: «wykonaj zrzuty ekranu z widocznymi poleceniami» и «wpisz polecenie do tabeli» → пиши **полную** команду с опциями.
+Логин в симуляторе: `administrator` / `zaq1@WSX`. На реальном листе пароль читай в treści zadania. Когда экзамен просит wpisać polecenie do tabeli, пиши полную команду с опциями и путями.
 
-## 1. Сеть
+## Как читать команду
 
-### 1.1 Узнать интерфейсы
-
-```bash
-ip -br a                 # имена (enp0s3, ens33, eth0), IP
-ip link                  # MAC: link/ether 08:00:27:aa:bb:cc  («adres fizyczny»)
-ip r                     # шлюз: default via ...
-resolvectl status        # DNS (Ubuntu); cat /etc/resolv.conf
-nmcli dev status         # Desktop: какой интерфейс к какому соединению
+```text
+sudo chmod -R 750 /home/zasob
+│    │     │  │   └─ CEL: katalog lub plik, którego dotyczy zmiana
+│    │     │  └─ WARTOŚĆ: prawa ósemkowo 750
+│    │     └─ opcja -R = recursive, rekurencyjnie
+│    └─ program: chmod = change mode, zmiana uprawnień
+└─ uruchom jako administrator przez sudo
 ```
 
-Какой интерфейс куда подключён: `ip -br link` → у отключённого кабеля `NO-CARRIER`/`DOWN`.
+## Какую программу брать
 
-### 1.2 Ubuntu Server — netplan (два интерфейса)
+| Zadanie w arkuszu | Program | Co znaczy nazwa |
+|---|---|---|
+| sprawdzić/adresować sieć Server | `ip`, `netplan` | internet protocol / network plan |
+| konfiguracja sieci Desktop | `nmcli` | NetworkManager CLI |
+| trasy | `ip route` | routing table |
+| DHCP | `dhcpd`, `systemctl` | DHCP daemon / systemd control |
+| strona WWW | `apache2ctl`, `a2ensite` | Apache control / enable site |
+| użytkownicy/grupy | `useradd`, `usermod` | user add / user modify |
+| prawa | `chmod`, `chown` | change mode / change owner |
+| dyski | `fdisk`, `mkfs`, `mount` | fixed disk / make filesystem |
+| usługi | `systemctl` | systemd control |
+| automatyczne zadania | `crontab` | cron table |
+| SMB | `testparm`, `smbpasswd` | test parameters / SMB password |
+| SSH | `ssh`, `sshd_config` | secure shell |
 
-Файл: `/etc/netplan/50-cloud-init.yaml` (или `01-netcfg.yaml`). Отступы — **пробелы**, по 2.
+## 1. Sieć — Server i Desktop
 
+```bash
+ip -br link                                      # pokaż interfejsy, MAC i stan krótko
+ip -br address                                   # pokaż adresy IPv4 krótko
+ip route show                                    # pokaż bramę i trasy
+resolvectl status                                # pokaż serwery DNS
+```
+
+Ubuntu Server — netplan:
+
+<!-- file: /etc/netplan/50-cloud-init.yaml -->
 ```yaml
+# korzeń konfiguracji sieci
 network:
+  # format netplan 2
   version: 2
+  # usługa networkd na serwerze
   renderer: networkd
+  # sekcja interfejsów Ethernet
   ethernets:
-    enp0s3:                      # к роутеру
-      dhcp4: false
-      addresses: [90.90.0.3/29]
-      routes:
-        - to: default
-          via: 90.90.0.1
-    enp0s8:                      # к коммутатору, без шлюза
-      dhcp4: false
-      addresses: [10.80.0.2/24]
-      nameservers:
-        addresses: [10.80.0.2]   # «DNS: localhost» → [127.0.0.1]
-```
-
-DHCP-вариант и «второй интерфейс выключен»:
-
-```yaml
-network:
-  version: 2
-  ethernets:
+    # pierwszy interfejs: WAN/ROUTER
     enp0s3:
-      dhcp4: true
-      nameservers:
-        addresses: [192.168.7.3]
+      # wyłącz automatyczny DHCPv4
+      dhcp4: false
+      # adres z maską prefiksu
+      addresses: [90.90.0.3/29]
+      # sekcja tras
+      routes:
+        # trasa domyślna
+        - to: default
+          # brama domyślna
+          via: 90.90.0.1
+    # drugi interfejs: LAN bez bramy
     enp0s8:
-      activation-mode: off       # интерфейс выключен
+      # wyłącz DHCPv4
+      dhcp4: false
+      # statyczny adres LAN
+      addresses: [10.80.0.2/24]
+      # sekcja DNS
+      nameservers:
+        # serwer DNS
+        addresses: [10.80.0.2]
 ```
 
 ```bash
-sudo chmod 600 /etc/netplan/*.yaml
-sudo netplan try          # откат через 120 с, если связь пропала
-sudo netplan apply
-sudo networkctl renew enp0s3     # «odśwież dzierżawę DHCP»
-ip -br a ; ip r
+sudo nano /etc/netplan/50-cloud-init.yaml        # edytuj konfigurację netplan
+sudo netplan generate                            # sprawdź składnię YAML
+sudo netplan apply                               # zastosuj konfigurację
 ```
 
-> Если есть `/etc/cloud/cloud.cfg.d/` и cloud-init перезаписывает файл: `echo 'network: {config: disabled}' | sudo tee /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg`.
-
-### 1.3 Ubuntu Desktop — NetworkManager (имя соединения!)
-
-В листе «nazwa połączenia: LAN K» на Linux = **имя соединения NetworkManager**.
-GUI: *Ustawienia → Sieć → ⚙ у Przewodowe* → вкладка *Tożsamość: Nazwa*, вкладка *IPv4: Ręcznie / Automatycznie (DHCP)*, адрес, maska, brama, DNS (снять «Automatycznie»).
+Ubuntu Desktop — NetworkManager:
 
 ```bash
-nmcli con show
-nmcli con mod "Połączenie przewodowe 1" connection.id "LAN K"          # переименовать
-nmcli con mod "LAN K" ipv4.method manual ipv4.addresses 10.0.10.11/24 \
-      ipv4.gateway 10.0.10.1 ipv4.dns 10.0.10.1
-nmcli con mod "LAN K" ipv4.method auto ipv4.addresses "" ipv4.gateway "" ipv4.dns 192.168.7.3   # DHCP + свой DNS
-nmcli con add type ethernet ifname enp0s3 con-name "LAN2" ipv4.method auto   # новое соединение
-nmcli con down "LAN K" && nmcli con up "LAN K"                         # применить / обновить DHCP
-nmcli dev disconnect enp0s8                                            # выключить интерфейс
+nmcli device status                              # pokaż urządzenia i aktywne profile
+nmcli connection show                            # pokaż nazwy profili połączeń
+nmcli con mod "Wired connection 1" connection.id LAN  # zmień nazwę połączenia na LAN
+nmcli con mod LAN ipv4.method manual ipv4.addresses 10.0.10.11/24 ipv4.gateway 10.0.10.1 ipv4.dns 10.0.10.1  # ustaw statyczny IPv4
+nmcli connection up LAN                          # aktywuj profil LAN
+nmcli con mod LAN ipv4.method auto ipv4.addresses "" ipv4.gateway "" ipv4.dns ""  # wróć do DHCP
 ```
 
-### 1.4 Имя хоста, время
+## 2. Trasy
 
 ```bash
-sudo hostnamectl set-hostname serwer-5      # + поправить 127.0.1.1 в /etc/hosts
-hostnamectl
-sudo timedatectl set-timezone Europe/Oslo   # 12-часовой формат — в GUI: Ustawienia → Data i czas
+sudo ip route add 192.168.77.0/24 via 90.90.0.1  # dodaj trasę tymczasową do sieci przez bramę
+ip route get 192.168.77.20                       # sprawdź wybór trasy dla adresu
+sudo ip route del 192.168.77.0/24 via 90.90.0.1  # usuń tę trasę tymczasową
 ```
 
-## 2. Пользователи и группы
+Stałe trasy wpisuj w netplan w `routes`, potem `sudo netplan apply`.
 
-| Задача | Команда |
-|---|---|
-| Пользователь с домашним каталогом | `sudo useradd -m jkowalski` |
-| … с описанием, shell, UID, своим home, сроком | `sudo useradd -m -c "Jan Kowalski" -s /bin/sh -u 7777 -d /home/user -e 2029-02-15 tester` |
-| Пароль | `sudo passwd tester` (или `echo 'tester:P@ss' \| sudo chpasswd`) |
-| Интерактивно (Ubuntu) | `sudo adduser jkowalski` |
-| Группа с GID | `sudo groupadd -g 1111 szkola` |
-| Сменить GID группы | `sudo groupmod -g 1111 informatycy` |
-| Добавить в группу | `sudo usermod -aG szkola student` / `sudo gpasswd -a student szkola` |
-| Права sudo («wszystkie polecenia jako root») | `sudo usermod -aG sudo asystent` (openSUSE: `wheel` + раскомментировать `%wheel ALL=(ALL) ALL` в `visudo`) |
-| Сменить shell | `sudo chsh -s /bin/sh asystent` / `usermod -s` |
-| Срок действия учётки | `sudo chage -E 2029-02-15 egzamin` |
-| Мин. дней между сменами пароля | `sudo chage -m 4 kadry` |
-| Дней после истечения пароля до блокировки | `sudo chage -I 2 administrator` |
-| Проверить | `id tester`, `getent passwd tester`, `getent group szkola`, `sudo chage -l tester` |
-| Удалить | `sudo userdel -r tester`, `sudo groupdel szkola` |
-| Принимает ли сообщения | `mesg` → «is y» = да |
+## 3. DHCP
 
-## 3. Права
-
-| Число | rwx | Смысл |
-|---|---|---|
-| 7 | rwx | полные |
-| 6 | rw- | чтение+запись |
-| 5 | r-x | чтение+выполнение |
-| 4 | r-- | чтение |
-| 1 | --x | выполнение («tylko uruchomienie») |
-| 0 | --- | нет |
-
-Порядок: **владелец – группа – остальные**. Примеры из листов:
-
-```bash
-chmod 754 ~/architekt        # u=rwx g=r-x o=r--
-chmod 710 konta.sh           # rwx для владельца, только выполнение для группы
-chmod 740 ~/ELEKTRONIKA      # 7 / 4 / 0  («właściciel pełne, grupa odczyt, inni brak»)
-chmod 741 ~/ELEKTRONIKA      # «… inni – wykonanie»
-chmod 666 konfiguracja       # чтение+запись всем
-chmod 770 /home/zadanie ; chmod 660 /home/zadanie/dane
-chmod u=rwx,g=rx,o= /kopie_strony     # символьно = 750
-chmod -R 755 /www            # рекурсивно
-sudo chown egzamin:root /home/zadanie
-sudo chown -R www-data:www-data /strona
-sudo chown jkowalski /dane && sudo chmod 700 /dane     # «pełne prawa tylko dla jkowalski»
-ls -ld /dane ; stat -c '%a %U %G %n' /dane
-```
-
-Полезное: `mkdir ~/.INF02` (скрытый каталог), `ln -s /dev ~/dowiazanie_dev`, `ls -d /sbin/n* > ~/Letter_n`, `df -h > ~/dysk`, `ip a > ~/konfiguracja`, `alias godz='date +%H-%M'` (+ в `~/.bashrc`), `cp /etc/ssh/sshd_config ~/KOPIE/ssh_old`.
-
-## 4. Скрипты bash
-
-Создание: `nano ~/skrypty_admina/konta.sh` → первая строка `#!/bin/bash` → `chmod +x` (или число из листа) → запуск `./konta.sh uczen 3TI` или `sudo bash konta.sh uczen 3TI`.
-
-```bash
-#!/bin/bash
-# konta.sh <nazwa_bazowa_uzytkownika> <nazwa_bazowa_katalogu>
-# tworzy uczen1..uczen5 z katalogami /home/3TI1../home/3TI5
-if [ $# -ne 2 ]; then
-  echo "Użycie: $0 nazwa_uzytkownika nazwa_katalogu"; exit 1
-fi
-for i in $(seq 1 5); do
-  useradd -m -d "/home/$2$i" -s /bin/bash "$1$i"
-  echo "Utworzono $1$i z katalogiem /home/$2$i"
-done
-```
-
-```bash
-#!/bin/bash
-# konfiguracja.sh — grupa, członek, zmiana GID
-groupadd informatycy
-usermod -aG informatycy administrator
-groupmod -g 1111 informatycy
-getent group informatycy
-```
-
-```bash
-#!/bin/bash
-# wzorce: pętla while, warunek, odczyt z klawiatury
-read -p "Podaj imię: " imie
-echo "Witaj $imie"
-n=1
-while [ $n -le 10 ]; do mkdir -p "/TEST/STUDENT$n"; n=$((n+1)); done
-for plik in /home/administrator/Kopie/*.txt; do echo "$plik"; done
-[ -d /dane ] && echo "jest" || echo "brak"
-```
-
-Переменные: `$0` имя скрипта, `$1..$9` параметры, `$#` их число, `$@` все, `$?` код возврата.
-
-## 5. Архивы
-
-```bash
-tar -cvf informatyk.tar inf02.txt inf03.txt     # c=create v=widoczne nazwy f=plik
-tar -czvf kopia.tar.gz katalog/                 # + gzip
-tar -cjvf kopia.tar.bz2 katalog/                # + bzip2
-tar -tvf informatyk.tar                         # lista
-tar -xvf inf02.tar -C ~/egzamin                 # rozpakuj do katalogu
-gzip plik ; gunzip plik.gz ; zip -r a.zip dir ; unzip a.zip
-tar -cvf ~/egzamin.tar ~/Obrazy/Zrzuty\ ekranu/*.png   # архив скриншотов
-```
-
-## 6. Диски
-
-```bash
-lsblk -f                                   # новый диск, например /dev/sdb
-sudo fdisk /dev/sdb                        # g (GPT) / o (MBR) → n → Enter×3 → w
-# или без диалога:
-sudo parted -s /dev/sdb mklabel gpt mkpart primary ext4 0% 100%
-sudo mkfs.ext4 -L DANE /dev/sdb1
-sudo mkdir /dane
-sudo mount /dev/sdb1 /dane
-sudo blkid /dev/sdb1                       # UUID
-echo 'UUID=xxxx-xxxx /dane ext4 defaults 0 2' | sudo tee -a /etc/fstab
-sudo mount -a && df -h /dane
-```
-
-Тест скорости: приложение **Dyski** (`gnome-disks`) → выбрать раздел → меню ⋮ → *Test wydajności partycji…* → *Rozpocznij test wydajności…* → снять «test zapisu», задать *Liczba próbek / Rozmiar próbki*. CLI: `sudo hdparm -t /dev/sda`.
-Флешка `Egzamin-x` монтируется в `/media/administrator/Egzamin-x`.
-
-## 7. Службы
-
-```bash
-sudo systemctl status ssh
-sudo systemctl enable --now ssh            # «uruchamia się po starcie» + uruchom
-sudo systemctl restart apache2
-systemctl is-enabled smbd ; systemctl is-active smbd
-journalctl -u isc-dhcp-server -n 30        # почему не стартует
-ss -tulpn                                  # кто слушает порты
-```
-
-### 7.1 isc-dhcp-server (полный пример)
-
-```bash
-sudo apt install isc-dhcp-server           # если не установлен
-sudo nano /etc/default/isc-dhcp-server
-#   INTERFACESv4="enp0s8"                  # интерфейс к коммутатору
-sudo nano /etc/dhcp/dhcpd.conf
-```
-```conf
-option domain-name "egzamin.edu";
-option domain-name-servers 10.80.0.2;
-default-lease-time 3600;          # 1 h
-max-lease-time 10800;             # 3 h
-authoritative;                    # «serwer autorytatywny» — раскомментировать
-
+<!-- file: /etc/dhcp/dhcpd.conf -->
+```dhcpd
+# serwer autorytatywny
+authoritative;
+# podsieć serwowana przez DHCP
 subnet 10.80.0.0 netmask 255.255.255.0 {
+  # pula adresów
   range 10.80.0.10 10.80.0.30;
+  # brama klienta
   option routers 10.80.0.2;
-  option broadcast-address 10.80.0.255;
-  option subnet-mask 255.255.255.0;
+  # DNS klienta
+  option domain-name-servers 10.80.0.2;
+  # czas dzierżawy
+  default-lease-time 3600;
+  # maksymalny czas
+  max-lease-time 10800;
+# koniec subnet
 }
-
-host stacja {                     # резервирование
-  hardware ethernet 08:00:27:aa:bb:cc;
-  fixed-address 10.80.0.20;
-}
 ```
-```bash
-sudo dhcpd -t -cf /etc/dhcp/dhcpd.conf     # проверка синтаксиса
-sudo systemctl restart isc-dhcp-server && systemctl status isc-dhcp-server
-cat /var/lib/dhcp/dhcpd.leases             # выданные адреса
+
+<!-- file: /etc/default/isc-dhcp-server -->
+```sh
+# interfejs IPv4 nasłuchujący DHCP
+INTERFACESv4="enp0s8"
+# IPv6 nieużywane
+INTERFACESv6=""
 ```
-Интерфейс сервера должен иметь **статический IP из этой подсети**, иначе служба не стартует.
-
-### 7.2 Apache (HTTP)
-
-| | Ubuntu | openSUSE |
-|---|---|---|
-| Пакет/служба | `apache2` | `apache2` |
-| Корень сайта по умолчанию | `/var/www/html` | `/srv/www/htdocs` |
-| Конфиг сайта | `/etc/apache2/sites-available/000-default.conf` | `/etc/apache2/default-server.conf` |
-| Порт | `/etc/apache2/ports.conf` (`Listen 80`) | `/etc/apache2/listen.conf` |
-| Пользователь/группа | `www-data` / `www-data` (`/etc/apache2/envvars`) | `wwwrun` / `www` (`/etc/apache2/uid.conf`) |
-
-Смена корня на `/www` и порта на 8080 (Ubuntu):
 
 ```bash
-grep -E 'APACHE_RUN_(USER|GROUP)' /etc/apache2/envvars     # «odczytaj użytkownika i grupę»
-sudo sed -i 's/^Listen 80$/Listen 8080/' /etc/apache2/ports.conf
-sudo sed -i 's#<VirtualHost \*:80>#<VirtualHost *:8080>#; s#DocumentRoot /var/www/html#DocumentRoot /www#' \
-     /etc/apache2/sites-available/000-default.conf
-sudo tee -a /etc/apache2/apache2.conf <<'EOF'
-<Directory /www/>
-    Options Indexes FollowSymLinks
-    AllowOverride None
-    Require all granted
-</Directory>
-EOF
-sudo apache2ctl configtest && sudo systemctl restart apache2
-curl http://localhost:8080
+sudo nano /etc/dhcp/dhcpd.conf                   # edytuj konfigurację DHCP
+sudo nano /etc/default/isc-dhcp-server           # wybierz interfejs usługi DHCP
+sudo dhcpd -t -cf /etc/dhcp/dhcpd.conf           # sprawdź składnię DHCP
+sudo systemctl restart isc-dhcp-server           # uruchom DHCP ponownie
+sudo systemctl enable isc-dhcp-server            # włącz autostart DHCP
 ```
 
-Замена главной страницы: `sudo cp /media/administrator/DOKUMENTACJA*/PLIKI/index.html /var/www/html/index.html`.
+## 4. WWW Apache
 
-### 7.3 Samba
+<!-- file: /etc/apache2/sites-available/010-www.conf -->
+```apache
+# witryna na porcie 80
+<VirtualHost *:80>
+    # katalog strony
+    DocumentRoot /www
+    # reguły katalogu
+    <Directory /www>
+        # zezwól odczyt wszystkim klientom
+        Require all granted
+    # koniec Directory
+    </Directory>
+# koniec VirtualHost
+</VirtualHost>
+```
 
 ```bash
-sudo apt install samba
-sudo nano /etc/samba/smb.conf
+sudo mkdir /www                                  # utwórz katalog strony
+printf '<h1>INF.02</h1>\n' | sudo tee /www/index.html  # utwórz prostą stronę testową
+sudo nano /etc/apache2/sites-available/010-www.conf  # edytuj definicję witryny
+sudo a2ensite 010-www                            # włącz witrynę
+sudo a2dissite 000-default                       # wyłącz domyślną witrynę
+sudo apache2ctl -t                               # sprawdź składnię Apache
+sudo systemctl reload apache2                    # przeładuj Apache bez zrywania połączeń
+curl -s http://localhost/                        # pobierz stronę testowo
 ```
-```conf
-[homes]
-   comment = Katalogi domowe
-   browseable = no
-   read only = no
-   valid users = %S
 
-[dane]
-   path = /dane
-   valid users = jkowalski
-   read only = no
-```
-```bash
-sudo smbpasswd -a jkowalski          # пользователь Samba (должен существовать в системе)
-testparm -s
-sudo systemctl enable --now smbd nmbd
-smbclient -L localhost -U jkowalski
-```
-Windows: `net use M: \\192.168.0.3\jkowalski /user:jkowalski /persistent:yes`, `net use P: \\192.168.0.3\dane`.
-DNS-служба на Ubuntu = `bind9`: `sudo systemctl enable --now named`.
-
-### 7.4 SSH
+## 5. Użytkownicy, grupy, prawa
 
 ```bash
-sudo apt install openssh-server
-sudo systemctl enable --now ssh
-echo 'AllowUsers jkowalski administrator' | sudo tee -a /etc/ssh/sshd_config
-sudo systemctl restart ssh
-ssh jkowalski@192.168.0.3            # с Windows: ssh / PuTTY
+sudo useradd -m -s /bin/bash jkowalski           # utwórz użytkownika z home i powłoką bash
+sudo passwd jkowalski                            # ustaw hasło użytkownika
+sudo groupadd -g 1111 informatycy                # utwórz grupę z GID 1111
+sudo usermod -aG informatycy jkowalski           # dodaj użytkownika do grupy dodatkowej
+sudo chmod 770 /home/publiczny                   # ustaw rwx właścicielowi i grupie
+sudo chown jkowalski:informatycy /home/publiczny # ustaw właściciela i grupę
+stat -c %a /home/publiczny                       # pokaż uprawnienia cyframi
 ```
 
-### 7.5 Брандмауэр ufw
+Prawa ósemkowo: `r=4`, `w=2`, `x=1`; kolejność `właściciel-grupa-inni`. Katalog bez `x` nie pozwala wejść do środka.
+
+## 6. Dysk i montowanie
+
+<!-- file: /etc/fstab -->
+```fstab
+# urządzenie punkt-montowania system-opcje dump pass
+/dev/sdb1 /dane ext4 defaults 0 2
+```
 
 ```bash
-sudo ufw status verbose        # в Ubuntu обычно inactive — ping работает
-sudo ufw allow 22/tcp ; sudo ufw allow 80/tcp ; sudo ufw allow Samba
-sudo ufw enable
+sudo fdisk -l /dev/sdb                           # pokaż partycje dysku sdb
+printf 'g\nn\n1\n\n\nw\n' | sudo fdisk /dev/sdb  # utwórz GPT i jedną partycję na cały dysk
+sudo mkfs.ext4 /dev/sdb1                         # sformatuj partycję jako ext4
+sudo mkdir /dane                                 # utwórz punkt montowania
+sudo mount /dev/sdb1 /dane                       # zamontuj partycję teraz
+sudo nano /etc/fstab                             # dodaj montowanie stałe
+sudo findmnt --verify                            # sprawdź fstab
+sudo umount /dane                                # odmontuj testowo
+sudo mount -a                                    # zamontuj wszystko z fstab
+df -hT /dane                                     # sprawdź system plików i miejsce
 ```
 
-## 8. Идентификация железа в Linux
-
-| Параметр | Команда |
-|---|---|
-| ОС, версия | `cat /etc/os-release`, `lsb_release -a`, `hostnamectl` |
-| Ядро | `uname -r` |
-| CPU: модель, ядра, частота | `lscpu` (*Model name*, *Core(s) per socket*, *CPU max MHz*), `cat /proc/cpuinfo` |
-| RAM: объём | `free -h` |
-| RAM: тип, частота, производитель, S/N, part number | `sudo dmidecode -t memory` (*Size, Type: DDR4, Speed, Manufacturer, Serial Number, Part Number*) |
-| Всё оборудование | `sudo lshw -short`, `sudo lshw -C memory`, `-C display`, `-C network`, `-C disk` |
-| GPU | `lspci \| grep -i vga`, `sudo lshw -C display` (*vendor*, *product*) |
-| Диски | `lsblk -d -o NAME,MODEL,SIZE,ROTA` (ROTA 0 = SSD), `sudo fdisk -l`, `sudo smartctl -i /dev/sda` |
-| Сетевая карта, MAC | `ip link`, `sudo lshw -C network` |
-| Разрешение монитора | `xrandr` (строка `maximum`, режимы со `*` = текущий) |
-| Свободное место | `df -h` |
-
-Результат в файл: `sudo lshw -short > ~/Identyfikacja_serwera/lshw.txt`.
-Скриншот: клавиша **PrtSc** (сохраняет PNG в `~/Obrazy/Zrzuty ekranu`). Нужен `.jpg` → открыть в GIMP → *Eksportuj jako* `ram.jpg`, или `convert a.png ram.jpg` (ImageMagick, если есть).
-
-## 9. Тесты
+## 7. Usługi, cron, logi
 
 ```bash
-ip -br a ; ip r ; resolvectl status
-ping -c 4 192.168.0.1
-ping -c 4 192.168.0.200
-nslookup www.egzamin.local
-curl -I http://192.168.1.101
+sudo systemctl restart ssh                       # zrestartuj usługę SSH
+sudo systemctl enable --now cron                 # włącz i uruchom cron
+systemctl is-active cron                         # sprawdź, czy cron działa
+printf '30 2 * * 1 /sbin/reboot\n' | sudo tee /tmp/crontab-root  # przygotuj zadanie roota
+sudo crontab /tmp/crontab-root                   # zainstaluj zadanie roota
+sudo crontab -l                                  # wypisz crontab roota
+sudo journalctl -u ssh -n 20                     # pokaż ostatnie logi SSH
 ```
 
-## 10. openSUSE — отличия
+## 8. Samba
 
-| Тема | openSUSE Leap |
-|---|---|
-| Пакеты | `sudo zypper in apache2 samba dhcp-server` |
-| Центр настройки | `sudo yast` (TUI), `yast lan`, `yast users` |
-| Сеть (server) | **wicked**: `/etc/sysconfig/network/ifcfg-eth0`, `routes`, DNS в `/etc/sysconfig/network/config`; `sudo wicked ifreload all` |
-| Сеть (desktop / Leap 16) | NetworkManager → те же команды `nmcli` |
-| Интерфейсы | чаще `eth0`, `eth1` |
-| sudo-группа | `wheel` (включить в `visudo`) |
-| DHCP-сервер | пакет `dhcp-server`, `/etc/sysconfig/dhcpd` → `DHCPD_INTERFACE="eth1"`, служба `dhcpd` |
-| Apache | пользователь `wwwrun`, группа `www`, корень `/srv/www/htdocs` |
-| Samba | службы `smb`, `nmb` |
-| SSH | служба `sshd` |
-| Брандмауэр | firewalld: `sudo firewall-cmd --add-service=ssh --permanent && sudo firewall-cmd --reload` |
-| Железо | `hwinfo --short`, `sudo lshw` |
-
+<!-- file: /etc/samba/smb.conf -->
 ```ini
-# /etc/sysconfig/network/ifcfg-eth0
-BOOTPROTO='static'
-IPADDR='192.168.0.4/24'
-STARTMODE='auto'
-# /etc/sysconfig/network/routes
-default 192.168.0.1 - -
-# /etc/sysconfig/network/config
-NETCONFIG_DNS_STATIC_SERVERS="4.4.4.4"
+# sekcja globalna
+[global]
+# grupa robocza
+workgroup = WORKGROUP
+# rola serwera
+server role = standalone server
+# zasób publiczny
+[publiczny]
+# ścieżka katalogu
+path = /home/publiczny
+# widoczny w sieci
+browseable = yes
+# zezwól zapis
+read only = no
+# dostęp tylko dla egzamin
+valid users = egzamin
 ```
 
-Скрипт самопроверки: `sudo bash tools/check-linux.sh [oczekiwane.txt]`.
+```bash
+sudo apt install samba                           # zainstaluj Sambę
+sudo useradd -m -s /bin/bash egzamin             # utwórz użytkownika linuksowego egzamin
+sudo mkdir /home/publiczny                       # utwórz katalog zasobu
+sudo chown egzamin:egzamin /home/publiczny       # ustaw właściciela zasobu
+sudo chmod 770 /home/publiczny                   # ustaw prawa zasobu
+sudo nano /etc/samba/smb.conf                    # edytuj konfigurację Samby
+sudo testparm -s                                 # sprawdź konfigurację Samby
+sudo smbpasswd -a egzamin                        # ustaw osobne hasło SMB
+sudo systemctl restart smbd nmbd                 # zrestartuj usługi Samby
+```
+
+## 9. SSH
+
+<!-- file: /etc/ssh/sshd_config -->
+```sshconfig
+# port serwera
+Port 2222
+# zablokuj roota
+PermitRootLogin no
+# zezwól hasła
+PasswordAuthentication yes
+# zezwól tylko administratorowi
+AllowUsers administrator
+```
+
+```bash
+sudo apt install openssh-server                  # zainstaluj serwer SSH
+sudo nano /etc/ssh/sshd_config                   # edytuj konfigurację SSH
+sudo systemctl restart ssh                       # zastosuj konfigurację SSH
+ss -tln                                          # sprawdź port nasłuchu
+ssh -p 2222 administrator@localhost hostname     # wykonaj testowe polecenie przez SSH
+```
+
+## 10. Skrypty
+
+<!-- file: /home/administrator/skrypty_admina/konta.sh -->
+```bash-file
+#!/bin/bash                                      # interpreter bash
+for i in {1..5}                                  # powtórz dla 1..5
+do                                               # początek pętli
+  useradd -m -d /home/${2}${i} -s /bin/bash ${1}${i}  # utwórz konto z parametrów
+done                                             # koniec pętli
+```
+
+```bash
+mkdir ~/skrypty_admina                           # utwórz katalog skryptów
+nano ~/skrypty_admina/konta.sh                   # utwórz skrypt konta.sh
+chmod 710 ~/skrypty_admina/konta.sh              # nadaj wymagane uprawnienia 710
+cd ~/skrypty_admina                              # przejdź do katalogu skryptu
+sudo ./konta.sh uczen 3TI                        # uruchom skrypt z parametrami uczen i 3TI
+tail -5 /etc/passwd                              # sprawdź utworzone konta
+```
+
+## Najczęstsze teksty błędów
+
+| Tekst z symulatora | Szybka naprawa |
+|---|---|
+| `command not found` | zainstaluj pakiet albo popraw literówkę |
+| `Permission denied` | dodaj `sudo` albo popraw `chmod`/`chown` |
+| `No such file or directory` | sprawdź ścieżkę przez `ls` i `pwd` |
+| `invalid option` | sprawdź minus i literę opcji |
+| `Incorrect indentation` | w YAML użyj spacji, nie tabulatora |
+| `Syntax error on line ...` | w Apache popraw wskazany numer linii |
+| `bad minute` / `errors in crontab file` | popraw pięć pól czasu cron |
+| `you must specify a filesystem type` | dodaj `-t ext4` albo wpis w fstab |
+| `must be superuser` | uruchom przez `sudo` |
+
+## Jak sprawdzić przed oddaniem zrzutów
+
+```bash
+ip -br address                                   # zrzut adresów IP
+ip route show                                    # zrzut bramy i tras
+systemctl is-active ssh cron apache2             # zrzut stanu kluczowych usług
+ls -l /home                                      # zrzut katalogów i praw
+sudo crontab -l                                  # zrzut zadań cron
+df -hT                                           # zrzut zamontowanych systemów plików
+```
+
+Na zrzucie musi być widoczne **polecenie i wynik**. Jeśli wynik jest długi, użyj `-br`, `-n`, `tail` albo `grep`, ale nie ukrywaj samego polecenia.

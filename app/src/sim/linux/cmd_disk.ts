@@ -156,8 +156,16 @@ register(
       c.outln(`Device does not contain a recognized partition table.\nCreated a new DOS (MBR) disklabel with disk identifier ${d.diskId}.\n`)
     }
     const total = d.sizeMB * SECT
+    const scripted = c.io.in ? (await c.stdin()).split('\n') : null
+    const askFd = async (prompt: string): Promise<string | null> => {
+      if (!scripted) return c.ask(prompt)
+      c.out(prompt)
+      const v = scripted.shift()
+      if (v !== undefined) c.outln(v)
+      return v === undefined ? null : v
+    }
     for (;;) {
-      const cmd = await c.ask('Command (m for help): ')
+      const cmd = await askFd('Command (m for help): ')
       if (cmd === null) {
         c.outln('')
         return 0
@@ -205,7 +213,7 @@ register(
           if (d.table === 'dos') {
             const prim = d.parts.length
             c.outln(`Partition type\n   p   primary (${prim} primary, 0 extended, ${4 - prim} free)\n   e   extended (container for logical partitions)`)
-            const t = ((await c.ask('Select (default p): ')) ?? '').trim() || 'p'
+            const t = ((await askFd('Select (default p): ')) ?? '').trim() || 'p'
             if (t === 'p') {
               /* ok */
             } else if (t === 'e') c.outln('(symulator) partycje rozszerzone nie są obsługiwane – tworzę partycję podstawową.')
@@ -217,7 +225,7 @@ register(
           }
           let free = 1
           while (used.includes(free)) free++
-          const nAns = ((await c.ask(`Partition number (${free}-${maxParts}, default ${free}): `)) ?? '').trim()
+          const nAns = ((await askFd(`Partition number (${free}-${maxParts}, default ${free}): `)) ?? '').trim()
           const num = nAns ? parseInt(nAns, 10) : free
           if (isNaN(num) || num < 1 || num > maxParts) {
             c.outln(`Value out of range.`)
@@ -229,7 +237,7 @@ register(
           }
           let start = lo
           for (;;) {
-            const a = ((await c.ask(`First sector (${lo}-${hi}, default ${lo}): `)) ?? '').trim()
+            const a = ((await askFd(`First sector (${lo}-${hi}, default ${lo}): `)) ?? '').trim()
             if (!a) break
             const v = parseSector(a, lo, hi, lo)
             if (v === null) {
@@ -241,7 +249,7 @@ register(
           }
           let end = hi
           for (;;) {
-            const a = ((await c.ask(`Last sector, +/-sectors or +/-size{K,M,G,T,P} (${start}-${hi}, default ${hi}): `)) ?? '').trim()
+            const a = ((await askFd(`Last sector, +/-sectors or +/-size{K,M,G,T,P} (${start}-${hi}, default ${hi}): `)) ?? '').trim()
             if (!a) break
             const v = parseSector(a, start, hi, start)
             if (v === null) {
@@ -265,7 +273,7 @@ register(
           }
           let num = d.parts[d.parts.length - 1].num
           if (d.parts.length > 1) {
-            const a = ((await c.ask(`Partition number (${d.parts.map((p) => p.num).join(',')}, default ${num}): `)) ?? '').trim()
+            const a = ((await askFd(`Partition number (${d.parts.map((p) => p.num).join(',')}, default ${num}): `)) ?? '').trim()
             if (a) num = parseInt(a, 10)
           } else c.outln(`Selected partition ${num}`)
           if (!d.parts.some((p) => p.num === num)) {
@@ -281,8 +289,8 @@ register(
             c.outln('No partition is defined yet!\n')
             break
           }
-          const num = d.parts.length === 1 ? d.parts[0].num : parseInt(((await c.ask(`Partition number (${d.parts.map((p) => p.num).join(',')}, default ${d.parts[d.parts.length - 1].num}): `)) ?? '').trim() || String(d.parts[d.parts.length - 1].num), 10)
-          const code = ((await c.ask('Hex code or alias (type L to list all): ')) ?? '').trim()
+          const num = d.parts.length === 1 ? d.parts[0].num : parseInt(((await askFd(`Partition number (${d.parts.map((p) => p.num).join(',')}, default ${d.parts[d.parts.length - 1].num}): `)) ?? '').trim() || String(d.parts[d.parts.length - 1].num), 10)
+          const code = ((await askFd('Hex code or alias (type L to list all): ')) ?? '').trim()
           const p = d.parts.find((x) => x.num === num)
           if (!p) break
           const names: Record<string, string> = { '83': 'Linux', '82': 'Linux swap / Solaris', '8e': 'Linux LVM', b: 'W95 FAT32', '7': 'HPFS/NTFS/exFAT' }
@@ -662,3 +670,23 @@ register(['swapon', 'swapoff'], (c) => {
 }, '/usr/sbin')
 register('partprobe', (c) => (c.root ? 0 : (c.err('Error: Error opening /dev/sda: Permission denied\n'), 1)), '/usr/sbin')
 register('sync', () => 0)
+
+register('findmnt', (c) => {
+  if (c.args.includes('--verify')) {
+    let bad = 0
+    for (const e of readFstab(c)) {
+      if (e.type === 'swap' || e.mp === 'none') continue
+      const mp = normPath(e.mp)
+      if (!tryLookup(c.st, mp) && !['/boot/efi', '/'].includes(mp)) {
+        c.err(`findmnt: ${mp}: mountpoint not found\n`)
+        bad++
+      }
+      if (!e.dev || !e.type) bad++
+    }
+    if (!bad) c.outln('Success, no errors or warnings detected')
+    return bad ? 1 : 0
+  }
+  c.outln('TARGET SOURCE                                    FSTYPE OPTIONS')
+  for (const m of c.st.mounts) c.outln(`${m.mountpoint.padEnd(6)} ${m.device.padEnd(48)} ${m.fstype.padEnd(6)} ${m.options}`)
+  return 0
+}, '/usr/bin')
