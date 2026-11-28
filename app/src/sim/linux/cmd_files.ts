@@ -2877,3 +2877,15 @@ register(
 )
 
 export { q, inputs, readArg }
+
+register('mktemp', (c) => {
+  const path = `/tmp/tmp.${Date.now().toString(36)}${Math.floor(Math.random() * 1e6).toString(36)}`
+  try {
+    writeFile(c.st, path, '', c.cred, { mode: 0o600, umask: 0 })
+    c.outln(path)
+    return 0
+  } catch (e) {
+    c.err(`mktemp: failed to create file via template '/tmp/tmp.XXXXXXXXXX': ${c.fsMsg(e)}\n`)
+    return 1
+  }
+}, '/usr/bin')

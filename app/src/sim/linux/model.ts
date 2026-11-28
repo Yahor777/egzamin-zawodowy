@@ -123,6 +123,7 @@ export interface LinuxState {
   services: Record<string, ServiceState>
   packages: string[]
   history: string[]
+  binMigrations?: string[]
   disks: Disk[]
   mounts: Mount[]
   journal: JournalEntry[]

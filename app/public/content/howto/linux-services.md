@@ -106,13 +106,15 @@ W `/etc/crontab` jest jeszcze dodatkowe pole **user** między czasem a polecenie
 mkdir -p ~/skrypty                               # utwórz katalog na skrypty użytkownika
 printf '#!/bin/bash\n/bin/date >> /home/administrator/cron-test.log\n' > ~/skrypty/cron-test.sh  # utwórz prosty skrypt testowy
 chmod 700 ~/skrypty/cron-test.sh                 # nadaj skryptowi prawo wykonania tylko dla właściciela
-crontab -l > ~/cron-backup 2>/dev/null || true   # zachowaj istniejące zadania; pusty plik też jest poprawny
-cp ~/cron-backup ~/cron-nowe                     # skopiuj stare zadania do nowej wersji crontab
-printf '30 2 * * 1 /home/administrator/skrypty/cron-test.sh\n' >> ~/cron-nowe  # dopisz ćwiczeniowe zadanie bez kasowania starych
-crontab ~/cron-nowe                              # zainstaluj połączoną wersję crontab
+b=$(mktemp)                                    # utwórz unikalny pusty plik na kopię starego crontab
+n=$(mktemp)                                    # utwórz unikalny pusty plik na nową wersję crontab
+crontab -l > "$b" 2>/dev/null || true            # zachowaj istniejące zadania bez nadpisywania cudzych plików
+cp "$b" "$n"                                     # skopiuj stare zadania do nowej wersji crontab
+printf '30 2 * * 1 /home/administrator/skrypty/cron-test.sh\n' >> "$n"  # dopisz ćwiczeniowe zadanie bez kasowania starych
+crontab "$n"                                     # zainstaluj połączoną wersję crontab
 crontab -l                                       # pokaż zainstalowane zadania crontab
-crontab ~/cron-backup                            # przywróć poprzednie zadania po ćwiczeniu
-rm ~/cron-backup ~/cron-nowe                     # usuń pliki tymczasowe ćwiczenia
+crontab "$b"                                     # przywróć poprzednie zadania po ćwiczeniu
+rm "$b" "$n"                                     # usuń unikalne pliki tymczasowe ćwiczenia
 ```
 
 ## Частые ошибки

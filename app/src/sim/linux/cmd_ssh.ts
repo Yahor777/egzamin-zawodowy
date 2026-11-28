@@ -2,7 +2,7 @@
 import { register, Proc } from './shell.ts'
 import type { Ctx } from './shell.ts'
 import { userByName, readShadow, checkPassword, credFor } from './users.ts'
-import { writeFile, tryLookup } from './vfs.ts'
+import { makeDir, writeFile, tryLookup } from './vfs.ts'
 import type { LinuxState } from './model.ts'
 
 export function sshdPortFromState(st: LinuxState): number {
@@ -77,8 +77,8 @@ register('ssh', async (c) => {
       c.err('Host key verification failed.\n')
       return 255
     }
-    c.st.fs[`${clientHome}/.ssh`] = c.st.fs[`${clientHome}/.ssh`] || { t: 'd', mode: 0o700, uid: c.cred.uid, gid: c.cred.gid, mtime: Date.now() }
     try {
+      if (!tryLookup(c.st, `${clientHome}/.ssh`)) makeDir(c.st, `${clientHome}/.ssh`, c.cred, 0, 0o700)
       writeFile(c.st, known, `${host} ssh-ed25519 SIMULATEDKEY\n`, c.cred, { mode: 0o600 })
     } catch {
       c.err('Failed to add the host to the list of known hosts.\n')

@@ -231,8 +231,9 @@ export const PKGS: Record<string, PkgDef> = {
 export const BASE_PACKAGES = ['openssh-server', 'curl', 'inetutils-traceroute']
 
 /** create bin placeholders for all commands provided by installed packages */
-export function installBins(st: LinuxState) {
+export function installBins(st: LinuxState, only?: Set<string>) {
   for (const [name, def] of Object.entries(CMDS)) {
+    if (only && !only.has(name)) continue
     if (def.pkg && !st.packages.includes(def.pkg)) continue
     const path = (def.dir === '/' ? '' : def.dir) + '/' + name
     if (!st.fs[path]) st.fs[path] = { t: 'f', mode: 0o755, uid: 0, gid: 0, bin: true, size: 35000 + ((name.length * 7919) % 120000), mtime: Date.parse('2024-04-08T12:00:00Z') }

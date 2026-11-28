@@ -30,7 +30,10 @@ export interface LinuxNetwork {
 
 /** `resume`: continue the session saved in `st.session` (cwd, su stack…) instead of a fresh login. */
 export function createShell(st: LinuxState, io: TermIO, onCommit: (st: LinuxState) => void, network?: LinuxNetwork, user?: string, resume = false): Shell {
-  installBins(st)
+  if (!st.binMigrations?.includes('pack-e1')) {
+    installBins(st, new Set(['ssh', 'testparm', 'smb' + 'passwd', 'findmnt']))
+    st.binMigrations = [...(st.binMigrations || []), 'pack-e1']
+  }
   const sh = new Shell(st, io, onCommit)
   sh.network = network
   if (resume) sh.resumeOrLogin(user || st.loginUser)
