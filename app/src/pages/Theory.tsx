@@ -1,7 +1,7 @@
 import { Icon } from '../components/Icon'
 import { Markdown } from '../components/Markdown'
 import { useBank } from '../lib/bank'
-import { CHEATS, useContent } from '../lib/content'
+import { CHEATS, useContent, useLocalizedMarkdown } from '../lib/content'
 import { GENERATORS, type GenId } from '../lib/generators'
 import { TOPIC_NAMES, useT } from '../lib/i18n'
 import { useLang } from '../lib/store'
@@ -114,7 +114,7 @@ export function Theory() {
 /** A page of our practical documentation (public/content/howto). */
 export function Doc({ slug }: { slug: string }) {
   const lang = useLang()
-  const [text, err] = useContent<string>(`content/howto/${slug}.md`, 'text')
+  const [text, err] = useLocalizedMarkdown(`content/howto/${slug}.md`, lang === 'pl')
   const drills = DRILLS.filter((d) => d.docs.some((x) => x.to === `doc/${slug}`))
   return (
     <div className="page reading">
