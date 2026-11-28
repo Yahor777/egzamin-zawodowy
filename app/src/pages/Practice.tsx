@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Icon } from '../components/Icon'
 import { Markdown } from '../components/Markdown'
-import { useContent, useContentList, type GuideMeta } from '../lib/content'
+import { useContentList, useLocalizedMarkdown, type GuideMeta } from '../lib/content'
 import { DRILLS, TOPICS } from '../sim/drills'
 import { dKey, lKey, SHEETS, statusOf, usePractice } from '../sim/drills/progress'
 import { useT } from '../lib/i18n'
@@ -212,7 +212,8 @@ export function Practice() {
 
 export function Guide({ slug }: { slug: string }) {
   const t = useT()
-  const [text, err] = useContent<string>(`content/practice/${slug}.md`, 'text')
+  const lang = useLang()
+  const [text, err] = useLocalizedMarkdown(`content/practice/${slug}.md`, lang === 'pl')
   const isSheet = slug.startsWith('inf02-')
   return (
     <div className="page reading">
